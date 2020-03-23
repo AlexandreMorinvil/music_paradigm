@@ -1,0 +1,45 @@
+{
+    "name": "speed_experiment",
+    "mode": "speed",
+    "anyPianoKey": 1,
+    "folder": "first_task",
+    "flow": [
+        {
+            "type": "instruction",
+            "pictureFileName": [
+                "instruction/Instruction_screen_first_task_crblm_1.png", 
+                "instruction/Instruction_screen_first_task_crblm_2.png", 
+                "instruction/Instruction_screen_first_task_crblm_3.png", 
+                "instruction/Instruction_screen_first_task_crblm_4.png"
+            ]
+        },
+        {
+            "type": "cue",
+            "pictureFileName": ["instruction/Instruction_screen_first_task_crblm_5.png"],
+            "midiFileName": ["melody/blank_crblm.mid"]
+        },
+        {
+            "type": "instruction",
+            "pictureFileName": [
+                "instruction/Instruction_screen_first_task_crblm_6.png"
+            ]
+        },
+        {
+            "type": "playing",
+            "pictureFileName": ["instruction/Training_screen_first_task_crblm.png"],
+            "progressBarFlag": 1,
+            "timeoutInSeconds": 30,
+            "followedBy": 1,
+            "numBlock": 3
+        },
+        {
+            "type": "rest",
+            "pictureFileName": ["instruction/Rest_screen_first_task.png"],
+            "timeoutInSeconds": 30
+        },
+        {
+            "type": "end",
+            "pictureFileName": ["instruction/End_training_first_task.png"]
+        }
+    ]
+}

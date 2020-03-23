@@ -1,0 +1,14 @@
+xx.model.js
+- add fields here
+
+xx.controller.js
+- add action route here
+
+db.js
+- database here
+
+server.js
+- add api route for database here
+
+config.json
+- change mongodb connection string

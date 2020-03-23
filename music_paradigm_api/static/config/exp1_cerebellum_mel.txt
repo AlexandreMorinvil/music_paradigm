@@ -1,0 +1,50 @@
+// '//' is for comments (won't be used for configuration)
+// Section 1: general information of your experiment
+// name: for your own reference
+name=speed_experiment
+// where you put your file (in this case, api/static/first_task)
+folder=first_task
+// mode: either ‘speed’ or ‘rhythm’
+mode=speed
+// to enable any piano key instead of spacebar only to proceed, add '//' at the front if not needed
+anyPianoKey=1
+// uncomment the next line if you want to specify a specific timbre, refer to 
+// timbreFile=https://raw.githubusercontent.com/gleitz/midi-js-soundfonts/gh-pages/MusyngKite/synth_bass_2-mp3.js
+
+// Section 2: where you customize the flow of the experiment
+flow=
+// always have 'type' first, followed by other variables, eg 'pictureFileName' etc.
+// type options: ‘cue’, ‘playing’, ‘feedback’, ‘rest’, ‘end’ (Note that currently every flow must end with ‘end’ block)
+-type=instruction
+// pictureFileName: put in list of filenames of the instruction screens
+-pictureFileName=
+instruction/Instruction_screen_first_task_crblm_1.png
+instruction/Instruction_screen_first_task_crblm_2.png
+instruction/Instruction_screen_first_task_crblm_3.png
+instruction/Instruction_screen_first_task_crblm_4.png 
+
+-type=cue
+-pictureFileName=instruction/Instruction_screen_first_task_crblm_5.png 
+// midiFileName: put in list of filenames of the MIDI files (only available in ‘cue’)
+-midiFileName=melody/1st_sequence_25342_left_hand_longer.mid
+
+-type=instruction
+-pictureFileName=instruction/Instruction_screen_first_task_crblm_6.png
+
+-type=playing
+-pictureFileName=instruction/Training_screen_first_task_crblm.png
+-progressBarFlag=1
+// timeoutInSeconds: this screen is skipped after a specific time window (eg. 30 seconds)
+-timeoutInSeconds=30
+// numBlock: number of trials in a block
+-numBlock=12
+// followedBy: means this screen is always followed by the next screen in each trial
+// in this case, means 'playing' is always followed by the 'rest' in each trial
+-followedBy=1
+
+-type=rest
+-pictureFileName=instruction/Rest_screen_first_task.png
+-timeoutInSeconds=30
+
+-type=end
+-pictureFileName=instruction/End_training_first_task.png

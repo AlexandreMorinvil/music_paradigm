@@ -1,0 +1,163 @@
+// '//' is for comments (won't be used for configuration)
+// Section 1: general information of your experiment
+// name: for your own reference
+name=Rhythm_Experiment
+// where you put your file (in this case, api/static/Second_Task)
+folder=Second_Task
+// mode: either ‘speed’ or ‘rhythm’
+mode=rhythm
+
+// Section 2: where you customize the flow of the experiment
+flow=
+// always have 'type' first, followed by other variables, eg 'pictureFileName' etc.
+// type options: ‘cue’, ‘playing’, ‘feedback’, ‘rest’, ‘end’ (Note that currently every flow must end with ‘end’ block)
+-type=instruction
+// pictureFileName: put in list of filenames of the instruction screens
+-pictureFileName=
+instructions_screens/Instruction_screen_second_task_general_1.png
+instructions_screens/Instruction_screen_second_task_general_2.png
+instructions_screens/Instruction_screen_second_task_general_3.png
+instructions_screens/Familiarization_screen_second_task_1.png
+
+// this stage is user familiarization with the melody tones 
+-type=rest
+-pictureFileName=instructions_screens/Melody_keys_simple_melody_A1.png
+// enableSound: piano output is enabled, it is otherwise muted except in 'playing' stage, add '//' at the beginning or delete the line if not needed
+-enableSoundFlag=1
+// timeoutInSeconds: this screen is skipped after a specific time window (eg. 10 seconds)
+-timeoutInSeconds=10
+
+-type=instruction
+-pictureFileName=
+instructions_screens/Familiarization_screen_second_task_2.png
+instructions_screens/Instruction_reminder_second_task.png
+
+-type=cue
+-pictureFileName=
+instructions_screens/Training_screen_simple_melody_A1_first_note_first_part.png
+instructions_screens/Training_screen_simple_melody_A1_first_note_second_part.png
+instructions_screens/Training_screen_simple_melody_A1_first_note_first_part.png
+// midiFileName: put in list of filenames of the MIDI files (only available in ‘cue’)
+-midiFileName=
+melodies/simple_melody_A1_RB_short_version_part_1.mid
+melodies/simple_melody_A1_RB_short_version_part_2.mid
+melodies/simple_melody_A1_RB_complete.mid
+// followedBy: means this screen is always followed by the next screen in each trial
+// in this case, means 'cue' is always followed by the 'playing' in each trial
+-followedBy=1
+// maxNumBlock: number of maximum trials a user can have, this block will be skipped after 3 times even though the user don't manange to pass it successfully 
+-maxNumBlock=3
+
+-type=playing
+//-pictureFileName=
+-progressBarFlag=1
+// followedBy: means this screen is always followed by the next screen in each trial
+// in this case, means 'playing' is always followed by the 'feedback' in each trial
+-followedBy=1
+-timeoutInSeconds=60
+
+-type=feedback
+
+-type=instruction
+-pictureFileName=
+instructions_screens/Instruction_screen_second_task_next_melody.png
+instructions_screens/Familiarization_screen_second_task_1.png
+
+-type=rest
+-pictureFileName=instructions_screens/Melody_keys_simple_melody_A2.png
+-enableSoundFlag=1
+-timeoutInSeconds=30
+
+-type=instruction
+-pictureFileName=
+instructions_screens/Familiarization_screen_second_task_2.png
+instructions_screens/Instruction_reminder_second_task.png
+
+-type=cue
+-pictureFileName=
+instructions_screens/Training_screen_simple_melody_A2_first_note_first_part.png
+instructions_screens/Training_screen_simple_melody_A2_first_note_second_part.png
+instructions_screens/Training_screen_simple_melody_A2_first_note_first_part.png
+-midiFileName=
+melodies/simple_melody_A2_RB_short_version_part_1.mid
+melodies/simple_melody_A2_RB_short_version_part_2.mid
+melodies/simple_melody_A2_RB_complete.mid
+-followedBy=1
+-maxNumBlock=3
+
+-type=playing
+-pictureFileName=
+-progressBarFlag=1
+-followedBy=1
+-timeoutInSeconds=60
+
+-type=feedback
+
+-type=instruction
+-pictureFileName=
+instructions_screens/Instruction_screen_second_task_next_melody.png
+instructions_screens/Familiarization_screen_second_task_1.png
+
+-type=rest
+-pictureFileName=instructions_screens/Melody_keys_simple_melody_A3.png
+-enableSoundFlag=1
+-timeoutInSeconds=30
+
+-type=instruction
+-pictureFileName=
+instructions_screens/Familiarization_screen_second_task_2.png
+instructions_screens/Instruction_reminder_second_task.png
+
+-type=cue
+-pictureFileName=
+instructions_screens/Training_screen_simple_melody_A3_first_note_first_part.png
+instructions_screens/Training_screen_simple_melody_A3_first_note_second_part.png
+instructions_screens/Training_screen_simple_melody_A3_first_note_first_part.png
+-midiFileName=
+melodies/simple_melody_A3_RB_short_version_part_1.mid
+melodies/simple_melody_A3_RB_short_version_part_2.mid
+melodies/simple_melody_A3_RB_complete.mid
+-followedBy=1
+
+-type=playing
+-progressBarFlag=1
+-followedBy=1
+-timeoutInSeconds=60
+
+-type=feedback
+ 
+-type=instruction
+-pictureFileName=
+instructions_screens/Instruction_screen_second_task_next_melody.png
+instructions_screens/Familiarization_screen_second_task_1.png
+
+-type=rest
+-pictureFileName=instructions_screens/Melody_keys_simple_melody_A4.png
+-enableSoundFlag=1
+-timeoutInSeconds=30
+
+-type=instruction
+-pictureFileName=
+instructions_screens/Familiarization_screen_second_task_2.png
+instructions_screens/Instruction_reminder_second_task.png
+
+-type=cue
+-pictureFileName=
+instructions_screens/Training_screen_simple_melody_A4_first_note_first_part.png
+instructions_screens/Training_screen_simple_melody_A4_first_note_second_part.png
+instructions_screens/Training_screen_simple_melody_A4_first_note_first_part.png
+-midiFileName=
+melodies/simple_melody_A4_RB_short_version_part_1.mid
+melodies/simple_melody_A4_RB_short_version_part_2.mid
+melodies/simple_melody_A4_RB_complete.mid
+-followedBy=1
+
+-type=playing
+-progressBarFlag=1
+-timeoutInSeconds=60
+-followedBy=1
+
+-type=feedback
+
+-type=end
+-pictureFileName=instructions_screens/End_training_second_task.png

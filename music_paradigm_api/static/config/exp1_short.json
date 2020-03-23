@@ -1,0 +1,37 @@
+{
+    "name": "speed_experiment_short",
+    "mode": "speed",
+    "folder": "first_task",
+    "timbreFile": "https://raw.githubusercontent.com/gleitz/midi-js-soundfonts/gh-pages/MusyngKite/synth_bass_2-mp3.js",
+    "flow": [
+        {
+            "type": "instruction",
+            "pictureFileName": [
+                "MVI_0583.MOV"
+            ]
+        },
+        {
+            "type": "cue",
+            "pictureFileName": ["instruction/Training_screen_first_task.png"],
+            "midiFileName": ["melody/1st_sequence_25342_left_hand.mid"]
+        },
+        {
+            "type": "playing",
+            "pictureFileName": ["instruction/Training_screen_first_task.png"],
+            "progressBarFlag": true,
+            "logFlag": true,
+            "timeoutInSeconds": 10,
+            "followedBy": true,
+            "numBlock": 2
+        },
+        {
+            "type": "rest",
+            "pictureFileName": ["instruction/Rest_screen_first_task.png"],
+            "timeoutInSeconds": 5
+        },
+        {
+            "type": "end",
+            "pictureFileName": ["instruction/End_training_first_task.png"]
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+version: '2'
+services:
+  learn:
+    container_name: clasp-webapp
+    build: music_paradigm_web
+    ports:
+      - 80:8080
+    environment:
+      - VIRTUAL_HOST=learn.coffeylab.ca
+      - LETSENCRYPT_HOST=learn.coffeylab.ca
+      - LESTENCRYPT_EMAIL=emily@coffeylab.ca
+      - VIRTUAL_PORT=8080
+    depends_on:
+      - claspweb
+
+  claspweb:
+    container_name: clasp-api
+    build: music_paradigm_api
+    ports:
+      - 4000:4000
+    depends_on:
+      - mongo
+
+  mongo:
+    container_name: claspmongo
+    image: mongo
+    volumes:
+      - ./db:/data/db:rw
+
+  mongo-express:
+     image: mongo-express
+     environment:
+      - ME_CONFIG_MONGODB_SERVER=claspmongo
+     ports:
+      - 8080:8081
