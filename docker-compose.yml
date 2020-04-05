@@ -4,7 +4,7 @@ services:
     container_name: clasp-webapp
     build: music_paradigm_web
     ports:
-      - 80:8080
+      - 81:8080
     environment:
       - VIRTUAL_HOST=learn.coffeylab.ca
       - LETSENCRYPT_HOST=learn.coffeylab.ca

@@ -1,0 +1,6 @@
+# Database files
+db/
+*.bson
+*.lock
+*.turtle
+*.wt
