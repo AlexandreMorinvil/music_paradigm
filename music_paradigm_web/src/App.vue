@@ -22,7 +22,10 @@ export default {
       playFlag: false,
       finished: false,
       currentOctave: 0,
-      useMidiInput: false  
+      useMidiInput: false,  
+
+      // Quick fix
+      previousKey: null
     }
   },
   computed: {
@@ -69,10 +72,20 @@ export default {
           this.playFlag = this.experiment.currentFlowState? this.experiment.currentFlowState.hasOwnProperty("enableSoundFlag"): false;
           if (this.$route.name === "playing" || this.playFlag === true) {
             if (mm.key === 1 || this.experiment.finished == true ) break;
+            // Fix here
+            
+            // Quick fix
+            if (this.previousKey !== null && this.localStarteds[this.previousKey]) {
+              this.localStarteds[this.previousKey].stop();            
+              delete this.localStarteds[this.previousKey]
+              this.addPlayedOffsets(new Date().getTime());
+            }
+
             this.localStarteds[mm.key] = this.piano.play(mm.key, 0, { gain: (vel) => {return (vel) / 127} });  // GainNode
             this.addPlayedNotes(mm.key);
             this.addPlayedDurations(new Date().getTime());    
-            this.addPlayedVelocities(mm.velocity);    
+            this.addPlayedVelocities(mm.velocity);
+            this.previousKey = mm.key;    
           } else if (mm.key === 1 || this.experiment.hasOwnProperty("anyPianoKey")) {
             // space bar or
             // any piano key by adding 'anyPianoKey: 1' in .config
