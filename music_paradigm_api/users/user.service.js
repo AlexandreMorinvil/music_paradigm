@@ -13,15 +13,27 @@ module.exports = {
     delete: _delete
 };
 
+/**
+ * @param {string} username     The date
+ * @param {string} password     The password (non-encrypted)
+ * @return {Object}             The user without hash of its password and the token
+ *                              If the authentication fails, it returns null
+ */
 async function authenticate({ username, password }) {
-    const user = await User.findOne({ username });
-    console.log("test");
-    const { hash, ...userWithoutHash } = user.toObject();
 
-    if (hash) {
-        if (!bcrypt.compareSync(password, hash)) return;
-    }
+    // Verification of the username
+    const user = await User.findOne({ username });
+    if(user === null) return null;
+    
+    // Verification of the password
+    const { hash, ...userWithoutHash } = user.toObject();
+    if (!bcrypt.compareSync(password, hash)) return null;
+
+    // Creation of the jwt token
     const token = jwt.sign({ sub: user.id }, config.secret);
+
+    // Verifying the selected experiment and attaching an experiment in case of issue
+    // TODO: Put that in a different function ===>
     if (user.experimentFile.endsWith("json")) {
         userWithoutHash.experiment = require(`static/config/${user.experimentFile}`);
     } else {
@@ -37,6 +49,7 @@ async function authenticate({ username, password }) {
             userWithoutHash.experiment = require(`static/config/exp1.json`);
         }
     }
+    //  <===
     
     return {
         ...userWithoutHash,
@@ -61,6 +74,8 @@ async function create(userParam) {
     const user = new User(userParam);
 
     // hash password
+
+    //TODO: Adding a random salt generator
     if (userParam.password) {
         user.hash = bcrypt.hashSync(userParam.password, 10);
     }
