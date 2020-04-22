@@ -4,3 +4,6 @@ db/
 *.lock
 *.turtle
 *.wt
+
+# Visualcode files
+*.vscode/*

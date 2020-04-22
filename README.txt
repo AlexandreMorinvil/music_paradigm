@@ -1,13 +1,19 @@
 ##### To Run the application
 
-### To run the application outside the container
+### To run the application within the container 
+### (For deployment)
+
+$ docker-compose -f "docker-compose.yml" up -d --build
+
+### To run the application outside the container 
+### (For development and debugging purposes)
 
 ## 1. Ensure that MongoDB is correctly installed
 # To install Mongo-Express
 
 $ sudo npm install -g mongo-express
 
-# 2. Start the MongoDB service
+## 2. Start the MongoDB service
 
 $ sudo systemctl start mongod
 
