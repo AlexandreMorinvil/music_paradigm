@@ -14,7 +14,7 @@ mongoose.connection.on('connected', handleConnection);
 mongoose.connection.on('disconnected', handleDisconnection);
 mongoose.connection.on('error', handleError);
 
-
+// Exporting the Schemas
 module.exports = {
     User: require('../users/user.model'),
     Result: require('../results/result.model')
@@ -23,7 +23,7 @@ module.exports = {
 /**
 * Confirms the connection to the database
 * @callback onConnectionCallback
- */
+*/
 function handleConnection() {
     console.log(`Database connected!`);
 }
@@ -41,7 +41,7 @@ function handleDisconnection() {
 
 /**
 * Indicates a disconnection to the database and reattemp connection after a delay
-* @callback onDisConnectionCallback
+* @callback onErrorCallback
 * @param {Error} error - The connection error that occured
 */
 function handleError(error) {
