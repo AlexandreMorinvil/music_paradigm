@@ -1,19 +1,49 @@
 const config = require('config.json');
 const mongoose = require('mongoose');
-const mongoUrl = process.env.NODE_ENV == 'production' ? (process.env.MONGODB_URI || config.connectionStringDocker) : config.connectionStringDev;
+
+// MongoDB connection URL
+const mongoUrl = process.env.NODE_ENV == 'production' ?
+    (process.env.MONGODB_URI || config.connectionStringDocker) : config.connectionStringDev;
 console.log(mongoUrl);
+
+// Estabilishing a connection
 mongoose.connect(mongoUrl, { useCreateIndex: true, useNewUrlParser: true });
-mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
-mongoose.connection.on('disconnected', (e) => {
-    console.log(`DB disconnected!: ${e}`);
-    setTimeout(() => 
-    mongoose.connect(mongoUrl, { useCreateIndex: true, useNewUrlParser: true })
-    , 5000);
-});
-mongoose.connection.on('connected', () => console.log(`DB connected!`) );
-mongoose.Promise = global.Promise;
+
+// Event listeners
+mongoose.connection.on('connected', handleConnection);
+mongoose.connection.on('disconnected', handleDisconnection);
+mongoose.connection.on('error', handleError);
+
 
 module.exports = {
     User: require('../users/user.model'),
     Result: require('../results/result.model')
 };
+
+/**
+* Confirms the connection to the database
+* @callback onConnectionCallback
+ */
+function handleConnection() {
+    console.log(`Database connected!`);
+}
+
+/**
+* Indicates a disconnection to the database and reattemp connection after a delay
+* @callback onDisConnectionCallback
+*/
+function handleDisconnection() {
+    console.log(`Database disconnected!`);
+    setTimeout(() =>
+        mongoose.connect(mongoUrl, { useCreateIndex: true, useNewUrlParser: true })
+        , 5000);
+}
+
+/**
+* Indicates a disconnection to the database and reattemp connection after a delay
+* @callback onDisConnectionCallback
+* @param {Error} error - The connection error that occured
+*/
+function handleError(error) {
+    console.error(`${error}`);
+}
