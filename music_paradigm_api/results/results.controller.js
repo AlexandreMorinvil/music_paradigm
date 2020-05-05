@@ -1,14 +1,16 @@
 ﻿const express = require('express');
 const router = express.Router();
+const jwtAuthorize = require('jwt/jwt.authorization');
+const role = require('_helpers/role');
 const service = require('./result.service');
 
 // routes
-router.post('/create', create);
-router.get('/', getAll);
-router.get('/current', getCurrent);
-router.get('/:id', getById);
-router.put('/:id', update);
-router.delete('/:id', _delete);
+router.post('/create',                              create);
+router.get('/',         jwtAuthorize(role.admin),   getAll);
+router.get('/current',                              getCurrent);
+router.get('/:id',      jwtAuthorize(role.admin),   getById);
+router.put('/:id',      jwtAuthorize(role.admin),   update);
+router.delete('/:id',   jwtAuthorize(role.admin),   _delete);
 
 module.exports = router;
 

@@ -1,6 +1,6 @@
 ﻿const bcrypt = require('bcryptjs');
 const db = require('_helpers/db');
-const abc = require('_helpers/jwt');
+const abc = require('jwt/jwt');
 const User = db.User;
 
 module.exports = {

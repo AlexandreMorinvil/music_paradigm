@@ -2,26 +2,24 @@ const expressJwt = require('express-jwt');
 const config = require('config.json');
 const userService = require('../users/user.service');
 
-module.exports = {
-    authentication: jwtMiddlewareAuthentication,
-};
+module.exports = jwtMiddlewareAuthentication;
 
 function jwtMiddlewareAuthentication() {
     const secret = config.secret;
     return expressJwt({ secret, isRevoked }).unless({
+        // Public routes that don't require authentication
         path: [
-            // Public routes that don't require authentication
             '/users/authenticate',
-            // '/users/register',
             '/static/'
         ]
     });
 }
 
 async function isRevoked(req, payload, done) {
+    // Verify that the user still exists
     const user = await userService.getById(payload.sub);
 
-    // revoke token if user no longer exists
+    // Revoke the token if the user no longer exists
     if (!user) {
         return done(null, true);
     }

@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const jwt = require('_helpers/jwt.middleware');
+const jwt = require('jwt/jwt.authentication');
 const errorHandler = require('_helpers/error-handler');
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -15,7 +15,7 @@ app.use(cors());
 app.use('/static', express.static('static'));
 
 // use JWT auth to secure the api
-app.use(jwt.authentication());
+app.use(jwt());
 
 // api routes
 app.use('/users', require('users/users.controller'));
