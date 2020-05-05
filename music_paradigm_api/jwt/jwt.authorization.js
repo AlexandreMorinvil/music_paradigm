@@ -1,11 +1,21 @@
-const expressJwt = require('express-jwt');
-const { secret } = require('config.json');
-
+// Exporting the middleware function
 module.exports = jwtMiddlewareAuthorization;
 
 /**
- * Middleware method to verify the jwt token and authorize a route according to the role
- * @param {string[]|string|} roles   Roles that are authorized on a route
+ * Middleware to enforce role based authentication on the routes of the server.
+ * 
+ * The JWT token must have been parsed and attached to the req prior to using this
+ * middleware.
+ * @module jwtMiddlewareAuthorization
+ * @function
+ * @param {Object}      req                 Express request object
+ * @param {Object}      res                 Express response object
+ * @param {String}      req.user.role       The the role of the user as decoded by 
+ *                                          the jwt authentication middleware 
+ * @param {Function}    next                Next middleware function
+ * @param {string[]|string|undefined} roles Roles that are authorized on a route.
+ *                                          When undefined, all roles are authorized.
+ * @return {undefined}
  */
 function jwtMiddlewareAuthorization(roles = []) {
 
@@ -16,11 +26,13 @@ function jwtMiddlewareAuthorization(roles = []) {
     }
 
     return [
+        
         // A user must have been added to the HTTP request by the authentication middleware used in 
         // the main entry point of the server. This user is then checked for access authorization.
         function (req, res, next) {
 
             if (roles.length && !roles.includes(req.user.role)) {
+
                 // The user's role does not grant authorization
                 return res.status(401).json({ message: 'Unauthorized' });
             }
