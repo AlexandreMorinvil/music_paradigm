@@ -42,7 +42,7 @@ function handleDisconnection() {
 /**
 * Indicates a disconnection to the database and reattemp connection after a delay
 * @callback onErrorCallback
-* @param {Error} error - The connection error that occured
+* @param {Error} error  The connection error that occured
 */
 function handleError(error) {
     console.error(`${error}`);
