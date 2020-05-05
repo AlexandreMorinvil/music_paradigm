@@ -1,28 +1,17 @@
-const expressJwt = require('express-jwt');
+const jsonWebToken = require('jsonwebtoken');
 const config = require('config.json');
-const userService = require('../users/user.service');
 
-module.exports = jwt;
-
-function jwt() {
-    const secret = config.secret;
-    return expressJwt({ secret, isRevoked }).unless({
-        path: [
-            // Public routes that don't require authentication
-            '/users/authenticate',
-            // '/users/register',
-            '/static/'
-        ]
-    });
-}
-
-async function isRevoked(req, payload, done) {
-    const user = await userService.getById(payload.sub);
-
-    // revoke token if user no longer exists
-    if (!user) {
-        return done(null, true);
-    }
-
-    done();
+module.exports = {
+    generateToken
 };
+
+function generateToken(user) {
+    // Creation of the jwt token
+    const token = jsonWebToken.sign(
+        {
+            sub: user._id,
+            role: user.role
+        },
+        config.secret);
+    return token;
+}

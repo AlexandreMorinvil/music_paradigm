@@ -1,7 +1,6 @@
-﻿const config = require('config.json');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+﻿const bcrypt = require('bcryptjs');
 const db = require('_helpers/db');
+const abc = require('_helpers/jwt');
 const User = db.User;
 
 module.exports = {
@@ -14,6 +13,7 @@ module.exports = {
 };
 
 /**
+ * Method for authenticating a user attempting to login
  * @param {string} username     The date
  * @param {string} password     The password (non-encrypted)
  * @return {Object}             The user without hash of its password and the token
@@ -30,7 +30,7 @@ async function authenticate({ username, password }) {
     if (!bcrypt.compareSync(password, hash)) return null;
 
     // Creation of the jwt token
-    const token = jwt.sign({ sub: user.id }, config.secret);
+    const token = abc.generateToken(userWithoutHash);
 
     // Verifying the selected experiment and attaching an experiment in case of issue
     // TODO: Put that in a different function ===>
