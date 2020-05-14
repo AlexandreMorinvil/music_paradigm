@@ -6,4 +6,4 @@ db/
 *.wt
 
 # Visualcode files
-*.vscode/*
+#*.vscode/*

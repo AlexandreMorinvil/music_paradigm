@@ -127,7 +127,7 @@ export default {
         case 'rhythm': {
           const pitchAcc = performanceEvaluation.getAccuracyB_2(this.playedNotes, this.songNotes);
           const rhythmDiff = performanceEvaluation.getRhythmTempo(this.playedDurations, this.songDurations);
-	  console.log(rhythmDiff);
+          console.log(rhythmDiff);
           // const rhythmDiff = performanceEvaluation.getRhythm(this.playedDurations, this.songDurations);
           this.experiment.feedbackStatus = pitchAcc === 100? 's': 'w';
           this.experiment.feedbackStatus += rhythmDiff <= config.maxRhythmError? 's': 'w';
@@ -212,7 +212,7 @@ export default {
         case 'rhythm':
           if (val >= 100) {
             window.clearTimeout(this.mainTimeOut);
-	    this.experiment.finished = true;
+	          this.experiment.finished = true;
             window.setTimeout(() => { this.onNext(); this.experiment.finished = false;}, 500);            
           }
         break;
