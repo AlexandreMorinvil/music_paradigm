@@ -1,8 +1,10 @@
 ﻿const bcrypt = require('bcryptjs');
 const db = require('_helpers/db');
-const abc = require('jwt/jwt');
+const timeout = require('_helpers/timeout')
+const jwt = require('jwt/jwt');
 const User = db.User;
 
+// Exports
 module.exports = {
     authenticate,
     getAll,
@@ -11,6 +13,13 @@ module.exports = {
     update,
     delete: _delete
 };
+
+/** 
+ * @constant 
+ * @type {number}
+*/
+const DATABASE_TIMEOUT = 10000;
+
 
 /**
  * Method for authenticating a user attempting to login
@@ -21,16 +30,18 @@ module.exports = {
  */
 async function authenticate({ username, password }) {
 
+    // Fetching the user in the database
+    const user = await timeout.dbQuery(User.findOne({ username }));
+
     // Verification of the username
-    const user = await User.findOne({ username });
-    if(user === null) return null;
-    
+    if (user === null) return null;
+
     // Verification of the password
     const { hash, ...userWithoutHash } = user.toObject();
     if (!bcrypt.compareSync(password, hash)) return null;
 
     // Creation of the jwt token
-    const token = abc.generateToken(userWithoutHash);
+    const token = jwt.generateToken(userWithoutHash);
 
     // Verifying the selected experiment and attaching an experiment in case of issue
     // TODO: Put that in a different function ===>
@@ -50,61 +61,69 @@ async function authenticate({ username, password }) {
         }
     }
     //  <===
-    
+
     return {
         ...userWithoutHash,
         token
     };
+
 }
 
 async function getAll() {
-    return await User.find().select('-hash');
+    return await timeout.dbQuery(
+        User.find().select('-hash'));
 }
 
 async function getById(id) {
-    return await User.findById(id).select('-hash');
+    return await timeout.dbQuery(
+        User.findById(id).select('-hash'));
 }
 
 async function create(userParam) {
-    // validate
-    if (await User.findOne({ username: userParam.username })) {
+
+    // Validate the uniqueness of the username
+    const document = timeout.dbQuery(
+        await User.findOne({ username: userParam.username }));
+    if (document) {
         throw 'Username "' + userParam.username + '" is already taken';
     }
 
+    // Create the new user
     const user = new User(userParam);
 
-    // hash password
-
-    //TODO: Adding a random salt generator
+    // Hash the password
     if (userParam.password) {
         user.hash = bcrypt.hashSync(userParam.password, 10);
     }
 
-    // save user
+    // Save the user
     await user.save();
 }
 
 async function update(id, userParam) {
-    const user = await User.findById(id);
+    
+    // Fetch the user in the database
+    const user = await timeout.dbQuery(User.findById(id));
 
-    // validate
+    // Validate the user
     if (!user) throw 'User not found';
     if (user.username !== userParam.username && await User.findOne({ username: userParam.username })) {
         throw 'Username "' + userParam.username + '" is already taken';
     }
 
-    // hash password if it was entered
+    // Hash password if it was entered
     if (userParam.password) {
         userParam.hash = bcrypt.hashSync(userParam.password, 10);
     }
 
-    // copy userParam properties to user
-    // console.log(userParam);
+    // Copy userParam properties to user
     Object.assign(user, userParam);
 
+    // Save the user
     await user.save();
 }
 
 async function _delete(id) {
-    await User.findByIdAndRemove(id);
+    await timeout.dbQuery(
+        User.findByIdAndRemove(id));
 }
