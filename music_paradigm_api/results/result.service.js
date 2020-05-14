@@ -1,4 +1,5 @@
 ﻿const db = require('_helpers/db');
+const timeout = require('_helpers/timeout')
 const Collection= db.Result;
 
 module.exports = {
@@ -10,32 +11,34 @@ module.exports = {
 };
 
 async function getAll() {
-    return await Collection.find().select('-hash');
+    return await timeout.dbQuery(
+        Collection.find().select('-hash'));
 }
 
 async function getById(id) {
-    return await Collection.findById(id).select('-hash');
+    return await timeout.dbQuery(
+        Collection.findById(id).select('-hash'));
 }
 
 async function create(param) {
     const collection = new Collection(param);
-
-    // save user
-    await collection.save();
+    await timeout.dbQuery(
+        collection.save());
 }
 
 async function update(id, param) {
-    const collection = await Collection.findById(id);
+    const collection = await timeout.dbQuery(
+        Collection.findById(id));
 
-    // validate
+    // Validate
     if (!collection) throw 'Collection not found';
 
-    // copy param properties to collection
+    // Copy param properties to collection
     Object.assign(collection, param);
-
-    await collection.save();
+    await timeout.dbQuery(collection.save());
 }
 
 async function _delete(id) {
-    await Collection.findByIdAndRemove(id);
+    await timeout.dbQuery(
+        Collection.findByIdAndRemove(id));
 }

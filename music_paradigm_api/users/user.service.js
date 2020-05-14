@@ -30,20 +30,21 @@ const DATABASE_TIMEOUT = 10000;
  */
 async function authenticate({ username, password }) {
 
-    // Fetching the user in the database
-    const user = await timeout.dbQuery(User.findOne({ username }));
+    // Fetch user in the database
+    const user = await timeout.dbQuery(
+        User.findOne({ username }));
 
-    // Verification of the username
+    // Validate username
     if (user === null) return null;
 
-    // Verification of the password
+    // Validate password
     const { hash, ...userWithoutHash } = user.toObject();
     if (!bcrypt.compareSync(password, hash)) return null;
 
-    // Creation of the jwt token
+    // Create jwt token
     const token = jwt.generateToken(userWithoutHash);
 
-    // Verifying the selected experiment and attaching an experiment in case of issue
+    // Attach an experiment to the user
     // TODO: Put that in a different function ===>
     if (user.experimentFile.endsWith("json")) {
         userWithoutHash.experiment = require(`static/config/${user.experimentFile}`);
