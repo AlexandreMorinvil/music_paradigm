@@ -1,5 +1,6 @@
 const config = require('config.json');
 const mongoose = require('mongoose');
+const init = require('./db.initialiation');
 
 // MongoDB connection URL
 const mongoUrl = process.env.NODE_ENV == 'production' ?
@@ -26,6 +27,7 @@ module.exports = {
 */
 function handleConnection() {
     console.log(`Database connected!`);
+    init.createDefaultAdmin();
 }
 
 /**
