@@ -1,5 +1,5 @@
 ﻿const bcrypt = require('bcryptjs');
-const db = require('_helpers/db');
+const db = require('database/db');
 const timeout = require('_helpers/timeout')
 const jwt = require('jwt/jwt');
 const User = db.User;

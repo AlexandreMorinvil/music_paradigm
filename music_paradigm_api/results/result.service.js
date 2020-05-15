@@ -1,4 +1,4 @@
-﻿const db = require('_helpers/db');
+﻿const db = require('database/db');
 const timeout = require('_helpers/timeout')
 const Collection= db.Result;
 

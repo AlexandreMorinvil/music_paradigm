@@ -34,13 +34,20 @@ function jwtMiddlewareAuthentication() {
 *                               invalidity of the token
 */
 async function isRevoked(req, payload, done) {
-    // Verify that the user still exists
-    const user = await userService.getById(payload.sub);
-
+    try {
+        // Verify that the user still exists
+        const user = await userService.getById(payload.sub);
+    } catch (err) {
+        // If an error occurs, it should be related to a timeout,
+        // meaning that the database can not being accessed
+        return done("Timeout : Unable to query the database to validate token", true);
+    }
+    
     // Revoke the token if the user no longer exists
     if (!user) {
         return done(null, true);
     }
 
+    // Validate the existence of the user
     done();
 };
