@@ -18,6 +18,9 @@ services:
     build: music_paradigm_api
     ports:
       - 4000:4000
+    environment:
+      - DEFAULT_ADMIN_USERNAME=LabMaster
+      - DEFAULT_ADMIN_PASSWORD=CoffeyLabInConcordia
     depends_on:
       - mongo
 
