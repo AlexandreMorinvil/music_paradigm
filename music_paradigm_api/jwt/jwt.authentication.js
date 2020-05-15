@@ -34,9 +34,10 @@ function jwtMiddlewareAuthentication() {
 *                               invalidity of the token
 */
 async function isRevoked(req, payload, done) {
+    let user;
     try {
         // Verify that the user still exists
-        const user = await userService.getById(payload.sub);
+        user = await userService.getById(payload.sub);
     } catch (err) {
         // If an error occurs, it should be related to a timeout,
         // meaning that the database can not being accessed

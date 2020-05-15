@@ -12,9 +12,9 @@ const DATABASE_TIMEOUT_MESSAGE = 'Timeout : Unable to fetch the database';
 function promiseTimeout(promise, ms, timeoutMessage = DEFAULT_TIMEOUT_MESSAGE) {
 
     // Create a promise that rejects in <ms> milliseconds
+    let wait;
     let timeout = new Promise((resolve, reject) => {
-        let wait = setTimeout(() => {
-            clearTimeout(wait);
+        wait = setTimeout(() => {
             reject(timeoutMessage)
         }, ms)
     })
@@ -24,6 +24,12 @@ function promiseTimeout(promise, ms, timeoutMessage = DEFAULT_TIMEOUT_MESSAGE) {
         promise,
         timeout
     ])
+    .then((result) => {
+        // Disable the setTimeout promess to avoid having unhandled rejections
+        clearTimeout(wait)
+        // Tranfer the result of the resolve
+        return result
+      })
 }
 
 function promiseDatabaseTimeout(promise) {
