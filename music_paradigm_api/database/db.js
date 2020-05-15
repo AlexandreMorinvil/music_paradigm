@@ -16,8 +16,8 @@ mongoose.connection.on('error', handleError);
 
 // Exporting the Schemas
 module.exports = {
-    User: require('../users/user.model'),
-    Result: require('../results/result.model')
+    User: require('./model.users'),
+    Result: require('./model.results')
 };
 
 /**
