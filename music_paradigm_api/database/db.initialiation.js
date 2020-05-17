@@ -16,11 +16,13 @@ async function createDefaultAdmin() {
     if (!adminExists) {
         const defaultAdminUsername = process.env.DEFAULT_ADMIN_USERNAME || 'LabMaster';
         const defaultAdminPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'CoffeyLabInConcordia';
-        users.create({
-            username: defaultAdminUsername,
-            hash: bcrypt.hashSync(defaultAdminPassword, 10),
-            role: role.admin
-        });
+
+        await timeout.dbQuery(
+            users.create({
+                username: defaultAdminUsername,
+                hash: bcrypt.hashSync(defaultAdminPassword, 10),
+                role: role.admin
+            }));
         console.log(`A default admin was created with username : "${defaultAdminUsername}" as no admin existed.`);
     }
 

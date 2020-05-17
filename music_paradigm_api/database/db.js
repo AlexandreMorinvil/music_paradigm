@@ -27,7 +27,11 @@ module.exports = {
 */
 function handleConnection() {
     console.log(`Database connected!`);
-    init.createDefaultAdmin();
+    try {
+        init.createDefaultAdmin();
+    } catch (error) {
+        console.log(`An error occured while trying to initialize the database : ${error}`);
+    }
 }
 
 /**
