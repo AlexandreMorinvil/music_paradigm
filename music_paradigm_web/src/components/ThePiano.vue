@@ -10,12 +10,12 @@ import MidiPlayer from '@/MidiPlayer/index.js'
 import map from '@/_helpers/keyboardMapping'
 import '@/config';
 export default {
-  name:"ThePiaono",
+  name:"ThePiano",
   data() {
     return {
       piano: null,
+      pianoInited: false,
       localStarteds: {},
-      appInited: false,
       playFlag: false,
       finished: false,
       currentOctave: 0,
@@ -30,7 +30,10 @@ export default {
       'player',
       'experiment',
     ]),
-    ...mapState('account', ['user']),
+    ...mapState(
+      'account', 
+      ['user']
+    ),
   },
   methods: {
     ...mapActions([
@@ -50,12 +53,15 @@ export default {
       'addPlayedVelocities',
       'setPlayedVelocities',
     ]),
-    onMidiMessage (msg) { //msg is event with mssg.data=[event,note,velocity], event 144 noteon 128 noteoff,note 0-127, velocity 0-127
+
+    //msg is event with mssg.data=[event,note,velocity], event 144 noteon 128 noteoff,note 0-127, velocity 0-127
+    onMidiMessage (msg) {
       const mm = {
         messageType: msg.data[0] == 144? 'noteon': 'noteoff',
         key: msg.data[1],
         velocity: msg.data[2]
       }
+
       // console.log(mm.velocity);
       if (mm.messageType === 'noteon' && mm.velocity < 20) { //for accidental press
         mm.messageType = 'noteoff';
@@ -104,16 +110,22 @@ export default {
       // return map[ (typeof e.which === "number")? e.which : e.keyCode ];
       return map[e.key];
     },
-    appInit () {
+    
+    initPiano () {
+
       console.log('Sound inited');
+
       // Initialize audio
       const ac = new AudioContext();
       const Soundfont = require('soundfont-player');
       this.setPlayer(new MidiPlayer.Player());    
+
       Soundfont.instrument(ac, this.experiment.timbreFile).then((piano) => {
         this.piano = piano;
+
         // MIDI input (piano) events
         window.navigator.requestMIDIAccess().then((midiAccess) => {
+
           // console.log(midiAccess.inputs.values())
           midiAccess.inputs.forEach((midiInput) => {
             midiInput.onmidimessage = this.onMidiMessage;
@@ -126,12 +138,14 @@ export default {
         let flags = {}; 
         window.addEventListener('keydown',(e) => { //keyDown = noteOn
           const note = this.toNote(e);
+          
           // If the key doesn't exist in the midi map, or we're trying to send a
           // noteOn event without having most recently sent a noteOff, end here.
           if (note === undefined || flags[note]) return false;
           flags[note] = true;
           this.onMidiMessage({data: [144, note, 127]});
         });
+
         window.addEventListener('keyup', (e) => { //keyUp = noteOff
           // key pitch + 12 
           if (e.code === "ShiftLeft") {
@@ -141,14 +155,18 @@ export default {
               if (mapKey === " ") continue;
               map[mapKey] -= 12;
             }
-          } else if (e.code === "ShiftRight") {
+          } 
+
+          else if (e.code === "ShiftRight") {
             console.log("Octave up")
             this.currentOctave += 1;
             for (let mapKey in map) {
               if (mapKey === " ") continue;
               map[mapKey] += 12;
             }
-          } else {
+          } 
+
+          else {
             const note = this.toNote(e);
             if (note === undefined) return false;
             flags[note] = false;
@@ -174,8 +192,8 @@ export default {
   watch: {
     experiment() {
       if (this.experiment.name && !this.appInited) {
-        this.appInit();
-        this.appInited = true;
+        this.initPiano();
+        this.pianoInited = true;
       }
     }
   }
