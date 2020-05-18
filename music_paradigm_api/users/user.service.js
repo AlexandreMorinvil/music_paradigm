@@ -83,8 +83,8 @@ async function getById(id) {
 async function create(userParam) {
 
     // Validate the uniqueness of the username
-    const document = timeout.dbQuery(
-        await User.findOne({ username: userParam.username }));
+    const document = await timeout.dbQuery(
+        User.findOne({ username: userParam.username }));
     if (document) {
         throw 'Username "' + userParam.username + '" is already taken';
     }
@@ -98,7 +98,7 @@ async function create(userParam) {
     }
 
     // Save the user
-    await user.save();
+    await timeout.dbQuery(user.save());
 }
 
 async function update(id, userParam) {
@@ -121,7 +121,7 @@ async function update(id, userParam) {
     Object.assign(user, userParam);
 
     // Save the user
-    await user.save();
+    await timeout.dbQuery(user.save());
 }
 
 async function _delete(id) {
