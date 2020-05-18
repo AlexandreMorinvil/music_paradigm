@@ -1,9 +1,10 @@
-﻿const config = require('config.json');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const db = require('_helpers/db');
+﻿const bcrypt = require('bcryptjs');
+const db = require('database/db');
+const timeout = require('_helpers/timeout')
+const jwt = require('jwt/jwt');
 const User = db.User;
 
+// Exports
 module.exports = {
     authenticate,
     getAll,
@@ -13,15 +14,38 @@ module.exports = {
     delete: _delete
 };
 
-async function authenticate({ username, password }) {
-    const user = await User.findOne({ username });
-    console.log("test");
-    const { hash, ...userWithoutHash } = user.toObject();
+/** 
+ * @constant 
+ * @type {number}
+*/
+const DATABASE_TIMEOUT = 10000;
 
-    if (hash) {
-        if (!bcrypt.compareSync(password, hash)) return;
-    }
-    const token = jwt.sign({ sub: user.id }, config.secret);
+
+/**
+ * Method for authenticating a user attempting to login
+ * @param {string} username     The date
+ * @param {string} password     The password (non-encrypted)
+ * @return {Object}             The user without hash of its password and the token
+ *                              If the authentication fails, it returns null
+ */
+async function authenticate({ username, password }) {
+
+    // Fetch user in the database
+    const user = await timeout.dbQuery(
+        User.findOne({ username }));
+
+    // Validate username
+    if (user === null) return null;
+
+    // Validate password
+    const { hash, ...userWithoutHash } = user.toObject();
+    if (!bcrypt.compareSync(password, hash)) return null;
+
+    // Create jwt token
+    const token = jwt.generateToken(userWithoutHash);
+
+    // Attach an experiment to the user
+    // TODO: Put that in a different function ===>
     if (user.experimentFile.endsWith("json")) {
         userWithoutHash.experiment = require(`static/config/${user.experimentFile}`);
     } else {
@@ -37,59 +61,70 @@ async function authenticate({ username, password }) {
             userWithoutHash.experiment = require(`static/config/exp1.json`);
         }
     }
-    
+    //  <===
+
     return {
         ...userWithoutHash,
         token
     };
+
 }
 
 async function getAll() {
-    return await User.find().select('-hash');
+    return await timeout.dbQuery(
+        User.find().select('-hash'));
 }
 
 async function getById(id) {
-    return await User.findById(id).select('-hash');
+    return await timeout.dbQuery(
+        User.findById(id).select('-hash'));
 }
 
 async function create(userParam) {
-    // validate
-    if (await User.findOne({ username: userParam.username })) {
+
+    // Validate the uniqueness of the username
+    const document = await timeout.dbQuery(
+        User.findOne({ username: userParam.username }));
+    if (document) {
         throw 'Username "' + userParam.username + '" is already taken';
     }
 
+    // Create the new user
     const user = new User(userParam);
 
-    // hash password
+    // Hash the password
     if (userParam.password) {
         user.hash = bcrypt.hashSync(userParam.password, 10);
     }
 
-    // save user
-    await user.save();
+    // Save the user
+    await timeout.dbQuery(user.save());
 }
 
 async function update(id, userParam) {
-    const user = await User.findById(id);
+    
+    // Fetch the user in the database
+    const user = await timeout.dbQuery(User.findById(id));
 
-    // validate
+    // Validate the user
     if (!user) throw 'User not found';
     if (user.username !== userParam.username && await User.findOne({ username: userParam.username })) {
         throw 'Username "' + userParam.username + '" is already taken';
     }
 
-    // hash password if it was entered
+    // Hash password if it was entered
     if (userParam.password) {
         userParam.hash = bcrypt.hashSync(userParam.password, 10);
     }
 
-    // copy userParam properties to user
-    // console.log(userParam);
+    // Copy userParam properties to user
     Object.assign(user, userParam);
 
-    await user.save();
+    // Save the user
+    await timeout.dbQuery(user.save());
 }
 
 async function _delete(id) {
-    await User.findByIdAndRemove(id);
+    await timeout.dbQuery(
+        User.findByIdAndRemove(id));
 }

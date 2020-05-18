@@ -1,19 +1,23 @@
 ﻿const express = require('express');
 const router = express.Router();
 const userService = require('./user.service');
+const jwtAuthorize = require('jwt/jwt.authorization');
+const timeout = require('_helpers/timeout')
+const role = require('_helpers/role');
 
 // routes
-router.post('/authenticate', authenticate);
-router.post('/register', register);
-router.get('/', getAll);
-router.get('/current', getCurrent);
-router.get('/:id', getById);
-router.put('/:id', update);
-router.delete('/:id', _delete);
+router.post('/authenticate',                               authenticate);
+router.post('/register',        jwtAuthorize(role.admin),  register);
+router.get('/',                 jwtAuthorize(role.admin),  getAll);
+router.get('/current',                                     getCurrent);
+router.get('/:id',              jwtAuthorize(role.admin),  getById);
+router.put('/:id',              jwtAuthorize(role.admin),  update);
+router.delete('/:id',           jwtAuthorize(role.admin),  _delete);
 
 module.exports = router;
 
 function authenticate(req, res, next) {
+    //timeout.limitTime(1000, userService.authenticate(req.body))
     userService.authenticate(req.body)
         .then(user => user ? res.json(user) : res.status(400).json({ message: 'Username or password is incorrect' }))
         .catch(err => next(err));
