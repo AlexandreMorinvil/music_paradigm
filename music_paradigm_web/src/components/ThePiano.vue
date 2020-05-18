@@ -1,7 +1,6 @@
 <template>
-  <div id="app" class="container">
-    <router-view />
-    <footer v-if="appInited && !useMidiInput">{{currentOctave}}</footer>
+  <div id="the-piano" class="piano">
+    <p>THIS IS THE PIANO</p>
   </div>
 </template>
 
@@ -11,7 +10,7 @@ import MidiPlayer from '@/MidiPlayer/index.js'
 import map from '@/_helpers/keyboardMapping'
 import '@/config';
 export default {
-  name:"app",
+  name:"ThePiaono",
   data() {
     return {
       piano: null,
