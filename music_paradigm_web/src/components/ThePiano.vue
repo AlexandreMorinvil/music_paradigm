@@ -21,7 +21,8 @@ export default {
       currentOctave: 0,
       useMidiInput: false,  
       // Quick fix
-      previousKey: null
+      previousKey: null,
+      flags: {}
     }
   },
   computed: {
@@ -57,9 +58,9 @@ export default {
     //msg is event with mssg.data=[event,note,velocity], event 144 noteon 128 noteoff,note 0-127, velocity 0-127
     onMidiMessage (msg) {
       const mm = {
-        messageType: msg.data[0] == 144? 'noteon': 'noteoff',
-        key: msg.data[1],
-        velocity: msg.data[2]
+        messageType: msg.data.messageType == 144? 'noteon': 'noteoff',
+        key: msg.data.key,
+        velocity: msg.data.velocity
       }
 
       // console.log(mm.velocity);
@@ -129,9 +130,8 @@ export default {
           // console.log(midiAccess.inputs.values())
           midiAccess.inputs.forEach((midiInput) => {
             midiInput.onmidimessage = this.onMidiMessage;
-            this.useMidiInput = true;
           })
-        })
+        }).then(() => { this.useMidiInput = true; })
         
         // Keyboard events
         // Keep track of keydown and keyup events so that the keydown event doesn't send messages repeatedly until keyup.
@@ -143,7 +143,7 @@ export default {
           // noteOn event without having most recently sent a noteOff, end here.
           if (note === undefined || flags[note]) return false;
           flags[note] = true;
-          this.onMidiMessage({data: [144, note, 127]});
+          this.onMidiMessage({data: {messageType : 144, key: note, velocity: 127 }});
         });
 
         window.addEventListener('keyup', (e) => { //keyUp = noteOff
@@ -170,7 +170,7 @@ export default {
             const note = this.toNote(e);
             if (note === undefined) return false;
             flags[note] = false;
-            this.onMidiMessage({data: [128, note, 127]});
+            this.onMidiMessage({data: {messageType : 128, key: note, velocity: 127}});
           }
         });
         

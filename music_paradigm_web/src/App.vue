@@ -7,33 +7,35 @@
 </template>
 
 <script>
-import ThePianoVue from './components/ThePiano.vue';
-import { mapState, mapActions } from 'vuex'
-import '@/config';
+import ThePianoVue from "./components/ThePiano.vue";
+import { mapState, mapActions } from "vuex";
+import "@/config";
 
 export default {
-  name:"app",
+  name: "app",
   components: {
     piano: ThePianoVue
   },
   data() {
     return {
       appInited: false
-    }
+    };
   },
   computed: {
-    ...mapState([
-      'player',
-      'experiment',
-    ]),
-    ...mapState(
-      'account', 
-      ['user']
-    ),
+    ...mapState(["player", "experiment"]),
+    ...mapState("account", ["user"])
   },
   methods: {
-    ...mapActions([
-    ]),
+    ...mapActions([])
+  },
+
+  mounted: function() {
+    // Verifying MIDI support
+    if (navigator.requestMIDIAccess) {
+      console.log("This browser supports WebMIDI!");
+    } else {
+      console.log("WebMIDI is not supported in this browser.");
+    }
   },
 
   watch: {
@@ -43,28 +45,28 @@ export default {
       }
     }
   }
-}
+};
 </script>
 
 
 <style>
-  body {
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.4;
-    background-color: black;
-    color: white;
-  }
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-size: 1.3rem;
-  }
-  footer {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    color: white;
-    font-size: 0.8rem;
-  }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.4;
+  background-color: black;
+  color: white;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 1.3rem;
+}
+footer {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  color: white;
+  font-size: 0.8rem;
+}
 </style>
