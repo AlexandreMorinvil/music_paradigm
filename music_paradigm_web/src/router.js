@@ -31,6 +31,11 @@ const router = new Router({
       name: 'playing',
       component: () => import(/* webpackChunkName: "about" */ './views/Playing.vue')
     },
+    {
+      path: '/video',
+      name: 'video',
+      component: () => import(/* webpackChunkName: "about" */ './views/Video.vue')
+    },
     // {
     //   path: '/feedback/:status',
     //   name: 'feedback',
