@@ -1,0 +1,59 @@
+{
+	"name": "speed_experiment",
+	"folder": "twins_first_part",
+	"mode": "speed",
+	"anyPianoKey": 1,
+	"flow": [
+		{
+			"type": "instruction",
+			"pictureFileName": [
+				"instruction/introduction_week_1_to_3/introduction_screen_page_1.png",
+				"instruction/introduction_week_1_to_3/introduction_screen_page_2.png",
+				"instruction/introduction_week_1_to_3/introduction_screen_page_3.png",
+				"instruction/introduction_week_1_to_3/introduction_screen_page_4.png",
+				"instruction/introduction_week_1_to_3/introduction_screen_page_5.png"
+			]
+		},
+		{
+			"type": "video",
+			"pictureFileName": [
+				"instruction/Training_screen_first_task.png"
+			],
+			"midiFileName": [
+				"melody/Melody1_1.mid"
+			],
+			"videoFileName": [
+				"video/Melody1_1.mp4"
+			]
+		},
+		{
+			"type": "instruction",
+			"pictureFileName": [
+				"instruction/Instruction_screen_first_task_general_6.png"
+			]
+		},
+		{
+			"type": "playing",
+			"pictureFileName": [
+				"instruction/Training_screen_first_task.png"
+			],
+			"progressBarFlag": 1,
+			"timeoutInSeconds": 30,
+			"numBlock": 12,
+			"followedBy": 1
+		},
+		{
+			"type": "rest",
+			"pictureFileName": [
+				"instruction/Rest_screen_first_task.png"
+			],
+			"timeoutInSeconds": 30
+		},
+		{
+			"type": "end",
+			"pictureFileName": [
+				"instruction/End_training_first_task.png"
+			]
+		}
+	]
+}
