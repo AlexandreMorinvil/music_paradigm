@@ -20,17 +20,15 @@ export default {
     return {
       apiUrl: config.apiUrl,
       picName: "",
-      video: {
-        url: {
-          src: "",
-          poster: ""
-        },
-        videoOptions: {},
-        playBack: {
-          delay: 0,
-          startTime: 1.0,
-          endTime: 0
-        }
+      url: {
+        src: "http://localhost:3000/video/Melody1.mp4",
+        poster: "http://localhost:3000/images/Music_poster.bmp"
+      },
+      videoOptions: {},
+      playBack: {
+        delay: 5,
+        startTime: 1.9,
+        endTime: 5
       }
     };
   },
@@ -38,7 +36,8 @@ export default {
     ...mapState(["player", "experiment"])
   },
   methods: {
-    ...mapActions(["setSongNotes", "setSongDurations", "initState", "onNext"])
+    ...mapActions(["setSongNotes", "setSongDurations"]),
+    ...mapActions("experiment", ["initState", "onNext"])
   },
   mounted() {
     this.initState();

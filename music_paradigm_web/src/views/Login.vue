@@ -43,10 +43,10 @@ export default {
     ...mapState('account', ['status', 'user']),
     experiment: {
       get: function () {
-        return this.$store.state.experiment;
+        return this.$store.experiment.state.experiment;
       },
       set: function (newValue) {
-        this.$store.state.experiment = newValue;
+        this.$store.experiment.state.experiment = newValue;
       }
     }
   },
