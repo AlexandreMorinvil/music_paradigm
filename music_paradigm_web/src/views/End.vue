@@ -1,26 +1,23 @@
 <template>
   <div id="app">
-    <img id='end-img' :src="apiUrl+'/static/'+picName" alt="End"/>
+    <img id="end-img" :src="apiUrl+'/static/'+picName" alt="End" />
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import config from '@/config';
+import { mapState, mapActions } from "vuex";
+import config from "@/config";
 
 export default {
-  name: 'End',
-  components: {
-  },
+  name: "End",
+  components: {},
   computed: {
-    ...mapState([
-      'starteds',
-    ]),
+    ...mapState(["starteds"]),
     experiment: {
-      get: function () {
+      get: function() {
         return this.$store.state.experiment;
       },
-      set: function (newValue) {
+      set: function(newValue) {
         this.$store.state.experiment = newValue;
       }
     }
@@ -28,21 +25,24 @@ export default {
   data() {
     return {
       apiUrl: config.apiUrl,
-      picName: "",
-    }
+      picName: ""
+    };
   },
   methods: {
-    ...mapActions([
-      'initState',
-    ]),
-    onNext () {
+    ...mapActions("experiment", ["initState"]),
+    onNext() {
       // this.$router.push({name: 'cue'});
       if (this.experiment.currentBlockNum === this.experiment.totalBlockNum) {
         this.experiment.nextFlowIndex += 1;
-        this.$router.push({name: 'login'});
+        this.$router.push({ name: "login" });
       } else {
         this.experiment.currentBlockNum += 1;
-        this.picName = this.experiment.folder + '/' + this.experiment.currentFlowState.pictureFileName[this.experiment.currentBlockNum];
+        this.picName =
+          this.experiment.folder +
+          "/" +
+          this.experiment.currentFlowState.pictureFileName[
+            this.experiment.currentBlockNum
+          ];
       }
     }
   },
@@ -58,7 +58,7 @@ export default {
     this.initState();
     this.picName = this.experiment.picName;
   }
-}
+};
 </script>
 
 <style scoped>

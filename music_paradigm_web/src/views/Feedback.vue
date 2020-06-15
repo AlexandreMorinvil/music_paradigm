@@ -1,55 +1,58 @@
 <template>
   <div id="app">
-    <img class='feedback-img-ww' id='ww' :src='apiUrl+"/static/feedback/"+status+".jpg"' alt="Feedback"/>
+    <img
+      class="feedback-img-ww"
+      id="ww"
+      :src='apiUrl+"/static/feedback/"+status+".jpg"'
+      alt="Feedback"
+    />
     <!-- <img class='feedback-img-ww' id='ww' v-if="status == 'ww'" src="@/assets/feedback/ww.jpg" alt="Feedback"/>
     <img class='feedback-img' id='ws' v-else-if="status == 'ws'" src="@/assets/feedback/ws.jpg" alt="Feedback"/>
     <img class='feedback-img' id='sw' v-else-if="status == 'sw'" src="@/assets/feedback/sw.jpg" alt="Feedback"/>
-    <img class='feedback-img' id='ss' v-else src="@/assets/feedback/ss.jpg" alt="Feedback"/> -->
+    <img class='feedback-img' id='ss' v-else src="@/assets/feedback/ss.jpg" alt="Feedback"/>-->
     <p>Press space bar to exit</p>
     <!-- <p><router-link to="/">Logout</router-link></p> -->
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import config from '@/config';
+import { mapState, mapActions } from "vuex";
+import config from "@/config";
 
 export default {
-  name: 'Feedback',
-  components: {
-  },
+  name: "Feedback",
+  components: {},
   data() {
     return {
       apiUrl: config.apiUrl,
-      status: 'ss'
-    }
+      status: "ss"
+    };
   },
   computed: {
-    ...mapState([
-      'starteds',
-      'experiment'
-    ]),
+    ...mapState(["starteds"]),
+    ...mapState("experiment", ["experiment"])
   },
   methods: {
-    ...mapActions([
-      'initState',
-      'onNext',
-    ])
+    ...mapActions("experiment", ["initState", "onNext"])
   },
   watch: {
     starteds() {
       // const current = this.experiment.flow[this.experiment.nextFlowIndex];
       if (this.starteds.length > 0) {
-        if (this.experiment.totalInnerBlockNum != 0) { // for certain limit on loops
+        if (this.experiment.totalInnerBlockNum != 0) {
+          // for certain limit on loops
           // console.log(`limit loop: ${this.experiment.innerBlockNum}/${this.experiment.totalInnerBlockNum}`);
-          if (this.experiment.feedbackStatus !== 'ss' && this.experiment.innerBlockNum < this.experiment.totalInnerBlockNum) {
+          if (
+            this.experiment.feedbackStatus !== "ss" &&
+            this.experiment.innerBlockNum < this.experiment.totalInnerBlockNum
+          ) {
             this.experiment.currentBlockNum -= 1;
             this.experiment.innerBlockNum += 1;
           } else {
             this.experiment.innerBlockNum = 0;
           }
-          
-        } else if (this.experiment.feedbackStatus !== 'ss') { // unlimited loop for unsuccessfull trials
+        } else if (this.experiment.feedbackStatus !== "ss") {
+          // unlimited loop for unsuccessfull trials
           this.experiment.currentBlockNum -= 1;
         }
         this.onNext();
@@ -58,9 +61,11 @@ export default {
   },
   mounted() {
     this.initState();
-    this.status = this.experiment.feedbackStatus? this.experiment.feedbackStatus: 'ww';
+    this.status = this.experiment.feedbackStatus
+      ? this.experiment.feedbackStatus
+      : "ww";
   }
-}
+};
 </script>
 
 <style scoped>

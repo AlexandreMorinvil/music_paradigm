@@ -6,7 +6,13 @@
       <form @submit.prevent="handleSubmit">
         <div class="form-group">
           <label for="username">Username</label>
-          <input type="text" v-model="username" name="username" class="form-control" :class="{ 'is-invalid': submitted && !username }" />
+          <input
+            type="text"
+            v-model="username"
+            name="username"
+            class="form-control"
+            :class="{ 'is-invalid': submitted && !username }"
+          />
           <div v-show="submitted && !username" class="invalid-feedback">Username is required</div>
         </div>
         <div class="form-group">
@@ -15,8 +21,10 @@
         </div>
         <div class="form-group">
           <button class="btn btn-primary">Login to start</button>
-          <img v-show="status.loggingIn" 
-          src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+          <img
+            v-show="status.loggingIn"
+            src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+          />
           <!-- <router-link to="/register" class="btn btn-link">Register</router-link> -->
         </div>
       </form>
@@ -25,56 +33,58 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from "vuex";
 
 export default {
-  name: 'Home',
-  components: {
-  },
+  name: "Home",
+  components: {},
   data() {
     return {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
       submitted: false
-    }
+    };
   },
   computed: {
-    ...mapState(['alert']),
-    ...mapState('account', ['status', 'user']),
+    ...mapState(["alert"]),
+    ...mapState("account", ["status", "user"]),
     experiment: {
-      get: function () {
-        return this.$store.experiment.state.experiment;
+      get: function() {
+        return this.$store.state.experiment.experiment;
       },
-      set: function (newValue) {
-        this.$store.experiment.state.experiment = newValue;
+      set: function(newValue) {
+        this.$store.state.experiment.experiment = newValue;
       }
     }
   },
   methods: {
     // ...mapActions(['setSongNum']),
-    ...mapActions('account', ['login', 'logout']),
-    ...mapActions({ clearAlert: 'alert/clear' }),
-    initState () { 
+    ...mapActions("account", ["login", "logout"]),
+    ...mapActions({ clearAlert: "alert/clear" }),
+    initState() {
       // import experiment settings (todo: change to fetch)
       if (this.user.experimentFile) {
         // this.experiment = require(`@/${this.user.experimentFile}`);
         this.experiment = this.user.experiment;
       } else {
-        console.log('Currently no configuration file attached to user');
+        console.log("Currently no configuration file attached to user");
         // this.experiment = require('@/exp1.json');
         // this.experiment = require('@/exp2.json');
         // this.experiment = require('@/exp1_short.json'); //test
       }
       if (this.experiment.timbreFile == undefined) {
-        this.experiment.timbreFile = "https://raw.githubusercontent.com/gleitz/midi-js-soundfonts/gh-pages/MusyngKite/acoustic_grand_piano-ogg.js";
+        this.experiment.timbreFile =
+          "https://raw.githubusercontent.com/gleitz/midi-js-soundfonts/gh-pages/MusyngKite/acoustic_grand_piano-ogg.js";
       }
     },
-    onNext () {
+    onNext() {
       this.experiment.nextFlowIndex = 0;
       this.experiment.currentBlockNum = -1;
-      this.$router.push({name: this.experiment.flow[this.experiment.nextFlowIndex].type});
+      this.$router.push({
+        name: this.experiment.flow[this.experiment.nextFlowIndex].type
+      });
     },
-    handleSubmit () {
+    handleSubmit() {
       this.submitted = true;
       const { username, password } = this;
       if (username) {
@@ -84,19 +94,19 @@ export default {
   },
   watch: {
     user() {
-      if (this.user? this.user.token: false) {
+      if (this.user ? this.user.token : false) {
         // this.setSongNum(parseInt(this.user.lastMidiFile));
-        
+
         this.initState();
         this.onNext();
       }
     }
   },
-  mounted() {    
+  mounted() {
     this.clearAlert();
     this.logout();
   }
-}
+};
 </script>
 
 <style scoped>
@@ -146,5 +156,4 @@ h2 {
   background-color: #4CAF50;
   color: white;
 } */
-
 </style>

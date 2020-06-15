@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <!-- <img id='cue-img' :src="apiUrl+'/static/cue/'+startingNode+'.jpg'" onerror="console.log(this.src)"/> -->
-    <img id="instruction-img" :src="apiUrl+'/static/'+picName" alt="Cue" />
     <video-player :options="videoOptions" :url="url" :playBack="playBack" />
   </div>
 </template>
@@ -20,10 +18,7 @@ export default {
     return {
       apiUrl: config.apiUrl,
       picName: "",
-      url: {
-        src: "http://localhost:3000/video/Melody1.mp4",
-        poster: "http://localhost:3000/images/Music_poster.bmp"
-      },
+      videoName: "",
       videoOptions: {},
       playBack: {
         delay: 5,
@@ -33,15 +28,23 @@ export default {
     };
   },
   computed: {
-    ...mapState(["player", "experiment"])
+    ...mapState(["player"]),
+    ...mapState("experiment", ["experiment"]),
+    url() {
+      return {
+        src: this.apiUrl + "/static/" + this.experiment.videoName,
+        poster: this.apiUrl + "/static/" + "assets/images/Music_poster.bmp"
+      };
+    }
   },
   methods: {
     ...mapActions(["setSongNotes", "setSongDurations"]),
     ...mapActions("experiment", ["initState", "onNext"])
   },
-  mounted() {
+  beforeMount() {
     this.initState();
-    this.picName = this.experiment.picName;
+ },
+  mounted() {
     this.setSongNotes([]);
     this.setSongDurations([]);
 

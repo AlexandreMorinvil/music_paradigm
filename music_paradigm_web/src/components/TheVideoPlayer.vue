@@ -70,6 +70,7 @@ export default {
     this.playerSetPoster(
       this.url.poster || "http://localhost:3000/images/Music_poster.bmp"
     );
+    console.log(this.url.src); // TODO: Erase
     this.playerSetSrc(this.url.src);
     this.playerSetVolume(this.playBack.volume || 1.0);
     this.playerSetTime(this.playBack.startTime || 0.0);

@@ -7,6 +7,5 @@ export default {
     playedNotes: [],
     playedDurations: [],
     playedOffsets: [],
-    playedVelocities: [],
-    experiment: {}
+    playedVelocities: []
 }

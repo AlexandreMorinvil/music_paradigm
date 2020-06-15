@@ -1,7 +1,31 @@
 import router from '@/router'
 
 const state = {
-    experiment: {}
+    experiment: {
+        // The experiment
+        flow: [],
+
+        // Cursor
+        currentFlowState: {},  // Entire block of the section
+        currentBlockIndex: -1, // Index of the current block of the flow
+        currentBlockNum: -1,   // Index of the current inner element of the block
+
+        anyPianoKey: 0,
+
+        folder: "",
+        innerBlockNum: 0,
+        mode: "",
+        name: "",
+        nextFlowIndex: 0,
+
+        picName: "",
+        videoName: "",
+
+        timbreFile: "",
+
+        totalBlockNum: 0,
+        totalInnerBlockNum: 0,
+    }
 };
 
 const actions = {
@@ -17,7 +41,7 @@ const mutations = {
     //settings
     initState(state) {
         // set this.picName after initState
-        if (state.experiment.flow == undefined) return;
+        if (state.experiment.flow === []) return;
 
         if (state.experiment.currentBlockNum == -1) {
             // new sets of trials
@@ -25,6 +49,19 @@ const mutations = {
             state.experiment.currentBlockIndex = state.experiment.nextFlowIndex;
             state.experiment.currentBlockNum = 0;
             state.experiment.picName = state.experiment.currentFlowState.pictureFileName[state.experiment.currentBlockNum];
+
+
+            // Video
+            if (state.experiment.flow[state.experiment.nextFlowIndex].hasOwnProperty("videoFileName")) {
+                if (state.experiment.currentBlockNum >= state.experiment.flow[state.experiment.nextFlowIndex].videoFileName.length) {
+                    state.experiment.videoName = state.experiment.flow[state.experiment.nextFlowIndex].videoFileName[0];
+                } else {
+                    state.experiment.videoName = state.experiment.flow[state.experiment.nextFlowIndex].videoFileName[state.experiment.currentBlockNum];
+                }
+            }
+
+
+
             // to limit number of trials for melody task
             state.experiment.totalInnerBlockNum = 0;
             state.experiment.innerBlockNum = 0;
@@ -34,9 +71,9 @@ const mutations = {
                 tempTotal = state.experiment.currentFlowState.pictureFileName.length - 1;
             }
 
-            if (state.experiment.currentFlowState.videoFileName.length > 0) {
-                tempTotal = state.experiment.currentFlowState.videoFileName.length - 1;
-            }
+            // if (state.experiment.currentFlowState.videoFileName) {
+            //     tempTotal = state.experiment.currentFlowState.videoFileName.length - 1;
+            // }
 
             if (state.experiment.currentFlowState.hasOwnProperty("numBlock")) {
                 state.experiment.totalBlockNum = state.experiment.currentFlowState.numBlock - 1;
@@ -58,6 +95,7 @@ const mutations = {
             }
         }
         state.experiment.picName = `${state.experiment.folder}/${state.experiment.picName}`;
+        state.experiment.videoName = `${state.experiment.folder}/${state.experiment.videoName}`;
         // console.log(`${state.experiment.flow[state.experiment.nextFlowIndex].type} initedState: currentBlockNum=${state.experiment.currentBlockNum} totalBlockNum=${state.experiment.totalBlockNum}`);
     },
     onNext(state) {

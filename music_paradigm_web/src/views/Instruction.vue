@@ -1,43 +1,37 @@
 <template>
   <div id="app">
-    <img v-if="picFlag" id='instruction-img' :src="apiUrl+'/static/'+picName" alt="Instruction"/>
+    <img v-if="picFlag" id="instruction-img" :src="apiUrl+'/static/'+picName" alt="Instruction" />
     <video v-else autoplay>
-      <source :src="apiUrl+'/static/'+picName" type="video/mp4">
-      Your browser does not support HTML5 video.
+      <source :src="apiUrl+'/static/'+picName" type="video/mp4" />Your browser does not support HTML5 video.
     </video>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import config from '@/config';
+import { mapState, mapActions } from "vuex";
+import config from "@/config";
 
 export default {
-  name: 'Instruction',
-  components: {
-  },
+  name: "Instruction",
+  components: {},
   data() {
     return {
       apiUrl: config.apiUrl,
-      picName: '',
-      picFlag: true,
-    }
+      picName: "",
+      picFlag: true
+    };
   },
   computed: {
-    ...mapState([
-      'starteds',
-      'experiment'
-    ]),
+    ...mapState(["starteds"]),
+    ...mapState("experiment", ["experiment"])
   },
   methods: {
-    ...mapActions([
-      'initState',
-      'onNext'
-    ]),
-    updatePicture () {
+    ...mapActions("experiment", ["initState", "onNext"]),
+    updatePicture() {
       this.picName = this.experiment.picName;
       const splittedName = this.picName.split(".").pop();
-      this.picFlag = splittedName == "jpg" || splittedName == "png" || splittedName == "bmp";
+      this.picFlag =
+        splittedName == "jpg" || splittedName == "png" || splittedName == "bmp";
     }
   },
   watch: {
@@ -45,19 +39,21 @@ export default {
     starteds() {
       if (this.starteds.length > 0) {
         this.onNext();
-        this.updatePicture();        
+        this.updatePicture();
       }
     }
   },
   mounted() {
     this.initState();
     this.updatePicture();
+    console.log(this.$store.state);
   }
-}
+};
 </script>
 
 <style scoped>
-img, video {
+img,
+video {
   max-height: 100%;
   width: auto;
   display: block;

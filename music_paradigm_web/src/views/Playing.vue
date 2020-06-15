@@ -34,9 +34,8 @@ export default {
       "playedDurations",
       "playedOffsets",
       "playedVelocities",
-
-      "experiment"
     ]),
+    ...mapState("experiment", ["experiment"]),
     playProgress() {
       if (this.songNotes.length === 0) return 100;
 
@@ -68,10 +67,9 @@ export default {
       "setPlayedDurations",
       "setPlayedOffsets",
       "setPlayedVelocities",
-
-      "initState"
     ]),
-    ...mapActions({ expOnNext: "onNext" }),
+    ...mapActions("experiment", ["initState"]),
+    ...mapActions("experiment", { expOnNext: "onNext" }),
     onNext() {
       this.expOnNext();
       this.picName = this.experiment.picName;

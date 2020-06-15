@@ -1,40 +1,31 @@
 <template>
   <div id="app">
     <!-- <img id='cue-img' :src="apiUrl+'/static/cue/'+startingNode+'.jpg'" onerror="console.log(this.src)"/> -->
-    <img id='instruction-img' :src="apiUrl+'/static/'+picName" alt="Cue"/>
+    <img id="instruction-img" :src="apiUrl+'/static/'+picName" alt="Cue" />
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from "vuex";
 
-import config from '@/config';
+import config from "@/config";
 
 export default {
-  name: 'Cue',
-  components: {
-  },
+  name: "Cue",
+  components: {},
   data() {
     return {
       apiUrl: config.apiUrl,
-      picName: "",
-    }
+      picName: ""
+    };
   },
   computed: {
-    ...mapState([
-      'player',
-      
-      'experiment'
-    ]),
+    ...mapState(["player"]),
+    ...mapState("experiment", ["experiment"])
   },
   methods: {
-    ...mapActions([
-      'setSongNotes',
-      'setSongDurations',
-
-      'initState',
-      'onNext'
-    ])
+    ...mapActions(["setSongNotes", "setSongDurations", "initState", "onNext"]),
+    ...mapActions("experiment", ["initState", "onNext"])
   },
   mounted() {
     this.initState();
@@ -44,11 +35,18 @@ export default {
 
     // online MIDI file loader
     const xhr = new XMLHttpRequest();
-    let fileUrl = '';
-    this.experiment.currentMidi = this.experiment.currentFlowState.midiFileName[this.experiment.currentBlockNum];
-    fileUrl = this.apiUrl + '/static/' + this.experiment.folder + '/' + this.experiment.currentMidi;
+    let fileUrl = "";
+    this.experiment.currentMidi = this.experiment.currentFlowState.midiFileName[
+      this.experiment.currentBlockNum
+    ];
+    fileUrl =
+      this.apiUrl +
+      "/static/" +
+      this.experiment.folder +
+      "/" +
+      this.experiment.currentMidi;
     // console.log(fileUrl);
-    xhr.open('GET', fileUrl, true);
+    xhr.open("GET", fileUrl, true);
     xhr.overrideMimeType("text/plain; charset=x-user-defined");
     xhr.responseType = "arraybuffer";
     xhr.send();
@@ -58,19 +56,19 @@ export default {
         // console.log(this.player.events[0].length); //0-9:init till MIDI port, last:end, middle:noteon+noteoff pair
         // console.log(this.player.events[0]);
         setTimeout(() => this.player.play(), 600);
-      // } else {
-      //   console.error('XHR failed');
+        // } else {
+        //   console.error('XHR failed');
       }
-    }
-  
+    };
+
     // MIDI file
-    this.player.on('endOfFile', () => {
+    this.player.on("endOfFile", () => {
       this.onNext();
       this.picName = this.experiment.picName;
-      this.player.eventListeners['endOfFile'] = [];
+      this.player.eventListeners["endOfFile"] = [];
     });
   }
-}
+};
 </script>
 
 <style scoped>
