@@ -48,11 +48,5 @@ export default {
     },
     setPlayedVelocities: ({ commit }, key) => {
         commit('setPlayedVelocities', key);
-    },
-    initState: ({ commit }) => {
-        commit('initState');
-    },
-    onNext: ({ commit }) => {
-        commit('onNext');
-    },
+    }
 }

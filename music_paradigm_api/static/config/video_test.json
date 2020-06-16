@@ -24,7 +24,8 @@
 			],
 			"videoFileName": [
 				"video/Melody1_1.mp4"
-			]
+			],
+			"enableSoundFlag": true
 		},
 		{
 			"type": "instruction",

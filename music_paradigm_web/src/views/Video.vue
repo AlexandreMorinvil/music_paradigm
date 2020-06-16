@@ -38,8 +38,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["setSongNotes", "setSongDurations"]),
-    ...mapActions("experiment", ["initState", "onNext"])
+    ...mapActions("experiment", ["initState", "onNext"]),
+    ...mapActions(["setSongNotes", "setSongDurations"])
   },
   beforeMount() {
     this.initState();
@@ -47,37 +47,6 @@ export default {
   mounted() {
     this.setSongNotes([]);
     this.setSongDurations([]);
-
-    // online MIDI file loader
-    const xhr = new XMLHttpRequest();
-    let fileUrl = "";
-    this.experiment.currentMidi = this.experiment.currentFlowState.midiFileName[
-      this.experiment.currentBlockNum
-    ];
-    fileUrl =
-      this.apiUrl +
-      "/static/" +
-      this.experiment.folder +
-      "/" +
-      this.experiment.currentMidi;
-    // console.log(fileUrl);
-    xhr.open("GET", fileUrl, true);
-    xhr.overrideMimeType("text/plain; charset=x-user-defined");
-    xhr.responseType = "arraybuffer";
-    xhr.send();
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        this.player.loadArrayBuffer(xhr.response);
-        setTimeout(() => this.player.play(), 600);
-      }
-    };
-
-    // MIDI file
-    this.player.on("endOfFile", () => {
-      this.onNext();
-      this.picName = this.experiment.picName;
-      this.player.eventListeners["endOfFile"] = [];
-    });
   }
 };
 </script>

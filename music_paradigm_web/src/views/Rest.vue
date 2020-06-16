@@ -41,7 +41,7 @@ export default {
     this.initState();
     this.picName = this.experiment.picName;
 
-    this.current = this.experiment.flow[this.experiment.nextFlowIndex];
+    this.current = this.experiment.flow[this.experiment.nextFlowIndex]; // TODO : TAKE THIS LOGIC AWAY FROM HERE
     // to avoid waiting for last trial of the block (to be modified)
     if (
       !this.current.hasOwnProperty("followedBy") &&

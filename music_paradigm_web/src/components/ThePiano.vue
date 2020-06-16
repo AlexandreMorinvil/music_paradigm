@@ -64,6 +64,7 @@ export default {
       }
       switch (mm.messageType) {
         case "noteon":
+          // TODO: Put in a place where it is easier to toggle on and of the piano
           this.playFlag = this.experiment.currentFlowState
             ? this.experiment.currentFlowState.hasOwnProperty("enableSoundFlag")
             : false;

@@ -1,9 +1,10 @@
 import router from '@/router'
 
 const state = {
+    flow: [],
     experiment: {
         // The experiment
-        flow: [],
+        
 
         // Cursor
         currentFlowState: {},  // Entire block of the section
@@ -27,6 +28,12 @@ const state = {
         totalInnerBlockNum: 0,
     }
 };
+
+const getters = {
+    getStarteds: (state) => {
+        return state.starteds;
+    }
+}
 
 const actions = {
     initState: ({ commit }) => {
@@ -132,6 +139,7 @@ const mutations = {
 export const experiment = {
     namespaced: true,
     state,
+    getters,
     actions,
     mutations
 };
