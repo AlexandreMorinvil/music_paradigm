@@ -48,41 +48,31 @@ export default {
   computed: {
     ...mapState(["alert"]),
     ...mapState("account", ["status", "user"]),
-    experiment: {
-      get: function() {
-        return this.$store.state.experiment.experiment;
-      },
-      set: function(newValue) {
-        this.$store.state.experiment.experiment = newValue;
-      }
-    }
+    ...mapState("experiment", ["flow", "timbreFile"]) // TODO: Put the timbreFile logic in a piano module
   },
   methods: {
     // ...mapActions(['setSongNum']),
     ...mapActions("account", ["login", "logout"]),
     ...mapActions({ clearAlert: "alert/clear" }),
+    ...mapActions("experiment", ["onNext", "setExperiment", "initExperiment"]),
     initState() {
-      // import experiment settings (todo: change to fetch)
       if (this.user.experimentFile) {
-        // this.experiment = require(`@/${this.user.experimentFile}`);
-        this.experiment = this.user.experiment;
+        this.setExperiment(this.user.experiment);
       } else {
+        // TODO: Put an alert in there
         console.log("Currently no configuration file attached to user");
-        // this.experiment = require('@/exp1.json');
-        // this.experiment = require('@/exp2.json');
-        // this.experiment = require('@/exp1_short.json'); //test
       }
-      if (this.experiment.timbreFile == undefined) {
-        this.experiment.timbreFile =
+
+      // TODO: Put this piece of logic in a piano VUEX module
+      if (this.timbreFile == undefined) {
+        this.timbreFile =
           "https://raw.githubusercontent.com/gleitz/midi-js-soundfonts/gh-pages/MusyngKite/acoustic_grand_piano-ogg.js";
       }
     },
-    onNext() {
-      this.experiment.nextFlowIndex = 0;
-      this.experiment.currentBlockNum = -1;
-      this.$router.push({
-        name: this.experiment.flow[this.experiment.nextFlowIndex].type
-      });
+    proceedExperiment() {
+      // TODO : TAKE THIS LOGIC AWAY FROM HERE
+      this.initExperiment();
+      this.onNext();
     },
     handleSubmit() {
       this.submitted = true;
@@ -98,7 +88,7 @@ export default {
         // this.setSongNum(parseInt(this.user.lastMidiFile));
 
         this.initState();
-        this.onNext();
+        this.proceedExperiment();
       }
     }
   },

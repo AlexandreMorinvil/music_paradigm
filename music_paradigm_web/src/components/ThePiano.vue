@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     ...mapState(["starteds", "player"]),
-    ...mapState("experiment", ["experiment"]),
+    ...mapState("experiment", ["timbreFile"]),
     ...mapState("account", ["user"])
   },
   methods: {
@@ -92,7 +92,7 @@ export default {
             this.previousKey = mm.key;
           } else if (
             mm.key === 1 ||
-            this.experiment.hasOwnProperty("anyPianoKey")
+            this.experiment.hasOwnProperty("anyPianoKey") // This won't be anymore
           ) {
             // space bar or
             // any piano key by adding 'anyPianoKey: 1' in .config
@@ -128,7 +128,7 @@ export default {
       const Soundfont = require("soundfont-player");
       this.setPlayer(new MidiPlayer.Player());
 
-      Soundfont.instrument(ac, this.experiment.timbreFile).then(piano => {
+      Soundfont.instrument(ac, this.timbreFile).then(piano => {
         this.piano = piano;
 
         // MIDI input (piano) events

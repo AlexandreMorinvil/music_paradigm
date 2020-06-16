@@ -1,10 +1,24 @@
 import router from '@/router'
 
 const state = {
-    flow: [],
+    flow: [], // The sequence of the experiment
+    description: {
+        name: "",
+        folder: "",
+        mode: ""
+    },
+
+    cursor: {
+        currentFlowState: {},  // Entire block of the section
+        currentBlockIndex: -1, // Index of the current block of the flow
+        currentBlockNum: -1,   // Index of the current inner element of the block
+
+        totalBlockNum: 0,
+
+        nextFlowIndex: 0
+    },
+
     experiment: {
-        // The experiment
-        
 
         // Cursor
         currentFlowState: {},  // Entire block of the section
@@ -13,20 +27,16 @@ const state = {
 
         anyPianoKey: 0,
 
-        folder: "",
-        innerBlockNum: 0,
-        mode: "",
-        name: "",
         nextFlowIndex: 0,
 
         picName: "",
         videoName: "",
 
-        timbreFile: "",
-
+        innerBlockNum: 0,
         totalBlockNum: 0,
         totalInnerBlockNum: 0,
-    }
+    },
+    timbreFile: "" // TODO: Put this pieace of logic in a piano module
 };
 
 const getters = {
@@ -36,6 +46,12 @@ const getters = {
 }
 
 const actions = {
+    setExperiment: ({ commit }, experiment) => {
+        commit('setExperiment', experiment);
+    },
+    initExperiment: ({ commit }) => {
+        commit('initExperiment');
+    },
     initState: ({ commit }) => {
         commit('initState');
     },
@@ -45,25 +61,36 @@ const actions = {
 }
 
 const mutations = {
-    //settings
+    setExperiment(state, experiment) {
+        state.flow = experiment.flow;
+        state.description = {
+            name: experiment.name,
+            folder: experiment.folder,
+            mode: experiment.mode
+        };
+    },
+    initExperiment(state) {
+        state.experiment.nextFlowIndex = 0;
+        state.experiment.currentBlockNum = -1;
+    },
     initState(state) {
         // set this.picName after initState
-        if (state.experiment.flow === []) return;
+        if (state.flow === []) return;
 
         if (state.experiment.currentBlockNum == -1) {
             // new sets of trials
-            state.experiment.currentFlowState = state.experiment.flow[state.experiment.nextFlowIndex]; //the first comp for a block of trials
+            state.experiment.currentFlowState = state.flow[state.experiment.nextFlowIndex]; //the first comp for a block of trials
             state.experiment.currentBlockIndex = state.experiment.nextFlowIndex;
             state.experiment.currentBlockNum = 0;
             state.experiment.picName = state.experiment.currentFlowState.pictureFileName[state.experiment.currentBlockNum];
 
 
             // Video
-            if (state.experiment.flow[state.experiment.nextFlowIndex].hasOwnProperty("videoFileName")) {
-                if (state.experiment.currentBlockNum >= state.experiment.flow[state.experiment.nextFlowIndex].videoFileName.length) {
-                    state.experiment.videoName = state.experiment.flow[state.experiment.nextFlowIndex].videoFileName[0];
+            if (state.flow[state.experiment.nextFlowIndex].hasOwnProperty("videoFileName")) {
+                if (state.experiment.currentBlockNum >= state.flow[state.experiment.nextFlowIndex].videoFileName.length) {
+                    state.experiment.videoName = state.flow[state.experiment.nextFlowIndex].videoFileName[0];
                 } else {
-                    state.experiment.videoName = state.experiment.flow[state.experiment.nextFlowIndex].videoFileName[state.experiment.currentBlockNum];
+                    state.experiment.videoName = state.flow[state.experiment.nextFlowIndex].videoFileName[state.experiment.currentBlockNum];
                 }
             }
 
@@ -93,38 +120,42 @@ const mutations = {
             }
         } else {
             // within same sets of trials
-            if (state.experiment.flow[state.experiment.nextFlowIndex].hasOwnProperty("pictureFileName")) {
-                if (state.experiment.currentBlockNum >= state.experiment.flow[state.experiment.nextFlowIndex].pictureFileName.length) {
-                    state.experiment.picName = state.experiment.flow[state.experiment.nextFlowIndex].pictureFileName[0];
+            if (state.flow[state.experiment.nextFlowIndex].hasOwnProperty("pictureFileName")) {
+                if (state.experiment.currentBlockNum >= state.flow[state.experiment.nextFlowIndex].pictureFileName.length) {
+                    state.experiment.picName = state.flow[state.experiment.nextFlowIndex].pictureFileName[0];
                 } else {
-                    state.experiment.picName = state.experiment.flow[state.experiment.nextFlowIndex].pictureFileName[state.experiment.currentBlockNum];
+                    state.experiment.picName = state.flow[state.experiment.nextFlowIndex].pictureFileName[state.experiment.currentBlockNum];
                 }
             }
         }
         state.experiment.picName = `${state.experiment.folder}/${state.experiment.picName}`;
         state.experiment.videoName = `${state.experiment.folder}/${state.experiment.videoName}`;
-        // console.log(`${state.experiment.flow[state.experiment.nextFlowIndex].type} initedState: currentBlockNum=${state.experiment.currentBlockNum} totalBlockNum=${state.experiment.totalBlockNum}`);
+        // console.log(`${state.flow[state.experiment.nextFlowIndex].type} initedState: currentBlockNum=${state.experiment.currentBlockNum} totalBlockNum=${state.experiment.totalBlockNum}`);
     },
     onNext(state) {
-        // set this.picName after onNext
-        if (state.experiment.flow == undefined) return;
+        
+        if (state.flow === undefined) throw new Error("No flow was found for the experiment");
 
-        if (state.experiment.flow[state.experiment.nextFlowIndex].hasOwnProperty("followedBy")) {
+        if (state.cursor) {
             state.experiment.nextFlowIndex += 1;
-            router.push({ name: state.experiment.flow[state.experiment.nextFlowIndex].type });
+            router.push({ name: state.flow[0].type });
+        }
+        else if (state.flow[state.experiment.nextFlowIndex].hasOwnProperty("followedBy")) {
+            state.experiment.nextFlowIndex += 1;
+            router.push({ name: state.flow[state.experiment.nextFlowIndex].type });
         }
         else {
             if (state.experiment.currentBlockNum === state.experiment.totalBlockNum) {
                 state.experiment.nextFlowIndex += 1;
                 state.experiment.currentBlockNum = -1;
-                router.push({ name: state.experiment.flow[state.experiment.nextFlowIndex].type });
+                router.push({ name: state.flow[state.experiment.nextFlowIndex].type });
             } else {
                 state.experiment.currentBlockNum += 1;
 
-                if (state.experiment.currentFlowState.type != state.experiment.flow[state.experiment.nextFlowIndex].type) {
+                if (state.experiment.currentFlowState.type != state.flow[state.experiment.nextFlowIndex].type) {
                     state.experiment.nextFlowIndex =
                         state.experiment.currentBlockIndex;
-                    // state.experiment.flow.findIndex((arr) => {return arr.type == state.experiment.currentFlowState.type});
+                    // state.flow.findIndex((arr) => {return arr.type == state.experiment.currentFlowState.type});
                     router.push({ name: state.experiment.currentFlowState.type });
                 } else {
                     state.experiment.picName = state.experiment.currentFlowState.pictureFileName[state.experiment.currentBlockNum];
@@ -132,7 +163,7 @@ const mutations = {
                 }
             }
         }
-        // console.log(`${state.experiment.flow[state.experiment.nextFlowIndex].type} onNexted: currentBlockNum=${state.experiment.currentBlockNum} totalBlockNum=${state.experiment.totalBlockNum}`);
+        // console.log(`${state.flow[state.experiment.nextFlowIndex].type} onNexted: currentBlockNum=${state.experiment.currentBlockNum} totalBlockNum=${state.experiment.totalBlockNum}`);
     }
 }
 

@@ -221,7 +221,7 @@ export default {
 
     this.experiment.finished = false;
 
-    this.current = this.experiment.flow[this.experiment.nextFlowIndex];
+    this.current = this.experiment.flow[this.experiment.nextFlowIndex]; // TODO : TAKE THIS LOGIC AWAY FROM HERE
     if (this.current.hasOwnProperty("timeoutInSeconds")) {
       this.mainTimeOut = window.setTimeout(() => {
         this.onNext();

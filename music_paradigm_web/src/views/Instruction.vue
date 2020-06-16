@@ -43,8 +43,10 @@ export default {
       }
     }
   },
-  mounted() {
+  beforeMount() {
     this.initState();
+ },
+  mounted() {
     this.updatePicture();
     console.log(this.$store.state);
   }
