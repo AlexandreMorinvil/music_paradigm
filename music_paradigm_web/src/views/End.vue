@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img id="end-img" :src="apiUrl+'/static/'+picName" alt="End" />
+    <img id="end-img" :src="apiUrl+'/static/'+pictureName" alt="End" />
   </div>
 </template>
 
@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       apiUrl: config.apiUrl,
-      picName: ""
+      pictureName: ""
     };
   },
   methods: {
@@ -37,7 +37,7 @@ export default {
         this.$router.push({ name: "login" });
       } else {
         this.experiment.currentBlockNum += 1;
-        this.picName =
+        this.pictureName =
           this.experiment.folder +
           "/" +
           this.experiment.currentFlowState.pictureFileName[
@@ -56,7 +56,7 @@ export default {
   },
   mounted() {
     this.initState();
-    this.picName = this.experiment.picName;
+    this.pictureName = this.experiment.pictureName;
   }
 };
 </script>

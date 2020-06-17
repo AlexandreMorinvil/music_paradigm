@@ -1,12 +1,12 @@
 <template>
   <div id="app">
     <!-- <img id='cue-img' :src="apiUrl+'/static/cue/'+startingNode+'.jpg'" onerror="console.log(this.src)"/> -->
-    <img id="instruction-img" :src="apiUrl+'/static/'+picName" alt="Cue" />
+    <img id="instruction-img" :src="apiUrl+'/static/'+pictureName" alt="Cue" />
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 import config from "@/config";
 
@@ -16,20 +16,21 @@ export default {
   data() {
     return {
       apiUrl: config.apiUrl,
-      picName: ""
     };
   },
   computed: {
     ...mapState(["player"]),
-    ...mapState("experiment", ["experiment"])
+    ...mapGetters("experiment", ["pictureName", "midiName"]),
+    ...mapState("experiment", ["state"])
   },
   methods: {
     ...mapActions(["setSongNotes", "setSongDurations", "initState", "onNext"]),
     ...mapActions("experiment", ["initState", "onNext"])
   },
-  mounted() {
+  beforeMount() {
     this.initState();
-    this.picName = this.experiment.picName;
+  },
+  mounted() {
     this.setSongNotes([]);
     this.setSongDurations([]);
 
@@ -64,7 +65,7 @@ export default {
     // MIDI file
     this.player.on("endOfFile", () => {
       this.onNext();
-      this.picName = this.experiment.picName;
+      this.pictureName = this.experiment.pictureName;
       this.player.eventListeners["endOfFile"] = [];
     });
   }

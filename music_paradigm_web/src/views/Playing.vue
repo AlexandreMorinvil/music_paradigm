@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img id="playing-img" :src="apiUrl+'/static/'+picName" alt="Playing" onerror="this.hidden=true" />
+    <img id="playing-img" :src="apiUrl+'/static/'+pictureName" alt="Playing" onerror="this.hidden=true" />
     <progress id="progress-bar" :value="playProgress" max="100" :style="customStyle"></progress>
     <!-- <meter id="progress-bar" :value="playProgress" max="100" style="width:500px"></meter> -->
   </div>
@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       apiUrl: config.apiUrl,
-      picName: "",
+      pictureName: "",
       customStyle: "",
 
       current: {},
@@ -72,7 +72,7 @@ export default {
     ...mapActions("experiment", { expOnNext: "onNext" }),
     onNext() {
       this.expOnNext();
-      this.picName = this.experiment.picName;
+      this.pictureName = this.experiment.pictureName;
       this.getMetricAndLog();
     },
     getMetricAndLog() {
@@ -211,7 +211,7 @@ export default {
   },
   mounted() {
     this.initState();
-    this.picName = this.experiment.picName;
+    this.pictureName = this.experiment.pictureName;
     this.experiment.feedbackStatus = "ww";
 
     this.setPlayedNotes([]);

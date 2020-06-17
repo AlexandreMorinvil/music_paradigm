@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img id="rest-img" :src="apiUrl+'/static/'+picName" alt="Rest" />
+    <img id="rest-img" :src="apiUrl+'/static/'+pictureName" alt="Rest" />
   </div>
 </template>
 
@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       apiUrl: config.apiUrl,
-      picName: "",
+      pictureName: "",
       current: {}
     };
   },
@@ -33,13 +33,13 @@ export default {
         !this.current.hasOwnProperty("timeoutInSeconds")
       ) {
         this.onNext();
-        this.picName = this.experiment.picName;
+        this.pictureName = this.experiment.pictureName;
       }
     }
   },
   mounted() {
     this.initState();
-    this.picName = this.experiment.picName;
+    this.pictureName = this.experiment.pictureName;
 
     this.current = this.experiment.flow[this.experiment.nextFlowIndex]; // TODO : TAKE THIS LOGIC AWAY FROM HERE
     // to avoid waiting for last trial of the block (to be modified)
@@ -49,13 +49,13 @@ export default {
       this.experiment.currentBlockNum === this.experiment.totalBlockNum
     ) {
       this.onNext();
-      this.picName = this.experiment.picName;
+      this.pictureName = this.experiment.pictureName;
     }
     // timeout to continue
     else if (this.current.hasOwnProperty("timeoutInSeconds")) {
       window.setTimeout(() => {
         this.onNext();
-        this.picName = this.experiment.picName;
+        this.pictureName = this.experiment.pictureName;
       }, this.current.timeoutInSeconds * 1000);
     }
   }

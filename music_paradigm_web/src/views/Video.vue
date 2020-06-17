@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       apiUrl: config.apiUrl,
-      picName: "",
+      pictureName: "",
       videoName: "",
       videoOptions: {},
       playBack: {
