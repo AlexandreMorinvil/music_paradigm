@@ -26,9 +26,9 @@ export default {
     };
   },
   computed: {
-    ...mapState(["starteds", "player"]),
-    ...mapState("experiment", ["timbreFile"]),
-    ...mapState("account", ["user"])
+    ...mapState(["starteds", "player", "mustInitApplication"]),
+    // TODO: Take the timbreFile from the Experiment module to a module dedicated to the piano
+    ...mapState("experiment", {timbreFile : state => state.settings.timbreFile})
   },
   methods: {
     ...mapActions([
@@ -65,10 +65,11 @@ export default {
       switch (mm.messageType) {
         case "noteon":
           // TODO: Put in a place where it is easier to toggle on and of the piano
-          this.playFlag = this.experiment.currentFlowState
-            ? this.experiment.currentFlowState.hasOwnProperty("enableSoundFlag")
-            : false;
-          if (this.$route.name === "playing" || this.playFlag === true) {
+          // this.playFlag = this.experiment.currentFlowState
+          //   ? this.experiment.currentFlowState.hasOwnProperty("enableSoundFlag")
+          //   : false;
+          if (this.$route.name === "playing") {
+            // || this.playFlag === true) {
             if (mm.key === 1 || this.experiment.finished == true) break;
             // Fix here
 
@@ -90,10 +91,7 @@ export default {
             this.addPlayedDurations(new Date().getTime());
             this.addPlayedVelocities(mm.velocity);
             this.previousKey = mm.key;
-          } else if (
-            mm.key === 1 ||
-            this.experiment.hasOwnProperty("anyPianoKey") // This won't be anymore
-          ) {
+          } else if (mm.key === 1 || this.settings.anyPianoKey) {
             // space bar or
             // any piano key by adding 'anyPianoKey: 1' in .config
             this.addStarted(mm.key);
@@ -110,9 +108,6 @@ export default {
           this.deleteStarted(mm.key);
           break;
       }
-      // console.log(Object.keys(this.starteds));
-      // console.log(Object.keys(this.starteds).length);
-      // console.log("62" in this.starteds);
     },
     toNote(e) {
       // Check the event key against the midi map.
@@ -205,9 +200,17 @@ export default {
       });
     }
   },
+  mounted: function() {
+    // Verifying MIDI support
+    if (navigator.requestMIDIAccess) {
+      console.log("This browser supports WebMIDI!");
+    } else {
+      console.log("WebMIDI is not supported in this browser.");
+    }
+  },
   watch: {
-    experiment() {
-      if (this.experiment.name && !this.appInited) {
+    mustInitApplication() {
+      if (this.mustInitApplication) {
         this.initPiano();
         this.pianoInited = true;
       }

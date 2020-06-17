@@ -22,25 +22,15 @@ export default {
     };
   },
   computed: {
-    ...mapState(["player", "experiment"]),
-    ...mapState("account", ["user"])
+    ...mapState("experiment", ["experimentSet"])
   },
   methods: {
-    ...mapActions([])
+    ...mapActions(["setApplicationInitialization"])
   },
-
-  mounted: function() {
-    // Verifying MIDI support
-    if (navigator.requestMIDIAccess) {
-      console.log("This browser supports WebMIDI!");
-    } else {
-      console.log("WebMIDI is not supported in this browser.");
-    }
-  },
-
   watch: {
-    experiment() {
-      if (this.experiment.name && !this.appInited) {
+    experimentSet() {
+      if (this.experimentSet && !this.appInited) {
+        this.setApplicationInitialization(true);
         this.appInited = true;
       }
     }

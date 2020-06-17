@@ -53,5 +53,8 @@ export default {
     },
     setPlayedVelocities: (state, key) => {
         state.playedVelocities = key;
+    },
+    setApplicationInitialization: (state, need) => {
+        state.mustInitApplication = need;
     }
 }

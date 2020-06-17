@@ -48,5 +48,8 @@ export default {
     },
     setPlayedVelocities: ({ commit }, key) => {
         commit('setPlayedVelocities', key);
+    },
+    setApplicationInitialization: ({ commit }, need) => {
+        commit('setApplicationInitialization', need);
     }
 }

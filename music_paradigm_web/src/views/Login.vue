@@ -51,29 +51,9 @@ export default {
     ...mapState("experiment", ["flow", "timbreFile"]) // TODO: Put the timbreFile logic in a piano module
   },
   methods: {
-    // ...mapActions(['setSongNum']),
     ...mapActions("account", ["login", "logout"]),
     ...mapActions({ clearAlert: "alert/clear" }),
     ...mapActions("experiment", ["onNext", "setExperiment", "initExperiment"]),
-    initState() {
-      if (this.user.experimentFile) {
-        this.setExperiment(this.user.experiment);
-      } else {
-        // TODO: Put an alert in there
-        console.log("Currently no configuration file attached to user");
-      }
-
-      // TODO: Put this piece of logic in a piano VUEX module
-      if (this.timbreFile == undefined) {
-        this.timbreFile =
-          "https://raw.githubusercontent.com/gleitz/midi-js-soundfonts/gh-pages/MusyngKite/acoustic_grand_piano-ogg.js";
-      }
-    },
-    proceedExperiment() {
-      // TODO : TAKE THIS LOGIC AWAY FROM HERE
-      this.initExperiment();
-      this.onNext();
-    },
     handleSubmit() {
       this.submitted = true;
       const { username, password } = this;
@@ -86,9 +66,9 @@ export default {
     user() {
       if (this.user ? this.user.token : false) {
         // this.setSongNum(parseInt(this.user.lastMidiFile));
-
-        this.initState();
-        this.proceedExperiment();
+        this.setExperiment(this.user.experiment);
+        this.initExperiment();
+        this.onNext();
       }
     }
   },

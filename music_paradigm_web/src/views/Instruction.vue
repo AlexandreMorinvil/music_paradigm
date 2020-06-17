@@ -48,7 +48,6 @@ export default {
  },
   mounted() {
     this.updatePicture();
-    console.log(this.$store.state);
   }
 };
 </script>
