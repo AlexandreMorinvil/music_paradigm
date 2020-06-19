@@ -31,11 +31,12 @@ const state = {
     // Data to navigate through the flow
     cursor: {
         current: {
-            index: START_INDEX,             // Index of the current block of the flow
-            stepIndex: START_INDEX          // Index of the current step of the block
+            stepIndex: START_INDEX,         // Index of the current step of the block
+            index: UNSET_INDEX,             // Index of the current block of the flow
         },
         navigator: {
-            indexNext: START_INDEX + 1,     // Index of the next block of the flow
+            totalSteps: UNSET_INDEX,        // Number of steps in a given block
+            indexNext: START_INDEX,     // Index of the next block of the flow
             indexLoopStart: UNSET_INDEX,    // Index to which thw loop start (from which a repetition is started)
             numberRepetition: 0,            // Number of repetiotions left in a loop
         }
@@ -147,11 +148,12 @@ const mutations = {
     initExperiment(state) {
         state.cursor = {
             current: {
-                index: START_INDEX,
-                stepIndex: START_INDEX
+                stepIndex: START_INDEX,
+                index: UNSET_INDEX
             },
             navigator: {
-                indexNext: START_INDEX + 1,
+                totalSteps: UNSET_INDEX,
+                indexNext: START_INDEX,
                 indexLoopStart: UNSET_INDEX,
                 numberRepetition: 0
             }
@@ -169,22 +171,21 @@ const mutations = {
         if (!state.flow[state.cursor.current.index].type) throw new Error("Attempting to initizalize a stat already initialized");
 
         // Parsing the block
+        const currentBlock = state.flow[state.cursor.current.index];
         const {
             // Media Arrays (state)
             midiFileName,
             pictureFileName,
             videoFileName,
-
             // Block specific settings affecting the flow navigation (cursor)
             numberRepetition,
-
             // Block specific settings affecting the vue instances (state)
             followedBy,
             progressBarFlag,
             timeoutInSeconds
-        } = state.flow[state.cursor.current.index];
+        } = currentBlock;
 
-        // Initializing the state
+        // Setting the state parameters
         state.state = {
             midiName: Array.isArray(midiFileName) ? midiFileName[START_INDEX] || "" : "",
             pictureName: Array.isArray(pictureFileName) ? pictureFileName[START_INDEX] || "" : "",
@@ -196,6 +197,24 @@ const mutations = {
                 timeoutInSeconds: timeoutInSeconds || -1,
             }
         };
+
+        // Set the cursor parameters
+
+        // Count to number of steps in the block
+        switch (currentBlock.type) {
+            case "cue":
+                state.cursor.navigator.totalSteps = Array.isArray(midiFileName) ? midiFileName.length - 1 || 0 : 0;
+                break;
+            case "instruction":
+                state.cursor.navigator.totalSteps = Array.isArray(pictureFileName) ? pictureFileName.length - 1 || 0 : 0;
+                break;
+            case "video":
+                state.cursor.navigator.totalSteps = Array.isArray(videoFileName) ? videoFileName.length - 1 || 0 : 0;
+                break;
+            default: // "playing", "feedback", "rest" or "end"
+                state.cursor.navigator.totalSteps = 0;
+                break;
+        }
 
         // Initializting the loops if : 
         // 1. A number of repetition is specified in the block settings, 
@@ -213,38 +232,36 @@ const mutations = {
     },
     onNext(state) {
 
-        // If it's the experiment was just set, to go to the first state
-        if (state.cursor.current.stepIndex === START_INDEX) {
-            router.push({ name: state.flow[0].type });
-        }
-
-        // If the following block has the property "followedBy"
-        // (Meaning that it must be repeated at every round of the loop)
-        else if (state.flow[state.cursor.next.index].hasOwnProperty("followedBy")) {
-            state.cursor.next.index += 1;
-            router.push({ name: state.flow[state.cursor.next.index].type });
-        }
-
-        else {
-            if (state.cursor.current.stepIndex === state.cursor.total.index) {
-                state.cursor.next.index += 1;
-                state.cursor.current.stepIndex = PRESTART_INDEX;
-                state.state.stateInited = false;
-                router.push({ name: state.flow[state.cursor.next.index].type });
-            } else {
-                state.cursor.current.stepIndex += 1;
-
-                if (state.cursor.current.block.type != state.flow[state.cursor.next.index].type) {
-                    state.cursor.next.index = state.cursor.current.index;
-                    // state.flow.findIndex((arr) => {return arr.type == state.cursor.current.block.type});
-                    router.push({ name: state.cursor.current.block.type });
-                } else {
-                    const pictureName = state.cursor.current.block.pictureFileName[state.cursor.current.stepIndex];
-                    state.state.pictureName = `${state.description.folder}/${pictureName}`;
-                }
+        // Step within same block if there are steps left to do
+        if (state.cursor.current.stepIndex < state.cursor.navigator.totalSteps) {
+            state.cursor.current.stepIndex += 1;
+            const currentBlock = state.flow[state.cursor.current.index];
+            switch (currentBlock.type) {
+                case "cue":
+                    state.state.midiName = currentBlock.midiFileName[state.cursor.current.stepIndex];
+                    break;
+                case "instruction":
+                    state.state.pictureName = currentBlock.pictureFileName[state.cursor.current.stepIndex];
+                    break;
+                case "video":
+                    state.state.videoName = currentBlock.videoFileName[state.cursor.current.stepIndex];
+                    break;
+                default: // "playing", "feedback", "rest" or "end"
+                    break;
             }
         }
-        // console.log(`${state.flow[state.cursor.next.index].type} onNexted: current.stepIndex=${state.cursor.current.stepIndex} total.index=${state.experiment.total.index}`);
+        
+        // Move to next block
+        else if (state.cursor.navigator.indexNext < state.flow.length) {
+            router.push({ name: state.flow[state.cursor.navigator.indexNext].type });
+            state.cursor.current.index = state.cursor.navigator.indexNext;
+            state.cursor.navigator.indexNext += 1;
+        }
+
+        return;
+
+        // Verify the cursor.navigator.numberRepetition to know if necessary to repeat
+        // Verify the "FollowedBy" to continue in a loop
     }
 }
 
