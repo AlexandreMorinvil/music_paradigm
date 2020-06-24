@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- <img id='cue-img' :src="apiUrl+'/static/cue/'+startingNode+'.jpg'" onerror="console.log(this.src)"/> -->
-    <img id="instruction-img" :src="apiUrl+'/static/'+pictureName" alt="Cue" />
+    <img id="instruction-img" :src="urlStatic(pictureName)" alt="Cue" />
   </div>
 </template>
 
@@ -20,6 +20,7 @@ export default {
   },
   computed: {
     ...mapState(["player"]),
+    ...mapGetters(["urlStatic"]),
     ...mapGetters("experiment", ["pictureName", "midiName"]),
     ...mapState("experiment", ["state"])
   },
@@ -43,9 +44,7 @@ export default {
     fileUrl =
       this.apiUrl +
       "/static/" +
-      this.experiment.folder +
-      "/" +
-      this.experiment.currentMidi;
+      this.midiName;
     // console.log(fileUrl);
     xhr.open("GET", fileUrl, true);
     xhr.overrideMimeType("text/plain; charset=x-user-defined");
@@ -65,7 +64,6 @@ export default {
     // MIDI file
     this.player.on("endOfFile", () => {
       this.onNext();
-      this.pictureName = this.experiment.pictureName;
       this.player.eventListeners["endOfFile"] = [];
     });
   }

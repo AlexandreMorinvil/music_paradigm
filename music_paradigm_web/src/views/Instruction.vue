@@ -1,12 +1,11 @@
 <template>
   <div id="app">
-    <img id="instruction-img" :src="apiUrl+'/static/'+pictureName" alt="Instruction" />
+    <img id="instruction-img" :src="urlStatic(pictureName)" alt="Instruction" />
   </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
-import config from "@/config";
 
 export default {
   name: "Instruction",
@@ -18,6 +17,7 @@ export default {
   },
   computed: {
     ...mapState(["starteds"]),
+    ...mapGetters(["urlStatic"]),
     ...mapGetters("experiment", ["pictureName"])
   },
   methods: {

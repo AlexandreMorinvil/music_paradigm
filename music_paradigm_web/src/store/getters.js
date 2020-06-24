@@ -1,8 +1,7 @@
+import url from "@/_helpers/url";
+
 export default {
-        // animalsCount: (state) => {
-    //   return state.cats.length + state.dogs.length
-    // },
-    // getStarteds: (state) => {
-    //     return state.starteds;
-    // }
+    urlStatic: (state) => (directory) => {
+        return url.static(directory);
+    }
 }

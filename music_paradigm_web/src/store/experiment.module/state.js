@@ -1,6 +1,7 @@
 import constants from './constants'
 
 export default {
+    // Indicator of wether or not the experiment was set
     experimentSet: false,
 
     // The sequence of the experiment
@@ -47,10 +48,5 @@ export default {
             progressBarFlag: false,
             timeoutInSeconds: 0,
         }
-    },
-
-    experiment: {
-        innerBlockNum: 0,
-        totalInnerBlockNum: 0,
-    },
+    }
 };
