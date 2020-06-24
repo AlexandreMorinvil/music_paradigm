@@ -7,11 +7,11 @@
 		{
 			"type": "instruction",
 			"pictureFileName": [
-				"instruction/introduction_week_1_to_3/introduction_screen_page_1.png",
-				"instruction/introduction_week_1_to_3/introduction_screen_page_2.png",
-				"instruction/introduction_week_1_to_3/introduction_screen_page_3.png",
-				"instruction/introduction_week_1_to_3/introduction_screen_page_4.png",
-				"instruction/introduction_week_1_to_3/introduction_screen_page_5.png"
+				"instruction/week_1_to_3/introduction_screen_page_1.png",
+				"instruction/week_1_to_3/introduction_screen_page_2.png",
+				"instruction/week_1_to_3/introduction_screen_page_3.png",
+				"instruction/week_1_to_3/introduction_screen_page_4.png",
+				"instruction/week_1_to_3/introduction_screen_page_5.png"
 			]
 		},
 		{
