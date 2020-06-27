@@ -19,13 +19,12 @@ export default {
     };
   },
   computed: {
-    ...mapState(["player"]),
+    ...mapState("piano", ["player"]),
     ...mapGetters(["urlStatic"]),
-    ...mapGetters("experiment", ["pictureName", "midiName"]),
-    ...mapState("experiment", ["state"])
+    ...mapGetters("experiment", ["pictureName", "midiName"])
   },
   methods: {
-    ...mapActions(["setSongNotes", "setSongDurations", "initState", "onNext"]),
+    ...mapActions("piano", ["setSongNotes", "setSongDurations"]),
     ...mapActions("experiment", ["initState", "onNext"])
   },
   beforeMount() {
@@ -35,16 +34,10 @@ export default {
     this.setSongNotes([]);
     this.setSongDurations([]);
 
+    // TODO: Put this piece of logic in the piano component
     // online MIDI file loader
     const xhr = new XMLHttpRequest();
-    let fileUrl = "";
-    this.experiment.currentMidi = this.experiment.currentFlowState.midiFileName[
-      this.experiment.currentBlockNum
-    ];
-    fileUrl =
-      this.apiUrl +
-      "/static/" +
-      this.midiName;
+    let fileUrl = fileUrl = this.urlStatic(this.midiName);
     // console.log(fileUrl);
     xhr.open("GET", fileUrl, true);
     xhr.overrideMimeType("text/plain; charset=x-user-defined");

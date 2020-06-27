@@ -1,6 +1,6 @@
 // Default settings values
 const DEFAULT_ANY_PIANO_KEY = false;
-const DEFAULT_MODE = "Mix";
+const DEFAULT_MODE = "rhythm";
 const DEFAULT_TIMBRE_FILE = "https://raw.githubusercontent.com/gleitz/midi-js-soundfonts/gh-pages/MusyngKite/acoustic_grand_piano-ogg.js";
 
 // Index default values

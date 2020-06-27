@@ -9,6 +9,7 @@ import getters from './getters'
 import { alert } from './alert.module';
 import { account } from './account.module';
 import { experiment } from './experiment.module/index';
+import { piano } from './piano.module/index';
 import { users } from './users.module';
 import { results } from './results.module';
 
@@ -23,6 +24,7 @@ export default new Vuex.Store({
     alert,
     account,
     experiment,
+    piano,
     users,
     results
   }

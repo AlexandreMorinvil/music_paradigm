@@ -11,12 +11,10 @@ export default {
   name: "Instruction",
   components: {},
   data() {
-    return {
-      apiUrl: config.apiUrl,
-    };
+    return {};
   },
   computed: {
-    ...mapState(["starteds"]),
+    ...mapState("piano", ["starteds"]),
     ...mapGetters(["urlStatic"]),
     ...mapGetters("experiment", ["pictureName"])
   },

@@ -29,7 +29,7 @@ export default {
         // Set the settings (optionals, default values if not set)
         state.settings = {
             anyPianoKey: experiment.anyPianoKey || constants.DEFAULT_ANY_PIANO_KEY,
-            mode: experiment.mode || constants.DEFAULT_MODE,
+            playingMode: experiment.mode || constants.DEFAULT_MODE,
             timbreFile: experiment.timbreFile || constants.DEFAULT_TIMBRE_FILE
         };
 
@@ -76,7 +76,9 @@ export default {
             // Block specific settings affecting the flow navigation (cursor)
             numberRepetition,
             // Block specific settings affecting the vue instances (state)
+            anyPianoKey,
             followedBy,
+            playingMode,
             progressBarFlag,
             timeoutInSeconds
         } = currentBlock;
@@ -88,7 +90,9 @@ export default {
             videoName: Array.isArray(videoFileName) ? videoFileName[constants.START_INDEX] || "" : "",
 
             settings: {
+                anyPianoKey: anyPianoKey || state.settings.anyPianoKey,
                 followedBy: followedBy || false,
+                playingMode: playingMode || state.settings.playingMode,
                 progressBarFlag: progressBarFlag || false,
                 timeoutInSeconds: timeoutInSeconds || -1,
             }
