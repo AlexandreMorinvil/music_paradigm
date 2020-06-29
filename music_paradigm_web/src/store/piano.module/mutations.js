@@ -17,14 +17,8 @@ export default {
     },
 
     // Mutations on the data from the midi files
-    addSongNotes: (state, key) => {
-        state.songNotes.push(key);
-    },
     setSongNotes: (state, key) => {
         state.songNotes = key;
-    },
-    addSongDurations: (state, key) => {
-        state.songDurations.push(key);
     },
     setSongDurations: (state, key) => {
         state.songDurations = key;
@@ -76,5 +70,18 @@ export default {
             state.midiFile.notes.velocity.push(notes[i].velocity);
             state.midiFile.notes.duration.push(notes[i].duration);
         }
+    },
+    eraseMidiNotes: (state) => {
+        state.midiFile.notes.midi = [];
+        state.midiFile.notes.time = [];
+        state.midiFile.notes.ticks = [];
+        state.midiFile.notes.name = [];
+        state.midiFile.notes.pitch = [];
+        state.midiFile.notes.octave = [];
+        state.midiFile.notes.velocity = [];
+        state.midiFile.notes.duration = [];
+    },
+    playMidiFile: (state) => {
+        state.player.play();
     }
 }

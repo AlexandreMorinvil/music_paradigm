@@ -15,7 +15,7 @@ export default {
   components: {},
   data() {
     return {
-      apiUrl: config.apiUrl,
+      apiUrl: config.apiUrl
     };
   },
   computed: {
@@ -24,17 +24,25 @@ export default {
     ...mapGetters("experiment", ["pictureName", "midiName"])
   },
   methods: {
-    ...mapActions("piano", ["resetSongData", "loadMidiFile"]),
+    ...mapActions("piano", [
+      "resetMidiFileData",
+      "loadMidiFile",
+      "playMidiFile"
+    ]),
     ...mapActions("experiment", ["initState", "onNext"])
   },
   beforeMount() {
     this.initState();
   },
   mounted() {
-    this.resetSongData();
-    this.loadMidiFile(this.midiName);
-    setTimeout(() => this.player.play(), 600);
-    // MIDI file
+    // Loading a new midi file
+    this.resetMidiFileData();
+    this.loadMidiFile(this.midiName).then(() => {
+      // Paying the midi file content
+      setTimeout(() => this.playMidiFile(), 500);
+    });
+
+    // Going to the next step after the playback ends
     this.player.on("endOfFile", () => {
       this.onNext();
       this.player.eventListeners["endOfFile"] = [];

@@ -41,8 +41,6 @@ export default {
       "addStarted",
       "deleteStarted",
       "setPlayer",
-      "addSongNotes",
-      "addSongDurations",
       "addPlayedNotes",
       "addPlayedDurations",
       "addPlayedOffsets",
@@ -194,10 +192,6 @@ export default {
           gain: midiMessage.velocity / 127,
           duration: 1
         });
-        if (midiMessage.velocity != 0) {
-          this.addSongNotes(midiMessage.noteNumber);
-          this.addSongDurations(Math.round(currTime * 1000));
-        }
       }
     }
   },

@@ -17,12 +17,7 @@ export default {
     },
 
     // For the midi files
-    addSongNotes: ({ commit }, key) => {
-        commit('addSongNotes', key);
-    },
-    addSongDurations: ({ commit }, key) => {
-        commit('addSongDurations', key);
-    },
+
 
     // for logging
     addPlayedNotes: ({ commit }, key) => {
@@ -41,10 +36,7 @@ export default {
         commit('addPlayedVelocities', key);
     },
 
-    resetSongData: ({ commit }) => {
-        commit('setSongNotes', []);
-        commit('setSongDurations', []);
-    },
+
     resetPlayedNotesLogs: ({ commit }) => {
         commit('setPlayedNotes', []);
         commit('setPlayedDurations', []);
@@ -53,8 +45,12 @@ export default {
     },
 
     // Midi file management
-    loadMidiFile: ({ commit }, midiFileName) => {
-        ressourceService.fetchMidiFile(midiFileName)
+    resetMidiFileData: ({ commit }) => {
+        commit('setMidiFileName', "");
+        commit('eraseMidiNotes');
+    },
+    loadMidiFile: ({ commit, dispatch }, midiFileName) => {
+        return ressourceService.fetchMidiFile(midiFileName)
             .then(
                 response => {
                     commit('setMidiFileName', midiFileName);
@@ -64,4 +60,7 @@ export default {
                 error => { console.error(`Midi file fail:\n${error}`); }
             );
     },
+    playMidiFile: ({commit}) => {
+        commit('playMidiFile');
+    }
 }
