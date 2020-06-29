@@ -8,8 +8,8 @@ import getters from './getters'
 
 import { alert } from './alert.module';
 import { account } from './account.module';
-import { experiment } from './experiment.module/index';
-import { piano } from './piano.module/index';
+import { experiment } from './experiment.module';
+import { piano } from './piano.module';
 import { users } from './users.module';
 import { results } from './results.module';
 

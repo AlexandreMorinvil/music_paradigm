@@ -42,9 +42,7 @@ export default {
       "deleteStarted",
       "setPlayer",
       "addSongNotes",
-      "setSongNotes", // In Cue, In Video
       "addSongDurations",
-      "setSongDurations", // In Cue, In Video
       "addPlayedNotes",
       "addPlayedDurations",
       "addPlayedOffsets",
@@ -118,12 +116,9 @@ export default {
     },
     toNote(e) {
       // Check the event key against the midi map.
-      // return map[ (typeof e.which === "number")? e.which : e.keyCode ];
       return map[e.key];
     },
     initPiano() {
-      console.log("Sound inited");
-
       // Initialize audio
       this.audioConctext = new AudioContext();
       const soundfont = require("soundfont-player");
@@ -149,6 +144,8 @@ export default {
 
         // Midi messages listener (To automatically play a MIDI file)
         this.player.on("midiEvent", this.handleMidiMessage);
+
+        console.log("Sound inited");
       });
     },
     interpretKeyPress(key) {
@@ -157,7 +154,7 @@ export default {
 
       // If the key doesn't exist in the midi map, or we're trying to send a
       // noteOn event without having most recently sent a noteOff, end here.
-      if (note === undefined || this.flags[note]) return false;
+      if (note === undefined || this.flags[note]) return;
       this.flags[note] = true;
       this.onMidiMessage({ data: [144, note, 127] });
     },

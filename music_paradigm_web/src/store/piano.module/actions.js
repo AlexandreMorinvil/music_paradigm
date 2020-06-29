@@ -1,3 +1,5 @@
+import { ressourceService } from '../../_services';
+
 export default {
     setSongNum: ({ commit }, key) => { // to be changed to module
         commit('setSongNum', key);
@@ -14,19 +16,15 @@ export default {
         commit('setPlayer', key);
     },
 
-    // for logging
+    // For the midi files
     addSongNotes: ({ commit }, key) => {
         commit('addSongNotes', key);
-    },
-    setSongNotes: ({ commit }, key) => {
-        commit('setSongNotes', key);
     },
     addSongDurations: ({ commit }, key) => {
         commit('addSongDurations', key);
     },
-    setSongDurations: ({ commit }, key) => {
-        commit('setSongDurations', key);
-    },
+
+    // for logging
     addPlayedNotes: ({ commit }, key) => {
         commit('addPlayedNotes', key);
     },
@@ -43,11 +41,26 @@ export default {
         commit('addPlayedVelocities', key);
     },
 
-    // For logging 2
+    resetSongData: ({ commit }) => {
+        commit('setSongNotes', []);
+        commit('setSongDurations', []);
+    },
     resetPlayedNotesLogs: ({ commit }) => {
         commit('setPlayedNotes', []);
         commit('setPlayedDurations', []);
         commit('setPlayedOffsets', []);
         commit('setPlayedVelocities', []);
-    }
+    },
+
+    // Midi file management
+    loadMidiFile: ({ commit }, midiFileUrl) => {
+        ressourceService.fetchMidiFile(midiFileUrl)
+            .then(
+                response => {
+                    commit('loadMidiArrayStream', response);
+                    commit('parseMidiSongData', response);
+                },
+                error => { console.error(`Midi file fail:\n${error}`); }
+            );
+    },
 }

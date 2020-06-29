@@ -1,7 +1,9 @@
+import { Midi } from 'tone'
+
 export default {
-        // appendPet: (state, { species, pet }) => {
-    //   state[species].push(pet)
-    // }
+    setPlayer: (state, key) => {
+        state.player = key;
+    },
     setSongNum: (state, key) => {
         state.songNum = key;
     },
@@ -13,9 +15,8 @@ export default {
         if (selectedIndex !== -1) state.starteds.splice(selectedIndex, 1);
         // delete state.started[key]
     },
-    setPlayer: (state, key) => {
-        state.player = key;
-    },
+
+    // Mutations on the data from the midi files
     addSongNotes: (state, key) => {
         state.songNotes.push(key);
     },
@@ -28,6 +29,8 @@ export default {
     setSongDurations: (state, key) => {
         state.songDurations = key;
     },
+
+    // Mutations on the data from the notes played
     addPlayedNotes: (state, key) => {
         state.playedNotes.push(key);
     },
@@ -51,5 +54,16 @@ export default {
     },
     setPlayedVelocities: (state, key) => {
         state.playedVelocities = key;
-    }
+    },
+
+    //
+    loadMidiArrayStream: (state, midiFile) => {
+        state.player.loadArrayBuffer(midiFile);
+    },
+    parseMidiSongData: (state, midiFile) => {
+        const midi = new Midi(midiFile);
+        const currentMidi = midi;
+        console.log("So far so good");
+        console.log("I can do it");
+    } // YOU ARE THERE !!!!
 }

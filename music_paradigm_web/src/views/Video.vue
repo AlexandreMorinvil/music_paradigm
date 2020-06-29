@@ -39,14 +39,13 @@ export default {
   },
   methods: {
     ...mapActions("experiment", ["initState", "onNext"]),
-    ...mapActions(["setSongNotes", "setSongDurations"])
+    ...mapActions("piano", ["resetSongData"]),
   },
   beforeMount() {
     this.initState();
  },
   mounted() {
-    this.setSongNotes([]);
-    this.setSongDurations([]);
+    this.resetSongData();
   }
 };
 </script>
