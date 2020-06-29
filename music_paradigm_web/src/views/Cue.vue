@@ -33,25 +33,7 @@ export default {
   mounted() {
     this.resetSongData();
     this.loadMidiFile(this.midiName);
-
-    // TODO: Put this piece of logic in the piano component
-    // Online MIDI file loader
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", this.urlStatic(this.midiName), true);
-    // Retrieve data unprocessed as a binary string
-    xhr.overrideMimeType("text/plain; charset=x-user-defined");
-    xhr.responseType = "arraybuffer";
-    // Sending the request
-    xhr.send();
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        this.player.loadArrayBuffer(xhr.response);
-        // console.log(this.player.events[0].length); //0-9:init till MIDI port, last:end, middle:noteon+noteoff pair
-        // console.log(this.player.events[0]);
-        setTimeout(() => this.player.play(), 600);
-      }
-    };
-
+    setTimeout(() => this.player.play(), 600);
     // MIDI file
     this.player.on("endOfFile", () => {
       this.onNext();

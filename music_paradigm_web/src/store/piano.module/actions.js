@@ -53,12 +53,13 @@ export default {
     },
 
     // Midi file management
-    loadMidiFile: ({ commit }, midiFileUrl) => {
-        ressourceService.fetchMidiFile(midiFileUrl)
+    loadMidiFile: ({ commit }, midiFileName) => {
+        ressourceService.fetchMidiFile(midiFileName)
             .then(
                 response => {
+                    commit('setMidiFileName', midiFileName);
                     commit('loadMidiArrayStream', response);
-                    commit('parseMidiSongData', response);
+                    commit('parseMidiNotes', response);
                 },
                 error => { console.error(`Midi file fail:\n${error}`); }
             );

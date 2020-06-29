@@ -1,4 +1,4 @@
-import { Midi } from 'tone'
+import { Midi } from '@tonejs/midi'
 
 export default {
     setPlayer: (state, key) => {
@@ -56,14 +56,25 @@ export default {
         state.playedVelocities = key;
     },
 
-    //
+    // Mutations on the midi files data
+    setMidiFileName: (state, midiFileName) => {
+        state.midiFile.name = midiFileName;
+    },
     loadMidiArrayStream: (state, midiFile) => {
         state.player.loadArrayBuffer(midiFile);
     },
-    parseMidiSongData: (state, midiFile) => {
-        const midi = new Midi(midiFile);
-        const currentMidi = midi;
-        console.log("So far so good");
-        console.log("I can do it");
-    } // YOU ARE THERE !!!!
+    parseMidiNotes: (state, midiFile) => {
+        const jsonMidi = new Midi(midiFile);
+        const notes = jsonMidi.tracks[0].notes;
+        for(let i in notes) {
+            state.midiFile.notes.midi.push(notes[i].midi);
+            state.midiFile.notes.time.push(notes[i].time);
+            state.midiFile.notes.ticks.push(notes[i].ticks);
+            state.midiFile.notes.name.push(notes[i].name);
+            state.midiFile.notes.pitch.push(notes[i].pitch);
+            state.midiFile.notes.octave.push(notes[i].octave);
+            state.midiFile.notes.velocity.push(notes[i].velocity);
+            state.midiFile.notes.duration.push(notes[i].duration);
+        }
+    }
 }
