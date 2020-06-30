@@ -10,18 +10,19 @@ import { mapState, mapActions, mapGetters } from "vuex";
 
 import config from "@/config";
 import performanceEvaluation from "@/_helpers/performanceEvaluation.js";
-import SpeedPlayingComponent from "./PlayingSpeed";
-import RythmPlayingComponent from "./PlayingRythm";
+import PlayingSpeedComponent from "./PlayingSpeed";
+import PlayingRhythmComponent from "./PlayingRhythm";
 
 export default {
   name: "Playing",
   components: {
-    speed: SpeedPlayingComponent,
-    rythm: RythmPlayingComponent
+    speed: PlayingSpeedComponent,
+    rhythm: PlayingRhythmComponent
   },
   data() {
     return {
-      mainTimeOut: null
+      mainTimeOut: null,
+      stateFinished: false
     };
   },
   computed: {
@@ -47,17 +48,13 @@ export default {
   },
   methods: {
     ...mapActions("results", ["create"]),
-    ...mapActions("account", { updateUser: "update" }),
     ...mapActions("piano", ["resetPlayedNotesLogs"]),
     ...mapActions("experiment", ["initState", "onNext"]),
     getMetricAndLog() {
-      const average = data => data.length > 0 ? data.reduce((sum, value) => sum + value) / data.length : 0;
-      const standardDeviation = values => Math.sqrt(average(values.map(value => (value - average(values)) ** 2)));
-
       //logging
       let logObj = {
         header: {},
-        data: {},
+        playedNotes: {},
         evaluation: {}
       };
 
@@ -73,11 +70,11 @@ export default {
         // expMidiFileName: this.midiName,
       };
 
-      logObj.data = {
-        playedNotesMidi: this.playedNotesMidi,
-        playedNotesDuration: this.playedNotesDuration,
-        playedNotesTime: this.playedNotesTime,
-        playedNotesVelocity: this.playedNotesVelocity
+      logObj.playedNotes = {
+        midi: this.playedNotesMidi,
+        duration: this.playedNotesDuration,
+        time: this.playedNotesTime,
+        velocity: this.playedNotesVelocity
       };
 
       logObj.evaluation = this.$refs.playingMode.getMetricAndLog();
@@ -111,7 +108,12 @@ export default {
     window.clearTimeout(this.mainTimeOut);
   },
   watch: {
-    playProgress(val) {}
+    // TODO: Integrate to each type
+    stateFinished(value) {
+      if (value) {
+        this.onNext();
+      }
+    }
   }
 };
 </script>

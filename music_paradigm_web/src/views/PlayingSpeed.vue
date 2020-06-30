@@ -94,9 +94,10 @@ export default {
   },
   destroyed() {},
   watch: {
+    // TODO: Take that out if it's not relevant
     // playProgress(val) {
     //     if (val >= 100) {
-    //         this.feedbackStatus = "ss";
+    //         // this.feedbackStatus = "ss";
     //     }
     // }
   }

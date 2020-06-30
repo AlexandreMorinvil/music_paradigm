@@ -24,9 +24,9 @@ export default {
     played: {
         notes: {
             midi: [],       // Midi number, e.g. 60 
-            time: [],       // Time in milliseconds (previously called Offset)
+            time: [],       // (Unused) Time in milliseconds (previously called Offset)
             duration: [],   // Duration in seconds between noteOn and noteOff
-            velocity: [],   // (Not working) Normalized 0-1 velocity, currently the velocity is always 1
+            velocity: [],   // (Unused/Not working) Normalized 0-1 velocity, currently the velocity is always 1
         }
     }
 };
