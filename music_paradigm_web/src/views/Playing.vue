@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <img id="playing-img" :src="urlStatic(pictureName)" alt="Playing" onerror="this.hidden=true" />
-    <component :is="playingMode" v-on:finished="onNext" ref="playingMode"/>
+    <component :is="playingMode" v-on:finishedPlaying="onNext" ref="playingMode"/>
   </div>
 </template>
 
@@ -20,10 +20,7 @@ export default {
     rhythm: PlayingRhythmComponent
   },
   data() {
-    return {
-      mainTimeOut: null,
-      isFinished: false
-    };
+    return {};
   },
   computed: {
     ...mapGetters(["urlStatic"]),
@@ -50,7 +47,8 @@ export default {
     ...mapActions("results", ["create"]),
     ...mapActions("piano", ["resetPlayedNotesLogs"]),
     ...mapActions("experiment", ["initState", "onNext"]),
-    getMetricAndLog() {
+    evaluate() {
+      // TODO: Put this logging logic in a dedicated store
       //logging
       let logObj = {
         header: {},
@@ -88,24 +86,13 @@ export default {
   },
   mounted() {
     // TODO: take that out if not necessary
-    //this.feedbackStatus = "ww";
-
+    // this.feedbackStatus = "ww";
     this.resetPlayedNotesLogs();
-
-
-    if (this.timeoutInSeconds !== 0) {
-      this.mainTimeOut = window.setTimeout(() => {
-        this.onNext();
-      }, this.timeoutInSeconds * 10000);
-    }
-
   },
   beforeDestroy() {
     this.getMetricAndLog();
   },
-  destroyed() {
-    window.clearTimeout(this.mainTimeOut);
-  },
+  destroyed() {},
   watch: {}
 };
 </script>

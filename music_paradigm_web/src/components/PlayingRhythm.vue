@@ -37,47 +37,69 @@ export default {
       return this.midiFileNotesMidi.length;
     },
     lastNoteDuration() {
-      return this.midiFileNotesDuration[this.midiFileNotesDuration.length - 1]
+      return this.midiFileNotesDuration[this.midiFileNotesDuration.length - 1];
     }
   },
   methods: {
-    getMetricAndLog() {
+    evaluate() {
+      // TODO: Put this logic in a dedicated store
+      const average = data =>
+        data.length > 0
+          ? data.reduce((sum, value) => sum + value) / data.length
+          : 0;
+      const standardDeviation = values =>
+        Math.sqrt(average(values.map(value => (value - average(values)) ** 2)));
 
-      const average = data => data.length > 0 ? data.reduce((sum, value) => sum + value) / data.length : 0;
-      const standardDeviation = values => Math.sqrt(average(values.map(value => (value - average(values)) ** 2)));
-
-      const pitchAcc = performanceEvaluation.getAccuracyB_2(this.playedNotesMidi, this.midiFileNotesMidi);
-      const rhythmDiff = performanceEvaluation.getRhythmTempo(this.playedNotesDuration, this.midiFileNotesDuration);
+      const pitchAcc = performanceEvaluation.getAccuracyB_2(
+        this.playedNotesMidi,
+        this.midiFileNotesMidi
+      );
+      const rhythmDiff = performanceEvaluation.getRhythmTempo(
+        this.playedNotesDuration,
+        this.midiFileNotesDuration
+      );
       console.log(rhythmDiff);
 
       // TODO: See if there is a way to solve this function which Weiwei couldn't implement
       // const rhythmDiff = performanceEvaluation.getRhythm(this.playedNotesDuration, this.midiFileNotesDuration);
-      
+
       // TODO: See if this piece of logic concerning the feedback belongs to here
       this.feedbackStatus = pitchAcc === 100 ? "s" : "w";
       this.feedbackStatus += rhythmDiff <= config.maxRhythmError ? "s" : "w";
 
-      const pitchErrorNum = performanceEvaluation.getAccuracyD_2(this.playedNotesMidi, this.midiFileNotesMidi);
-      const missedNotes = performanceEvaluation.getMissedNotes(this.playedNotesMidi, this.midiFileNotesMidi);
+      const pitchErrorNum = performanceEvaluation.getAccuracyD_2(
+        this.playedNotesMidi,
+        this.midiFileNotesMidi
+      );
+      const missedNotes = performanceEvaluation.getMissedNotes(
+        this.playedNotesMidi,
+        this.midiFileNotesMidi
+      );
       const missedNoteNum = missedNotes.length;
-      const IOIs = performanceEvaluation.getIOIs(this.playedNotesDuration, this.midiFileNotesDuration);
-      const sequenceDuration = missedNoteNum ? 0 : this.playedNotesDuration[this.playedNotesDuration.length - 1] - this.playedNotesDuration[0];
+      const IOIs = performanceEvaluation.getIOIs(
+        this.playedNotesDuration,
+        this.midiFileNotesDuration
+      );
+      const sequenceDuration = missedNoteNum
+        ? 0
+        : this.playedNotesDuration[this.playedNotesDuration.length - 1] -
+          this.playedNotesDuration[0];
       const meanIOI = average(IOIs);
       const sdIOI = standardDeviation(IOIs);
       const cvIOI = sdIOI / meanIOI;
 
       return {
-        pitchErrorNum: pitchErrorNum,           // errors
-        missedNotes: missedNotes,               // array of number
-        missedNoteNum: missedNoteNum,           // notes
-        IOIs: IOIs,                             // array of ms
-        IOImean: meanIOI,                       // ms
+        pitchErrorNum: pitchErrorNum, // errors
+        missedNotes: missedNotes, // array of number
+        missedNoteNum: missedNoteNum, // notes
+        IOIs: IOIs, // array of ms
+        IOImean: meanIOI, // ms
         IOIsd: sdIOI,
         IOIcv: cvIOI,
-        sequenceDuration: sequenceDuration,     // ms
+        sequenceDuration: sequenceDuration, // ms
         above50sFlag: sequenceDuration > 50000,
-        pitchAcc: pitchAcc,                     // %
-        rhythmDiff: rhythmDiff                  // proportion
+        pitchAcc: pitchAcc, // %
+        rhythmDiff: rhythmDiff // proportion
       };
     }
   },
@@ -85,8 +107,8 @@ export default {
   mounted() {
     // Set the maximum time limit
     if (this.timeoutInSeconds !== 0) {
-      this.maxTimeTimeout = window.setTimeout(() => {
-        this.$emit('finished');
+      window.setTimeout(() => {
+        this.$emit("finishedPlaying");
       }, this.timeoutInSeconds * 1000);
     }
   },
@@ -96,11 +118,11 @@ export default {
   watch: {
     playProgress(value) {
       // When the last note was pressed, we wait the duration of the last note
-      // plus one additional second before indicating the end of the playing state
+      // plus a second before indicating the end of the playing state
       if (value >= this.maxPlayProgress) {
-        setTimeout(() => {
-          this.$emit('finished');
-        }, (this.lastNoteDuration + 1) * 1000);
+        this.timerUniqueIdentifier = setTimeout(() => {
+          this.$emit("finishedPlaying");
+        }, (this.lastNoteDuration + 1.0) * 1000);
       }
     }
   }

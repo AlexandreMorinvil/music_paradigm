@@ -43,7 +43,9 @@ export default {
         commit('setMidiFileName', "");
         commit('eraseMidiNotes');
     },
-    loadMidiFile: ({ commit }, midiFileName) => {
+    loadMidiFile: ({ commit, dispatch }, midiFileName) => {
+        // TODO: Insuring that if the midi file to download is the same, that was already here, we do not redownload it
+        dispatch('resetMidiFileData');
         return ressourceService.fetchMidiFile(midiFileName)
             .then(
                 response => {

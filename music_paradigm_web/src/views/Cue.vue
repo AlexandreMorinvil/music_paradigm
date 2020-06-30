@@ -33,10 +33,8 @@ export default {
     this.initState();
   },
   mounted() {
-    // Loading a new midi file
-    this.resetMidiFileData();
+    // Loading a new midi file and playing the midi file content
     this.loadMidiFile(this.midiName).then(() => {
-      // Paying the midi file content
       setTimeout(() => this.playMidiFile(), 500);
     });
 

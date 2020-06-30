@@ -46,7 +46,8 @@ export default {
     countTime() {
       this.timeProgress += this.timeStep;
     },
-    getMetricAndLog() {
+    evaluate() {
+      // TODO: Put this logic in a dedicated store
       const speedW = performanceEvaluation.getSpeedW(
         this.playedNotesMidi,
         this.midiFileNotesMidi
@@ -94,12 +95,12 @@ export default {
   },
   destroyed() {},
   watch: {
-    // TODO: Take that out if it's not relevant
-    // playProgress(val) {
-    //     if (val >= 100) {
-    //         // this.feedbackStatus = "ss";
-    //     }
-    // }
+    playProgress(value) {
+      // When the time is over we indicate the end of the playing state
+      if (value >= this.maxPlayProgress) {
+        this.$emit('finishedPlaying');
+      }
+    }
   }
 };
 </script>
