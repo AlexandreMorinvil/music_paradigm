@@ -23,9 +23,6 @@ export default {
     addPlayedNotes: ({ commit }, key) => {
         commit('addPlayedNotes', key);
     },
-    setPlayedNotes: ({ commit }, key) => {
-        commit('setPlayedNotes', key);
-    },
     addPlayedDurations: ({ commit }, key) => {
         commit('addPlayedDurations', key);
     },
@@ -38,10 +35,7 @@ export default {
 
 
     resetPlayedNotesLogs: ({ commit }) => {
-        commit('setPlayedNotes', []);
-        commit('setPlayedDurations', []);
-        commit('setPlayedOffsets', []);
-        commit('setPlayedVelocities', []);
+        commit('resetPlayedNotesLogs');
     },
 
     // Midi file management
@@ -49,7 +43,7 @@ export default {
         commit('setMidiFileName', "");
         commit('eraseMidiNotes');
     },
-    loadMidiFile: ({ commit, dispatch }, midiFileName) => {
+    loadMidiFile: ({ commit }, midiFileName) => {
         return ressourceService.fetchMidiFile(midiFileName)
             .then(
                 response => {

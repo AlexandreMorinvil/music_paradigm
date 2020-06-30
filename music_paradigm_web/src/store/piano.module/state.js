@@ -7,26 +7,30 @@ export default {
 
     // Data from the current MIDI file
     midiFile: {
-        url: "",
+        name: "",
         notes: {
             midi: [],     // Midi number, e.g. 60 
-            time: [],     // Time in seconds
-            ticks: [],    // Time in ticks
+            time: [],     // (Unused) Time in seconds
+            ticks: [],    // (Unused) Time in ticks
             name: [],     // (Unused) Note name, e.g. "C4",
             pitch: [],    // (Unused) The pitch class, e.g. "C",
-            octave : [],  // (Unused) The octave, e.g. 4
+            octave: [],   // (Unused) The octave, e.g. 4
             velocity: [], // (Unused) Normalized 0-1 velocity
             duration: [], // Duration in seconds between noteOn and noteOff
         }
     },
 
-    midiFileName: "",
     songNotes: [],
     songDurations: [],
 
     // Data from the notes played
-    playedNotes: [],
-    playedDurations: [],
-    playedOffsets: [],
-    playedVelocities: []
+    // Data from the user's interactions with the piano
+    played: {
+        notes: {
+            midi: [],       // Midi number, e.g. 60 
+            time: [],       // Time in milliseconds (previously called Offset)
+            duration: [],   // Duration in seconds between noteOn and noteOff
+            velocity: [],   // (Not working) Normalized 0-1 velocity, currently the velocity is always 1
+        }
+    }
 };

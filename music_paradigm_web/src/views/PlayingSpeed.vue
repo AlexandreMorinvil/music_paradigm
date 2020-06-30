@@ -31,6 +31,15 @@ export default {
     ...mapState("piano", [
       "songNotes",
       "songDurations",
+
+      // HERE: NOW MY TASK IS TO MODIFY THE STATES FOR THEIR APPROPRIATE GETTERS
+      "playedNotesMidi",
+      "playedNotesDuration",
+      "playedNotesTime",
+      "playedNotesVelocity",
+
+
+
       "playedNotes",
       "playedDurations",
       "playedOffsets",

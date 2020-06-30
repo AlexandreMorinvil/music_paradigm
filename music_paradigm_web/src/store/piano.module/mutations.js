@@ -16,38 +16,24 @@ export default {
         // delete state.started[key]
     },
 
-    // Mutations on the data from the midi files
-    setSongNotes: (state, key) => {
-        state.songNotes = key;
-    },
-    setSongDurations: (state, key) => {
-        state.songDurations = key;
-    },
-
     // Mutations on the data from the notes played
     addPlayedNotes: (state, key) => {
-        state.playedNotes.push(key);
-    },
-    setPlayedNotes: (state, key) => {
-        state.playedNotes = key;
+        state.played.notes.midi.push(key);
     },
     addPlayedDurations: (state, key) => {
-        state.playedDurations.push(key);
-    },
-    setPlayedDurations: (state, key) => {
-        state.playedDurations = key;
+        state.played.notes.duration.push(key);
     },
     addPlayedOffsets: (state, key) => {
-        state.playedOffsets.push(key);
-    },
-    setPlayedOffsets: (state, key) => {
-        state.playedOffsets = key;
+        state.played.notes.time.push(key);
     },
     addPlayedVelocities: (state, key) => {
-        state.playedVelocities.push(key);
+        state.played.notes.velocity.push(key);
     },
-    setPlayedVelocities: (state, key) => {
-        state.playedVelocities = key;
+    resetPlayedNotesLogs: (state) => {
+        state.played.notes.midi = [];
+        state.played.notes.duration = [];
+        state.played.notes.time = [];
+        state.played.notes.velocity = [];
     },
 
     // Mutations on the midi files data

@@ -10,7 +10,7 @@ function fetchMidiFile(midiFileName) {
         method: 'GET',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
     };
-
+    
     return fetch(url.static(midiFileName), requestOptions).then(function (response) {
         if (!response.ok) {
             throw new Error("HTTP error, status = " + response.status);

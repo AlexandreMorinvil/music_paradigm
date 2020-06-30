@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <img id='cue-img' :src="apiUrl+'/static/cue/'+startingNode+'.jpg'" onerror="console.log(this.src)"/> -->
     <img id="instruction-img" :src="urlStatic(pictureName)" alt="Cue" />
   </div>
 </template>
@@ -15,7 +14,6 @@ export default {
   components: {},
   data() {
     return {
-      apiUrl: config.apiUrl
     };
   },
   computed: {

@@ -27,6 +27,7 @@ export default {
   computed: {
     // ERASE THAT
     ...mapGetters(["urlStatic"]),
+    ...mapState("account", ["user"]),
     ...mapGetters("experiment", [
       "experimentName",
       "pictureName", 
@@ -34,15 +35,11 @@ export default {
       "playingMode",
       "timeoutInSeconds"
     ]),
-
-    ...mapState("account", ["user"]),
-    ...mapState("piano", [
-      "songNotes",
-      "songDurations",
-      "playedNotes",
-      "playedDurations",
-      "playedOffsets",
-      "playedVelocities"
+    ...mapGetters("piano", [
+      "playedNotesMidi",
+      "playedNotesDuration",
+      "playedNotesTime",
+      "playedNotesVelocity"
     ]),
 
     ...mapState(["feedbackStatus"]),
@@ -55,9 +52,6 @@ export default {
     ...mapActions("piano", ["resetPlayedNotesLogs"]),
     ...mapActions("experiment", ["initState", "onNext"]),
     getMetricAndLog() {
-      console.log(this.playedNotes, 'played');
-      console.log(this.songNotes);
-      // console.log(this.playedDurations, this.songDurations);
       const average = data => data.length > 0 ? data.reduce((sum, value) => sum + value) / data.length : 0;
       const standardDeviation = values => Math.sqrt(average(values.map(value => (value - average(values)) ** 2)));
 
@@ -73,11 +67,12 @@ export default {
         // TODO: INSURING THAT THE MIDIFILE FROM THE PREVIOUS BLOCK IS KEPT IF THERE IS NO NEW MIDI FILE
         // expMidiFileName: this.midiName,
 
-        playedNotes: this.playedNotes,
-        playedOnsets: this.playedDurations,
-        playedOffsets: this.playedOffsets,
-        playedVelocities: this.playedVelocities
+        playedNotesMidi: this.playedNotesMidi,
+        playedNotesDuration: this.playedNotesDuration,
+        playedNotesTime: this.playedNotesTime,
+        playedNotesVelocity: this.playedNotesVelocity
       };
+      console.log("Il s'est rendu là");
 
       this.$refs.playingMode.getMetricAndLog();
 
