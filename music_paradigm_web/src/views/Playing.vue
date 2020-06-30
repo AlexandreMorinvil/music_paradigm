@@ -25,7 +25,6 @@ export default {
     };
   },
   computed: {
-    // ERASE THAT
     ...mapGetters(["urlStatic"]),
     ...mapState("account", ["user"]),
     ...mapGetters("experiment", [
@@ -56,7 +55,13 @@ export default {
       const standardDeviation = values => Math.sqrt(average(values.map(value => (value - average(values)) ** 2)));
 
       //logging
-      const logObj = {
+      let logObj = {
+        header: {},
+        data: {},
+        evaluation: {}
+      };
+
+      logObj.header = {
         userId: this.user._id,
         username: this.user.username,
         experimentName: this.experimentName,
@@ -66,17 +71,17 @@ export default {
 
         // TODO: INSURING THAT THE MIDIFILE FROM THE PREVIOUS BLOCK IS KEPT IF THERE IS NO NEW MIDI FILE
         // expMidiFileName: this.midiName,
+      };
 
+      logObj.data = {
         playedNotesMidi: this.playedNotesMidi,
         playedNotesDuration: this.playedNotesDuration,
         playedNotesTime: this.playedNotesTime,
         playedNotesVelocity: this.playedNotesVelocity
       };
-      console.log("Il s'est rendu là");
 
-      this.$refs.playingMode.getMetricAndLog();
+      logObj.evaluation = this.$refs.playingMode.getMetricAndLog();
 
-      console.log(logObj);
       // send results
       this.create(logObj);
     }

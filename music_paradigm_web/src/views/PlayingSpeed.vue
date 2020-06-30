@@ -17,83 +17,80 @@ export default {
     return {
       counterUniqueIdentifier: 0,
       timeProgress: 0,
-      timeSteps: 100
+      timeStep: 100
     };
   },
   computed: {
     ...mapGetters(["urlStatic"]),
-    ...mapGetters("experiment", [
-      "midiName", 
-      "timeoutInSeconds"
-    ]),
-
-    ...mapState("account", ["user"]),
-    ...mapState("piano", [
-      "songNotes",
-      "songDurations",
-
-      // HERE: NOW MY TASK IS TO MODIFY THE STATES FOR THEIR APPROPRIATE GETTERS
+    ...mapGetters("experiment", ["timeoutInSeconds"]),
+    ...mapGetters("piano", [
+      // From the midiFile (reference)
+      "midiFileNotesMidi",
+      // Eperimental results (to analyse)
       "playedNotesMidi",
-      "playedNotesDuration",
-      "playedNotesTime",
-      "playedNotesVelocity",
-
-
-
-      "playedNotes",
-      "playedDurations",
-      "playedOffsets",
-      "playedVelocities"
+      "playedNotesDuration"
     ]),
 
+    // TODO: Decide whether Feedback is relevant here
     ...mapState(["feedbackStatus"]),
 
     playProgress() {
       return this.timeProgress;
     },
     maxPlayProgress() {
-        return this.timeoutInSeconds * 1000;
+      return this.timeoutInSeconds * 1000;
     }
   },
   methods: {
     ...mapActions("results", ["create"]),
-    ...mapActions("account", { updateUser: "update" }),
-    ...mapActions("experiment", ["initState"]),
     countTime() {
-      this.timeProgress += this.timeSteps;
+      this.timeProgress += this.timeStep;
     },
     getMetricAndLog() {
-          const speedW = performanceEvaluation.getSpeedW(this.playedNotes, this.songNotes);
-          const { durations, speedD } = performanceEvaluation.getSpeedD(this.playedNotes, this.songNotes, this.playedDurations);
-          const transitionSpeeds = performanceEvaluation.getTransitionSpeeds(this.playedNotes, this.songNotes, this.playedDurations);
-          let meanTransitionSpeeds = [];
-          if (transitionSpeeds.length != 0) {
-            transitionSpeeds.forEach(element => {
-              meanTransitionSpeeds.push(element.reduce((a, b) => a + b, 0));
-            });
-          }
-          const accuracyW = performanceEvaluation.getAccuracyW(this.playedNotes, this.songNotes);
+      const speedW = performanceEvaluation.getSpeedW(
+        this.playedNotesMidi,
+        this.midiFileNotesMidi
+      );
+      const { durations, speedD } = performanceEvaluation.getSpeedD(
+        this.playedNotesMidi,
+        this.midiFileNotesMidi,
+        this.playedNotesDuration
+      );
+      const transitionSpeeds = performanceEvaluation.getTransitionSpeeds(
+        this.playedNotesMidi,
+        this.midiFileNotesMidi,
+        this.playedNotesDuration
+      );
+      let meanTransitionSpeeds = [];
+      if (transitionSpeeds.length != 0) {
+        transitionSpeeds.forEach(element => {
+          meanTransitionSpeeds.push(element.reduce((a, b) => a + b, 0));
+        });
+      }
+      const accuracyW = performanceEvaluation.getAccuracyW(
+        this.playedNotesMidi,
+        this.midiFileNotesMidi
+      );
 
-          Object.assign(logObj, {
-            speedW: speedW, //corrects
-            sequenceDurations: durations, // array of ms
-            speedD: speedD, //ms
-            accuracyW: accuracyW, //incorrects
-            transitionSpeeds: transitionSpeeds, //array of array of ms
-            transitionSpeedMean: meanTransitionSpeeds //array of ms
-          });
-
-      console.log(logObj);
-      // send results
-      this.create(logObj);
+      return {
+        speedW: speedW,                           // corrects
+        sequenceDurations: durations,             // array of ms
+        speedD: speedD,                           // ms
+        accuracyW: accuracyW,                     // incorrects
+        transitionSpeeds: transitionSpeeds,       // array of array of ms
+        transitionSpeedMean: meanTransitionSpeeds // array of ms
+      };
     }
   },
   beforeMount() {},
   mounted() {
-      this.counterUniqueIdentifier = window.setInterval(this.countTime, this.timeSteps);
+    this.counterUniqueIdentifier = window.setInterval(
+      this.countTime,
+      this.timeStep
+    );
   },
   beforeDestroy() {
-      window.clearInterval(this.counterUniqueIdentifier);
+    window.clearInterval(this.counterUniqueIdentifier);
   },
   destroyed() {},
   watch: {

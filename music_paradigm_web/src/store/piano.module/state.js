@@ -20,11 +20,7 @@ export default {
         }
     },
 
-    songNotes: [],
-    songDurations: [],
-
-    // Data from the notes played
-    // Data from the user's interactions with the piano
+    // Data from the notes played by the user
     played: {
         notes: {
             midi: [],       // Midi number, e.g. 60 

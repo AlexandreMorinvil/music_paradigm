@@ -1,9 +1,15 @@
 import state from "./state";
 
 export default {
-    experimentName: (state) => {
-        return "UNKNOWN_NAME";
+    // Getters for the current MIDI file data
+    midiFileNotesMidi: (state) => {
+        return state.midiFile.notes.midi;
     },
+    midiFileNotesDuration: (state) => {
+        return state.midiFile.notes.duration;
+    },
+
+    // Getters for the played notes
     playedNotesMidi: (state) => {
         return state.played.notes.midi;
     },
