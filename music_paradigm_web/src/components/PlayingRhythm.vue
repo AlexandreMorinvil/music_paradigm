@@ -1,6 +1,6 @@
 <template>
   <div id="playingRythm">
-    <progress id="progress-bar" :value="timeProgress" :max="maxPlayProgress"></progress>
+    <progress id="progress-bar" :value="playProgress" :max="maxPlayProgress"></progress>
   </div>
 </template>
 
@@ -15,19 +15,12 @@ export default {
   components: {},
   data() {
     return {
-      customStyle: "",
-
-      current: {},
-      mainTimeOut: null
+      maxTimeTimeout: null
     };
   },
   computed: {
     ...mapGetters(["urlStatic"]),
-    ...mapGetters("experiment", [
-      "timeoutInSeconds"
-    ]),
-
-    ...mapState("account", ["user"]),
+    ...mapGetters("experiment", ["timeoutInSeconds"]),
     ...mapGetters("piano", [
       // From the midiFile (reference)
       "midiFileNotesMidi",
@@ -36,24 +29,18 @@ export default {
       "playedNotesMidi",
       "playedNotesDuration"
     ]),
-
     ...mapState(["feedbackStatus"]),
-
     playProgress() {
-      return playedNotesMidi.length;
+      return this.playedNotesMidi.length;
     },
     maxPlayProgress() {
       return this.midiFileNotesMidi.length;
+    },
+    lastNoteDuration() {
+      return this.midiFileNotesDuration[this.midiFileNotesDuration.length - 1]
     }
   },
   methods: {
-    ...mapActions("results", ["create"]),
-    ...mapActions("experiment", ["initState"]),
-    ...mapActions("experiment", { expOnNext: "onNext" }),
-    onNext() {
-      this.expOnNext();
-      this.getMetricAndLog();
-    },
     getMetricAndLog() {
 
       const average = data => data.length > 0 ? data.reduce((sum, value) => sum + value) / data.length : 0;
@@ -62,8 +49,11 @@ export default {
       const pitchAcc = performanceEvaluation.getAccuracyB_2(this.playedNotesMidi, this.midiFileNotesMidi);
       const rhythmDiff = performanceEvaluation.getRhythmTempo(this.playedNotesDuration, this.midiFileNotesDuration);
       console.log(rhythmDiff);
+
+      // TODO: See if there is a way to solve this function which Weiwei couldn't implement
       // const rhythmDiff = performanceEvaluation.getRhythm(this.playedNotesDuration, this.midiFileNotesDuration);
       
+      // TODO: See if this piece of logic concerning the feedback belongs to here
       this.feedbackStatus = pitchAcc === 100 ? "s" : "w";
       this.feedbackStatus += rhythmDiff <= config.maxRhythmError ? "s" : "w";
 
@@ -89,40 +79,28 @@ export default {
         pitchAcc: pitchAcc,                     // %
         rhythmDiff: rhythmDiff                  // proportion
       };
-
-      console.log(logObj);
-      // send results
-      this.create(logObj);
     }
   },
   beforeMount() {},
   mounted() {
-    //this.feedbackStatus = "ww";
-
-    // TODO : Erase that piece of code or move to piano
-    // this.experiment.finished = false;
-
+    // Set the maximum time limit
     if (this.timeoutInSeconds !== 0) {
-      this.mainTimeOut = window.setTimeout(() => {
-        this.onNext();
-      }, (this.timeoutInSeconds || 10) * 1000);
+      this.maxTimeTimeout = window.setTimeout(() => {
+        this.$emit('finished');
+      }, this.timeoutInSeconds * 1000);
     }
   },
   destroyed() {
-    window.clearTimeout(this.mainTimeOut);
+    window.clearTimeout(this.maxTimeTimeout);
   },
   watch: {
-    // TODO: Integrate the stateFInished in here when it's here
-    playProgress(val) {
-      if (val >= 100) {
-        window.clearTimeout(this.mainTimeOut);
-        // TODO : Erase that piece of code or move to piano
-        // this.experiment.finished = true;
-        window.setTimeout(() => {
-          this.onNext();
-          // TODO : Erase that piece of code or move to piano
-          // this.experiment.finished = false;
-        }, 500);
+    playProgress(value) {
+      // When the last note was pressed, we wait the duration of the last note
+      // plus one additional second before indicating the end of the playing state
+      if (value >= this.maxPlayProgress) {
+        setTimeout(() => {
+          this.$emit('finished');
+        }, (this.lastNoteDuration + 1) * 1000);
       }
     }
   }

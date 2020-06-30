@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <img id="playing-img" :src="urlStatic(pictureName)" alt="Playing" onerror="this.hidden=true" />
-    <component :is="playingMode"  ref="playingMode"/>
+    <component :is="playingMode" v-on:finished="onNext" ref="playingMode"/>
   </div>
 </template>
 
@@ -10,8 +10,8 @@ import { mapState, mapActions, mapGetters } from "vuex";
 
 import config from "@/config";
 import performanceEvaluation from "@/_helpers/performanceEvaluation.js";
-import PlayingSpeedComponent from "./PlayingSpeed";
-import PlayingRhythmComponent from "./PlayingRhythm";
+import PlayingSpeedComponent from "@/components/PlayingSpeed";
+import PlayingRhythmComponent from "@/components/PlayingRhythm";
 
 export default {
   name: "Playing",
@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       mainTimeOut: null,
-      stateFinished: false
+      isFinished: false
     };
   },
   computed: {
@@ -87,17 +87,16 @@ export default {
     this.initState();
   },
   mounted() {
+    // TODO: take that out if not necessary
     //this.feedbackStatus = "ww";
 
     this.resetPlayedNotesLogs();
 
-    // TODO : Erase that piece of code or move to piano
-    // this.experiment.finished = false;
 
     if (this.timeoutInSeconds !== 0) {
       this.mainTimeOut = window.setTimeout(() => {
         this.onNext();
-      }, this.timeoutInSeconds * 1000);
+      }, this.timeoutInSeconds * 10000);
     }
 
   },
@@ -107,14 +106,7 @@ export default {
   destroyed() {
     window.clearTimeout(this.mainTimeOut);
   },
-  watch: {
-    // TODO: Integrate to each type
-    stateFinished(value) {
-      if (value) {
-        this.onNext();
-      }
-    }
-  }
+  watch: {}
 };
 </script>
 
