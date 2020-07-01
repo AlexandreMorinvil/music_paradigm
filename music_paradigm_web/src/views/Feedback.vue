@@ -35,41 +35,24 @@ export default {
   methods: {
     ...mapActions("experiment", ["initState", "onNext"])
   },
+  mounted() {
+    this.initState();
+    // TODO: See if this piece of logic concerning the feedback belongs to here
+    // this.feedbackStatus = pitchAcc === 100 ? "s" : "w";
+    // this.feedbackStatus += rhythmDiff <= config.maxRhythmError ? "s" : "w";
+
+    this.status = this.experiment.feedbackStatus ? this.experiment.feedbackStatus : "ww";
+  },
   watch: {
-    starteds() {
+    starteds(array) {
       // TODO: Break the loop if all good and if new parameter "continueOnSuccess" is true (true by default)
-      // TODO: See if this piece of logic concerning the feedback belongs to here
-      // this.feedbackStatus = pitchAcc === 100 ? "s" : "w";
-      // this.feedbackStatus += rhythmDiff <= config.maxRhythmError ? "s" : "w";
 
       // const current = this.experiment.flow[this.experiment.nextFlowIndex];
-      if (this.starteds.length > 0) {
-        if (this.experiment.totalInnerBlockNum != 0) {
-          // for certain limit on loops
-          // console.log(`limit loop: ${this.experiment.innerBlockNum}/${this.experiment.totalInnerBlockNum}`);
-          if (
-            this.experiment.feedbackStatus !== "ss" &&
-            this.experiment.innerBlockNum < this.experiment.totalInnerBlockNum
-          ) {
-            this.experiment.currentBlockNum -= 1;
-            this.experiment.innerBlockNum += 1;
-          } else {
-            this.experiment.innerBlockNum = 0;
-          }
-        } else if (this.experiment.feedbackStatus !== "ss") {
-          // unlimited loop for unsuccessfull trials
-          this.experiment.currentBlockNum -= 1;
-        }
+      if (array.length > 0) {
         this.onNext();
       }
     }
   },
-  mounted() {
-    this.initState();
-    this.status = this.experiment.feedbackStatus
-      ? this.experiment.feedbackStatus
-      : "ww";
-  }
 };
 </script>
 

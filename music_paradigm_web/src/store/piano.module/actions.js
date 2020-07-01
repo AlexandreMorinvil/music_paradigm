@@ -25,8 +25,6 @@ export default {
     addPlayedVelocities: ({ commit }, key) => {
         commit('addPlayedVelocities', key);
     },
-
-
     resetPlayedNotesLogs: ({ commit }) => {
         commit('resetPlayedNotesLogs');
     },

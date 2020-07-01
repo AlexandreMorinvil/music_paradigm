@@ -114,7 +114,6 @@ export default {
                 transitionSpeedMean: meanTransitionSpeeds // array of ms
             }
         }
-        console.log(state.played);
     },
     evaluateRhythmType: (state, { midiFileNotes, playedNotes }) => {
         // TODO : Put those methods in the performanceEvaluation file or otherwise use a built in Javascript function for computing the Mean and standard deviation of an Array
@@ -175,6 +174,5 @@ export default {
                 rhythmDiff: rhythmDiff                  // proportion
             }
         };
-        console.log(state.played.evaluation);
     }
 }
