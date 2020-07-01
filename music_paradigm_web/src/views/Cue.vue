@@ -7,14 +7,11 @@
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
 
-import config from "@/config";
-
 export default {
   name: "Cue",
   components: {},
   data() {
-    return {
-    };
+    return {};
   },
   computed: {
     ...mapState("piano", ["player"]),

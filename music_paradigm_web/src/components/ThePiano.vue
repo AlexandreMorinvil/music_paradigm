@@ -1,6 +1,5 @@
 <template>
   <div id="the-piano" class="piano">
-    <p>THIS IS THE PIANO</p>
   </div>
 </template>
 

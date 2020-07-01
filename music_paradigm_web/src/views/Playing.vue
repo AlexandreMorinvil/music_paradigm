@@ -8,8 +8,6 @@
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
 
-import config from "@/config";
-import performanceEvaluation from "@/_helpers/performanceEvaluation.js";
 import PlayingSpeedComponent from "@/components/PlayingSpeed";
 import PlayingRhythmComponent from "@/components/PlayingRhythm";
 
@@ -40,8 +38,6 @@ export default {
     ]),
 
     ...mapState(["feedbackStatus"]),
-
-    playProgress() {}
   },
   methods: {
     ...mapActions("results", ["create"]),
@@ -78,7 +74,8 @@ export default {
       logObj.evaluation = this.$refs.playingMode.evaluate();
 
       // send results
-      this.create(logObj);
+      // TODO: Fix this piece of code because your changes made it so it doesn't work anymore
+      //this.create(logObj);
     }
   },
   beforeMount() {

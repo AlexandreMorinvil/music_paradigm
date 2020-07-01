@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 import config from "@/config";
 import performanceEvaluation from "@/_helpers/performanceEvaluation.js";

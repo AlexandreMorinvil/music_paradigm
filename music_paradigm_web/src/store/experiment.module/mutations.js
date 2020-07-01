@@ -130,6 +130,8 @@ export default {
         // Indicate that the state is initialized 
         state.state.stateInited = true;
     },
+
+    // TODO: Ensuring in some way that the rest of the last trial is ignored
     onNext(state) {
 
         // Step within same block if there are steps left to do
