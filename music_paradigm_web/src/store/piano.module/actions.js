@@ -1,25 +1,18 @@
 import { ressourceService } from '../../_services';
 
 export default {
-    setSongNum: ({ commit }, key) => { // to be changed to module
-        commit('setSongNum', key);
-    },
-
     // piano
+    setPlayer: ({ commit }, key) => {
+        commit('setPlayer', key);
+    },
     addStarted: ({ commit }, key) => {
         commit('addStarted', key);
     },
     deleteStarted: ({ commit }, key) => {
         commit('deleteStarted', key);
     },
-    setPlayer: ({ commit }, key) => {
-        commit('setPlayer', key);
-    },
 
-    // For the midi files
-
-
-    // for logging
+    // Log of played notes
     addPlayedNotes: ({ commit }, key) => {
         commit('addPlayedNotes', key);
     },
@@ -56,7 +49,19 @@ export default {
                 error => { console.error(`Midi file fail:\n${error}`); }
             );
     },
-    playMidiFile: ({commit}) => {
+    playMidiFile: ({ commit }) => {
         commit('playMidiFile');
+    },
+
+    // Performance evaluation
+    evaluateRhythmType: ({ commit, getters }) => {
+        const midiFileNotes = getters.midiFileNotes;
+        const playedNotes = getters.playedNotes;
+        commit('evaluateRhythmType', { midiFileNotes, playedNotes });
+    },
+    evaluateSpeedType: ({ commit, getters }) => {
+        const midiFileNotes = getters.midiFileNotes;
+        const playedNotes = getters.playedNotes;
+        commit('evaluateSpeedType', { midiFileNotes, playedNotes });
     }
 }

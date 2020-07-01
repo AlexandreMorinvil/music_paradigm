@@ -53,6 +53,10 @@ var getDurationArray = (timeArr, refTimeArr) => {
     return {durArr, refDurArr};
 };
 
+// TODO: Put the research specific algorithms in a dedicated "algorithm.js"
+// TODO: Then, the simplier functions (Mean, standard deviations, etc) in here, maybe
+
+// TODO: Give more clear names to the parameters, maybe
 export default {
     // speed mode (task 1) performance measures
     // Walker: number of correctly typed sequence per block

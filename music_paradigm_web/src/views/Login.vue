@@ -65,7 +65,8 @@ export default {
   watch: {
     user() {
       if (this.user ? this.user.token : false) {
-        // this.setSongNum(parseInt(this.user.lastMidiFile));
+        // TODO: Ensuring that we can resume an experiment from the last place we left it
+        // TODO: The experiment, does it have to be attached to the user?
         this.setExperiment(this.user.experiment);
         this.initExperiment();
         this.onNext();

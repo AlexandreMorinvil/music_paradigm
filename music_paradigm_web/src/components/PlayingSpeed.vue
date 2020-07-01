@@ -5,9 +5,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
-
-import performanceEvaluation from "@/_helpers/performanceEvaluation.js";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "PlayingSpeed",
@@ -22,17 +20,6 @@ export default {
   computed: {
     ...mapGetters(["urlStatic"]),
     ...mapGetters("experiment", ["timeoutInSeconds"]),
-    ...mapGetters("piano", [
-      // From the midiFile (reference)
-      "midiFileNotesMidi",
-      // Eperimental results (to analyse)
-      "playedNotesMidi",
-      "playedNotesDuration"
-    ]),
-
-    // TODO: Decide whether Feedback is relevant here
-    ...mapState(["feedbackStatus"]),
-
     playProgress() {
       return this.timeProgress;
     },
@@ -41,51 +28,19 @@ export default {
     }
   },
   methods: {
-    ...mapActions("results", ["create"]),
-    countTime() {
-      this.timeProgress += this.timeStep;
-    },
+    ...mapActions("piano", ["evaluateSpeedType"]),
     evaluate() {
-      // TODO: Put this logic in a dedicated store
-      const speedW = performanceEvaluation.getSpeedW(
-        this.playedNotesMidi,
-        this.midiFileNotesMidi
-      );
-      const { durations, speedD } = performanceEvaluation.getSpeedD(
-        this.playedNotesMidi,
-        this.midiFileNotesMidi,
-        this.playedNotesDuration
-      );
-      const transitionSpeeds = performanceEvaluation.getTransitionSpeeds(
-        this.playedNotesMidi,
-        this.midiFileNotesMidi,
-        this.playedNotesDuration
-      );
-      let meanTransitionSpeeds = [];
-      if (transitionSpeeds.length != 0) {
-        transitionSpeeds.forEach(element => {
-          meanTransitionSpeeds.push(element.reduce((a, b) => a + b, 0));
-        });
-      }
-      const accuracyW = performanceEvaluation.getAccuracyW(
-        this.playedNotesMidi,
-        this.midiFileNotesMidi
-      );
-
-      return {
-        speedW: speedW,                           // corrects
-        sequenceDurations: durations,             // array of ms
-        speedD: speedD,                           // ms
-        accuracyW: accuracyW,                     // incorrects
-        transitionSpeeds: transitionSpeeds,       // array of array of ms
-        transitionSpeedMean: meanTransitionSpeeds // array of ms
-      };
+      this.evaluateSpeedType();
+    },
+    countTimeStep() {
+      this.timeProgress += this.timeStep;
     }
   },
   beforeMount() {},
   mounted() {
+    // Start timer to count and limit time availble for playing
     this.counterUniqueIdentifier = window.setInterval(
-      this.countTime,
+      this.countTimeStep,
       this.timeStep
     );
   },

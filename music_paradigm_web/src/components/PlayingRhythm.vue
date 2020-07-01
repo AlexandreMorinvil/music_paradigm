@@ -5,10 +5,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
-
-import config from "@/config";
-import performanceEvaluation from "@/_helpers/performanceEvaluation.js";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Playing",
@@ -22,14 +19,10 @@ export default {
     ...mapGetters(["urlStatic"]),
     ...mapGetters("experiment", ["timeoutInSeconds"]),
     ...mapGetters("piano", [
-      // From the midiFile (reference)
       "midiFileNotesMidi",
       "midiFileNotesDuration",
-      // Eperimental results (to analyse)
-      "playedNotesMidi",
-      "playedNotesDuration"
+      "playedNotesMidi"
     ]),
-    ...mapState(["feedbackStatus"]),
     playProgress() {
       return this.playedNotesMidi.length;
     },
@@ -41,73 +34,16 @@ export default {
     }
   },
   methods: {
+    ...mapActions("piano", ["evaluateRhythmType"]),
     evaluate() {
-      // TODO: Put this logic in a dedicated store
-      const average = data =>
-        data.length > 0
-          ? data.reduce((sum, value) => sum + value) / data.length
-          : 0;
-      const standardDeviation = values =>
-        Math.sqrt(average(values.map(value => (value - average(values)) ** 2)));
-
-      const pitchAcc = performanceEvaluation.getAccuracyB_2(
-        this.playedNotesMidi,
-        this.midiFileNotesMidi
-      );
-      const rhythmDiff = performanceEvaluation.getRhythmTempo(
-        this.playedNotesDuration,
-        this.midiFileNotesDuration
-      );
-      console.log(rhythmDiff);
-
-      // TODO: See if there is a way to solve this function which Weiwei couldn't implement
-      // const rhythmDiff = performanceEvaluation.getRhythm(this.playedNotesDuration, this.midiFileNotesDuration);
-
-      // TODO: See if this piece of logic concerning the feedback belongs to here
-      this.feedbackStatus = pitchAcc === 100 ? "s" : "w";
-      this.feedbackStatus += rhythmDiff <= config.maxRhythmError ? "s" : "w";
-
-      const pitchErrorNum = performanceEvaluation.getAccuracyD_2(
-        this.playedNotesMidi,
-        this.midiFileNotesMidi
-      );
-      const missedNotes = performanceEvaluation.getMissedNotes(
-        this.playedNotesMidi,
-        this.midiFileNotesMidi
-      );
-      const missedNoteNum = missedNotes.length;
-      const IOIs = performanceEvaluation.getIOIs(
-        this.playedNotesDuration,
-        this.midiFileNotesDuration
-      );
-      const sequenceDuration = missedNoteNum
-        ? 0
-        : this.playedNotesDuration[this.playedNotesDuration.length - 1] -
-          this.playedNotesDuration[0];
-      const meanIOI = average(IOIs);
-      const sdIOI = standardDeviation(IOIs);
-      const cvIOI = sdIOI / meanIOI;
-
-      return {
-        pitchErrorNum: pitchErrorNum, // errors
-        missedNotes: missedNotes, // array of number
-        missedNoteNum: missedNoteNum, // notes
-        IOIs: IOIs, // array of ms
-        IOImean: meanIOI, // ms
-        IOIsd: sdIOI,
-        IOIcv: cvIOI,
-        sequenceDuration: sequenceDuration, // ms
-        above50sFlag: sequenceDuration > 50000,
-        pitchAcc: pitchAcc, // %
-        rhythmDiff: rhythmDiff // proportion
-      };
+      this.evaluateRhythmType();
     }
   },
   beforeMount() {},
   mounted() {
     // Set the maximum time limit
     if (this.timeoutInSeconds !== 0) {
-      window.setTimeout(() => {
+      this.maxTimeTimeout = window.setTimeout(() => {
         this.$emit("finishedPlaying");
       }, this.timeoutInSeconds * 1000);
     }

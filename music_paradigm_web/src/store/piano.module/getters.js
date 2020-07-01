@@ -2,6 +2,9 @@ import state from "./state";
 
 export default {
     // Getters for the current MIDI file data
+    midiFileNotes: (state) => {
+        return state.midiFile.notes;
+    },
     midiFileNotesMidi: (state) => {
         return state.midiFile.notes.midi;
     },
@@ -10,6 +13,9 @@ export default {
     },
 
     // Getters for the played notes
+    playedNotes: (state) => {
+        return state.played.notes;
+    },
     playedNotesMidi: (state) => {
         return state.played.notes.midi;
     },

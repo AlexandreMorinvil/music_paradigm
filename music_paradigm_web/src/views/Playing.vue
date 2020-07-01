@@ -43,7 +43,7 @@ export default {
     ...mapActions("results", ["create"]),
     ...mapActions("piano", ["resetPlayedNotesLogs"]),
     ...mapActions("experiment", ["initState", "onNext"]),
-    getPlayedNotesMetrics() {
+    evaluatePlayedNotes() {
       // TODO: Put this logging logic in a dedicated store
       //logging
       let logObj = {
@@ -71,11 +71,11 @@ export default {
         velocity: this.playedNotesVelocity
       };
 
-      logObj.evaluation = this.$refs.playingMode.evaluate();
+      this.$refs.playingMode.evaluate();
 
       // send results
       // TODO: Fix this piece of code because your changes made it so it doesn't work anymore
-      //this.create(logObj);
+      // this.create(logObj);
     }
   },
   beforeMount() {
@@ -87,7 +87,7 @@ export default {
     this.resetPlayedNotesLogs();
   },
   beforeDestroy() {
-    this.getPlayedNotesMetrics();
+    this.evaluatePlayedNotes();
   },
   destroyed() {},
   watch: {}

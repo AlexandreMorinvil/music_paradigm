@@ -37,6 +37,11 @@ export default {
   },
   watch: {
     starteds() {
+      // TODO: Break the loop if all good and if new parameter "continueOnSuccess" is true (true by default)
+      // TODO: See if this piece of logic concerning the feedback belongs to here
+      // this.feedbackStatus = pitchAcc === 100 ? "s" : "w";
+      // this.feedbackStatus += rhythmDiff <= config.maxRhythmError ? "s" : "w";
+
       // const current = this.experiment.flow[this.experiment.nextFlowIndex];
       if (this.starteds.length > 0) {
         if (this.experiment.totalInnerBlockNum != 0) {

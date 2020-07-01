@@ -51,7 +51,6 @@ export default {
     }
   },
   methods: {
-    // ...mapActions(['setSongNum']),
     ...mapActions('account', ['login', 'logout']),
     ...mapActions({ clearAlert: 'alert/clear' }),
     ...mapActions({ setAlert: 'alert/error' }),
