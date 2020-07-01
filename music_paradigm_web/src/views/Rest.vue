@@ -1,62 +1,61 @@
 <template>
   <div id="app">
-    <img id="rest-img" :src="apiUrl+'/static/'+pictureName" alt="Rest" />
+    <p v-if="timeLeft > 0"> Time left : {{ timeLeft }} </p>
+    <img id="instruction-img" :src="urlStatic(pictureName)" alt="Rest" />
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-import config from "@/config";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Rest",
   components: {},
   computed: {
-    ...mapState(["starteds"]),
-    ...mapState("experiment", ["experiment"])
+    ...mapGetters(["urlStatic"]),
+    ...mapState("piano", ["starteds"]),
+    ...mapGetters("experiment", ["pictureName", "timeoutInSeconds"])
   },
   data() {
     return {
-      apiUrl: config.apiUrl,
-      pictureName: "",
-      current: {}
+      counterUniqueIdentifier: 0, // Unique Identifier of the countdown used for clean up
+      timeLeft: 0,                // Time left to the countdown
+      timeStep: 1                 // Timesteps of the countdown in seconds
     };
   },
   methods: {
-    ...mapActions("experiment", ["initState", "onNext"])
+    ...mapActions("experiment", ["initState", "onNext"]),
+    countdownTime() {
+      this.timeLeft -= this.timeStep;
+    }
+  },
+  beforeMount() {
+    this.initState();
+  },
+  mounted() {
+    // Starting the countdown of the maximum time for the rest
+    if (this.timeoutInSeconds !== 0) {
+      this.timeLeft = this.timeoutInSeconds;
+      this.counterUniqueIdentifier = window.setInterval(
+        this.countdownTime,
+        this.timeStep * 1000
+      );
+    }
+  },
+  beforeDestroy() {
+    window.clearInterval(this.counterUniqueIdentifier);
   },
   watch: {
     // press any piano keys to continue
-    starteds() {
-      if (
-        this.starteds.length > 0 &&
-        !this.current.hasOwnProperty("timeoutInSeconds")
-      ) {
+    starteds(array) {
+      if (array.length > 0 && this.timeoutInSeconds === 0) {
         this.onNext();
-        this.pictureName = this.experiment.pictureName;
       }
-    }
-  },
-  mounted() {
-    this.initState();
-    this.pictureName = this.experiment.pictureName;
-
-    this.current = this.experiment.flow[this.experiment.nextFlowIndex]; // TODO : TAKE THIS LOGIC AWAY FROM HERE
-    // to avoid waiting for last trial of the block (to be modified)
-    if (
-      !this.current.hasOwnProperty("followedBy") &&
-      this.experiment.currentBlockNum !== 0 &&
-      this.experiment.currentBlockNum === this.experiment.totalBlockNum
-    ) {
-      this.onNext();
-      this.pictureName = this.experiment.pictureName;
-    }
-    // timeout to continue
-    else if (this.current.hasOwnProperty("timeoutInSeconds")) {
-      window.setTimeout(() => {
+    },
+    timeLeft(value) {
+      if (value <= 0) {
         this.onNext();
-        this.pictureName = this.experiment.pictureName;
-      }, this.current.timeoutInSeconds * 1000);
+      }
     }
   }
 };
