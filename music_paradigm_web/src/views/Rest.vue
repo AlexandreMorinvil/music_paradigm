@@ -24,7 +24,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions("experiment", ["initState", "onNext"]),
+    ...mapActions("experiment", ["initState", "goNextStep"]),
     countdownTime() {
       this.timeLeft -= this.timeStep;
     }
@@ -49,12 +49,12 @@ export default {
     // press any piano keys to continue
     starteds(array) {
       if (array.length > 0 && this.timeoutInSeconds === 0) {
-        this.onNext();
+        this.goNextStep();
       }
     },
     timeLeft(value) {
       if (value <= 0) {
-        this.onNext();
+        this.goNextStep();
       }
     }
   }

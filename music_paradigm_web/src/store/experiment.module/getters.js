@@ -45,6 +45,7 @@ export default {
     },
 
     // State attributes
+    // TODO : Make sure this works
     anyPianoKey: (state) => {
         // Return the "anyPianoKey" value specified by the block if it exists,
         // otherwise, the default "anyPianoKey" of the experiment is returned.

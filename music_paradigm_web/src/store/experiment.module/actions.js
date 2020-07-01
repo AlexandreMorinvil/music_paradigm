@@ -8,7 +8,7 @@ export default {
     initState: ({ commit }) => {
         commit('initState');
     },
-    onNext: ({ commit }) => {
-        commit('onNext');
+    goNextStep: ({ commit }) => {
+        commit('goNextStep');
     }
 }

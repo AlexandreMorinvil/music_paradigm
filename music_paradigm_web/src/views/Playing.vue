@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <img id="playing-img" :src="urlStatic(pictureName)" alt="Playing" onerror="this.hidden=true" />
-    <component :is="playingMode" v-on:finishedPlaying="onNext" ref="playingMode"/>
+    <component :is="playingMode" v-on:finishedPlaying="goNextStep" ref="playingMode"/>
   </div>
 </template>
 
@@ -42,7 +42,7 @@ export default {
   methods: {
     ...mapActions("results", ["create"]),
     ...mapActions("piano", ["resetPlayedNotesLogs"]),
-    ...mapActions("experiment", ["initState", "onNext"]),
+    ...mapActions("experiment", ["initState", "goNextStep"]),
     evaluatePlayedNotes() {
       // TODO: Put this logging logic in a dedicated store
       //logging

@@ -54,6 +54,7 @@ export default {
     ...mapActions('account', ['login', 'logout']),
     ...mapActions({ clearAlert: 'alert/clear' }),
     ...mapActions({ setAlert: 'alert/error' }),
+    // TODO: Ensuring that the name "onNext" is changed to "goNextStep" if it is accruate in this state
     onNext () {
       this.$router.push({name: 'register'});
     },
@@ -70,6 +71,7 @@ export default {
   watch: {
     user() {
       if (this.user? this.user.token: false) {
+        // TODO: Ensuring that the name "onNext" is changed to "goNextStep" if it is accruate in this state
         this.onNext();
       }
     }

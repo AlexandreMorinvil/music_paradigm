@@ -33,7 +33,7 @@ export default {
     ...mapState("experiment", ["experiment"])
   },
   methods: {
-    ...mapActions("experiment", ["initState", "onNext"])
+    ...mapActions("experiment", ["initState", "goNextStep"])
   },
   mounted() {
     this.initState();
@@ -49,7 +49,7 @@ export default {
 
       // const current = this.experiment.flow[this.experiment.nextFlowIndex];
       if (array.length > 0) {
-        this.onNext();
+        this.goNextStep();
       }
     }
   },

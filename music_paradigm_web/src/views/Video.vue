@@ -38,7 +38,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("experiment", ["initState", "onNext"]),
+    ...mapActions("experiment", ["initState", "goNextStep"]),
     ...mapActions("piano", ["resetSongData"]),
   },
   beforeMount() {

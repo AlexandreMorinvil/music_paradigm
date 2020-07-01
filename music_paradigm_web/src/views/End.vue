@@ -30,6 +30,7 @@ export default {
   },
   methods: {
     ...mapActions("experiment", ["initState"]),
+    // TODO: Ensuring that the name "onNext" is changed to "goNextStep" if it is accruate in this state
     onNext() {
       // this.$router.push({name: 'cue'});
       if (this.experiment.currentBlockNum === this.experiment.totalBlockNum) {
@@ -50,6 +51,7 @@ export default {
     // press any piano keys to continue
     starteds() {
       if (this.starteds.length > 0) {
+        // TODO: Ensuring that the name "onNext" is changed to "goNextStep" if it is accruate in this state
         this.onNext();
       }
     }

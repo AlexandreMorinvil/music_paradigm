@@ -132,7 +132,7 @@ export default {
     },
 
     // TODO: Ensuring in some way that the rest of the last trial is ignored
-    onNext(state) {
+    goNextStep(state) {
 
         // Step within same block if there are steps left to do
         if (state.cursor.current.stepIndex < state.cursor.navigator.totalSteps) {

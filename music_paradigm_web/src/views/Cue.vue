@@ -24,7 +24,7 @@ export default {
       "loadMidiFile",
       "playMidiFile"
     ]),
-    ...mapActions("experiment", ["initState", "onNext"])
+    ...mapActions("experiment", ["initState", "goNextStep"])
   },
   beforeMount() {
     this.initState();
@@ -37,7 +37,7 @@ export default {
 
     // Going to the next step after the playback ends
     this.player.on("endOfFile", () => {
-      this.onNext();
+      this.goNextStep();
       this.player.eventListeners["endOfFile"] = [];
     });
   }

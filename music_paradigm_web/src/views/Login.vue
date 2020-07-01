@@ -53,7 +53,7 @@ export default {
   methods: {
     ...mapActions("account", ["login", "logout"]),
     ...mapActions({ clearAlert: "alert/clear" }),
-    ...mapActions("experiment", ["onNext", "setExperiment", "initExperiment"]),
+    ...mapActions("experiment", ["goNextStep", "setExperiment", "initExperiment"]),
     handleSubmit() {
       this.submitted = true;
       const { username, password } = this;
@@ -69,7 +69,7 @@ export default {
         // TODO: The experiment, does it have to be attached to the user?
         this.setExperiment(this.user.experiment);
         this.initExperiment();
-        this.onNext();
+        this.goNextStep();
       }
     }
   },

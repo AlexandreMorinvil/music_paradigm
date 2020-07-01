@@ -19,12 +19,12 @@ export default {
     ...mapGetters("experiment", ["pictureName"])
   },
   methods: {
-    ...mapActions("experiment", ["initState", "onNext"])
+    ...mapActions("experiment", ["initState", "goNextStep"])
   },
   watch: {
     starteds() {
       if (this.starteds.length > 0) {
-        this.onNext();
+        this.goNextStep();
       }
     }
   },
