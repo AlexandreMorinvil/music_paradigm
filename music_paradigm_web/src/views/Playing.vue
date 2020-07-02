@@ -42,7 +42,7 @@ export default {
   methods: {
     ...mapActions("results", ["create"]),
     ...mapActions("piano", ["resetPlayedNotesLogs"]),
-    ...mapActions("experiment", ["initState", "goNextStep"]),
+    ...mapActions("experiment", ["goNextStep"]),
     evaluatePlayedNotes() {
       // TODO: Put this logging logic in a dedicated store
       //logging
@@ -78,9 +78,7 @@ export default {
       // this.create(logObj);
     }
   },
-  beforeMount() {
-    this.initState();
-  },
+  beforeMount() {},
   mounted() {
     // TODO: take that out if not necessary
     // this.feedbackStatus = "ww";

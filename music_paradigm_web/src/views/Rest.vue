@@ -24,14 +24,12 @@ export default {
     };
   },
   methods: {
-    ...mapActions("experiment", ["initState", "goNextStep"]),
+    ...mapActions("experiment", ["goNextStep"]),
     countdownTime() {
       this.timeLeft -= this.timeStep;
     }
   },
-  beforeMount() {
-    this.initState();
-  },
+  beforeMount() {},
   mounted() {
     // Starting the countdown of the maximum time for the rest
     if (this.timeoutInSeconds !== 0) {

@@ -1,5 +1,8 @@
-import router from '@/router'
 import constants from './constants'
+import {
+    updateState,
+    moveCursorNext
+} from './functions'
 
 export default {
 
@@ -38,130 +41,47 @@ export default {
     },
 
     /**
-     * Initializes the cursor to start navigating through the experiment (sets the cursor)
-     * @param {Object} state    Vuex state from a store (automatic argument)
+     * Initializes the cursor to start navigating through the experiment
+     * @param {Object} state            Vuex state from a store (automatic argument)
+     * @param {Object} presetCursor     Cursor from another session, in order to restart
+     *                                  where the experiment was left
      */
-    initExperiment(state) {
-        state.cursor = {
-            current: {
-                stepIndex: constants.START_INDEX,
-                index: constants.UNSET_INDEX
-            },
-            navigator: {
-                totalSteps: constants.UNSET_INDEX,
-                indexNext: constants.START_INDEX,
-                indexLoopStart: constants.UNSET_INDEX,
-                numberRepetition: 0
-            }
+    initCursor(state, presetCursor = null) {
+        // If a cursor is provided, the experiment is resumed with the state of the cursor
+        if (presetCursor) {
+            Object.assign(state.cursor, presetCursor);
         }
-    },
+        // If no cursor is provided, the default values of the cursor
+        else {
+            state.cursor = {
+                current: {
+                    index: -1,
+                    innerStepIndex: 0,
+                    playableMediaIndex: 0
+                },
+                navigation: {
+                    indexNext: 0,
+                    indexPlayableMediaPile: -1,
+                    indexLoopStart: -1,
+                    totalInnerSteps: 0,
+                    numberPiledPlayableMedia: 0,
+                    numberRepetition: 0,
+                }
+            };
+        }
 
-    /**
-     * Initializes the state of the experiment according to the block pointed by the cursor (sets the state and cursor)
-     * @param {Object} state    Vuex state from a store (automatic argument)
-     */
-    initState(state) {
-        // Verify that the state was not already initialized
-        if (state.state.stateInited) throw new Error("Attempting to initizalize a stat already initialized");
-        // Verify that the current state to initialize possesses a type
-        if (!state.flow[state.cursor.current.index].type) throw new Error("Attempting to initizalize a stat already initialized");
-
-        // Parsing the block
-        const currentBlock = state.flow[state.cursor.current.index];
-        const {
-            // Media Arrays (state)
-            midiFileName,
-            pictureFileName,
-            videoFileName,
-            // Block specific settings affecting the flow navigation (cursor)
-            numberRepetition,
-            // Block specific settings affecting the vue instances (state)
-            anyPianoKey,
-            followedBy,
-            playingMode,
-            progressBarFlag,
-            timeoutInSeconds
-        } = currentBlock;
-
-        // Setting the state parameters
-        state.state = {
-            midiName: Array.isArray(midiFileName) ? midiFileName[constants.START_INDEX] || "" : "",
-            pictureName: Array.isArray(pictureFileName) ? pictureFileName[constants.START_INDEX] || "" : "",
-            videoName: Array.isArray(videoFileName) ? videoFileName[constants.START_INDEX] || "" : "",
-
-            settings: {
-                anyPianoKey: anyPianoKey || state.settings.anyPianoKey,
-                followedBy: followedBy || false,
-                playingMode: playingMode || state.settings.playingMode,
-                progressBarFlag: progressBarFlag || false,
-                timeoutInSeconds: timeoutInSeconds || -1,
-            }
+        // Set the initialization indicators to false
+        state.isInitialized = {
+            route: false,
+            state: false,
+            media: false
         };
-
-        // Set the cursor parameters
-
-        // Count to number of steps in the block
-        switch (currentBlock.type) {
-            case "cue":
-                state.cursor.navigator.totalSteps = Array.isArray(midiFileName) ? midiFileName.length - 1 || 0 : 0;
-                break;
-            case "instruction":
-                state.cursor.navigator.totalSteps = Array.isArray(pictureFileName) ? pictureFileName.length - 1 || 0 : 0;
-                break;
-            case "video":
-                state.cursor.navigator.totalSteps = Array.isArray(videoFileName) ? videoFileName.length - 1 || 0 : 0;
-                break;
-            default: // "playing", "feedback", "rest" or "end"
-                state.cursor.navigator.totalSteps = 0;
-                break;
-        }
-
-        // Initializting the loops if : 
-        // 1. A number of repetition is specified in the block settings, 
-        // 2. The cursor is not currently in a loop (thus the number of reptition left is 0)
-        // 3. The current index is not the start index of a previous loop (to avoid resetting a loop twice)
-        if (numberRepetition > 0 &&
-            state.cursor.navigator.numberRepetition === 0 &&
-            state.cursor.current.index !== state.cursor.navigator.indexLoopStart) {
-            state.cursor.navigator.indexLoopStart = state.cursor.current.index;
-            state.cursor.navigator.numberRepetition = numberRepetition;
-        }
-
-        // Indicate that the state is initialized 
-        state.state.stateInited = true;
     },
-
-    // TODO: Ensuring in some way that the rest of the last trial is ignored
-    goNextStep(state) {
-
-        // Step within same block if there are steps left to do
-        if (state.cursor.current.stepIndex < state.cursor.navigator.totalSteps) {
-            state.cursor.current.stepIndex += 1;
-            const currentBlock = state.flow[state.cursor.current.index];
-            switch (currentBlock.type) {
-                case "cue":
-                    state.state.midiName = currentBlock.midiFileName[state.cursor.current.stepIndex];
-                    break;
-                case "instruction":
-                    state.state.pictureName = currentBlock.pictureFileName[state.cursor.current.stepIndex];
-                    break;
-                case "video":
-                    state.state.videoName = currentBlock.videoFileName[state.cursor.current.stepIndex];
-                    break;
-                default: // "playing", "feedback", "rest" or "end"
-                    break;
-            }
-        }
-
-        // Move to next block
-        else if (state.cursor.navigator.indexNext < state.flow.length) {
-            router.push({ name: state.flow[state.cursor.navigator.indexNext].type });
-            state.state.stateInited = false;
-            state.cursor.current.index = state.cursor.navigator.indexNext;
-            state.cursor.navigator.indexNext += 1;
-        }
-
-        // Verify the cursor.navigator.numberRepetition to know if necessary to repeat
-        // Verify the "FollowedBy" to continue in a loop
+    updateState: (state) => {
+        updateState(state);
+    },
+    moveNextStep: (state) => {
+        moveCursorNext(state);
+        updateState(state);
     }
 }

@@ -53,7 +53,7 @@ export default {
   methods: {
     ...mapActions("account", ["login", "logout"]),
     ...mapActions({ clearAlert: "alert/clear" }),
-    ...mapActions("experiment", ["goNextStep", "setExperiment", "initExperiment"]),
+    ...mapActions("experiment", ["goNextStep", "setExperiment", "setStartingPoint"]),
     handleSubmit() {
       this.submitted = true;
       const { username, password } = this;
@@ -68,7 +68,7 @@ export default {
         // TODO: Ensuring that we can resume an experiment from the last place we left it
         // TODO: The experiment, does it have to be attached to the user?
         this.setExperiment(this.user.experiment);
-        this.initExperiment();
+        this.setStartingPoint(this.user.cursor);
         this.goNextStep();
       }
     }

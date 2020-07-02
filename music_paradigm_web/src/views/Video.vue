@@ -38,12 +38,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions("experiment", ["initState", "goNextStep"]),
+    ...mapActions("experiment", ["goNextStep"]),
     ...mapActions("piano", ["resetSongData"]),
   },
-  beforeMount() {
-    this.initState();
- },
+  beforeMount() {},
   mounted() {
     this.resetSongData();
   }

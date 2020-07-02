@@ -24,11 +24,9 @@ export default {
       "loadMidiFile",
       "playMidiFile"
     ]),
-    ...mapActions("experiment", ["initState", "goNextStep"])
+    ...mapActions("experiment", ["goNextStep"])
   },
-  beforeMount() {
-    this.initState();
-  },
+  beforeMount() {},
   mounted() {
     // Loading a new midi file and playing the midi file content
     this.loadMidiFile(this.midiName).then(() => {

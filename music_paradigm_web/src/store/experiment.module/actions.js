@@ -2,13 +2,13 @@ export default {
     setExperiment: ({ commit }, experiment) => {
         commit('setExperiment', experiment);
     },
-    initExperiment: ({ commit }) => {
-        commit('initExperiment');
+    setStartingPoint: ({ commit }, cursor = null) => {
+        commit('initCursor', cursor);
     },
-    initState: ({ commit }) => {
-        commit('initState');
+    updateState: ({ commit }) => {
+        commit('updateState');
     },
     goNextStep: ({ commit }) => {
-        commit('goNextStep');
+        commit('moveNextStep');
     }
 }

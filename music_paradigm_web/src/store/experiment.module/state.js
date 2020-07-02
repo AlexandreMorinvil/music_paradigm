@@ -15,36 +15,45 @@ export default {
 
     // General settings of the flow
     settings: {
-        anyPianoKey: constants.DEFAULT_ANY_PIANO_KEY, // Allowing any piano key press to advance to the next page
-        playingMode: constants.DEFAULT_MODE,          // Mode of the experiment ("rhythm" or "speed")
-        timbreFile: constants.DEFAULT_TIMBRE_FILE     // URL or location of the timbre file used for the piano
+        anyPianoKey: constants.DEFAULT_ANY_PIANO_KEY,   // Allowing any piano key press to advance to the next page
+        playingMode: constants.DEFAULT_MODE,            // Mode of the experiment ("rhythm" or "speed")
+        timbreFile: constants.DEFAULT_TIMBRE_FILE       // URL or location of the timbre file used for the piano
     },
 
     // Data to navigate through the flow
     cursor: {
         current: {
-            stepIndex: constants.START_INDEX,         // Index of the current step of the block
-            index: constants.UNSET_INDEX,             // Index of the current block of the flow
+            index: -1,                      // Index of the current block of the flow
+            playableMediaIndex : 0,         // Index of the current step of the block (browses the midi and video file names)
+            innerStepIndex: 0               // Index of the current step of the block (browses the picture file names)
         },
-        navigator: {
-            totalSteps: constants.UNSET_INDEX,        // Number of steps in a given block
-            indexNext: constants.START_INDEX,         // Index of the next block of the flow
-            indexLoopStart: constants.UNSET_INDEX,    // Index to which thw loop start (from which a repetition is started)
-            numberRepetition: 0,                      // Number of repetiotions left in a loop
+        navigation: {
+            indexNext: 0,                   // Index of the next block of the flow
+            indexLoopStart: -1,             // Index to which a loop start
+            indexPlayableMediaPile: -1,     // Index to which there remains playable medias to depile
+            totalInnerSteps: 0,             // Number of steps in a given block
+            numberRepetition: 0,            // Number of repetitions left in a loop
+            numberPiledPlayableMedia: 0     // Number of playable medias piled
         }
     },
 
+    // Initialization status of vue pages
+    isInitialized : {
+        route: false,
+        state: false,
+        media: false
+    },
     // Data used by the view pages
     state: {
-        stateInited: false,
-        midiName: "",
-        pictureName: "",
-        videoName: "",
-
+        // Multimedia elements
+        mediaFile: {
+            pictureName: "",                                // Name of the current picture to display
+            midiName: "",                                   // Name of the current midi file loaded in the player to play
+            videoName: "",                                  // Name of the current video file to playback
+        },
         // Block specific settings
         settings: {
             anyPianoKey: constants.DEFAULT_ANY_PIANO_KEY,
-            followedBy: false,
             numberRepetition: 0,
             progressBarFlag: false,
             timeoutInSeconds: 0,

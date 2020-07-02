@@ -1,4 +1,4 @@
-export default {
+export default {    
     // Experiment
     experimentName: (state) => {
         return state.description.name || "UNKNOWN_NAME";
@@ -7,7 +7,7 @@ export default {
     // Media file names
     midiName: (state) => {
         // Fetch the picture name
-        const midiName = state.state.midiName;
+        const midiName = state.state.mediaFile.midiName;
 
         // Verify that the file name describes a supported file format
         const midiNameExtension = midiName.split(".").pop();
@@ -25,7 +25,7 @@ export default {
 
     pictureName: (state) => {
         // Fetch the picture name
-        const pictureName = state.state.pictureName;
+        const pictureName = state.state.mediaFile.pictureName;
 
         // Verify that the file name describes a supported file format
         const pictureNameExtension = pictureName.split(".").pop();
@@ -41,7 +41,7 @@ export default {
     },
 
     videoName: (state) => {
-        return state.state.videoName;
+        return state.state.mediaFile.videoName;
     },
 
     // State attributes

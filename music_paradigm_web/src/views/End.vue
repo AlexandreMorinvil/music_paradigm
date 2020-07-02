@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 import config from "@/config";
 
 export default {
@@ -29,7 +29,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions("experiment", ["initState"]),
+    // ...mapActions("experiment", ["initState"]),
     // TODO: Ensuring that the name "onNext" is changed to "goNextStep" if it is accruate in this state
     onNext() {
       // this.$router.push({name: 'cue'});
@@ -57,7 +57,7 @@ export default {
     }
   },
   mounted() {
-    this.initState();
+    // this.initState();
     this.pictureName = this.experiment.pictureName;
   }
 };

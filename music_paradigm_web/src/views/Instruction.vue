@@ -19,7 +19,7 @@ export default {
     ...mapGetters("experiment", ["pictureName"])
   },
   methods: {
-    ...mapActions("experiment", ["initState", "goNextStep"])
+    ...mapActions("experiment", ["goNextStep"])
   },
   watch: {
     starteds() {
@@ -28,9 +28,7 @@ export default {
       }
     }
   },
-  beforeMount() {
-    this.initState();
-  },
+  beforeMount() {},
   mounted() {}
 };
 </script>
