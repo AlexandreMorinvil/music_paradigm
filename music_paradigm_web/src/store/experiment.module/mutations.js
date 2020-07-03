@@ -55,12 +55,12 @@ export default {
         else {
             state.cursor = {
                 current: {
-                    index: -1,
+                    index: 0,
                     innerStepIndex: 0,
                     playableMediaIndex: 0
                 },
                 navigation: {
-                    indexNext: 0,
+                    indexNext: 1,
                     indexPlayableMediaPile: -1,
                     indexLoopStart: -1,
                     totalInnerSteps: 0,

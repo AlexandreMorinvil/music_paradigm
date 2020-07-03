@@ -23,12 +23,12 @@ export default {
     // Data to navigate through the flow
     cursor: {
         current: {
-            index: -1,                      // Index of the current block of the flow
+            index: 0,                      // Index of the current block of the flow
             playableMediaIndex : 0,         // Index of the current step of the block (browses the midi and video file names)
             innerStepIndex: 0               // Index of the current step of the block (browses the picture file names)
         },
         navigation: {
-            indexNext: 0,                   // Index of the next block of the flow
+            indexNext: 1,                   // Index of the next block of the flow
             indexLoopStart: -1,             // Index to which a loop start
             indexPlayableMediaPile: -1,     // Index to which there remains playable medias to depile
             totalInnerSteps: 0,             // Number of steps in a given block
