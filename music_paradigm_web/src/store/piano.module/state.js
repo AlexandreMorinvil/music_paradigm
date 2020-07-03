@@ -40,7 +40,8 @@ export default {
         // }
         evaluation: {
             type: "",
-            results: null
+            results: null,
+            grade: null
         }
     }
 };

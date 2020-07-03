@@ -1,4 +1,6 @@
-export default {    
+export default {
+    // TODO: Set a getter for the number of steps left to the experiment
+    
     // Experiment
     experimentName: (state) => {
         return state.description.name || "UNKNOWN_NAME";
