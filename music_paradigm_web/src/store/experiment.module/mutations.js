@@ -78,10 +78,10 @@ export default {
         };
     },
     updateState: (state) => {
-        updateState(state);
+        updateState(state.state, state.flow, state.cursor, state.isInitialized, state.description);
     },
     moveNextStep: (state) => {
-        moveCursorNext(state);
-        updateState(state);
+        moveCursorNext(state.flow, state.cursor, state.isInitialized);
+        updateState(state.state, state.flow, state.cursor, state.isInitialized, state.description);
     }
 }

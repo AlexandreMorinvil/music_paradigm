@@ -45,6 +45,7 @@ export default {
     },
     // Data used by the view pages
     state: {
+        type: "",
         // Multimedia elements
         mediaFile: {
             pictureName: "",                                // Name of the current picture to display
