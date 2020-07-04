@@ -27,5 +27,10 @@ export default {
     },
     playedNotesVelocity: () => {
         return state.played.notes.velocity;
+    },
+
+    // Getters for the evaluations
+    grades: () => {
+        return state.played.evaluation.grades;
     }
 }

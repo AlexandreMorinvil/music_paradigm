@@ -80,8 +80,6 @@ export default {
   },
   beforeMount() {},
   mounted() {
-    // TODO: take that out if not necessary
-    // this.feedbackStatus = "ww";
     this.resetPlayedNotesLogs();
   },
   beforeDestroy() {

@@ -102,26 +102,26 @@ const evaluateRhythmType = function (midiFileNotes, playedNotes) {
 }
 
 // TODO: Make the grade function gradeSpeedType
-const gradeSpeedType = function (evaluationResults) {
+const gradeSpeedType = function (evaluationResults, { minSequencePlayed }) {
     const grades = [
         {
-            criteria: "Speed",
-            isPassing: evaluationResults.speedW > 0
+            criteria: "Notes",
+            isPassing: evaluationResults.speedW >= minSequencePlayed
         }
     ];
     return grades;
 }
 
 // TODO: Make the grade function gradeRhythmType
-const gradeRhythmType = function (evaluationResults) {
+const gradeRhythmType = function (evaluationResults, { minNoteAccuracy, maxRhythmError}) {
     const grades = [
         {
             criteria: "Notes",
-            passingMark: evaluationResults.pitchAcc === 100
+            passingMark: evaluationResults.pitchAcc >= minNoteAccuracy
         },
         {
             criteria: "Rhythm",
-            isPassing: evaluationResults.rhythmDiff <= (config.maxRhythmError || 0.15),
+            isPassing: evaluationResults.rhythmDiff <= maxRhythmError,
         }
     ];
     return grades;

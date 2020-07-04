@@ -1,53 +1,48 @@
 <template>
   <div id="app">
-    <img
-      class="feedback-img-ww"
-      id="ww"
-      :src='apiUrl+"/static/feedback/"+status+".jpg"'
-      alt="Feedback"
-    />
-    <!-- <img class='feedback-img-ww' id='ww' v-if="status == 'ww'" src="@/assets/feedback/ww.jpg" alt="Feedback"/>
-    <img class='feedback-img' id='ws' v-else-if="status == 'ws'" src="@/assets/feedback/ws.jpg" alt="Feedback"/>
-    <img class='feedback-img' id='sw' v-else-if="status == 'sw'" src="@/assets/feedback/sw.jpg" alt="Feedback"/>
-    <img class='feedback-img' id='ss' v-else src="@/assets/feedback/ss.jpg" alt="Feedback"/>-->
-    <p>Press space bar to exit</p>
-    <!-- <p><router-link to="/">Logout</router-link></p> -->
+    <table>
+      <tr>
+        <th v-for="grade in grades" :key="grade.criteria">
+          <feedback-grade :grade="grade" />
+        </th>
+      </tr>
+    </table>
+
+    <!-- <p>Press space bar to exit</p> -->
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-import config from "@/config";
+import { mapState, mapGetters, mapActions } from "vuex";
+
+import FeedbackGrade from "@/components/FeedbackGrade";
 
 export default {
   name: "Feedback",
-  components: {},
+  components: {
+    feedbackGrade: FeedbackGrade
+  },
   data() {
-    return {
-      apiUrl: config.apiUrl,
-      status: "ss"
-    };
+    return {};
   },
   computed: {
     ...mapState(["starteds"]),
-    ...mapState("experiment", ["experiment"])
+    ...mapGetters("piano", ["grades"])
   },
   methods: {
     ...mapActions("experiment", ["goNextStep"])
   },
   mounted() {
-    this.status = this.experiment.feedbackStatus ? this.experiment.feedbackStatus : "ww";
+    console.log("Got there");
+    console.log("Ok");
   },
   watch: {
     starteds(array) {
-      // TODO: Break the loop if all good and if new parameter "continueOnSuccess" is true (true by default)
-
-      // const current = this.experiment.flow[this.experiment.nextFlowIndex];
       if (array.length > 0) {
         this.goNextStep();
       }
     }
-  },
+  }
 };
 </script>
 

@@ -1,5 +1,7 @@
+import config from "@/config";
 import { Midi } from '@tonejs/midi';
 import { notePerformance } from "@/_helpers";
+
 
 export default {
     setPlayer: (state, key) => {
@@ -33,10 +35,11 @@ export default {
         state.played.notes.duration = [];
         state.played.notes.time = [];
         state.played.notes.velocity = [];
-        
+
         // Resetting the evaluation
         state.played.evaluation.type = "";
         state.played.evaluation.results = null;
+        state.played.evaluation.grades = null;
     },
 
     // Mutations on the midi files data
@@ -77,11 +80,18 @@ export default {
     // Mutations for note performance evaluation
     // TODO: Ensure those functions work properly
     evaluateSpeedType: (state, { midiFileNotes, playedNotes }) => {
-        state.played.evaluation = notePerformance.evaluateSpeedType(midiFileNotes, playedNotes);
-        state.played.grade = notePerformance.notePerformance(state.played.evaluation);
+        state.played.evaluation.results = notePerformance.evaluateSpeedType(midiFileNotes, playedNotes);
+        state.played.evaluation.grades = notePerformance.gradeSpeedType(
+            state.played.evaluation, {
+            minSequencePlayed: config.minSequencePlayed || 1
+        });
     },
     evaluateRhythmType: (state, { midiFileNotes, playedNotes }) => {
-        state.played.evaluation = notePerformance.evaluateRhythmType(midiFileNotes, playedNotes);
-        state.played.grade = notePerformance.gradeRhythmType(state.played.evaluation);
+        state.played.evaluation.results = notePerformance.evaluateRhythmType(midiFileNotes, playedNotes);
+        state.played.evaluation.grades = notePerformance.gradeRhythmType(
+            state.played.evaluation, {
+            noteAccuracy: config.minNoteAccuracy || 100,
+            maxRhythmError: config.maxRhythmError || 0.15
+        });
     }
 }
