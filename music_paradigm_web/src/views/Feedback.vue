@@ -36,10 +36,6 @@ export default {
     ...mapActions("experiment", ["goNextStep"])
   },
   mounted() {
-    // TODO: See if this piece of logic concerning the feedback belongs to here
-    // this.feedbackStatus = pitchAcc === 100 ? "s" : "w";
-    // this.feedbackStatus += rhythmDiff <= config.maxRhythmError ? "s" : "w";
-
     this.status = this.experiment.feedbackStatus ? this.experiment.feedbackStatus : "ww";
   },
   watch: {

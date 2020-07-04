@@ -19,11 +19,7 @@ export default {
     ...mapGetters("experiment", ["pictureName", "midiName"])
   },
   methods: {
-    ...mapActions("piano", [
-      "resetMidiFileData",
-      "loadMidiFile",
-      "playMidiFile"
-    ]),
+    ...mapActions("piano", ["loadMidiFile", "playMidiFile"]),
     ...mapActions("experiment", ["goNextStep"])
   },
   beforeMount() {},

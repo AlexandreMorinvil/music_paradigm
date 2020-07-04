@@ -1,5 +1,5 @@
-import { Midi } from '@tonejs/midi'
-import performanceEvaluation from "@/_helpers/performanceEvaluation.js";
+import { Midi } from '@tonejs/midi';
+import { notePerformance } from "@/_helpers";
 
 export default {
     setPlayer: (state, key) => {
@@ -74,105 +74,14 @@ export default {
         state.player.play();
     },
 
-    // Mutations for performance evaluation
+    // Mutations for note performance evaluation
     // TODO: Ensure those functions work properly
     evaluateSpeedType: (state, { midiFileNotes, playedNotes }) => {
-        const speedW = performanceEvaluation.getSpeedW(
-            playedNotes.midi,
-            midiFileNotes.midi
-        );
-        const { durations, speedD } = performanceEvaluation.getSpeedD(
-            playedNotes.midi,
-            midiFileNotes.midi,
-            midiFileNotes.duration
-        );
-        const transitionSpeeds = performanceEvaluation.getTransitionSpeeds(
-            playedNotes.midi,
-            midiFileNotes.midi,
-            midiFileNotes.duration
-        );
-        // TODO: Put this in a dedicated function
-        let meanTransitionSpeeds = [];
-        if (transitionSpeeds.length != 0) {
-            transitionSpeeds.forEach(element => {
-                meanTransitionSpeeds.push(element.reduce((a, b) => a + b, 0));
-            });
-        }
-        const accuracyW = performanceEvaluation.getAccuracyW(
-            playedNotes.midi,
-            midiFileNotes.midi
-        );
-
-        state.played.evaluation = {
-            type: "speed",
-            results: {
-                speedW: speedW,                           // corrects
-                sequenceDurations: durations,             // array of ms // TODO: Take that out for a more accruate duration calculation based on the time of press and release of a key on the keyboard
-                speedD: speedD,                           // ms
-                accuracyW: accuracyW,                     // incorrects
-                transitionSpeeds: transitionSpeeds,       // array of array of ms
-                transitionSpeedMean: meanTransitionSpeeds // array of ms
-            }
-        }
+        state.played.evaluation = notePerformance.evaluateSpeedType(midiFileNotes, playedNotes);
+        state.played.grade = notePerformance.notePerformance(state.played.evaluation);
     },
     evaluateRhythmType: (state, { midiFileNotes, playedNotes }) => {
-        // TODO : Put those methods in the performanceEvaluation file or otherwise use a built in Javascript function for computing the Mean and standard deviation of an Array
-        const average = data => data.length > 0 ? data.reduce((sum, value) => sum + value) / data.length : 0;
-        const standardDeviation = values => Math.sqrt(average(values.map(value => (value - average(values)) ** 2)));
-
-        const pitchAcc = performanceEvaluation.getAccuracyB_2(
-            playedNotes.midi,
-            midiFileNotes.midi
-        );
-        const rhythmDiff = performanceEvaluation.getRhythmTempo(
-            playedNotes.duration,
-            midiFileNotes.duration
-        );
-
-        // TODO: See if there is a way to solve this function which Weiwei couldn't implement
-        // const rhythmDiff = performanceEvaluation.getRhythm(playedNotes.duration, midiFileNotes.duration);
-
-        const pitchErrorNum = performanceEvaluation.getAccuracyD_2(
-            playedNotes.midi,
-            midiFileNotes.midi
-        );
-
-        // TODO: Missed notes and Missed notes length could be returned by the same function
-        const missedNotes = performanceEvaluation.getMissedNotes(
-            playedNotes.midi,
-            midiFileNotes.midi
-        );
-        const missedNoteNum = missedNotes.length;
-        const IOIs = performanceEvaluation.getIOIs(
-            playedNotes.duration,
-            midiFileNotes.duration
-        );
-        // TODO: When I will have modified the way the durations are calculated, this will need to be modified
-        const sequenceDuration = missedNoteNum
-            ? 0
-            : playedNotes.duration[playedNotes.duration.length - 1] -
-            playedNotes.duration[0];
-        
-        // TODO: Give more explicit names to those elements
-        const meanIOI = average(IOIs);
-        const sdIOI = standardDeviation(IOIs);
-        const cvIOI = sdIOI / meanIOI;
-
-        state.played.evaluation = {
-            type: "rhythm",
-            results: {
-                pitchErrorNum: pitchErrorNum,           // errors
-                missedNotes: missedNotes,               // array of number
-                missedNoteNum: missedNoteNum,           // notes
-                IOIs: IOIs,                             // array of ms
-                IOImean: meanIOI,                       // ms
-                IOIsd: sdIOI,
-                IOIcv: cvIOI,
-                sequenceDuration: sequenceDuration,     // ms
-                above50sFlag: sequenceDuration > 50000,
-                pitchAcc: pitchAcc,                     // %
-                rhythmDiff: rhythmDiff                  // proportion
-            }
-        };
+        state.played.evaluation = notePerformance.evaluateRhythmType(midiFileNotes, playedNotes);
+        state.played.grade = notePerformance.gradeRhythmType(state.played.evaluation);
     }
 }
