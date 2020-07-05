@@ -1,8 +1,8 @@
 // search for sub array
-var findSubarray = (arr, subarr, from_index) => {
+var findSubarray = (subarr, arr, from_index) => {
     from_index = from_index || 0;
     let found = [];
-    
+
     if (arr.length < subarr.length) return [];
     const last_check_index = arr.length - subarr.length;
     const subarr_length = subarr.length;
@@ -14,7 +14,7 @@ var findSubarray = (arr, subarr, from_index) => {
                 continue position_loop;
             } else if (j === subarr_length - 1) {
                 found.push(i);
-                i = i + j; // starts from the last index
+                i = i + j - 1; // Starts at the last index (the for loop will increment thus cancel the -1)
                 continue position_loop;
             }
         }
@@ -27,11 +27,11 @@ var findSubarray = (arr, subarr, from_index) => {
 var compareArray = (arr1, arr2) => {
     if (arr1 == undefined || arr2 == undefined) {
         // console.error('undefined array');
-        return false;            
+        return false;
     }
     if (arr1.length === 0 || arr1.length !== arr2.length) {
         // console.error('different-length or empty array');
-        return false;            
+        return false;
     }
     return true;
 };
@@ -40,17 +40,17 @@ var compareArray = (arr1, arr2) => {
 var getDurationArray = (timeArr, refTimeArr) => {
     let durArr = [];
     let refDurArr = [];
-    if (compareArray(timeArr, refTimeArr)) {        
+    if (compareArray(timeArr, refTimeArr)) {
         const arrLength = timeArr.length;
 
         for (let i = 1; i < arrLength; i++) {
-            durArr.push(timeArr[i] - timeArr[i-1]);
-            refDurArr.push(refTimeArr[i] - refTimeArr[i-1]);
+            durArr.push(timeArr[i] - timeArr[i - 1]);
+            refDurArr.push(refTimeArr[i] - refTimeArr[i - 1]);
         }
     }
 
     // console.log(`getDurationArray: play: ${durArr}, ref: ${refDurArr}`);
-    return {durArr, refDurArr};
+    return { durArr, refDurArr };
 };
 
 // TODO: Put the research specific algorithms in a dedicated "algorithm.js"
@@ -60,78 +60,89 @@ var getDurationArray = (timeArr, refTimeArr) => {
 export default {
     // speed mode (task 1) performance measures
     // Walker: number of correctly typed sequence per block
-    getSpeedW: (noteArr, refNoteArr) => {
-        const idxArr = findSubarray(noteArr, refNoteArr);
-        // console.log(`getSpeedW ${idxArr.length}`);
+    // Old name : getSpeedW
+    getCorrectSequenceCount: (refNoteArr, noteArr) => {
+        const idxArr = findSubarray(refNoteArr, noteArr);
         return idxArr.length;
     },
     // Duke: mean sequence duration measured from the onset of the first note to the onset of the final tone in each sequence. 
-    getSpeedD: (noteArr, refNoteArr, timeArr) => {
-        const idxArr = findSubarray(noteArr, refNoteArr);
+    // Old name : getSpeedD
+    getSequenceDurations: (refNoteArr, noteArr, timeArr) => {
+        const idxArr = findSubarray(refNoteArr, noteArr);
         if (idxArr.length < 1) {
-            return {durations: [], speedD: 0};   
+            return { durations: [], speedD: 0 };
         }
         const noteLength = refNoteArr.length - 1;
         let duration = 0;
         let durations = [];
         idxArr.forEach(idx => {
-            const temp = timeArr[idx+noteLength] - timeArr[idx]; 
+            const temp = timeArr[idx + noteLength] - timeArr[idx];
             duration += temp;
             durations.push(temp);
         });
-        // console.log(`getSpeedD ${durations} ${duration}`);
-        return {durations: durations, speedD: duration/idxArr.length};
+        return { durations: durations, durationsAverage: duration / idxArr.length };
     },
+
+    // within-sequence measure assessed the time intervals between successive key presses within the sequence
+    // for correct sequences only
+    getTransitionSpeeds: (refNoteArr, noteArr, timeArr) => {
+        const idxArr = findSubarray(refNoteArr, noteArr);
+        const sequenceCount = idxArr.length;
+        if (sequenceCount <= 0) return { transitionSpeeds: [], transitionSpeedsAverage: [] };
+
+        let transitionSpeeds = [];
+        const noteLength = refNoteArr.length - 1;
+        for (let i = 0; i < noteLength; i++) {
+            let subDurations = [];
+            idxArr.forEach(idx => {
+                subDurations.push(timeArr[idx + i + 1] - timeArr[idx + i]);
+            });
+            transitionSpeeds.push(subDurations);
+        }
+
+        // Computing the average
+        let transitionSpeedsAverage = [];
+        if (transitionSpeeds.length != 0) {
+            transitionSpeeds.forEach(element => {
+                transitionSpeedsAverage.push(element.reduce((a, b) => a + b, 0) / sequenceCount);
+            });
+        }
+
+        // return [[a],[b],[c],[d]]
+        return { transitionSpeeds: transitionSpeeds, transitionSpeedsAverage: transitionSpeedsAverage };
+    },
+
     // the number of errors made relative to the number of correctly typed sequences per 30-sec trial
-    // incorrectly typed sequence/basically all sequences that are not equal to 25342
-    // for any length of signals? currently >=5-notes considered as a sequence
-    getAccuracyW: (noteArr, refNoteArr) => {
-        const idxArr = findSubarray(noteArr, refNoteArr);
+    // incorrectly typed sequence. Count the number of icorrect note sequences >= sequenceLength notes
+    // Old name : getAccuracyW
+    // FIXME: This concept could be improved maybe
+    getSequenceErrorCount: (refNoteArr, noteArr, sequenceLength) => {
+        const idxArr = findSubarray(refNoteArr, noteArr);
         if (idxArr.length < 1) {
             return -1; // exceptional case    
         }
-        const noteLength = refNoteArr.length;
+
+        sequenceLength = sequenceLength || refNoteArr.length;
+        const noteLength = Math.min(sequenceLength, refNoteArr.length);
         let incorrect = 0;
         let tempIncorrect = 0;
         if (idxArr[0] !== 0) {
             tempIncorrect = idxArr[0] / noteLength;
-            incorrect += tempIncorrect >= 1? Math.floor(tempIncorrect-1): Math.floor(tempIncorrect);
-            // console.log(`at 0 tempIncorrect=${tempIncorrect} incorrect=${incorrect}`);
+            incorrect += tempIncorrect >= 1 ? Math.floor(tempIncorrect - 1) : Math.floor(tempIncorrect);
         }
-        for(let idx = 1; idx < idxArr.length; idx++) {
-            tempIncorrect = (idxArr[idx] - idxArr[idx-1]) / noteLength;
-            incorrect += tempIncorrect >= 1? Math.floor(tempIncorrect-1): Math.floor(tempIncorrect);
-            // console.log(`at ${idx} tempIncorrect=${tempIncorrect} incorrect=${incorrect}`);
+        for (let idx = 1; idx < idxArr.length; idx++) {
+            tempIncorrect = (idxArr[idx] - idxArr[idx - 1]) / noteLength;
+            incorrect += tempIncorrect >= 1 ? Math.floor(tempIncorrect - 1) : Math.floor(tempIncorrect);
         }
         tempIncorrect = (noteArr.length - idxArr[idxArr.length - 1]) / noteLength;
-        incorrect += tempIncorrect >= 1? Math.floor(tempIncorrect-1): Math.floor(tempIncorrect);
-        // console.log(`at last tempIncorrect=${tempIncorrect} incorrect=${incorrect}`);
+        incorrect += tempIncorrect >= 1 ? Math.floor(tempIncorrect - 1) : Math.floor(tempIncorrect);
 
-        // console.log(`getAccuracyW ${incorrect}`);
         return incorrect;
     },
     // mean number of errors per sequence
     // for 5-notes sequence only? if not, compare front part only?
     getAccuracyD: () => {
         return 0;
-    },
-    // within-sequence measure assessed the time intervals between successive key presses within the sequence
-    // for correct sequences only
-    getTransitionSpeeds: (noteArr, refNoteArr, timeArr) => {
-        const idxArr = findSubarray(noteArr, refNoteArr);
-        let durations = [];
-        if (idxArr.length > 0) {
-            const noteLength = refNoteArr.length - 1;
-            for (let i = 0; i < noteLength; i++) {
-                let subDurations = [];
-                idxArr.forEach(idx => {
-                    subDurations.push(timeArr[idx+i+1] - timeArr[idx+i]);
-                });
-                durations.push(subDurations);
-            }
-        }
-        // console.log(`getTransitionSpeeds ${durations}`);
-        return durations; // return [[a],[b],[c],[d]]
     },
 
     // melody mode (task 2) performance measures
@@ -167,20 +178,20 @@ export default {
     // averaeg IOI duration difference over their reference IOI duration
     // (diff_a/a + diff_b/b+.......) / 2 - rhythm + tempo
     getRhythmTempo: (timeArray, refTimeArray) => {
-        const {durArr, refDurArr} = getDurationArray(timeArray, refTimeArray);
+        const { durArr, refDurArr } = getDurationArray(timeArray, refTimeArray);
 
         let arrDiff = 0;
         for (let i = 0; i < durArr.length; i++) {
             arrDiff += Math.abs(durArr[i] - refDurArr[i]) / refDurArr[i];
         }
-	// Count missing notes 
-	//arrDiff += refDurArr.length - durArr.length;
-	
+        // Count missing notes 
+        //arrDiff += refDurArr.length - durArr.length;
+
         return arrDiff / durArr.length;
     },
     // get rhythm, excluding tempo (not working yet)
     getRhythm: (timeArray, refTimeArray) => {
-        const {durArr, refDurArr} = getDurationArray(timeArray, refTimeArray);
+        const { durArr, refDurArr } = getDurationArray(timeArray, refTimeArray);
 
         let arrRatio = 0;
         let refArrRatio = 0;
@@ -195,10 +206,10 @@ export default {
     getMissedNotes: (noteArr, refNoteArr) => {
         let missedNotes = [];
         if (noteArr == undefined || noteArr == []) {
-            missedNotes = refNoteArr;            
+            missedNotes = refNoteArr;
         }
         if (noteArr.length < refNoteArr.length) {
-            missedNotes = refNoteArr.slice(noteArr.length, refNoteArr.length);      
+            missedNotes = refNoteArr.slice(noteArr.length, refNoteArr.length);
         }
         return missedNotes;
     },
@@ -207,7 +218,7 @@ export default {
         if (timeArr.length > 0) {
             const noteLength = refTimeArr.length - 1; // TODO: When the duration will have been fixed, we will be able to get the actual value for all notes (without needing to do a -1 to substract the last note)
             for (let i = 0; i < noteLength; i++) {
-                durations.push(timeArr[i+1] - timeArr[i]);
+                durations.push(timeArr[i + 1] - timeArr[i]);
             }
         }
         // console.log(`getIOIs ${durations}`);

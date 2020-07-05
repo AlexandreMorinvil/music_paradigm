@@ -13,6 +13,7 @@ export default {
     },
 
     // Getters for the played notes
+    // TODO: Erase the ones that are not useful, once you will have cleaned up the Playing.vue from the logging elements
     playedNotes: (state) => {
         return state.played.notes;
     },

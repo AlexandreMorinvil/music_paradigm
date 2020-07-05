@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     isSuccess() {
-      return this.grade.isPassing;
+      return this.grade.mark >= this.grade.passMark;
     }
   }
 };

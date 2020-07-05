@@ -1,41 +1,38 @@
 import noteAlgorithm from "./noteAlgorithm";
 
 const evaluateSpeedType = function (midiFileNotes, playedNotes) {
-    const speedW = noteAlgorithm.getSpeedW(
-        playedNotes.midi,
-        midiFileNotes.midi
-    );
-    const { durations, speedD } = noteAlgorithm.getSpeedD(
-        playedNotes.midi,
+    const sequenceCount = noteAlgorithm.getCorrectSequenceCount(
         midiFileNotes.midi,
+        playedNotes.midi
+    );
+    
+    const { durations, durationsAverage } = noteAlgorithm.getSequenceDurations(
+        midiFileNotes.midi,
+        playedNotes.midi,
         playedNotes.duration
     );
-    const transitionSpeeds = noteAlgorithm.getTransitionSpeeds(
-        playedNotes.midi,
+
+    const { transitionSpeeds, transitionSpeedsAverage } = noteAlgorithm.getTransitionSpeeds(
         midiFileNotes.midi,
+        playedNotes.midi,
         playedNotes.duration
     );
-    // TODO: Put this in a dedicated function
-    let meanTransitionSpeeds = [];
-    if (transitionSpeeds.length != 0) {
-        transitionSpeeds.forEach(element => {
-            meanTransitionSpeeds.push(element.reduce((a, b) => a + b, 0));
-        });
-    }
-    const accuracyW = noteAlgorithm.getAccuracyW(
+
+    const sequenceErrorCount = noteAlgorithm.getSequenceErrorCount(
+        midiFileNotes.midi,
         playedNotes.midi,
-        midiFileNotes.midi
+        5
     );
 
     return {
         type: "speed",
         results: {
-            speedW: speedW,                           // corrects
-            sequenceDurations: durations,             // array of ms // TODO: Take that out for a more accruate duration calculation based on the time of press and release of a key on the keyboard
-            speedD: speedD,                           // ms
-            accuracyW: accuracyW,                     // incorrects
-            transitionSpeeds: transitionSpeeds,       // array of array of ms
-            transitionSpeedMean: meanTransitionSpeeds // array of ms
+            sequenceCount: sequenceCount,                   // Walker: Number of correctly typed sequence per block
+            sequenceDurations: durations,                   // Duke: Sequence duration measured from the onset of the first note to the onset of the final tone in each sequence. (Array of ms)
+            sequenceDurationsAverage: durationsAverage,     // Average of the sequence durations (in ms)
+            transitionSpeeds: transitionSpeeds,             // Array of array of ms
+            transitionSpeedMean: transitionSpeedsAverage,   // Array of ms
+            sequenceErrorCount: sequenceErrorCount,         // Number of icorrect note sequences >= 5 notes
         }
     }
 }
@@ -105,9 +102,9 @@ const evaluateRhythmType = function (midiFileNotes, playedNotes) {
 const gradeSpeedType = function (evaluationResults, { minSequencePlayed }) {
     const grades = [
         {
-            criteria: "Sequence",
-            isPassing: evaluationResults.speedW >= minSequencePlayed,
-            mark: evaluationResults.speedW,
+            criteria: "Sequence Played",
+            isPassing: evaluationResults.sequenceCount >= minSequencePlayed,
+            mark: evaluationResults.sequenceCount,
             passMark: 1,
             topMark: Math.ceil((minSequencePlayed + 5)/10)*10
         }

@@ -59,6 +59,15 @@ export default {
     parseMidiNotes: (state, midiFile) => {
         const jsonMidi = new Midi(midiFile);
         const notes = jsonMidi.tracks[0].notes;
+        
+        state.midiFile.notes.midi = [];
+        state.midiFile.notes.time = [];
+        state.midiFile.notes.ticks = [];
+        state.midiFile.notes.name = [];
+        state.midiFile.notes.pitch = [];
+        state.midiFile.notes.octave = [];
+        state.midiFile.notes.velocity = [];
+        state.midiFile.notes.duration = [];
         for (let i in notes) {
             state.midiFile.notes.midi.push(notes[i].midi);
             state.midiFile.notes.time.push(notes[i].time);
@@ -90,6 +99,7 @@ export default {
         // Evaluate the performance according to get specific metrics
         Object.assign(state.played.evaluation,
             notePerformance.evaluateSpeedType(state.midiFile.notes, state.played.notes));
+
         // Grade the performance according to obtained metrics to provide feedback
         state.played.evaluation.grades = notePerformance.gradeSpeedType(
             state.played.evaluation.results, {
@@ -100,6 +110,7 @@ export default {
         // Evaluate the performance according to get specific metrics
         Object.assign(state.played.evaluation,
             notePerformance.evaluateRhythmType(state.midiFile.notes, state.played.notes));
+
         // Grade the performance according to obtained metrics to provide feedback
         state.played.evaluation.grades = notePerformance.gradeRhythmType(
             state.played.evaluation.results, {

@@ -41,7 +41,7 @@ export default {
         evaluation: {
             type: "",
             results: null,  // { metric: Type, ... }
-            grades: null     // [ { criteria: String, isPassing: Boolean } ]
+            grades: null     // [ { criteria: String, isPassing: Boolean, mark: Number, passMark: Number, topMark: Number} ]
         }
     }
 };
