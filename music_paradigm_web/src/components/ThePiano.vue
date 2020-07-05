@@ -90,7 +90,7 @@ export default {
               }
             }); // GainNode
             this.addPlayedNotes(mm.key);
-            this.addPlayedDurations(new Date().getTime());
+            this.addPlayedDurations(new Date().getTime()); // TODO: The time to record here should be relative to the start of the experiment
             this.addPlayedVelocities(mm.velocity);
             this.previousKey = mm.key;
           } else if (mm.key === 1 || this.anyPianoKey) {

@@ -19,6 +19,13 @@ export default {
     // Mutations on the data from the notes played
     addPlayedNotes: (state, key) => {
         state.played.notes.midi.push(key);
+        // TODO: Add the additional information below
+        // octave = int(notenum / 12) - 1;
+        // note = substring("C C#D D#E F F#G G#A A#B ", (notenum % 12) * 2, 2);
+
+        // Time/Offset also
+        // Time in ticks?
+
     },
     addPlayedDurations: (state, key) => {
         state.played.notes.duration.push(key);
@@ -81,7 +88,7 @@ export default {
     // TODO: Ensure those functions work properly
     evaluateSpeedType: (state) => {
         // Evaluate the performance according to get specific metrics
-        Object.assign(state.played.evaluation, 
+        Object.assign(state.played.evaluation,
             notePerformance.evaluateSpeedType(state.midiFile.notes, state.played.notes));
         // Grade the performance according to obtained metrics to provide feedback
         state.played.evaluation.grades = notePerformance.gradeSpeedType(
@@ -91,7 +98,7 @@ export default {
     },
     evaluateRhythmType: (state) => {
         // Evaluate the performance according to get specific metrics
-        Object.assign(state.played.evaluation, 
+        Object.assign(state.played.evaluation,
             notePerformance.evaluateRhythmType(state.midiFile.notes, state.played.notes));
         // Grade the performance according to obtained metrics to provide feedback
         state.played.evaluation.grades = notePerformance.gradeRhythmType(

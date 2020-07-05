@@ -1,13 +1,18 @@
 <template>
-  <div>
-    <p style="font-size:20px;">{{ passingFace }}</p>
-    <!-- <span style="font-size:15px;">{{ grade.criteria }}</span> -->
+  <div class="feedbackGrade">
+    <h1>{{ grade.criteria }}</h1>
+    <svg class="emoji smile" v-if="isSuccess">
+      <use xlink:href="sprites.svg#emoji-smile" />
+    </svg>
+    <svg class="emoji frown" v-else>
+      <use xlink:href="sprites.svg#emoji-frown" />
+    </svg>
   </div>
 </template>
 
 <script>
 export default {
-  name: "VideoPlayer",
+  name: "feedbackGrade",
   props: {
     grade: {
       type: Object,
@@ -19,23 +24,33 @@ export default {
       }
     }
   },
-  data() {
-    return {};
-  },
   computed: {
-    passingFace() {
-      // "&#128522;" : Unicode for a Happy face
-      // "&#128543;" : Unicode for a Sad face
-      return this.isPassing ? "&#128522;" : "&#128543;";
+    isSuccess() {
+      return this.grade.isPassing;
     }
-  },
-  mounted() {},
-  methods: {}
+  }
 };
 </script>
 
 <style scoped>
-body {
-  font-size: 20px;
+.feedbackGrade {
+  font-size: 10em;
+  color: white;
+}
+.emoji {
+  display: inline-block;
+  stroke-width: 0;
+  width: 13em;
+  height: 13em;
+}
+
+.smile {
+  stroke: rgb(0, 200, 0);
+  fill: rgb(0, 200, 0);
+}
+
+.frown {
+  stroke: rgb(200, 0, 0);
+  fill: rgb(200, 0, 0);
 }
 </style>

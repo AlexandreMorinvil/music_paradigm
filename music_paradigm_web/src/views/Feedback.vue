@@ -1,12 +1,10 @@
 <template>
-  <div id="app">
-    <table>
-      <tr>
-        <th v-for="grade in grades" :key="grade.criteria">
-          <feedback-grade :grade="grade" />
-        </th>
-      </tr>
-    </table>
+  <div class="feedback" id="feedback">
+    <ul class="feedbackGradeBoard">
+      <li class="feedbackElement" v-for="grade in grades" :key="grade.criteria">
+        <feedback-grade class="feedbackGrade" :grade="grade" />
+      </li>
+    </ul>
 
     <!-- <p>Press space bar to exit</p> -->
   </div>
@@ -47,17 +45,23 @@ export default {
 </script>
 
 <style scoped>
-div {
+.feedbackGradeBoard {
   display: block;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  list-style-type: none;
   text-align: center;
+  margin-top: 10%; 
+
 }
 
-img {
-  max-height: 100%;
-  width: auto;
+.feedbackElement {
+  display: inline-block;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.feedbackGrade {
+  margin: auto;
 }
 </style>
