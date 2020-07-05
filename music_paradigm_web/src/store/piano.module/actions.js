@@ -52,14 +52,10 @@ export default {
     },
 
     // Performance evaluation
-    evaluateRhythmType: ({ commit, getters }) => {
-        const midiFileNotes = getters.midiFileNotes;
-        const playedNotes = getters.playedNotes;
-        commit('evaluateRhythmType', { midiFileNotes, playedNotes });
+    evaluateRhythmType: ({ commit }) => {
+        commit('evaluateRhythmType');
     },
-    evaluateSpeedType: ({ commit, getters }) => {
-        const midiFileNotes = getters.midiFileNotes;
-        const playedNotes = getters.playedNotes;
-        commit('evaluateSpeedType', { midiFileNotes, playedNotes });
+    evaluateSpeedType: ({ commit }) => {
+        commit('evaluateSpeedType');
     }
 }

@@ -79,18 +79,24 @@ export default {
 
     // Mutations for note performance evaluation
     // TODO: Ensure those functions work properly
-    evaluateSpeedType: (state, { midiFileNotes, playedNotes }) => {
-        state.played.evaluation.results = notePerformance.evaluateSpeedType(midiFileNotes, playedNotes);
+    evaluateSpeedType: (state) => {
+        // Evaluate the performance according to get specific metrics
+        Object.assign(state.played.evaluation, 
+            notePerformance.evaluateSpeedType(state.midiFile.notes, state.played.notes));
+        // Grade the performance according to obtained metrics to provide feedback
         state.played.evaluation.grades = notePerformance.gradeSpeedType(
-            state.played.evaluation, {
+            state.played.evaluation.results, {
             minSequencePlayed: config.minSequencePlayed || 1
         });
     },
-    evaluateRhythmType: (state, { midiFileNotes, playedNotes }) => {
-        state.played.evaluation.results = notePerformance.evaluateRhythmType(midiFileNotes, playedNotes);
+    evaluateRhythmType: (state) => {
+        // Evaluate the performance according to get specific metrics
+        Object.assign(state.played.evaluation, 
+            notePerformance.evaluateRhythmType(state.midiFile.notes, state.played.notes));
+        // Grade the performance according to obtained metrics to provide feedback
         state.played.evaluation.grades = notePerformance.gradeRhythmType(
-            state.played.evaluation, {
-            noteAccuracy: config.minNoteAccuracy || 100,
+            state.played.evaluation.results, {
+            minNoteAccuracy: config.minNoteAccuracy || 100,
             maxRhythmError: config.maxRhythmError || 0.15
         });
     }
