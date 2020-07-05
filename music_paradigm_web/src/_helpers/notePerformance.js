@@ -5,7 +5,7 @@ const evaluateSpeedType = function (midiFileNotes, playedNotes) {
         midiFileNotes.midi,
         playedNotes.midi
     );
-    
+
     const { durations, durationsAverage } = noteAlgorithm.getSequenceDurations(
         midiFileNotes.midi,
         playedNotes.midi,
@@ -42,7 +42,7 @@ const evaluateRhythmType = function (midiFileNotes, playedNotes) {
     const average = data => data.length > 0 ? data.reduce((sum, value) => sum + value) / data.length : 0;
     const standardDeviation = values => Math.sqrt(average(values.map(value => (value - average(values)) ** 2)));
 
-    const pitchAcc = noteAlgorithm.getAccuracyB_2(
+    const pitchAccuracy = noteAlgorithm.getPitchAccuracy(
         playedNotes.midi,
         midiFileNotes.midi
     );
@@ -83,6 +83,8 @@ const evaluateRhythmType = function (midiFileNotes, playedNotes) {
     return {
         type: "rhythm",
         results: {
+            pitchAccuracy: pitchAccuracy,                     // %
+
             pitchErrorNum: pitchErrorNum,           // errors
             missedNotes: missedNotes,               // array of number
             missedNoteNum: missedNoteNum,           // notes
@@ -92,7 +94,6 @@ const evaluateRhythmType = function (midiFileNotes, playedNotes) {
             IOIcv: cvIOI,
             sequenceDuration: sequenceDuration,     // ms
             above50sFlag: sequenceDuration > 50000,
-            pitchAcc: pitchAcc,                     // %
             rhythmDiff: rhythmDiff                  // proportion
         }
     };

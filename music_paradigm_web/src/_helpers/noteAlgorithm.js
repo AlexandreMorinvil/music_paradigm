@@ -19,17 +19,41 @@ var findSubarray = (subarr, arr, from_index) => {
             }
         }
     }
-    // console.log(`found ${found}`);
+
     return found; // return list of indices
 };
 
+// search for sub array
+var findSubarraySegment = (subarr, arr, from_index) => {
+    from_index = from_index || 0;
+
+    let maxLength = 0;
+    let startIndex = 0;
+    let endIndex = 0;
+
+    position_loop:
+    for (let i = from_index; i <= arr.length - maxLength; i++) {
+        for (let j = 0; j < subarr.length; j++) {
+            if (arr[i + j] !== subarr[j]) {
+                continue position_loop;
+            } else if (j + 1 > maxLength) {
+                maxLength = j + 1
+                startIndex = i;
+                endIndex = i + j;
+            }
+        }
+    }
+
+    return { startIndex: startIndex, endIndex: endIndex, length: maxLength };
+};
+
 // make sure arrays are defined and of same length
-var compareArray = (arr1, arr2) => {
+var arraysValid = (arr1, arr2) => {
     if (arr1 == undefined || arr2 == undefined) {
         // console.error('undefined array');
         return false;
     }
-    if (arr1.length === 0 || arr1.length !== arr2.length) {
+    if (arr1.length === 0 || arr2.length === 0) {
         // console.error('different-length or empty array');
         return false;
     }
@@ -40,7 +64,7 @@ var compareArray = (arr1, arr2) => {
 var getDurationArray = (timeArr, refTimeArr) => {
     let durArr = [];
     let refDurArr = [];
-    if (compareArray(timeArr, refTimeArr)) {
+    if (arraysValid(timeArr, refTimeArr)) {
         const arrLength = timeArr.length;
 
         for (let i = 1; i < arrLength; i++) {
@@ -139,30 +163,18 @@ export default {
 
         return incorrect;
     },
-    // mean number of errors per sequence
-    // for 5-notes sequence only? if not, compare front part only?
-    getAccuracyD: () => {
-        return 0;
-    },
 
     // melody mode (task 2) performance measures
     // Brown and Penhune: percentage of pitches performed in the correct order
-    getAccuracyB_2: (noteArr, refNoteArr) => {
-        if (!compareArray(noteArr, refNoteArr)) {
-            return -1; // exceptional case
-        }
-        let arrSame = 0;
-        let arrLength = noteArr.length;
-        for (let i = 0; i < arrLength; i++) {
-            if (noteArr[i] == refNoteArr[i]) {
-                arrSame++;
-            }
-        }
-        return arrSame / arrLength * 100;
+    // Old name : getAccuracyB_2
+    getPitchAccuracy: (noteArr, refNoteArr) => {
+        if (!arraysValid(noteArr, refNoteArr)) return -1;
+        const { length } = findSubarraySegment(refNoteArr, noteArr);
+        return length / noteArr.length * 100;
     },
     // (Duke: mean) number of pitch errors per sequence
     getAccuracyD_2: (noteArr, refNoteArr) => {
-        if (!compareArray(noteArr, refNoteArr)) {
+        if (!arraysValid(noteArr, refNoteArr)) {
             return -1; // exceptional case
         }
         const arrLength = noteArr.length;
