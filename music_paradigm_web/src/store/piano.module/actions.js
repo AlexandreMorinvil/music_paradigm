@@ -21,18 +21,6 @@ export default {
         commit('addReleasedNoteLog', key);
     },
 
-    addPlayedNotes: ({ commit }, key) => {
-        commit('addPlayedNotes', key);
-    },
-    addPlayedDurations: ({ commit }, key) => {
-        commit('addPlayedDurations', key);
-    },
-    addPlayedOffsets: ({ commit }, key) => {
-        commit('addPlayedOffsets', key);
-    },
-    addPlayedVelocities: ({ commit }, key) => {
-        commit('addPlayedVelocities', key);
-    },
     resetPlayedNotesLogs: ({ commit }) => {
         commit('resetPlayedNotesLogs');
     },

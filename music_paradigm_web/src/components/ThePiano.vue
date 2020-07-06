@@ -4,9 +4,9 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
-import MidiPlayer from "@/MidiPlayer/index.js";
+import MidiPlayer from "@/MidiPlayer";
 import map from "@/_helpers/keyboardMapping";
-import "@/config";
+
 export default {
   name: "ThePiano",
   data() {

@@ -1,7 +1,7 @@
 import config from "@/config";
 import { Midi } from '@tonejs/midi';
 import { notePerformance } from "@/_helpers";
-import { clearPlayedNotes } from './functions'
+import { clearMidiNotes } from './functions'
 
 
 export default {
@@ -22,37 +22,16 @@ export default {
         state.played.notes.volume.push(key.volume);
         state.played.notes.midi.push(key.note);
         state.played.notes.time.push(key.time - state.played.startTime);
+        state.played.notes.pitch.push("C C#D D#E F F#G G#A A#B ".substring((key.note % 12) * 2, 2).replace(/\s+/g, ''));
+        state.played.notes.octave.push(((key.note / 12) | 0) - 1);
         state.played.notes.velocity.push(key.velocity);
-
-        // TODO: Add the additional information below
-        // octave = int(notenum / 12) - 1;
-        // note = substring("C C#D D#E F F#G G#A A#B ", (notenum % 12) * 2, 2);
+        state.played.notes.name.push(state.played.notes.pitch.concat(state.played.notes.octave));
     },
 
     addReleasedNoteLog: (state, key) => {
         state.played.notes.duration.push(key.time - state.played.startTime);
     },
 
-
-    addPlayedNotes: (state, key) => {
-        state.played.notes.midi.push(key);
-        // TODO: Add the additional information below
-        // octave = int(notenum / 12) - 1;
-        // note = substring("C C#D D#E F F#G G#A A#B ", (notenum % 12) * 2, 2);
-
-        // Time/Offset also
-        // Time in ticks?
-
-    },
-    addPlayedDurations: (state, key) => {
-        state.played.notes.duration.push(key);
-    },
-    addPlayedOffsets: (state, key) => {
-        state.played.notes.time.push(key);
-    },
-    addPlayedVelocities: (state, key) => {
-        state.played.notes.velocity.push(key);
-    },
     resetPlayedNotesLogs: (state) => {
         // Record start time
         state.played.startTime = 0;
@@ -79,8 +58,8 @@ export default {
     parseMidiNotes: (state, midiFile) => {
         const jsonMidi = new Midi(midiFile);
         const notes = jsonMidi.tracks[0].notes;
-        clearPlayedNotes(state);
-        
+        clearMidiNotes(state);
+
         for (let i in notes) {
             state.midiFile.notes.midi.push(notes[i].midi);
             state.midiFile.notes.time.push(notes[i].time);
@@ -93,7 +72,7 @@ export default {
         }
     },
     eraseMidiNotes: (state) => {
-        clearPlayedNotes(state);
+        clearMidiNotes(state);
     },
     playMidiFile: (state) => {
         state.player.play();
