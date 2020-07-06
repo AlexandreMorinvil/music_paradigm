@@ -107,7 +107,7 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
     currentState.settings = {
         anyPianoKey: (typeof anyPianoKey !== 'undefined') ? Boolean(anyPianoKey) : generalSettings.anyPianoKey,
         enableSoundFlag : (typeof enableSoundFlag !== 'undefined') ? Boolean(enableSoundFlag) : generalSettings.enableSoundFlag,
-        playingMode: (typeof playingMode !== 'undefined') ? playingMode : generalSettings.playingMode,
+        playingMode: (typeof playingMode === 'string') ? playingMode : generalSettings.playingMode,
         progressBarFlag: (typeof progressBarFlag !== 'undefined') ? Boolean(progressBarFlag) : true,
         timeoutInSeconds: (typeof timeoutInSeconds === 'number') ? timeoutInSeconds : 0
     };

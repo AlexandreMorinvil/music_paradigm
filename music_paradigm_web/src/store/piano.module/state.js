@@ -22,6 +22,7 @@ export default {
 
     // Data from the notes played by the user
     played: {
+        startTime: 0,
         notes: {
             volume: [],     // Indicator of if the pressed note generated an output
             midi: [],       // Midi number, e.g. 60 

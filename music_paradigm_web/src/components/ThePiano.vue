@@ -14,7 +14,7 @@ export default {
       audioConctext: null,
       piano: null,
       pianoInited: false,
-      localStarteds: {},
+      playingNotes: {},
       currentOctave: 0,
       // The flags keeps track of keydown and keyup events for each key so that
       // the keydown event doesn't send messages repeatedly until keyup.
@@ -35,16 +35,16 @@ export default {
       "addStarted",
       "deleteStarted",
       "setPlayer",
-      "addPressedNote",
-      "addReleasedNote"
+      "addPressedNoteLog",
+      "addReleasedNoteLog"
     ]),
 
     /**
      * Handle the midi messages
      * @param {Object} midiNote
-     * @param {String} midiNote.data[0]         144 for "Note On" or 128 for "Note Off"
-     * @param {Number} midiMessage.note[1]      Value between 0-127
-     * @param {Number} midiMessage.velocity[2]  Value between 0-127
+     * @param {String} midiNote.data[0] 144 for "Note On" or 128 for "Note Off"
+     * @param {Number} midiNote.data[1] Value between 0-127
+     * @param {Number} midiNote.data[2] Value between 0-127
      */
     manageMidiNote(midiNote) {
       const midiMessage = {
@@ -53,51 +53,60 @@ export default {
         velocity: midiNote.data[2]
       };
       // HACK: Put the space bar out of the piano
-      if(midiMessage.note === 1) {
+      if (midiMessage.note === 1) {
         this.addStarted(midiMessage.note);
+        // this.deleteStarted(midiMessage.note);
         return;
-        //this.deleteStarted(midiMessage.note);
-      };
+      }
       switch (midiMessage.type) {
         case "Note On":
+          // We turn off all the other notes previous notes (Only one active note at the time)
+          for (let otherNotes in this.playingNotes) {
+            if (otherNotes !== midiMessage.note) {
+              this.stopNote(otherNotes);
+              this.recordKeyReleased(otherNotes);
+              this.deleteStarted(otherNotes);
+            }
+          }
+          // We activate the specified note
           if (this.enableSoundFlag) this.playNote(midiMessage.note);
           this.recordKeyPress(midiMessage);
           this.addStarted(midiMessage.note);
-          console.log("Note on");
           break;
         case "Note Off":
-          this.stopNote(midiMessage.note);
-          this.recordKeyReleased(midiMessage);
-          this.deleteStarted(midiMessage.note);
+          // If the note was still active, we deactivate it
+          if (this.playingNotes[midiMessage.note]) {
+            this.stopNote(midiMessage.note);
+            this.recordKeyReleased(midiMessage.note);
+            this.deleteStarted(midiMessage.note);
+          }
           break;
         default:
           break;
       }
     },
     playNote(note) {
-      this.localStarteds[note] = this.piano.play(note, 0, {
+      this.playingNotes[note] = this.piano.play(note, 0, {
         gain: vel => {
           return vel / 127;
         }
       }); // GainNode
     },
     stopNote(note) {
-      if (this.localStarteds[note]) {
-        this.localStarteds[note].stop();
-        delete this.localStarteds[note];
-      }
+      this.playingNotes[note].stop();
+      delete this.playingNotes[note];
     },
     recordKeyPress(midiMessage) {
-      this.addPressedNote({
+      this.addPressedNoteLog({
         volume: this.enableSoundFlag, //TODO: Integrate the volume concept
         note: midiMessage.note,
         time: new Date().getTime(),
         velocity: midiMessage.velocity
       });
     },
-    recordKeyReleased(midiMessage) {
-      this.addReleasedNote({
-        note: midiMessage.note,
+    recordKeyReleased(note) {
+      this.addReleasedNoteLog({
+        note: note,
         time: new Date().getTime()
       });
     },
@@ -114,7 +123,6 @@ export default {
 
         // MIDI input (piano) events
         window.navigator.requestMIDIAccess().then(midiAccess => {
-          // console.log(midiAccess.inputs.values())
           midiAccess.inputs.forEach(midiInput => {
             midiInput.onmidimessage = this.manageMidiNote;
           });

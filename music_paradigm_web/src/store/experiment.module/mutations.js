@@ -33,8 +33,8 @@ export default {
         state.settings = {
             anyPianoKey: (typeof experiment.anyPianoKey !== 'undefined') ? Boolean(experiment.anyPianoKey) : constants.DEFAULT_ANY_PIANO_KEY,
             enableSoundFlag: (typeof experiment.enableSoundFlag !== 'undefined') ? Boolean(experiment.enableSoundFlag) : constants.DEFAULT_ENABLE_SOUND_FLAG,
-            playingMode: (typeof experiment.mode !== 'string') ? experiment.mode : constants.DEFAULT_MODE,
-            timbreFile: (typeof experiment.timbreFile !== 'string') ? experiment.timbreFile : constants.DEFAULT_TIMBRE_FILE
+            playingMode: (typeof experiment.mode === 'string') ? experiment.mode : constants.DEFAULT_MODE,
+            timbreFile: (typeof experiment.timbreFile === 'string') ? experiment.timbreFile : constants.DEFAULT_TIMBRE_FILE
         };
 
         // Toggle the boolean value indicating that an experiment is mounted
