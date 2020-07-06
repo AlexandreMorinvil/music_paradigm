@@ -16,9 +16,7 @@ export default {
       pianoInited: false,
       playingNotes: {},
       currentOctave: 0,
-      // The flags keeps track of keydown and keyup events for each key so that
-      // the keydown event doesn't send messages repeatedly until keyup.
-      flags: {}
+      keyboardTracker: {} // Keeps track of keydown and keyup events for each key
     };
   },
   computed: {
@@ -142,8 +140,8 @@ export default {
       // PianokeyDown => 'Note On'
       // If the key doesn't exist in the midi map, or we're trying to send a
       // noteOn event without having most recently sent a noteOff, end here.
-      if (note === undefined || this.flags[note]) return;
-      this.flags[note] = true;
+      if (note === undefined || this.keyboardTracker[note]) return;
+      this.keyboardTracker[note] = true;
       this.manageMidiNote({ data: [144, note, 127] });
     },
     handleKeyRelease(key) {
@@ -168,7 +166,7 @@ export default {
         default: {
           const note = this.toNote(key);
           if (note !== undefined) {
-            this.flags[note] = false;
+            this.keyboardTracker[note] = false;
             this.manageMidiNote({ data: [128, note, 127] }); // FIXME: change the pressure sensitivity here
           }
         }

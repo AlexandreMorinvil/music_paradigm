@@ -46,7 +46,6 @@ export default {
 
 <style scoped>
 .feedbackGradeBoard {
-  background-color: blue;
   display: block;
   list-style-type: none;
   text-align: center;
