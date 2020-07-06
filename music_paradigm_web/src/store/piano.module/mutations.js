@@ -17,6 +17,22 @@ export default {
     },
 
     // Mutations on the data from the notes played
+    addPressedNote: (state, key) => {
+        state.played.notes.volume.push(key.volume);
+        state.played.notes.midi.push(key.note);
+        state.played.notes.velocity.push(key.velocity);
+        state.played.notes.time.push(key.time - state.played.notes.time[0] || key.time);
+
+        // TODO: Add the additional information below
+        // octave = int(notenum / 12) - 1;
+        // note = substring("C C#D D#E F F#G G#A A#B ", (notenum % 12) * 2, 2);
+    },
+
+    addReleasedNote: (state, key) => {
+        state.played.notes.duration.push(key.time - state.played.notes.time[0]);
+    },
+
+
     addPlayedNotes: (state, key) => {
         state.played.notes.midi.push(key);
         // TODO: Add the additional information below
@@ -59,7 +75,7 @@ export default {
     parseMidiNotes: (state, midiFile) => {
         const jsonMidi = new Midi(midiFile);
         const notes = jsonMidi.tracks[0].notes;
-        
+
         state.midiFile.notes.midi = [];
         state.midiFile.notes.time = [];
         state.midiFile.notes.ticks = [];

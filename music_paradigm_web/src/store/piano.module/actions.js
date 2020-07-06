@@ -13,6 +13,14 @@ export default {
     },
 
     // Log of played notes
+    addPressedNote: ({ commit }, key) => {
+        commit('addPressedNote', key);
+    },
+
+    addReleasedNote: ({ commit }, key) => {
+        commit('addReleasedNote', key);
+    },
+
     addPlayedNotes: ({ commit }, key) => {
         commit('addPlayedNotes', key);
     },

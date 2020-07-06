@@ -15,9 +15,10 @@ export default {
 
     // General settings of the flow
     settings: {
-        anyPianoKey: constants.DEFAULT_ANY_PIANO_KEY,   // Allowing any piano key press to advance to the next page
-        playingMode: constants.DEFAULT_MODE,            // Mode of the experiment ("rhythm" or "speed")
-        timbreFile: constants.DEFAULT_TIMBRE_FILE       // URL or location of the timbre file used for the piano
+        anyPianoKey: constants.DEFAULT_ANY_PIANO_KEY,           // Allowing any piano key press to advance to the next page
+        enableSoundFlag: constants.DEFAULT_ENABLE_SOUND_FLAG,   // Whether or not the piano output is enabled by default in the session
+        playingMode: constants.DEFAULT_MODE,                    // Mode of the experiment ("rhythm" or "speed")
+        timbreFile: constants.DEFAULT_TIMBRE_FILE               // URL or location of the timbre file used for the piano
     },
 
     // Data to navigate through the flow
@@ -55,8 +56,9 @@ export default {
         // Block specific settings
         settings: {
             anyPianoKey: constants.DEFAULT_ANY_PIANO_KEY,
+            enableSoundFlag: constants.DEFAULT_ENABLE_SOUND_FLAG,
             numberRepetition: 0,
-            progressBarFlag: false,
+            progressBarFlag: true,
             timeoutInSeconds: 0,
             playingMode: constants.DEFAULT_MODE
         }

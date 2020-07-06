@@ -31,9 +31,10 @@ export default {
 
         // Set the settings (optionals, default values if not set)
         state.settings = {
-            anyPianoKey: experiment.anyPianoKey || constants.DEFAULT_ANY_PIANO_KEY,
-            playingMode: experiment.mode || constants.DEFAULT_MODE,
-            timbreFile: experiment.timbreFile || constants.DEFAULT_TIMBRE_FILE
+            anyPianoKey: (typeof experiment.anyPianoKey !== 'undefined') ? Boolean(experiment.anyPianoKey) : constants.DEFAULT_ANY_PIANO_KEY,
+            enableSoundFlag: (typeof experiment.enableSoundFlag !== 'undefined') ? Boolean(experiment.enableSoundFlag) : constants.DEFAULT_ENABLE_SOUND_FLAG,
+            playingMode: (typeof experiment.mode !== 'string') ? experiment.mode : constants.DEFAULT_MODE,
+            timbreFile: (typeof experiment.timbreFile !== 'string') ? experiment.timbreFile : constants.DEFAULT_TIMBRE_FILE
         };
 
         // Toggle the boolean value indicating that an experiment is mounted
@@ -78,10 +79,10 @@ export default {
         };
     },
     updateState: (state) => {
-        updateState(state.state, state.flow, state.cursor, state.isInitialized, state.description);
+        updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
     },
     moveNextStep: (state) => {
         moveCursorNext(state.flow, state.cursor, state.isInitialized);
-        updateState(state.state, state.flow, state.cursor, state.isInitialized, state.description);
+        updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
     }
 }

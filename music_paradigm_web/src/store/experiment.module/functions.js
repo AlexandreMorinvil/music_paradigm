@@ -96,6 +96,7 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
     const currentBlock = flow[cursor.current.index];
     const {
         anyPianoKey,
+        enableSoundFlag,
         playingMode,
         progressBarFlag,
         timeoutInSeconds
@@ -104,12 +105,13 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
     // TODO: Integrate progress Bar ?
     // Set the settings for the state. If no value is found, an appropreate default value is set
     currentState.settings = {
-        anyPianoKey: anyPianoKey || generalSettings.anyPianoKey,
-        playingMode: playingMode || generalSettings.playingMode,
-        progressBarFlag: progressBarFlag || false,
-        timeoutInSeconds: timeoutInSeconds || 0
+        anyPianoKey: (typeof anyPianoKey !== 'undefined') ? Boolean(anyPianoKey) : generalSettings.anyPianoKey,
+        enableSoundFlag : (typeof enableSoundFlag !== 'undefined') ? Boolean(enableSoundFlag) : generalSettings.enableSoundFlag,
+        playingMode: (typeof playingMode !== 'undefined') ? playingMode : generalSettings.playingMode,
+        progressBarFlag: (typeof progressBarFlag !== 'undefined') ? Boolean(progressBarFlag) : true,
+        timeoutInSeconds: (typeof timeoutInSeconds === 'number') ? timeoutInSeconds : 0
     };
-
+    //(typeof VAR_NAME !== 'undefined') ? VAR_NAME : DEFAULT
     // Indicate that the state (current block's settings) was already initialized 
     Object.assign(isInitialized, { state: true, media: false });
 }

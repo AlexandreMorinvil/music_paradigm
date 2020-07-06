@@ -43,8 +43,8 @@ const evaluateRhythmType = function (midiFileNotes, playedNotes) {
     const standardDeviation = values => Math.sqrt(average(values.map(value => (value - average(values)) ** 2)));
 
     const pitchAccuracy = noteAlgorithm.getPitchAccuracy(
-        playedNotes.midi,
-        midiFileNotes.midi
+        midiFileNotes.midi,
+        playedNotes.midi
     );
     const rhythmDiff = noteAlgorithm.getRhythmTempo(
         playedNotes.duration,
@@ -118,8 +118,8 @@ const gradeRhythmType = function (evaluationResults, { minNoteAccuracy, maxRhyth
     const grades = [
         {
             criteria: "Notes",
-            isPassing: evaluationResults.pitchAcc >= minNoteAccuracy,
-            mark: evaluationResults.pitchAcc,
+            isPassing: evaluationResults.pitchAccuracy >= minNoteAccuracy,
+            mark: evaluationResults.pitchAccuracy,
             passMark: minNoteAccuracy,
             topMark: 100
         },

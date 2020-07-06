@@ -167,7 +167,7 @@ export default {
     // melody mode (task 2) performance measures
     // Brown and Penhune: percentage of pitches performed in the correct order
     // Old name : getAccuracyB_2
-    getPitchAccuracy: (noteArr, refNoteArr) => {
+    getPitchAccuracy: (refNoteArr, noteArr) => {
         if (!arraysValid(noteArr, refNoteArr)) return -1;
         const { length } = findSubarraySegment(refNoteArr, noteArr);
         return length / noteArr.length * 100;
