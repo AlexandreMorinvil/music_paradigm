@@ -5,11 +5,11 @@ export default {
     setPlayer: ({ commit }, key) => {
         commit('setPlayer', key);
     },
-    addStarted: ({ commit }, key) => {
-        commit('addStarted', key);
+    addPressedKey: ({ commit }, key) => {
+        commit('addPressedKey', key);
     },
-    deleteStarted: ({ commit }, key) => {
-        commit('deleteStarted', key);
+    deletePressedKey: ({ commit }, key) => {
+        commit('deletePressedKey', key);
     },
 
     // Log of played notes

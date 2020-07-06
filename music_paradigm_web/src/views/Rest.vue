@@ -13,7 +13,7 @@ export default {
   components: {},
   computed: {
     ...mapGetters(["urlStatic"]),
-    ...mapState("piano", ["starteds"]),
+    ...mapState("piano", ["pressedKeys"]),
     ...mapGetters("experiment", ["pictureName", "timeoutInSeconds"])
   },
   data() {
@@ -45,7 +45,7 @@ export default {
   },
   watch: {
     // press any piano keys to continue
-    starteds(array) {
+    pressedKeys(array) {
       if (array.length > 0 && this.timeoutInSeconds === 0) {
         this.goNextStep();
       }

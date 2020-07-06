@@ -14,7 +14,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapState("piano", ["starteds"]),
+    ...mapState("piano", ["pressedKeys"]),
     ...mapGetters(["urlStatic"]),
     ...mapGetters("experiment", ["pictureName"])
   },
@@ -22,8 +22,8 @@ export default {
     ...mapActions("experiment", ["goNextStep"])
   },
   watch: {
-    starteds() {
-      if (this.starteds.length > 0) {
+    pressedKeys() {
+      if (this.pressedKeys.length > 0) {
         this.goNextStep();
       }
     }

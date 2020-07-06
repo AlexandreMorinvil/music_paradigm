@@ -3,7 +3,7 @@ export default {
     player: null,
 
     // The notes started
-    starteds: [],
+    pressedKeys: [],
 
     // Data from the current MIDI file
     midiFile: {

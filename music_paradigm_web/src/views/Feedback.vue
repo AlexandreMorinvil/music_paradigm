@@ -24,8 +24,8 @@ export default {
     return {};
   },
   computed: {
-    ...mapState(["starteds"]),
-    ...mapGetters("piano", ["grades"])
+    ...mapState(["pressedKeys"]),
+    ...mapGetters("piano", ["grades", "pressedKeys"])
   },
   methods: {
     ...mapActions("experiment", ["goNextStep"])
@@ -35,7 +35,7 @@ export default {
     console.log("Ok");
   },
   watch: {
-    starteds(array) {
+    pressedKeys(array) {
       if (array.length > 0) {
         this.goNextStep();
       }
@@ -46,11 +46,14 @@ export default {
 
 <style scoped>
 .feedbackGradeBoard {
+  background-color: blue;
   display: block;
   list-style-type: none;
   text-align: center;
-  margin-top: 10%; 
-
+  margin-top: 10%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 
 .feedbackElement {

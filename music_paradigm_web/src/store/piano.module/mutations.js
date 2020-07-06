@@ -8,12 +8,12 @@ export default {
     setPlayer: (state, key) => {
         state.player = key;
     },
-    addStarted: (state, key) => {
-        state.starteds.push(key);
+    addPressedKey: (state, key) => {
+        state.pressedKeys.push(key);
     },
-    deleteStarted: (state, key) => {
-        const selectedIndex = state.starteds.indexOf(key);
-        if (selectedIndex !== -1) state.starteds.splice(selectedIndex, 1);
+    deletePressedKey: (state, key) => {
+        const selectedIndex = state.pressedKeys.indexOf(key);
+        if (selectedIndex !== -1) state.pressedKeys.splice(selectedIndex, 1);
     },
 
     // Mutations on the data from the notes played

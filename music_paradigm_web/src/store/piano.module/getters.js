@@ -1,6 +1,16 @@
 import state from "./state";
 
 export default {
+    // Getter for the player
+    player: (state) => {
+        return state.player;
+    },
+
+    // Getter for the pressed keys
+    pressedKeys: (state) => {
+        return state.pressedKeys;
+    },
+
     // Getters for the current MIDI file data
     midiFileNotes: (state) => {
         return state.midiFile.notes;

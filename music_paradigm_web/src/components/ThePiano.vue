@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     ...mapState(["mustInitApplication"]),
-    ...mapState("piano", ["player"]), // TODO: Put a getter
+    ...mapGetters("piano", ["player"]),
     ...mapGetters("experiment", [
       "timbreFile",
       "anyPianoKey",
@@ -32,8 +32,8 @@ export default {
   },
   methods: {
     ...mapActions("piano", [
-      "addStarted",
-      "deleteStarted",
+      "addPressedKey",
+      "deletePressedKey",
       "setPlayer",
       "addPressedNoteLog",
       "addReleasedNoteLog"
@@ -54,32 +54,31 @@ export default {
       };
       // HACK: Put the space bar out of the piano
       if (midiMessage.note === 1) {
-        this.addStarted(midiMessage.note);
-        // this.deleteStarted(midiMessage.note);
+        this.addPressedKey(midiMessage.note);
+        // this.deletePressedKey(midiMessage.note);
         return;
       }
       switch (midiMessage.type) {
         case "Note On":
           // We turn off all the other notes previous notes (Only one active note at the time)
-          for (let otherNotes in this.playingNotes) {
-            if (otherNotes !== midiMessage.note) {
-              this.stopNote(otherNotes);
-              this.recordKeyReleased(otherNotes);
-              this.deleteStarted(otherNotes);
+          for (let otherNote in this.playingNotes) {
+            if (otherNote !== midiMessage.note) {
+              this.stopNote(otherNote);
+              this.recordKeyReleased(otherNote);
             }
           }
           // We activate the specified note
           if (this.enableSoundFlag) this.playNote(midiMessage.note);
           this.recordKeyPress(midiMessage);
-          this.addStarted(midiMessage.note);
+          this.addPressedKey(midiMessage.note);
           break;
         case "Note Off":
           // If the note was still active, we deactivate it
           if (this.playingNotes[midiMessage.note]) {
             this.stopNote(midiMessage.note);
             this.recordKeyReleased(midiMessage.note);
-            this.deleteStarted(midiMessage.note);
           }
+          this.deletePressedKey(midiMessage.note);
           break;
         default:
           break;

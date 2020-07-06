@@ -12,7 +12,7 @@ export default {
   name: "End",
   components: {},
   computed: {
-    ...mapState(["starteds"]),
+    ...mapState(["pressedKeys"]),
     experiment: {
       get: function() {
         return this.$store.state.experiment;
@@ -49,8 +49,8 @@ export default {
   },
   watch: {
     // press any piano keys to continue
-    starteds() {
-      if (this.starteds.length > 0) {
+    pressedKeys() {
+      if (this.pressedKeys.length > 0) {
         // TODO: Ensuring that the name "onNext" is changed to "goNextStep" if it is accruate in this state
         this.onNext();
       }
