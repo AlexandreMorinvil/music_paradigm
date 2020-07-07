@@ -1,16 +1,30 @@
 <template>
   <div class="feedbackGrade">
-    <h1>{{ grade.criteria }}</h1>
-    <svg class="emoji smile" v-if="isSuccess">
-      <use xlink:href="sprites.svg#emoji-smile" />
-    </svg>
-    <svg class="emoji frown" v-else>
-      <use xlink:href="sprites.svg#emoji-frown" />
-    </svg>
+    <div>
+      <h1>{{ grade.criteria }}</h1>
+    </div>
+    <div>
+      <svg class="emoji smile" v-if="isSuccess">
+        <use xlink:href="sprites.svg#emoji-smile" />
+      </svg>
+      <svg class="emoji frown" v-else>
+        <use xlink:href="sprites.svg#emoji-frown" />
+      </svg>
+    </div>
+
+    <div class="progress-bar">
+      <div class="position-wrapper" :style="checkpointOverlay" >
+        <div :class="'checkpoint-content '+ this.checkpointColor" :style="passingWidth"></div>
+      </div>
+      <div class="progress-content content-color">
+        <div :class="'progress-line ' + this.barColor" :style="progressWidth"></div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+// TODO: Put the progress bar logic in a dedicated component
 export default {
   name: "feedbackGrade",
   props: {
@@ -19,7 +33,9 @@ export default {
       default() {
         return {
           criteria: "No criteria",
-          isPassing: false
+          mark: 0,
+          passMark: 60,
+          topMark: 100
         };
       }
     }
@@ -27,6 +43,26 @@ export default {
   computed: {
     isSuccess() {
       return this.grade.mark >= this.grade.passMark;
+    },
+    passingWidth() {
+      //HACK: The CSS could be ajusted more properly
+      return (
+        "--checkpointPosition: " +
+        (this.grade.passMark / this.grade.topMark) * 100 * 0.925 +
+        "%;"
+      );
+    },
+    progressWidth() {
+      return "width: " + (this.grade.mark / this.grade.topMark) * 100 + "%;";
+    },
+    barColor() {
+      return this.isSuccess ? " success-color " : " info-color ";
+    },
+    checkpointColor() {
+      return this.isSuccess ? " success-color " : " content-color ";
+    },
+    checkpointOverlay() {
+      return this.isSuccess ? " z-index: 1; " : " z-index: 0;";
     }
   }
 };
@@ -34,23 +70,75 @@ export default {
 
 <style scoped>
 .feedbackGrade {
+  width: 400px;
   font-size: 10em;
   color: white;
 }
 .emoji {
-  display: inline-block;
+  display: block;
+  margin: auto;
   stroke-width: 0;
-  width: 13em;
-  height: 13em;
+  width: 300px;
+  height: 300px;
 }
-
 .smile {
   stroke: rgb(0, 200, 0);
   fill: rgb(0, 200, 0);
 }
-
 .frown {
   stroke: rgb(200, 0, 0);
   fill: rgb(200, 0, 0);
+}
+.progress-bar {
+  background-color: rgb(235, 235, 235);
+  height: 35px;
+  width: 380px;
+
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+
+  border-style: solid;
+  border-radius: 10px;
+  border-left-width: 5px;
+  border-right-width: 5px;
+  border-color: rgb(235, 235, 235);
+}
+.position-wrapper {
+  width: inherit;
+  position: absolute;
+  transform: translate(-5px);
+}
+.checkpoint-content {
+  position: relative;
+  border-radius: 100px;
+  background-color: inherit;
+  height: 25px;
+  width: 25px;
+  left: var(--checkpointPosition);
+  z-index: inherit;
+}
+.progress-content {
+  background-color: rgb(150, 150, 150);
+  margin: auto;
+  height: 50%;
+  width: 95%;
+  border-radius: inherit;
+  z-index: 0;
+}
+.progress-line {
+  height: 100%;
+  width: 95%;
+  border-radius: inherit;
+}
+.content-color {
+  background-color: rgb(150, 150, 150);
+}
+.success-color {
+  background-color: rgb(0, 200, 0);
+}
+.info-color {
+  background-color: rgb(53, 206, 253);
 }
 </style>

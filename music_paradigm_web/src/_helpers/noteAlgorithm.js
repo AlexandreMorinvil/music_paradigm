@@ -180,7 +180,7 @@ export default {
     // Average relative duration error
     getRhythmTempoRelativeError: (refDurArr, durArr) => {
         let arrDiff = 0;
-        for (let i = 0; i < durArr.length; i++) {
+        for (let i = 0; i < refDurArr.length; i++) {
             arrDiff += Math.abs(durArr[i] - refDurArr[i]) / refDurArr[i];
         }
 
@@ -214,12 +214,11 @@ export default {
 
     // Old name : getIOIs
     // InterOnsetInterval : The interonset interval, or IOI, is the interval between onsets of stimuli
-    getInterOnsetIntervals: (refNoteArr, refTimeArr, noteArr,  timeArr) => {
-        const { startIndex, endIndex } = findSubarraySegment(refNoteArr, noteArr);
+    getInterOnsetIntervals: (timeArr) => {
         let IOIs = [];
         if (timeArr.length > 0) {
-            for (let i = startIndex; i < endIndex; i++) {
-                IOIs.push(timeArr[i + 1] - timeArr[i]);
+            for (let i = 1; i < timeArr.length; i++) {
+                IOIs.push(timeArr[i] - timeArr[i - 1]);
             }
         }
         const meanIOI = average(IOIs);
@@ -235,8 +234,8 @@ export default {
     },
 
     // Duration of the corresponding sequence of notes played (ms)
-    getSequenceDuration: (refNoteArr, noteArr, timeArr, durationArr) => {
-        const { startIndex, endIndex } = findSubarraySegment(refNoteArr, noteArr);
-        return (timeArr[endIndex] + durationArr[endIndex]) - timeArr[startIndex];
+    getSequenceDuration: (timeArr, durationArr) => {
+        const noteCount = timeArr.length;
+        return (timeArr[0] + durationArr[noteCount - 1]) - timeArr[noteCount - 1];
     }
 }

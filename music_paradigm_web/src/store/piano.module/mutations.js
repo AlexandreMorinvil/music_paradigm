@@ -105,7 +105,7 @@ export default {
         state.played.evaluation.grades = notePerformance.gradeRhythmType(
             state.played.evaluation.results, {
             minNoteAccuracy: config.minNoteAccuracy || 100,
-            maxRhythmError: config.maxRhythmError || 0.15
+            maxRhythmError: config.maxRhythmError || 15
         });
     }
 }

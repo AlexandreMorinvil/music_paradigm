@@ -59,18 +59,14 @@ const evaluateRhythmType = function (midiFileNotes, playedNotes) {
         playedNotes.midi
     );
 
-    const {InterOnsetInterval, InterOnsetIntervalAVG, InterOnsetIntervalSD, InterOnsetIntervalCV } 
-    = noteAlgorithm.getInterOnsetIntervals(
-        midiFileNotes.midi,
-        midiFileNotes.time,
-        playedNotes.midi,
-        playedNotes.time
-    );
+    const { InterOnsetInterval, InterOnsetIntervalAVG, InterOnsetIntervalSD, InterOnsetIntervalCV }
+        = noteAlgorithm.getInterOnsetIntervals(
+            midiFileNotes.time,
+            playedNotes.time
+        );
 
     // TODO: When I will have modified the way the durations are calculated, this will need to be modified
     const sequenceDuration = noteAlgorithm.getSequenceDuration(
-        midiFileNotes.midi,
-        playedNotes.midi,
         playedNotes.time,
         playedNotes.duration
     );
@@ -92,35 +88,30 @@ const evaluateRhythmType = function (midiFileNotes, playedNotes) {
     };
 }
 
-// TODO: Make the grade function gradeSpeedType
 const gradeSpeedType = function (evaluationResults, { minSequencePlayed }) {
     const grades = [
         {
             criteria: "Sequence Played",
-            isPassing: evaluationResults.sequenceCount >= minSequencePlayed,
             mark: evaluationResults.sequenceCount,
             passMark: 1,
-            topMark: Math.ceil((minSequencePlayed + 5)/10)*10
+            topMark: Math.ceil((minSequencePlayed + 5) / 10) * 10
         }
     ];
     return grades;
 }
 
-// TODO: Make the grade function gradeRhythmType
-const gradeRhythmType = function (evaluationResults, { minNoteAccuracy, maxRhythmError}) {
+const gradeRhythmType = function (evaluationResults, { minNoteAccuracy, maxRhythmError }) {
     const grades = [
         {
             criteria: "Notes",
-            isPassing: evaluationResults.pitchAccuracy >= minNoteAccuracy,
             mark: evaluationResults.pitchAccuracy,
             passMark: minNoteAccuracy,
             topMark: 100
         },
         {
             criteria: "Rhythm",
-            isPassing: evaluationResults.rhythmDiff <= maxRhythmError,
-            mark: evaluationResults.rhythmDiff,
-            passMark: 100 * (1 - maxRhythmError),
+            mark: 100 - evaluationResults.rhythmTempoRelativeError,
+            passMark: 100 - maxRhythmError,
             topMark: 100
         }
     ];
