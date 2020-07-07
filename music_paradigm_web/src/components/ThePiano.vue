@@ -15,8 +15,8 @@ export default {
       piano: null,
       pianoInited: false,
       playingNotes: {},
-      currentOctave: 0,
-      keyboardTracker: {} // Keeps track of keydown and keyup events for each key
+      currentOctave: 4,
+      keyboardTracker: {}   // Keeps track of keydown and keyup events for each key
     };
   },
   computed: {

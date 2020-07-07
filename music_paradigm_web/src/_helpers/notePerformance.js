@@ -9,13 +9,13 @@ const evaluateSpeedType = function (midiFileNotes, playedNotes) {
     const { durations, durationsAverage } = noteAlgorithm.getSequenceDurations(
         midiFileNotes.midi,
         playedNotes.midi,
-        playedNotes.duration
+        playedNotes.time
     );
 
     const { transitionSpeeds, transitionSpeedsAverage } = noteAlgorithm.getTransitionSpeeds(
         midiFileNotes.midi,
         playedNotes.midi,
-        playedNotes.duration
+        playedNotes.time
     );
 
     const sequenceErrorCount = noteAlgorithm.getSequenceErrorCount(
@@ -29,72 +29,65 @@ const evaluateSpeedType = function (midiFileNotes, playedNotes) {
         results: {
             sequenceCount: sequenceCount,                   // Walker: Number of correctly typed sequence per block
             sequenceDurations: durations,                   // Duke: Sequence duration measured from the onset of the first note to the onset of the final tone in each sequence. (Array of ms)
-            sequenceDurationsAverage: durationsAverage,     // Average of the sequence durations (in ms)
-            transitionSpeeds: transitionSpeeds,             // Array of array of ms
-            transitionSpeedMean: transitionSpeedsAverage,   // Array of ms
+            sequenceDurationsAVG: durationsAverage,         // Average of the sequence durations (in ms)
+            transitionSpeeds: transitionSpeeds,             // Intervals between successive key presses within the sequence (Array of array of ms)
+            transitionSpeedAVG: transitionSpeedsAverage,    // Average of the intervals between successive key presses within the sequence (Array of ms)
             sequenceErrorCount: sequenceErrorCount,         // Number of icorrect note sequences >= 5 notes
         }
     }
 }
 
 const evaluateRhythmType = function (midiFileNotes, playedNotes) {
-    // TODO : Put those methods in the noteAlgorithm file or otherwise use a built in Javascript function for computing the Mean and standard deviation of an Array
-    const average = data => data.length > 0 ? data.reduce((sum, value) => sum + value) / data.length : 0;
-    const standardDeviation = values => Math.sqrt(average(values.map(value => (value - average(values)) ** 2)));
 
     const pitchAccuracy = noteAlgorithm.getPitchAccuracy(
         midiFileNotes.midi,
         playedNotes.midi
     );
-    const rhythmDiff = noteAlgorithm.getRhythmTempo(
-        playedNotes.duration,
-        midiFileNotes.duration
+
+    const rhythmTempoRelativeError = noteAlgorithm.getRhythmTempoRelativeError(
+        midiFileNotes.duration,
+        playedNotes.duration
     );
 
-    // TODO: See if there is a way to solve this function which Weiwei couldn't implement
-    // const rhythmDiff = noteAlgorithm.getRhythm(playedNotes.duration, midiFileNotes.duration);
+    const pitchErrorCount = noteAlgorithm.getPitchErrorCount(
+        midiFileNotes.midi,
+        playedNotes.midi
+    );
 
-    const pitchErrorNum = noteAlgorithm.getAccuracyD_2(
+    const { missedNotes, missedNotesCount } = noteAlgorithm.getMissedNotes(
+        midiFileNotes.midi,
+        playedNotes.midi
+    );
+
+    const {InterOnsetInterval, InterOnsetIntervalAVG, InterOnsetIntervalSD, InterOnsetIntervalCV } 
+    = noteAlgorithm.getInterOnsetIntervals(
+        midiFileNotes.midi,
+        midiFileNotes.time,
         playedNotes.midi,
-        midiFileNotes.midi
+        playedNotes.time
     );
 
-    // TODO: Missed notes and Missed notes length could be returned by the same function
-    const missedNotes = noteAlgorithm.getMissedNotes(
-        playedNotes.midi,
-        midiFileNotes.midi
-    );
-    const missedNoteNum = missedNotes.length;
-    const IOIs = noteAlgorithm.getIOIs(
-        playedNotes.duration,
-        midiFileNotes.duration
-    );
     // TODO: When I will have modified the way the durations are calculated, this will need to be modified
-    const sequenceDuration = missedNoteNum
-        ? 0
-        : playedNotes.duration[playedNotes.duration.length - 1] -
-        playedNotes.duration[0];
-
-    // TODO: Give more explicit names to those elements
-    const meanIOI = average(IOIs);
-    const sdIOI = standardDeviation(IOIs);
-    const cvIOI = sdIOI / meanIOI;
+    const sequenceDuration = noteAlgorithm.getSequenceDuration(
+        midiFileNotes.midi,
+        playedNotes.midi,
+        playedNotes.time,
+        playedNotes.duration
+    );
 
     return {
         type: "rhythm",
         results: {
-            pitchAccuracy: pitchAccuracy,                     // %
-
-            pitchErrorNum: pitchErrorNum,           // errors
-            missedNotes: missedNotes,               // array of number
-            missedNoteNum: missedNoteNum,           // notes
-            IOIs: IOIs,                             // array of ms
-            IOImean: meanIOI,                       // ms
-            IOIsd: sdIOI,
-            IOIcv: cvIOI,
-            sequenceDuration: sequenceDuration,     // ms
-            above50sFlag: sequenceDuration > 50000,
-            rhythmDiff: rhythmDiff                  // proportion
+            pitchAccuracy: pitchAccuracy,                       // Brown and Penhune: percentage of pitches performed in the correct order (%)
+            rhythmTempoRelativeError: rhythmTempoRelativeError, // Average relative duration error (%)
+            pitchErrorCount: pitchErrorCount,                   // Number of pitch errors per sequence (Number)
+            missedNotes: missedNotes,                           // List of the missed notes (Array of midi number)
+            missedNotesCount: missedNotesCount,                 // Number of missed notes (Number)
+            InterOnsetInterval: InterOnsetInterval,             // Interval between onsets of stimuli (Array of ms)
+            InterOnsetIntervalAVG: InterOnsetIntervalAVG,       // Average of the inter-onset interval (ms)
+            InterOnsetIntervalSD: InterOnsetIntervalSD,         // Standard deviation of the inter-onset interval (ms)
+            InterOnsetIntervalCV: InterOnsetIntervalCV,         // Coefficient of variation of the inter-onset interval
+            sequenceDuration: sequenceDuration,                 // Duration of the corresponding sequence of notes played (ms)
         }
     };
 }

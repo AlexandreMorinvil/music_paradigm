@@ -58,7 +58,8 @@ export default {
       if (value >= this.maxPlayProgress) {
         this.timerUniqueIdentifier = setTimeout(() => {
           this.$emit("finishedPlaying");
-        }, (this.lastNoteDuration + 1.0) * 1000);
+          console.log("The signal was emitted")
+        }, (this.lastNoteDuration + 1000));
       }
     }
   }

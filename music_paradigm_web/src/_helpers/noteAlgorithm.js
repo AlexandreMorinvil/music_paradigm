@@ -60,28 +60,15 @@ var arraysValid = (arr1, arr2) => {
     return true;
 };
 
-// get duration array from time array
-var getDurationArray = (timeArr, refTimeArr) => {
-    let durArr = [];
-    let refDurArr = [];
-    if (arraysValid(timeArr, refTimeArr)) {
-        const arrLength = timeArr.length;
-
-        for (let i = 1; i < arrLength; i++) {
-            durArr.push(timeArr[i] - timeArr[i - 1]);
-            refDurArr.push(refTimeArr[i] - refTimeArr[i - 1]);
-        }
-    }
-
-    // console.log(`getDurationArray: play: ${durArr}, ref: ${refDurArr}`);
-    return { durArr, refDurArr };
-};
+const average = data => data.length > 0 ? data.reduce((sum, value) => sum + value) / data.length : 0;
+const standardDeviation = values => Math.sqrt(average(values.map(value => (value - average(values)) ** 2)));
 
 // TODO: Put the research specific algorithms in a dedicated "algorithm.js"
 // TODO: Then, the simplier functions (Mean, standard deviations, etc) in here, maybe
 
 // TODO: Give more clear names to the parameters, maybe
 export default {
+
     // speed mode (task 1) performance measures
     // Walker: number of correctly typed sequence per block
     // Old name : getSpeedW
@@ -89,6 +76,7 @@ export default {
         const idxArr = findSubarray(refNoteArr, noteArr);
         return idxArr.length;
     },
+
     // Duke: mean sequence duration measured from the onset of the first note to the onset of the final tone in each sequence. 
     // Old name : getSpeedD
     getSequenceDurations: (refNoteArr, noteArr, timeArr) => {
@@ -172,39 +160,36 @@ export default {
         const { length } = findSubarraySegment(refNoteArr, noteArr);
         return length / noteArr.length * 100;
     },
+
     // (Duke: mean) number of pitch errors per sequence
-    getAccuracyD_2: (noteArr, refNoteArr) => {
+    // Old name : getAccuracyD_2
+    getPitchErrorCount: (refNoteArr, noteArr) => {
         if (!arraysValid(noteArr, refNoteArr)) {
             return -1; // exceptional case
         }
         const arrLength = noteArr.length;
-        let arrDiff = 0;
-        for (let i = 0; i < arrLength; i++) {
-            if (noteArr[i] !== refNoteArr[i]) {
-                arrDiff++;
-            }
-        }
-        return arrDiff;
+        const { startIndex, length } = findSubarraySegment(refNoteArr, noteArr);
+        let arrDiff = noteArr.length - length;
+        return arrDiff + startIndex;
     },
+
     // (percentage of IOI durations performed in the correct order)
     // averaeg IOI duration difference over their reference IOI duration
     // (diff_a/a + diff_b/b+.......) / 2 - rhythm + tempo
-    getRhythmTempo: (timeArray, refTimeArray) => {
-        const { durArr, refDurArr } = getDurationArray(timeArray, refTimeArray);
-
+    // Old name : getRhythmTempo
+    // Average relative duration error
+    getRhythmTempoRelativeError: (refDurArr, durArr) => {
         let arrDiff = 0;
         for (let i = 0; i < durArr.length; i++) {
             arrDiff += Math.abs(durArr[i] - refDurArr[i]) / refDurArr[i];
         }
-        // Count missing notes 
-        //arrDiff += refDurArr.length - durArr.length;
 
-        return arrDiff / durArr.length;
+        return arrDiff / durArr.length * 100;
     },
-    // get rhythm, excluding tempo (not working yet)
-    getRhythm: (timeArray, refTimeArray) => {
-        const { durArr, refDurArr } = getDurationArray(timeArray, refTimeArray);
 
+    // FIXME: This is a function that Weiwei never finished implementing
+    // get rhythm, excluding tempo (not working yet)
+    getRhythm: (refDurArr, durArr) => {
         let arrRatio = 0;
         let refArrRatio = 0;
         for (let i = 1; i < durArr.length; i++) {
@@ -214,26 +199,44 @@ export default {
         // console.log(`arrRatio:${arrRatio}, refArrRatio:${refArrRatio}`);
         return Math.abs(arrRatio - refArrRatio) / (durArr.length - 1);
     },
+
     // get array of missedNotes
-    getMissedNotes: (noteArr, refNoteArr) => {
+    getMissedNotes: (refNoteArr, noteArr) => {
         let missedNotes = [];
-        if (noteArr == undefined || noteArr == []) {
-            missedNotes = refNoteArr;
+
+        const { length } = findSubarraySegment(refNoteArr, noteArr);
+
+        if (length < refNoteArr.length) {
+            missedNotes = refNoteArr.slice(length, refNoteArr.length);
         }
-        if (noteArr.length < refNoteArr.length) {
-            missedNotes = refNoteArr.slice(noteArr.length, refNoteArr.length);
-        }
-        return missedNotes;
+        return { missedNotes: missedNotes, missedNotesCount: missedNotes.length };
     },
-    getIOIs: (timeArr, refTimeArr) => {
-        let durations = [];
+
+    // Old name : getIOIs
+    // InterOnsetInterval : The interonset interval, or IOI, is the interval between onsets of stimuli
+    getInterOnsetIntervals: (refNoteArr, refTimeArr, noteArr,  timeArr) => {
+        const { startIndex, endIndex } = findSubarraySegment(refNoteArr, noteArr);
+        let IOIs = [];
         if (timeArr.length > 0) {
-            const noteLength = refTimeArr.length - 1; // TODO: When the duration will have been fixed, we will be able to get the actual value for all notes (without needing to do a -1 to substract the last note)
-            for (let i = 0; i < noteLength; i++) {
-                durations.push(timeArr[i + 1] - timeArr[i]);
+            for (let i = startIndex; i < endIndex; i++) {
+                IOIs.push(timeArr[i + 1] - timeArr[i]);
             }
         }
-        // console.log(`getIOIs ${durations}`);
-        return durations; // return [a,b,c,d]
+        const meanIOI = average(IOIs);
+        const sdIOI = standardDeviation(IOIs);
+        const cvIOI = sdIOI / meanIOI;
+
+        return {
+            InterOnsetInterval : IOIs, 
+            InterOnsetIntervalAVG : meanIOI, 
+            InterOnsetIntervalSD : sdIOI, 
+            InterOnsetIntervalCV : cvIOI
+        }; // return [a,b,c,d]
     },
+
+    // Duration of the corresponding sequence of notes played (ms)
+    getSequenceDuration: (refNoteArr, noteArr, timeArr, durationArr) => {
+        const { startIndex, endIndex } = findSubarraySegment(refNoteArr, noteArr);
+        return (timeArr[endIndex] + durationArr[endIndex]) - timeArr[startIndex];
+    }
 }

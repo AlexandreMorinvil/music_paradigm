@@ -18,24 +18,29 @@ export default {
 
     // Mutations on the data from the notes played
     addPressedNoteLog: (state, key) => {
-        if (state.played.notes.time.length === 0) state.played.startTime = key.time;
+        const noteCount = state.played.notes.midi.length;
+        if (noteCount === 0) state.played.startTime = key.time;
         state.played.notes.volume.push(key.volume);
         state.played.notes.midi.push(key.note);
         state.played.notes.time.push(key.time - state.played.startTime);
-        state.played.notes.pitch.push("C C#D D#E F F#G G#A A#B ".substring((key.note % 12) * 2, 2).replace(/\s+/g, ''));
+        state.played.notes.pitch.push("C C#D D#E F F#G G#A A#B ".substr((key.note % 12) * 2, 2).replace(/\s+/g, ''));
         state.played.notes.octave.push(((key.note / 12) | 0) - 1);
         state.played.notes.velocity.push(key.velocity);
-        state.played.notes.name.push(state.played.notes.pitch.concat(state.played.notes.octave));
+        state.played.notes.name.push(
+            state.played.notes.pitch[noteCount].concat(
+                state.played.notes.octave[noteCount]));
     },
 
     addReleasedNoteLog: (state, key) => {
-        state.played.notes.duration.push(key.time - state.played.startTime);
+        state.played.notes.duration.push(key.time
+            - state.played.startTime
+            - state.played.notes.time[state.played.notes.time.length - 1]);
     },
 
     resetPlayedNotesLogs: (state) => {
         // Record start time
         state.played.startTime = 0;
-        
+
         // Resetting the notes
         state.played.notes.midi = [];
         state.played.notes.duration = [];
@@ -62,13 +67,13 @@ export default {
 
         for (let i in notes) {
             state.midiFile.notes.midi.push(notes[i].midi);
-            state.midiFile.notes.time.push(notes[i].time);
+            state.midiFile.notes.time.push(notes[i].time * 1000);
             state.midiFile.notes.ticks.push(notes[i].ticks);
             state.midiFile.notes.name.push(notes[i].name);
             state.midiFile.notes.pitch.push(notes[i].pitch);
             state.midiFile.notes.octave.push(notes[i].octave);
             state.midiFile.notes.velocity.push(notes[i].velocity);
-            state.midiFile.notes.duration.push(notes[i].duration);
+            state.midiFile.notes.duration.push(notes[i].duration * 1000);
         }
     },
     eraseMidiNotes: (state) => {
