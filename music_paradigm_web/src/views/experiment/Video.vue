@@ -8,7 +8,7 @@
 import { mapState, mapActions } from "vuex";
 
 import config from "@/config";
-import VideoComponentVue from "../components/TheVideoPlayer.vue";
+import VideoComponentVue from "@/components/TheVideoPlayer.vue";
 export default {
   name: "Video",
   components: {

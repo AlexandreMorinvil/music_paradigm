@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Login from './views/Login.vue'
-import Feedback from './views/Feedback.vue'
 
 Vue.use(Router)
 
@@ -14,48 +13,49 @@ const router = new Router({
       component: Login
     },
     {
-      path: '/instruction',
-      name: 'instruction',
+      path: '/experiment',
+      name: 'experiment',
       // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
+      // this generates a separate chunk (experiment.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/Instruction.vue')
-    },
-    {
-      path: '/cue',
-      name: 'cue',
-      component: () => import(/* webpackChunkName: "about" */ './views/Cue.vue')
-    },
-    {
-      path: '/playing',
-      name: 'playing',
-      component: () => import(/* webpackChunkName: "about" */ './views/Playing.vue')
-    },
-    {
-      path: '/video',
-      name: 'video',
-      component: () => import(/* webpackChunkName: "about" */ './views/Video.vue')
-    },
-    // {
-    //   path: '/feedback/:status',
-    //   name: 'feedback',
-    //   component: Feedback,
-    //   props: true
-    // },
-    {
-      path: '/feedback',
-      name: 'feedback',
-      component: Feedback
-    },
-    {
-      path: '/rest',
-      name: 'rest',
-      component: () => import(/* webpackChunkName: "about" */ './views/Rest.vue')
-    },
-    {
-      path: '/end',
-      name: 'end',
-      component: () => import(/* webpackChunkName: "about" */ './views/End.vue')
+      component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Experiment.vue'),
+      children: [
+        {
+          path: '/instruction',
+          name: 'instruction',
+          component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Instruction.vue')
+        },
+        {
+          path: '/cue',
+          name: 'cue',
+          component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Cue.vue')
+        },
+        {
+          path: '/playing',
+          name: 'playing',
+          component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Playing.vue')
+        },
+        {
+          path: '/video',
+          name: 'video',
+          component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Video.vue')
+        },
+        {
+          path: '/feedback',
+          name: 'feedback',
+          component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Feedback.vue')
+        },
+        {
+          path: '/rest',
+          name: 'rest',
+          component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Rest.vue')
+        },
+        {
+          path: '/end',
+          name: 'end',
+          component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/End.vue')
+        },
+      ]
     },
     {
       path: '/admin',
@@ -68,7 +68,7 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/Register.vue'),
     },
     {
-      path: '*',
+      path: '/*',
       redirect: '/'
     },
   ]
