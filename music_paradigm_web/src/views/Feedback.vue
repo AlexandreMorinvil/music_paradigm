@@ -31,8 +31,6 @@ export default {
     ...mapActions("experiment", ["goNextStep"])
   },
   mounted() {
-    console.log("Got there");
-    console.log("Ok");
   },
   watch: {
     pressedKeys(array) {
