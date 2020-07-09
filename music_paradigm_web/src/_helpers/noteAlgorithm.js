@@ -167,7 +167,6 @@ export default {
         if (!arraysValid(noteArr, refNoteArr)) {
             return -1; // exceptional case
         }
-        const arrLength = noteArr.length;
         const { startIndex, length } = findSubarraySegment(refNoteArr, noteArr);
         let arrDiff = noteArr.length - length;
         return arrDiff + startIndex;

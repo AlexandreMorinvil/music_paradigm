@@ -60,3 +60,6 @@ export default {
 
     " ": 1,
 }
+
+// TODO : Put all the MIDI related functions here to move from one octave to the other
+// TODO : Create a file for the MIDI to PITCH/NAME

@@ -8,7 +8,7 @@
       <router-view />
     </div>
 
-    <!-- <footer v-if="appSoundInited && !useMidiInput">{{currentOctave}}</footer> -->
+    <!-- <footer v-if="appState!=='experiment'"> Footer display </footer> -->
   </div>
 </template>
 
@@ -139,6 +139,7 @@ body {
   margin: 0;
   font-size: inherit;
   cursor: pointer;
+  overflow: hidden;
 }
 .app-navigation-bar-button:hover {
   background-color: rgb(65, 65, 65);
