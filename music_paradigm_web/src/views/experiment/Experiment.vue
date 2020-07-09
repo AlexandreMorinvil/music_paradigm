@@ -1,32 +1,30 @@
 <template>
   <div id="experiment" class="experiment-context experimen-grid">
-    
     <div id="experiment-status">
-      <ul>
-        <li>
-          <a href="default.asp">Home</a>
-        </li>
-        <li>
-          <a href="news.asp">News</a>
-        </li>
-        <li>
-          <a href="contact.asp">Contact</a>
-        </li>
-        <li>
-          <a href="about.asp">About</a>
-        </li>
-        <li>
-          <piano />
-        </li>
-      </ul>
+      <div>
+        <p> Time </p>
+      </div>
+      <div>
+        <p> Back </p>
+      </div>
+      <div>
+        <p> State </p>
+      </div>
+      <div>
+        <p> Next </p>
+      </div>
+      <div>
+        Piano status
+        <piano />
+      </div>
     </div>
 
     <div id="experiment-progress-bar">
-      <div id="experiment-progress"> </div>
+      <div id="experiment-progress"></div>
     </div>
 
     <div id="experiment-state">
-      <router-view class="centered"/>
+      <router-view class="centered" />
     </div>
   </div>
 </template>
@@ -64,22 +62,38 @@ export default {
 
 
 <style>
+#experiment {
+  height: 100%;
+  background-color: rgb(15, 15, 15);
+}
+.experiment-header-position {
+  grid-area: header;
+}
+.experiment-progress-position {
+  grid-area: progress;
+}
+.experiment-main-position {
+  grid-area: main;
+}
 .experimen-grid {
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: 200px 10px;
+  grid-template-rows: 64px 10px;
+  grid-template-areas:
+    "header" /* Status of the experiment */
+    "progress" /* Progress bar of the experiment */
+    "main"; /* State of the experiment */
   grid-gap: 0px;
 }
-.experiment-context {
-  padding: 0px 20px 0px;
-  background-color: blanchedalmond;
-  height: 100%;
-}
 #experiment-status {
-  background-color: rgb(50, 50, 50);
+  display: flex;
+  background-color: rgb(30, 30, 30);
 }
 #experiment-progress-bar {
-  background-color: rgb(30, 30, 30);
+  background-color: rgb(20, 20, 20);
+  border-bottom-color: rgb(15, 15, 15);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
   height: inherit;
 }
 #experiment-progress {
@@ -88,11 +102,17 @@ export default {
   width: 50%;
 }
 #experiment-state {
-  background-color: rgb(0, 200, 0);
-  /* min-height: 400px; */
-  justify-content: center; /* Doesn't work yet */
+  box-shadow: 0 0 25px 0 rgb(0, 0, 0);
+  background-color: rgb(0, 0, 0);
+  margin: 25px;
+  min-height: 400px;
 }
-
+#experiment-status > div {
+  background-color: black;
+  margin: 10px;
+  padding: 0px;
+  font-size: 30px;
+}
 ul {
   list-style-type: none;
   margin: 0;
