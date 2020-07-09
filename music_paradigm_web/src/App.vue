@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="app-grid">
     <div v-if="true" id="app-header" class="app-header-position">
-      <component :is="navigationBarType" ref="navigationBar" />
+      <component :is="navigationBarType" id="app-navigation-bar" ref="navigationBar" />
     </div>
 
     <div id="app-main" class="app-main-position">
@@ -41,7 +41,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["setApplicationInitialization"]),
+    ...mapActions(["setApplicationInitialization"])
   },
   watch: {
     // On change of the route, we reevaluate the state of the application
@@ -98,6 +98,53 @@ body {
   border-bottom-width: 1px;
   border-bottom-style: solid;
 }
+/* Template specifications for the different types of navigation bars */
+#app-navigation-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  font-size: 20px;
+  color: rgb(200, 200, 200);
+}
+.navigation-bar-wrapper {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  width: 33%;
+  font-size: inherit;
+}
+#wrapper-left {
+  justify-content: flex-start;
+}
+#wrapper-center {
+  justify-content: center;
+}
+#wrapper-right {
+  justify-content: flex-end;
+}
+.app-navigation-bar-button {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  border-collapse: collapse;
+  border-color: rgb(35, 35, 35);
+  border-width: 0 2px 0;
+  border-style: solid;
+  height: 100%;
+  width: auto;
+  padding: 0 30px 0;
+  margin: 0;
+  font-size: inherit;
+  cursor: pointer;
+}
+.app-navigation-bar-button:hover {
+  background-color: rgb(65, 65, 65);
+  color: white;
+}
+/* Footer */
 footer {
   position: fixed;
   right: 0;
