@@ -2,16 +2,16 @@
   <div id="experiment" class="experiment-context experimen-grid">
     <div id="experiment-status">
       <div>
-        <p> Time </p>
+        <p>Time</p>
       </div>
       <div>
-        <p> Back </p>
+        <p>Back</p>
       </div>
       <div>
-        <p> State </p>
+        <p>State</p>
       </div>
       <div>
-        <p> Next </p>
+        <p>Next</p>
       </div>
       <div>
         Piano status
@@ -31,7 +31,7 @@
 
 <script>
 import ThePianoVue from "@/components/ThePiano.vue";
-import { mapState, mapActions } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "Experiment",
@@ -44,10 +44,13 @@ export default {
     };
   },
   computed: {
-    ...mapState("experiment", ["experimentSet"])
+    ...mapState("experiment", ["experimentName", "experimentSet"]),
+    ...mapGetters("experiment", [])
   },
   methods: {
     ...mapActions(["setApplicationInitialization"])
+  },
+  mounted() {
   },
   watch: {
     experimentSet() {
@@ -112,10 +115,5 @@ export default {
   margin: 10px;
   padding: 0px;
   font-size: 30px;
-}
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
 }
 </style>

@@ -111,7 +111,7 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
         progressBarFlag: (typeof progressBarFlag !== 'undefined') ? Boolean(progressBarFlag) : true,
         timeoutInSeconds: (typeof timeoutInSeconds === 'number') ? timeoutInSeconds : 0
     };
-    //(typeof VAR_NAME !== 'undefined') ? VAR_NAME : DEFAULT
+
     // Indicate that the state (current block's settings) was already initialized 
     Object.assign(isInitialized, { state: true, media: false });
 }

@@ -1,5 +1,6 @@
 <template>
   <div id="the-piano" class="piano"></div>
+  <!-- <footer v-if="appSoundInited && !useMidiInput">{{currentOctave}}</footer> -->
 </template>
 
 <script>
