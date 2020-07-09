@@ -1,6 +1,10 @@
 <template>
-  <div id="app">
+  <div id="instruction-state">
+    <h1> VIEW OUTLET! </h1>
+    <p> VIEW OUTLET </p>
+    <!--
     <img id="instruction-img" :src="urlStatic(pictureName)" alt="Instruction" />
+    -->
   </div>
 </template>
 
@@ -29,7 +33,8 @@ export default {
     }
   },
   beforeMount() {},
-  mounted() {}
+  mounted() {
+  }
 };
 </script>
 
