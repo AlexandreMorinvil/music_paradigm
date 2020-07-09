@@ -1,19 +1,16 @@
 <template>
   <div id="experiment" class="experiment-context experimen-grid">
     <div id="experiment-status">
-      <div>
-        <p>Time</p>
+      <div id="timer-box" class="status-display-box">
+        <timer />
       </div>
-      <div>
-        <p>Back</p>
+
+      <div id="center-wrapper">
+        <div id="current-state-box" class="status-display-box wrapped-display">State</div>
+        <div id="next-state-box" class="status-display-box wrapped-display">Next</div>
       </div>
-      <div>
-        <p>State</p>
-      </div>
-      <div>
-        <p>Next</p>
-      </div>
-      <div>
+
+      <div id="piano-box" class="status-display-box">
         Piano status
         <piano />
       </div>
@@ -31,12 +28,14 @@
 
 <script>
 import ThePianoVue from "@/components/ThePiano.vue";
+import ExperimentPiano from "@/components/ExperimentTimer.vue";
 import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "Experiment",
   components: {
-    piano: ThePianoVue
+    piano: ThePianoVue,
+    timer: ExperimentPiano
   },
   data() {
     return {
@@ -50,8 +49,7 @@ export default {
   methods: {
     ...mapActions(["setApplicationInitialization"])
   },
-  mounted() {
-  },
+  mounted() {},
   watch: {
     experimentSet() {
       if (this.experimentSet && !this.appInited) {
@@ -90,6 +88,8 @@ export default {
 }
 #experiment-status {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: rgb(30, 30, 30);
 }
 #experiment-progress-bar {
@@ -110,10 +110,38 @@ export default {
   margin: 25px;
   min-height: 400px;
 }
-#experiment-status > div {
-  background-color: black;
-  margin: 10px;
-  padding: 0px;
-  font-size: 30px;
+.status-display-box {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  overflow: hidden;
+
+  border-radius: 5px;
+  border-color: rgb(35, 35, 35);
+  border-width: 0 2px 0;
+  border-style: solid;
+
+  background-color: rgb(15, 15, 15);
+  color: rgb(220, 220, 220);
+
+  height: 85%;
+  width: 15%;
+  min-width: 100px;
+  padding: 0 20px 0;
+  margin: 0 10px 0;
+  font-size: 25px;
+}
+#center-wrapper {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+
+  height: 100%;
+  width: 50%;
+}
+.wrapped-display {
+  width: 30%;
 }
 </style>
