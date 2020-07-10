@@ -4,7 +4,7 @@
       <svg class="piano-icon">
         <use xlink:href="sprites.svg#icon-piano" />
       </svg>
-      {{soundStatus}}
+      &nbsp;{{soundStatus}}
     </div>
   </div>
   <!-- <footer v-if="appSoundInited && !useMidiInput">{{currentOctave}}</footer> -->

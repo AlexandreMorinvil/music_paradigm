@@ -1,20 +1,40 @@
 <template>
-  <div id="timer">{{timerDisplay}}</div>
+  <div id="timer">
+    <div id="timer-display" :class="color">
+      <svg class="timer-icon">
+        <use xlink:href="sprites.svg#icon-timer" />
+      </svg>
+      &nbsp;{{timerDisplay}}
+    </div>
+  </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-
 export default {
   name: "Playing",
+  props: {
+    mustCountDown: {
+      type: Boolean,
+      default() {
+        return false;
+      }
+    },
+    startTime: {
+      type: Number,
+      default() {
+        return 0;
+      }
+    }
+  },
   components: {},
   data() {
     return {
-      cumulatedTime: 0,
+      turnedOn: false,
       counterUniqueIdentifier: 0,
       timeStepInMilliseconds: 1000,
-      startTime: 0,
-      total: 0,
+      referenceTime: 0,
+      totalTime: 0,
+      cumulatedTime: 0,
       seconds: 0,
       minutes: 0,
       hours: 0,
@@ -22,8 +42,10 @@ export default {
     };
   },
   computed: {
+    color() {
+      return this.turnedOn ? "active" : "inactive";
+    },
     timerDisplay() {
-      //return  `${this.minutes}:${this.seconds}`;
       let hours = "";
       if (this.hours > 0)
         hours = (this.hours < 10 ? "0" + this.hours : this.hours) + ":";
@@ -36,43 +58,84 @@ export default {
     }
   },
   methods: {
+    setTime(value) {
+      this.cumulatedTime = value;
+      this.totalTime = this.cumulatedTime;
+      this.referenceTime = new Date();
+    },
     startTimer() {
-      this.startTime = new Date();
+      this.referenceTime = new Date();
       this.counterUniqueIdentifier = window.setInterval(
         this.updateTimer,
         this.timeStepInMilliseconds
       );
+      this.updateTimer();
+      this.turnedOn = true;
     },
     stopTimer() {
       window.clearInterval(this.counterUniqueIdentifier);
-      this.updateTimer();
-      this.cumulatedTime =
-        Date.parse(new Date()) -
-        Date.parse(this.startTime) +
-        this.cumulatedTime;
+      this.cumulatedTime = this.updateTimer();
+      this.turnedOn = false;
     },
     updateTimer() {
-      this.total =
-        Date.parse(new Date()) -
-        Date.parse(this.startTime) +
-        this.cumulatedTime;
-      this.seconds = Math.floor((this.total / 1000) % 60);
-      this.minutes = Math.floor((this.total / 1000 / 60) % 60);
-      this.hours = Math.floor((this.total / (1000 * 60 * 60)) % 24);
-      this.days = Math.floor(this.total / (1000 * 60 * 60 * 24));
+      this.mustCountDown ? this.countDown() : this.countUp();
+      return this.totalTime;
+    },
+    countUp() {
+    this.totalTime = this.cumulatedTime +
+      Date.parse(new Date()) - Date.parse(this.referenceTime);
+    },
+    countDown() {
+      this.totalTime = this.cumulatedTime -
+        (Date.parse(new Date()) - Date.parse(this.referenceTime));
     }
   },
   beforeMount() {},
+
   mounted() {
+    this.setTime(this.startTime);
     this.startTimer();
   },
   beforeDestroy() {
     window.clearInterval(this.counterUniqueIdentifier);
   },
   destroyed() {},
-  watch: {}
+  watch: {
+    totalTime(value) {
+      if (this.totalTime < 0) {
+        this.setTime(0);
+        this.stopTimer();
+      } else {
+        this.seconds = Math.floor((this.totalTime / 1000) % 60);
+        this.minutes = Math.floor((this.totalTime / 1000 / 60) % 60);
+        this.hours = Math.floor((this.totalTime / (1000 * 60 * 60)) % 24);
+        this.days = Math.floor(this.totalTime / (1000 * 60 * 60 * 24));
+      }
+    }
+  }
 };
 </script>
 
 <style scoped>
+#timer-display {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.timer-icon {
+  display: inline-block;
+  stroke-width: 0;
+  width: 30px;
+  height: 30px;
+}
+.active {
+  stroke: rgb(220, 220, 220);
+  fill: rgb(220, 220, 220);
+  color: rgb(220, 220, 220);
+}
+.inactive {
+  stroke: rgb(100, 100, 100);
+  fill: rgb(100, 100, 100);
+  color: rgb(100, 100, 100);
+}
 </style>
