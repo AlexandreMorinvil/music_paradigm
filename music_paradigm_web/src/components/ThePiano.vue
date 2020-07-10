@@ -1,15 +1,30 @@
 <template>
-  <div id="the-piano" class="piano"></div>
+  <div id="the-piano" class="piano">
+    <div id="piano-display" v-if="display" :class="color">
+      <svg class="piano-icon">
+        <use xlink:href="sprites.svg#icon-piano" />
+      </svg>
+      {{soundStatus}}
+    </div>
+  </div>
   <!-- <footer v-if="appSoundInited && !useMidiInput">{{currentOctave}}</footer> -->
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import MidiPlayer from "@/MidiPlayer";
 import map from "@/_helpers/keyboardMapping";
 
 export default {
   name: "ThePiano",
+  props: {
+    display: {
+      type: Boolean,
+      default() {
+        return false;
+      }
+    }
+  },
   data() {
     return {
       audioConctext: null,
@@ -17,17 +32,24 @@ export default {
       pianoInited: false,
       playingNotes: {},
       currentOctave: 4,
-      keyboardTracker: {}   // Keeps track of keydown and keyup events for each key
+      keyboardTracker: {} // Keeps track of keydown and keyup events for each key
     };
   },
   computed: {
-    ...mapState(["mustInitApplication"]),
     ...mapGetters("piano", ["player"]),
     ...mapGetters("experiment", [
       "timbreFile",
       "anyPianoKey",
       "enableSoundFlag"
-    ])
+    ]),
+    soundStatus() {
+      if (!this.pianoInited) return "LOAD...";
+      return this.enableSoundFlag ? "ON" : "OFF";
+    },
+    color() {
+      if (!this.pianoInited) return "not-ready";
+      return this.enableSoundFlag ? "active" : "inactive";
+    }
   },
   methods: {
     ...mapActions("piano", [
@@ -133,7 +155,7 @@ export default {
         // Midi messages listener (To automatically play a MIDI file)
         this.player.on("midiEvent", this.handleMidiMessage);
 
-        console.log("Sound inited");
+        this.pianoInited = true;
       });
     },
     handleKeyPress(key) {
@@ -187,21 +209,40 @@ export default {
     // Verifying MIDI support
     if (navigator.requestMIDIAccess) {
       console.log("This browser supports WebMIDI!");
+      this.initPiano();
     } else {
       console.log("WebMIDI is not supported in this browser.");
     }
   },
-  watch: {
-    mustInitApplication() {
-      if (this.mustInitApplication) {
-        this.initPiano();
-        this.pianoInited = true;
-      }
-    }
-  }
+  watch: {}
 };
 </script>
 
-
 <style>
+#piano-display {
+  display: flex;
+  align-items: center;
+  height:100%;
+}
+.piano-icon {
+  display: inline-block;
+  stroke-width: 0;
+  width: 40px;
+  height: 40px;
+}
+.active {
+  stroke: rgb(0, 200, 0);
+  fill: rgb(0, 200, 0);
+  color: rgb(0, 200, 0);
+}
+.inactive {
+  stroke: rgb(200, 0, 0);
+  fill: rgb(200, 0, 0);
+  color: rgb(200, 0, 0);
+}
+.not-ready {
+  stroke: rgb(100, 100, 100);
+  fill: rgb(100, 100, 100);
+  color: rgb(100, 100, 100);
+}
 </style>

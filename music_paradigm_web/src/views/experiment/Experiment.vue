@@ -11,8 +11,7 @@
       </div>
 
       <div id="piano-box" class="status-display-box">
-        Piano status
-        <piano />
+        <piano :display="true"/>
       </div>
     </div>
 
@@ -106,7 +105,7 @@ export default {
 }
 #experiment-state {
   box-shadow: 0 0 25px 0 rgb(0, 0, 0);
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(248, 135, 135);
   margin: 25px;
   min-height: 400px;
 }
@@ -130,7 +129,9 @@ export default {
   min-width: 100px;
   padding: 0 20px 0;
   margin: 0 10px 0;
+
   font-size: 25px;
+  line-height: 0.7;
 }
 #center-wrapper {
   display: flex;

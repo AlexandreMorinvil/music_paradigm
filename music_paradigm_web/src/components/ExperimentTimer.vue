@@ -63,7 +63,9 @@ export default {
     }
   },
   beforeMount() {},
-  mounted() {},
+  mounted() {
+    this.startTimer();
+  },
   beforeDestroy() {
     window.clearInterval(this.counterUniqueIdentifier);
   },

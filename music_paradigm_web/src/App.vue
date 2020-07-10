@@ -107,6 +107,7 @@ body {
   width: 100%;
   font-size: 20px;
   color: rgb(200, 200, 200);
+  line-height: 0.8;
 }
 .navigation-bar-wrapper {
   display: flex;
