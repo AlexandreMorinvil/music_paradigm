@@ -1,5 +1,50 @@
 import router from '@/router'
 
+const countStepsLeft = function (flow, startPointCursor) {
+    // Deep copy the cursor (or initialize the cursor at the start by default)
+    let stepTracerCursor = assignCursor(startPointCursor);
+
+    // Count the number of steps before being beyond the end of the experiment
+    let stepsCounter = 0;
+    while (!stepTracerCursor.current.isBeyondEnd) {
+        moveCursorNext(flow, stepTracerCursor);
+        stepsCounter += 1;
+    }
+    return stepsCounter;
+}
+
+/**
+ * Deep clone a cursor in parameter or assignes default initial values
+ * @param {Objecy} cursorToCopy 
+ */
+const assignCursor = function (cursorToCopy) {
+    // If no cursor is set to be cloned, 
+    if (cursorToCopy) {
+        // Deep copy the the cursor set in parameter
+        return JSON.parse(JSON.stringify(cursorToCopy));
+    }
+    else {
+        // Set the default values
+        const defaultCursor = {
+            current: {
+                index: 0,
+                innerStepIndex: 0,
+                playableMediaIndex: 0,
+                isBeyondEnd: false
+            },
+            navigation: {
+                indexNext: 1,
+                indexPlayableMediaPile: -1,
+                indexLoopStart: -1,
+                totalInnerSteps: 0,
+                numberPiledPlayableMedia: 0,
+                numberRepetition: 0,
+            }
+        };
+        return defaultCursor;
+    }
+}
+
 const moveCursorNextStep = function (flow, cursor, isInitialized = {}) {
     // Moving to the next inner step if there remains inner steps
     if (cursor.current.innerStepIndex < cursor.navigation.totalInnerSteps) {
@@ -13,12 +58,14 @@ const moveCursorNextStep = function (flow, cursor, isInitialized = {}) {
     }
     // Moving beyond the last block of the flow
     else {
-        throw new Error("Attempting to move cursor to a non-existing block");
+        cursor.current.isBeyondEnd = true;
     }
 }
 
 // Read the block for the index specific parameters
 const updateCursorNavigation = function (flow, cursor) {
+    // If the cursor is beyond the end, the flow is finished, we do not need to parse another block
+    if (cursor.current.isBeyondEnd) return;
     // Parsing the block's flow navigation parameters
     const currentBlock = flow[cursor.current.index];
     const {
@@ -82,6 +129,10 @@ const updateCursorNavigation = function (flow, cursor) {
 }
 
 const updateRoute = function (currentState, flow, cursor, isInitialized) {
+    // XXX: If the cursor is beyond the end, the flow is finished, we go to the default end process
+    if (cursor.current.isBeyondEnd) return;
+
+    // We update the route
     currentState.type = flow[cursor.current.index].type;
     router.push({ name: currentState.type });
     Object.assign(isInitialized, { route: true, state: false, media: false });
@@ -89,9 +140,11 @@ const updateRoute = function (currentState, flow, cursor, isInitialized) {
 
 /**
  * Initializes the state of the experiment according to the block pointed by the cursor
- * @param {Object} state    Vuex state from a store (automatic argument)
  */
 const updateStateSettings = function (currentState, flow, cursor, isInitialized, generalSettings) {
+    // If the cursor is beyond the end, the flow is finished, we do not need to parse another block
+    if (cursor.current.isBeyondEnd) return;
+
     // Parsing the current block's state settings
     const currentBlock = flow[cursor.current.index];
     const {
@@ -106,7 +159,7 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
     // Set the settings for the state. If no value is found, an appropreate default value is set
     currentState.settings = {
         anyPianoKey: (typeof anyPianoKey !== 'undefined') ? Boolean(anyPianoKey) : generalSettings.anyPianoKey,
-        enableSoundFlag : (typeof enableSoundFlag !== 'undefined') ? Boolean(enableSoundFlag) : generalSettings.enableSoundFlag,
+        enableSoundFlag: (typeof enableSoundFlag !== 'undefined') ? Boolean(enableSoundFlag) : generalSettings.enableSoundFlag,
         playingMode: (typeof playingMode === 'string') ? playingMode : generalSettings.playingMode,
         progressBarFlag: (typeof progressBarFlag !== 'undefined') ? Boolean(progressBarFlag) : true,
         timeoutInSeconds: (typeof timeoutInSeconds === 'number') ? timeoutInSeconds : 0
@@ -117,6 +170,9 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
 }
 
 const updateStateMediaFiles = function (currentState, flow, cursor, isInitialized) {
+    // If the cursor is beyond the end, the flow is finished, we do not need to parse another block
+    if (cursor.current.isBeyondEnd) return;
+
     // Parsing the current block's media files
     const currentBlock = flow[cursor.current.index];
     const {
@@ -157,8 +213,10 @@ const updateState = function (currentState, flow, cursor, isInitialized, general
 }
 
 
-export {
+export default {
+    countStepsLeft,
+    assignCursor,
+    moveCursorNext,
     updateState,
-    moveCursorNext
 }
 // TODO: Instoring a break from the loop mechanism (end of loop parameter)

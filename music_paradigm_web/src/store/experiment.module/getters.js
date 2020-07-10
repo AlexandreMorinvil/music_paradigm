@@ -1,7 +1,14 @@
 import constants from "./constants"
+import functions from "./functions"
 
 export default {
-    // TODO: Set a getter for the number of steps left to the experiment
+    // Getters for the experiment flow's information
+    stepsTotalCount: (state) => {
+        return functions.countStepsLeft(state.flow);
+    },
+    stepsLeftCount: (state) => {
+        return functions.countStepsLeft(state.flow, state.cursor);
+    },
 
     // Getters for the experiment's settings
     experimentName: (state) => {
@@ -52,6 +59,28 @@ export default {
     },
 
     // State attributes
+    currentStateType: (state) => {
+        // Return the type of the current state
+        if (state.cursor.current.isBeyondEnd) {
+            return "end";
+        }
+        return state.state.type || "UNDEFINED";
+    },
+    nextStateType: (state) => {
+        // Return the type of the next state
+        // If we are currently beyond the last block of the flow or if there is
+        // no current state type step, we return no next step
+        if (state.cursor.current.isBeyondEnd || !state.state.type){
+            return "";
+        }
+        // If the next step is beyond the last block of the flow, we return "end"
+        else if (state.cursor.navigation.indexNext > state.flow.length) {
+            return "end";
+        }
+        // If we are not in an edge case of the end of the flow, we return the
+        // type of the next step
+        return state.flow[state.cursor.navigation.indexNext].type;
+    },
     // TODO : Make sure this works
     anyPianoKey: (state) => {
         // Return the "anyPianoKey" value specified by the block if it exists,

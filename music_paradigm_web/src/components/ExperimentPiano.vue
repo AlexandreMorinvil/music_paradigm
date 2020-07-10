@@ -31,7 +31,7 @@ export default {
       piano: null,
       pianoInited: false,
       playingNotes: {},
-      currentOctave: 4,
+      currentOctave: 4,   // FIXME: This should be directly in the keyboard mapping
       keyboardTracker: {} // Keeps track of keydown and keyup events for each key
     };
   },

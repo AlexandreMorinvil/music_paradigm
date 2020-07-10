@@ -2,7 +2,7 @@ import constants from './constants'
 
 export default {
     // Indicator of wether or not the experiment was set
-    experimentSet: false,
+    hasExperiment: false,
 
     // The sequence of the experiment
     flow: [],
@@ -24,17 +24,18 @@ export default {
     // Data to navigate through the flow
     cursor: {
         current: {
-            index: 0,                      // Index of the current block of the flow
-            playableMediaIndex : 0,         // Index of the current step of the block (browses the midi and video file names)
-            innerStepIndex: 0               // Index of the current step of the block (browses the picture file names)
+            index: 0,                   // Index of the current block of the flow
+            playableMediaIndex : 0,     // Index of the current step of the block (browses the midi and video file names)
+            innerStepIndex: 0,          // Index of the current step of the block (browses the picture file names)
+            isBeyondEnd: false          // Indicator of whether the index as reached the end of the flow (is checked before moving the cursor forward)
         },
         navigation: {
-            indexNext: 1,                   // Index of the next block of the flow
-            indexLoopStart: -1,             // Index to which a loop start
-            indexPlayableMediaPile: -1,     // Index to which there remains playable medias to depile
-            totalInnerSteps: 0,             // Number of steps in a given block
-            numberRepetition: 0,            // Number of repetitions left in a loop
-            numberPiledPlayableMedia: 0     // Number of playable medias piled
+            indexNext: 1,               // Index of the next block of the flow
+            indexLoopStart: -1,         // Index to which a loop start
+            indexPlayableMediaPile: -1, // Index to which there remains playable medias to depile
+            totalInnerSteps: 0,         // Number of steps in a given block
+            numberRepetition: 0,        // Number of repetitions left in a loop
+            numberPiledPlayableMedia: 0 // Number of playable medias piled
         }
     },
 

@@ -1,8 +1,5 @@
 import constants from './constants'
-import {
-    updateState,
-    moveCursorNext
-} from './functions'
+import functions from './functions'
 
 export default {
 
@@ -38,7 +35,7 @@ export default {
         };
 
         // Toggle the boolean value indicating that an experiment is mounted
-        state.experimentSet = true;
+        state.hasExperiment = true;
     },
 
     /**
@@ -48,28 +45,9 @@ export default {
      *                                  where the experiment was left
      */
     initCursor(state, presetCursor = null) {
-        // If a cursor is provided, the experiment is resumed with the state of the cursor
-        if (presetCursor) {
-            Object.assign(state.cursor, presetCursor);
-        }
-        // If no cursor is provided, the default values of the cursor
-        else {
-            state.cursor = {
-                current: {
-                    index: 0,
-                    innerStepIndex: 0,
-                    playableMediaIndex: 0
-                },
-                navigation: {
-                    indexNext: 1,
-                    indexPlayableMediaPile: -1,
-                    indexLoopStart: -1,
-                    totalInnerSteps: 0,
-                    numberPiledPlayableMedia: 0,
-                    numberRepetition: 0,
-                }
-            };
-        }
+        // If a cursor is provided, the experiment is resumed with the state of the cursor.
+        // If no cursor is provided, the default values of the cursor.
+        state.cursor = functions.assignCursor(presetCursor);
 
         // Set the initialization indicators to false
         state.isInitialized = {
@@ -79,10 +57,10 @@ export default {
         };
     },
     updateState: (state) => {
-        updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
+        functions.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
     },
     moveNextStep: (state) => {
-        moveCursorNext(state.flow, state.cursor, state.isInitialized);
-        updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
+        functions.moveCursorNext(state.flow, state.cursor, state.isInitialized);
+        functions.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
     }
 }

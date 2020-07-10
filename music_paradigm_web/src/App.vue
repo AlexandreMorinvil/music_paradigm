@@ -13,8 +13,6 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-
 import NavigationBarDefault from "@/components/NavigationBarDefault";
 import NavigationBarExperiment from "@/components/NavigationBarExperiment";
 
@@ -40,9 +38,7 @@ export default {
       }
     }
   },
-  methods: {
-    ...mapActions(["setApplicationInitialization"])
-  },
+  methods: {},
   watch: {
     // On change of the route, we reevaluate the state of the application
     $route(to) {

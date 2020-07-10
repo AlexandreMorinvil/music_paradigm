@@ -102,14 +102,14 @@ export default {
   destroyed() {},
   watch: {
     totalTime(value) {
-      if (this.totalTime < 0) {
+      if (value < 0) {
         this.setTime(0);
         this.stopTimer();
       } else {
-        this.seconds = Math.floor((this.totalTime / 1000) % 60);
-        this.minutes = Math.floor((this.totalTime / 1000 / 60) % 60);
-        this.hours = Math.floor((this.totalTime / (1000 * 60 * 60)) % 24);
-        this.days = Math.floor(this.totalTime / (1000 * 60 * 60 * 24));
+        this.seconds = Math.floor((value / 1000) % 60);
+        this.minutes = Math.floor((value / 1000 / 60) % 60);
+        this.hours = Math.floor((value / (1000 * 60 * 60)) % 24);
+        this.days = Math.floor(value / (1000 * 60 * 60 * 24));
       }
     }
   }

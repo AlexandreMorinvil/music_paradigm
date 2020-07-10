@@ -6,57 +6,57 @@
       </div>
 
       <div id="center-wrapper">
-        <div id="current-state-box" class="status-display-box wrapped-display">State</div>
-        <div id="next-state-box" class="status-display-box wrapped-display">Next</div>
+        <div
+          id="current-state-box"
+          class="status-display-box wrapped-display"
+        >{{ currentStateType }}</div>
+        <div id="next-state-box" class="status-display-box wrapped-display">{{ nextStateType }}</div>
       </div>
 
       <div id="piano-box" class="status-display-box">
-        <piano :display="true"/>
+        <piano :display="true" />
       </div>
     </div>
 
     <div id="experiment-progress-bar">
-      <div id="experiment-progress"></div>
+      <div id="experiment-progress" :style="`width: ${progressBarWith}%`"></div>
     </div>
 
     <div id="experiment-state">
       <router-view class="centered" />
+      {{ progressBarWith }};
     </div>
   </div>
 </template>
 
 <script>
-import ThePianoVue from "@/components/ThePiano.vue";
-import ExperimentPiano from "@/components/ExperimentTimer.vue";
-import { mapActions, mapGetters, mapState } from "vuex";
+import ExperimentPiano from "@/components/ExperimentPiano.vue";
+import ExperimentTimer from "@/components/ExperimentTimer.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Experiment",
   components: {
-    piano: ThePianoVue,
-    timer: ExperimentPiano
+    piano: ExperimentPiano,
+    timer: ExperimentTimer
   },
   data() {
-    return {
-      appInited: false
-    };
+    return {};
   },
   computed: {
-    ...mapState("experiment", ["experimentName", "experimentSet"]),
-    ...mapGetters("experiment", [])
-  },
-  methods: {
-    ...mapActions(["setApplicationInitialization"])
-  },
-  mounted() {},
-  watch: {
-    experimentSet() {
-      if (this.experimentSet && !this.appInited) {
-        this.setApplicationInitialization(true);
-        this.appInited = true;
-      }
+    ...mapGetters("experiment", [
+      "stepsTotalCount",
+      "stepsLeftCount",
+      "currentStateType",
+      "nextStateType"
+    ]),
+    progressBarWith() {
+      return 100 * (1 - this.stepsLeftCount / this.stepsTotalCount);
     }
-  }
+  },
+  methods: {},
+  mounted() {},
+  watch: {}
 };
 </script>
 
