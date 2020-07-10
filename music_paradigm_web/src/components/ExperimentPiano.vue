@@ -226,7 +226,7 @@ export default {
 }
 .piano-icon {
   display: inline-block;
-  stroke-width: 0;
+  stroke-width: 1px;
   width: 40px;
   height: 40px;
 }
