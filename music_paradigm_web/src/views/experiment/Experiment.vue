@@ -96,11 +96,11 @@ export default {
     navigateExperiment() {
       this.goNextStep();
     },
-    handleSpaceBarPress() {
-      this.isSpaceBarPressed = true;
+    handleSpaceBarPress(pressedKey) {
+      if (pressedKey.key === " ") this.isSpaceBarPressed = true;
     },
-    handleSpaceBarRelease() {
-      this.isSpaceBarPressed = false;
+    handleSpaceBarRelease(releasedKey) {
+      if (releasedKey.key === " ") this.isSpaceBarPressed = false;
     }
   },
   mounted() {

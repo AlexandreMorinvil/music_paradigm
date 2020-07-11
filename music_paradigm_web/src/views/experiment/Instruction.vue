@@ -90,7 +90,6 @@ export default {
 </script>
 
 <style scoped>
-/* Classes used by the child experiment states */
 .experiment-state-container {
   width: 100%;
   height: 100%;

@@ -73,12 +73,6 @@ export default {
         note: midiNote.data[1],
         velocity: midiNote.data[2]
       };
-      // HACK: Put the space bar out of the piano
-      if (midiMessage.note === 1) {
-        this.addPressedKey(midiMessage.note);
-        // this.deletePressedKey(midiMessage.note);
-        return;
-      }
       switch (midiMessage.type) {
         case "Note On":
           // We turn off all the other notes previous notes (Only one active note at the time)
