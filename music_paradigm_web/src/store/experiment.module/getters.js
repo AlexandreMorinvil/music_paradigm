@@ -10,7 +10,7 @@ export default {
         return functions.countStepsLeft(state.flow, state.cursor);
     },
 
-    // Getters for the experiment's settings
+    // Getters for the experiment settings
     experimentName: (state) => {
         return state.description.name || "UNKNOWN_NAME";
     },
@@ -18,10 +18,38 @@ export default {
         return state.settings.timbreFile || constants.DEFAULT_TIMBRE_FILE;
     },
 
-    // Media file names
+    // Getters for the state medias and texts
+    // Texts
+    textContent: () => {
+        // TODO: Integrate the texts in the flows
+        // Return the text name
+        return "Random text";//state.state.display.text;
+    },
+
+    // Image files
+    pictureName: (state) => {
+        // Fetch the picture name
+        const pictureName = state.state.mediaFile.pictureName;
+        if (pictureName === "") return "";
+
+        // Verify that the file name describes a supported file format
+        const pictureNameExtension = pictureName.split(".").pop();
+        if (!["jpg", "png", "bmp"].includes(pictureNameExtension)) {
+            throw new Error(`
+                Incompatible image format for the "${pictureName}" image file.\n
+                The "${pictureNameExtension}" file format is not supported.
+            `);
+        }
+
+        // Return the picture name
+        return `${state.description.folder}/${pictureName}`;
+    },
+
+    // Playable Media file names
     midiName: (state) => {
         // Fetch the picture name
         const midiName = state.state.mediaFile.midiName;
+        if (midiName === "") return "";
 
         // Verify that the file name describes a supported file format
         const midiNameExtension = midiName.split(".").pop();
@@ -37,28 +65,25 @@ export default {
 
     },
 
-    pictureName: (state) => {
-        // Fetch the picture name
-        const pictureName = state.state.mediaFile.pictureName;
+    videoName: (state) => {
+        // Fetch the video name
+        const videoName = state.state.mediaFile.videoName;
+        if (videoName === "") return "";
 
         // Verify that the file name describes a supported file format
-        const pictureNameExtension = pictureName.split(".").pop();
-        if (!["jpg", "png", "bmp"].includes(pictureNameExtension)) {
+        const videoNameExtension = videoName.split(".").pop();
+        if (!["mp4"].includes(videoNameExtension)) {
             throw new Error(`
-                Incompatible image format for the "${pictureName}" image file.\n
-                The "${pictureNameExtension}" file format is not supported.
-            `);
+                        Incompatible video format for the "${videoName}" MIDI file.\n
+                        The "${videoNameExtension}" file format is not supported.
+                    `);
         }
 
-        // Return the picture name
-        return `${state.description.folder}/${pictureName}`;
+        // Return the video name
+        return `${state.description.folder}/${videoName}`;
     },
 
-    videoName: (state) => {
-        return state.state.mediaFile.videoName;
-    },
-
-    // State attributes
+    // Geters for the state attributes
     currentStateType: (state) => {
         // Return the type of the current state
         if (state.cursor.current.isBeyondEnd) {
@@ -66,11 +91,12 @@ export default {
         }
         return state.state.type || "UNDEFINED";
     },
+
     nextStateType: (state) => {
         // Return the type of the next state
         // If we are currently beyond the last block of the flow or if there is
         // no current state type step, we return no next step
-        if (state.cursor.current.isBeyondEnd || !state.state.type){
+        if (state.cursor.current.isBeyondEnd || !state.state.type) {
             return "";
         }
         // If the next step is beyond the last block of the flow, we return "end"
@@ -81,6 +107,7 @@ export default {
         // type of the next step
         return state.flow[state.cursor.navigation.indexNext].type;
     },
+
     // TODO : Make sure this works
     anyPianoKey: (state) => {
         // Return the "anyPianoKey" value specified by the block if it exists,
@@ -91,6 +118,7 @@ export default {
         // space bar key (if the value is false).
         return state.state.settings.anyPianoKey || state.settings.anyPianoKey;
     },
+
     playingMode: (state) => {
         // Return the playing mode specified by the block if it exists,
         // otherwise, the default playing mode of the experiment is returned.
@@ -123,5 +151,19 @@ export default {
         // Return the the timeout time specified by the block if it exists,
         // otherwise, return a value of 0 to be interpreted as "There is no timeout"
         return state.state.settings.timeoutInSeconds || 0;
+    },
+
+    // Getters used for the state display formatting
+    hasText: (getters) => {
+        return Boolean(getters.textContent);
+    },
+    hasVisualMedia: (getters) => {
+      // There must always be at least be a visual media. If there is no text, necessarily we add a visual medial (the piano)
+      // If there is a text, the value will depend of whether or not there is a picture name.
+      return (getters.hasText) ? Boolean(getters.pictureName) : true;
+    },
+    // TODO: Integrate that concept in the model
+    hasFootnote: () => {
+        return true;
     }
 }

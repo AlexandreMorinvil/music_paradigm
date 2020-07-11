@@ -190,7 +190,7 @@ export default {
           const note = this.toNote(key);
           if (note !== undefined) {
             this.keyboardTracker[note] = false;
-            this.manageMidiNote({ data: [128, note, 127] }); // FIXME: change the pressure sensitivity here
+            this.manageMidiNote({ data: [128, note, 127] });
           }
         }
       }
@@ -205,7 +205,7 @@ export default {
       }
     }
   },
-  mounted: function() {
+  mounted() {
     // Verifying MIDI support
     if (navigator.requestMIDIAccess) {
       console.log("This browser supports WebMIDI!");
@@ -213,6 +213,10 @@ export default {
     } else {
       console.log("WebMIDI is not supported in this browser.");
     }
+  },
+  beforeDestroy() {
+    window.removeEventListener("keydown", this.handleKeyPress);
+    window.removeEventListener("keyup", this.handleKeyRelease);
   },
   watch: {}
 };

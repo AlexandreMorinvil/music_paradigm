@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="cue-state" class="experiment-state-container">
     <img id="instruction-img" :src="urlStatic(pictureName)" alt="Cue" />
   </div>
 </template>

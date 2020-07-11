@@ -30,8 +30,7 @@
     </div>
 
     <div id="experiment-state">
-      <router-view class="centered" />
-      {{ progressBarWith }};
+      <router-view :isSpaceBarPressed="isSpaceBarPressed" v-on:stateEnded="navigateExperiment" />
     </div>
   </div>
 </template>
@@ -39,7 +38,7 @@
 <script>
 import ExperimentPiano from "@/components/ExperimentPiano.vue";
 import ExperimentTimer from "@/components/ExperimentTimer.vue";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Experiment",
@@ -48,7 +47,9 @@ export default {
     timer: ExperimentTimer
   },
   data() {
-    return {};
+    return {
+      isSpaceBarPressed: false
+    };
   },
   computed: {
     ...mapGetters("experiment", [
@@ -68,6 +69,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions("experiment", ["goNextStep"]),
     getIconReference(stateType) {
       const iconFileName = "sprites.svg#";
       switch (stateType) {
@@ -90,9 +92,25 @@ export default {
         default:
           return iconFileName + "icon-three-dots";
       }
+    },
+    navigateExperiment() {
+      this.goNextStep();
+    },
+    handleSpaceBarPress() {
+      this.isSpaceBarPressed = true;
+    },
+    handleSpaceBarRelease() {
+      this.isSpaceBarPressed = false;
     }
   },
-  mounted() {},
+  mounted() {
+    window.addEventListener("keydown", this.handleSpaceBarPress);
+    window.addEventListener("keyup", this.handleSpaceBarRelease);
+  },
+  beforeDestroy() {
+    window.removeEventListener("keydown", this.handleSpaceBarPress);
+    window.removeEventListener("keyup", this.handleSpaceBarRelease);
+  },
   watch: {}
 };
 </script>
@@ -142,9 +160,9 @@ export default {
 }
 #experiment-state {
   box-shadow: 0 0 25px 0 rgb(0, 0, 0);
-  background-color: rgb(248, 135, 135);
+  background-color: rgb(251, 170, 170);
+  overflow: auto;
   margin: 25px;
-  min-height: 400px;
 }
 .status-display-box {
   display: flex;

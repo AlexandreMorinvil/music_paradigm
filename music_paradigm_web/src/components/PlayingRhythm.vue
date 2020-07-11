@@ -67,22 +67,4 @@ export default {
 </script>
 
 <style scoped>
-#app {
-  text-align: center;
-  max-height: 100%;
-  width: auto;
-  display: block;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-/* progress {
-  -webkit-appearance: none;
-} */
-
-* {
-  font-size: 1.6rem;
-}
 </style>
