@@ -82,11 +82,11 @@ export default {
         this.$emit("stateEnded");
       }
     },
-    pressedKeys(keys) {
-      if (this.anyPianoKey && keys.length > 0) {
-        this.$emit("stateEnded");
-      }
-    }
+    // pressedKeys(keys) {
+    //   if (this.anyPianoKey && keys.length > 0) {
+    //     this.$emit("stateEnded");
+    //   }
+    // }
   },
   beforeMount() {},
   mounted() {}

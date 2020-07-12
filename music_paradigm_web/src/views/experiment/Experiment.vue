@@ -30,12 +30,17 @@
     </div>
 
     <div id="experiment-state">
-      <router-view :isSpaceBarPressed="isSpaceBarPressed" v-on:stateEnded="navigateExperiment" />
+      <router-view
+        :isSpaceBarPressed="isSpaceBarPressed"
+        :pianoDataBus="pianoDataBus"
+        v-on:stateEnded="navigateExperiment"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import Vue from "vue";
 import ExperimentPiano from "@/components/ExperimentPiano.vue";
 import ExperimentTimer from "@/components/ExperimentTimer.vue";
 import { mapActions, mapGetters } from "vuex";
@@ -48,7 +53,8 @@ export default {
   },
   data() {
     return {
-      isSpaceBarPressed: false
+      isSpaceBarPressed: false,
+      pianoDataBus: new Vue()
     };
   },
   computed: {

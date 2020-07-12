@@ -31,8 +31,9 @@ export default {
 
     // Going to the next step after the playback ends
     this.player.on("endOfFile", () => {
-      this.goNextStep();
-      this.player.eventListeners["endOfFile"] = [];
+      console.log("End of file");
+      // this.goNextStep();
+      // this.player.eventListeners["endOfFile"] = [];
     });
   }
 };

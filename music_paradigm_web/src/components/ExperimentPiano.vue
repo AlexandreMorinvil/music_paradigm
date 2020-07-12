@@ -23,6 +23,12 @@ export default {
       default() {
         return false;
       }
+    },
+    pianoDataBus: {
+      type: Object,
+      default() {
+        return null;
+      }
     }
   },
   data() {
@@ -31,7 +37,7 @@ export default {
       piano: null,
       pianoInited: false,
       playingNotes: {},
-      currentOctave: 4,   // FIXME: This should be directly in the keyboard mapping
+      currentOctave: 4, // FIXME: This should be directly in the keyboard mapping
       keyboardTracker: {} // Keeps track of keydown and keyup events for each key
     };
   },
@@ -117,12 +123,20 @@ export default {
         time: new Date().getTime(),
         velocity: midiMessage.velocity
       });
+
+      // If the component is connected to the piano bus, we emit the key press event
+      if (this.pianoDataBus !== null)
+        this.pianoDataBus.$emit("pianoKeyPress", midiMessage.note);
     },
     recordKeyReleased(note) {
       this.addReleasedNoteLog({
         note: note,
         time: new Date().getTime()
       });
+
+      // If the component is connected to the piano bus, we emit the key release event
+      if (this.pianoDataBus !== null)
+        this.pianoDataBus.$emit("pianoKeyRelease", note);
     },
     toNote(e) {
       return map[e.key];
@@ -189,6 +203,23 @@ export default {
         }
       }
     },
+    /**
+     * Hanfling the midi messages to play a midi file
+     * @param {Object} midiMessage            The midi message that will be handled
+     * @param {Number} midiMessage.byteIndex  Number of the byte inted in the midi file
+     * @param {Number} midiMessage.channel    Channel as specified by the midi file (eg. 1, undefined)
+     * @param {Number} midiMessage.delta      Number of ticks since the last midi message
+     * @param {String} midiMessage.name       Midi message type (Time Signature, Key Signature, Set Tempo, 
+     *                                        Controller change, Program Change, Midi Port, Note on, undefined)
+     * @param {String} midiMessage.noteName   Name of the note played (eg. G4, A4, C5)
+     * @param {Number} midiMessage.noteNumber Midi number of the note (eg. 67, 69, 72)
+     * @param {Boolean} midiMessage.running   Boolean value
+     * @param {Number} midiMessage.tick       Number of ticks during the idi file playing 
+     * @param {Number} midiMessage.track      Track number
+     * @param {Number} velocity               Velocity of the note (There is no "Note off" midi message. A note
+     *                                        is turned off when there is a midi message for that note with a
+     *                                        velocity of 0)
+     */
     handleMidiMessage(midiMessage) {
       if (midiMessage.name == "Note on") {
         const currTime = this.audioConctext.currentTime;
@@ -196,7 +227,13 @@ export default {
           gain: midiMessage.velocity / 127,
           duration: 1
         });
+        // If the component is connected to the piano bus, we emit the midi messages
+        if (this.pianoDataBus !== null)
+          this.pianoDataBus.$emit("midiFileSignal", {isMidiMessage: true, payload: midiMessage});
       }
+      console.log(
+        `MidiMessage | byteIndex: ${midiMessage.byteIndex}; channel: ${midiMessage.channel}; delta: ${midiMessage.delta};  name: ${midiMessage.name}; noteName: ${midiMessage.noteName}; noteNumber : ${midiMessage.noteNumber}; running: ${midiMessage.running}; tick: ${midiMessage.tick}; track: ${midiMessage.track}; velocity: ${midiMessage.velocity}`
+      );
     }
   },
   mounted() {
@@ -212,7 +249,17 @@ export default {
     window.removeEventListener("keydown", this.handleKeyPress);
     window.removeEventListener("keyup", this.handleKeyRelease);
   },
-  watch: {}
+  watch: {
+    pianoDataBus() {
+      // Adding a custom signal at the end of the last note (Because the library used to play
+      // midi files does not emit a midi message for the end of the last note and it is
+      // necessary to emit a signal on the piano bus to indicate the end of hte last note)
+      this.player.on("endOfFile", () => {
+        if (this.pianoDataBus !== null)
+          this.pianoDataBus.$emit("midiFileSignal", {isMidiMessage: false, payload: "endOfFile"});
+      });
+    }
+  }
 };
 </script>
 
@@ -220,7 +267,7 @@ export default {
 #piano-display {
   display: flex;
   align-items: center;
-  height:100%;
+  height: 100%;
 }
 .piano-icon {
   display: inline-block;
