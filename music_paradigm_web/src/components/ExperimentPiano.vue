@@ -23,12 +23,6 @@ export default {
       default() {
         return false;
       }
-    },
-    pianoDataBus: {
-      type: Object,
-      default() {
-        return null;
-      }
     }
   },
   data() {
@@ -36,9 +30,11 @@ export default {
       audioConctext: null,
       piano: null,
       pianoInited: false,
+      pressedNotes: {},
       playingNotes: {},
       currentOctave: 4, // FIXME: This should be directly in the keyboard mapping
-      keyboardTracker: {} // Keeps track of keydown and keyup events for each key
+      keyboardTracker: {}, // Keeps track of keydown and keyup events for each key
+      bus: null
     };
   },
   computed: {
@@ -59,9 +55,9 @@ export default {
   },
   methods: {
     ...mapActions("piano", [
+      "setPlayer",
       "addPressedKey",
       "deletePressedKey",
-      "setPlayer",
       "addPressedNoteLog",
       "addReleasedNoteLog"
     ]),
@@ -82,25 +78,23 @@ export default {
       switch (midiMessage.type) {
         case "Note On":
           // We turn off all the other notes previous notes (Only one active note at the time)
-          for (let otherNote in this.playingNotes) {
-            if (otherNote !== midiMessage.note) {
-              this.stopNote(otherNote);
-              this.recordKeyReleased(otherNote);
+          for (let otherNote in this.pressedNotes) {
+            if(otherNote !== midiMessage.note) {
+              if (this.playingNotes.includes(otherNote)) this.stopNote(otherNote);
+              if (this.pressedNotes.includes(otherNote)) this.recordKeyReleased(otherNote);
             }
           }
           // We activate the specified note
           if (this.enableSoundFlag) this.playNote(midiMessage.note);
           this.recordKeyPress(midiMessage);
-          this.addPressedKey(midiMessage.note);
           break;
+       
         case "Note Off":
           // If the note was still active, we deactivate it
-          if (this.playingNotes[midiMessage.note]) {
-            this.stopNote(midiMessage.note);
-            this.recordKeyReleased(midiMessage.note);
-          }
-          this.deletePressedKey(midiMessage.note);
+          if (this.playingNotes[midiMessage.note]) this.stopNote(midiMessage.note);
+          if (this.pressedNotes[midiMessage.note]) this.recordKeyReleased(midiMessage.note);
           break;
+
         default:
           break;
       }
@@ -110,33 +104,27 @@ export default {
         gain: vel => {
           return vel / 127;
         }
-      }); // GainNode
+      });
     },
     stopNote(note) {
       this.playingNotes[note].stop();
       delete this.playingNotes[note];
     },
     recordKeyPress(midiMessage) {
+      this.addPressedKey(midiMessage.note);
       this.addPressedNoteLog({
         volume: this.enableSoundFlag, //TODO: Integrate the volume concept
         note: midiMessage.note,
         time: new Date().getTime(),
         velocity: midiMessage.velocity
       });
-
-      // If the component is connected to the piano bus, we emit the key press event
-      if (this.pianoDataBus !== null)
-        this.pianoDataBus.$emit("pianoKeyPress", midiMessage.note);
     },
     recordKeyReleased(note) {
+      this.deletePressedKey(note);
       this.addReleasedNoteLog({
         note: note,
         time: new Date().getTime()
       });
-
-      // If the component is connected to the piano bus, we emit the key release event
-      if (this.pianoDataBus !== null)
-        this.pianoDataBus.$emit("pianoKeyRelease", note);
     },
     toNote(e) {
       return map[e.key];
@@ -160,8 +148,9 @@ export default {
         window.addEventListener("keydown", this.handleKeyPress);
         window.addEventListener("keyup", this.handleKeyRelease);
 
-        // Midi messages listener (To automatically play a MIDI file)
+        // Midi messages listener (To handle played automatically MIDI files)
         this.player.on("midiEvent", this.handleMidiMessage);
+        this.setEndOfFileEmitter();
 
         this.pianoInited = true;
       });
@@ -209,12 +198,12 @@ export default {
      * @param {Number} midiMessage.byteIndex  Number of the byte inted in the midi file
      * @param {Number} midiMessage.channel    Channel as specified by the midi file (eg. 1, undefined)
      * @param {Number} midiMessage.delta      Number of ticks since the last midi message
-     * @param {String} midiMessage.name       Midi message type (Time Signature, Key Signature, Set Tempo, 
+     * @param {String} midiMessage.name       Midi message type (Time Signature, Key Signature, Set Tempo,
      *                                        Controller change, Program Change, Midi Port, Note on, undefined)
      * @param {String} midiMessage.noteName   Name of the note played (eg. G4, A4, C5)
      * @param {Number} midiMessage.noteNumber Midi number of the note (eg. 67, 69, 72)
      * @param {Boolean} midiMessage.running   Boolean value
-     * @param {Number} midiMessage.tick       Number of ticks during the idi file playing 
+     * @param {Number} midiMessage.tick       Number of ticks during the idi file playing
      * @param {Number} midiMessage.track      Track number
      * @param {Number} velocity               Velocity of the note (There is no "Note off" midi message. A note
      *                                        is turned off when there is a midi message for that note with a
@@ -228,12 +217,18 @@ export default {
           duration: 1
         });
         // If the component is connected to the piano bus, we emit the midi messages
-        if (this.pianoDataBus !== null)
-          this.pianoDataBus.$emit("midiFileSignal", {isMidiMessage: true, payload: midiMessage});
+        if (this.bus !== null)
+          this.bus.$emit("midiMessage", midiMessage);
       }
-      console.log(
-        `MidiMessage | byteIndex: ${midiMessage.byteIndex}; channel: ${midiMessage.channel}; delta: ${midiMessage.delta};  name: ${midiMessage.name}; noteName: ${midiMessage.noteName}; noteNumber : ${midiMessage.noteNumber}; running: ${midiMessage.running}; tick: ${midiMessage.tick}; track: ${midiMessage.track}; velocity: ${midiMessage.velocity}`
-      );
+    },
+    setEndOfFileEmitter() {
+      // Adding a custom signal at the end of the last note (Because the library used to play
+      // midi files does not emit a midi message for the end of the last note and it is
+      // necessary to emit a signal on the piano bus to indicate the end of hte last note)
+      this.player.on("endOfFile", () => {
+        if (this.bus !== null)
+          this.bus.$emit("midiEndOfFile");
+      });
     }
   },
   mounted() {
@@ -249,17 +244,7 @@ export default {
     window.removeEventListener("keydown", this.handleKeyPress);
     window.removeEventListener("keyup", this.handleKeyRelease);
   },
-  watch: {
-    pianoDataBus() {
-      // Adding a custom signal at the end of the last note (Because the library used to play
-      // midi files does not emit a midi message for the end of the last note and it is
-      // necessary to emit a signal on the piano bus to indicate the end of hte last note)
-      this.player.on("endOfFile", () => {
-        if (this.pianoDataBus !== null)
-          this.pianoDataBus.$emit("midiFileSignal", {isMidiMessage: false, payload: "endOfFile"});
-      });
-    }
-  }
+  watch: {}
 };
 </script>
 

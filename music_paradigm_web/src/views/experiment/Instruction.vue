@@ -12,8 +12,7 @@
       class="experiment-state-division state-division-visual-media"
     >
       <!-- <img id="instruction-img" :src="urlStatic(pictureName)" alt="Instruction" /> -->
-      <visual-piano />
-      <!-- <component :is="playingMode" v-on:finishedPlaying="goNextStep" ref="playingMode" /> -->
+      <visual-piano :pianoDataBus="pianoDataBus"/>
     </div>
 
     <div
@@ -39,6 +38,12 @@ export default {
       type: Boolean,
       default() {
         return false;
+      }
+    },
+    pianoDataBus: {
+      type: Object,
+      default() {
+        return null;
       }
     }
   },
@@ -81,7 +86,7 @@ export default {
       if (isPressed) {
         this.$emit("stateEnded");
       }
-    },
+    }
     // pressedKeys(keys) {
     //   if (this.anyPianoKey && keys.length > 0) {
     //     this.$emit("stateEnded");

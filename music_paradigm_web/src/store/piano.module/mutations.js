@@ -9,11 +9,16 @@ export default {
         state.player = key;
     },
     addPressedKey: (state, key) => {
-        state.pressedKeys.push(key);
+        state.pressedKeys[key] = true;
     },
     deletePressedKey: (state, key) => {
-        const selectedIndex = state.pressedKeys.indexOf(key);
-        if (selectedIndex !== -1) state.pressedKeys.splice(selectedIndex, 1);
+        state.pressedKeys[key] = false;
+    },
+    addMidiFileTriggeredKey: ({ commit }, key) => {
+        state.pressedKeys[key] = true;
+    },
+    deleteMidiFileTriggeredKey: ({ commit }, key) => {
+        state.pressedKeys[key] = false;
     },
 
     // Mutations on the data from the notes played

@@ -2,8 +2,9 @@ export default {
     // The player instance
     player: null,
 
-    // The notes started
-    pressedKeys: [],
+    // The notes being interacted with
+    pressedKeys: {},
+    midiFileTriggeredKeys: {},
 
     // Data from the current MIDI file
     midiFile: {

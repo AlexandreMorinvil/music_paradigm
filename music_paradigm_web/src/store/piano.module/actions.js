@@ -11,6 +11,12 @@ export default {
     deletePressedKey: ({ commit }, key) => {
         commit('deletePressedKey', key);
     },
+    addMidiFileTriggeredKey: ({ commit }, key) => {
+        commit('addMidiFileTriggeredKey', key);
+    },
+    deleteMidiFileTriggeredKey: ({ commit }, key) => {
+        commit('deleteMidiFileTriggeredKey', key);
+    },
 
     // Log of played notes
     addPressedNoteLog: ({ commit }, key) => {

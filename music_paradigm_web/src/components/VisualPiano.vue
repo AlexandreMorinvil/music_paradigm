@@ -44,46 +44,51 @@ export default {
   components: {},
   data() {
     return {
-      lastMidiNoteFromSignal: 0
+      lastMidiNoteFromSignal: 0,
+      bus: null
     };
   },
   computed: {},
   methods: {
     handleKeyPress(note) {
+      console.log(" ");
       this.activateFromPress(note);
     },
     handleKeyRealease(note) {
+      console.log(" ");
       this.deActivateFromPress(note);
     },
     /**
-     * Handle signals related to the reading and playing of midi files
-     * @param {Object}  signal          Signal that will be interpreted
-     * @param {Boolean} isMidiMessage   Indicator of whether the signal contains a midi message or
-     *                                  a costum made signal (eg. "endOfFile")
-     * @param {Object|String} payload   Content of the midi message if the signal is a midi message or
-     *                                  string inficating type of signal if it is not a midi message
+     * Hanfling the midi messages to play a midi file
+     * @param {Object} midiMessage            The midi message that will be handled
+     * @param {Number} midiMessage.byteIndex  Number of the byte inted in the midi file
+     * @param {Number} midiMessage.channel    Channel as specified by the midi file (eg. 1, undefined)
+     * @param {Number} midiMessage.delta      Number of ticks since the last midi message
+     * @param {String} midiMessage.name       Midi message type (Time Signature, Key Signature, Set Tempo,
+     *                                        Controller change, Program Change, Midi Port, Note on, undefined)
+     * @param {String} midiMessage.noteName   Name of the note played (eg. G4, A4, C5)
+     * @param {Number} midiMessage.noteNumber Midi number of the note (eg. 67, 69, 72)
+     * @param {Boolean} midiMessage.running   Boolean value
+     * @param {Number} midiMessage.tick       Number of ticks during the idi file playing
+     * @param {Number} midiMessage.track      Track number
+     * @param {Number} velocity               Velocity of the note (There is no "Note off" midi message. A note
+     *                                        is turned off when there is a midi message for that note with a
+     *                                        velocity of 0)
      */
-    handleMidiFileSignal(signal) {
-      // If the signal is a midi message named "Note on", we deactivate the note id the velocity
+    handleMidiMessage(midiMessage) {
+      // If the midi message named "Note on", we deactivate the note if the velocity
       // is 0 or we activate the note if the veolocity is different from 0.
-      if (signal.isMidiMessage) {
-        if (midiSignal.payload.name === "Note on") {
-          if (midiSignal.payload.velocity === 0)
-            this.activateFromSignal(midiSignal.payload.noteNumber);
-          else this.deActivateFromSignal(midiSignal.payload.noteNumber);
-        }
-      } else {
-        // A custom signal was implemented at to be emitted at the end of the last note
-        // (Because the library used to play midi files does not emit a midi message for
-        // the end of the last note and it is necessary know the end of the last note in
-        // order to know when to deactivate the last note)
-        if (midiSignal.payload === "EnfOfFile")
-          this.deActivateFromSignal(this.lastMidiNoteFromSignal);
+      if (midiMessage.name === "Note on") {
+        if (midiMessage.velocity === 0)
+          this.activateFromSignal(midiMessage.noteNumber);
+        else this.deActivateFromSignal(midiMessage.noteNumber);
       }
     },
+    handleMidiEndOfFile() {
+      deActivateFromSignal(1);
+    },
     activateFromPress(midiNumber) {
-      // TODO: I AM HERE, ADD CLASS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      this.$refs[midiNumber]
+      this.$refs[midiNumber];
       console.log(`Pressed : ${midiNumber}`);
     },
     deActivateFromPress(midiNumber) {
@@ -91,25 +96,31 @@ export default {
     },
     activateFromSignal(midiNumber) {
       this.lastMidiNoteFromSignal = midiNumber;
-      console.log("Activate Note");
+      console.log(`Activate Note ${midiNumber}`);
     },
     deActivateFromSignal(midiNumber) {
-      console.log("Deactivate Note");
+      console.log(`Deactivate Note ${midiNumber}`);
     }
   },
   beforeMount() {},
   mounted() {
     // If the component is connected to the piano bus, we add event listeners
-    console.log(this.pianoDataBus);
+    this.bus = this.pianoDataBus;
     if (this.pianoDataBus !== null) {
-      this.pianoDataBus.$on("pianoKeyPress", this.handleKeyPress);
-      this.pianoDataBus.$on("pianoKeyRelease", this.handleKeyRealease);
-      this.pianoDataBus.$on("midiFileSignal", this.handleMidiFileSignal);
+      this.bus.$on("pianoKeyPress", this.handleKeyPress);
+      this.bus.$on("pianoKeyRelease", this.handleKeyRealease);
+      this.bus.$on("midiMessage", this.handleMidiMessage);
+      this.bus.$on("midiEndOfFile", this.handleMidiEndOfFile);
     }
   },
   beforeDestroy() {
     // If the component is connected to the piano bus, we delete the event listeners
-    if (this.pianoDataBus !== null) this.pianoDataBus.$off();
+    if (this.bus !== null) {
+      this.bus.$off("pianoKeyPress", this.handleKeyPress);
+      this.bus.$off("pianoKeyRelease", this.handleKeyRealease);
+      this.bus.$off("midiMessage", this.handleMidiMessage);
+      this.bus.$off("midiEndOfFile", this.handleMidiEndOfFile);
+    }
   },
   destroyed() {},
   watch: {}

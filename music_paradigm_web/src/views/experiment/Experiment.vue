@@ -21,7 +21,7 @@
       </div>
 
       <div id="piano-box" class="status-display-box">
-        <piano :display="true" />
+        <piano :display="true" :pianoDataBus="pianoDataBus" />
       </div>
     </div>
 
