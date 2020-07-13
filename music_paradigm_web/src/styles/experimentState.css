@@ -6,54 +6,55 @@
     justify-content: center;
     align-content: space-between;
     grid-template-columns: 100%;
+    grid-row-gap: 2.5%;
 }
 
 /* Three areas division grid */
 
 .grid-area-area-note {
-    grid-template-rows: 45% 45% 10%;
+    grid-template-rows: 42.5% 42.5% 10%;
 }
 
 .grid-big-area-area-note {
-    grid-template-rows: 55% 35% 10%;
+    grid-template-rows: 51.944% 33.055% 10%;
 }
 
 .grid-area-big-area-note {
-    grid-template-rows: 35% 55% 10%;
+    grid-template-rows: 33.055% 51.944% 10%;
 }
 
 .grid-big-area-small-area-note {
-    grid-template-rows: 70% 20% 10%;
+    grid-template-rows: 66.111% 18.888% 10%;
 }
 
 .grid-small-area-big-area-note {
-    grid-template-rows: 20% 70% 10%;
+    grid-template-rows: 18.888% 66.111% 10%;
 }
 
 /* Two areas division grid */
 
 .grid-area-note {
-    grid-template-rows: 90% 10%;
+    grid-template-rows: 87.75% 10%;
 }
 
 .grid-area-area {
-    grid-template-rows: 50% 50%;
+    grid-template-rows: 48.75% 48.75%;
 }
 
 .grid-big-area-area {
-    grid-template-rows: 60% 40%;
+    grid-template-rows: 58.5% 39%;
 }
 
 .grid-area-big-area {
-    grid-template-rows: 40% 60%;
+    grid-template-rows: 39% 58.5%;
 }
 
 .grid-big-area-small-area {
-    grid-template-rows: 80% 20%;
+    grid-template-rows: 78% 19.5%;
 }
 
 .grid-small-area-big-area {
-    grid-template-rows: 20% 85%;
+    grid-template-rows: 19.5% 78%;
 }
 
 /* Sigle area division grid */
