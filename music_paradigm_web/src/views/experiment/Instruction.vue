@@ -12,7 +12,7 @@
       class="experiment-state-division state-division-visual-media"
     >
       <!-- <img id="instruction-img" :src="urlStatic(pictureName)" alt="Instruction" /> -->
-      <visual-piano :pianoDataBus="pianoDataBus"/>
+      <visual-piano />
     </div>
 
     <div
@@ -38,12 +38,6 @@ export default {
       type: Boolean,
       default() {
         return false;
-      }
-    },
-    pianoDataBus: {
-      type: Object,
-      default() {
-        return null;
       }
     }
   },

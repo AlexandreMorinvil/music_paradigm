@@ -8,17 +8,28 @@ export default {
     setPlayer: (state, key) => {
         state.player = key;
     },
+
     addPressedKey: (state, key) => {
-        state.pressedKeys[key] = true;
+        // This approach is used to add the pressed keys  in an array to ensure that
+        // only one insance of a given key is recorded at a time and to ensure that
+        // the mutations on pressedKeys or midiFileTriggeredKeys can be reactive with
+        // the vue instances. Doing a direct assignation as pressedKey[key] = true
+        // is would be a direct assignation in an Array/Object and would not allow
+        // the watch properties of Vue to detect the change of state.
+        const selectedIndex = state.pressedKeys.indexOf(key);
+        if (selectedIndex === -1) state.pressedKeys.push(key);
     },
     deletePressedKey: (state, key) => {
-        state.pressedKeys[key] = false;
+        const selectedIndex = state.pressedKeys.indexOf(key);
+        if (selectedIndex !== -1) state.pressedKeys.splice(selectedIndex, 1);
     },
-    addMidiFileTriggeredKey: ({ commit }, key) => {
-        state.pressedKeys[key] = true;
+    addMidiFileTriggeredKey: (state, key) => {
+        const selectedIndex = state.midiFileTriggeredKeys.indexOf(key);
+        if (selectedIndex === -1) state.midiFileTriggeredKeys.push(key);
     },
-    deleteMidiFileTriggeredKey: ({ commit }, key) => {
-        state.pressedKeys[key] = false;
+    deleteMidiFileTriggeredKey: (state, key) => {
+        const selectedIndex = state.midiFileTriggeredKeys.indexOf(key);
+        if (selectedIndex !== -1) state.midiFileTriggeredKeys.splice(selectedIndex, 1);
     },
 
     // Mutations on the data from the notes played

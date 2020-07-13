@@ -21,7 +21,7 @@
       </div>
 
       <div id="piano-box" class="status-display-box">
-        <piano :display="true" :pianoDataBus="pianoDataBus" />
+        <piano :display="true" />
       </div>
     </div>
 
@@ -32,7 +32,6 @@
     <div id="experiment-state">
       <router-view
         :isSpaceBarPressed="isSpaceBarPressed"
-        :pianoDataBus="pianoDataBus"
         v-on:stateEnded="navigateExperiment"
       />
     </div>

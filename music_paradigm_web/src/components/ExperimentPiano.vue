@@ -30,7 +30,6 @@ export default {
       audioConctext: null,
       piano: null,
       pianoInited: false,
-      pressedNotes: {},
       playingNotes: {},
       currentOctave: 4, // FIXME: This should be directly in the keyboard mapping
       keyboardTracker: {}, // Keeps track of keydown and keyup events for each key
@@ -38,7 +37,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("piano", ["player"]),
+    ...mapGetters("piano", ["player", "pressedKeys", "midiFileTriggeredKeys"]),
     ...mapGetters("experiment", [
       "timbreFile",
       "anyPianoKey",
@@ -59,7 +58,9 @@ export default {
       "addPressedKey",
       "deletePressedKey",
       "addPressedNoteLog",
-      "addReleasedNoteLog"
+      "addReleasedNoteLog",
+      "addMidiFileTriggeredKey",
+      "deleteMidiFileTriggeredKey"
     ]),
 
     /**
@@ -78,21 +79,25 @@ export default {
       switch (midiMessage.type) {
         case "Note On":
           // We turn off all the other notes previous notes (Only one active note at the time)
-          for (let otherNote in this.pressedNotes) {
-            if(otherNote !== midiMessage.note) {
-              if (this.playingNotes.includes(otherNote)) this.stopNote(otherNote);
-              if (this.pressedNotes.includes(otherNote)) this.recordKeyReleased(otherNote);
+          for (let otherNote in this.pressedKeys) {
+            if (otherNote !== midiMessage.note) {
+              if (Object.values(this.playingNotes).includes(otherNote))
+                this.stopNote(otherNote);
+              if (this.pressedKeys.includes(otherNote))
+                this.recordKeyReleased(otherNote);
             }
           }
           // We activate the specified note
           if (this.enableSoundFlag) this.playNote(midiMessage.note);
           this.recordKeyPress(midiMessage);
           break;
-       
+
         case "Note Off":
           // If the note was still active, we deactivate it
-          if (this.playingNotes[midiMessage.note]) this.stopNote(midiMessage.note);
-          if (this.pressedNotes[midiMessage.note]) this.recordKeyReleased(midiMessage.note);
+          if (this.playingNotes[midiMessage.note])
+            this.stopNote(midiMessage.note);
+          if (this.pressedKeys.includes(midiMessage.note))
+            this.recordKeyReleased(midiMessage.note);
           break;
 
         default:
@@ -150,7 +155,7 @@ export default {
 
         // Midi messages listener (To handle played automatically MIDI files)
         this.player.on("midiEvent", this.handleMidiMessage);
-        this.setEndOfFileEmitter();
+        this.player.on("endOfFile", this.handleMidiFileEndOfFile);
 
         this.pianoInited = true;
       });
@@ -216,19 +221,17 @@ export default {
           gain: midiMessage.velocity / 127,
           duration: 1
         });
-        // If the component is connected to the piano bus, we emit the midi messages
-        if (this.bus !== null)
-          this.bus.$emit("midiMessage", midiMessage);
+        if (midiMessage.velocity === 0) this.deleteMidiFileTriggeredKey(midiMessage.noteNumber);
+        else this.addMidiFileTriggeredKey(midiMessage.noteNumber);
       }
     },
-    setEndOfFileEmitter() {
-      // Adding a custom signal at the end of the last note (Because the library used to play
-      // midi files does not emit a midi message for the end of the last note and it is
-      // necessary to emit a signal on the piano bus to indicate the end of hte last note)
-      this.player.on("endOfFile", () => {
-        if (this.bus !== null)
-          this.bus.$emit("midiEndOfFile");
-      });
+    handleMidiFileEndOfFile() {
+      // At the end of the last note, we enforce the turning off of the midi file triggered
+      // notes in our Vuex data. The reason is because the library used to play midi files
+      // does not emit a midi message for the end of the last note, therefore we would always
+      // have a last note turned on if we do not turn all the notes off at the end of the file
+      for (let note in this.midiFileTriggeredKeys) 
+        this.deleteMidiFileTriggeredKey(note);
     }
   },
   mounted() {

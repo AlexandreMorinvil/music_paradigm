@@ -3,8 +3,8 @@ export default {
     player: null,
 
     // The notes being interacted with
-    pressedKeys: {},
-    midiFileTriggeredKeys: {},
+    pressedKeys: [],
+    midiFileTriggeredKeys: [],
 
     // Data from the current MIDI file
     midiFile: {

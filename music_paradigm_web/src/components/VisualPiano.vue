@@ -2,128 +2,61 @@
   <!-- The HTML definition of this piano adapted from the open source project : https://codepen.io/zastrow/pen/oDBki -->
   <div id="visual-piano">
     <ul class="set">
-      <li id="note-60" ref="61" class="white c"></li>
-      <li id="note-61" ref="62" class="black cs"></li>
-      <li id="note-63" ref="63" class="white d"></li>
-      <li id="note-64" ref="64" class="black ds"></li>
-      <li id="note-65" ref="65" class="white e"></li>
-      <li id="note-66" ref="66" class="white f"></li>
-      <li id="note-67" ref="67" class="black fs"></li>
-      <li id="note-68" ref="68" class="white g"></li>
-      <li id="note-69" ref="69" class="black gs"></li>
-      <li id="note-70" ref="70" class="white a"></li>
-      <li id="note-71" ref="71" class="black as"></li>
-      <li id="note-72" ref="72" class="white b"></li>
-      <li id="note-73" ref="73" class="white c"></li>
-      <li id="note-74" ref="74" class="black cs"></li>
-      <li id="note-75" ref="75" class="white d"></li>
-      <li id="note-76" ref="76" class="black ds"></li>
-      <li id="note-77" ref="77" class="white e"></li>
-      <li id="note-78" ref="78" class="white f"></li>
-      <li id="note-79" ref="79" class="black fs"></li>
-      <li id="note-80" ref="80" class="white g"></li>
-      <li id="note-81" ref="81" class="black gs"></li>
-      <li id="note-82" ref="82" class="white a"></li>
-      <li id="note-83" ref="83" class="black as"></li>
-      <li id="note-84" ref="84" class="white b"></li>
+      <li id="note-48" ref="48" class="white c"></li>
+      <li id="note-49" ref="49" class="black cs"></li>
+      <li id="note-50" ref="50" class="white d"></li>
+      <li id="note-51" ref="51" class="black ds"></li>
+      <li id="note-52" ref="52" class="white e"></li>
+      <li id="note-53" ref="53" class="white f"></li>
+      <li id="note-54" ref="54" class="black fs"></li>
+      <li id="note-55" ref="55" class="white g"></li>
+      <li id="note-56" ref="56" class="black gs"></li>
+      <li id="note-57" ref="57" class="white a"></li>
+      <li id="note-58" ref="58" class="black as"></li>
+      <li id="note-59" ref="59" class="white b"></li>
+      <li id="note-60" ref="60" class="white c"></li>
+      <li id="note-61" ref="61" class="black cs"></li>
+      <li id="note-62" ref="62" class="white d"></li>
+      <li id="note-63" ref="63" class="black ds"></li>
+      <li id="note-64" ref="64" class="white e"></li>
+      <li id="note-65" ref="65" class="white f"></li>
+      <li id="note-66" ref="66" class="black fs"></li>
+      <li id="note-67" ref="67" class="white g"></li>
+      <li id="note-68" ref="68" class="black gs"></li>
+      <li id="note-69" ref="69" class="white a"></li>
+      <li id="note-70" ref="70" class="black as"></li>
+      <li id="note-71" ref="71" class="white b"></li>
     </ul>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "Playing",
-  props: {
-    pianoDataBus: {
-      type: Object,
-      default() {
-        return null;
-      }
-    }
-  },
   components: {},
   data() {
-    return {
-      lastMidiNoteFromSignal: 0,
-      bus: null
-    };
+    return {};
   },
-  computed: {},
-  methods: {
-    handleKeyPress(note) {
-      console.log(" ");
-      this.activateFromPress(note);
-    },
-    handleKeyRealease(note) {
-      console.log(" ");
-      this.deActivateFromPress(note);
-    },
-    /**
-     * Hanfling the midi messages to play a midi file
-     * @param {Object} midiMessage            The midi message that will be handled
-     * @param {Number} midiMessage.byteIndex  Number of the byte inted in the midi file
-     * @param {Number} midiMessage.channel    Channel as specified by the midi file (eg. 1, undefined)
-     * @param {Number} midiMessage.delta      Number of ticks since the last midi message
-     * @param {String} midiMessage.name       Midi message type (Time Signature, Key Signature, Set Tempo,
-     *                                        Controller change, Program Change, Midi Port, Note on, undefined)
-     * @param {String} midiMessage.noteName   Name of the note played (eg. G4, A4, C5)
-     * @param {Number} midiMessage.noteNumber Midi number of the note (eg. 67, 69, 72)
-     * @param {Boolean} midiMessage.running   Boolean value
-     * @param {Number} midiMessage.tick       Number of ticks during the idi file playing
-     * @param {Number} midiMessage.track      Track number
-     * @param {Number} velocity               Velocity of the note (There is no "Note off" midi message. A note
-     *                                        is turned off when there is a midi message for that note with a
-     *                                        velocity of 0)
-     */
-    handleMidiMessage(midiMessage) {
-      // If the midi message named "Note on", we deactivate the note if the velocity
-      // is 0 or we activate the note if the veolocity is different from 0.
-      if (midiMessage.name === "Note on") {
-        if (midiMessage.velocity === 0)
-          this.activateFromSignal(midiMessage.noteNumber);
-        else this.deActivateFromSignal(midiMessage.noteNumber);
-      }
-    },
-    handleMidiEndOfFile() {
-      deActivateFromSignal(1);
-    },
-    activateFromPress(midiNumber) {
-      this.$refs[midiNumber];
-      console.log(`Pressed : ${midiNumber}`);
-    },
-    deActivateFromPress(midiNumber) {
-      console.log(`Released : ${midiNumber}`);
-    },
-    activateFromSignal(midiNumber) {
-      this.lastMidiNoteFromSignal = midiNumber;
-      console.log(`Activate Note ${midiNumber}`);
-    },
-    deActivateFromSignal(midiNumber) {
-      console.log(`Deactivate Note ${midiNumber}`);
-    }
+  computed: {
+    ...mapGetters("piano", ["player", "pressedKeys", "midiFileTriggeredKeys"])
   },
+  methods: {},
   beforeMount() {},
   mounted() {
-    // If the component is connected to the piano bus, we add event listeners
-    this.bus = this.pianoDataBus;
-    if (this.pianoDataBus !== null) {
-      this.bus.$on("pianoKeyPress", this.handleKeyPress);
-      this.bus.$on("pianoKeyRelease", this.handleKeyRealease);
-      this.bus.$on("midiMessage", this.handleMidiMessage);
-      this.bus.$on("midiEndOfFile", this.handleMidiEndOfFile);
-    }
+    this.$refs["55"].classList.add('user-triggered');
   },
-  beforeDestroy() {
-    // If the component is connected to the piano bus, we delete the event listeners
-    if (this.bus !== null) {
-      this.bus.$off("pianoKeyPress", this.handleKeyPress);
-      this.bus.$off("pianoKeyRelease", this.handleKeyRealease);
-      this.bus.$off("midiMessage", this.handleMidiMessage);
-      this.bus.$off("midiEndOfFile", this.handleMidiEndOfFile);
-    }
-  },
+  beforeDestroy() {},
   destroyed() {},
-  watch: {}
+  watch: {
+    pressedKeys(list) {
+      for (let note = 48; note < 71; note++) {
+        if (list.includes(note)) this.$refs[note.toString()].classList.add('user-triggered');
+        else this.$refs[note.toString()].classList.remove('user-triggered');
+      }
+    }
+  }
 };
 </script>
 

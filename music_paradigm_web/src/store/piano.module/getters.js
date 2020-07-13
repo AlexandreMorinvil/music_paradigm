@@ -10,11 +10,11 @@ export default {
     pressedKeys: (state) => {
         return state.pressedKeys;
     },
+    midiFileTriggeredKeys: (state) => {
+        return state.midiFileTriggeredKeys;
+    },
 
     // Getters for the current MIDI file data
-    midiFileNotes: (state) => {
-        return state.midiFile.notes;
-    },
     midiFileNotesMidi: (state) => {
         return state.midiFile.notes.midi;
     },

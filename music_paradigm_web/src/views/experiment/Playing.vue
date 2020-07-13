@@ -44,38 +44,38 @@ export default {
     ...mapActions("piano", ["resetPlayedNotesLogs"]),
     ...mapActions("experiment", ["goNextStep"]),
     evaluatePlayedNotes() {
-      // TODO: Put this logging logic in a dedicated store
-      //logging
-      let logObj = {
-        header: {},
-        playedNotes: {},
-        evaluation: {}
-      };
+      // // TODO: Put this logging logic in a dedicated store
+      // //logging
+      // let logObj = {
+      //   header: {},
+      //   playedNotes: {},
+      //   evaluation: {}
+      // };
 
-      logObj.header = {
-        userId: this.user._id,
-        username: this.user.username,
-        experimentName: this.experimentName,
-        experimentMode: this.playingMode,
-        // TODO: INSURING THAT WE CAN GET THE NUMBER OF REPETITIONS
-        // expBlockNum: this.experiment.currentBlockNum + 1, //so that block number starts from 0
+      // logObj.header = {
+      //   userId: this.user._id,
+      //   username: this.user.username,
+      //   experimentName: this.experimentName,
+      //   experimentMode: this.playingMode,
+      //   // TODO: INSURING THAT WE CAN GET THE NUMBER OF REPETITIONS
+      //   // expBlockNum: this.experiment.currentBlockNum + 1, //so that block number starts from 0
 
-        // TODO: INSURING THAT THE MIDIFILE FROM THE PREVIOUS BLOCK IS KEPT IF THERE IS NO NEW MIDI FILE
-        // expMidiFileName: this.midiName,
-      };
+      //   // TODO: INSURING THAT THE MIDIFILE FROM THE PREVIOUS BLOCK IS KEPT IF THERE IS NO NEW MIDI FILE
+      //   // expMidiFileName: this.midiName,
+      // };
 
-      logObj.playedNotes = {
-        midi: this.playedNotesMidi,
-        duration: this.playedNotesDuration,
-        time: this.playedNotesTime,
-        velocity: this.playedNotesVelocity
-      };
+      // logObj.playedNotes = {
+      //   midi: this.playedNotesMidi,
+      //   duration: this.playedNotesDuration,
+      //   time: this.playedNotesTime,
+      //   velocity: this.playedNotesVelocity
+      // };
 
       this.$refs.playingMode.evaluate();
 
-      // send results
-      // TODO: Fix this piece of code because your changes made it so it doesn't work anymore
-      // this.create(logObj);
+      // // send results
+      // // TODO: Fix this piece of code because your changes made it so it doesn't work anymore
+      // // this.create(logObj);
     }
   },
   beforeMount() {},
