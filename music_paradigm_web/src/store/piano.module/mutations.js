@@ -1,8 +1,7 @@
 import config from "@/config";
 import { Midi } from '@tonejs/midi';
-import { notePerformance } from "@/_helpers";
+import { midiConversion, notePerformance } from "@/_helpers";
 import functions from './functions'
-
 
 export default {
     // Mutations on player
@@ -52,13 +51,11 @@ export default {
         if (noteCount === 0) state.played.startTime = key.time;
         state.played.notes.volume.push(key.volume);
         state.played.notes.midi.push(key.note);
-        state.played.notes.time.push(key.time - state.played.startTime);
-        state.played.notes.pitch.push("C C#D D#E F F#G G#A A#B ".substr((key.note % 12) * 2, 2).replace(/\s+/g, ''));
-        state.played.notes.octave.push(((key.note / 12) | 0) - 1);
         state.played.notes.velocity.push(key.velocity);
-        state.played.notes.name.push(
-            state.played.notes.pitch[noteCount].concat(
-                state.played.notes.octave[noteCount]));
+        state.played.notes.time.push(key.time - state.played.startTime);
+        state.played.notes.pitch.push(midiConversion.midiNumberToPitch(key.note));
+        state.played.notes.octave.push(midiConversion.midiNumberToOctave(key.note));
+        state.played.notes.name.push(midiConversion.midiNumberToName(key.note));
     },
 
     addReleasedNoteLog: (state, key) => {

@@ -78,7 +78,14 @@ export default {
   beforeDestroy() {
     this.removePlayerEndOfFileAction(this.handleEndOfMidiFile);
   },
-  watch: {}
+  watch: {
+    midiName: {
+      immediate: true,
+      handler: function(midiName) {
+        if (midiName !== "") this.loadMidiFile(this.midiName);
+      }
+    }
+  }
 };
 </script>
 

@@ -104,14 +104,14 @@ const gradeRhythmType = function (evaluationResults, { minNoteAccuracy, maxRhyth
     const grades = [
         {
             criteria: "Notes",
-            mark: evaluationResults.pitchAccuracy,
-            passMark: minNoteAccuracy,
+            mark: Math.max(evaluationResults.pitchAccuracy, 0),
+            passMark: Math.min(Math.max(minNoteAccuracy, 0), 100),
             topMark: 100
         },
         {
             criteria: "Rhythm",
-            mark: 100 - evaluationResults.rhythmTempoRelativeError,
-            passMark: 100 - maxRhythmError,
+            mark: Math.max(100 - evaluationResults.rhythmTempoRelativeError, 0),
+            passMark: Math.min(Math.max(100 - maxRhythmError, 0), 100),
             topMark: 100
         }
     ];

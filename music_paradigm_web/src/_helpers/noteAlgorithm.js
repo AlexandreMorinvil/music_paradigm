@@ -164,9 +164,8 @@ export default {
     // (Duke: mean) number of pitch errors per sequence
     // Old name : getAccuracyD_2
     getPitchErrorCount: (refNoteArr, noteArr) => {
-        if (!arraysValid(noteArr, refNoteArr)) {
-            return -1; // exceptional case
-        }
+        if (!arraysValid(noteArr, refNoteArr)) return -1;
+
         const { startIndex, length } = findSubarraySegment(refNoteArr, noteArr);
         let arrDiff = noteArr.length - length;
         return arrDiff + startIndex;
@@ -178,6 +177,8 @@ export default {
     // Old name : getRhythmTempo
     // Average relative duration error
     getRhythmTempoRelativeError: (refDurArr, durArr) => {
+        if (!arraysValid(durArr, refDurArr)) return -1;
+
         let arrDiff = 0;
         for (let i = 0; i < refDurArr.length; i++) {
             arrDiff += Math.abs(durArr[i] - refDurArr[i]) / refDurArr[i];
@@ -189,6 +190,8 @@ export default {
     // FIXME: This is a function that Weiwei never finished implementing
     // get rhythm, excluding tempo (not working yet)
     getRhythm: (refDurArr, durArr) => {
+        if (!arraysValid(durArr, refDurArr)) return -1;
+
         let arrRatio = 0;
         let refArrRatio = 0;
         for (let i = 1; i < durArr.length; i++) {
@@ -201,6 +204,7 @@ export default {
 
     // get array of missedNotes
     getMissedNotes: (refNoteArr, noteArr) => {
+        if (!arraysValid(noteArr, refNoteArr)) return -1;
         let missedNotes = [];
 
         const { length } = findSubarraySegment(refNoteArr, noteArr);
