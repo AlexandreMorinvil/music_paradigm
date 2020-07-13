@@ -1,5 +1,5 @@
-import {Track} from './track';
-import {Utils} from './utils';
+import { Track } from './track';
+import { Utils } from './utils';
 
 // Polyfill Uint8Array.forEach: Doesn't exist on Safari <10
 if (!Uint8Array.prototype.forEach) {
@@ -34,7 +34,7 @@ class Player {
 		this.totalEvents = 0;
 		this.eventListeners = {};
 
-		if (typeof(eventHandler) === 'function') this.on('midiEvent', eventHandler);
+		if (typeof (eventHandler) === 'function') this.on('midiEvent', eventHandler);
 	}
 
 	/**
@@ -188,7 +188,7 @@ class Player {
 			this.inLoop = true;
 			this.tick = this.getCurrentTick();
 
-			this.tracks.forEach(function(track) {
+			this.tracks.forEach(function (track) {
 				// Handle next event
 				if (!dryRun && this.endOfFile()) {
 					//console.log('end of file')
@@ -213,7 +213,7 @@ class Player {
 
 			}, this);
 
-			if (!dryRun) this.triggerPlayerEvent('playing', {tick: this.tick});
+			if (!dryRun) this.triggerPlayerEvent('playing', { tick: this.tick });
 			this.inLoop = false;
 		}
 	}
@@ -287,7 +287,7 @@ class Player {
 		this.startTick = tick;
 
 		// Need to set track event indexes to the nearest possible event to the specified tick.
-		this.tracks.forEach(function(track) {
+		this.tracks.forEach(function (track) {
 			track.setEventIndexByTick(tick);
 		});
 		return this;
@@ -369,7 +369,7 @@ class Player {
 	 * @return {number}
 	 */
 	getTotalEvents() {
-		return this.tracks.reduce((a, b) => {return {events: {length: a.events.length + b.events.length}}}, {events: {length: 0}}).events.length;
+		return this.tracks.reduce((a, b) => { return { events: { length: a.events.length + b.events.length } } }, { events: { length: 0 } }).events.length;
 	}
 
 	/**
@@ -402,7 +402,7 @@ class Player {
 	 */
 	bytesProcessed() {
 		// Currently assume header chunk is strictly 14 bytes
-		return 14 + this.tracks.length * 8 + this.tracks.reduce((a, b) => {return {pointer: a.pointer + b.pointer}}, {pointer: 0}).pointer;
+		return 14 + this.tracks.length * 8 + this.tracks.reduce((a, b) => { return { pointer: a.pointer + b.pointer } }, { pointer: 0 }).pointer;
 	}
 
 	/**
@@ -410,7 +410,7 @@ class Player {
 	 * @return {number}
 	 */
 	eventsPlayed() {
-		return this.tracks.reduce((a, b) => {return {eventIndex: a.eventIndex + b.eventIndex}}, {eventIndex: 0}).eventIndex;
+		return this.tracks.reduce((a, b) => { return { eventIndex: a.eventIndex + b.eventIndex } }, { eventIndex: 0 }).eventIndex;
 	}
 
 	/**
@@ -433,8 +433,8 @@ class Player {
 	 * @return {number}
 	 */
 	getCurrentTick() {
-		if(!this.startTime && this.tick) return this.startTick;
-		else if(!this.startTime) return 0;
+		if (!this.startTime && this.tick) return this.startTick;
+		else if (!this.startTime) return 0;
 		return Math.round(((new Date()).getTime() - this.startTime) / 1000 * (this.division * (this.tempo / 60))) + this.startTick;
 	}
 
@@ -461,6 +461,24 @@ class Player {
 	}
 
 	/**
+	 * Remove one or all event to listeners for an event (Custom made function, not in the original distrinution)
+	 * @param {string} - Name of event to subscribe to.
+	 * @param {function} - Callback to fire when event is broadcast.
+	 * @return {Player}
+	 */
+	off(playerEvent, fn) {
+		if (!this.eventListeners.hasOwnProperty(playerEvent)) return this;
+		if (fn && this.eventListeners[playerEvent].includes(fn)) {
+			const index = this.eventListeners[playerEvent].indexOf(fn);
+			if (index !== -1) this.eventListeners[playerEvent].splice(index, 1);
+		}
+		else {
+			this.eventListeners[playerEvent] = [];
+		}
+		return this;
+	}
+
+	/**
 	 * Broadcasts event to trigger subscribed callbacks.
 	 * @param {string} - Name of event.
 	 * @param {object} - Data to be passed to subscriber callback.
@@ -473,4 +491,4 @@ class Player {
 
 }
 
-export {Player};
+export { Player };

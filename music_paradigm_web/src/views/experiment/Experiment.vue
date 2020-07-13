@@ -30,10 +30,7 @@
     </div>
 
     <div id="experiment-state">
-      <router-view
-        :isSpaceBarPressed="isSpaceBarPressed"
-        v-on:stateEnded="navigateExperiment"
-      />
+      <router-view :isSpaceBarPressed="isSpaceBarPressed" v-on:stateEnded="navigateExperiment" />
     </div>
   </div>
 </template>
@@ -61,7 +58,8 @@ export default {
       "stepsTotalCount",
       "stepsLeftCount",
       "currentStateType",
-      "nextStateType"
+      "nextStateType",
+      "midiName"
     ]),
     currentStateIcon() {
       return this.getIconReference(this.currentStateType);
@@ -75,6 +73,7 @@ export default {
   },
   methods: {
     ...mapActions("experiment", ["goNextStep"]),
+    ...mapActions("piano", ["loadMidiFile"]),
     getIconReference(stateType) {
       const iconFileName = "sprites.svg#";
       switch (stateType) {
@@ -116,7 +115,14 @@ export default {
     window.removeEventListener("keydown", this.handleSpaceBarPress);
     window.removeEventListener("keyup", this.handleSpaceBarRelease);
   },
-  watch: {}
+  watch: {
+    midiName: {
+      immediate: true,
+      handler: function(midiName) {
+        if (midiName !== "") this.loadMidiFile(this.midiName);
+      }
+    }
+  }
 };
 </script>
 

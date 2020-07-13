@@ -17,6 +17,9 @@ export default {
     deleteMidiFileTriggeredKey: ({ commit }, key) => {
         commit('deleteMidiFileTriggeredKey', key);
     },
+    deleteAllMidiFileTriggeredKey: ({ commit }, key) => {
+        commit('deleteAllMidiFileTriggeredKey', key);
+    },
 
     // Log of played notes
     addPressedNoteLog: ({ commit }, key) => {

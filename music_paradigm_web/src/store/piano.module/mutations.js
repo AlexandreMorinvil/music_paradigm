@@ -31,6 +31,9 @@ export default {
         const selectedIndex = state.midiFileTriggeredKeys.indexOf(key);
         if (selectedIndex !== -1) state.midiFileTriggeredKeys.splice(selectedIndex, 1);
     },
+    deleteAllMidiFileTriggeredKey: (state) => {
+        state.midiFileTriggeredKeys.splice(0, state.midiFileTriggeredKeys.length);
+    },
 
     // Mutations on the data from the notes played
     addPressedNoteLog: (state, key) => {

@@ -34,7 +34,7 @@
 /* Two areas division grid */
 
 .grid-area-note {
-    grid-template-rows: 87.75% 10%;
+    grid-template-rows: 87.5% 10%;
 }
 
 .grid-area-area {

@@ -37,12 +37,8 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("piano", ["player", "pressedKeys", "midiFileTriggeredKeys"]),
-    ...mapGetters("experiment", [
-      "timbreFile",
-      "anyPianoKey",
-      "enableSoundFlag"
-    ]),
+    ...mapGetters("piano", ["player", "pressedKeys"]),
+    ...mapGetters("experiment", ["timbreFile", "enableSoundFlag"]),
     soundStatus() {
       if (!this.pianoInited) return "LOAD...";
       return this.enableSoundFlag ? "ON" : "OFF";
@@ -60,7 +56,8 @@ export default {
       "addPressedNoteLog",
       "addReleasedNoteLog",
       "addMidiFileTriggeredKey",
-      "deleteMidiFileTriggeredKey"
+      "deleteMidiFileTriggeredKey",
+      "deleteAllMidiFileTriggeredKey"
     ]),
 
     /**
@@ -221,7 +218,8 @@ export default {
           gain: midiMessage.velocity / 127,
           duration: 1
         });
-        if (midiMessage.velocity === 0) this.deleteMidiFileTriggeredKey(midiMessage.noteNumber);
+        if (midiMessage.velocity === 0)
+          this.deleteMidiFileTriggeredKey(midiMessage.noteNumber);
         else this.addMidiFileTriggeredKey(midiMessage.noteNumber);
       }
     },
@@ -230,8 +228,7 @@ export default {
       // notes in our Vuex data. The reason is because the library used to play midi files
       // does not emit a midi message for the end of the last note, therefore we would always
       // have a last note turned on if we do not turn all the notes off at the end of the file
-      for (let note in this.midiFileTriggeredKeys) 
-        this.deleteMidiFileTriggeredKey(note);
+      this.deleteAllMidiFileTriggeredKey();
     }
   },
   mounted() {

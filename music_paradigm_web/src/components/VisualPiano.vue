@@ -26,6 +26,9 @@
       <li id="note-69" ref="69" class="white a"></li>
       <li id="note-70" ref="70" class="black as"></li>
       <li id="note-71" ref="71" class="white b"></li>
+      <li id="note-72" ref="72" class="white c"></li>
+      <li id="note-73" ref="73" class="black cs"></li>
+      <li id="note-74" ref="74" class="white d"></li>
     </ul>
   </div>
 </template>
@@ -40,7 +43,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters("piano", ["player", "pressedKeys", "midiFileTriggeredKeys"])
+    ...mapGetters("piano", ["pressedKeys", "midiFileTriggeredKeys"])
   },
   methods: {},
   beforeMount() {},
@@ -49,17 +52,18 @@ export default {
   destroyed() {},
   watch: {
     pressedKeys(list) {
-      for (let note = 48; note < 71; note++) {
+      for (let note = 48; note <= 74; note++) {
         if (list.includes(note))
           this.$refs[note.toString()].classList.add("user-triggered");
         else this.$refs[note.toString()].classList.remove("user-triggered");
       }
     },
     midiFileTriggeredKeys(list) {
-      for (let note = 48; note < 71; note++) {
+      for (let note = 48; note <= 74; note++) {
         if (list.includes(note))
           this.$refs[note.toString()].classList.add("midi-file-triggered");
-        else this.$refs[note.toString()].classList.remove("midi-file-triggered");
+        else
+          this.$refs[note.toString()].classList.remove("midi-file-triggered");
       }
     }
   }
@@ -109,7 +113,7 @@ li {
 
 ul .white {
   height: 103%;
-  width: 6.76%;
+  width: 6%;
   z-index: 1;
   border-left: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
@@ -132,8 +136,8 @@ ul .white:active,
 .black,
 .triggered {
   height: 60%;
-  width: 4%;
-  margin: 0 0 0 -2%;
+  width: 3.6%;
+  margin: 0 0 0 -1.8%;
   z-index: 2;
   border: 1px solid #000;
   border-radius: 0 0 3px 3px;
@@ -153,7 +157,7 @@ ul .white:active,
 .g,
 .a,
 .b {
-  margin: 0 0 0 -2%;
+  margin: 0 0 0 -1.8%;
 }
 
 ul li:first-child {

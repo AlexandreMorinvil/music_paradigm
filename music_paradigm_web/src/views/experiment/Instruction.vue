@@ -4,7 +4,8 @@
       v-if="hasText"
       id="text-area"
       class="experiment-state-division state-division-text"
-    >{{ textContent }}</div>
+    >{{ textContent }}
+ </div>
 
     <div
       v-if="hasVisualMedia"
@@ -25,7 +26,7 @@
 
 <script>
 import "@/styles/experimentState.css";
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import VisualPiano from "@/components/VisualPiano.vue";
 
 export default {
@@ -42,13 +43,11 @@ export default {
     }
   },
   data() {
-    return {
-      false: false
-    };
+    return {};
   },
   computed: {
-    ...mapState("piano", ["pressedKeys"]),
     ...mapGetters(["urlStatic"]),
+    ...mapGetters("piano", ["pressedKeys"]),
     ...mapGetters("experiment", [
       "hasInteractivePiano",
       "hasText",
