@@ -468,9 +468,11 @@ class Player {
 	 */
 	off(playerEvent, fn) {
 		if (!this.eventListeners.hasOwnProperty(playerEvent)) return this;
-		if (fn && this.eventListeners[playerEvent].includes(fn)) {
-			const index = this.eventListeners[playerEvent].indexOf(fn);
-			if (index !== -1) this.eventListeners[playerEvent].splice(index, 1);
+		if (fn) {
+			if (this.eventListeners[playerEvent].includes(fn)) {
+				const index = this.eventListeners[playerEvent].indexOf(fn);
+				if (index !== -1) this.eventListeners[playerEvent].splice(index, 1);
+			}
 		}
 		else {
 			this.eventListeners[playerEvent] = [];
