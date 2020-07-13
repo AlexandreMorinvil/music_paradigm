@@ -46,6 +46,15 @@ class Player {
 	}
 
 	/**
+	 * Erase the file of the the player (Custom made function, not in the original distrinution)
+	 * @return {Player}
+	 */
+	deleteFile() {
+		this.buffer = null;
+		return this;
+	}
+
+	/**
 	 * Load a file into the player (Node.js only).
 	 * @param {string} path - Path of file.
 	 * @return {Player}

@@ -1,5 +1,5 @@
 // This code is put in a function as it is used in more than one mutation
-const clearMidiNotes = function (state) {
+const clearMidiFileNotes = function (state) {
     state.midiFile.notes.midi = [];
     state.midiFile.notes.time = [];
     state.midiFile.notes.ticks = [];
@@ -10,6 +10,6 @@ const clearMidiNotes = function (state) {
     state.midiFile.notes.duration = [];
 }
 
-export {
-    clearMidiNotes
+export default {
+    clearMidiFileNotes
 }

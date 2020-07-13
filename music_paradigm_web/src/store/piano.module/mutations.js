@@ -1,13 +1,16 @@
 import config from "@/config";
 import { Midi } from '@tonejs/midi';
 import { notePerformance } from "@/_helpers";
-import { clearMidiNotes } from './functions'
+import functions from './functions'
 
 
 export default {
     // Mutations on player
     setPlayer: (state, player) => {
         state.player = player;
+    },
+    playMidiFile: (state) => {
+        state.player.play();
     },
     addPlayerEndOfFileAction: (state, functionToExecute) => {
         state.player.on("endOfFile", functionToExecute);
@@ -69,29 +72,40 @@ export default {
         state.played.startTime = 0;
 
         // Resetting the notes
+        state.played.notes.volume = [];
         state.played.notes.midi = [];
-        state.played.notes.duration = [];
         state.played.notes.time = [];
+        state.played.notes.name = [];
+        state.played.notes.duration = [];
+        state.played.notes.pitch = [];
+        state.played.notes.octave = [];
         state.played.notes.velocity = [];
 
         // Resetting the evaluation
+        // We do note reset the grades, in order to have them available to be displayed
+        // in a "Feedback" state at any point, until the next evaluation of performances
         state.played.evaluation.type = "";
         state.played.evaluation.results = null;
-        state.played.evaluation.grades = null;
     },
 
     // Mutations on the midi files data
+    eraseMidiFile: (state) => {
+        state.midiFile.name = "";
+        state.player.deleteFile();
+        state.midiFile.loaded = false;
+        functions.clearMidiFileNotes(state);
+    },
     setMidiFileName: (state, midiFileName) => {
         state.midiFile.name = midiFileName;
     },
     loadMidiArrayStream: (state, midiFile) => {
         state.player.loadArrayBuffer(midiFile);
+        state.midiFile.loaded = true;
     },
     parseMidiNotes: (state, midiFile) => {
         const jsonMidi = new Midi(midiFile);
         const notes = jsonMidi.tracks[0].notes;
-        clearMidiNotes(state);
-
+        functions.clearMidiFileNotes(state);
         for (let i in notes) {
             state.midiFile.notes.midi.push(notes[i].midi);
             state.midiFile.notes.time.push(notes[i].time * 1000);
@@ -103,15 +117,9 @@ export default {
             state.midiFile.notes.duration.push(notes[i].duration * 1000);
         }
     },
-    eraseMidiNotes: (state) => {
-        clearMidiNotes(state);
-    },
-    playMidiFile: (state) => {
-        state.player.play();
-    },
 
     // Mutations for note performance evaluation
-    // TODO: Ensure those functions work properly
+    // FIXME: Ensure those functions work properly when no keys were pressed
     evaluateSpeedType: (state) => {
         // Evaluate the performance according to get specific metrics
         Object.assign(state.played.evaluation,

@@ -5,6 +5,9 @@ export default {
     setPlayer: ({ commit }, player) => {
         commit('setPlayer', player);
     },
+    playMidiFile: ({ commit }) => {
+        commit('playMidiFile');
+    },
     addPlayerEndOfFileAction: ({ commit }, functionToExecute) => {
         commit('addPlayerEndOfFileAction', functionToExecute);
     },
@@ -43,13 +46,11 @@ export default {
     },
 
     // Midi file management
-    resetMidiFileData: ({ commit }) => {
-        commit('setMidiFileName', "");
-        commit('eraseMidiNotes');
+    eraseMidiFile: ({ commit }) => {
+        commit('eraseMidiFile');
     },
     loadMidiFile: ({ commit, dispatch }, midiFileName) => {
-        // TODO: Insuring that if the midi file to download is the same, that was already here, we do not redownload it
-        dispatch('resetMidiFileData');
+        dispatch('eraseMidiFile');
         return ressourceService.fetchMidiFile(midiFileName)
             .then(
                 response => {
@@ -59,9 +60,6 @@ export default {
                 },
                 error => { console.error(`Midi file fail:\n${error}`); }
             );
-    },
-    playMidiFile: ({ commit }) => {
-        commit('playMidiFile');
     },
 
     // Performance evaluation

@@ -8,7 +8,8 @@ export default {
 
     // Data from the current MIDI file
     midiFile: {
-        name: "",
+        loaded: false,      // Indicator of whether or not the midi file has been loaded
+        name: "",           // Name of the midi file
         notes: {
             midi: [],       // Midi number, e.g. 60 
             time: [],       // (Unused) Time in seconds
