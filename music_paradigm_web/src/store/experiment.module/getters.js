@@ -158,9 +158,13 @@ export default {
         return Boolean(getters.textContent);
     },
     hasVisualMedia: (getters) => {
-      // There must always be at least be a visual media. If there is no text, necessarily we add a visual medial (the piano)
-      // If there is a text, the value will depend of whether or not there is a picture name.
-      return (getters.hasText) ? Boolean(getters.pictureName) : true;
+        // There must always be at least be a visual media. If there is no text, necessarily we add a visual medial (the piano)
+        // If there is a text, the value will depend of whether or not there is a picture name.
+        return (getters.hasText) ? Boolean(getters.pictureName) : true;
+    },
+    // TODO: Integrate that concept in the model
+    hasInteractivePiano: () => {
+        return true;
     },
     // TODO: Integrate that concept in the model
     hasFootnote: () => {

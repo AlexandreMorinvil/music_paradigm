@@ -11,8 +11,8 @@
       id="visual-media-area"
       class="experiment-state-division state-division-visual-media"
     >
-      <!-- <img id="instruction-img" :src="urlStatic(pictureName)" alt="Instruction" /> -->
-      <visual-piano />
+      <visual-piano v-if="hasInteractivePiano" />
+      <img id="instruction-img" v-else :src="urlStatic(pictureName)" alt="Instruction" />
     </div>
 
     <div
@@ -50,6 +50,7 @@ export default {
     ...mapState("piano", ["pressedKeys"]),
     ...mapGetters(["urlStatic"]),
     ...mapGetters("experiment", [
+      "hasInteractivePiano",
       "hasText",
       "hasVisualMedia",
       "hasFootnote",
@@ -80,12 +81,12 @@ export default {
       if (isPressed) {
         this.$emit("stateEnded");
       }
+    },
+    pressedKeys(keys) {
+      if (this.anyPianoKey && keys.length > 0) {
+        this.$emit("stateEnded");
+      }
     }
-    // pressedKeys(keys) {
-    //   if (this.anyPianoKey && keys.length > 0) {
-    //     this.$emit("stateEnded");
-    //   }
-    // }
   },
   beforeMount() {},
   mounted() {}

@@ -44,16 +44,22 @@ export default {
   },
   methods: {},
   beforeMount() {},
-  mounted() {
-    this.$refs["55"].classList.add('user-triggered');
-  },
+  mounted() {},
   beforeDestroy() {},
   destroyed() {},
   watch: {
     pressedKeys(list) {
       for (let note = 48; note < 71; note++) {
-        if (list.includes(note)) this.$refs[note.toString()].classList.add('user-triggered');
-        else this.$refs[note.toString()].classList.remove('user-triggered');
+        if (list.includes(note))
+          this.$refs[note.toString()].classList.add("user-triggered");
+        else this.$refs[note.toString()].classList.remove("user-triggered");
+      }
+    },
+    midiFileTriggeredKeys(list) {
+      for (let note = 48; note < 71; note++) {
+        if (list.includes(note))
+          this.$refs[note.toString()].classList.add("midi-file-triggered");
+        else this.$refs[note.toString()].classList.remove("midi-file-triggered");
       }
     }
   }
@@ -158,21 +164,20 @@ ul li:last-child {
   border-radius: 0 5px 5px 5px;
 }
 
-ul .midi-file-triggered {
-  border: 1px solid rgb(19, 117, 4);
-  background: linear-gradient(
-    to bottom,
-    rgb(21, 255, 0) 0%,
-    rgb(9, 139, 2) 100%
-  );
-}
-
 ul .user-triggered {
   border: 1px solid rgb(4, 19, 117);
   background: linear-gradient(
     to bottom,
     rgb(0, 187, 255) 0%,
     rgb(2, 48, 139) 100%
+  );
+}
+ul .midi-file-triggered {
+  border: 1px solid rgb(19, 117, 4);
+  background: linear-gradient(
+    to bottom,
+    rgb(21, 255, 0) 0%,
+    rgb(9, 139, 2) 100%
   );
 }
 </style>
