@@ -1,10 +1,18 @@
 import { ressourceService } from '../../_services';
 
 export default {
-    // piano
-    setPlayer: ({ commit }, key) => {
-        commit('setPlayer', key);
+    // Player actions
+    setPlayer: ({ commit }, player) => {
+        commit('setPlayer', player);
     },
+    addPlayerEndOfFileAction: ({ commit }, functionToExecute) => {
+        commit('addPlayerEndOfFileAction', functionToExecute);
+    },
+    removePlayerEndOfFileAction: ({ commit }, functionToRemove) => {
+        commit('removePlayerEndOfFileAction', functionToRemove);
+    },
+
+    // Key interaction actions
     addPressedKey: ({ commit }, key) => {
         commit('addPressedKey', key);
     },

@@ -243,6 +243,8 @@ export default {
   beforeDestroy() {
     window.removeEventListener("keydown", this.handleKeyPress);
     window.removeEventListener("keyup", this.handleKeyRelease);
+    this.player.off("midiEvent", this.handleMidiMessage);
+    this.player.off("endOfFile", this.handleMidiFileEndOfFile);
   },
   watch: {}
 };

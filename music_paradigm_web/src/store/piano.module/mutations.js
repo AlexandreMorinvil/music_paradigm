@@ -5,10 +5,18 @@ import { clearMidiNotes } from './functions'
 
 
 export default {
-    setPlayer: (state, key) => {
-        state.player = key;
+    // Mutations on player
+    setPlayer: (state, player) => {
+        state.player = player;
+    },
+    addPlayerEndOfFileAction: (state, functionToExecute) => {
+        state.player.on("endOfFile", functionToExecute);
+    },
+    removePlayerEndOfFileAction: (state, functionToRemove) => {
+        state.player.off("endOfFile", functionToRemove);
     },
 
+    // Mutations on key interations arrays
     addPressedKey: (state, key) => {
         // This approach is used to add the pressed keys  in an array to ensure that
         // only one insance of a given key is recorded at a time and to ensure that

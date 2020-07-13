@@ -38,8 +38,6 @@ export default {
   },
   computed: {
     ...mapGetters(["urlStatic"]),
-    ...mapState("piano", ["player"]),
-    ...mapGetters("piano", ["pressedKeys"]),
     ...mapGetters("experiment", [
       "hasInteractivePiano",
       "hasText",
@@ -63,18 +61,22 @@ export default {
     }
   },
   methods: {
-    ...mapActions("piano", ["playMidiFile"]), // XXX: Put that in the experiment vue page
+    ...mapActions("piano", [
+      "playMidiFile",
+      "addPlayerEndOfFileAction",
+      "removePlayerEndOfFileAction"
+    ]), // XXX: Put that in the experiment vue page
     handleEndOfMidiFile() {
       this.$emit("stateEnded");
     }
   },
   beforeMount() {},
   mounted() {
-    this.player.on("endOfFile", this.handleEndOfMidiFile);
+    this.addPlayerEndOfFileAction(this.handleEndOfMidiFile);
     setTimeout(() => this.playMidiFile(), 500);
   },
   beforeDestroy() {
-    this.player.off("endOfFile", this.handleEndOfMidiFile);
+    this.removePlayerEndOfFileAction(this.handleEndOfMidiFile);
   },
   watch: {}
 };
