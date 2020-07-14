@@ -6,6 +6,11 @@ export default {
         return state.player;
     },
 
+    // Midi file for the midiFile loading status
+    isMidiFileLoaded: (state) => {
+        return state.midiFile.isLoaded;
+    },
+
     // Getter for the pressed keys
     pressedKeys: (state) => {
         return state.pressedKeys;

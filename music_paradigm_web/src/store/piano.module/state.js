@@ -8,7 +8,7 @@ export default {
 
     // Data from the current MIDI file
     midiFile: {
-        loaded: false,      // Indicator of whether or not the midi file has been loaded
+        isLoaded: false,      // Indicator of whether or not the midi file has been loaded
         name: "",           // Name of the midi file
         notes: {
             midi: [],       // Midi number, e.g. 60 
@@ -24,7 +24,7 @@ export default {
 
     // Data from the notes played by the user
     played: {
-        startTime: 0,
+        startTime: 0,       // Time in milliseconds of the first note
         notes: {
             volume: [],     // Indicator of if the pressed note generated an output
             midi: [],       // Midi number, e.g. 60 

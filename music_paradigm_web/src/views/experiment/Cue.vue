@@ -38,6 +38,7 @@ export default {
   },
   computed: {
     ...mapGetters(["urlStatic"]),
+    ...mapGetters("piano", ["isMidiFileLoaded"]),
     ...mapGetters("experiment", [
       "hasInteractivePiano",
       "hasText",
@@ -73,16 +74,15 @@ export default {
   beforeMount() {},
   mounted() {
     this.addPlayerEndOfFileAction(this.handleEndOfMidiFile);
-    setTimeout(() => this.playMidiFile(), 500);
   },
   beforeDestroy() {
     this.removePlayerEndOfFileAction(this.handleEndOfMidiFile);
   },
   watch: {
-    midiName: {
+    isMidiFileLoaded: {
       immediate: true,
-      handler: function(midiName) {
-        if (midiName !== "") this.loadMidiFile(this.midiName);
+      handler: function(isReady) {
+        if (isReady) setTimeout(() => this.playMidiFile(), 500);
       }
     }
   }
