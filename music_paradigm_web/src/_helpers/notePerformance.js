@@ -44,7 +44,7 @@ const evaluateRhythmType = function (midiFileNotes, playedNotes) {
         playedNotes.midi
     );
 
-    const rhythmTempoRelativeError = noteAlgorithm.getRhythmTempoRelativeError(
+    const durationsRelativeError = noteAlgorithm.getDurationsRelativeError(
         midiFileNotes.duration,
         playedNotes.duration
     );
@@ -59,13 +59,15 @@ const evaluateRhythmType = function (midiFileNotes, playedNotes) {
         playedNotes.midi
     );
 
-    const { InterOnsetInterval, InterOnsetIntervalAVG, InterOnsetIntervalSD, InterOnsetIntervalCV }
-        = noteAlgorithm.getInterOnsetIntervals(
-            midiFileNotes.time,
-            playedNotes.time
-        );
+    const interOnsetInterval = noteAlgorithm.getInterOnsetIntervals(
+        playedNotes.time
+    );
 
-    // TODO: When I will have modified the way the durations are calculated, this will need to be modified
+    const interOnsetIntervalsRelativeError = noteAlgorithm.getInterOnsetIntervalsRelativeError(
+        midiFileNotes.time,
+        playedNotes.time
+    );
+
     const sequenceDuration = noteAlgorithm.getSequenceDuration(
         playedNotes.time,
         playedNotes.duration
@@ -74,16 +76,14 @@ const evaluateRhythmType = function (midiFileNotes, playedNotes) {
     return {
         type: "rhythm",
         results: {
-            pitchAccuracy: pitchAccuracy,                       // Brown and Penhune: percentage of pitches performed in the correct order (%)
-            rhythmTempoRelativeError: rhythmTempoRelativeError, // Average relative duration error (%)
-            pitchErrorCount: pitchErrorCount,                   // Number of pitch errors per sequence (Number)
-            missedNotes: missedNotes,                           // List of the missed notes (Array of midi number)
-            missedNotesCount: missedNotesCount,                 // Number of missed notes (Number)
-            InterOnsetInterval: InterOnsetInterval,             // Interval between onsets of stimuli (Array of ms)
-            InterOnsetIntervalAVG: InterOnsetIntervalAVG,       // Average of the inter-onset interval (ms)
-            InterOnsetIntervalSD: InterOnsetIntervalSD,         // Standard deviation of the inter-onset interval (ms)
-            InterOnsetIntervalCV: InterOnsetIntervalCV,         // Coefficient of variation of the inter-onset interval
-            sequenceDuration: sequenceDuration,                 // Duration of the corresponding sequence of notes played (ms)
+            pitchAccuracy: pitchAccuracy,                                       // Brown and Penhune: percentage of pitches performed in the correct order (%)
+            durationsRelativeError: durationsRelativeError,                     // Average relative duration error (%)
+            pitchErrorCount: pitchErrorCount,                                   // Number of pitch errors per sequence (Number)
+            missedNotes: missedNotes,                                           // List of the missed notes (Array of midi number)
+            missedNotesCount: missedNotesCount,                                 // Number of missed notes (Number)
+            interOnsetInterval: interOnsetInterval,                             // Interval between onsets of stimuli (Array of ms)
+            interOnsetIntervalsRelativeError: interOnsetIntervalsRelativeError, // Relative 
+            sequenceDuration: sequenceDuration,                                 // Duration of the corresponding sequence of notes played (ms)
         }
     };
 }
@@ -110,7 +110,7 @@ const gradeRhythmType = function (evaluationResults, { minNoteAccuracy, maxRhyth
         },
         {
             criteria: "Rhythm",
-            mark: Math.max(100 - evaluationResults.rhythmTempoRelativeError, 0),
+            mark: Math.max(100 - evaluationResults.interOnsetIntervalsRelativeError, 0),
             passMark: Math.min(Math.max(100 - maxRhythmError, 0), 100),
             topMark: 100
         }
