@@ -1,15 +1,13 @@
 import router from '@/router'
 
 const countStepsLeft = function (flow, startPointCursor) {
-    
+
     // Deep copy the cursor (or initialize the cursor at the start by default)
     let stepTracerCursor = assignCursor(startPointCursor);
 
     // Count the number of steps before being beyond the end of the experiment
     let stepsCounter = 0;
     while (!stepTracerCursor.current.isBeyondEnd) {
-        console.log(`#: ${stepsCounter}; index : ${stepTracerCursor.current.index}; innerStepIndex : ${stepTracerCursor.current.innerStepIndex}; piledContentIndex : ${stepTracerCursor.current.piledContentIndex}; indexNext : ${stepTracerCursor.navigation.indexNext}; indexLoop : ${stepTracerCursor.navigation.indexLoopStart}; indexPileStart : ${stepTracerCursor.navigation.indexPileStart}; indexGroupEnd : ${stepTracerCursor.navigation.indexGroupEnd}; totalInnerSteps : ${stepTracerCursor.navigation.totalInnerSteps}; numberRepetition : ${stepTracerCursor.navigation.numberRepetition}; numberPiledContent : ${stepTracerCursor.navigation.numberPiledContent};`);
-
         moveCursorNext(flow, stepTracerCursor);
         stepsCounter += 1;
     }
@@ -42,8 +40,8 @@ const assignCursor = function (cursorToCopy) {
                 indexLoopStart: -1,
                 indexGroupEnd: -1,
                 totalInnerSteps: 0,
+                numberRepetition: 1,
                 numberPiledContent: 0,
-                numberRepetition: 0,
             }
         };
         return defaultCursor;
@@ -58,17 +56,30 @@ const moveCursorNextStep = function (flow, cursor, isInitialized = {}) {
         Object.assign(isInitialized, { media: false });
     }
 
-    // Moving to next block as specified by the next index of the navigation
-    //  - If there are no repetition left and the next index is behin the current index, this means 
-    //    that we are going behind to depile a content pile, so we increment the pile content index
-    //  - Otherwise, if the next step is beyond a group of blocks, we reset the piled content index
-    //  - We systematically reset the inner step index to 0 when moving to a new block
+    // Moving to a new block
     else if (cursor.navigation.indexNext < flow.length) {
-        if (cursor.navigation.indexNext < cursor.current.index && cursor.navigation.numberRepetition <= 1)
-            cursor.current.piledContentIndex += 1;
-        else if (cursor.navigation.indexNext > cursor.navigation.indexGroupEnd)
-            cursor.current.piledContentIndex = 0;
+
+        // We systematically reset the inner step index to 0 when moving to a new block
         cursor.current.innerStepIndex = 0;
+
+        // If the index of the next block is lower than the index of the current block, this means that we are looping
+        if (cursor.navigation.indexNext < cursor.current.index) {
+            // If there remains reptitions: we loop back and substract a repetition
+            if (cursor.navigation.numberRepetition > 1) {
+                cursor.navigation.numberRepetition -= 1;
+            }
+            // If there remains content to depile: we loop back and decrement the count of piled content
+            else if (cursor.navigation.numberPiledContent > 1) {
+                cursor.navigation.numberPiledContent -= 1;
+                cursor.current.piledContentIndex += 1;
+            }
+        }
+        // Otherwise, if the next step is beyond a group of blocks, we reset the piled content index
+        else if (cursor.navigation.indexNext > cursor.navigation.indexGroupEnd) {
+            cursor.current.piledContentIndex = 0;
+        }
+            
+        // We move the current intdex to the next step
         cursor.current.index = cursor.navigation.indexNext;
         Object.assign(isInitialized, { route: false, state: false, media: false });
     }
@@ -96,7 +107,7 @@ const updateCursorNavigation = function (flow, cursor) {
         videoFileName,
         // Cursor parameters
         followedBy,
-        numberRepetition
+        numberRepetition, maxNumBlock, numBlock // Those three names are kept for backward compatibility
     } = currentBlock;
 
     // Variable use to differential the instruction blocks from the other types of blocks
@@ -104,7 +115,7 @@ const updateCursorNavigation = function (flow, cursor) {
 
     // Set all the navigation parameters
     setCursorInnerStepsTotal(cursor, isInstruction, pictureFileName);
-    setCursorLoopStart(cursor, numberRepetition);
+    setCursorLoopStart(cursor, Math.max(numberRepetition || 0, maxNumBlock || 0, numBlock || 0));
     setCursorContentDepilingStart(cursor, isInstruction, pictureFileName, midiFileName, videoFileName);
     setCursorNextStep(cursor, followedBy);
 }
@@ -112,6 +123,7 @@ const updateCursorNavigation = function (flow, cursor) {
 
 
 const setCursorInnerStepsTotal = function (cursor, isInstruction, pictureFileName) {
+
     // Initialize the total number of inner steps of the current block ONLY if it is an instruction block
     const numberPictureFiles = Array.isArray(pictureFileName) ? (pictureFileName.length - 1) : 0;
     if (isInstruction) cursor.navigation.totalInnerSteps = numberPictureFiles;
@@ -119,6 +131,7 @@ const setCursorInnerStepsTotal = function (cursor, isInstruction, pictureFileNam
 }
 
 const setCursorLoopStart = function (cursor, numberRepetition) {
+
     // Let A, B, C and D be three blocks, that are not instruction blocks.
     //
     //              A                           B                           C                           D
@@ -134,10 +147,10 @@ const setCursorLoopStart = function (cursor, numberRepetition) {
 
     // Initialize a loop (loop start index & number of repetitions) if :
     // 1. A number of repetition greater than 1 is specified in the block's settings, 
-    // 2. The cursor is not currently in a loop (thus the number of reptition left is 1)
+    // 2. The cursor is not currently in a loop (thus the number of reptition left is <= 1)
     // 3. The current index is not the start index of a previous loop (to avoid resetting a loop twice)
     if (numberRepetition > 1 &&
-        cursor.navigation.numberRepetition === 1 &&
+        cursor.navigation.numberRepetition <= 1 &&
         cursor.current.index !== cursor.navigation.indexLoopStart) {
         cursor.navigation.indexLoopStart = cursor.current.index;
         cursor.navigation.numberRepetition = numberRepetition;
@@ -145,6 +158,7 @@ const setCursorLoopStart = function (cursor, numberRepetition) {
 }
 
 const setCursorContentDepilingStart = function (cursor, isInstruction, pictureFileName, midiFileName, videoFileName) {
+
     // Let A, B, C and D be three blocks, that are not instruction blocks.
     //
     //              A                                   B                               C                               D
@@ -194,38 +208,32 @@ const setCursorContentDepilingStart = function (cursor, isInstruction, pictureFi
 }
 
 const setCursorNextStep = function (cursor, followedBy) {
-    
+
     // Updating the next index
     // If the block is followed by the next block, we will necessarily go to the next block
     // and we know that we are within a group of blocks
     if (followedBy) {
         cursor.navigation.indexNext = cursor.current.index + 1;
     }
-    
+
     // If the block is not followed by another block, it is necesserily the end of a group of blocks
     else {
         cursor.navigation.indexGroupEnd = cursor.current.index;
 
-        // If there remains reptitions: 
-        //  - We loop back to the start of the loop
+        // If there remains reptitions: We loop back to the start of the loop
         if (cursor.navigation.numberRepetition > 1) {
             cursor.navigation.indexNext = cursor.navigation.indexLoopStart;
-            cursor.navigation.numberRepetition -= 1;
         }
-        
+
         // If there remains content to depile:
         //  - We will loop back to that point
-        //  - We decrement the count of piled content
-        //  - We reset the loop start in order to comple the number of repetition for the new piled content index 
+        //  - We reset the loop start in order to be able to loop again with the new content
         else if (cursor.navigation.numberPiledContent > 1) {
             cursor.navigation.indexNext = cursor.navigation.indexPileStart;
-            cursor.navigation.numberPiledContent -= 1;
             cursor.navigation.indexLoopStart = -1;
         }
 
-        // By default, if we are not in any type of loop: 
-        //  - The next block is the following block
-        //  - We reset the inner step index to 0
+        // By default, the next block is the following block
         else {
             cursor.navigation.indexNext = cursor.current.index + 1;
         }
@@ -233,7 +241,7 @@ const setCursorNextStep = function (cursor, followedBy) {
 }
 
 const updateRoute = function (currentState, flow, cursor, isInitialized) {
-    
+
     // XXX: If the cursor is beyond the end, the flow is finished, we go to the default end process
     if (cursor.current.isBeyondEnd) return;
 
@@ -247,7 +255,7 @@ const updateRoute = function (currentState, flow, cursor, isInitialized) {
  * Initializes the state of the experiment according to the block pointed by the cursor
  */
 const updateStateSettings = function (currentState, flow, cursor, isInitialized, generalSettings) {
-    
+
     // If the cursor is beyond the end, the flow is finished, we do not need to parse another block
     if (cursor.current.isBeyondEnd) return;
 
