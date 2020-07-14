@@ -64,6 +64,7 @@ const moveCursorNextStep = function (flow, cursor, isInitialized = {}) {
 
         // If the index of the next block is lower than the index of the current block, this means that we are looping
         if (cursor.navigation.indexNext < cursor.current.index) {
+
             // If there remains reptitions: we loop back and substract a repetition
             if (cursor.navigation.numberRepetition > 1) {
                 cursor.navigation.numberRepetition -= 1;
@@ -74,6 +75,7 @@ const moveCursorNextStep = function (flow, cursor, isInitialized = {}) {
                 cursor.current.piledContentIndex += 1;
             }
         }
+
         // Otherwise, if the next step is beyond a group of blocks, we reset the piled content index
         else if (cursor.navigation.indexNext > cursor.navigation.indexGroupEnd) {
             cursor.current.piledContentIndex = 0;
@@ -284,6 +286,7 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
 }
 
 const updateStateMediaFiles = function (currentState, flow, cursor, isInitialized) {
+    
     // If the cursor is beyond the end, the flow is finished, we do not need to parse another block
     if (cursor.current.isBeyondEnd) return;
 

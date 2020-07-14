@@ -34,12 +34,15 @@ export default {
     visualPiano: VisualPiano
   },
   data() {
-    return {};
+    return {
+      errorAutomaticTransitionSeconds: 10
+    };
   },
   computed: {
     ...mapGetters(["urlStatic"]),
     ...mapGetters("piano", ["isMidiFileLoaded"]),
     ...mapGetters("experiment", [
+      "midiName",
       "hasInteractivePiano",
       "hasText",
       "hasVisualMedia",
@@ -58,7 +61,12 @@ export default {
       }
     },
     footnote() {
-      return "The experiment will automatically go to the next step after the muscial cue";
+      var noteMessage;
+      if (this.midiName !== "")
+        noteMessage = `The experiment will automatically go to the next step after the muscial cue`;
+      else
+        noteMessage = `There is no melody to be played, the next step will proceed in ${this.errorAutomaticTransitionSeconds} seconds`;
+      return noteMessage;
     }
   },
   methods: {
@@ -66,7 +74,7 @@ export default {
       "playMidiFile",
       "addPlayerEndOfFileAction",
       "removePlayerEndOfFileAction"
-    ]), // XXX: Put that in the experiment vue page
+    ]),
     handleEndOfMidiFile() {
       this.$emit("stateEnded");
     }
@@ -83,6 +91,11 @@ export default {
       immediate: true,
       handler: function(isReady) {
         if (isReady) setTimeout(() => this.playMidiFile(), 500);
+        else if (this.midiName === "")
+          setTimeout(
+            () => this.$emit("stateEnded"),
+            this.errorAutomaticTransitionSeconds * 1000
+          );
       }
     }
   }
