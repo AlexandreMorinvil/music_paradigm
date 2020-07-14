@@ -103,9 +103,17 @@ export default {
         else if (state.cursor.navigation.indexNext > state.flow.length) {
             return "end";
         }
-        // If we are not in an edge case of the end of the flow, we return the
-        // type of the next step
-        return state.flow[state.cursor.navigation.indexNext].type;
+
+        // If There remains inner steps in the current block, the next step is
+        // of the same type as the current step
+        else if (state.cursor.current.innerStepIndex < state.cursor.navigation.totalInnerSteps){
+            return state.flow[state.cursor.current.index].type;
+        }
+
+        // Otherwise, if it is none of the edge casess, the type of the next step
+        // is the type of the following block
+        else 
+            return state.flow[state.cursor.navigation.indexNext].type;
     },
 
     // TODO : Make sure this works
