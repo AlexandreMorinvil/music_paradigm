@@ -40,30 +40,51 @@ export default {
   name: "Playing",
   components: {},
   data() {
-    return {};
+    return {
+      designatedKeys: [],
+      firstNote: 48,
+      lastNote: 74
+    };
   },
   computed: {
     ...mapGetters("piano", ["pressedKeys", "midiFileTriggeredKeys"])
   },
-  methods: {},
-  beforeMount() {},
-  mounted() {},
-  beforeDestroy() {},
-  destroyed() {},
+  methods: {
+    designateKeys(keys) {
+      if (Array.isArray(keys))
+        this.designatedKeys = keys;
+      else if (typeof keys == 'number')
+        this.designatedKeys = [keys];
+    },
+    clearDesignatedKeys() {
+      this.designatedKeys = [];
+    }
+  },
+  beforeDestroy() {
+    this.clearDesignatedKeys();
+  },
   watch: {
     pressedKeys(list) {
-      for (let note = 48; note <= 74; note++) {
+      for (let note = this.firstNote; note <= this.lastNote; note++) {
         if (list.includes(note))
           this.$refs[note.toString()].classList.add("user-triggered");
         else this.$refs[note.toString()].classList.remove("user-triggered");
       }
     },
     midiFileTriggeredKeys(list) {
-      for (let note = 48; note <= 74; note++) {
+      for (let note = this.firstNote; note <= this.lastNote; note++) {
         if (list.includes(note))
           this.$refs[note.toString()].classList.add("midi-file-triggered");
         else
           this.$refs[note.toString()].classList.remove("midi-file-triggered");
+      }
+    },
+    designatedKeys(list) {
+      for (let note = this.firstNote; note <= this.lastNote; note++) {
+        if (list.includes(note))
+          this.$refs[note.toString()].classList.add("designated");
+        else
+          this.$refs[note.toString()].classList.remove("designated");
       }
     }
   }
@@ -168,6 +189,15 @@ ul li:last-child {
   border-radius: 0 5px 5px 5px;
 }
 
+ul .designated {
+  border: 1px solid rgb(19, 117, 4);
+  background: linear-gradient(
+    to bottom,
+    rgb(255, 252, 81) 0%,
+    rgb(222, 219, 0) 100%
+  );
+}
+
 ul .user-triggered {
   border: 1px solid rgb(4, 19, 117);
   background: linear-gradient(
@@ -176,6 +206,7 @@ ul .user-triggered {
     rgb(2, 48, 139) 100%
   );
 }
+
 ul .midi-file-triggered {
   border: 1px solid rgb(19, 117, 4);
   background: linear-gradient(

@@ -1,7 +1,7 @@
 <template>
   <div id="playing-speed-area" class="playing-area">
     <div id="playing-visual-media" class="playing-visual-media-area">
-      <visual-piano v-if="hasInteractivePiano" />
+      <visual-piano v-if="hasInteractivePiano" ref="piano" />
       <img id="playing-img" v-else :src="urlStatic(pictureName)" alt="Playing" />
     </div>
 
@@ -23,6 +23,7 @@ export default {
   },
   data() {
     return {
+      playingStarted: false,
       defaultTimeLimitInSeconds: 30,
       counterUniqueIdentifier: 0,
       referenceTime: 0,
@@ -37,7 +38,7 @@ export default {
       "pictureName",
       "timeoutInSeconds"
     ]),
-    ...mapGetters("piano", ["midiFileNotesMidi", "playedNotesMidi"]),
+    ...mapGetters("piano", ["midiFileNotesMidi", "pressedKeys"]),
     timeLimit() {
       return this.timeoutInSeconds || this.defaultTimeLimitInSeconds;
     },
@@ -60,9 +61,22 @@ export default {
     countUp() {
       this.timeProgress = Date.now() - this.referenceTime;
     },
-    updateFootnote() {
-      var noteMessage =
-        "The experiment will go to the next step after the time allowed";
+    hintFistNote() {
+      if (this.hasInteractivePiano)
+        this.$refs.piano.designateKeys(this.midiFileNotesMidi[0]);
+    },
+    stopHint() {
+      if (this.hasInteractivePiano) this.$refs.piano.clearDesignatedKeys();
+    },
+    updateFootnote(firstNotePressed) {
+      var noteMessage;
+      if (firstNotePressed) {
+        noteMessage =
+          "The experiment will go to the next step after the time allowed";
+      } else {
+        noteMessage = "The time limit will start after the first key press";
+      }
+
       this.$emit("footnote", noteMessage);
     },
     evaluate() {
@@ -71,8 +85,8 @@ export default {
   },
   beforeMount() {},
   mounted() {
-    this.updateFootnote();
-    this.startTimeLimit();
+    this.hintFistNote();
+    this.updateFootnote(false);
   },
   beforeDestroy() {
     window.clearInterval(this.counterUniqueIdentifier);
@@ -82,6 +96,14 @@ export default {
       // When the time is over we indicate the end of the playing state
       if (value >= this.maxPlayProgress) {
         this.$emit("finishedPlaying");
+      }
+    },
+    pressedKeys() {
+      if (!this.playingStarted) {
+        this.startTimeLimit();
+        this.updateFootnote(true);
+        this.stopHint();
+        this.playingStarted = true;
       }
     }
   }
