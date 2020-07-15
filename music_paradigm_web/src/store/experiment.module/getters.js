@@ -100,7 +100,7 @@ export default {
             return "";
         }
         // If the next step is beyond the last block of the flow, we return "end"
-        else if (state.cursor.navigation.indexNext > state.flow.length) {
+        else if (state.cursor.navigation.indexNext > (state.flow.length - 1)) {
             return "end";
         }
 
