@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import "@/styles/playingTemplate.css";
 import { mapActions, mapGetters } from "vuex";
 import VisualPiano from "@/components/VisualPiano.vue";
 
@@ -67,7 +68,6 @@ export default {
       this.evaluateRhythmType();
     }
   },
-  beforeMount() {},
   mounted() {
     this.updateFootnote();
     this.setTimeLimit();
@@ -90,42 +90,4 @@ export default {
 </script>
 
 <style scoped>
-.playing-area {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-}
-.playing-visual-media-area {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 85%;
-  width: 100%;
-}
-.playing-progress-bar-area {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 15%;
-  width: 100%;
-}
-progress {
-  height: 25px;
-  width: 70%;
-  max-width: 600px;
-  border-radius: 12px;
-  border-style: solid;
-  border-width: 5px;
-}
-progress::-webkit-progress-bar {
-  background-color: rgb(200, 200, 200);
-  border-radius: 3px;
-}
-progress::-webkit-progress-value {
-  background-color: rgb(53, 206, 253);
-  border-radius: 3px;
-}
 </style>
