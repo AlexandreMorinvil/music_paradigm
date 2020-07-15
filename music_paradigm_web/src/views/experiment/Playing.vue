@@ -27,8 +27,8 @@
 import "@/styles/experimentState.css";
 import { mapGetters } from "vuex";
 
-import PlayingSpeedComponent from "@/components/PlayingSpeed";
-import PlayingRhythmComponent from "@/components/PlayingRhythm";
+import PlayingSpeedComponent from  "./PlayingSpeed";
+import PlayingRhythmComponent from "./PlayingRhythm";
 
 export default {
   name: "Playing",
