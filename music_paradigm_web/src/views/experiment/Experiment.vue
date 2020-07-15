@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     ...mapActions("experiment", ["goNextStep"]),
-    ...mapActions("piano", ["loadMidiFile"]),
+    ...mapActions("piano", ["loadMidiFile", "resetPlayedNotesLogs"]),
     getIconReference(stateType) {
       const iconFileName = "sprites.svg#";
       switch (stateType) {
@@ -98,6 +98,7 @@ export default {
       }
     },
     navigateExperiment() {
+      this.resetPlayedNotesLogs();
       this.goNextStep();
     },
     handleSpaceBarPress(pressedKey) {

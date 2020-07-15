@@ -1,5 +1,5 @@
 <template>
-  <div id="instruction-state" class="experiment-state-container" :class="gridClass">
+  <div id="cue-state" class="experiment-state-container" :class="gridClass">
     <div
       v-if="hasText"
       id="text-area"
@@ -12,7 +12,7 @@
       class="experiment-state-division state-division-visual-media"
     >
       <visual-piano v-if="hasInteractivePiano" />
-      <img id="instruction-img" v-else :src="urlStatic(pictureName)" alt="Cue" />
+      <img id="cue-img" v-else :src="urlStatic(pictureName)" alt="Cue" />
     </div>
 
     <div
@@ -77,6 +77,9 @@ export default {
     ]),
     handleEndOfMidiFile() {
       this.$emit("stateEnded");
+    },
+    manageHavingNoMidiFile() {
+      this.$emit("stateEnded");
     }
   },
   beforeMount() {},
@@ -93,7 +96,7 @@ export default {
         if (isReady) setTimeout(() => this.playMidiFile(), 500);
         else if (this.midiName === "")
           setTimeout(
-            () => this.$emit("stateEnded"),
+            () => this.manageHavingNoMidiFile(),
             this.errorAutomaticTransitionSeconds * 1000
           );
       }

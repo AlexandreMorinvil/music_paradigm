@@ -68,7 +68,7 @@ export default {
     },
     footnote() {
       if (this.anyPianoKey)
-        return "Any piano key or the space bar for going to the next step";
+        return "Press any piano key or the space bar for going to the next step";
       else return "Press the space bar for going to the next step";
     }
   },

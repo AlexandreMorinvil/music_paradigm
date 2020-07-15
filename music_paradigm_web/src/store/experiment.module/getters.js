@@ -163,7 +163,7 @@ export default {
 
     // Getters used for the state display formatting
     hasText: (getters) => {
-        return false; //Boolean(getters.textContent);
+        return true; //Boolean(getters.textContent);
     },
     hasVisualMedia: (getters) => {
         // There must always be at least be a visual media. If there is no text, necessarily we add a visual medial (the piano)

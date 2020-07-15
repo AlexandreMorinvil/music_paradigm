@@ -1,23 +1,37 @@
 <template>
-  <div id="playingRythm">
-    <progress id="progress-bar" :value="playProgress" :max="maxPlayProgress"></progress>
+  <div id="playing-rythm-area" class="playing-area">
+    <div id="playing-visual-media" class="playing-visual-media-area">
+      <visual-piano v-if="hasInteractivePiano" />
+      <img id="playing-img" v-else :src="urlStatic(pictureName)" alt="Playing" />
+    </div>
+
+    <div id="playing-progress-bar" class="playing-progress-bar-area">
+      <progress id="progress-bar" :value="playProgress" :max="maxPlayProgress"></progress>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import VisualPiano from "@/components/VisualPiano.vue";
 
 export default {
-  name: "Playing",
-  components: {},
+  name: "PlayingRhythm",
+  components: {
+    visualPiano: VisualPiano
+  },
   data() {
     return {
-      maxTimeTimeout: null
+      timeLimitUniqueIdentifier: 0
     };
   },
   computed: {
     ...mapGetters(["urlStatic"]),
-    ...mapGetters("experiment", ["timeoutInSeconds"]),
+    ...mapGetters("experiment", [
+      "hasInteractivePiano",
+      "pictureName",
+      "timeoutInSeconds"
+    ]),
     ...mapGetters("piano", [
       "midiFileNotesMidi",
       "midiFileNotesDuration",
@@ -35,21 +49,31 @@ export default {
   },
   methods: {
     ...mapActions("piano", ["evaluateRhythmType"]),
+    setTimeLimit() {
+      if (this.timeoutInSeconds !== 0) {
+        this.timeLimitUniqueIdentifier = window.setTimeout(() => {
+          this.$emit("finishedPlaying");
+        }, this.timeoutInSeconds * 1000);
+      }
+    },
+    updateFootnote() {
+      var noteMessage =
+        "The experiment will go to the next step after your performance";
+      if (this.timeoutInSeconds !== 0)
+        noteMessage += ` or after ${this.timeoutInSeconds} seconds`;
+      this.$emit("footnote", noteMessage);
+    },
     evaluate() {
       this.evaluateRhythmType();
     }
   },
   beforeMount() {},
   mounted() {
-    // Set the maximum time limit
-    if (this.timeoutInSeconds !== 0) {
-      this.maxTimeTimeout = window.setTimeout(() => {
-        this.$emit("finishedPlaying");
-      }, this.timeoutInSeconds * 1000);
-    }
+    this.updateFootnote();
+    this.setTimeLimit();
   },
   destroyed() {
-    window.clearTimeout(this.maxTimeTimeout);
+    window.clearTimeout(this.timeLimitUniqueIdentifier);
   },
   watch: {
     playProgress(value) {
@@ -58,7 +82,7 @@ export default {
       if (value >= this.maxPlayProgress) {
         this.timerUniqueIdentifier = setTimeout(() => {
           this.$emit("finishedPlaying");
-        }, (this.lastNoteDuration + 1000));
+        }, this.lastNoteDuration + 1000);
       }
     }
   }
@@ -66,4 +90,42 @@ export default {
 </script>
 
 <style scoped>
+.playing-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.playing-visual-media-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 85%;
+  width: 100%;
+}
+.playing-progress-bar-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 15%;
+  width: 100%;
+}
+progress {
+  height: 25px;
+  width: 70%;
+  max-width: 600px;
+  border-radius: 12px;
+  border-style: solid;
+  border-width: 5px;
+}
+progress::-webkit-progress-bar {
+  background-color: rgb(200, 200, 200);
+  border-radius: 3px;
+}
+progress::-webkit-progress-value {
+  background-color: rgb(53, 206, 253);
+  border-radius: 3px;
+}
 </style>

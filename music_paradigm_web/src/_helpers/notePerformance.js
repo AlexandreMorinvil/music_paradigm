@@ -110,7 +110,8 @@ const gradeRhythmType = function (evaluationResults, { minNoteAccuracy, maxRhyth
         },
         {
             criteria: "Rhythm",
-            mark: Math.max(100 - evaluationResults.interOnsetIntervalsRelativeError, 0),
+            mark: (evaluationResults.interOnsetIntervalsRelativeError >= 0) ?
+                Math.max(100 - evaluationResults.interOnsetIntervalsRelativeError, 0) : 0,
             passMark: Math.min(Math.max(100 - maxRhythmError, 0), 100),
             topMark: 100
         }

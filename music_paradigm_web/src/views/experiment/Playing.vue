@@ -1,12 +1,31 @@
 <template>
-  <div id="app">
-    <img id="playing-img" :src="urlStatic(pictureName)" alt="Playing" onerror="this.hidden=true" />
-    <component :is="playingMode" v-on:finishedPlaying="goNextStep" ref="playingMode"/>
+  <div id="playing-state" class="experiment-state-container" :class="gridClass">
+    <div
+      v-if="hasText"
+      id="text-area"
+      class="experiment-state-division state-division-text"
+    >{{ textContent }}</div>
+
+    <div id="visual-media-area" class="experiment-state-division state-division-visual-media">
+      <component
+        :is="playingMode"
+        v-on:footnote="handleFootnote"
+        v-on:finishedPlaying="handdleEndOfPlaying"
+        ref="playingMode"
+      />
+    </div>
+
+    <div
+      id="note-area"
+      v-if="hasFootnote"
+      class="experiment-state-division state-division-text"
+    >{{ footnote }}</div>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+import "@/styles/experimentState.css";
+import { mapGetters } from "vuex";
 
 import PlayingSpeedComponent from "@/components/PlayingSpeed";
 import PlayingRhythmComponent from "@/components/PlayingRhythm";
@@ -18,73 +37,44 @@ export default {
     rhythm: PlayingRhythmComponent
   },
   data() {
-    return {};
+    return {
+      footnote: "The experiment will go to the next step after your performance"
+    };
   },
   computed: {
-    ...mapGetters(["urlStatic"]),
-    ...mapState("account", ["user"]),
     ...mapGetters("experiment", [
-      "experimentName",
-      "pictureName", 
-      "midiName", 
-      "playingMode",
-      "timeoutInSeconds"
+      "hasText",
+      "hasFootnote",
+      "textContent",
+      "playingMode"
     ]),
-    ...mapGetters("piano", [
-      "playedNotesMidi",
-      "playedNotesDuration",
-      "playedNotesTime",
-      "playedNotesVelocity"
-    ]),
-
-    ...mapState(["feedbackStatus"]),
+    gridClass() {
+      if (this.hasFootnote) {
+        if (this.hasText)
+          return "grid-small-area-big-area-note";
+        else return "grid-area-note";
+      } else {
+        if (this.hasTexta)
+          return "grid-small-area-big-area";
+        else return "grid-single-area";
+      }
+    }
   },
   methods: {
-    ...mapActions("results", ["create"]),
-    ...mapActions("piano", ["resetPlayedNotesLogs"]),
-    ...mapActions("experiment", ["goNextStep"]),
+    handleFootnote(footNote) {
+      this.footnote = footNote;
+    },
+    handdleEndOfPlaying() {
+      this.evaluatePlayedNotes();
+      this.$emit("stateEnded");
+    },
     evaluatePlayedNotes() {
-      // // TODO: Put this logging logic in a dedicated store
-      // //logging
-      // let logObj = {
-      //   header: {},
-      //   playedNotes: {},
-      //   evaluation: {}
-      // };
-
-      // logObj.header = {
-      //   userId: this.user._id,
-      //   username: this.user.username,
-      //   experimentName: this.experimentName,
-      //   experimentMode: this.playingMode,
-      //   // TODO: INSURING THAT WE CAN GET THE NUMBER OF REPETITIONS
-      //   // expBlockNum: this.experiment.currentBlockNum + 1, //so that block number starts from 0
-
-      //   // TODO: INSURING THAT THE MIDIFILE FROM THE PREVIOUS BLOCK IS KEPT IF THERE IS NO NEW MIDI FILE
-      //   // expMidiFileName: this.midiName,
-      // };
-
-      // logObj.playedNotes = {
-      //   midi: this.playedNotesMidi,
-      //   duration: this.playedNotesDuration,
-      //   time: this.playedNotesTime,
-      //   velocity: this.playedNotesVelocity
-      // };
-
       this.$refs.playingMode.evaluate();
-
-      // // send results
-      // // TODO: Fix this piece of code because your changes made it so it doesn't work anymore
-      // // this.create(logObj);
     }
   },
   beforeMount() {},
-  mounted() {
-    this.resetPlayedNotesLogs();
-  },
-  beforeDestroy() {
-    this.evaluatePlayedNotes();
-  },
+  mounted() {},
+  beforeDestroy() {},
   destroyed() {},
   watch: {}
 };

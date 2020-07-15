@@ -27,6 +27,7 @@ export default {
   },
   data() {
     return {
+      player: null,
       audioConctext: null,
       piano: null,
       pianoInited: false,
@@ -37,7 +38,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("piano", ["player", "pressedKeys"]),
+    ...mapGetters("piano", ["pressedKeys"]),
     ...mapGetters("experiment", ["timbreFile", "enableSoundFlag"]),
     soundStatus() {
       if (!this.pianoInited) return "LOAD...";
@@ -51,6 +52,8 @@ export default {
   methods: {
     ...mapActions("piano", [
       "setPlayer",
+      "addPlayerEndOfFileAction",
+      "removePlayerEndOfFileAction",
       "addPressedKey",
       "deletePressedKey",
       "addPressedNoteLog",
@@ -134,7 +137,8 @@ export default {
     initPiano() {
       // Initialize audio
       this.audioConctext = new AudioContext();
-      this.setPlayer(new MidiPlayer.Player());
+      this.player = new MidiPlayer.Player();
+      this.setPlayer(this.player);
       const soundfont = require("soundfont-player");
       soundfont.instrument(this.audioConctext, this.timbreFile).then(piano => {
         this.piano = piano;

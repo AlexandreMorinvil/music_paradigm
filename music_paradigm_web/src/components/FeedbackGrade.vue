@@ -120,7 +120,7 @@ export default {
   z-index: inherit;
 }
 .progress-content {
-  background-color: rgb(150, 150, 150);
+  background-color: rgb(175, 175, 175);
   margin: auto;
   height: 50%;
   width: 95%;
@@ -133,7 +133,7 @@ export default {
   border-radius: inherit;
 }
 .content-color {
-  background-color: rgb(150, 150, 150);
+  background-color: rgb(175, 175, 175);
 }
 .success-color {
   background-color: rgb(0, 200, 0);
