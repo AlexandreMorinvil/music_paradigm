@@ -25,7 +25,7 @@
 
 <script>
 import "@/styles/experimentState.css";
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 import VisualPiano from "@/components/VisualPiano.vue";
 
 export default {

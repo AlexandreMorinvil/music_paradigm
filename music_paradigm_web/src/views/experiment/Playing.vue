@@ -71,12 +71,7 @@ export default {
     evaluatePlayedNotes() {
       this.$refs.playingMode.evaluate();
     }
-  },
-  beforeMount() {},
-  mounted() {},
-  beforeDestroy() {},
-  destroyed() {},
-  watch: {}
+  }
 };
 </script>
 

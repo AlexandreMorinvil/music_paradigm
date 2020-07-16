@@ -82,7 +82,6 @@ export default {
       this.$emit("stateEnded");
     }
   },
-  beforeMount() {},
   mounted() {
     this.addPlayerEndOfFileAction(this.handleEndOfMidiFile);
   },

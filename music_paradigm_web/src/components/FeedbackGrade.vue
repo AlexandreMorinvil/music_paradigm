@@ -1,5 +1,5 @@
 <template>
-  <div class="feedbackGrade">
+  <div class="feedback-grade">
     <div>
       <h1>{{ grade.criteria }}</h1>
     </div>
@@ -13,7 +13,7 @@
     </div>
 
     <div class="progress-bar">
-      <div class="position-wrapper" :style="checkpointOverlay" >
+      <div class="position-wrapper" :style="checkpointOverlay">
         <div :class="'checkpoint-content '+ this.checkpointColor" :style="passingWidth"></div>
       </div>
       <div class="progress-content content-color">
@@ -24,7 +24,6 @@
 </template>
 
 <script>
-// TODO: Put the progress bar logic in a dedicated component
 export default {
   name: "feedbackGrade",
   props: {
@@ -69,9 +68,10 @@ export default {
 </script>
 
 <style scoped>
-.feedbackGrade {
-  width: 400px;
+.feedback-grade {
+  max-width: 400px;
   font-size: 10em;
+  text-align: center;
   color: white;
 }
 .emoji {

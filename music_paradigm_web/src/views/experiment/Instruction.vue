@@ -26,7 +26,7 @@
 
 <script>
 import "@/styles/experimentState.css";
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 import VisualPiano from "@/components/VisualPiano.vue";
 
 export default {
@@ -72,9 +72,6 @@ export default {
       else return "Press the space bar for going to the next step";
     }
   },
-  methods: {
-    ...mapActions("experiment", ["goNextStep"])
-  },
   watch: {
     isSpaceBarPressed(isPressed) {
       if (isPressed) {
@@ -86,9 +83,7 @@ export default {
         this.$emit("stateEnded");
       }
     }
-  },
-  beforeMount() {},
-  mounted() {}
+  }
 };
 </script>
 

@@ -1,18 +1,34 @@
 <template>
-  <div class="feedback" id="feedback">
-    <ul class="feedbackGradeBoard">
-      <li class="feedbackElement" v-for="grade in grades" :key="grade.criteria">
-        <feedback-grade class="feedbackGrade" :grade="grade" />
-      </li>
-    </ul>
+  <div id="feedback-state" class="experiment-state-container" :class="gridClass">
+    <div
+      v-if="hasText"
+      id="text-area"
+      class="experiment-state-division state-division-text"
+    >{{ textContent }}</div>
 
-    <!-- <p>Press space bar to exit</p> -->
+    <div
+      id="visual-media-area"
+      style="background-color: green"
+      class="experiment-state-division state-division-visual-media"
+    >
+      <div class="feedback-grade-board">
+        <div class="feedback-box" v-for="grade in grades" :key="grade.criteria">
+          <feedback-grade class="feedback-element" :grade="grade" />
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="note-area"
+      v-if="hasFootnote"
+      class="experiment-state-division state-division-text"
+    >{{ footnote }}</div>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
-
+import "@/styles/experimentState.css";
+import { mapGetters } from "vuex";
 import FeedbackGrade from "@/components/FeedbackGrade";
 
 export default {
@@ -20,22 +36,50 @@ export default {
   components: {
     feedbackGrade: FeedbackGrade
   },
+  props: {
+    isSpaceBarPressed: {
+      type: Boolean,
+      default() {
+        return false;
+      }
+    }
+  },
   data() {
     return {};
   },
   computed: {
-    ...mapState(["pressedKeys"]),
-    ...mapGetters("piano", ["grades", "pressedKeys"])
+    ...mapGetters("piano", ["grades", "pressedKeys"]),
+    ...mapGetters("experiment", [
+      "hasText",
+      "hasFootnote",
+      "textContent",
+      "anyPianoKey"
+    ]),
+    footnote() {
+      if (this.anyPianoKey)
+        return "Press any piano key or the space bar for going to the next step";
+      else return "Press the space bar for going to the next step";
+    },
+    gridClass() {
+      if (this.hasFootnote) {
+        if (this.hasText) return "grid-small-area-big-area-note";
+        else return "grid-area-note";
+      } else {
+        if (this.hasText) return "grid-small-area-big-area";
+        else return "grid-single-area";
+      }
+    }
   },
-  methods: {
-    ...mapActions("experiment", ["goNextStep"])
-  },
-  mounted() {
-  },
+
   watch: {
-    pressedKeys(array) {
-      if (array.length > 0) {
-        this.goNextStep();
+    isSpaceBarPressed(isPressed) {
+      if (isPressed) {
+        this.$emit("stateEnded");
+      }
+    },
+    pressedKeys(keys) {
+      if (this.anyPianoKey && keys.length > 0) {
+        this.$emit("stateEnded");
       }
     }
   }
@@ -43,25 +87,28 @@ export default {
 </script>
 
 <style scoped>
-.feedbackGradeBoard {
-  display: block;
-  list-style-type: none;
-  text-align: center;
-  margin-top: 10%;
-  margin-left: auto;
-  margin-right: auto;
+.feedback-grade-board {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
   width: 100%;
+  background-color: rgb(17, 0, 255);
 }
 
-.feedbackElement {
-  display: inline-block;
-  margin-top: auto;
-  margin-bottom: auto;
-  margin-left: 5%;
-  margin-right: 5%;
+.feedback-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 10px;
+  background-color: brown;
 }
 
-.feedbackGrade {
-  margin: auto;
+.feedback-element {
+  background-color: rgb(255, 230, 0);
+  margin: 0 2.5% 0;
 }
 </style>
