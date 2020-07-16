@@ -1,9 +1,10 @@
 <template>
   <div class="feedback-grade">
-    <div>
+    <div class="feedback-grade-name">
       <h1>{{ grade.criteria }}</h1>
     </div>
-    <div>
+
+    <div class="feedback-grade-emoji">
       <svg class="emoji smile" v-if="isSuccess">
         <use xlink:href="sprites.svg#emoji-smile" />
       </svg>
@@ -44,7 +45,6 @@ export default {
       return this.grade.mark >= this.grade.passMark;
     },
     passingWidth() {
-      //HACK: The CSS could be ajusted more properly
       return (
         "--checkpointPosition: " +
         (this.grade.passMark / this.grade.topMark) * 100 * 0.925 +
@@ -69,17 +69,36 @@ export default {
 
 <style scoped>
 .feedback-grade {
-  max-width: 400px;
-  font-size: 10em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 400px;
+  height: 100%;
+  width: 100%;
   text-align: center;
   color: white;
 }
+.feedback-grade-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: calc(2vh + 2vw);
+  height: 15%;
+  width: 100%;
+}
+
+.feedback-grade-emoji {
+  height: 80%;
+  width: 100%;
+}
+
 .emoji {
   display: block;
   margin: auto;
   stroke-width: 0;
-  width: 300px;
-  height: 300px;
+  height: 100%;
+  width: 100%;
 }
 .smile {
   stroke: rgb(0, 200, 0);
@@ -94,8 +113,8 @@ export default {
   height: 35px;
   width: 380px;
 
-  margin-top: 1em;
-  margin-bottom: 1em;
+  margin-top: 2.5%;
+  margin-bottom: 2.5%;
   margin-left: auto;
   margin-right: auto;
 

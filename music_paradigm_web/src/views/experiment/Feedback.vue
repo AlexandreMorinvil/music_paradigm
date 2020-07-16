@@ -8,12 +8,11 @@
 
     <div
       id="visual-media-area"
-      style="background-color: green"
       class="experiment-state-division state-division-visual-media"
     >
       <div class="feedback-grade-board">
         <div class="feedback-box" v-for="grade in grades" :key="grade.criteria">
-          <feedback-grade class="feedback-element" :grade="grade" />
+          <feedback-grade :grade="grade" />
         </div>
       </div>
     </div>
@@ -94,21 +93,14 @@ export default {
   align-items: center;
   height: 100%;
   width: 100%;
-  background-color: rgb(17, 0, 255);
 }
 
 .feedback-box {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  margin: 0 2% 0;
+  width: auto;
   height: 100%;
-  margin: 10px;
-  background-color: brown;
-}
-
-.feedback-element {
-  background-color: rgb(255, 230, 0);
-  margin: 0 2.5% 0;
 }
 </style>
