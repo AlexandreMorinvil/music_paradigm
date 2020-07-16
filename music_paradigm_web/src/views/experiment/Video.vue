@@ -1,61 +1,136 @@
 <template>
-  <div id="app">
-    <video-player :options="videoOptions" :url="url" :playBack="playBack" />
+  <div id="video-state" class="experiment-state-container grid-area-area-note" :class="gridClass">
+    <div
+      style="background-color: blue;"
+      v-if="hasText"
+      id="text-area"
+      class="experiment-state-division state-division-text"
+    >{{ textContent }}</div>
+
+    <div
+      style="background-color: purple;"
+      id="visual-media-area"
+      class="experiment-state-division state-division-visual-media"
+    >
+      <div class="visual-media-board">
+        <div class="video-box">
+          <video-player
+            :src="urlStatic(videoName)"
+            :dimension="videoDimensions"
+            :playBack="playBack"
+          />
+        </div>
+        <div class="piano-box" v-if="hasInteractivePiano" :style="videoWidth">
+          <visual-piano />
+        </div>
+      </div>
+    </div>
+    <div
+      style="background-color: green;"
+      id="note-area"
+      v-if="hasFootnote"
+      class="experiment-state-division state-division-text"
+    >{{ footnote }}</div>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import "@/styles/experimentState.css";
+import { mapGetters } from "vuex";
+import VideoPlayer from "@/components/VideoPlayer.vue";
+import VisualPiano from "@/components/VisualPiano.vue";
 
-import config from "@/config";
-import VideoComponentVue from "@/components/TheVideoPlayer.vue";
 export default {
   name: "Video",
   components: {
-    VideoPlayer: VideoComponentVue
+    visualPiano: VisualPiano,
+    VideoPlayer: VideoPlayer
   },
   data() {
     return {
-      apiUrl: config.apiUrl,
-      pictureName: "",
-      videoName: "",
-      videoOptions: {},
+      errorAutomaticTransitionSeconds: 10,
+      defaultVideoHeight: 253,
+      defaultVideoWidth: 480,
       playBack: {
-        delay: 5,
+        delay: 10,
         startTime: 1.9,
         endTime: 5
       }
     };
   },
   computed: {
-    ...mapState(["player"]),
-    ...mapState("experiment", ["experiment"]),
-    url() {
-      return {
-        src: this.apiUrl + "/static/" + this.experiment.videoName,
-        poster: this.apiUrl + "/static/" + "assets/images/Music_poster.bmp"
-      };
+    ...mapGetters(["urlStatic"]),
+    ...mapGetters("experiment", [
+      "hasInteractivePiano",
+      "hasText",
+      "hasFootnote",
+      "textContent",
+      "videoName"
+    ]),
+    gridClass() {
+      if (this.hasFootnote) {
+        if (this.hasText) return "grid-small-area-big-area-note";
+        else return "grid-area-note";
+      } else {
+        if (this.hasText) return "grid-small-area-big-area";
+        else return "grid-single-area";
+      }
+    },
+    videoDimensions() {
+      if (this.hasInteractivePiano)
+        return {
+          height: this.defaultVideoHeight * 1.5,
+          width: this.defaultVideoWidth * 1.5
+        };
+      else
+        return {
+          height: this.defaultVideoHeight * 2,
+          width: this.defaultVideoWidth * 2
+        };
+    },
+    videoWidth() {
+      return "--videoWidth: " + this.videoDimensions.width + "px;";
+    },
+    footnote() {
+      var noteMessage;
+      if (this.videoName === "")
+        noteMessage = `There is no video to be played, the experiment will automatically  go to the next step in ${this.errorAutomaticTransitionSeconds} seconds`;
+      else
+        noteMessage = `The experiment will automatically go to the next step after the video playback`;
+      return noteMessage;
     }
   },
-  methods: {
-    ...mapActions("experiment", ["goNextStep"]),
-    ...mapActions("piano", ["resetSongData"]),
-  },
-  beforeMount() {},
+  methods: {},
   mounted() {
-    this.resetSongData();
+    console.log("Just un teste");
   }
 };
 </script>
 
 <style scoped>
-img {
-  max-height: 100%;
-  width: auto;
-  display: block;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.visual-media-board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.video-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+  width: 100%;
+  background-color: coral;
+  padding: 10px;
+}
+.piano-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+  width: calc(var(--videoWidth) * 1.1);
+  background-color: rgb(188, 255, 80);
 }
 </style>

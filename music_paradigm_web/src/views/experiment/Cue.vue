@@ -62,10 +62,10 @@ export default {
     },
     footnote() {
       var noteMessage;
-      if (this.midiName !== "")
-        noteMessage = `The experiment will automatically go to the next step after the muscial cue`;
+      if (this.midiName === "")
+        noteMessage = `There is no melody to be played, the experiment will automatically  go to the next step in ${this.errorAutomaticTransitionSeconds} seconds`;
       else
-        noteMessage = `There is no melody to be played, the next step will proceed in ${this.errorAutomaticTransitionSeconds} seconds`;
+        noteMessage = `The experiment will automatically go to the next step after the muscial cue`;
       return noteMessage;
     }
   },

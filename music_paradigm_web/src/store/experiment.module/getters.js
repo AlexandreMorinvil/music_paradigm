@@ -172,7 +172,7 @@ export default {
     },
     // TODO: Integrate that concept in the model
     hasInteractivePiano: () => {
-        return true;
+        return false;
     },
     // TODO: Integrate that concept in the model
     hasFootnote: () => {

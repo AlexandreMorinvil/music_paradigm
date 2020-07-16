@@ -6,10 +6,7 @@
       class="experiment-state-division state-division-text"
     >{{ textContent }}</div>
 
-    <div
-      id="visual-media-area"
-      class="experiment-state-division state-division-visual-media"
-    >
+    <div id="visual-media-area" class="experiment-state-division state-division-visual-media">
       <div class="feedback-grade-board">
         <div class="feedback-box" v-for="grade in grades" :key="grade.criteria">
           <feedback-grade :grade="grade" />
@@ -54,11 +51,6 @@ export default {
       "textContent",
       "anyPianoKey"
     ]),
-    footnote() {
-      if (this.anyPianoKey)
-        return "Press any piano key or the space bar for going to the next step";
-      else return "Press the space bar for going to the next step";
-    },
     gridClass() {
       if (this.hasFootnote) {
         if (this.hasText) return "grid-small-area-big-area-note";
@@ -67,6 +59,11 @@ export default {
         if (this.hasText) return "grid-small-area-big-area";
         else return "grid-single-area";
       }
+    },
+    footnote() {
+      if (this.anyPianoKey)
+        return "Press any piano key or the space bar for going to the next step";
+      else return "Press the space bar for going to the next step";
     }
   },
 

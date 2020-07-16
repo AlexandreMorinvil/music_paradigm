@@ -1,8 +1,5 @@
 <template>
   <div>
-    <p v-if="timerCount > 0">Time before start : {{ timerCount }}</p>
-    <br />
-    <br />
     <video ref="videoPlayer" class="video-js">
       <p class="vjs-no-js">
         To view this video please enable JavaScript, and consider upgrading to a
@@ -23,23 +20,18 @@ import "video.js/dist/video-js.min.css";
 export default {
   name: "VideoPlayer",
   props: {
-    url: {
-      type: Object,
+    src: {
+      type: String,
       default() {
-        return {
-          src: "",
-          poster: "http://localhost:3000/images/Music_poster.bmp"
-        };
+        return "";
       }
     },
-    options: {
+    dimension: {
       type: Object,
       default() {
         return {
-          controls: false,
-          muted: false,
-          height: 720,
-          width: 1280
+          height: 100,
+          width: 100
         };
       }
     },
@@ -47,7 +39,6 @@ export default {
       type: Object,
       default() {
         return {
-          delay: 0,
           startTime: 0.0,
           endTime: 0.0,
           volume: 1.0
@@ -55,10 +46,11 @@ export default {
       }
     }
   },
+  // poster: "http://localhost:3000/images/Music_poster.bmp";
+  // poster: "sprites.svg#emoji-frown" //this.apiUrl + "/static/" + "assets/images/Music_poster.bmp"
   data() {
     return {
       player: null,
-      timerCount: this.playBack.delay || 0,
       volume: 0,
       time: 0,
       duration: 0
@@ -67,16 +59,14 @@ export default {
   mounted() {
     window.playerEvents = this;
     this.playerInitialize();
-    this.playerSetPoster(
-      this.url.poster || "http://localhost:3000/images/Music_poster.bmp"
-    );
-    console.log(this.url.src); // TODO: Erase
-    this.playerSetSrc(this.url.src);
+    // this.playerSetPoster(
+    //   this.src.poster || "http://localhost:3000/images/Music_poster.bmp"
+    // );
+    this.playerSetSrc(this.src);
     this.playerSetVolume(this.playBack.volume || 1.0);
     this.playerSetTime(this.playBack.startTime || 0.0);
     this.playerSetupEndEvents();
     this.setEndTime(this.playBack.endTime || 0.0);
-    this.delayedPlay(this.playBack.delay || 0);
   },
   beforeDestroy() {
     if (this.player) {
@@ -87,14 +77,11 @@ export default {
     // Video initialization method
     playerInitialize() {
       const initialOptions = {
-        // Customizable options
-        // Presence of a control bar
-        controls: this.options.controls || false,
-        // Muting the video
-        muted: this.options.muted || false,
+        controls: false,
+        muted: false,
         // Dimensions
-        height: this.options.height || 720,
-        width: this.options.width || 1280,
+        height: this.dimension.height,
+        width: this.dimension.width,
 
         // Immutable options
         // The medias have to be preloaded for more smooth transitions
@@ -108,22 +95,17 @@ export default {
     },
 
     // Video control methods
-    delayedPlay(timeInSeconds) {
-      setTimeout(() => {
-        this.playerPlay();
-      }, timeInSeconds * 1000);
-    },
     playerPlay() {
       this.player.play();
     },
     playerPause() {
       this.player.pause();
     },
-    playerSetPoster(url) {
-      this.player.poster(url);
+    playerSetPoster(src) {
+      this.player.poster(src);
     },
-    playerSetSrc(url, type) {
-      this.player.src(url);
+    playerSetSrc(src, type) {
+      this.player.src(src);
     },
     playerSetVolume(float) {
       this.player.volume(float);
@@ -172,35 +154,14 @@ export default {
       });
     }
   },
-  watch: {
-    timerCount: {
-      handler(value) {
-        if (value > 0) {
-          setTimeout(() => {
-            this.timerCount--;
-          }, 1000);
-        }
-      },
-      immediate: true // This ensures the watcher is triggered upon creation
-    }
-  }
+  watch: {}
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+video {
+  width: 3050px;
+  height: 160px;
+  background-color: lightblue;
 }
 </style>

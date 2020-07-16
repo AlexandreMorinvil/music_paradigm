@@ -24,11 +24,11 @@
 }
 
 .grid-big-area-small-area-note {
-    grid-template-rows: 66.111% 18.888% 10%;
+    grid-template-rows: 75% 10% 10%;
 }
 
 .grid-small-area-big-area-note {
-    grid-template-rows: 18.888% 66.111% 10%;
+    grid-template-rows: 10% 75% 10%;
 }
 
 /* Two areas division grid */
