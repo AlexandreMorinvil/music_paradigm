@@ -1,32 +1,35 @@
 <template>
   <div id="video-state" class="experiment-state-container grid-area-area-note" :class="gridClass">
     <div
-      style="background-color: blue;"
       v-if="hasText"
       id="text-area"
       class="experiment-state-division state-division-text"
     >{{ textContent }}</div>
 
-    <div
-      style="background-color: purple;"
-      id="visual-media-area"
-      class="experiment-state-division state-division-visual-media"
-    >
+    <div id="visual-media-area" class="experiment-state-division state-division-visual-media">
       <div class="visual-media-board">
         <div class="video-box">
+          <div
+            v-show="!isPlaying"
+            class="video-hidding-thumbnail"
+            :style="videoWidthCSSvariable +';'+videoHeightCSSvariable"
+          >The video will start in {{ delayLeftDisplay }}</div>
           <video-player
+            v-show="isPlaying"
             :src="urlStatic(videoName)"
             :dimension="videoDimensions"
             :playBack="playBack"
+            v-on:finishedPlayback="handdleEndOfVideo"
+            ref="video"
           />
         </div>
-        <div class="piano-box" v-if="hasInteractivePiano" :style="videoWidth">
+        <div class="piano-box" v-if="hasInteractivePiano" :style="videoWidthCSSvariable">
           <visual-piano />
         </div>
       </div>
     </div>
+
     <div
-      style="background-color: green;"
       id="note-area"
       v-if="hasFootnote"
       class="experiment-state-division state-division-text"
@@ -48,13 +51,23 @@ export default {
   },
   data() {
     return {
+      counterUniqueIdentifier: 0,
       errorAutomaticTransitionSeconds: 10,
+      // Video dimensions variable
       defaultVideoHeight: 253,
       defaultVideoWidth: 480,
+      // Delay before playback variables
+      referenceTime: 0,
+      playbackDelayInSeconds: 5,
+      delayLeftInMilliseconds: 5000,
+      timeStepInMilliseconds: 200,
+      // Delay after playback variable
+      endOfStatedelayInMilliseconds: 2000,
+      // Playback variables
+      isPlaying: false,
       playBack: {
-        delay: 10,
-        startTime: 1.9,
-        endTime: 5
+        startTime: 0,
+        endTime: 0
       }
     };
   },
@@ -76,33 +89,94 @@ export default {
         else return "grid-single-area";
       }
     },
-    videoDimensions() {
-      if (this.hasInteractivePiano)
-        return {
-          height: this.defaultVideoHeight * 1.5,
-          width: this.defaultVideoWidth * 1.5
-        };
-      else
-        return {
-          height: this.defaultVideoHeight * 2,
-          width: this.defaultVideoWidth * 2
-        };
-    },
-    videoWidth() {
-      return "--videoWidth: " + this.videoDimensions.width + "px;";
-    },
     footnote() {
       var noteMessage;
       if (this.videoName === "")
         noteMessage = `There is no video to be played, the experiment will automatically  go to the next step in ${this.errorAutomaticTransitionSeconds} seconds`;
       else
-        noteMessage = `The experiment will automatically go to the next step after the video playback`;
+        return `The experiment will automatically go to the next step after the video playback`;
+
       return noteMessage;
+    },
+    videoDimensions() {
+      var height = this.defaultVideoHeight;
+      var width = this.defaultVideoWidth;
+      if (this.hasInteractivePiano) {
+        height *= 1.5;
+        width *= 1.5;
+      } else {
+        height *= 2;
+        width *= 2;
+      }
+      return {
+        height: height,
+        width: width
+      };
+    },
+    videoHeightCSSvariable() {
+      return "--videoHeight: " + this.videoDimensions.height + "px;";
+    },
+    videoWidthCSSvariable() {
+      return "--videoWidth: " + this.videoDimensions.width + "px;";
+    },
+    delayLeftDisplay() {
+      var display = "";
+      const minutes = Math.floor((this.delayLeftInMilliseconds / 60000) % 60);
+      const seconds = Math.floor((this.delayLeftInMilliseconds / 1000) % 60);
+      if (minutes > 0) {
+        display += `${minutes} minutes `;
+      }
+      display += `${seconds} seconds`;
+      return display;
     }
   },
-  methods: {},
+  methods: {
+    handdleEndOfVideo() {
+      setTimeout(() => {
+        this.$emit("stateEnded");
+      }, this.endOfStatedelayInMilliseconds);
+    },
+    startDelayCountdown() {
+      this.delayLeftInMilliseconds = this.playbackDelayInSeconds * 1000;
+      this.referenceTime = Date.parse(new Date());
+      this.counterUniqueIdentifier = window.setInterval(
+        this.countdown,
+        this.timeStepInMilliseconds
+      );
+    },
+    countdown() {
+      this.delayLeftInMilliseconds = Math.max(
+        this.playbackDelayInSeconds * 1000 - (Date.now() - this.referenceTime),
+        0
+      );
+      console.log(this.delayLeftInMilliseconds);
+    },
+    manageHavingNoVideo() {
+      setTimeout(
+        () => this.manageHavingNoMidiFile(),
+        this.errorAutomaticTransitionSeconds * 1000
+      );
+    },
+    startVideo() {
+      this.isPlaying = true;
+      this.$refs.video.playerPlay();
+    }
+  },
   mounted() {
-    console.log("Just un teste");
+    if (this.videoName === "") this.manageHavingNoVideo();
+    else this.startDelayCountdown();
+  },
+  beforeDestroy() {
+    window.clearInterval(this.counterUniqueIdentifier);
+  },
+  watch: {
+    delayLeftInMilliseconds(value) {
+      // When the delay is over, we start the video
+      if (value <= 0) {
+        window.clearInterval(this.counterUniqueIdentifier);
+        this.startVideo();
+      }
+    }
   }
 };
 </script>
@@ -122,8 +196,6 @@ export default {
   align-items: center;
   height: 80%;
   width: 100%;
-  background-color: coral;
-  padding: 10px;
 }
 .piano-box {
   display: flex;
@@ -131,6 +203,13 @@ export default {
   align-items: center;
   height: 20%;
   width: calc(var(--videoWidth) * 1.1);
-  background-color: rgb(188, 255, 80);
+}
+.video-hidding-thumbnail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: radial-gradient(rgb(50, 50, 50), black);
+  height: var(--videoHeight);
+  width: var(--videoWidth);
 }
 </style>

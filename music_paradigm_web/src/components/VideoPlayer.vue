@@ -41,13 +41,10 @@ export default {
         return {
           startTime: 0.0,
           endTime: 0.0,
-          volume: 1.0
         };
       }
     }
   },
-  // poster: "http://localhost:3000/images/Music_poster.bmp";
-  // poster: "sprites.svg#emoji-frown" //this.apiUrl + "/static/" + "assets/images/Music_poster.bmp"
   data() {
     return {
       player: null,
@@ -56,40 +53,17 @@ export default {
       duration: 0
     };
   },
-  mounted() {
-    window.playerEvents = this;
-    this.playerInitialize();
-    // this.playerSetPoster(
-    //   this.src.poster || "http://localhost:3000/images/Music_poster.bmp"
-    // );
-    this.playerSetSrc(this.src);
-    this.playerSetVolume(this.playBack.volume || 1.0);
-    this.playerSetTime(this.playBack.startTime || 0.0);
-    this.playerSetupEndEvents();
-    this.setEndTime(this.playBack.endTime || 0.0);
-  },
-  beforeDestroy() {
-    if (this.player) {
-      this.player.dispose();
-    }
-  },
   methods: {
     // Video initialization method
     playerInitialize() {
       const initialOptions = {
         controls: false,
+        userActions: {},
         muted: false,
-        // Dimensions
         height: this.dimension.height,
         width: this.dimension.width,
-
-        // Immutable options
-        // The medias have to be preloaded for more smooth transitions
         preload: "auto",
-        // The autoplay is managed with the playback options
-        autoplay: false,
-        // We want the video not to be sentive to inputs
-        userActions: {}
+        autoplay: false // The autoplay is managed manually to handle delays
       };
       this.player = videojs(this.$refs.videoPlayer, initialOptions);
     },
@@ -100,9 +74,6 @@ export default {
     },
     playerPause() {
       this.player.pause();
-    },
-    playerSetPoster(src) {
-      this.player.poster(src);
     },
     playerSetSrc(src, type) {
       this.player.src(src);
@@ -123,14 +94,13 @@ export default {
       }
     },
     playerEventEnded() {
-      console.log("ended");
+      this.$emit("finishedPlayback");
     },
     playerEventError() {
       const error = this.player.error().message;
       console.log(error);
       alert(error);
     },
-
     // Event listening methods
     setEndTime(endTime) {
       if (endTime !== 0.0) {
@@ -152,6 +122,20 @@ export default {
       this.player.on("error", function() {
         window.playerEvents.playerEventError();
       });
+    }
+  },
+  mounted() {
+    window.playerEvents = this;
+    this.playerInitialize();
+    this.playerSetSrc(this.src);
+    this.playerSetVolume(1.0);
+    this.playerSetTime(this.playBack.startTime || 0.0);
+    this.playerSetupEndEvents();
+    this.setEndTime(this.playBack.endTime || 0.0);
+  },
+  beforeDestroy() {
+    if (this.player) {
+      this.player.dispose();
     }
   },
   watch: {}
