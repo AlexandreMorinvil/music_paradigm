@@ -4,7 +4,7 @@
       v-if="hasText"
       id="text-area"
       class="experiment-state-division state-division-text"
-    >{{ textContent }}</div>
+    >{{ textToDisplay }}</div>
 
     <div
       v-if="hasVisualMedia"
@@ -62,6 +62,10 @@ export default {
         else return "grid-single-area";
       }
     },
+    textToDisplay() {
+      if (this.textContent !== "") return "Rest";
+      else return this.textContent;
+    },
     footnote() {
       return `The experiment will go to the next step in ${this.timeLeftDisplay}`;
     },
@@ -70,12 +74,14 @@ export default {
     },
     timeLeftDisplay() {
       var display = "";
-      const minutes = Math.floor((this.timeLeftInMilliseconds / 1000 / 60) % 60);
+      const minutes = Math.floor(
+        (this.timeLeftInMilliseconds / 1000 / 60) % 60
+      );
       const seconds = Math.floor((this.timeLeftInMilliseconds / 1000) % 60);
       if (minutes > 0) {
         display += `${minutes} minutes `;
       }
-      display += `${seconds} seconds`
+      display += `${seconds} seconds`;
       return display;
     }
   },

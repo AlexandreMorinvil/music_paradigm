@@ -40,7 +40,7 @@ export default {
       default() {
         return {
           startTime: 0.0,
-          endTime: 0.0,
+          endTime: 0.0
         };
       }
     }
@@ -75,8 +75,8 @@ export default {
     playerPause() {
       this.player.pause();
     },
-    playerSetSrc(src, type) {
-      this.player.src(src);
+    playerSetSrc(src, type = "video/mp4") {
+      this.player.src({ type: type, src: src });
     },
     playerSetVolume(float) {
       this.player.volume(float);
@@ -86,7 +86,7 @@ export default {
     },
 
     // Event handling methods
-    playerCheckDelayedStop(endTime) {
+    playerCheckDelayedStop() {
       this.time = this.player.currentTime();
       if (this.time >= this.duration) {
         this.playerPause();
@@ -105,7 +105,7 @@ export default {
     setEndTime(endTime) {
       if (endTime !== 0.0) {
         this.duration = endTime;
-        this.player.on("timeupdate", function(e) {
+        this.player.on("timeupdate", function() {
           window.playerEvents.playerCheckDelayedStop();
         });
       } else {

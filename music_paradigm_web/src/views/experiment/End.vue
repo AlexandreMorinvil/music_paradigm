@@ -1,76 +1,91 @@
 <template>
-  <div id="app">
-    <img id="end-img" :src="apiUrl+'/static/'+pictureName" alt="End" />
+  <div id="end-state" class="experiment-state-container" :class="gridClass">
+    <div
+      v-if="hasText"
+      id="text-area"
+      class="experiment-state-division state-division-text"
+    >{{ textToDisplay }}</div>
+
+    <div
+      v-if="hasVisualMedia"
+      id="visual-media-area"
+      class="experiment-state-division state-division-visual-media"
+    >
+      <img id="end-img" :src="urlStatic(pictureName)" alt="Instruction" />
+    </div>
+
+    <div
+      id="note-area"
+      v-if="hasFootnote"
+      class="experiment-state-division state-division-text"
+    >{{ footnote }}</div>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
-import config from "@/config";
+import "@/styles/experimentState.css";
+import { mapGetters } from "vuex";
 
 export default {
   name: "End",
   components: {},
-  computed: {
-    ...mapState(["pressedKeys"]),
-    experiment: {
-      get: function() {
-        return this.$store.state.experiment;
-      },
-      set: function(newValue) {
-        this.$store.state.experiment = newValue;
+  props: {
+    isSpaceBarPressed: {
+      type: Boolean,
+      default() {
+        return false;
       }
     }
   },
   data() {
-    return {
-      apiUrl: config.apiUrl,
-      pictureName: ""
-    };
+    return {};
   },
-  methods: {
-    // ...mapActions("experiment", ["initState"]),
-    // TODO: Ensuring that the name "onNext" is changed to "goNextStep" if it is accruate in this state
-    onNext() {
-      // this.$router.push({name: 'cue'});
-      if (this.experiment.currentBlockNum === this.experiment.totalBlockNum) {
-        this.experiment.nextFlowIndex += 1;
-        this.$router.push({ name: "login" });
+  computed: {
+    ...mapGetters(["urlStatic"]),
+    ...mapGetters("piano", ["pressedKeys"]),
+    ...mapGetters("experiment", [
+      "hasText",
+      "hasVisualMedia",
+      "hasFootnote",
+      "pictureName",
+      "textContent",
+      "anyPianoKey"
+    ]),
+    gridClass() {
+      if (this.hasFootnote) {
+        if (this.hasText && this.hasVisualMedia) return "grid-area-area-note";
+        else return "grid-area-note";
       } else {
-        this.experiment.currentBlockNum += 1;
-        this.pictureName =
-          this.experiment.folder +
-          "/" +
-          this.experiment.currentFlowState.pictureFileName[
-            this.experiment.currentBlockNum
-          ];
+        if (this.hasText && this.hasVisualMedia) return "grid-area-area";
+        else return "grid-single-area";
       }
+    },
+    textToDisplay() {
+      if (this.textContent !== "") return "End";
+      else return this.textContent;
+    },
+    footnote() {
+      if (this.anyPianoKey)
+        return "Press any piano key or the space bar for ending the experiment";
+      else return "Press the space bar for ending the experiment";
     }
   },
+  methods: {},
+  mounted() {},
   watch: {
-    // press any piano keys to continue
-    pressedKeys() {
-      if (this.pressedKeys.length > 0) {
-        // TODO: Ensuring that the name "onNext" is changed to "goNextStep" if it is accruate in this state
-        this.onNext();
+    isSpaceBarPressed(isPressed) {
+      if (isPressed) {
+        this.$emit("stateEnded");
+      }
+    },
+    pressedKeys(keys) {
+      if (this.anyPianoKey && keys.length > 0) {
+        this.$emit("stateEnded");
       }
     }
-  },
-  mounted() {
-    // this.initState();
-    this.pictureName = this.experiment.pictureName;
   }
 };
 </script>
 
 <style scoped>
-img {
-  max-height: 100%;
-  width: auto;
-  display: block;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
 </style>
