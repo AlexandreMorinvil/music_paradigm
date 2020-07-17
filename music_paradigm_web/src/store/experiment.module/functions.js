@@ -11,7 +11,7 @@ const countStepsLeft = function (flow, startPointCursor) {
         moveCursorNext(flow, stepTracerCursor);
         stepsCounter += 1;
     }
-    return stepsCounter;
+    return (stepsCounter - 1);
 }
 
 /**
