@@ -11,7 +11,7 @@ const countStepsLeft = function (flow, startPointCursor) {
         moveCursorNext(flow, stepTracerCursor);
         stepsCounter += 1;
     }
-    return (stepsCounter - 1);
+    return Math.max(0, (stepsCounter - 1));
 }
 
 /**
@@ -31,7 +31,7 @@ const assignCursor = function (cursorToCopy) {
             current: {
                 index: 0,
                 innerStepIndex: 0,
-                piledContentIndex: 0,
+                piledMediaIndex: 0,
                 isBeyondEnd: false
             },
             navigation: {
@@ -41,7 +41,7 @@ const assignCursor = function (cursorToCopy) {
                 indexGroupEnd: -1,
                 totalInnerSteps: 0,
                 numberRepetition: 1,
-                numberPiledContent: 0,
+                numberPiledMedia: 0,
             }
         };
         return defaultCursor;
@@ -53,7 +53,7 @@ const moveCursorNextStep = function (flow, cursor, isInitialized = {}) {
     // Moving to the next inner step if there remains inner steps (only in instruction blocks)
     if (cursor.current.innerStepIndex < cursor.navigation.totalInnerSteps) {
         cursor.current.innerStepIndex += 1;
-        Object.assign(isInitialized, { media: false });
+        Object.assign(isInitialized, { content: false });
     }
 
     // Moving to a new block
@@ -69,21 +69,21 @@ const moveCursorNextStep = function (flow, cursor, isInitialized = {}) {
             if (cursor.navigation.numberRepetition > 1) {
                 cursor.navigation.numberRepetition -= 1;
             }
-            // If there remains content to depile: we loop back and decrement the count of piled content
-            else if (cursor.navigation.numberPiledContent > 1) {
-                cursor.navigation.numberPiledContent -= 1;
-                cursor.current.piledContentIndex += 1;
+            // If there remains media content to depile: we loop back and decrement the count of piled content
+            else if (cursor.navigation.numberPiledMedia > 1) {
+                cursor.navigation.numberPiledMedia -= 1;
+                cursor.current.piledMediaIndex += 1;
             }
         }
 
         // Otherwise, if the next step is beyond a group of blocks, we reset the piled content index
         else if (cursor.navigation.indexNext > cursor.navigation.indexGroupEnd) {
-            cursor.current.piledContentIndex = 0;
+            cursor.current.piledMediaIndex = 0;
         }
             
         // We move the current intdex to the next step
         cursor.current.index = cursor.navigation.indexNext;
-        Object.assign(isInitialized, { route: false, state: false, media: false });
+        Object.assign(isInitialized, { route: false, state: false, media: false, content: false });
     }
 
     // Moving beyond the last block of the flow
@@ -181,11 +181,11 @@ const setCursorContentDepilingStart = function (cursor, isInstruction, pictureFi
     const numberVideoFiles = Array.isArray(videoFileName) ? (videoFileName.length) : 0;
     const numberPictureFiles = Array.isArray(pictureFileName) ? (pictureFileName.length) : 0;
 
-    // Detemine the maximum number of piled content elements all types included.
-    // The cursor will loop to the start of the pile and use the content corresponding to the index named "piledContentIndex"
+    // Detemine the maximum number of piled media content.
+    // The cursor will loop to the start of the pile and use the content corresponding to the index named "piledMediaIndex"
     // If we are in an instruction block, the pictures and text content will be shown immeiately and they will not depend on 
-    // the "piledContentIndex" so they are not considered.
-    // If it is not an instruction block, the picture and text will be shown accordingly with the "piledContentIndex", so they
+    // the "piledMediaIndex" so they are not considered.
+    // If it is not an instruction block, the picture and text will be shown accordingly with the "piledMediaIndex", so they
     // are considred in the maximum calculation.
     var maxNumberContentElement;
     if (isInstruction) {
@@ -194,18 +194,18 @@ const setCursorContentDepilingStart = function (cursor, isInstruction, pictureFi
         maxNumberContentElement = Math.max(numberMidiFiles, numberVideoFiles, numberPictureFiles);
     }
 
-    // Initialize the number of piled content (playable media pile index & number of medias) if :
-    // 1. There is more than one content element (midi/video/picture/text) (so the total index > 1), 
+    // Initialize the number of piled media content (playable media pile index & number of medias) if :
+    // 1. There is more than one media content element (midi/video) (so the total index > 1), 
     // 2. The cursor is not currently depiling a content pile (thus the number of piled content left is 1 or 0)
     // 3. The current index is not the start index of a previous pile (to avoid depiling a pile twice)
     // 4. The current index is beyond the loop end (in order to not start a loop of depilement within 
     //    a group of blocks)
     if (maxNumberContentElement > 1 &&
-        cursor.navigation.numberPiledContent <= 1 &&
+        cursor.navigation.numberPiledMedia <= 1 &&
         cursor.current.index !== cursor.navigation.indexPileStart &&
         cursor.current.index > cursor.navigation.indexGroupEnd) {
         cursor.navigation.indexPileStart = cursor.current.index;
-        cursor.navigation.numberPiledContent = maxNumberContentElement;
+        cursor.navigation.numberPiledMedia = maxNumberContentElement;
     }
 }
 
@@ -229,8 +229,8 @@ const setCursorNextStep = function (cursor, followedBy) {
 
         // If there remains content to depile:
         //  - We will loop back to that point
-        //  - We reset the loop start in order to be able to loop again with the new content
-        else if (cursor.navigation.numberPiledContent > 1) {
+        //  - We reset the loop start in order to be able to loop again with the new media content
+        else if (cursor.navigation.numberPiledMedia > 1) {
             cursor.navigation.indexNext = cursor.navigation.indexPileStart;
             cursor.navigation.indexLoopStart = -1;
         }
@@ -250,7 +250,7 @@ const updateRoute = function (currentState, flow, cursor, isInitialized) {
     // We update the route
     currentState.type = flow[cursor.current.index].type;
     router.push({ name: currentState.type });
-    Object.assign(isInitialized, { route: true, state: false, media: false });
+    Object.assign(isInitialized, { route: true, state: false, media: false, content: false });
 }
 
 /**
@@ -282,7 +282,7 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
     };
 
     // Indicate that the state (current block's settings) was already initialized 
-    Object.assign(isInitialized, { state: true, media: false });
+    Object.assign(isInitialized, { state: true, media: false, content: false });
 }
 
 const updateStateMediaFiles = function (currentState, flow, cursor, isInitialized) {
@@ -290,41 +290,61 @@ const updateStateMediaFiles = function (currentState, flow, cursor, isInitialize
     // If the cursor is beyond the end, the flow is finished, we do not need to parse another block
     if (cursor.current.isBeyondEnd) return;
 
-    // Parsing the current block's media files
+    // Parsing the current block
     const currentBlock = flow[cursor.current.index];
     const {
-        // Type of block
-        type,
         // Media files
-        pictureFileName,
         midiFileName,
         videoFileName
     } = currentBlock;
+    
+    // Parsing the cursor
+    const piledMediaIndex = cursor.current.piledMediaIndex;
 
-    // Update the media files
-    // If no file is specified for the index searched, the previous file is returned.
-    // For the picture file name, we start from the inner steps index if the block is an instruction block
-    // For all other types of blocks, we the picture file name corresponds to the playable media file name
-    // For the midi and video file name, we start from the index of playable media files
-    const innerStepIndex = cursor.current.innerStepIndex;
-    const piledContentIndex = cursor.current.piledContentIndex;
+    // Update the media files. If no new value is found, the previous value is used (it is kept unchanged)
+    const mediaIndex = piledMediaIndex;
 
-    var updatedPictureFileName;
-    if (type === "instruction") updatedPictureFileName = Array.isArray(pictureFileName) ? (pictureFileName[innerStepIndex] || null) : null;
-    else updatedPictureFileName = Array.isArray(pictureFileName) ? (pictureFileName[piledContentIndex] || null) : null;
+    const updatedMidiFileName = Array.isArray(midiFileName) ? (midiFileName[mediaIndex] || null) : null;
+    const updatedVideoFileName = Array.isArray(videoFileName) ? (videoFileName[mediaIndex] || null) : null;
 
-    var updatedMidiFileName = Array.isArray(midiFileName) ? (midiFileName[piledContentIndex] || null) : null;
-    var updatedVideoFileName = Array.isArray(videoFileName) ? (videoFileName[piledContentIndex] || null) : null;
-
-
-    // Set the media files name. If no new value is found, it is kept unchanged
     const oldMediaFile = currentState.mediaFile;
-    currentState.mediaFile.pictureName = updatedPictureFileName || oldMediaFile.pictureName;
     currentState.mediaFile.midiName = updatedMidiFileName || oldMediaFile.midiName;
     currentState.mediaFile.videoName = updatedVideoFileName || oldMediaFile.videoName;
 
     // Indicate that the media files is initialized 
-    Object.assign(isInitialized, { media: true });
+    Object.assign(isInitialized, { media: true, content: false });
+}
+
+const updateStateContent = function (currentState, flow, cursor, isInitialized) {
+    
+    // If the cursor is beyond the end, the flow is finished, we do not need to parse another block
+    if (cursor.current.isBeyondEnd) return;
+
+    // Parsing the current block
+    const currentBlock = flow[cursor.current.index];
+    const {
+        // Type of block
+        type,
+        // Content elements
+        textContent,
+        pictureFileName,
+    } = currentBlock;
+    
+    // Parsing the cursor
+    const innerStepIndex = cursor.current.innerStepIndex;
+    const piledMediaIndex = cursor.current.piledMediaIndex;
+
+    // Update the content. If no value is found, no value is set
+    const contentIndex = (type === "instruction") ? innerStepIndex : piledMediaIndex;
+
+    const updatedTextContent = Array.isArray(textContent) ? (textContent[contentIndex] || null) : null;
+    const updatedPictureFileName = Array.isArray(pictureFileName) ? (pictureFileName[contentIndex] || null) : null;
+
+    currentState.content.text = updatedTextContent || "";
+    currentState.content.pictureName = updatedPictureFileName || "";
+
+    // Indicate that the media files is initialized 
+    Object.assign(isInitialized, { content: false });
 }
 
 const moveCursorNext = function (flow, cursor, isInitialized) {
@@ -336,6 +356,7 @@ const updateState = function (currentState, flow, cursor, isInitialized, general
     if (!isInitialized.route) updateRoute(currentState, flow, cursor, isInitialized);
     if (!isInitialized.state) updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings);
     if (!isInitialized.media) updateStateMediaFiles(currentState, flow, cursor, isInitialized);
+    if (!isInitialized.content) updateStateContent(currentState, flow, cursor, isInitialized);
 }
 
 

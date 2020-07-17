@@ -25,7 +25,7 @@ export default {
     cursor: {
         current: {
             index: 0,                   // Index of the current block of the flow
-            piledContentIndex : 0,      // Index of the current step of the block (browses the midi and video file names)
+            piledMediaIndex : 0,      // Index of the current step of the block (browses the midi and video file names)
             innerStepIndex: 0,          // Index of the current step of the block (browses the picture file names)
             isBeyondEnd: false          // Indicator of whether the index as reached the end of the flow (is checked before moving the cursor forward)
         },
@@ -36,7 +36,7 @@ export default {
             indexGroupEnd: -1,          // Index of the end of a group of blocks (the last index with a followedBy or an individual block)
             totalInnerSteps: 0,         // Number of steps in a given block
             numberRepetition: 1,        // Number of repetitions left to do
-            numberPiledContent: 0,      // Number of content piled at the index pile start
+            numberPiledMedia: 0,        // Number of media content piled at the index pile start
         }
     },
 
@@ -44,14 +44,18 @@ export default {
     isInitialized : {
         route: false,
         state: false,
-        media: false
+        media: false,
+        content: false,
     },
     // Data used by the view pages
     state: {
         type: "",
+        content: {
+            text: "",
+            pictureName: "",                                // Name of the current picture to display
+        },
         // Multimedia elements
         mediaFile: {
-            pictureName: "",                                // Name of the current picture to display
             midiName: "",                                   // Name of the current midi file loaded in the player to play
             videoName: "",                                  // Name of the current video file to playback
         },

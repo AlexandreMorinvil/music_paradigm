@@ -18,7 +18,7 @@ export default {
         return state.settings.timbreFile || constants.DEFAULT_TIMBRE_FILE;
     },
 
-    // Getters for the state medias and texts
+    // Getters for the state content
     // Texts
     textContent: () => {
         // TODO: Integrate the texts in the flows
@@ -29,7 +29,7 @@ export default {
     // Image files
     pictureName: (state) => {
         // Fetch the picture name
-        const pictureName = state.state.mediaFile.pictureName;
+        const pictureName = state.state.content.pictureName;
         if (pictureName === "") return "";
 
         // Verify that the file name describes a supported file format
@@ -45,6 +45,7 @@ export default {
         return `${state.description.folder}/${pictureName}`;
     },
 
+    // Getters for the state media
     // Playable Media file names
     midiName: (state) => {
         // Fetch the picture name
