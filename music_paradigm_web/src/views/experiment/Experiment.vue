@@ -172,7 +172,7 @@ export default {
 }
 #experiment-state {
   box-shadow: 0 0 25px 0 rgb(0, 0, 0);
-  background-color: rgb(251, 170, 170);
+  background-color: black;
   overflow: auto;
   margin: 25px;
 }

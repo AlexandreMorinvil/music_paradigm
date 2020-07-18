@@ -20,10 +20,8 @@ export default {
 
     // Getters for the state content
     // Texts
-    textContent: () => {
-        // TODO: Integrate the texts in the flows
-        // Return the text name
-        return "Random text";//state.state.display.text;
+    textContent: (state) => {
+        return state.state.content.text;
     },
 
     // Image files
@@ -44,7 +42,7 @@ export default {
         // Return the picture name
         return `${state.description.folder}/${pictureName}`;
     },
-    
+
     // Interactive piano
     hasInteractivePiano: (state) => {
         return state.state.content.interactivePiano || false;
@@ -112,13 +110,13 @@ export default {
 
         // If There remains inner steps in the current block, the next step is
         // of the same type as the current step
-        else if (state.cursor.current.innerStepIndex < state.cursor.navigation.totalInnerSteps){
+        else if (state.cursor.current.innerStepIndex < state.cursor.navigation.totalInnerSteps) {
             return state.flow[state.cursor.current.index].type;
         }
 
         // Otherwise, if it is none of the edge casess, the type of the next step
         // is the type of the following block
-        else 
+        else
             return state.flow[state.cursor.navigation.indexNext].type;
     },
 
@@ -130,13 +128,35 @@ export default {
         // can move to the next step by pressing any piano key (if the value is "true"),
         // otherwise the experiment will move to the next step only by pressing the
         // space bar key (if the value is false).
-        return state.state.settings.anyPianoKey || state.settings.anyPianoKey;
+        let anyPianoKey;
+
+        if (typeof state.state.settings.anyPianoKey === "boolean")
+            anyPianoKey = state.state.settings.playingMode;
+
+        else if (typeof state.settings.anyPianoKey === "boolean")
+            anyPianoKey = state.settings.playingMode
+
+        else
+            anyPianoKey = constants.DEFAULT_ANY_PIANO_KEY
+
+        return anyPianoKey;
     },
 
     playingMode: (state) => {
         // Return the playing mode specified by the block if it exists,
         // otherwise, the default playing mode of the experiment is returned.
-        return state.state.settings.playingMode || state.settings.playingMode;
+        let playingMode;
+
+        if (typeof state.state.settings.playingMode === "boolean")
+            playingMode = state.state.settings.playingMode;
+
+        else if (typeof state.settings.playingMode === "boolean")
+            playingMode = state.settings.playingMode
+
+        else
+            playingMode = constants.DEFAULT_PLAYING_MODE
+
+        return playingMode;
     },
 
     enableSoundFlag: (state) => {
@@ -146,18 +166,19 @@ export default {
         // 3. The experiment setting
         // 4. Otherwise, it is turned off
         let enableSoundFlag;
-        if (state.state.type === "playing") {
+
+        if (state.state.type === "playing")
             enableSoundFlag = true;
-        }
-        else if (state.state.settings.enableSoundFlag !== undefined) {
+
+        else if (typeof state.state.settings.enableSoundFlag === "boolean")
             enableSoundFlag = state.state.settings.enableSoundFlag;
-        }
-        else if (state.settings.enableSoundFlag !== undefined) {
+
+        else if (typeof state.settings.enableSoundFlag === "boolean")
             enableSoundFlag = state.settings.enableSoundFlag;
-        }
-        else {
-            enableSoundFlag = false;
-        }
+
+        else
+            enableSoundFlag = constants.DEFAULT_ENABLE_SOUND_FLAG
+
         return enableSoundFlag;
     },
 
@@ -166,18 +187,24 @@ export default {
         // otherwise, return a value of 0 to be interpreted as "There is no timeout"
         return state.state.settings.timeoutInSeconds || 0;
     },
+    hasFootnote: (state) => {
+        let hasFootNote;
 
-    // Getters used for the state display formatting
-    hasText: (getters) => {
-        return true; //Boolean(getters.textContent);
+        if (typeof state.settings.hasFootnote === "boolean")
+            hasFootNote = state.settings.hasFootnote;
+
+        else
+            hasFootNote = constants.DEFAULT_FOOTNOTE;
+
+        return hasFootNote;
     },
-    hasVisualMedia: (getters) => {
-        // There must always be at least be a visual media. If there is no text, necessarily we add a visual medial (the piano)
-        // If there is a text, the value will depend of whether or not there is a picture name.
-        return (getters.hasText) ? Boolean(getters.pictureName) : true;
+
+    // Getters used for the content disposition on the screen
+    hasText: (state) => {
+        return Boolean(state.state.content.textContent);
     },
-    // TODO: Integrate that concept in the model
-    hasFootnote: () => {
-        return true;
+
+    hasVisualMedia: (state) => {
+        return (state.state.content.pictureName || state.state.content.interactivePiano);
     }
 }

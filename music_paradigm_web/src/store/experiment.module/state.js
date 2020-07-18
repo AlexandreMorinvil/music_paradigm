@@ -17,8 +17,9 @@ export default {
     settings: {
         anyPianoKey: constants.DEFAULT_ANY_PIANO_KEY,           // Allowing any piano key press to advance to the next page
         enableSoundFlag: constants.DEFAULT_ENABLE_SOUND_FLAG,   // Whether or not the piano output is enabled by default in the session
-        playingMode: constants.DEFAULT_MODE,                    // Mode of the experiment ("rhythm" or "speed")
-        timbreFile: constants.DEFAULT_TIMBRE_FILE               // URL or location of the timbre file used for the piano
+        playingMode: constants.DEFAULT_PLAYING_MODE,            // Mode of the experiment ("rhythm" or "speed")
+        timbreFile: constants.DEFAULT_TIMBRE_FILE,              // URL or location of the timbre file used for the piano
+        footnote: constants.DEFAULT_FOOTNOTE                    // Whether or not the experiment must display the inidcative foot note in each state
     },
 
     // Data to navigate through the flow
@@ -65,9 +66,9 @@ export default {
             anyPianoKey: constants.DEFAULT_ANY_PIANO_KEY,
             enableSoundFlag: constants.DEFAULT_ENABLE_SOUND_FLAG,
             numberRepetition: 0,
-            progressBarFlag: true,
             timeoutInSeconds: 0,
-            playingMode: constants.DEFAULT_MODE
+            playingMode: constants.DEFAULT_PLAYING_MODE,
+            footnote: constants.DEFAULT_FOOTNOTE
         }
     }
 };

@@ -262,18 +262,17 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
         anyPianoKey,
         enableSoundFlag,
         playingMode,
-        progressBarFlag,
-        timeoutInSeconds
+        timeoutInSeconds,
+        footnote
     } = currentBlock;
 
-    // TODO: Integrate progress Bar ?
     // Set the settings for the state. If no value is found, an appropreate default value is set
     currentState.settings = {
         anyPianoKey: (typeof anyPianoKey !== 'undefined') ? Boolean(anyPianoKey) : generalSettings.anyPianoKey,
         enableSoundFlag: (typeof enableSoundFlag !== 'undefined') ? Boolean(enableSoundFlag) : generalSettings.enableSoundFlag,
         playingMode: (typeof playingMode === 'string') ? playingMode : generalSettings.playingMode,
-        progressBarFlag: (typeof progressBarFlag !== 'undefined') ? Boolean(progressBarFlag) : true,
-        timeoutInSeconds: (typeof timeoutInSeconds === 'number') ? timeoutInSeconds : 0
+        timeoutInSeconds: (typeof timeoutInSeconds === 'number') ? timeoutInSeconds : 0,
+        footnote: (typeof footnote !== 'undefined') ? Boolean(footnote) : generalSettings.footnote
     };
 
     // Indicate that the state (current block's settings) was already initialized 
