@@ -2,7 +2,7 @@
   <div id="experiment" class="experiment-context experimen-grid">
     <div id="experiment-status">
       <div id="timer-box" class="status-display-box">
-        <timer />
+        <timer :startTimeInSeconds="timeLimitInSeconds" :mustCountDown="timeLimitInSeconds > 0" v-on:timesUp="handleTimesUp"/>
       </div>
 
       <div id="center-wrapper">
@@ -59,7 +59,8 @@ export default {
       "stepsLeftCount",
       "currentStateType",
       "nextStateType",
-      "midiName"
+      "midiName",
+      "timeLimitInSeconds"
     ]),
     currentStateIcon() {
       return this.getIconReference(this.currentStateType);
@@ -96,6 +97,9 @@ export default {
         default:
           return iconFileName + "icon-three-dots";
       }
+    },
+    handleTimesUp(){
+      console.log("Times up");
     },
     navigateExperiment() {
       this.resetPlayedNotesLogs();

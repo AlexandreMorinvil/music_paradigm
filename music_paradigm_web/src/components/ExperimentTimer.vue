@@ -1,7 +1,10 @@
 <template>
   <div id="timer">
     <div id="timer-display" :class="color">
-      <svg class="timer-icon">
+      <svg v-if="mustCountDown" class="timer-icon">
+        <use xlink:href="sprites.svg#icon-hourglass" />
+      </svg>
+      <svg v-else class="timer-icon">
         <use xlink:href="sprites.svg#icon-timer" />
       </svg>
       &nbsp;{{timerDisplay}}
@@ -19,7 +22,7 @@ export default {
         return false;
       }
     },
-    startTime: {
+    startTimeInSeconds: {
       type: Number,
       default() {
         return 0;
@@ -59,7 +62,7 @@ export default {
   },
   methods: {
     setTime(value) {
-      this.cumulatedTime = value;
+      this.cumulatedTime = value * 1000;
       this.totalTime = this.cumulatedTime;
       this.referenceTime = new Date();
     },
@@ -82,18 +85,21 @@ export default {
       return this.totalTime;
     },
     countUp() {
-    this.totalTime = this.cumulatedTime +
-      Date.parse(new Date()) - Date.parse(this.referenceTime);
+      this.totalTime =
+        this.cumulatedTime +
+        Date.parse(new Date()) -
+        Date.parse(this.referenceTime);
     },
     countDown() {
-      this.totalTime = this.cumulatedTime -
+      this.totalTime =
+        this.cumulatedTime -
         (Date.parse(new Date()) - Date.parse(this.referenceTime));
     }
   },
   beforeMount() {},
 
   mounted() {
-    this.setTime(this.startTime);
+    this.setTime(this.startTimeInSeconds);
     this.startTimer();
   },
   beforeDestroy() {
@@ -105,6 +111,7 @@ export default {
       if (value < 0) {
         this.setTime(0);
         this.stopTimer();
+        this.$emit("timesUp");
       } else {
         this.seconds = Math.floor((value / 1000) % 60);
         this.minutes = Math.floor((value / 1000 / 60) % 60);

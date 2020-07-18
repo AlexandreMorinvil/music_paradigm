@@ -14,8 +14,13 @@ export default {
     experimentName: (state) => {
         return state.description.name || "UNKNOWN_NAME";
     },
+
     timbreFile: (state) => {
         return state.settings.timbreFile || constants.DEFAULT_TIMBRE_FILE;
+    },
+
+    timeLimitInSeconds: (state) => {
+        return state.settings.timeLimitInSeconds || constants.DEFAULT_TIME_LIMIT;
     },
 
     // Getters for the state content

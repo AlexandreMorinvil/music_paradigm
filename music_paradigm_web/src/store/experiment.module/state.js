@@ -19,7 +19,8 @@ export default {
         enableSoundFlag: constants.DEFAULT_ENABLE_SOUND_FLAG,       // Whether or not the piano output is enabled by default in the session
         playingMode: constants.DEFAULT_PLAYING_MODE,                // Mode of the experiment ("rhythm" or "speed")
         timbreFile: constants.DEFAULT_TIMBRE_FILE,                  // URL or location of the timbre file used for the piano
-        footnote: constants.DEFAULT_FOOTNOTE                        // Whether or not the experiment must display the inidcative foot note in each state
+        footnote: constants.DEFAULT_FOOTNOTE,                       // Whether or not the experiment must display the inidcative foot note in each state
+        timeLimitInSeconds: constants.DEFAULT_TIME_LIMIT            // Time limit of the experiment. If set to 0, ther is no limit and the timer will count up, otherwise the timer will count down
     },
 
     // Data to navigate through the flow
