@@ -323,6 +323,7 @@ const updateStateContent = function (currentState, flow, cursor, isInitialized) 
         // Content elements
         textContent,
         pictureFileName,
+        interactivePiano
     } = currentBlock;
 
     // Parsing the cursor
@@ -334,9 +335,11 @@ const updateStateContent = function (currentState, flow, cursor, isInitialized) 
 
     const updatedTextContent = Array.isArray(textContent) ? (textContent[contentIndex] || null) : null;
     const updatedPictureFileName = Array.isArray(pictureFileName) ? (pictureFileName[contentIndex] || null) : null;
+    const updatedInteractivePiano = Array.isArray(interactivePiano) ? (interactivePiano[contentIndex] || false) : false;
 
     currentState.content.text = updatedTextContent || "";
     currentState.content.pictureName = updatedPictureFileName || "";
+    currentState.content.interactivePiano = updatedInteractivePiano || false;
 
     // Indicate that the media files is initialized 
     Object.assign(isInitialized, { content: false });

@@ -45,7 +45,7 @@ export default {
         route: false,
         state: false,
         media: false,
-        content: false,
+        content: false
     },
     // Data used by the view pages
     state: {
@@ -53,6 +53,7 @@ export default {
         content: {
             text: "",
             pictureName: "",                                // Name of the current picture to display
+            interactivePiano: false
         },
         // Multimedia elements
         mediaFile: {
