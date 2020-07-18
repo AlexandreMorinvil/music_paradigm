@@ -9,35 +9,35 @@ export default {
 
     // Mandatory description of the flow
     description: {
-        name: "",   // Name of the experiment
-        folder: ""  // Folder in which the resources for the experiment are located
+        name: "",                                                   // Name of the experiment
+        folder: ""                                                  // Folder in which the resources for the experiment are located
     },
 
     // General settings of the flow
     settings: {
-        anyPianoKey: constants.DEFAULT_ANY_PIANO_KEY,           // Allowing any piano key press to advance to the next page
-        enableSoundFlag: constants.DEFAULT_ENABLE_SOUND_FLAG,   // Whether or not the piano output is enabled by default in the session
-        playingMode: constants.DEFAULT_PLAYING_MODE,            // Mode of the experiment ("rhythm" or "speed")
-        timbreFile: constants.DEFAULT_TIMBRE_FILE,              // URL or location of the timbre file used for the piano
-        footnote: constants.DEFAULT_FOOTNOTE                    // Whether or not the experiment must display the inidcative foot note in each state
+        anyPianoKey: constants.DEFAULT_ANY_PIANO_KEY,               // Allowing any piano key press to advance to the next page
+        enableSoundFlag: constants.DEFAULT_ENABLE_SOUND_FLAG,       // Whether or not the piano output is enabled by default in the session
+        playingMode: constants.DEFAULT_PLAYING_MODE,                // Mode of the experiment ("rhythm" or "speed")
+        timbreFile: constants.DEFAULT_TIMBRE_FILE,                  // URL or location of the timbre file used for the piano
+        footnote: constants.DEFAULT_FOOTNOTE                        // Whether or not the experiment must display the inidcative foot note in each state
     },
 
     // Data to navigate through the flow
     cursor: {
         current: {
-            index: 0,                   // Index of the current block of the flow
-            piledMediaIndex : 0,      // Index of the current step of the block (browses the midi and video file names)
-            innerStepIndex: 0,          // Index of the current step of the block (browses the picture file names)
-            isBeyondEnd: false          // Indicator of whether the index as reached the end of the flow (is checked before moving the cursor forward)
+            index: 0,                                               // Index of the current block of the flow
+            piledMediaIndex : 0,                                    // Index of the current step of the block (browses the midi and video file names)
+            innerStepIndex: 0,                                      // Index of the current step of the block (browses the picture file names)
+            isBeyondEnd: false                                      // Indicator of whether the index as reached the end of the flow (is checked before moving the cursor forward)
         },
         navigation: {
-            indexNext: 1,               // Index of the next block of the flow
-            indexLoopStart: -1,         // Index to which a loop start
-            indexPileStart: -1,         // Index to which there remains content to depile
-            indexGroupEnd: -1,          // Index of the end of a group of blocks (the last index with a followedBy or an individual block)
-            totalInnerSteps: 0,         // Number of steps in a given block
-            numberRepetition: 1,        // Number of repetitions left to do
-            numberPiledMedia: 0,        // Number of media content piled at the index pile start
+            indexNext: 1,                                           // Index of the next block of the flow
+            indexLoopStart: -1,                                     // Index to which a loop start
+            indexPileStart: -1,                                     // Index to which there remains content to depile
+            indexGroupEnd: -1,                                      // Index of the end of a group of blocks (the last index with a followedBy or an individual block)
+            totalInnerSteps: 0,                                     // Number of steps in a given block
+            numberRepetition: 1,                                    // Number of repetitions left to do
+            numberPiledMedia: 0,                                    // Number of media content piled at the index pile start
         }
     },
 
@@ -50,25 +50,25 @@ export default {
     },
     // Data used by the view pages
     state: {
-        type: "",
+        type: "",                                                   // Type of the current state
         content: {
-            text: "",
-            pictureName: "",                                // Name of the current picture to display
-            interactivePiano: false
+            text: "",                                               // Text to display
+            pictureName: "",                                        // Name of the current picture to display
+            interactivePiano: false                                 // Directive to display the interactive piano
         },
         // Multimedia elements
         mediaFile: {
-            midiName: "",                                   // Name of the current midi file loaded in the player to play
-            videoName: "",                                  // Name of the current video file to playback
+            midiName: "",                                           // Name of the current midi file loaded in the player to play
+            videoName: "",                                          // Name of the current video file to playback
         },
         // Block specific settings
         settings: {
-            anyPianoKey: constants.DEFAULT_ANY_PIANO_KEY,
-            enableSoundFlag: constants.DEFAULT_ENABLE_SOUND_FLAG,
-            numberRepetition: 0,
-            timeoutInSeconds: 0,
-            playingMode: constants.DEFAULT_PLAYING_MODE,
-            footnote: constants.DEFAULT_FOOTNOTE
+            anyPianoKey: constants.DEFAULT_ANY_PIANO_KEY,           // Block specific "anyPianoLKey" superseding the general setting
+            enableSoundFlag: constants.DEFAULT_ENABLE_SOUND_FLAG,   // Block specific "enableSoundFlag" superseding the general setting
+            numberRepetition: 0,                                    // Number of repetitions of a block group
+            timeoutInSeconds: 0,                                    // Time limit for a given block
+            playingMode: constants.DEFAULT_PLAYING_MODE,            // Playing mode ("rhythm" or "speed")
+            footnote: constants.DEFAULT_FOOTNOTE                    // Block specific "footnote" superseding the general setting
         }
     }
 };

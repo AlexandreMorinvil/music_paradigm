@@ -1,10 +1,14 @@
 <template>
   <div id="end-state" class="experiment-state-container" :class="gridClass">
     <div
-      v-if="hasText"
+      v-if="hasText || hasNoContent"
       id="text-area"
       class="experiment-state-division state-division-text"
-    >{{ textToDisplay }}</div>
+    >
+      <p>{{ textContent }}</p>
+      <!-- Default display if no content is provided -->
+      <p v-if="hasNoContent"> End </p>
+    </div>
 
     <div
       v-if="hasVisualMedia"
@@ -44,6 +48,7 @@ export default {
     ...mapGetters(["urlStatic"]),
     ...mapGetters("piano", ["pressedKeys"]),
     ...mapGetters("experiment", [
+      "hasNoContent",
       "hasText",
       "hasVisualMedia",
       "hasFootnote",

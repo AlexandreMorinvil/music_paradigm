@@ -1,10 +1,14 @@
 <template>
   <div id="cue-state" class="experiment-state-container" :class="gridClass">
     <div
-      v-if="hasText"
+      v-if="hasText || hasNoContent"
       id="text-area"
       class="experiment-state-division state-division-text"
-    >{{ textContent }}</div>
+    >
+      <p>{{ textContent }}</p>
+      <!-- Default display if no content is provided -->
+      <p v-if="hasNoContent">Cue</p>
+    </div>
 
     <div
       v-if="hasVisualMedia"
@@ -35,7 +39,7 @@ export default {
   },
   data() {
     return {
-      errorAutomaticTransitionSeconds: 10
+      errorAutomaticTransitionSeconds: 5
     };
   },
   computed: {
@@ -43,6 +47,7 @@ export default {
     ...mapGetters("piano", ["isMidiFileLoaded"]),
     ...mapGetters("experiment", [
       "midiName",
+      "hasNoContent",
       "hasInteractivePiano",
       "hasText",
       "hasVisualMedia",

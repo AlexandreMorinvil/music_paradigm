@@ -13,7 +13,7 @@
             v-show="!isPlaying"
             class="video-hidding-thumbnail"
             :style="videoWidthCSSvariable +';'+videoHeightCSSvariable"
-          >The video will start in {{ delayLeftDisplay }}</div>
+          >{{ videoWaitingMessage }}</div>
           <video-player
             v-show="isPlaying"
             :src="urlStatic(videoName)"
@@ -52,7 +52,7 @@ export default {
   data() {
     return {
       counterUniqueIdentifier: 0,
-      errorAutomaticTransitionSeconds: 10,
+      errorAutomaticTransitionSeconds: 5,
       // Video dimensions variable
       defaultVideoHeight: 253,
       defaultVideoWidth: 480,
@@ -128,6 +128,10 @@ export default {
       }
       display += `${seconds} seconds`;
       return display;
+    },
+    videoWaitingMessage() {
+      if (this.videoName === "") return "There is no video to be played";
+      else return `The video will start in ${this.delayLeftDisplay}`;
     }
   },
   methods: {
@@ -152,10 +156,9 @@ export default {
       console.log(this.delayLeftInMilliseconds);
     },
     manageHavingNoVideo() {
-      setTimeout(
-        () => this.manageHavingNoMidiFile(),
-        this.errorAutomaticTransitionSeconds * 1000
-      );
+      setTimeout(() => {
+        this.$emit("stateEnded");
+      }, this.errorAutomaticTransitionSeconds * 1000);
     },
     startVideo() {
       this.isPlaying = true;

@@ -1,10 +1,14 @@
 <template>
   <div id="feedback-state" class="experiment-state-container" :class="gridClass">
     <div
-      v-if="hasText"
+      v-if="hasText || grades === null"
       id="text-area"
       class="experiment-state-division state-division-text"
-    >{{ textContent }}</div>
+    >
+      <p>{{ textContent }}</p>
+      <!-- Default display if no performance was graded -->
+      <p v-if="!hasText && grades === null">No performance was graded</p>
+    </div>
 
     <div id="visual-media-area" class="experiment-state-division state-division-visual-media">
       <div class="feedback-grade-board">

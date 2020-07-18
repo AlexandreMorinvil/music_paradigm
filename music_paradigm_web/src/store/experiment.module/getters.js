@@ -147,10 +147,10 @@ export default {
         // otherwise, the default playing mode of the experiment is returned.
         let playingMode;
 
-        if (typeof state.state.settings.playingMode === "boolean")
+        if (typeof state.state.settings.playingMode === "string")
             playingMode = state.state.settings.playingMode;
 
-        else if (typeof state.settings.playingMode === "boolean")
+        else if (typeof state.settings.playingMode === "string")
             playingMode = state.settings.playingMode
 
         else
@@ -187,6 +187,7 @@ export default {
         // otherwise, return a value of 0 to be interpreted as "There is no timeout"
         return state.state.settings.timeoutInSeconds || 0;
     },
+
     hasFootnote: (state) => {
         let hasFootNote;
 
@@ -204,7 +205,15 @@ export default {
         return Boolean(state.state.content.textContent);
     },
 
+    hasPicture: (state) => {
+        return Boolean(state.state.content.pictureName);
+    },
+
     hasVisualMedia: (state) => {
-        return (state.state.content.pictureName || state.state.content.interactivePiano);
+        return Boolean(state.state.content.pictureName) || Boolean(state.state.content.interactivePiano);
+    },
+
+    hasNoContent: (state) => {
+        return !(state.state.content.textContent) && !(Boolean(state.state.content.pictureName) || Boolean(state.state.content.interactivePiano));
     }
 }
