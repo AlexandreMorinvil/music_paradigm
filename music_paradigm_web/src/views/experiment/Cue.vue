@@ -4,11 +4,7 @@
       v-if="hasText || hasNoContent"
       id="text-area"
       class="experiment-state-division state-division-text"
-    >
-      <p>{{ textContent }}</p>
-      <!-- Default display if no content is provided -->
-      <p v-if="hasNoContent">Cue</p>
-    </div>
+    >{{ textToDisplay }}</div>
 
     <div
       v-if="hasVisualMedia"
@@ -72,6 +68,10 @@ export default {
       else
         noteMessage = `The experiment will automatically go to the next step after the muscial cue`;
       return noteMessage;
+    },
+    textToDisplay() {
+      if (this.hasNoContent) return "Cue";
+      else return this.textContent;
     }
   },
   methods: {

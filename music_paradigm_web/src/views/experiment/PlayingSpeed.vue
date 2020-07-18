@@ -1,8 +1,13 @@
 <template>
   <div id="playing-speed-area" class="playing-area">
-    <div id="playing-visual-media" class="playing-visual-media-area">
-      <visual-piano v-if="hasInteractivePiano || hasNoContent" ref="piano" />
-      <img id="playing-img" v-else :src="urlStatic(pictureName)" alt="Playing" />
+    <div id="playing-visual-media" v-if="hasVisualMedia" class="playing-visual-media-area">
+      <visual-piano v-if="hasInteractivePiano" ref="piano" />
+      <img
+        id="playing-img"
+        v-if="!hasInteractivePiano && hasPicture"
+        :src="urlStatic(pictureName)"
+        alt="Playing"
+      />
     </div>
 
     <div id="playing-progress-bar" class="playing-progress-bar-area">
@@ -34,7 +39,8 @@ export default {
   computed: {
     ...mapGetters(["urlStatic"]),
     ...mapGetters("experiment", [
-      "hasNoContent",
+      "hasVisualMedia",
+      "hasPicture",
       "hasInteractivePiano",
       "pictureName",
       "timeoutInSeconds"

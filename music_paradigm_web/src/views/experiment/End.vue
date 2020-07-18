@@ -4,11 +4,7 @@
       v-if="hasText || hasNoContent"
       id="text-area"
       class="experiment-state-division state-division-text"
-    >
-      <p>{{ textContent }}</p>
-      <!-- Default display if no content is provided -->
-      <p v-if="hasNoContent"> End </p>
-    </div>
+    >{{ textToDisplay }}</div>
 
     <div
       v-if="hasVisualMedia"
@@ -73,6 +69,10 @@ export default {
       if (this.anyPianoKey)
         return "Press any piano key or the space bar for ending the experiment";
       else return "Press the space bar for ending the experiment";
+    },
+    textToDisplay() {
+      if (this.hasNoContent) return "End";
+      else return this.textContent;
     }
   },
   methods: {},

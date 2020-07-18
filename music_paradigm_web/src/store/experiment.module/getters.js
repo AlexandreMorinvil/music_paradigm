@@ -196,8 +196,8 @@ export default {
     hasFootnote: (state) => {
         let hasFootNote;
 
-        if (typeof state.settings.hasFootnote === "boolean")
-            hasFootNote = state.settings.hasFootnote;
+        if (typeof state.settings.footnote === "boolean")
+            hasFootNote = state.settings.footnote;
 
         else
             hasFootNote = constants.DEFAULT_FOOTNOTE;
@@ -207,7 +207,7 @@ export default {
 
     // Getters used for the content disposition on the screen
     hasText: (state) => {
-        return Boolean(state.state.content.textContent);
+        return Boolean(state.state.content.text);
     },
 
     hasPicture: (state) => {
@@ -219,6 +219,6 @@ export default {
     },
 
     hasNoContent: (state) => {
-        return !(state.state.content.textContent) && !(Boolean(state.state.content.pictureName) || Boolean(state.state.content.interactivePiano));
+        return !(state.state.content.text) && !(Boolean(state.state.content.pictureName) || Boolean(state.state.content.interactivePiano));
     }
 }

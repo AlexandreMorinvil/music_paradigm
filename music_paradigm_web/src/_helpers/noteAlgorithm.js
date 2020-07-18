@@ -1,3 +1,5 @@
+// TODO: This file is a mess...
+
 // search for sub array
 var findSubarray = function (subarr, arr, from_index) {
     from_index = from_index || 0;
@@ -63,11 +65,6 @@ var arraysValid = function (arr1, arr2) {
 const average = data => data.length > 0 ? data.reduce((sum, value) => sum + value) / data.length : 0;
 const standardDeviation = values => Math.sqrt(average(values.map(value => (value - average(values)) ** 2)));
 
-
-// TODO: Put the research specific algorithms in a dedicated "algorithm.js"
-// TODO: Then, the simplier functions (Mean, standard deviations, etc) in here, maybe
-
-// TODO: Give more clear names to the parameters, maybe
 
 // speed mode (task 1) performance measures
 // Walker: number of correctly typed sequence per block

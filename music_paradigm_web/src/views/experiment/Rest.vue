@@ -68,7 +68,7 @@ export default {
       }
     },
     textToDisplay() {
-      if (this.textContent !== "") return "Rest";
+      if (this.hasNoContent) return "Rest";
       else return this.textContent;
     },
     footnote() {

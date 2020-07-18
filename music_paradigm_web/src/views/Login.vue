@@ -48,7 +48,6 @@ export default {
   computed: {
     ...mapState(["alert"]),
     ...mapState("account", ["status", "user"]),
-    ...mapState("experiment", ["flow", "timbreFile"]) // TODO: Put the timbreFile logic in a piano module
   },
   methods: {
     ...mapActions("account", ["login", "logout"]),

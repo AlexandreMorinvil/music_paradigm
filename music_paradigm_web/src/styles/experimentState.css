@@ -80,6 +80,7 @@
     padding: 0 10% 0;
     font-size: calc(1vh + 1vw);
     text-align: center;
+    white-space: pre-line;
 }
 
 .state-division-visual-media>img {

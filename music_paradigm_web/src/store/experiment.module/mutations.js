@@ -33,7 +33,7 @@ export default {
             playingMode: (typeof experiment.mode === 'string') ? experiment.mode : constants.DEFAULT_PLAYING_MODE,
             timbreFile: (typeof experiment.timbreFile === 'string') ? experiment.timbreFile : constants.DEFAULT_TIMBRE_FILE,
             footnote: (typeof experiment.footnote !== 'undefined') ? Boolean(experiment.footnote) : constants.DEFAULT_FOOTNOTE,
-            timeLimitInSeconds: (typeof experiment.footnote !== 'number') ? experiment.timeLimitInSeconds : constants.DEFAULT_TIME_LIMIT
+            timeLimitInSeconds: (typeof experiment.footnote === 'number') ? experiment.timeLimitInSeconds : constants.DEFAULT_TIME_LIMIT
         };
 
         // Toggle the boolean value indicating that an experiment is mounted
@@ -43,8 +43,7 @@ export default {
     /**
      * Initializes the cursor to start navigating through the experiment
      * @param {Object} state            Vuex state from a store (automatic argument)
-     * @param {Object} presetCursor     Cursor from another session, in order to restart
-     *                                  where the experiment was left
+     * @param {Object} presetCursor     Cursor from another session, in order to restart where the experiment was left
      */
     initCursor(state, presetCursor = null) {
         // If a cursor is provided, the experiment is resumed with the state of the cursor.
@@ -55,7 +54,8 @@ export default {
         state.isInitialized = {
             route: false,
             state: false,
-            media: false
+            media: false,
+            content: false
         };
     },
     updateState: (state) => {

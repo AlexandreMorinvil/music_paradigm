@@ -54,7 +54,7 @@ export default {
           return "grid-small-area-big-area-note";
         else return "grid-area-note";
       } else {
-        if (this.hasTexta)
+        if (this.hasText)
           return "grid-small-area-big-area";
         else return "grid-single-area";
       }

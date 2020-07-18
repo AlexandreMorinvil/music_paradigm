@@ -1,17 +1,15 @@
 <template>
   <div id="feedback-state" class="experiment-state-container" :class="gridClass">
     <div
-      v-if="hasText || grades === null"
+      v-if="hasText"
       id="text-area"
       class="experiment-state-division state-division-text"
-    >
-      <p>{{ textContent }}</p>
-      <!-- Default display if no performance was graded -->
-      <p v-if="!hasText && grades === null">No performance was graded</p>
-    </div>
+    >{{ textContent }}</div>
 
     <div id="visual-media-area" class="experiment-state-division state-division-visual-media">
       <div class="feedback-grade-board">
+        <!-- Default display if no performance was graded -->
+        <p v-if="!hasGrades">No performance was graded</p>
         <div class="feedback-box" v-for="grade in grades" :key="grade.criteria">
           <feedback-grade :grade="grade" />
         </div>
@@ -68,6 +66,10 @@ export default {
       if (this.anyPianoKey)
         return "Press any piano key or the space bar for going to the next step";
       else return "Press the space bar for going to the next step";
+    },
+    hasGrades() {
+      if (Array.isArray(this.grades) && this.grades.length > 0) return true;
+      else return false;
     }
   },
 
