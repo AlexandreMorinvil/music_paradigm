@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import "@/styles/experimentState.css";
+import "@/styles/experimentStateTemplate.css";
 import { mapGetters } from "vuex";
 import VideoPlayer from "@/components/VideoPlayer.vue";
 import VisualPiano from "@/components/VisualPiano.vue";

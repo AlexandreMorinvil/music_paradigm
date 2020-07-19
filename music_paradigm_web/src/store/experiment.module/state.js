@@ -2,10 +2,10 @@ import constants from './constants'
 
 export default {
     // Indicator of wether or not the experiment was set
-    hasExperiment: false,
+    hasExperiment: false,                                           // Indicator of whether or not an experiment was parsed
 
     // The sequence of the experiment
-    flow: [],
+    flow: [],                                                       // Description of the different steps of the experiment
 
     // Mandatory description of the flow
     description: {
@@ -44,10 +44,10 @@ export default {
 
     // Initialization status of vue pages
     isInitialized : {
-        route: false,
-        state: false,
-        media: false,
-        content: false
+        route: false,                                               // Flag indicating whether the route needs to be updated
+        state: false,                                               // Flag indicating whether the state's settings need to be opdated
+        media: false,                                               // Flag indicating whether the state's media files need to be updated
+        content: false                                              // Flag indicating whether the state's content need to be updated
     },
     // Data used by the view pages
     state: {

@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import "@/styles/experimentState.css";
+import "@/styles/experimentStateTemplate.css";
 import { mapGetters } from "vuex";
 import FeedbackGrade from "@/components/FeedbackGrade";
 

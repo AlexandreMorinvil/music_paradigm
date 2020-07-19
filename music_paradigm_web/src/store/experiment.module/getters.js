@@ -136,10 +136,10 @@ export default {
         let anyPianoKey;
 
         if (typeof state.state.settings.anyPianoKey === "boolean")
-            anyPianoKey = state.state.settings.playingMode;
+            anyPianoKey = state.state.settings.anyPianoKey;
 
         else if (typeof state.settings.anyPianoKey === "boolean")
-            anyPianoKey = state.settings.playingMode
+            anyPianoKey = state.settings.anyPianoKey
 
         else
             anyPianoKey = constants.DEFAULT_ANY_PIANO_KEY
@@ -195,6 +195,9 @@ export default {
 
     hasFootnote: (state) => {
         let hasFootNote;
+
+        if (typeof state.state.settings.footnote === "boolean")
+            hasFootNote = state.state.settings.footnote;
 
         if (typeof state.settings.footnote === "boolean")
             hasFootNote = state.settings.footnote;
