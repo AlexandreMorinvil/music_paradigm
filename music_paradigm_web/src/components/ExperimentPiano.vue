@@ -7,7 +7,6 @@
       &nbsp;{{soundStatus}}
     </div>
   </div>
-  <!-- <footer v-if="appSoundInited && !useMidiInput">{{currentOctave}}</footer> -->
 </template>
 
 <script>
@@ -204,27 +203,34 @@ export default {
      * @param {Number} midiMessage.byteIndex  Number of the byte inted in the midi file
      * @param {Number} midiMessage.channel    Channel as specified by the midi file (eg. 1, undefined)
      * @param {Number} midiMessage.delta      Number of ticks since the last midi message
-     * @param {String} midiMessage.name       Midi message type (Time Signature, Key Signature, Set Tempo,
-     *                                        Controller change, Program Change, Midi Port, Note on, undefined)
+     * @param {String} midiMessage.name       Midi message type (Time Signature, Key Signature, Set Tempo, Controller change,
+     *                                        Program Change, Midi Port, Note on, Note off, undefined)
      * @param {String} midiMessage.noteName   Name of the note played (eg. G4, A4, C5)
      * @param {Number} midiMessage.noteNumber Midi number of the note (eg. 67, 69, 72)
      * @param {Boolean} midiMessage.running   Boolean value
      * @param {Number} midiMessage.tick       Number of ticks during the idi file playing
      * @param {Number} midiMessage.track      Track number
-     * @param {Number} velocity               Velocity of the note (There is no "Note off" midi message. A note
-     *                                        is turned off when there is a midi message for that note with a
-     *                                        velocity of 0)
+     * @param {Number} velocity               Velocity of the note (In some MIDI files, there is no "Note off" midi message. A note
+     *                                        is then turned off when there is a midi message for that note with a velocity of 0)
      */
     handleMidiMessage(midiMessage) {
-      if (midiMessage.name == "Note on") {
-        const currTime = this.audioConctext.currentTime;
-        this.piano.play(midiMessage.noteName, currTime, {
+      console.log(midiMessage);
+      if (midiMessage.name === "Note on") {
+        const currentTime = this.audioConctext.currentTime;
+        this.piano.play(midiMessage.noteName, currentTime, {
           gain: midiMessage.velocity / 127,
           duration: 1
         });
         if (midiMessage.velocity === 0)
           this.deleteMidiFileTriggeredKey(midiMessage.noteNumber);
         else this.addMidiFileTriggeredKey(midiMessage.noteNumber);
+      } else if (midiMessage.name === "Note off") {
+        const currentTime = this.audioConctext.currentTime;
+        this.piano.play(midiMessage.noteName, currentTime, {
+          gain: 0,
+          duration: 1
+        });
+        this.deleteMidiFileTriggeredKey(midiMessage.noteNumber);
       }
     },
     handleMidiFileEndOfFile() {
