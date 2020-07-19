@@ -5,7 +5,7 @@
       <img
         id="playing-img"
         v-if="!hasInteractivePiano && hasPicture"
-        :src="urlStatic(pictureName)"
+        :src="urlExperimentRessource(pictureName)"
         alt="Playing"
       />
     </div>
@@ -37,7 +37,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["urlStatic"]),
+    ...mapGetters(["urlExperimentRessource"]),
     ...mapGetters("experiment", [
       "hasVisualMedia",
       "hasPicture",

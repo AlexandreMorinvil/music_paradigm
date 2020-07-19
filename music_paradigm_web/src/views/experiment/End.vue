@@ -11,7 +11,7 @@
       id="visual-media-area"
       class="experiment-state-division state-division-visual-media"
     >
-      <img id="end-img" :src="urlStatic(pictureName)" alt="Instruction" />
+      <img id="end-img" :src="urlExperimentRessource(pictureName)" alt="Instruction" />
     </div>
 
     <div
@@ -41,7 +41,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters(["urlStatic"]),
+    ...mapGetters(["urlExperimentRessource"]),
     ...mapGetters("piano", ["pressedKeys"]),
     ...mapGetters("experiment", [
       "hasNoContent",

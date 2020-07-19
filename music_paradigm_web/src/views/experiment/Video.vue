@@ -17,7 +17,7 @@
           <video-player
             v-if="hasVideo"
             v-show="isPlaying"
-            :src="urlStatic(videoName)"
+            :src="urlExperimentRessource(videoName)"
             :dimension="videoDimensions"
             :playBack="playBack"
             v-on:finishedPlayback="handdleEndOfVideo"
@@ -73,7 +73,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["urlStatic"]),
+    ...mapGetters(["urlExperimentRessource"]),
     ...mapGetters("experiment", [
       "hasInteractivePiano",
       "hasText",

@@ -4,7 +4,7 @@ export default {
     urlStatic: () => (directory) => {
         return url.static(directory);
     },
-    urlAssets: () => (directory) => {
-        return url.assets(directory);
+    urlExperimentRessource: () => (directory) => {
+        return url.experimentRessource(directory);
     }
 }

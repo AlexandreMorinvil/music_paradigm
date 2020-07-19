@@ -13,6 +13,7 @@ app.use(cors());
 
 // serve static
 app.use('/static', express.static('static'));
+app.use('/experiment-ressources', express.static(__dirname + '/../experiment_ressources'));
 
 // use JWT auth to secure the api
 app.use(jwt());

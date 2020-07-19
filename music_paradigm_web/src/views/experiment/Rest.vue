@@ -16,7 +16,7 @@
       class="experiment-state-division state-division-visual-media"
     >
       <visual-piano v-if="hasInteractivePiano" />
-      <img id="cue-img" v-else :src="urlStatic(pictureName)" alt="Rest" />
+      <img id="cue-img" v-else :src="urlExperimentRessource(pictureName)" alt="Rest" />
     </div>
 
     <div
@@ -46,7 +46,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["urlStatic"]),
+    ...mapGetters(["urlExperimentRessource"]),
     ...mapGetters("experiment", ["pictureName", "timeoutInSeconds"]),
     ...mapGetters("experiment", [
       "hasNoContent",

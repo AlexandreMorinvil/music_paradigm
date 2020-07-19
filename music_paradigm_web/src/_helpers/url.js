@@ -1,13 +1,13 @@
 import config from "@/config";
 
-const staticDir = "/static/";
-const assetsDir = staticDir + "assets/";
+const staticDirectory = "/static/";
+const experimentRessourceDirectory = "/experiment-ressources/";
 
 export default {
     static : function(directory) {
-        return config.apiUrl + staticDir + directory;
+        return config.apiUrl + staticDirectory + directory;
     },
-    assets : function(directory) {
-        return config.apiUrl + assetsDir + directory;
+    experimentRessource : function(directory) {
+        return config.apiUrl + experimentRessourceDirectory + directory;
     }
 }

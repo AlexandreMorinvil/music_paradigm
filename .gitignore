@@ -5,5 +5,8 @@ db/
 *.turtle
 *.wt
 
+# Experiment ressource files
+experiment_ressources/
+
 # Visualcode files
 #*.vscode/*

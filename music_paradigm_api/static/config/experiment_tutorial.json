@@ -1,0 +1,52 @@
+{
+    "name": "speed_experiment",
+    "folder": "test_flow",
+    "mode": "speed",
+    "anyPianoKey": false,
+    "enableSoundFlag": false,
+    "footnote": true,
+    "timeLimitInSeconds": 6000,
+    "flow": [
+        {
+            "type": "instruction",
+            "textContent": ["Voici in test pour afficher un texte\nWill this actually work"]
+        },
+        {
+            "type": "video",
+            "textContent": ["Voici in test pour afficher un texte\nWill this actually work"],
+            "interactivePiano": ["first"],
+            "midiFileName": ["melody/Melody1_1.mid"]
+        },
+        {
+            "type": "cue",
+            "textContent": ["Voici in test pour afficher un texte\nWill this actually work"],
+            "interactivePiano": ["midi"]
+        },
+        {
+            "type": "feedback",
+            "textContent": ["Voici in test pour afficher un texte\nWill this actually work"]
+        },
+        {
+            "type": "playing",
+            "textContent": ["Voici in test pour afficher un texte\nWill this actually work"]
+        },
+        {
+            "type": "rest",
+            "textContent": ["Voici in test pour afficher un texte\nWill this actually work"]
+        },
+        {
+            "type": "instruction",
+            "textContent": ["Voici in test pour afficher un texte\nWill this actually work"],
+            "interactivePiano": [true],
+            "pictureFileName": [],
+            "midiFileName": [],
+            "videoFileName": [],
+            "numberRepetition": 5,
+            "followedBy": true
+        },
+        {
+            "type": "end",
+            "textContent": ["Voici in test pour afficher un texte\nWill this actually work"]
+        }
+    ]
+}
