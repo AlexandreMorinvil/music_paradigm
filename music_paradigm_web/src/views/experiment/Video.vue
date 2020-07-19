@@ -15,6 +15,7 @@
             :style="videoWidthCSSvariable +';'+videoHeightCSSvariable"
           >{{ videoWaitingMessage }}</div>
           <video-player
+            v-if="hasVideo"
             v-show="isPlaying"
             :src="urlStatic(videoName)"
             :dimension="videoDimensions"
@@ -91,12 +92,15 @@ export default {
     },
     footnote() {
       var noteMessage;
-      if (this.videoName === "")
+      if (this.hasVideo)
         noteMessage = `There is no video to be played, the experiment will automatically  go to the next step in ${this.errorAutomaticTransitionSeconds} seconds`;
       else
         return `The experiment will automatically go to the next step after the video playback`;
 
       return noteMessage;
+    },
+    hasVideo() {
+      return this.videoName !== "";
     },
     videoDimensions() {
       var height = this.defaultVideoHeight;
