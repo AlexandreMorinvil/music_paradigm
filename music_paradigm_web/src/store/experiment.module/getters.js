@@ -49,7 +49,7 @@ export default {
     },
 
     // Interactive piano
-    hasInteractivePiano: (state) => {
+    interactivePiano: (state) => {
         return state.state.content.interactivePiano || false;
     },
 
@@ -125,7 +125,6 @@ export default {
             return state.flow[state.cursor.navigation.indexNext].type;
     },
 
-    // TODO : Make sure this works
     anyPianoKey: (state) => {
         // Return the "anyPianoKey" value specified by the block if it exists,
         // otherwise, the default "anyPianoKey" of the experiment is returned.
@@ -211,6 +210,10 @@ export default {
     // Getters used for the content disposition on the screen
     hasText: (state) => {
         return Boolean(state.state.content.text);
+    },
+
+    hasInteractivePiano: (state) => {
+        return Boolean(state.state.content.interactivePiano);
     },
 
     hasPicture: (state) => {

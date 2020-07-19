@@ -37,7 +37,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("piano", ["pressedKeys"]),
+    ...mapGetters("piano", ["pressedKeys", "midiFileNotesName"]),
     ...mapGetters("experiment", ["timbreFile", "enableSoundFlag"]),
     soundStatus() {
       if (!this.pianoInited) return "LOAD...";
@@ -133,6 +133,20 @@ export default {
     toNote(e) {
       return map[e.key];
     },
+    playNoteFromMidiFile(noteName, velocity) {
+      const currentTime = this.audioConctext.currentTime;
+      this.piano.play(noteName, currentTime, {
+        gain: velocity / 127,
+        duration: 1
+      });
+    },
+    stopNoteFromMidiFile(noteName) {
+      const currentTime = this.audioConctext.currentTime;
+      this.piano.play(noteName, currentTime, {
+        gain: 0,
+        duration: 1
+      });
+    },
     initPiano() {
       // Initialize audio
       this.audioConctext = new AudioContext();
@@ -214,22 +228,13 @@ export default {
      *                                        is then turned off when there is a midi message for that note with a velocity of 0)
      */
     handleMidiMessage(midiMessage) {
-      console.log(midiMessage);
       if (midiMessage.name === "Note on") {
-        const currentTime = this.audioConctext.currentTime;
-        this.piano.play(midiMessage.noteName, currentTime, {
-          gain: midiMessage.velocity / 127,
-          duration: 1
-        });
+        this.playNoteFromMidiFile(midiMessage.noteName, midiMessage.velocity);
         if (midiMessage.velocity === 0)
           this.deleteMidiFileTriggeredKey(midiMessage.noteNumber);
         else this.addMidiFileTriggeredKey(midiMessage.noteNumber);
       } else if (midiMessage.name === "Note off") {
-        const currentTime = this.audioConctext.currentTime;
-        this.piano.play(midiMessage.noteName, currentTime, {
-          gain: 0,
-          duration: 1
-        });
+        this.stopNoteFromMidiFile(midiMessage.noteName);
         this.deleteMidiFileTriggeredKey(midiMessage.noteNumber);
       }
     },
@@ -239,6 +244,12 @@ export default {
       // does not emit a midi message for the end of the last note, therefore we would always
       // have a last note turned on if we do not turn all the notes off at the end of the file
       this.deleteAllMidiFileTriggeredKey();
+
+      // We also stop the playing of the last note manually
+      const lastNoteName = this.midiFileNotesName[
+        this.midiFileNotesName.length - 1
+      ];
+      this.stopNoteFromMidiFile(lastNoteName);
     }
   },
   mounted() {

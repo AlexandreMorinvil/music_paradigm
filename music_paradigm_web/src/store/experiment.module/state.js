@@ -55,7 +55,7 @@ export default {
         content: {
             text: "",                                               // Text to display
             pictureName: "",                                        // Name of the current picture to display
-            interactivePiano: false                                 // Directive to display the interactive piano
+            interactivePiano: false                                 // <Boolean|String> Directive to display the interactive piano
         },
         // Multimedia elements
         mediaFile: {

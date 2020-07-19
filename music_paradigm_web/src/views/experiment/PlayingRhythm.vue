@@ -28,7 +28,8 @@ export default {
   },
   data() {
     return {
-      timeLimitUniqueIdentifier: 0
+      timeLimitUniqueIdentifier: 0,
+      isFirstNotePressed: false
     };
   },
   computed: {
@@ -64,6 +65,9 @@ export default {
         }, this.timeoutInSeconds * 1000);
       }
     },
+    stopHint() {
+      if (this.hasInteractivePiano) this.$refs.piano.clearDesignatedKeys();
+    },
     updateFootnote() {
       var noteMessage =
         "The experiment will go to the next step after your performance";
@@ -90,6 +94,12 @@ export default {
         this.timerUniqueIdentifier = setTimeout(() => {
           this.$emit("finishedPlaying");
         }, this.lastNoteDuration + 1000);
+      }
+    },
+    pressedKeys() {
+      if (!this.isFirstNotePressed) {
+        this.stopHint();
+        this.isFirstNotePressed = true;
       }
     }
   }

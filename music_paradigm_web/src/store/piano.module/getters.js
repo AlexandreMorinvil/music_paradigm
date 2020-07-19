@@ -18,6 +18,9 @@ export default {
     midiFileNotesMidi: (state) => {
         return state.midiFile.notes.midi;
     },
+    midiFileNotesName: (state) => {
+        return state.midiFile.notes.name;
+    },
     midiFileNotesDuration: (state) => {
         return state.midiFile.notes.duration;
     },

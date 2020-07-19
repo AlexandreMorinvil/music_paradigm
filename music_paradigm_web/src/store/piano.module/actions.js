@@ -28,8 +28,8 @@ export default {
     deleteMidiFileTriggeredKey: ({ commit }, key) => {
         commit('deleteMidiFileTriggeredKey', key);
     },
-    deleteAllMidiFileTriggeredKey: ({ commit }, key) => {
-        commit('deleteAllMidiFileTriggeredKey', key);
+    deleteAllMidiFileTriggeredKey: ({ commit }) => {
+        commit('deleteAllMidiFileTriggeredKey');
     },
 
     // Log of played notes

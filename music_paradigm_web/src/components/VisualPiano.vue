@@ -41,23 +41,35 @@ export default {
   components: {},
   data() {
     return {
-      designatedKeys: [],
+      highlightedDesignatedKeys: [],
       firstNote: 48,
       lastNote: 74
     };
   },
   computed: {
-    ...mapGetters("piano", ["pressedKeys", "midiFileTriggeredKeys"])
+    ...mapGetters("experiment", ["interactivePiano"]),
+    ...mapGetters("piano", [
+      "pressedKeys",
+      "midiFileTriggeredKeys",
+      "midiFileNotesMidi"
+    ])
   },
   methods: {
     designateKeys(keys) {
-      if (Array.isArray(keys))
-        this.designatedKeys = keys;
-      else if (typeof keys == 'number')
-        this.designatedKeys = [keys];
+      if (Array.isArray(keys)) this.highlightedDesignatedKeys = keys;
+      else if (typeof keys == "number") this.highlightedDesignatedKeys = [keys];
     },
     clearDesignatedKeys() {
-      this.designatedKeys = [];
+      this.highlightedDesignatedKeys = [];
+    },
+    hintAllNotes() {
+      const designatedKeys = [];
+      for (let index = 0; index < this.midiFileNotesMidi.length; index++)
+        designatedKeys.push(this.midiFileNotesMidi[index]);
+      this.designateKeys(designatedKeys);
+    },
+    hintFirstNote() {
+      this.designateKeys(this.midiFileNotesMidi[0]);
     }
   },
   beforeDestroy() {
@@ -79,12 +91,19 @@ export default {
           this.$refs[note.toString()].classList.remove("midi-file-triggered");
       }
     },
-    designatedKeys(list) {
+    highlightedDesignatedKeys(list) {
       for (let note = this.firstNote; note <= this.lastNote; note++) {
         if (list.includes(note))
           this.$refs[note.toString()].classList.add("designated");
-        else
-          this.$refs[note.toString()].classList.remove("designated");
+        else this.$refs[note.toString()].classList.remove("designated");
+      }
+    },
+    midiFileNotesMidi: {
+      immediate: true,
+      handler: function(value) {
+        this.clearDesignatedKeys();
+        if (this.interactivePiano === "first") this.hintFirstNote();
+        if (this.interactivePiano === "midi") this.hintAllNotes();
       }
     }
   }

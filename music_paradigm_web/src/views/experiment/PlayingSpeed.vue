@@ -68,10 +68,6 @@ export default {
     countUp() {
       this.timeProgress = Date.now() - this.referenceTime;
     },
-    hintFistNote() {
-      if (this.hasInteractivePiano)
-        this.$refs.piano.designateKeys(this.midiFileNotesMidi[0]);
-    },
     stopHint() {
       if (this.hasInteractivePiano) this.$refs.piano.clearDesignatedKeys();
     },
@@ -92,7 +88,6 @@ export default {
   },
   beforeMount() {},
   mounted() {
-    this.hintFistNote();
     this.updateFootnote(false);
   },
   beforeDestroy() {
