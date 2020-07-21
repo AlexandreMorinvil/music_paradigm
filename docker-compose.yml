@@ -23,6 +23,8 @@ services:
       - DEFAULT_ADMIN_PASSWORD=CoffeyLabInConcordia
     depends_on:
       - mongo
+    volumes:
+      - ./experiment_ressources:/usr/src/experiment_ressources
 
   mongo:
     container_name: claspmongo
