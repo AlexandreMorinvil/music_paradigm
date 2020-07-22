@@ -51,6 +51,7 @@ async function authenticate({ username, password }) {
     } else {
         // read text files
         var fs = require('fs');
+        // TODO: Take that away, we do not need a converter anymore
         const text2json = require('_helpers/text2json');
         try {
             const data = fs.readFileSync(`static/config/${user.experimentFile}`, 'utf8');
