@@ -10,8 +10,8 @@ export default {
 
 <style scoped>
 .loader {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
+  border: 16px solid rgb(150, 150, 150); /* Light grey */
+  border-top: 16px solid rgb(0, 100, 255); /* Blue */
   border-radius: 50%;
   width: 120px;
   height: 120px;

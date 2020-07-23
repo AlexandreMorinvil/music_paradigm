@@ -15,6 +15,7 @@
             <input
               type="text"
               v-on:blur="setUsernameHadFocus"
+              v-bind:class="{ 'input-text-danger': hasUsernameError }"
               v-model="username"
               name="username"
               placeholder="Enter Username"
@@ -24,6 +25,7 @@
           <div>
             <label for="password">Password</label>
             <input type="password" v-model="password" name="password" placeholder="Enter Password" />
+            <p class="form-note-text"> Forgot <a class="form-note-text" href="#"> password? (not implemented yet) </a> </p>
           </div>
           <div>
             <button class="button">Login</button>
@@ -159,8 +161,9 @@ export default {
 }
 
 .loader {
-  width: 200px;
-  height: 200px;
+  width: 300px;
+  height: 300px;
+  margin: auto;
 }
 
 #alert {
@@ -173,10 +176,22 @@ export default {
   font-size: 1rem;
 }
 
+.form-note-text  {
+  text-align: right;
+  font-size: 0.75rem;
+  margin: 10px 0 10px
+}
+
 .invalid-input {
   color: red;
   padding-top: 10px;
   font-size: 0.5em;
+}
+
+.input-text-danger {
+  border-width: 3px;
+  border-color: red;
+  background-color: rgba(255, 200, 200, 1);
 }
 
 .button {
@@ -185,7 +200,6 @@ export default {
   color: white;
   border-radius: 5px;
   padding: 10px 40px;
-  margin: 40px 0;
   text-align: center;
   display: inline-block;
   font-size: 1em;
