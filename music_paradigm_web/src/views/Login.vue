@@ -1,43 +1,43 @@
 <template>
-  <div>
+  <div class="content">
     <div id="alert" v-if="alert.message" :class="`alert ${alert.type}`">{{alert.message}}</div>
-    <div id="app">
-      <h2 class="text-center">Music Paradigm</h2>
-      <form @submit.prevent="handleSubmit">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input
-            type="text"
-            v-model="username"
-            name="username"
-            class="form-control"
-            :class="{ 'is-invalid': submitted && !username }"
-          />
-          <div v-show="submitted && !username" class="invalid-feedback">Username is required</div>
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" v-model="password" name="password" class="form-control" />
-        </div>
-        <div class="form-group">
-          <button class="btn btn-primary">Login to start</button>
-          <img
-            v-show="status.loggingIn"
-            src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-          />
-          <!-- <router-link to="/register" class="btn btn-link">Register</router-link> -->
-        </div>
-      </form>
+
+    <div id="login-box" class="login-box">
+      <div id="login-box-title" class="login-box-title">
+        <h1>Login</h1>
+      </div>
+
+      <div id="login-box-form" class="login-box-form">
+        <form @submit.prevent="handleSubmit">
+          <div>
+            <label for="username">Username</label>
+            <input type="text" v-model="username" name="username" />
+            <div v-show="submitted && !username" class="invalid-feedback">Username is required</div>
+          </div>
+          <div>
+            <label for="password">Password</label>
+            <input type="password" v-model="password" name="password" />
+          </div>
+          <div>
+            <button class="button">Login</button>
+          </div>
+        </form>
+      </div>
+
+      <loader v-if="status.loggingIn"></loader>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
+import LoaderCircular from "@/components/LoaderCircular.vue";
 
 export default {
   name: "Home",
-  components: {},
+  components: {
+    loader: LoaderCircular
+  },
   data() {
     return {
       username: "",
@@ -47,12 +47,16 @@ export default {
   },
   computed: {
     ...mapState(["alert"]),
-    ...mapState("account", ["status", "user"]),
+    ...mapState("account", ["status", "user"])
   },
   methods: {
     ...mapActions("account", ["login", "logout"]),
     ...mapActions({ clearAlert: "alert/clear" }),
-    ...mapActions("experiment", ["updateState", "setExperiment", "setStartingPoint"]),
+    ...mapActions("experiment", [
+      "updateState",
+      "setExperiment",
+      "setStartingPoint"
+    ]),
     handleSubmit() {
       this.submitted = true;
       const { username, password } = this;
@@ -79,18 +83,56 @@ export default {
 </script>
 
 <style scoped>
-#app {
-  display: block;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  /* text-align: center; */
+.content {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  height: 100%;
 }
 
-h2 {
-  color: lightblue;
-  margin: 1em 0;
+.content {
+  background-color: rgb(12, 12, 12);
+}
+
+#login-box {
+  display: block;
+  height: 450px;
+  width: 500px;
+  box-sizing: border-box;
+  background-color: rgb(20, 20, 20);
+
+  border-collapse: collapse;
+  border-color: rgb(35, 35, 35);
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+
+  color: rgb(200, 200, 200);
+}
+
+.login-box-title {
+  background-color: rgb(35, 35, 35);
+  height: auto;
+  width: 100%;
+  border-radius: 5px 5px 0 0;
+  padding: 20px;
+}
+
+.login-box-form {
+  padding: 20px;
+}
+
+.login-box-form label {
+  display: block;
+  padding: 10px 0 10px;
+  font-size: 1em;
+}
+
+.login-box-form input {
+  display: block;
+  width: 100%;
+  height: 1.5em;
+  border-radius: 4px;
 }
 
 .btn {
@@ -107,22 +149,22 @@ h2 {
   font-size: 1rem;
 }
 
-/* .btn {
-  background-color: white;
-  border: none;
-  color: black;
-  padding: 16px 32px;
+.button {
+  background-color: rgb(0, 100, 255);
+  border: 2px solid rgb(40, 126, 255);
+  color: white;
+  border-radius: 5px;
+  padding: 10px 40px;
+  margin: 40px 0;
   text-align: center;
-  text-decoration: none;
   display: inline-block;
-  font-size: 26px;
-  -webkit-transition-duration: 0.4s;
-  transition-duration: 0.4s;
+  font-size: 1em;
   cursor: pointer;
 }
 
-.btn:hover {
-  background-color: #4CAF50;
+.button:hover {
+  background-color: rgb(0, 80, 200);
+  border: 2px solid rgb(0, 100, 255);
   color: white;
-} */
+}
 </style>
