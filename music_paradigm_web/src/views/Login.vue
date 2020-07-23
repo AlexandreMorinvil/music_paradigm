@@ -8,23 +8,28 @@
       </div>
 
       <div id="login-box-form" class="login-box-form">
-        <form @submit.prevent="handleSubmit">
+        <loader v-if="status.loggingIn" class="loader"></loader>
+        <form v-else @submit.prevent="handleSubmit">
           <div>
             <label for="username">Username</label>
-            <input type="text" v-model="username" name="username" />
-            <div v-show="submitted && !username" class="invalid-feedback">Username is required</div>
+            <input
+              type="text"
+              v-on:blur="setUsernameHadFocus"
+              v-model="username"
+              name="username"
+              placeholder="Enter Username"
+            />
+            <div v-if="hasUsernameError" class="invalid-input">{{ usernameValidityMessage }}</div>
           </div>
           <div>
             <label for="password">Password</label>
-            <input type="password" v-model="password" name="password" />
+            <input type="password" v-model="password" name="password" placeholder="Enter Password" />
           </div>
           <div>
             <button class="button">Login</button>
           </div>
         </form>
       </div>
-
-      <loader v-if="status.loggingIn"></loader>
     </div>
   </div>
 </template>
@@ -36,18 +41,28 @@ import LoaderCircular from "@/components/LoaderCircular.vue";
 export default {
   name: "Home",
   components: {
-    loader: LoaderCircular
+    loader: LoaderCircular,
   },
   data() {
     return {
       username: "",
       password: "",
-      submitted: false
+      hasFocusedOnUsername: false,
+      hasAttemptedSubmit: false,
     };
   },
   computed: {
     ...mapState(["alert"]),
-    ...mapState("account", ["status", "user"])
+    ...mapState("account", ["status", "user"]),
+    hasUsernameError() {
+      return (
+        (this.hasAttemptedSubmit || this.hasFocusedOnUsername) && !this.username
+      );
+    },
+    usernameValidityMessage() {
+      if (!this.username) return "Username is required";
+      else return "";
+    },
   },
   methods: {
     ...mapActions("account", ["login", "logout"]),
@@ -55,15 +70,18 @@ export default {
     ...mapActions("experiment", [
       "updateState",
       "setExperiment",
-      "setStartingPoint"
+      "setStartingPoint",
     ]),
+    setUsernameHadFocus() {
+      this.hasFocusedOnUsername = true;
+    },
     handleSubmit() {
-      this.submitted = true;
+      this.hasAttemptedSubmit = true;
       const { username, password } = this;
       if (username) {
         this.login({ username, password });
       }
-    }
+    },
   },
   watch: {
     user() {
@@ -73,12 +91,12 @@ export default {
         this.setStartingPoint(this.user.cursor);
         this.updateState();
       }
-    }
+    },
   },
   mounted() {
     this.clearAlert();
     this.logout();
-  }
+  },
 };
 </script>
 
@@ -96,7 +114,7 @@ export default {
 
 #login-box {
   display: block;
-  height: 450px;
+  height: auto;
   width: 500px;
   box-sizing: border-box;
   background-color: rgb(20, 20, 20);
@@ -119,6 +137,9 @@ export default {
 }
 
 .login-box-form {
+  display: block;
+  justify-content: center;
+  align-content: center;
   padding: 20px;
 }
 
@@ -131,12 +152,15 @@ export default {
 .login-box-form input {
   display: block;
   width: 100%;
-  height: 1.5em;
+  padding: 0.4em 0;
   border-radius: 4px;
+  padding-left: 10px;
+  font-size: 0.8em;
 }
 
-.btn {
-  margin: 1em 0;
+.loader {
+  width: 200px;
+  height: 200px;
 }
 
 #alert {
@@ -147,6 +171,12 @@ export default {
   margin: 2em 0;
   text-align: center;
   font-size: 1rem;
+}
+
+.invalid-input {
+  color: red;
+  padding-top: 10px;
+  font-size: 0.5em;
 }
 
 .button {
