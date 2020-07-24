@@ -1,13 +1,17 @@
 <template>
-  <div class="alert position dimentsions" :class="alertClass">
-    <span class="close-button" v-on:click="clearAlert">&times;</span>
-    <strong>{{alertPrefix}}</strong>
-    {{alertMessage}}
+  <div class="alert position dimentsions" :class="alertMessageClass">
+    <div class="type-area" :class="alertTypeClass">
+      <strong>{{alertPrefix}}</strong>
+    </div>
+
+    <div class="message-area">{{alertMessage}}</div>
+
+    <div class="close-button" v-on:click="clearAlert">&times;</div>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Alert",
   data() {
@@ -15,7 +19,7 @@ export default {
   },
   computed: {
     ...mapGetters("alert", ["alertType", "alertMessage"]),
-    alertClass() {
+    alertTypeClass() {
       switch (this.alertType) {
         case "success":
           return "success";
@@ -29,23 +33,27 @@ export default {
           return "information";
       }
     },
+    alertMessageClass() {
+      return this.alertTypeClass + "-message";
+    },
+
     alertPrefix() {
       return this.alertType.toUpperCase() + ":";
     },
   },
   methods: {
     ...mapActions("alert", ["clearAlert"]),
-  }
+  },
 };
 </script>
 
 <style scoped>
 .alert {
-  padding: 20px;
-  color: white;
+  display: flex;
+  align-items: stretch;
+  color: rgb(125, 125, 125);
   opacity: 1;
   transition: opacity 0.6s;
-  margin-bottom: 15px;
   text-align: left;
 }
 
@@ -63,28 +71,53 @@ export default {
   border-radius: 2px;
 }
 
-.alert.success {
-  background-color: #4caf50;
+.type-area {
+  color: white;
+  border-radius: 2px 0 0 2px;
+  padding: 20px;
+  display: inline-block;
+  width: auto;
 }
-.alert.information {
-  background-color: #2196f3;
-}
-.alert.warning {
-  background-color: #ff9800;
-}
-.alert.error {
-  background-color: #f44336;
+
+.message-area {
+  width: 100%;
+  padding: 20px;
 }
 
 .close-button {
-  margin-left: 15px;
+  padding: 10px;
+  width: auto;
   color: white;
   font-weight: bold;
-  float: right;
   font-size: 1.5em;
-  line-height: 20px;
   cursor: pointer;
   transition: 0.3s;
+}
+
+.success {
+  background-color: #4caf50;
+}
+.information {
+  background-color: #2196f3;
+}
+.warning {
+  background-color: #ff9800;
+}
+.error {
+  background-color: #f44336;
+}
+
+.success-message {
+  background-color: #daffdc;
+}
+.information-message {
+  background-color: #cfeaff;
+}
+.warning-message {
+  background-color: #ffe9c8;
+}
+.error-message {
+  background-color: #ffbeb8;
 }
 
 .close-button:hover {
