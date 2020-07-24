@@ -3,28 +3,54 @@ const state = {
     message: null
 };
 
+const getters = {
+    hasAlert: (state) => {
+        return !!(state.type);
+    },
+    alertType: (state) => {
+        return state.type || "No type";
+    },
+    alertMessage: (state) => {
+        return state.message || "No message";
+    },
+};
+
 const actions = {
-    success({ commit }, message) {
-        commit('success', message);
+    setSuccessAlert({ commit }, message) {
+        commit('setSuccessAlert', message);
     },
-    error({ commit }, message) {
-        commit('error', message);
+    setInformationAlert({ commit }, message) {
+        commit('setInformationAlert', message);
     },
-    clear({ commit }, message) {
-        commit('success', message);
+    setWarningAlert({ commit }, message) {
+        commit('setWarningAlert', message);
+    },
+    setErrorAlert({ commit }, message) {
+        commit('setErrorAlert', message);
+    },
+    clearAlert({ commit }, message) {
+        commit('clearAlert', message);
     }
 };
 
 const mutations = {
-    success(state, message) {
-        state.type = 'alert-success';
+    setSuccessAlert(state, message) {
+        state.type = 'success';
+        state.message = message;
+    },    
+    setInformationAlert(state, message) {
+        state.type = 'information';
         state.message = message;
     },
-    error(state, message) {
-        state.type = 'alert-danger';
+    setWarningAlert(state, message) {
+        state.type = 'warning';
         state.message = message;
     },
-    clear(state) {
+    setErrorAlert(state, message) {
+        state.type = 'error';
+        state.message = message;
+    },
+    clearAlert(state) {
         state.type = null;
         state.message = null;
     }
@@ -33,6 +59,7 @@ const mutations = {
 export const alert = {
     namespaced: true,
     state,
+    getters,
     actions,
     mutations
 };

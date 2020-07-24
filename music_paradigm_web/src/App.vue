@@ -1,5 +1,8 @@
 <template>
   <div id="app" class="app-grid">
+    <!-- The alert is not considered in the grid of the application -->
+    <alert id="alert" v-if="hasAlert"/>
+
     <div v-if="true" id="app-header" class="app-header-position">
       <component :is="navigationBarType" id="app-navigation-bar" ref="navigationBar" />
     </div>
@@ -13,22 +16,26 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 import NavigationBarDefault from "@/components/NavigationBarDefault";
 import NavigationBarExperiment from "@/components/NavigationBarExperiment";
+import Alert from "@/components/Alert";
 
 export default {
   name: "app",
   components: {
     defaultNavigationBar: NavigationBarDefault,
-    experimentNavigationBar: NavigationBarExperiment
+    experimentNavigationBar: NavigationBarExperiment,
+    alert: Alert
   },
   data() {
     return {
       appInited: false,
-      appState: "default"
+      appState: "default",
     };
   },
   computed: {
+    ...mapGetters("alert", ["hasAlert"]),
     navigationBarType() {
       switch (this.appState) {
         case "experiment":
@@ -36,19 +43,22 @@ export default {
         default:
           return "defaultNavigationBar";
       }
-    }
+    },
   },
-  methods: {},
+  methods: {
+    ...mapActions("alert", ["clearAlert"])
+  },
   watch: {
     // On change of the route, we reevaluate the state of the application
     $route(to) {
+      this.clearAlert();
       let state = "default";
-      if (to.matched.some(m => m.name === "admin")) state = "admin";
-      else if (to.matched.some(m => m.name === "experiment"))
+      if (to.matched.some((m) => m.name === "admin")) state = "admin";
+      else if (to.matched.some((m) => m.name === "experiment"))
         state = "experiment";
       this.appState = state;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -142,6 +152,7 @@ body {
   background-color: rgb(65, 65, 65);
   color: white;
 }
+
 /* Footer */
 footer {
   position: fixed;

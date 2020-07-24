@@ -1,9 +1,15 @@
-import { userService } from '../_services';
+import { userService } from '@/_services';
 
-const user = JSON.parse(localStorage.getItem('user'));
-const state = user
-    ? { status: { loggedIn: true }, user }
-    : { status: {}, user: null };
+const initialUser = JSON.parse(localStorage.getItem('user')) || null;
+
+const state = {
+    status: {
+        loggingIn: false,
+        loggedIn: (initialUser) ? true : false
+    },
+
+    user: initialUser,
+}
 
 const actions = {
     login({ dispatch, commit }, { username, password }) {
@@ -16,7 +22,7 @@ const actions = {
                 },
                 error => {
                     commit('loginFailure', error);
-                    dispatch('alert/error', error, { root: true });
+                    dispatch('alert/setErrorAlert', error, { root: true });
                     return Promise.reject(error);
                 }
             );
@@ -33,11 +39,11 @@ const actions = {
                 user => {
                     commit('registerSuccess', user);
                     // display success message after route change completes
-                    dispatch('alert/success', 'Registration successful', { root: true });
+                    dispatch('alert/setSuccessAlert', 'Registration successful', { root: true });
                 },
                 error => {
                     commit('registerFailure', error);
-                    dispatch('alert/error', error, { root: true });
+                    dispatch('alert/setErrorAlert', error, { root: true });
                 }
             );
     },

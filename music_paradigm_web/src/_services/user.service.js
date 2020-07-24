@@ -18,14 +18,13 @@ function login(username, password) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
     };
-    // console.log(requestOptions)
 
     return fetch(`${config.apiUrl}/users/authenticate`, requestOptions)
         .then(handleResponse)
         .then(user => {
-            // login successful if there's a jwt token in the response
+            // Login successful if there's a jwt token in the response
             if (user.token) {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
+                // Store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('user', JSON.stringify(user));
             }
 
@@ -34,7 +33,7 @@ function login(username, password) {
 }
 
 function logout() {
-    // remove user from local storage to log user out
+    // Remove user from local storage to log user out
     localStorage.removeItem('user');
 }
 

@@ -1,7 +1,5 @@
 <template>
   <div class="content">
-    <div id="alert" v-if="alert.message" :class="`alert ${alert.type}`">{{alert.message}}</div>
-
     <div id="login-box" class="login-box">
       <div id="login-box-title" class="login-box-title">
         <h1>Login</h1>
@@ -25,7 +23,10 @@
           <div>
             <label for="password">Password</label>
             <input type="password" v-model="password" name="password" placeholder="Enter Password" />
-            <p class="form-note-text"> Forgot <a class="form-note-text" href="#"> password? (not implemented yet) </a> </p>
+            <p class="form-note-text">
+              Forgot
+              <a class="form-note-text" href="#">password? (not implemented yet)</a>
+            </p>
           </div>
           <div>
             <button class="button">Login</button>
@@ -68,7 +69,6 @@ export default {
   },
   methods: {
     ...mapActions("account", ["login", "logout"]),
-    ...mapActions({ clearAlert: "alert/clear" }),
     ...mapActions("experiment", [
       "updateState",
       "setExperiment",
@@ -176,10 +176,10 @@ export default {
   font-size: 1rem;
 }
 
-.form-note-text  {
+.form-note-text {
   text-align: right;
   font-size: 0.75rem;
-  margin: 10px 0 10px
+  margin: 10px 0 10px;
 }
 
 .invalid-input {

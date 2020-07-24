@@ -52,7 +52,7 @@ export default {
     },
     methods: {
         ...mapActions('account', ['register']),
-        ...mapActions({ clearAlert: 'alert/clear' }),
+        ...mapActions({ clearAlert: 'alert/clear' }), // FIXME: This doesn't work anymore
         initInput () {
             this.newUser.username = '';
             this.newUser.password = '';

@@ -52,8 +52,8 @@ export default {
   },
   methods: {
     ...mapActions('account', ['login', 'logout']),
-    ...mapActions({ clearAlert: 'alert/clear' }),
-    ...mapActions({ setAlert: 'alert/error' }),
+    ...mapActions({ clearAlert: 'alert/clear' }), // FIXME: This doesn't work anymore
+    ...mapActions({ setAlert: 'alert/error' }), // FIXME: This doesn't work anymore
     // TODO: Ensuring that the name "onNext" is changed to "goNextStep" if it is accruate in this state
     onNext () {
       this.$router.push({name: 'register'});
