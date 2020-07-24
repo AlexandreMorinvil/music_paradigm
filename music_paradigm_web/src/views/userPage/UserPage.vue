@@ -1,10 +1,9 @@
 <template>
   <div class="page-grid">
     <div id="sidebar" class="sidebar-position sidebar">
-      <a href="#">Home</a>
-      <a href="#">Experiment List</a>
+      <router-link :to="{name: 'userHome'}"> Home </router-link>
+      <router-link :to="{name: 'userExperiments'}"> Experiments </router-link>
     </div>
-
     <div id="user-main" class="main-position">
       <router-view />
     </div>
@@ -13,15 +12,7 @@
 
 <script>
 export default {
-  name: "UserPage",
-  components: {},
-  data() {
-    return {};
-  },
-  computed: {},
-  methods: {},
-  watch: {},
-  mounted() {},
+  name: "UserPage"
 };
 </script>
 
@@ -46,6 +37,7 @@ export default {
   border-collapse: collapse;
 }
 
+/* Is associated to the "router-link" */
 .sidebar a {
   display: block;
   height: 60px;

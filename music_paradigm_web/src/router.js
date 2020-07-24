@@ -21,37 +21,37 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Experiment.vue'),
       children: [
         {
-          path: '/instruction',
+          path: 'instruction',
           name: 'instruction',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Instruction.vue')
         },
         {
-          path: '/cue',
+          path: 'cue',
           name: 'cue',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Cue.vue')
         },
         {
-          path: '/playing',
+          path: 'playing',
           name: 'playing',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Playing.vue')
         },
         {
-          path: '/video',
+          path: 'video',
           name: 'video',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Video.vue')
         },
         {
-          path: '/feedback',
+          path: 'feedback',
           name: 'feedback',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Feedback.vue')
         },
         {
-          path: '/rest',
+          path: 'rest',
           name: 'rest',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Rest.vue')
         },
         {
-          path: '/end',
+          path: 'end',
           name: 'end',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/End.vue')
         },
@@ -60,7 +60,19 @@ const router = new Router({
     {
       path: '/user',
       name: 'userPage',
-      component: () => import(/* webpackChunkName: "user" */ './views/UserPage.vue'),
+      component: () => import(/* webpackChunkName: "user" */ './views/userPage/UserPage.vue'),
+      children: [
+        {
+          path: 'home',
+          name: 'userHome',
+          component: () => import(/* webpackChunkName: "user" */ './views/userPage/Home.vue')
+        },
+        {
+          path: 'experiments',
+          name: 'userExperiments',
+          component: () => import(/* webpackChunkName: "user" */ './views/userPage/Experiments.vue')
+        }
+      ]
     },
     {
       path: '/admin',
