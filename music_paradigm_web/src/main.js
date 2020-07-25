@@ -5,12 +5,6 @@ import store from './store'
 
 Vue.config.productionTip = false
 
-// // setup fake backend
-// import { configureFakeBackend } from '@/_helpers';
-// configureFakeBackend();
-
-
-
 new Vue({
   router,
   store,
