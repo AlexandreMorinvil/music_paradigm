@@ -29,7 +29,7 @@
             </p>
           </div>
           <div>
-            <button class="button">Login</button>
+            <button class="login-button">Login</button>
           </div>
         </form>
       </div>
@@ -109,10 +109,6 @@ export default {
   height: 100%;
 }
 
-.content {
-  background-color: rgb(12, 12, 12);
-}
-
 #login-box {
   display: block;
   height: auto;
@@ -165,16 +161,6 @@ export default {
   margin: auto;
 }
 
-#alert {
-  display: inline-block;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  margin: 2em 0;
-  text-align: center;
-  font-size: 1rem;
-}
-
 .form-note-text {
   text-align: right;
   font-size: 0.75rem;
@@ -193,19 +179,21 @@ export default {
   background-color: rgba(255, 200, 200, 1);
 }
 
-.button {
+.login-button {
   background-color: rgb(0, 100, 255);
   border: 2px solid rgb(40, 126, 255);
   color: white;
+  width: 100%;
   border-radius: 5px;
   padding: 10px 40px;
+  margin-top: 30px;
   text-align: center;
   display: inline-block;
   font-size: 1em;
   cursor: pointer;
 }
 
-.button:hover {
+.login-button:hover {
   background-color: rgb(0, 80, 200);
   border: 2px solid rgb(0, 100, 255);
   color: white;
