@@ -15,10 +15,13 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Alert",
   data() {
-    return {};
+    return {
+      timeoutUniqueIdentifier: 0,
+      timeoutInSeconds: 15,
+    };
   },
   computed: {
-    ...mapGetters("alert", ["alertType", "alertMessage"]),
+    ...mapGetters("alert", ["hasAlert", "alertType", "alertMessage"]),
     alertTypeClass() {
       switch (this.alertType) {
         case "success":
@@ -42,7 +45,22 @@ export default {
     },
   },
   methods: {
-    ...mapActions("alert", ["clearAlert"]),
+    ...mapActions("alert", ["clearAlert"])
+  },
+  watch: {
+    hasAlert: {
+      immediate: true,
+      handler: function (value) {
+        if (value) {
+          this.timeoutUniqueIdentifier = setTimeout(
+            this.clearAlert,
+            this.timeoutInSeconds * 1000
+          );
+        } else {
+          clearTimeout(this.timeoutUniqueIdentifier);
+        }
+      },
+    },
   },
 };
 </script>

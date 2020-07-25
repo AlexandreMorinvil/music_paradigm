@@ -56,12 +56,12 @@ const actions = {
                     commit('updateSuccess', user);
                     setTimeout(() => {
                         // display success message after route change completes
-                        dispatch('alert/success', 'Update successful', { root: true });
+                        dispatch('alert/setSuccessAlert', 'Update successful', { root: true });
                     })
                 },
                 error => {
                     commit('updateFailure', error);
-                    dispatch('alert/error', error, { root: true });
+                    dispatch('alert/setErrorAlert', error, { root: true });
                 }
             );
     }

@@ -96,7 +96,6 @@ export default {
     },
   },
   mounted() {
-    this.clearAlert();
     this.logout();
   },
 };
