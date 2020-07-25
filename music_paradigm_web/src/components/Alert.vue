@@ -47,6 +47,9 @@ export default {
   methods: {
     ...mapActions("alert", ["clearAlert"])
   },
+  beforeDestroy() {
+    clearTimeout(this.timeoutUniqueIdentifier);
+  },
   watch: {
     hasAlert: {
       immediate: true,
