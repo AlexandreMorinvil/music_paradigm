@@ -8,8 +8,7 @@ const schema = new Schema({
     hash: {type: String},
     role: {type: String, default: roles.user},
     createdDate: { type: Date, default: Date.now },
-    experimentFile: { type: String, default: 'exp1.json'},
-    expLastMidi: { type: String, default: '0' },
+    experimentFile: { type: String, default: 'exp1.json'}
 });
 
 schema.set('toJSON', { virtuals: true });

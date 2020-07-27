@@ -46,7 +46,11 @@ export default {
     },
   },
   methods: {
+    ...mapActions("account", ["resumeLogin"]),
     ...mapActions("alert", ["clearAlert"])
+  },
+  created() {
+    this.resumeLogin();
   },
   watch: {
     // On change of the route, we reevaluate the state of the application

@@ -1,20 +1,31 @@
 import { userService } from '@/_services';
 
-const initialUser = JSON.parse(localStorage.getItem('user')) || null;
+// const initialUser = JSON.parse(localStorage.getItem('user')) || {};
 
 const state = {
     status: {
         loggingIn: false,
-        loggedIn: (initialUser) ? true : false
+        loggedIn: false//(initialUser) ? true : false
     },
 
-    user: initialUser,
+    user: {
+
+    }
 }
 
 const actions = {
+    resumeLogin({commit}) {
+        userService.resumeLogin()
+        .then(
+            user => {
+                commit('loginSuccess', user);
+            },
+            error => {}
+        );
+    },
     login({ dispatch, commit }, { username, password }) {
         commit('loginRequest', { username });
-    
+
         userService.login(username, password)
             .then(
                 user => {
@@ -23,7 +34,6 @@ const actions = {
                 error => {
                     commit('loginFailure', error);
                     dispatch('alert/setErrorAlert', error, { root: true });
-                    return Promise.reject(error);
                 }
             );
     },
@@ -33,7 +43,7 @@ const actions = {
     },
     register({ dispatch, commit }, user) {
         commit('registerRequest', user);
-    
+
         userService.register(user)
             .then(
                 user => {
@@ -49,7 +59,7 @@ const actions = {
     },
     update({ dispatch, commit }, user) {
         commit('updateRequest', user);
-    
+
         userService.update(user)
             .then(
                 user => {
@@ -69,19 +79,29 @@ const actions = {
 
 const mutations = {
     loginRequest(state, user) {
-        state.status = { loggingIn: true };
-        state.user = user;
+        Object.assign(state.status, {
+            loggingIn: true,
+        });
+        state.user = null;
     },
     loginSuccess(state, user) {
-        state.status = { loggedIn: true };
+        Object.assign(state.status, {
+            loggingIn: false,
+            loggedIn: true
+        });
         state.user = user;
     },
     loginFailure(state) {
-        state.status = {};
+        Object.assign(state.status, {
+            loggingIn: false,
+            loggedIn: false
+        });
         state.user = null;
     },
     logout(state) {
-        state.status = {};
+        Object.assign(state.status, {
+            loggedIn: false
+        });
         state.user = null;
     },
     registerRequest(state) {

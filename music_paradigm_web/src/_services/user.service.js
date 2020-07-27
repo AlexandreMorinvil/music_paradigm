@@ -3,6 +3,7 @@ import { authHeader } from '@/_helpers';
 import config from '@/config';
 
 export const userService = {
+    resumeLogin,
     login,
     logout,
     register,
@@ -11,6 +12,15 @@ export const userService = {
     update,
     delete: _delete
 };
+
+function resumeLogin() {
+    let promise = new Promise( function(resolve, reject) {
+        const resumingUser = JSON.parse(localStorage.getItem('user'));
+        if (resumingUser) resolve(resumingUser);
+        else reject("No user");
+    });
+    return promise;
+}
 
 function login(username, password) {
     const requestOptions = {
