@@ -1,3 +1,6 @@
+# For quick testing
+experiment_ressources/twins_experiment/
+
 # Database files
 db/
 *.bson
