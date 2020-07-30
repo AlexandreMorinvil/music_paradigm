@@ -70,9 +70,9 @@ export default {
   methods: {
     ...mapActions("account", ["login", "logout"]),
     ...mapActions("experiment", [
-      "updateState",
       "setExperiment",
       "setStartingPoint",
+      "initExperiment"
     ]),
     setUsernameHadFocus() {
       this.hasFocusedOnUsername = true;
@@ -91,7 +91,7 @@ export default {
         // TODO: The experiment, does it have to be attached to the user?
         this.setExperiment(this.user.experiment);
         this.setStartingPoint(this.user.cursor);
-        this.updateState();
+        this.initExperiment();
       }
     },
   },

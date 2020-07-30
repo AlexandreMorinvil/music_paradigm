@@ -21,6 +21,11 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Experiment.vue'),
       children: [
         {
+          path: 'prelude',
+          name: 'prelude',
+          component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Prelude.vue')
+        },
+        {
           path: 'instruction',
           name: 'instruction',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Instruction.vue')

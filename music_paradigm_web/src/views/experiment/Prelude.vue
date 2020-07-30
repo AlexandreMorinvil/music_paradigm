@@ -15,13 +15,10 @@
 <script>
 import "@/styles/experimentStateTemplate.css";
 import { mapGetters } from "vuex";
-import VisualPiano from "@/components/VisualPiano.vue";
 
 export default {
-  name: "Instruction",
-  components: {
-    visualPiano: VisualPiano
-  },
+  name: "Prelude",
+  components: {},
   props: {
     isSpaceBarPressed: {
       type: Boolean,
@@ -34,14 +31,12 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters(["urlExperimentRessource"]),
     ...mapGetters("piano", ["pressedKeys"]),
     footnote() {
-      return "Press the space bar for going to the next step";
+      return "The experiment will start once the internal ressources are ready";
     },
     textToDisplay() {
-      if (this.hasNoContent) return "Instruction";
-      else return this.textContent;
+      return "Loading...";
     }
   },
   watch: {

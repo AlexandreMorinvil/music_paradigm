@@ -1,3 +1,4 @@
+import { routerNavigation } from '@/_helpers'
 import constants from './constants'
 import functions from './functions'
 
@@ -57,6 +58,9 @@ export default {
             media: false,
             content: false
         };
+    },
+    initExperiment: () => {
+        routerNavigation.moveToExperimentPrelude();
     },
     updateState: (state) => {
         functions.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);

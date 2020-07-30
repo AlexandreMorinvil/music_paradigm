@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="app-grid">
-    <!-- The alert is not considered in the grid of the application -->
+    <!-- The alert is not considered in the grid display of the application -->
     <alert id="alert" v-if="hasAlert"/>
 
     <div v-if="true" id="app-header" class="app-header-position">
@@ -50,7 +50,8 @@ export default {
     ...mapActions("alert", ["clearAlert"])
   },
   created() {
-    this.resumeLogin();
+    // TODO: Make that work properly
+    //this.resumeLogin();
   },
   watch: {
     // On change of the route, we reevaluate the state of the application
