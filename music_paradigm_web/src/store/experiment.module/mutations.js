@@ -49,6 +49,7 @@ export default {
         // If a cursor is provided, the experiment is resumed with the state of the cursor.
         // If no cursor is provided, the default values of the cursor.
         state.cursor = functions.assignCursor(presetCursor);
+        functions.updateCursorNavigation(state.flow, state.cursor);
 
         // Set the initialization indicators to false
         state.isInitialized = {

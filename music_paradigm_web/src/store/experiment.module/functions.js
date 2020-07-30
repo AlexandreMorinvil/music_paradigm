@@ -361,6 +361,7 @@ export default {
     countStepsLeft,
     assignCursor,
     moveCursorNext,
-    updateState,
+    updateCursorNavigation,
+    updateState
 }
 // TODO: Instoring a break from the loop mechanism (end of loop parameter)
