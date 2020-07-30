@@ -3,7 +3,7 @@ import router from '@/router'
 const countStepsLeft = function (flow, startPointCursor) {
 
     // Deep copy the cursor (or initialize the cursor at the start by default)
-    let stepTracerCursor = assignCursor(startPointCursor);
+    let stepTracerCursor = assignCursor(flow, startPointCursor);
 
     // Count the number of steps before being beyond the end of the experiment
     let stepsCounter = 0;
@@ -11,6 +11,7 @@ const countStepsLeft = function (flow, startPointCursor) {
         moveCursorNext(flow, stepTracerCursor);
         stepsCounter += 1;
     }
+
     return Math.max(0, (stepsCounter - 1));
 }
 
@@ -18,7 +19,7 @@ const countStepsLeft = function (flow, startPointCursor) {
  * Deep clone a cursor in parameter or assignes default initial values
  * @param {Objecy} cursorToCopy 
  */
-const assignCursor = function (cursorToCopy) {
+const assignCursor = function (flow, cursorToCopy) {
 
     // If no cursor is set to be cloned, 
     if (cursorToCopy) {
@@ -44,6 +45,9 @@ const assignCursor = function (cursorToCopy) {
                 numberPiledMedia: 0,
             }
         };
+        // Adjust the navigation values so that it corresponds to the actual flow
+        updateCursorNavigation(flow, defaultCursor);
+        
         return defaultCursor;
     }
 }
@@ -62,13 +66,14 @@ const moveCursorNextStep = function (flow, cursor, isInitialized = {}) {
         // We systematically reset the inner step index to 0 when moving to a new block
         cursor.current.innerStepIndex = 0;
 
-        // If the index of the next block is lower than the index of the current block, this means that we are looping
-        if (cursor.navigation.indexNext < cursor.current.index) {
+        // If the index of the next block is lower than or equal to the index of the current block, this means that we are looping
+        if (cursor.navigation.indexNext <= cursor.current.index) {
 
             // If there remains reptitions: we loop back and substract a repetition
             if (cursor.navigation.numberRepetition > 1) {
                 cursor.navigation.numberRepetition -= 1;
             }
+
             // If there remains media content to depile: we loop back and decrement the count of piled content
             else if (cursor.navigation.numberPiledMedia > 1) {
                 cursor.navigation.numberPiledMedia -= 1;

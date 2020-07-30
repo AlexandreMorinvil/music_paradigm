@@ -4,8 +4,9 @@ import functions from "./functions"
 export default {
     // Getters for the experiment flow's information
     stepsTotalCount: (state) => {
-        return functions.countStepsLeft(state.flow);
+    return functions.countStepsLeft(state.flow);
     },
+
     stepsLeftCount: (state) => {
         return functions.countStepsLeft(state.flow, state.cursor);
     },
