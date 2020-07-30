@@ -1,4 +1,4 @@
-import router from '@/router'
+import { routerNavigation } from '@/_helpers'
 
 const countStepsLeft = function (flow, startPointCursor) {
 
@@ -249,7 +249,7 @@ const updateRoute = function (currentState, flow, cursor, isInitialized) {
 
     // We update the route
     currentState.type = flow[cursor.current.index].type;
-    router.push({ name: currentState.type });
+    routerNavigation.moveToState(currentState.type);
     Object.assign(isInitialized, { route: true, state: false, media: false, content: false });
 }
 
