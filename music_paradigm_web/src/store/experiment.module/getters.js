@@ -99,7 +99,7 @@ export default {
         if (state.cursor.current.isBeyondEnd) {
             return "end";
         }
-        return state.state.type || "UNDEFINED";
+        return state.state.type || "";
     },
 
     nextStateType: (state) => {

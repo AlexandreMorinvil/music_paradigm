@@ -1,6 +1,11 @@
 import { ressourceService } from '../../_services';
 
 export default {
+    // Initialization actions
+    setInitializationState: ({ commit }, isInitialized) => {
+        commit('setInitializationState', isInitialized);
+    },
+
     // Player actions
     setPlayer: ({ commit }, player) => {
         commit('setPlayer', player);

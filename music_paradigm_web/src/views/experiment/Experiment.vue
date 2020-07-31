@@ -2,7 +2,11 @@
   <div id="experiment" class="experiment-context experimen-grid">
     <div id="experiment-status">
       <div id="timer-box" class="status-display-box">
-        <timer :startTimeInSeconds="timeLimitInSeconds" :mustCountDown="timeLimitInSeconds > 0" v-on:timesUp="handleTimesUp"/>
+        <timer
+          :startTimeInSeconds="timeLimitInSeconds"
+          :mustCountDown="timeLimitInSeconds > 0"
+          v-on:timesUp="handleTimesUp"
+        />
       </div>
 
       <div id="center-wrapper">
@@ -30,12 +34,17 @@
     </div>
 
     <div id="experiment-state">
-      <router-view :isSpaceBarPressed="isSpaceBarPressed" v-on:stateEnded="navigateExperiment" />
+      <router-view
+        :isSpaceBarPressed="isSpaceBarPressed"
+        v-on:experimentReady="displayFirstStep"
+        v-on:stateEnded="navigateExperiment"
+      />
     </div>
   </div>
 </template>
 
 <script>
+// TODO: Start timer only when we leave the prelude
 import Vue from "vue";
 import ExperimentPiano from "@/components/ExperimentPiano.vue";
 import ExperimentTimer from "@/components/ExperimentTimer.vue";
@@ -45,12 +54,12 @@ export default {
   name: "Experiment",
   components: {
     piano: ExperimentPiano,
-    timer: ExperimentTimer
+    timer: ExperimentTimer,
   },
   data() {
     return {
       isSpaceBarPressed: false,
-      pianoDataBus: new Vue()
+      pianoDataBus: new Vue(),
     };
   },
   computed: {
@@ -60,7 +69,7 @@ export default {
       "currentStateType",
       "nextStateType",
       "midiName",
-      "timeLimitInSeconds"
+      "timeLimitInSeconds",
     ]),
     currentStateIcon() {
       return this.getIconReference(this.currentStateType);
@@ -70,10 +79,10 @@ export default {
     },
     progressBarWith() {
       return 100 * (1 - this.stepsLeftCount / this.stepsTotalCount);
-    }
+    },
   },
   methods: {
-    ...mapActions("experiment", ["goNextStep"]),
+    ...mapActions("experiment", ["updateState", "goNextStep"]),
     ...mapActions("piano", ["loadMidiFile", "resetPlayedNotesLogs"]),
     getIconReference(stateType) {
       const iconFileName = "sprites.svg#";
@@ -98,8 +107,11 @@ export default {
           return iconFileName + "icon-three-dots";
       }
     },
-    handleTimesUp(){
+    handleTimesUp() {
       console.log("Times up");
+    },
+    displayFirstStep() {
+      this.updateState();
     },
     navigateExperiment() {
       this.resetPlayedNotesLogs();
@@ -110,7 +122,7 @@ export default {
     },
     handleSpaceBarRelease(releasedKey) {
       if (releasedKey.key === " ") this.isSpaceBarPressed = false;
-    }
+    },
   },
   mounted() {
     window.addEventListener("keydown", this.handleSpaceBarPress);
@@ -123,11 +135,22 @@ export default {
   watch: {
     midiName: {
       immediate: true,
-      handler: function(midiName) {
+      handler: function (midiName) {
         if (midiName !== "") this.loadMidiFile(this.midiName);
-      }
+      },
+    },
+  },
+  beforeRouteLeave(to, from, next) {
+    // TODO: Do that only if we are with isBeyondEnd = true or at the end
+    const answer = window.confirm(
+      "Do you really want to leave?\n\n Your progress will be saved and you will be able to resume the experiment from where you left."
+    );
+    if (answer) {
+      next();
+    } else {
+      next(false);
     }
-  }
+  },
 };
 </script>
 

@@ -1,7 +1,12 @@
 import state from "./state";
 
 export default {
-    // Midi file for the midiFile loading status
+    // Getter for the piano initialization status
+    isPianoInitialized: (state) => {
+        return state.isPianoInitialized;
+    },
+
+    // Getteer for the Midi File loading status
     isMidiFileLoaded: (state) => {
         return state.midiFile.isLoaded;
     },

@@ -1,4 +1,7 @@
 export default {
+    // Indicator of whether or not the virtual piano is ready to be used
+    isPianoInitialized: false,
+
     // The player instance
     player: null,
 

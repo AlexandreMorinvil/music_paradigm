@@ -4,6 +4,11 @@ import { midiConversion, notePerformance } from "@/_helpers";
 import functions from './functions'
 
 export default {
+    // Mutation on isPianoInitialized
+    setInitializationState: (state, isInitialized) => {
+        state.isPianoInitialized = isInitialized || false;
+    },
+
     // Mutations on player
     setPlayer: (state, player) => {
         state.player = player;
