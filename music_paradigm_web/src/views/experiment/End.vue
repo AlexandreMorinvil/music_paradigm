@@ -69,10 +69,6 @@ export default {
       if (this.anyPianoKey)
         return "Press any piano key or the space bar for ending the experiment";
       else return "Press the space bar for ending the experiment";
-    },
-    textToDisplay() {
-      if (this.hasNoContent) return "End";
-      else return this.textContent;
     }
   },
   methods: {},
@@ -80,12 +76,12 @@ export default {
   watch: {
     isSpaceBarPressed(isPressed) {
       if (isPressed) {
-        this.$emit("stateEnded");
+        this.$emit("experimentEnded");
       }
     },
     pressedKeys(keys) {
       if (this.anyPianoKey && keys.length > 0) {
-        this.$emit("stateEnded");
+        this.$emit("experimentEnded");
       }
     }
   }

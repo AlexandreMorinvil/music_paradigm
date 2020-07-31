@@ -39,13 +39,13 @@
         :isSpaceBarPressed="isSpaceBarPressed"
         v-on:experimentReady="displayFirstStep"
         v-on:stateEnded="navigateExperiment"
+        v-on:experimentEnded="concludeExperiment"
       />
     </div>
   </div>
 </template>
 
 <script>
-// TODO: Start timer only when we leave the prelude
 import Vue from "vue";
 import ExperimentPiano from "@/components/ExperimentPiano.vue";
 import ExperimentTimer from "@/components/ExperimentTimer.vue";
@@ -118,6 +118,9 @@ export default {
     navigateExperiment() {
       this.resetPlayedNotesLogs();
       this.goNextStep();
+    },
+    concludeExperiment() {
+      console.log("We are leaving the experiment");
     },
     handleSpaceBarPress(pressedKey) {
       if (pressedKey.key === " ") this.isSpaceBarPressed = true;
