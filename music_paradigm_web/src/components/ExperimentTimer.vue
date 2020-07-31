@@ -100,7 +100,6 @@ export default {
 
   mounted() {
     this.setTime(this.startTimeInSeconds);
-    this.startTimer();
   },
   beforeDestroy() {
     window.clearInterval(this.counterUniqueIdentifier);

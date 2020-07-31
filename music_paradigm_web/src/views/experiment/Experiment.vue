@@ -6,6 +6,7 @@
           :startTimeInSeconds="timeLimitInSeconds"
           :mustCountDown="timeLimitInSeconds > 0"
           v-on:timesUp="handleTimesUp"
+          ref="timer"
         />
       </div>
 
@@ -112,6 +113,7 @@ export default {
     },
     displayFirstStep() {
       this.updateState();
+      this.$refs.timer.startTimer();
     },
     navigateExperiment() {
       this.resetPlayedNotesLogs();
