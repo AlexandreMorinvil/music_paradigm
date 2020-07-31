@@ -5,14 +5,16 @@ const countStepsLeft = function (flow, startPointCursor) {
     // Deep copy the cursor (or initialize the cursor at the start by default)
     let stepTracerCursor = assignCursor(flow, startPointCursor);
 
-    // Count the number of steps before being beyond the end of the experiment
+    // Count the number of steps before being at the end state (or beyond 
+    // the last block if no end state is specified in the flow description)
     let stepsCounter = 0;
-    while (!stepTracerCursor.current.isBeyondEnd) {
+    
+    while (!stepTracerCursor.current.isBeyondEnd && !(flow[stepTracerCursor.current.index].type === "end")) {
         moveCursorNext(flow, stepTracerCursor);
         stepsCounter += 1;
     }
 
-    return Math.max(0, (stepsCounter - 1));
+    return Math.max(0, stepsCounter);
 }
 
 /**
@@ -47,7 +49,7 @@ const assignCursor = function (flow, cursorToCopy) {
         };
         // Adjust the navigation values so that it corresponds to the actual flow
         updateCursorNavigation(flow, defaultCursor);
-        
+
         return defaultCursor;
     }
 }
@@ -99,9 +101,6 @@ const moveCursorNextStep = function (flow, cursor, isInitialized = {}) {
 
 // Read the block for the index specific parameters
 const updateCursorNavigation = function (flow, cursor) {
-
-    // If the cursor is beyond the end, the flow is finished, we do not need to parse another block
-    if (cursor.current.isBeyondEnd) return;
 
     // Parsing the block's flow navigation parameters
     const currentBlock = flow[cursor.current.index];
@@ -244,9 +243,6 @@ const setCursorNextStep = function (cursor, followedBy) {
 
 const updateRoute = function (currentState, flow, cursor, isInitialized) {
 
-    // XXX: If the cursor is beyond the end, the flow is finished, we go to the default end process
-    if (cursor.current.isBeyondEnd) return;
-
     // We update the route
     currentState.type = flow[cursor.current.index].type;
     routerNavigation.moveToState(currentState.type);
@@ -257,9 +253,6 @@ const updateRoute = function (currentState, flow, cursor, isInitialized) {
  * Initializes the state of the experiment according to the block pointed by the cursor
  */
 const updateStateSettings = function (currentState, flow, cursor, isInitialized, generalSettings) {
-
-    // If the cursor is beyond the end, the flow is finished, we do not need to parse another block
-    if (cursor.current.isBeyondEnd) return;
 
     // Parsing the current block's state settings
     const currentBlock = flow[cursor.current.index];
@@ -285,9 +278,6 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
 }
 
 const updateStateMediaFiles = function (currentState, flow, cursor, isInitialized) {
-
-    // If the cursor is beyond the end, the flow is finished, we do not need to parse another block
-    if (cursor.current.isBeyondEnd) return;
 
     // Parsing the current block
     const currentBlock = flow[cursor.current.index];
@@ -315,9 +305,6 @@ const updateStateMediaFiles = function (currentState, flow, cursor, isInitialize
 }
 
 const updateStateContent = function (currentState, flow, cursor, isInitialized) {
-
-    // If the cursor is beyond the end, the flow is finished, we do not need to parse another block
-    if (cursor.current.isBeyondEnd) return;
 
     // Parsing the current block
     const currentBlock = flow[cursor.current.index];
@@ -349,18 +336,34 @@ const updateStateContent = function (currentState, flow, cursor, isInitialized) 
     Object.assign(isInitialized, { content: false });
 }
 
+const forceEndState = function (currentState, isInitialized) {
+    
+    // We update the route
+    routerNavigation.moveToState("end");
+
+    // We render the state display as empty
+    currentState.content.text = "";
+    currentState.content.pictureName = "";
+    currentState.content.interactivePiano = false;
+
+    // We set the initialization status to true
+    Object.assign(isInitialized, { route: true, state: true, media: true, content: true });
+}
+
 const moveCursorNext = function (flow, cursor, isInitialized) {
     moveCursorNextStep(flow, cursor, isInitialized);
     updateCursorNavigation(flow, cursor);
 }
 
 const updateState = function (currentState, flow, cursor, isInitialized, generalSettings) {
-    if (!isInitialized.route) updateRoute(currentState, flow, cursor, isInitialized);
-    if (!isInitialized.state) updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings);
-    if (!isInitialized.media) updateStateMediaFiles(currentState, flow, cursor, isInitialized);
-    if (!isInitialized.content) updateStateContent(currentState, flow, cursor, isInitialized);
+    if (cursor.current.isBeyondEnd) forceEndState(currentState, flow, cursor, isInitialized);
+    else {
+        if (!isInitialized.route) updateRoute(currentState, flow, cursor, isInitialized);
+        if (!isInitialized.state) updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings);
+        if (!isInitialized.media) updateStateMediaFiles(currentState, flow, cursor, isInitialized);
+        if (!isInitialized.content) updateStateContent(currentState, flow, cursor, isInitialized);
+    }
 }
-
 
 export default {
     countStepsLeft,

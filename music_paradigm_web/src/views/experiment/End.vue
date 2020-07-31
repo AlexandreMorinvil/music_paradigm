@@ -62,7 +62,7 @@ export default {
       }
     },
     textToDisplay() {
-      if (this.textContent !== "") return "End";
+      if (this.textContent === "") return "End";
       else return this.textContent;
     },
     footnote() {

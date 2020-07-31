@@ -4,7 +4,7 @@ import functions from "./functions"
 export default {
     // Getters for the experiment flow's information
     stepsTotalCount: (state) => {
-    return functions.countStepsLeft(state.flow);
+        return functions.countStepsLeft(state.flow);
     },
 
     stepsLeftCount: (state) => {
@@ -109,19 +109,24 @@ export default {
         if (state.cursor.current.isBeyondEnd || !state.state.type) {
             return "";
         }
+
+        // If the current block is an end block, regardless of whether or not there exists another 
+        // block in the flow description flow, there is no next step to be indicated
+        else if (state.state.type === "end") {
+            return "";
+        }
+
         // If the next step is beyond the last block of the flow, we return "end"
         else if (state.cursor.navigation.indexNext > (state.flow.length - 1)) {
             return "end";
         }
 
-        // If There remains inner steps in the current block, the next step is
-        // of the same type as the current step
+        // If There remains inner steps in the current block, the next step is of the same type as the current step
         else if (state.cursor.current.innerStepIndex < state.cursor.navigation.totalInnerSteps) {
             return state.flow[state.cursor.current.index].type;
         }
 
-        // Otherwise, if it is none of the edge casess, the type of the next step
-        // is the type of the following block
+        // Otherwise, if it is none of the edge casess, the type of the next step is the type of the following block
         else
             return state.flow[state.cursor.navigation.indexNext].type;
     },
