@@ -1,6 +1,3 @@
-# For quick testing
-experiment_ressources/twins_experiment/
-
 # Database files
 db/
 *.bson
@@ -10,6 +7,7 @@ db/
 
 # Experiment ressource files
 experiment_ressources/
+!experiment_ressources/platform_tutorial/
 
 # Visualcode files
 #*.vscode/*
