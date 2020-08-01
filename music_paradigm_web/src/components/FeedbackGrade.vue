@@ -145,6 +145,7 @@ export default {
   width: 95%;
   border-radius: inherit;
   z-index: 0;
+  transform: translate(0, 6px);
 }
 .progress-line {
   height: 100%;
