@@ -80,25 +80,56 @@ const router = new Router({
       children: [
         {
           path: 'home',
-          name: 'userHome',
+          name: 'user.home',
           component: () => import(/* webpackChunkName: "user" */ './views/userPage/Home.vue')
         },
         {
           path: 'experiments',
-          name: 'userExperiments',
+          name: 'user.experiments',
           component: () => import(/* webpackChunkName: "user" */ './views/userPage/Experiments.vue')
-        }
+        },
+        {
+          path: 'account',
+          name: 'user.account',
+          component: () => import(/* webpackChunkName: "user" */ './views/userPage/Account.vue')
+        },
+        {
+          path: '*',
+          redirect: { name: "user.home" }
+        },
       ]
     },
+    // TODO: Guard for the admin page : verify that we are indeed an admin 
     {
       path: '/admin',
       name: 'admin',
-      component: () => import(/* webpackChunkName: "about" */ './views/AdminLogin.vue'),
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: () => import(/* webpackChunkName: "about" */ './views/Register.vue'),
+      component: () => import(/* webpackChunkName: "admin" */ './views/adminPage/AdminPage.vue'),
+      children: [
+        {
+          path: 'home',
+          name: 'admin.home',
+          component: () => import(/* webpackChunkName: "admin" */ './views/adminPage/Home.vue')
+        },
+        {
+          path: 'experiments',
+          name: 'admin.experiments',
+          component: () => import(/* webpackChunkName: "admin" */ './views/adminPage/Experiments.vue')
+        },
+        {
+          path: 'users',
+          name: 'admin.users',
+          component: () => import(/* webpackChunkName: "admin" */ './views/adminPage/Users.vue'),
+        },
+        {
+          path: 'account',
+          name: 'admin.account',
+          component: () => import(/* webpackChunkName: "admin" */ './views/adminPage/Account.vue'),
+        },
+        {
+          path: '*',
+          redirect: { name: "admin.home" }
+        },
+      ]
     },
     {
       path: '/*',

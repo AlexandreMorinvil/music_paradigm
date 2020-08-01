@@ -1,10 +1,10 @@
 <template>
-  <div class="page-grid">Experiments page</div>
+  <div class="page-grid">Admin Experiments page</div>
 </template>
 
 <script>
 export default {
-  name: "UserExperiments",
+  name: "AdminExperiments",
 };
 </script>
 

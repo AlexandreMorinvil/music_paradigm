@@ -27,13 +27,12 @@ const actions = {
                 commit('loginSuccess', user);
             },
             error => {
-                commit('loginFailure');
+                commit('loginFailure', error);
             }
         );
     },
     login({ dispatch, commit }, { username, password }) {
         commit('loginRequest', { username });
-
         userService.login(username, password)
             .then(
                 user => {
@@ -86,7 +85,7 @@ const actions = {
 };
 
 const mutations = {
-    loginRequest(state, user) {
+    loginRequest(state) {
         Object.assign(state.status, {
             loggingIn: true,
         });
