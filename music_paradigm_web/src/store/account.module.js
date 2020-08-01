@@ -13,14 +13,22 @@ const state = {
     }
 }
 
+const getters = {
+    isLoggedIn: (state) => {
+        return state.status.loggedIn;
+    }
+}
+
 const actions = {
-    resumeLogin({commit}) {
+    resumeLoginStatus({commit}) {
         userService.resumeLogin()
         .then(
             user => {
                 commit('loginSuccess', user);
             },
-            error => {}
+            error => {
+                commit('loginFailure');
+            }
         );
     },
     login({ dispatch, commit }, { username, password }) {
@@ -127,6 +135,7 @@ const mutations = {
 export const account = {
     namespaced: true,
     state,
+    getters,
     actions,
     mutations
 };

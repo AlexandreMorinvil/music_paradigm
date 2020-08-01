@@ -46,12 +46,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions("account", ["resumeLogin"]),
+    ...mapActions("account", ["resumeLoginStatus"]),
     ...mapActions("alert", ["clearAlert"])
   },
   created() {
-    // TODO: Make that work properly
-    //this.resumeLogin();
+    this.resumeLoginStatus();
   },
   watch: {
     // On change of the route, we reevaluate the state of the application

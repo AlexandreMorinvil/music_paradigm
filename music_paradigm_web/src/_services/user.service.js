@@ -1,5 +1,5 @@
 // import config from 'config';
-import { authHeader } from '@/_helpers';
+import { authHeader, routerNavigation } from '@/_helpers';
 import config from '@/config';
 
 export const userService = {
@@ -36,6 +36,7 @@ function login(username, password) {
             if (user.token) {
                 // Store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('user', JSON.stringify(user));
+                routerNavigation.goToHomePage(user.role);
             }
 
             return user;
@@ -45,6 +46,7 @@ function login(username, password) {
 function logout() {
     // Remove user from local storage to log user out
     localStorage.removeItem('user');
+    routerNavigation.goToRootPage();
 }
 
 function register(user) {

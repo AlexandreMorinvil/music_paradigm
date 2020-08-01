@@ -68,7 +68,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("account", ["login", "logout"]),
+    ...mapActions("account", ["login"]),
     ...mapActions("experiment", [
       "setExperiment",
       "setStartingPoint",
@@ -91,13 +91,10 @@ export default {
         // TODO: The experiment, does it have to be attached to the user?
         this.setExperiment(this.user.experiment);
         this.setStartingPoint(this.user.cursor);
-        this.initExperiment();
+        // this.initExperiment();
       }
     },
-  },
-  mounted() {
-    this.logout();
-  },
+  }
 };
 </script>
 

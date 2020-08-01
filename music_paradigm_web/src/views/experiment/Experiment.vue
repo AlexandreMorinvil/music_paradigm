@@ -148,7 +148,7 @@ export default {
   beforeRouteLeave(to, from, next) {
     // TODO: Do that only if we are with isBeyondEnd = true or at the end
     const answer = window.confirm(
-      "Do you really want to leave?\n\n Your progress will be saved and you will be able to resume the experiment from where you left."
+      "Do you really want to leave the experiment in progress?"
     );
     if (answer) {
       next();

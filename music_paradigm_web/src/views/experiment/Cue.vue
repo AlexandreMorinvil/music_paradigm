@@ -31,11 +31,12 @@ import VisualPiano from "@/components/VisualPiano.vue";
 export default {
   name: "Cue",
   components: {
-    visualPiano: VisualPiano
+    visualPiano: VisualPiano,
   },
   data() {
     return {
-      errorAutomaticTransitionSeconds: 5
+      errorAutomaticTransitionSeconds: 5,
+      playbackDelayInSeconds: 1,
     };
   },
   computed: {
@@ -49,7 +50,7 @@ export default {
       "hasVisualMedia",
       "hasFootnote",
       "pictureName",
-      "textContent"
+      "textContent",
     ]),
     gridClass() {
       if (this.hasFootnote) {
@@ -72,20 +73,20 @@ export default {
     textToDisplay() {
       if (this.hasNoContent) return "Cue";
       else return this.textContent;
-    }
+    },
   },
   methods: {
     ...mapActions("piano", [
       "playMidiFile",
       "addPlayerEndOfFileAction",
-      "removePlayerEndOfFileAction"
+      "removePlayerEndOfFileAction",
     ]),
     handleEndOfMidiFile() {
       this.$emit("stateEnded");
     },
     manageHavingNoMidiFile() {
       this.$emit("stateEnded");
-    }
+    },
   },
   mounted() {
     this.addPlayerEndOfFileAction(this.handleEndOfMidiFile);
@@ -96,16 +97,20 @@ export default {
   watch: {
     isMidiFileLoaded: {
       immediate: true,
-      handler: function(isReady) {
-        if (isReady) setTimeout(() => this.playMidiFile(), 500);
+      handler: function (isReady) {
+        if (isReady)
+          setTimeout(
+            () => this.playMidiFile(),
+            this.playbackDelayInSeconds * 1000
+          );
         else if (this.midiName === "")
           setTimeout(
             () => this.manageHavingNoMidiFile(),
             this.errorAutomaticTransitionSeconds * 1000
           );
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 

@@ -1,16 +1,27 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Login from './views/Login.vue'
-
 Vue.use(Router)
+
+function loggedInGuard(to, from, next) {
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (user) {
+    switch (user.role) {
+      case "admin": next("/admin"); break;
+      case "user": next("/user"); break;
+      default: break;
+    }
+  }
+  else next();
+}
 
 const router = new Router({
   routes: [
     {
       path: '/',
       name: 'login',
-      component: Login
+      component: () => import(/* webpackChunkName: "login" */ './views/Login.vue'),
+      beforeEnter: loggedInGuard
     },
     {
       path: '/experiment',
@@ -96,17 +107,18 @@ const router = new Router({
   ]
 })
 
-// router.beforeEach((to, from, next) => {
-//   // redirect to login page if not logged in and trying to access a restricted page
-//   const publicPages = ['/', '/admin'];
-//   const authRequired = !publicPages.includes(to.path);
-//   const loggedIn = localStorage.getItem('user');
+router.beforeEach((to, from, next) => {
+  // Redirect to login page if not logged in and trying to access a restricted page
+  const publicPages = ['/'];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem('user');
 
-//   if (authRequired && !loggedIn) {
-//     return next('/');
-//   }
-
-//   next();
-// })
+  if (authRequired && !loggedIn) {
+    return next('/');
+  }
+  else {
+    next();
+  }
+})
 
 export default router
