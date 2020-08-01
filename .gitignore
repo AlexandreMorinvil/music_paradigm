@@ -6,7 +6,7 @@ db/
 *.wt
 
 # Experiment ressource files
-experiment_ressources/
+experiment_ressources/*
 !experiment_ressources/platform_tutorial/
 
 # Visualcode files
