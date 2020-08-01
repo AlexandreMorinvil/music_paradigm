@@ -92,7 +92,7 @@ export default {
     },
     footnote() {
       var noteMessage;
-      if (this.hasVideo)
+      if (!this.hasVideo)
         noteMessage = `There is no video to be played, the experiment will automatically  go to the next step in ${this.errorAutomaticTransitionSeconds} seconds`;
       else
         return `The experiment will automatically go to the next step after the video playback`;

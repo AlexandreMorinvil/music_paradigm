@@ -38,7 +38,7 @@ export default {
 
         // Verify that the file name describes a supported file format
         const pictureNameExtension = pictureName.split(".").pop();
-        if (!["jpg", "png", "bmp"].includes(pictureNameExtension)) {
+        if (!["jpg", "png", "bmp"].includes(pictureNameExtension.toLowerCase())) {
             throw new Error(`
                 Incompatible image format for the "${pictureName}" image file.\n
                 The "${pictureNameExtension}" file format is not supported.
@@ -63,7 +63,7 @@ export default {
 
         // Verify that the file name describes a supported file format
         const midiNameExtension = midiName.split(".").pop();
-        if (!["mid"].includes(midiNameExtension)) {
+        if (!["mid"].includes(midiNameExtension.toLowerCase())) {
             throw new Error(`
                 Incompatible MIDI format for the "${midiName}" MIDI file.\n
                 The "${midiNameExtension}" file format is not supported.
@@ -82,7 +82,7 @@ export default {
 
         // Verify that the file name describes a supported file format
         const videoNameExtension = videoName.split(".").pop();
-        if (!["mp4"].includes(videoNameExtension)) {
+        if (!["mp4"].includes(videoNameExtension.toLowerCase())) {
             throw new Error(`
                         Incompatible video format for the "${videoName}" MIDI file.\n
                         The "${videoNameExtension}" file format is not supported.

@@ -34,7 +34,7 @@ export default {
             playingMode: (typeof experiment.mode === 'string') ? experiment.mode : constants.DEFAULT_PLAYING_MODE,
             timbreFile: (typeof experiment.timbreFile === 'string') ? experiment.timbreFile : constants.DEFAULT_TIMBRE_FILE,
             footnote: (typeof experiment.footnote !== 'undefined') ? Boolean(experiment.footnote) : constants.DEFAULT_FOOTNOTE,
-            timeLimitInSeconds: (typeof experiment.footnote === 'number') ? experiment.timeLimitInSeconds : constants.DEFAULT_TIME_LIMIT
+            timeLimitInSeconds: (typeof experiment.timeLimitInSeconds === 'number') ? experiment.timeLimitInSeconds : constants.DEFAULT_TIME_LIMIT
         };
 
         // Toggle the boolean value indicating that an experiment is mounted
