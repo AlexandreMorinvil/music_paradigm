@@ -94,7 +94,7 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "user" */ './views/userPage/Account.vue')
         },
         {
-          path: '*',
+          path: '',
           redirect: { name: "user.home" }
         },
       ]
@@ -126,7 +126,7 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "admin" */ './views/adminPage/Account.vue'),
         },
         {
-          path: '*',
+          path: '',
           redirect: { name: "admin.home" }
         },
       ]
