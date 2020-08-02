@@ -10,6 +10,9 @@ console.log(mongoUrl);
 // Estabilishing a connection
 mongoose.connect(mongoUrl, { useCreateIndex: true, useNewUrlParser: true });
 
+// Settings of the connection
+// mongoose.set('maxTimeMS', 3000);
+
 // Event listeners
 mongoose.connection.on('connected', handleConnection);
 mongoose.connection.on('disconnected', handleDisconnection);
@@ -17,7 +20,7 @@ mongoose.connection.on('error', handleError);
 
 // Exporting the Schemas
 module.exports = {
-    User: require('./model.users'),
+    User: require('./schemas/user').model,
     Result: require('./model.results')
 };
 

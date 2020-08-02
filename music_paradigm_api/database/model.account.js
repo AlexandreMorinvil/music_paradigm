@@ -3,39 +3,25 @@ const roles = require('../_helpers/role');
 
 const Schema = mongoose.Schema;
 
+function validateEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
 const schema = new Schema({
     username: { type: String, unique: true, required: true },
-    hash: { type: String },
-    role: { type: String, default: roles.user, enum: ['user', 'administrator'], },
+    passwordHash: { type: String, required: true },
+    role: { type: String, default: roles.user, enum: ['user', 'admin'] },
+
+    firstName: { type: String, default: "FirstName" },
+    lastName: { type: String, default: "LastName" },
+    email: { type: String, unique: true },
+
     createdDate: { type: Date, default: Date.now },
+
+    curriculums: [curriculum],
+
     experimentFile: { type: String, default: 'exp1.json' },
-
-    // firstName: {
-    //     type: String,
-    //     required: true,
-
-    // },
-    // lastName: {
-    //     type: String,
-    //     required: false,
-
-    // },
-    // email: {
-    //     type: String,
-    //     required: true,
-    // },
-    // passwordHash: {
-    //     type: String,
-    //     required: true,
-    // },
-    // role: {
-    //     type: String,
-    //     required: true,
-    //     default: roles.user,
-    //     enum: ["user"]
-    // },
-
-    // curriculums: [curriculum]
 });
 
 schema.set('toJSON', { virtuals: true });

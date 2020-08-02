@@ -31,23 +31,22 @@ const DATABASE_TIMEOUT = 10000;
 async function authenticate({ username, password }) {
 
     // Fetch user in the database
-    const user = await timeout.dbQuery(
-        User.findOne({ username }));
+    const user = await User.findOne({ username });
 
     // Validate username
     if (user === null) return null;
 
     // Validate password
-    const { hash, ...userWithoutHash } = user.toObject();
-    if (!bcrypt.compareSync(password, hash)) return null;
+    const { passwordHash, ...userWithoutPasswordHash } = user.toObject();
+    if (!bcrypt.compareSync(password, passwordHash)) return null;
 
     // Create jwt token
-    const token = jwt.generateToken(userWithoutHash);
+    const token = jwt.generateToken(userWithoutPasswordHash);
 
     // Attach an experiment to the user
     // TODO: Put that in a different function ===>
     if (user.experimentFile.endsWith("json")) {
-        userWithoutHash.experiment = require(`static/config/${user.experimentFile}`);
+        userWithoutPasswordHash.experiment = require(`static/config/${user.experimentFile}`);
     } else {
         // read text files
         var fs = require('fs');
@@ -55,17 +54,17 @@ async function authenticate({ username, password }) {
         const text2json = require('_helpers/text2json');
         try {
             const data = fs.readFileSync(`static/config/${user.experimentFile}`, 'utf8');
-            userWithoutHash.experiment = text2json(data);
-            // console.log(userWithoutHash.experiment.flow);
+            userWithoutPasswordHash.experiment = text2json(data);
+            // console.log(userWithoutPasswordHash.experiment.flow);
         } catch {
             console.error('config file not found, default exp1.json loaded');
-            userWithoutHash.experiment = require(`static/config/exp1.json`);
+            userWithoutPasswordHash.experiment = require(`static/config/exp1.json`);
         }
     }
     //  <===
 
     return {
-        ...userWithoutHash,
+        ...userWithoutPasswordHash,
         token
     };
 
@@ -73,12 +72,12 @@ async function authenticate({ username, password }) {
 
 async function getAll() {
     return await timeout.dbQuery(
-        User.find().select('-hash'));
+        User.find().select('-passwordHash'));
 }
 
 async function getById(id) {
     return await timeout.dbQuery(
-        User.findById(id).select('-hash'));
+        User.findById(id).select('-passwordHash'));
 }
 
 async function create(userParam) {
@@ -95,7 +94,7 @@ async function create(userParam) {
 
     // Hash the password
     if (userParam.password) {
-        user.hash = bcrypt.hashSync(userParam.password, 10);
+        user.passwordHash = bcrypt.hashSync(userParam.password, 10);
     }
 
     // Save the user
@@ -115,7 +114,7 @@ async function update(id, userParam) {
 
     // Hash password if it was entered
     if (userParam.password) {
-        userParam.hash = bcrypt.hashSync(userParam.password, 10);
+        userParam.passwordHash = bcrypt.hashSync(userParam.password, 10);
     }
 
     // Copy userParam properties to user

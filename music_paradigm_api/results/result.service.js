@@ -12,12 +12,12 @@ module.exports = {
 
 async function getAll() {
     return await timeout.dbQuery(
-        Collection.find().select('-hash'));
+        Collection.find().select('-passwordHash'));
 }
 
 async function getById(id) {
     return await timeout.dbQuery(
-        Collection.findById(id).select('-hash'));
+        Collection.findById(id).select('-passwordHash'));
 }
 
 async function create(param) {

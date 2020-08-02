@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const users = require('./model.users');
+const users = require('./schemas/user').model;
 const role = require('_helpers/role');
 const timeout = require('_helpers/timeout');
 
@@ -20,11 +20,17 @@ async function createDefaultAdmin() {
         await timeout.dbQuery(
             users.create({
                 username: defaultAdminUsername,
-                hash: bcrypt.hashSync(defaultAdminPassword, 10),
+                passwordHash: bcrypt.hashSync(defaultAdminPassword, 10),
                 role: role.admin
             }));
         console.log(`A default admin was created with username : "${defaultAdminUsername}" as no admin existed.`);
     }
 
+    test();
+
     return;
+}
+
+const test = function() {
+    console.log("TEST");
 }
