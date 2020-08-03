@@ -125,6 +125,11 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "admin" */ './views/adminPage/Curriculums.vue')
         },
         {
+          path: 'ressources',
+          name: 'admin.ressources',
+          component: () => import(/* webpackChunkName: "admin" */ './views/adminPage/ExperimentRessources.vue'),
+        },
+        {
           path: 'data',
           name: 'admin.data',
           component: () => import(/* webpackChunkName: "admin" */ './views/adminPage/Data.vue')

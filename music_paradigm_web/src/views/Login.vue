@@ -69,11 +69,6 @@ export default {
   },
   methods: {
     ...mapActions("account", ["login"]),
-    ...mapActions("experiment", [
-      "setExperiment",
-      "setStartingPoint",
-      "initExperiment"
-    ]),
     setUsernameHadFocus() {
       this.hasFocusedOnUsername = true;
     },
