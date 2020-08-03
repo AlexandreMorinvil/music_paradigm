@@ -75,7 +75,6 @@ const router = new Router({
     },
     {
       path: '/user',
-      name: 'userPage',
       component: () => import(/* webpackChunkName: "user" */ './views/userPage/UserPage.vue'),
       children: [
         {
@@ -95,6 +94,7 @@ const router = new Router({
         },
         {
           path: '',
+          name: 'user',
           redirect: { name: "user.home" }
         },
       ]
@@ -102,7 +102,6 @@ const router = new Router({
     // TODO: Guard for the admin page : verify that we are indeed an admin 
     {
       path: '/admin',
-      name: 'admin',
       component: () => import(/* webpackChunkName: "admin" */ './views/adminPage/AdminPage.vue'),
       children: [
         {
@@ -137,6 +136,7 @@ const router = new Router({
         },
         {
           path: '',
+          name: 'admin',
           redirect: { name: "admin.home" }
         },
       ]
