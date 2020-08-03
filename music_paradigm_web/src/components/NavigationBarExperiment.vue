@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import "@/styles/navigationBarTemplate.css";
+
 export default {
   name: "NavigationBarExperiment",
   components: {},
