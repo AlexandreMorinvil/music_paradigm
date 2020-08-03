@@ -14,13 +14,6 @@ module.exports = {
     delete: _delete
 };
 
-/** 
- * @constant 
- * @type {number}
-*/
-const DATABASE_TIMEOUT = 10000;
-
-
 /**
  * Method for authenticating a user attempting to login
  * @param {string} username     The date
@@ -31,7 +24,7 @@ const DATABASE_TIMEOUT = 10000;
 async function authenticate({ username, password }) {
 
     // Fetch user in the database
-    const user = await User.findOne({ username });
+    const user = await timeout.dbQuery(User.findOne({ username }));
 
     // Validate username
     if (user === null) return null;
@@ -43,26 +36,6 @@ async function authenticate({ username, password }) {
     // Create jwt token
     const token = jwt.generateToken(userWithoutPasswordHash);
 
-    // Attach an experiment to the user
-    // TODO: Put that in a different function ===>
-    if (user.experimentFile.endsWith("json")) {
-        userWithoutPasswordHash.experiment = require(`static/config/${user.experimentFile}`);
-    } else {
-        // read text files
-        var fs = require('fs');
-        // TODO: Take that away, we do not need a converter anymore
-        const text2json = require('_helpers/text2json');
-        try {
-            const data = fs.readFileSync(`static/config/${user.experimentFile}`, 'utf8');
-            userWithoutPasswordHash.experiment = text2json(data);
-            // console.log(userWithoutPasswordHash.experiment.flow);
-        } catch {
-            console.error('config file not found, default exp1.json loaded');
-            userWithoutPasswordHash.experiment = require(`static/config/exp1.json`);
-        }
-    }
-    //  <===
-
     return {
         ...userWithoutPasswordHash,
         token
@@ -71,13 +44,11 @@ async function authenticate({ username, password }) {
 }
 
 async function getAll() {
-    return await timeout.dbQuery(
-        User.find().select('-passwordHash'));
+    return await timeout.dbQuery(User.find().select('-passwordHash'));
 }
 
 async function getById(id) {
-    return await timeout.dbQuery(
-        User.findById(id).select('-passwordHash'));
+    return await timeout.dbQuery(User.findById(id).select('-passwordHash'));
 }
 
 async function create(userParam) {
@@ -102,7 +73,7 @@ async function create(userParam) {
 }
 
 async function update(id, userParam) {
-    
+
     // Fetch the user in the database
     const user = await timeout.dbQuery(User.findById(id));
 
@@ -125,6 +96,5 @@ async function update(id, userParam) {
 }
 
 async function _delete(id) {
-    await timeout.dbQuery(
-        User.findByIdAndRemove(id));
+    await timeout.dbQuery(User.findByIdAndRemove(id));
 }

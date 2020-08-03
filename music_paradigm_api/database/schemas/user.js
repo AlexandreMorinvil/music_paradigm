@@ -8,16 +8,23 @@ const progression = require('./curriculum').schemaProgression;
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
+    
+    // Creation time of the user
     createdDate: { type: Date, default: Date.now },
 
+    // Management data
     username: { type: String, unique: true, required: true },
+    email: { type: String, unique: true, sparse: true },
     passwordHash: { type: String, required: true },
     role: { type: String, default: roles.user, enum: ['user', 'admin'] },
+    groups: { type: [String], default: [] },
 
+    // Description of the user
     firstName: { type: String, default: "FirstName" },
+    middleName: { type: String, default: "LastName" },
     lastName: { type: String, default: "LastName" },
-    email: { type: String, unique: true },
 
+    //
     tasks: {
         curriculums: {
             type: [curriculum]
@@ -29,7 +36,6 @@ const schema = new Schema({
         }
     }
 });
-
 
 // Ensure that the virtual properties are also integrated in the schema
 schema.set('toJSON', { virtuals: true });
