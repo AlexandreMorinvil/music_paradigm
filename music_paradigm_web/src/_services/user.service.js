@@ -3,50 +3,12 @@ import { authHeader, routerNavigation } from '@/_helpers';
 import config from '@/config';
 
 export const userService = {
-    resumeLogin,
-    login,
-    logout,
     register,
     getAll,
     getById,
     update,
     delete: _delete
 };
-
-function resumeLogin() {
-    return new Promise( function(resolve) {
-        const resumingUser = JSON.parse(localStorage.getItem('user'));
-        if (resumingUser) resolve(resumingUser);
-        else resolve(null);
-    });
-}
-
-function login(username, password) {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-    };
-
-    return fetch(`${config.apiUrl}/users/authenticate`, requestOptions)
-        .then(handleResponse)
-        .then(user => {
-            // Login successful if there's a jwt token in the response
-            if (user.token) {
-                // Store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('user', JSON.stringify(user));
-                routerNavigation.goToHomePage(user.role);
-            }
-
-            return user;
-        });
-}
-
-function logout() {
-    // Remove user from local storage to log user out
-    localStorage.removeItem('user');
-    routerNavigation.goToRootPage();
-}
 
 function register(user) {
     const requestOptions = {

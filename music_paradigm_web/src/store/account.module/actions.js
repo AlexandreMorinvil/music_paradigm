@@ -1,8 +1,8 @@
-import { userService } from '@/_services';
+import { accountService, userService } from '@/_services';
 
 export default {
     resumeLoginStatus({ commit }) {
-        userService.resumeLogin()
+        accountService.resumeLogin()
             .then(user => {
                 if (user) commit('loginSuccess', user);
                 else commit('loginFailure');
@@ -11,7 +11,7 @@ export default {
 
     login({ dispatch, commit }, { username, password }) {
         commit('loginRequest', { username });
-        userService.login(username, password)
+        accountService.login(username, password)
             .then(
                 user => {
                     commit('loginSuccess', user);
@@ -24,7 +24,7 @@ export default {
     },
 
     logout({ commit }) {
-        userService.logout();
+        accountService.logout();
         commit('logout');
     },
 
