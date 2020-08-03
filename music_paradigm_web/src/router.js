@@ -111,14 +111,24 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "admin" */ './views/adminPage/Home.vue')
         },
         {
+          path: 'users',
+          name: 'admin.users',
+          component: () => import(/* webpackChunkName: "admin" */ './views/adminPage/Users.vue'),
+        },
+        {
           path: 'experiments',
           name: 'admin.experiments',
           component: () => import(/* webpackChunkName: "admin" */ './views/adminPage/Experiments.vue')
         },
         {
-          path: 'users',
-          name: 'admin.users',
-          component: () => import(/* webpackChunkName: "admin" */ './views/adminPage/Users.vue'),
+          path: 'curriculums',
+          name: 'admin.curriculums',
+          component: () => import(/* webpackChunkName: "admin" */ './views/adminPage/Curriculums.vue')
+        },
+        {
+          path: 'data',
+          name: 'admin.data',
+          component: () => import(/* webpackChunkName: "admin" */ './views/adminPage/Data.vue')
         },
         {
           path: 'account',

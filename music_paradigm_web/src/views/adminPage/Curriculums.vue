@@ -1,18 +1,18 @@
 <template>
   <div class="page-grid">
-    Admin Experiments page
+    Admin Curriculums page
     <br />
-    <br />INterface to create experiments
+    <br />INterface to create curriculums
     <br />
     <br />FUcntionality to import curriculums (as Json files)
     <br />
-    <br />List of all the existing experiments, their related information
+    <br />List of all the existing curriculums and their relates informations
   </div>
 </template>
 
 <script>
 export default {
-  name: "AdminExperiments",
+  name: "AdminCurriculums",
 };
 </script>
 

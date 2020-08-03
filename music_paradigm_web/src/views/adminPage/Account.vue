@@ -1,5 +1,10 @@
 <template>
-  <div class="page-grid">Admin Account page</div>
+  <div class="page-grid">
+    Admin Account page
+    <br />
+    <br />Hability to change : First name, Middle name, Last Name, Password, Email, and username of oneself
+    (The current account, this page is not to manipulate other accounts).
+  </div>
 </template>
 
 <script>

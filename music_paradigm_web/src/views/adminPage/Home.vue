@@ -1,5 +1,9 @@
 <template>
-  <div class="page-grid">Admin Home page</div>
+  <div class="page-grid">
+    Admin Home page
+    <br><br>
+    Recent activity on the server and important information from the users
+  </div>
 </template>
 
 <script>
