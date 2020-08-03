@@ -3,8 +3,10 @@ import { userService } from '@/_services';
 export default {
     resumeLoginStatus({ commit }) {
         userService.resumeLogin()
-            .then(user => { commit('loginSuccess', user); })
-            .catch(() => { commit('loginFailure'); });
+            .then(user => {
+                if (user) commit('loginSuccess', user);
+                else commit('loginFailure');
+            })
     },
 
     login({ dispatch, commit }, { username, password }) {
@@ -33,7 +35,6 @@ export default {
             .then(
                 user => {
                     commit('registerSuccess', user);
-                    // display success message after route change completes
                     dispatch('alert/setSuccessAlert', 'Registration successful', { root: true });
                 },
                 error => {

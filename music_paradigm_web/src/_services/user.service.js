@@ -14,12 +14,11 @@ export const userService = {
 };
 
 function resumeLogin() {
-    let promise = new Promise( function(resolve, reject) {
+    return new Promise( function(resolve) {
         const resumingUser = JSON.parse(localStorage.getItem('user'));
         if (resumingUser) resolve(resumingUser);
-        else reject("No user");
+        else resolve(null);
     });
-    return promise;
 }
 
 function login(username, password) {
