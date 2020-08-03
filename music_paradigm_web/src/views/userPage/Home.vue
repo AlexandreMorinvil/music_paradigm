@@ -1,5 +1,13 @@
 <template>
-  <div class="page-grid">Home page</div>
+  <div class="page-grid">
+    Home page
+    <br><br>
+    Important messages from the experiment administrators
+    <br><br>
+    Start button to the latest experiment available
+    <br><br>
+    Status of the curriculum
+  </div>
 </template>
 
 <script>

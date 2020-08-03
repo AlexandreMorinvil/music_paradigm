@@ -49,9 +49,11 @@ export default {
         media: false,                                               // Flag indicating whether the state's media files need to be updated
         content: false                                              // Flag indicating whether the state's content need to be updated
     },
+    
     // Data used by the view pages
     state: {
         type: "",                                                   // Type of the current state
+        // Displayable content elements
         content: {
             text: "",                                               // Text to display
             pictureName: "",                                        // Name of the current picture to display

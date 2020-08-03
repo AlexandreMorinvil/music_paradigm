@@ -8,28 +8,46 @@ const state = {
         loggedIn: false//(initialUser) ? true : false
     },
 
+    // TODO: Fit it for the assignment to be done more properly
     user: {
+        // Management information of the user
+        username: "",
+        email: "",
+        role: "",
 
+        // Description of the user
+        firstName: "First",
+        middleName: "Middle",
+        lastName: "Last",
+
+        // Tasks of the user
+        tasks: {
+            curriculums: [],
+            progression: []
+        }
     }
 }
 
 const getters = {
     isLoggedIn: (state) => {
         return state.status.loggedIn;
+    },
+    fullName: (state) => {
+        return state.user.firstName + " " + state.user.middleName + " " + state.user.lastName;
     }
 }
 
 const actions = {
-    resumeLoginStatus({commit}) {
+    resumeLoginStatus({ commit }) {
         userService.resumeLogin()
-        .then(
-            user => {
-                commit('loginSuccess', user);
-            },
-            error => {
-                commit('loginFailure', error);
-            }
-        );
+            .then(
+                user => {
+                    commit('loginSuccess', user);
+                },
+                error => {
+                    commit('loginFailure', error);
+                }
+            );
     },
     login({ dispatch, commit }, { username, password }) {
         commit('loginRequest', { username });

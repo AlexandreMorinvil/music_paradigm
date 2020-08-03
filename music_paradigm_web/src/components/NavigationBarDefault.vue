@@ -1,6 +1,11 @@
 <template>
   <div id="navigation-bar">
-    <div id="wrapper-left" class="navigation-bar-wrapper"></div>
+    <div id="wrapper-left" class="navigation-bar-wrapper">
+      <div
+        id="connected-user"
+        v-if="isLoggedIn"
+      >Welcome {{ fullName }} </div>
+    </div>
 
     <div id="wrapper-center" class="navigation-bar-wrapper">Music Paradigm</div>
 
@@ -17,6 +22,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import "@/styles/navigationBarTemplate.css";
 
 export default {
   name: "NavigationBarDefault",
@@ -25,7 +31,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters("account", ["isLoggedIn"]),
+    ...mapGetters("account", ["isLoggedIn", "fullName"]),
   },
   methods: {
     ...mapActions("account", ["logout"]),
@@ -42,4 +48,8 @@ export default {
 </script>
 
 <style scoped>
+#wrapper-left:first-child div {
+  padding-left: 20px;
+  font-size: inherit;
+}
 </style>
