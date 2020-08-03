@@ -3,14 +3,8 @@ import { userService } from '@/_services';
 export default {
     resumeLoginStatus({ commit }) {
         userService.resumeLogin()
-            .then(
-                user => {
-                    commit('loginSuccess', user);
-                },
-                error => {
-                    commit('loginFailure', error);
-                }
-            );
+            .then(user => { commit('loginSuccess', user); })
+            .catch(() => { commit('loginFailure'); });
     },
 
     login({ dispatch, commit }, { username, password }) {
