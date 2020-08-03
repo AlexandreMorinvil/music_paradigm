@@ -86,13 +86,14 @@ export default {
     },
   },
   watch: {
+    // TO
     user() {
-      if (this.user ? this.user.token : false) {
-        // TODO: The experiment, does it have to be attached to the user?
-        this.setExperiment(this.user.experiment);
-        this.setStartingPoint(this.user.cursor);
-        // this.initExperiment();
-      }
+      // if (this.user ? this.user.token : false) {
+      //   // TODO: The experiment, does it have to be attached to the user?
+      //   // this.setExperiment(this.user.experiment);
+      //   // this.setStartingPoint(this.user.cursor);
+      //   // this.initExperiment();
+      // }
     },
   }
 };

@@ -36,6 +36,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 
+// TODO: Remake all the register page in a dedicated component
 export default {
   data() {
     return {
@@ -66,11 +67,11 @@ export default {
       console.log(this.newUser);
       if (this.newUser.username != "") {
         if (this.newUser.experimentFile == "") {
-          const { experimentFile, ...newUserWithoutExp } = this.newUser;
-          this.register(newUserWithoutExp);
+          const user = this.user;
+          this.register(user);
           console.log("register w/o exp");
         } else {
-          this.register(this.newUser);
+          this.register(this.user);
           console.log("register");
         }
         this.initInput();
