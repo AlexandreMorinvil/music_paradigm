@@ -17,9 +17,8 @@ router.delete('/:id',           jwtAuthorize(role.admin),  _delete);
 module.exports = router;
 
 function authenticate(req, res, next) {
-    //timeout.limitTime(1000, userService.authenticate(req.body))
     userService.authenticate(req.body)
-        .then(user => user ? res.json(user) : res.status(400).json({ message: 'Username or password is incorrect' }))
+        .then(user => user ? res.json(user) : res.json({ message: 'Username or password is incorrect' }))
         .catch(err => next(err));
 }
 

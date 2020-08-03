@@ -41,7 +41,7 @@ const schemaExperiment = new Schema({
 schemaBlock.set('toJSON', { virtuals: true });
 schemaExperiment.set('toJSON', { virtuals: true });
 
-const model = mongoose.model('Experiment', schemaCurriculum, 'experiments');
+const model = mongoose.model('Experiment', schemaExperiment, 'experiments');
 
 module.exports = {
     schemaBlock: schemaBlock,

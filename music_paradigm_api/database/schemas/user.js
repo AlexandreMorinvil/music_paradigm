@@ -21,7 +21,7 @@ const schema = new Schema({
 
     // Description of the user
     firstName: { type: String, default: "FirstName" },
-    middleName: { type: String, default: "LastName" },
+    middleName: { type: String, default: "MiddleName" },
     lastName: { type: String, default: "LastName" },
 
     //

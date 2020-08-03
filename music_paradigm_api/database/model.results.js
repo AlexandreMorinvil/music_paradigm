@@ -1,3 +1,4 @@
+// TODO: Erase this for the improved "Log" Schema
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
