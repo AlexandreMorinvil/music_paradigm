@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="app-grid">
     <!-- The alert is not considered in the grid display of the application -->
-    <alert id="alert" v-if="hasAlert"/>
+    <alert id="alert" v-if="hasAlert" />
 
     <div v-if="true" id="app-header" class="app-header-position">
       <component :is="navigationBarType" id="app-navigation-bar" ref="navigationBar" />
@@ -26,7 +26,7 @@ export default {
   components: {
     defaultNavigationBar: NavigationBarDefault,
     experimentNavigationBar: NavigationBarExperiment,
-    alert: Alert
+    alert: Alert,
   },
   data() {
     return {
@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     ...mapActions("account", ["resumeLoginStatus"]),
-    ...mapActions("alert", ["clearAlert"])
+    ...mapActions("alert", ["clearAlert"]),
   },
   created() {
     this.resumeLoginStatus();
@@ -72,7 +72,7 @@ export default {
 html,
 body,
 #app {
-  min-height: 100vh;
+  height: 100vh;
 }
 body {
   font-family: Arial, Helvetica, sans-serif;
@@ -88,6 +88,8 @@ body {
 }
 .app-header-position {
   grid-area: header;
+  position: fixed;
+  top: 0;
 }
 .app-main-position {
   grid-area: main;
@@ -101,8 +103,9 @@ body {
   grid-gap: 0px;
 }
 #app-header {
-  height: inherit;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 56px;
+  box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0);
   background-color: rgb(25, 25, 25);
   border-bottom-color: rgb(35, 35, 35);
   border-bottom-width: 1px;

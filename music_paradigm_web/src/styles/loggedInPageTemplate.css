@@ -16,6 +16,12 @@
   border-right-width: 1px;
   border-right-color: rgb(35, 35, 35);
   border-collapse: collapse;
+
+  width: 300px;
+  height: 100%;
+
+  position: fixed;
+  left: 0;
 }
 
 /* "a" tag is also associated to the "router-link" */
@@ -40,5 +46,4 @@
 
 .main-display {
   display: block;
-  background-color: burlywood;
 }
