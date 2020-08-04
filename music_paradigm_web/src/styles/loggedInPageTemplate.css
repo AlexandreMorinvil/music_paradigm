@@ -1,6 +1,6 @@
 .page-grid {
   display: grid;
-  grid-template-columns: 300px;
+  grid-template-columns: 250px;
   grid-template-areas: "sidebar main";
   height: 100%;
   width: 100%;
@@ -16,7 +16,7 @@
   border-right-width: 1px;
   border-right-color: rgb(35, 35, 35);
   border-collapse: collapse;
-  width: 299px;
+  width: 249px;
   height: 100%;
   position: fixed;
   left: 0;
