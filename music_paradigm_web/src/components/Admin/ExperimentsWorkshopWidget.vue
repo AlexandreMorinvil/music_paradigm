@@ -1,18 +1,37 @@
 <template>
-  <div id="experiments-workshop" class="widget">
+  <div id="experiments-workshop" class="widget widget-box">
     THIS IS BEING DISPLAYED
-    <form action="/action_page.php">
-      <label for="myfile">Select a file:</label>
-      <input type="file" id="myfile" name="myfile" v-on:change="handleExperimentFile" />
-      <br />
-      <textarea id="w3review" name="w3review" rows="20" cols="50" v-model="content">  </textarea>
-      <br />
-      <input type="submit" />
-    </form>
+    <div class="submit-position">
+      <button>test</button>
+    </div>
+
+    <div class="import-position">
+      <form v-on:submit.prevent="handleSubmit">
+        <input type="file" id="myfile" name="myfile" v-on:change="handleExperimentFile" />
+      </form>
+    </div>
+
+    <div class="editor-position">
+      <form v-on:submit.prevent="handleSubmit">
+        <textarea
+          id="w3review"
+          class="text-editor"
+          name="w3review"
+          rows="20"
+          cols="50"
+          v-model="editableContent"
+        ></textarea>
+      </form>
+    </div>
+
+    <div class="editor-position">
+      <div></div>
+    </div>
   </div>
 </template>
 
 <script>
+import "@/styles/widgetTemplate.css";
 //import LoaderCircular from "@/components/LoaderCircular.vue";
 
 export default {
@@ -23,7 +42,7 @@ export default {
   data() {
     return {
       file: "",
-      content: "a",
+      editableContent: "a",
     };
   },
   computed: {},
@@ -48,11 +67,15 @@ export default {
 
       readFileContent(input.files[0])
         .then((content) => {
-          this.content = content;
+          this.editableContent = content;
         })
         .catch((error) => {
           console.log(error);
         });
+    },
+
+    handleSubmit() {
+      // TODO: Submit file to backend
     },
   },
   mounted() {},
@@ -62,28 +85,38 @@ export default {
 </script>
 
 <style scoped>
-.widget {
-  display: grid;
-  background-color: cadetblue;
+.widget-box {
+  background-color: rgb(238, 153, 111);
 }
 
-.centered .a-position {
-  grid-area: header;
+.submit-position {
+  grid-area: submit;
+  background-color: darkred;
 }
-.b-position {
-  grid-area: progress;
+
+.import-position {
+  grid-area: import;
+  background-color: darkblue;
 }
-.experiment-main-position {
-  grid-area: main;
+
+.editor-position {
+  grid-area: editor;
+  background-color: deepskyblue;
 }
-.experimen-grid {
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: 64px 10px;
+
+.widget {
+  /* grid-template-columns: auto;
+  grid-template-rows: 64pxx; */
   grid-template-areas:
-    "header" /* Status of the experiment */
-    "progress" /* Progress bar of the experiment */
-    "main"; /* State of the experiment */
-  grid-gap: 0px;
+    "submit"
+    "import"
+    "editor";
+}
+
+.text-editor {
+  width: 100%;
+  white-space: nowrap;
+  overflow: scroll;
+  font-size: 0.5em;
 }
 </style>

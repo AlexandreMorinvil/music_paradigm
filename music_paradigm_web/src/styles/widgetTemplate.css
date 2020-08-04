@@ -1,0 +1,5 @@
+.widget {
+    display: grid;
+    padding: 25px;
+    grid-gap: 25px;
+}
