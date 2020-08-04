@@ -16,15 +16,14 @@
   border-right-width: 1px;
   border-right-color: rgb(35, 35, 35);
   border-collapse: collapse;
-
-  width: 300px;
+  width: 299px;
   height: 100%;
-
   position: fixed;
   left: 0;
 }
 
 /* "a" tag is also associated to the "router-link" */
+
 .sidebar a {
   display: block;
   height: 60px;
@@ -35,8 +34,15 @@
   color: rgb(200, 200, 200);
 }
 
-.sidebar a:hover {
-  background-color: rgb(65, 65, 65);
+.sidebar .currentLink {
+  background-color: rgb(60, 60, 60);
+  border-left: solid rgb(0, 100, 255) 5px;
+  color: white;
+}
+
+.sidebar a:hover:not(.currentLink) {
+  background-color: rgb(30, 30, 30);
+  border-left: solid rgb(0, 100, 255) 5px;
   color: white;
 }
 
