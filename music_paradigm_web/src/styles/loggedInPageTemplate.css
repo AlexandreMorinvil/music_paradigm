@@ -20,6 +20,7 @@
   height: 100%;
   position: fixed;
   left: 0;
+  z-index: 10;
 }
 
 /* "a" tag is also associated to the "router-link" */
@@ -30,7 +31,7 @@
   border-collapse: collapse;
   padding: 15px 8px 15px 16px;
   text-decoration: none;
-  font-size: 0.8em;
+  font-size: 22px;
   color: rgb(200, 200, 200);
 }
 

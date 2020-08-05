@@ -11,44 +11,27 @@
       </form>
     </div>
 
-    <div class="editor-position">
-      <form v-on:submit.prevent="handleSubmit">
-        <textarea
-          id="w3review"
-          class="text-editor"
-          name="w3review"
-          rows="20"
-          cols="50"
-          v-model="editableContent"
-        ></textarea>
-      </form>
+    <div class="editor-position editor-size-fix ">
+      <code-editor id="text-editor" />
     </div>
 
     <div class="reference-position">
       <div></div>
     </div>
 
-    <div>
-      <code-editor> </code-editor>
-    </div>
+    <div></div>
   </div>
 </template>
 
 <script>
 import "@/styles/widgetTemplate.css";
-
-// import { codemirror } from 'vue-codemirror'
-// import 'codemirror/lib/codemirror.css'
-
-//import LoaderCircular from "@/components/LoaderCircular.vue";
-
-import CodeEditor from "@/components/Admin/TextEditor.vue"
+import CodeEditor from "@/components/Admin/TextEditor.vue";
 
 export default {
   name: "ExperimentsWorkshopWidget",
   components: {
     // loader: LoaderCircular,
-    codeEditor: CodeEditor
+    codeEditor: CodeEditor,
   },
   data() {
     return {
@@ -116,8 +99,8 @@ export default {
 }
 
 .widget {
-  /* grid-template-columns: auto;
-  grid-template-rows: 64pxx; */
+  grid-template-columns: 100%;
+  /* grid-template-rows: 64pxx; */
   grid-template-areas:
     "submit"
     "import"
@@ -126,8 +109,8 @@ export default {
 
 .text-editor {
   width: 100%;
-  white-space: nowrap;
-  overflow: scroll;
-  font-size: 0.5em;
+  /* white-space: nowrap;
+  overflow: scroll; */
+  font-size: 1em;
 }
 </style>

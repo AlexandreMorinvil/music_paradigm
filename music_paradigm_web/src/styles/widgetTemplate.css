@@ -3,3 +3,9 @@
     padding: 25px;
     grid-gap: 25px;
 }
+
+.editor-size-fix {
+    /* This property is required in the parent HTML element of a codeMirror component 
+    to prevent the codeMirror component to expend boundlessly */
+    min-width: 0;
+}

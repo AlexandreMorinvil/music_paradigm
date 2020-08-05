@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div id="text-editor">
     <!-- Two-way Data-Binding -->
-    <codemirror v-model="code" :options="cmOptions" />
+    <codemirror class="text-editor" ref="cmEditor" v-model="code" :options="cmOptions" />
 
     <!-- Or manually control the data synchronization -->
     <!-- <codemirror
@@ -12,23 +12,14 @@
       @focus="onCmFocus"
       @input="onCmCodeChange"
     />-->
-
-    <!-- Nuxt.js -->
-    <!-- <client-only placeholder="Codemirror Loading...">
-      <codemirror
-        ref="cmEditor"
-        :value="code"
-        :options="cmOptions"
-        @ready="onCmReady"
-        @focus="onCmFocus"
-        @input="onCmCodeChange"
-      />
-    </client-only>-->
   </div>
 </template>
 
 <script>
-
+// TODO: Add button to control text size
+// TODO: Add props to specify wither the code editor can be edited or not
+// TODO: Change the color of the text editor
+// TODO: Add Gutter (JS Lit)
 import { codemirror } from "vue-codemirror";
 import "codemirror/lib/codemirror.css";
 
@@ -38,23 +29,31 @@ import "codemirror/mode/javascript/javascript.js";
 // import theme style
 import "codemirror/theme/base16-dark.css";
 
-// import more 'codemirror/some-resource...'
-
 export default {
   components: {
     codemirror,
   },
   data() {
     return {
-      code: "const a = 10",
+      code: "{}",
       cmOptions: {
         tabSize: 4,
-        mode: "text/javascript",
+
+        mode: "application/json", //"text/javascript",
         theme: "base16-dark",
         lineNumbers: true,
         line: true,
-        // more CodeMirror options...
+
+        // Nore CodeMirror options
+        indentUnit: 4,
+        electricChars: true,
+        lineWrapping: true,
+        lineNumbers: true,
+        readOnly: false,
+        showCursorWhenSelecting: true,
+        pasteLinesPerSelection: true,
       },
+      textSizeFactor: 1,
     };
   },
   methods: {
@@ -65,7 +64,6 @@ export default {
       console.log("the editor is focused!", cm);
     },
     onCmCodeChange(newCode) {
-      console.log("this is new code", newCode);
       this.code = newCode;
     },
   },
@@ -74,9 +72,9 @@ export default {
       return this.$refs.cmEditor.codemirror;
     },
   },
-  mounted() {
-    console.log("the current CodeMirror instance object:", this.codemirror);
-    // you can use this.codemirror to do something...
-  },
 };
 </script>
+
+<style scoped>
+/* .CodeMirror {} */
+</style>
