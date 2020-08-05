@@ -29,10 +29,9 @@
 </template>
 
 <script>
-// TODO: Add Gutter (JS Lit)
 // TODO: Link text to something external
 import { codemirror } from "vue-codemirror";
-import { JSHINT } from "jshint";
+import jsonlint from 'jsonlint-mod';
 
 // import language js
 import "codemirror/mode/javascript/javascript.js";
@@ -44,7 +43,7 @@ import 'codemirror/addon/lint/lint.css';
 
 // Import addons
 import 'codemirror/addon/lint/lint';
-import 'codemirror/addon/lint/javascript-lint';
+import 'codemirror/addon/lint/json-lint.js';
 
 export default {
   components: {
@@ -119,7 +118,7 @@ export default {
     },
   },
   beforeMount() {
-    window.JSHINT = JSHINT;
+    window.jsonlint = jsonlint;
   },
   mounted() {
     // Deep copy the text of the start value props
