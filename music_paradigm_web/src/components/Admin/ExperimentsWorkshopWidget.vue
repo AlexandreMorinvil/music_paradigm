@@ -24,20 +24,31 @@
       </form>
     </div>
 
-    <div class="editor-position">
+    <div class="reference-position">
       <div></div>
+    </div>
+
+    <div>
+      <code-editor> </code-editor>
     </div>
   </div>
 </template>
 
 <script>
 import "@/styles/widgetTemplate.css";
+
+// import { codemirror } from 'vue-codemirror'
+// import 'codemirror/lib/codemirror.css'
+
 //import LoaderCircular from "@/components/LoaderCircular.vue";
+
+import CodeEditor from "@/components/Admin/TextEditor.vue"
 
 export default {
   name: "ExperimentsWorkshopWidget",
   components: {
     // loader: LoaderCircular,
+    codeEditor: CodeEditor
   },
   data() {
     return {
