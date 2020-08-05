@@ -2,9 +2,18 @@
   <div id="text-editor">
     <!-- Two-way Data-Binding -->
     <div class="text-editor-button-panel">
-      <button class="text-editor-button editor-button-1" v-on:click="decreaseFontSize()">Decrease Size</button>
-      <button class="text-editor-button editor-button-2" v-on:click="setDefaultFontSize()">Default Size</button>
-      <button class="text-editor-button editor-button-3" v-on:click="increaseFontSize()">Increase Size</button>
+      <button
+        class="text-editor-button editor-button-1"
+        v-on:click="decreaseFontSize()"
+      >Decrease Size</button>
+      <button
+        class="text-editor-button editor-button-2"
+        v-on:click="setDefaultFontSize()"
+      >Default Size</button>
+      <button
+        class="text-editor-button editor-button-3"
+        v-on:click="increaseFontSize()"
+      >Increase Size</button>
     </div>
     <codemirror
       class="text-editor"
@@ -20,39 +29,58 @@
 </template>
 
 <script>
-// TODO: Add props to specify wither the code editor can be edited or not
-// TODO: Change the color of the text editor
 // TODO: Add Gutter (JS Lit)
 // TODO: Link text to something external
 import { codemirror } from "vue-codemirror";
-import "codemirror/lib/codemirror.css";
+import { JSHINT } from "jshint";
 
 // import language js
 import "codemirror/mode/javascript/javascript.js";
 
 // import theme style
-import "codemirror/theme/base16-dark.css";
+import "codemirror/theme/solarized.css";
+import "codemirror/lib/codemirror.css";
+import 'codemirror/addon/lint/lint.css';
+
+// Import addons
+import 'codemirror/addon/lint/lint';
+import 'codemirror/addon/lint/javascript-lint';
 
 export default {
   components: {
     codemirror,
   },
+  props: {
+    startText: {
+      type: String,
+      default() {
+        return "{}";
+      },
+    },
+    readOnly: {
+      type: Boolean,
+      default() {
+        return false;
+      },
+    },
+  },
   data() {
     return {
-      code: "{}",
+      code: "",
       cmOptions: {
         tabSize: 4,
         mode: "application/json", //"text/javascript",
-        theme: "base16-dark",
+        theme: "solarized",
         lineNumbers: true,
         line: true,
         indentUnit: 4,
         electricChars: true,
         lineWrapping: false,
-        lineNumbers: true,
-        readOnly: false,
+        readOnly: this.readOnly,
         showCursorWhenSelecting: true,
         pasteLinesPerSelection: true,
+        gutters: ['CodeMirror-lint-markers'],
+        lint: true
       },
       textSizeFactor: 1,
       minTextSizeFactor: 0.1,
@@ -90,7 +118,13 @@ export default {
       return "--textSizeFactor: " + this.textSizeFactor;
     },
   },
-  mounted() {},
+  beforeMount() {
+    window.JSHINT = JSHINT;
+  },
+  mounted() {
+    // Deep copy the text of the start value props
+    this.code = (" " + this.startText).slice(1);
+  },
 };
 </script>
 
@@ -100,7 +134,6 @@ export default {
 .text-editor {
   font-size: calc(0.6em * var(--textSizeFactor));
 }
-
 
 .text-editor-button-panel {
   display: flex;
@@ -125,5 +158,4 @@ export default {
 .editor-button-3 {
   border-left-style: none;
 }
-
 </style>

@@ -1,6 +1,5 @@
 <template>
   <div id="experiments-workshop" class="widget widget-box">
-    THIS IS BEING DISPLAYED
     <div class="submit-position">
       <button>test</button>
     </div>
@@ -16,10 +15,8 @@
     </div>
 
     <div class="reference-position">
-      <div></div>
+      <code-editor id="reference-editor" :readOnly="true"/>
     </div>
-
-    <div></div>
   </div>
 </template>
 
@@ -36,7 +33,7 @@ export default {
   data() {
     return {
       file: "",
-      editableContent: "a",
+      editableContent: "a"
     };
   },
   computed: {},
@@ -98,13 +95,18 @@ export default {
   background-color: deepskyblue;
 }
 
+.reference-position {
+  grid-area: reference;
+  background-color: deepskyblue;
+}
+
 .widget {
-  grid-template-columns: 100%;
+  /* grid-template-columns: 50% ; */
   /* grid-template-rows: 64pxx; */
   grid-template-areas:
-    "submit"
-    "import"
-    "editor";
+    "submit submit"
+    "import import"
+    "editor reference";
 }
 
 .text-editor {
