@@ -111,6 +111,6 @@ export default {
   width: 100%;
   /* white-space: nowrap;
   overflow: scroll; */
-  font-size: 1em;
+
 }
 </style>
