@@ -74,26 +74,31 @@ body,
 #app {
   height: 100vh;
 }
+
 body {
+  font-size: 1.3rem;
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.4;
   background-color: rgb(0, 0, 0);
   color: white;
 }
+
 * {
-  font-size: 1.3rem;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 .app-header-position {
   grid-area: header;
   position: fixed;
   top: 0;
 }
+
 .app-main-position {
   grid-area: main;
 }
+
 .app-grid {
   display: grid;
   grid-template-rows: 56px;
@@ -102,6 +107,7 @@ body {
     "main";
   grid-gap: 0px;
 }
+
 #app-header {
   width: 100%;
   height: 56px;
