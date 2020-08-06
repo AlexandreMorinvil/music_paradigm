@@ -83,7 +83,7 @@ export default {
   top: 64px;
   margin: auto;
   left: 5%;
-  z-index: 10;
+  z-index: 100;
 }
 
 .dimentsions {

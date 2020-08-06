@@ -88,12 +88,8 @@ export default {
     };
   },
   methods: {
-    onCmReady(cm) {
-      console.log("the editor is readied!", cm);
-    },
-    onCmFocus(cm) {
-      console.log("the editor is focused!", cm);
-    },
+    onCmReady(cm) {},
+    onCmFocus(cm) {},
     onCmCodeChange(newCode) {
       this.code = newCode;
     },
@@ -136,7 +132,7 @@ export default {
 
 .text-editor-button-panel {
   display: flex;
-  height: 25px;
+  min-height: auto;
   flex-direction: row;
   justify-content: space-between;
 }

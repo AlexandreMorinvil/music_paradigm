@@ -9,3 +9,15 @@
     to prevent the codeMirror component to expend boundlessly */
     min-width: 0;
 }
+
+.widget-bg {
+    background-color: rgb(25, 25, 25);
+    border-left: solid rgb(25, 25, 25) 5px;
+}
+
+.widget-bg:hover,
+.widget-bg:focus-within,
+.widget-bg.activated {
+    background-color: rgb(35, 35, 35);
+    border-left: solid rgb(0, 100, 255) 5px;
+}

@@ -11,7 +11,6 @@ export default {
         name: "",
         folder: "",
         flow: []
-        
     },
     experimentsReferences: [
         {

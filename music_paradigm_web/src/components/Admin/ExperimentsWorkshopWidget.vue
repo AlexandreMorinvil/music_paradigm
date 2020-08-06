@@ -1,21 +1,32 @@
 <template>
-  <div id="experiments-workshop" class="widget widget-box">
+  <div id="experiments-workshop" class="widget widget-box widget-bg">
     <div class="submit-position">
       <button>test</button>
     </div>
 
-    <div class="import-position">
+    <div class="create-position">
+      <button>Create Experiment</button>
+    </div>
+
+    <div class="update-position">
+      <button>Update Selected Experiment</button>
+    </div>
+
+    <div class="buttons-position">
       <form v-on:submit.prevent="handleSubmit">
         <input type="file" id="myfile" name="myfile" v-on:change="handleExperimentFile" />
       </form>
+      <button v-on:click="validateEdition">Set Edition Active</button>
     </div>
 
-    <div class="editor-position editor-size-fix ">
+    <div class="editor-position editor-size-fix">
+      Experiment Editor :
       <code-editor id="text-editor" />
     </div>
 
     <div class="reference-position">
-      <code-editor id="reference-editor" :readOnly="true"/>
+      Selected Experiment :
+      <code-editor id="reference-editor" :readOnly="true" />
     </div>
   </div>
 </template>
@@ -23,21 +34,22 @@
 <script>
 import "@/styles/widgetTemplate.css";
 import CodeEditor from "@/components/Admin/TextEditor.vue";
+import { validator } from "@/_helpers";
+import { mapActions } from "vuex";
 
 export default {
   name: "ExperimentsWorkshopWidget",
   components: {
-    // loader: LoaderCircular,
     codeEditor: CodeEditor,
   },
   data() {
     return {
-      file: "",
-      editableContent: "a"
+      editionContent: "{}1",
     };
   },
   computed: {},
   methods: {
+    ...mapActions("alert", ["setInformationAlert", "setErrorAlert"]),
     handleExperimentFile(event) {
       const input = event.target;
 
@@ -58,7 +70,7 @@ export default {
 
       readFileContent(input.files[0])
         .then((content) => {
-          this.editableContent = content;
+          this.editionContent = content;
         })
         .catch((error) => {
           console.log(error);
@@ -67,6 +79,24 @@ export default {
 
     handleSubmit() {
       // TODO: Submit file to backend
+      console.log("Handle submit was called");
+    },
+    validateEdition() {
+      let experimentObject;
+      try {
+        experimentObject = JSON.parse(this.editionContent);
+        validator.validateExperiment(experimentObject);
+      } catch (e) {
+        this.setErrorAlert(
+          e
+          //"The JSON syntax of the definition of the experiment is not valid"
+        );
+        return false;
+      }
+      this.setInformationAlert(
+        "The experiment in the code editor was set active"
+      );
+      return true;
     },
   },
   mounted() {},
@@ -76,17 +106,23 @@ export default {
 </script>
 
 <style scoped>
-.widget-box {
-  background-color: rgb(238, 153, 111);
-}
-
 .submit-position {
   grid-area: submit;
   background-color: darkred;
 }
 
-.import-position {
-  grid-area: import;
+.buttons-position {
+  grid-area: buttons;
+  background-color: darkblue;
+}
+
+.create-position {
+  grid-area: create;
+  background-color: darkblue;
+}
+
+.update-position {
+  grid-area: update;
   background-color: darkblue;
 }
 
@@ -105,14 +141,12 @@ export default {
   /* grid-template-rows: 64pxx; */
   grid-template-areas:
     "submit submit"
-    "import import"
+    "create update"
+    "buttons buttons"
     "editor reference";
 }
 
 .text-editor {
   width: 100%;
-  /* white-space: nowrap;
-  overflow: scroll; */
-
 }
 </style>
