@@ -4,8 +4,8 @@ export default {
     setSelectedExperiment(state, experimentReference) {
 
     },
-    setEditedExperiment(state, experimentEditedText) {
-        let editedExperiment = JSON.parse(experimentEditedText);
+    setEditedExperiment(state, experiment) {
+        state.edition = {};
         Object.assign(state.edition, editedExperiment);
     }
 };

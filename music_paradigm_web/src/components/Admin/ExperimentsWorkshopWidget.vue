@@ -4,6 +4,23 @@
       <button>test</button>
     </div>
 
+    <div class="buttons-position">
+      <form v-on:submit.prevent="handleSubmit">
+        <input type="file" id="myfile" name="myfile" v-on:change="handleExperimentFile" />
+      </form>
+      <button v-on:click="validateEdition">Compile Edition</button>
+    </div>
+
+    <div class="editor-position editor-size-fix">
+      Experiment Editor :
+      <code-editor id="text-editor" ref="codeEditor" />
+    </div>
+
+    <div class="reference-position">
+      Selected Experiment :
+      <code-editor id="reference-editor" :readOnly="true" />
+    </div>
+
     <div class="create-position">
       <button>Create Experiment</button>
     </div>
@@ -11,30 +28,12 @@
     <div class="update-position">
       <button>Update Selected Experiment</button>
     </div>
-
-    <div class="buttons-position">
-      <form v-on:submit.prevent="handleSubmit">
-        <input type="file" id="myfile" name="myfile" v-on:change="handleExperimentFile" />
-      </form>
-      <button v-on:click="validateEdition">Set Edition Active</button>
-    </div>
-
-    <div class="editor-position editor-size-fix">
-      Experiment Editor :
-      <code-editor id="text-editor" />
-    </div>
-
-    <div class="reference-position">
-      Selected Experiment :
-      <code-editor id="reference-editor" :readOnly="true" />
-    </div>
   </div>
 </template>
 
 <script>
 import "@/styles/widgetTemplate.css";
 import CodeEditor from "@/components/Admin/TextEditor.vue";
-import { validator } from "@/_helpers";
 import { mapActions } from "vuex";
 
 export default {
@@ -50,6 +49,7 @@ export default {
   computed: {},
   methods: {
     ...mapActions("alert", ["setInformationAlert", "setErrorAlert"]),
+    ...mapActions("experiments", ["setEditedExperiment"]),
     handleExperimentFile(event) {
       const input = event.target;
 
@@ -85,21 +85,24 @@ export default {
       let experimentObject;
       try {
         experimentObject = JSON.parse(this.editionContent);
-        validator.validateExperiment(experimentObject);
       } catch (e) {
         this.setErrorAlert(
-          e
-          //"The JSON syntax of the definition of the experiment is not valid"
+          "The JSON syntax of the experiment definition is not valid"
         );
-        return false;
+        return;
       }
-      this.setInformationAlert(
-        "The experiment in the code editor was set active"
-      );
-      return true;
+      this.setEditedExperiment(experimentObject);
     },
   },
-  mounted() {},
+  mounted() {
+    this.$watch(
+      "$refs.codeEditor.code",
+      (new_value) => {
+        this.editionContent = new_value;
+      },
+      { immediate: true }
+    );
+  },
   destroyed() {},
   watch: {},
 };
@@ -141,9 +144,9 @@ export default {
   /* grid-template-rows: 64pxx; */
   grid-template-areas:
     "submit submit"
-    "create update"
     "buttons buttons"
-    "editor reference";
+    "editor reference"
+    "create update";
 }
 
 .text-editor {

@@ -12,7 +12,7 @@
 
 .widget-bg {
     background-color: rgb(25, 25, 25);
-    border-left: solid rgb(25, 25, 25) 5px;
+    border-left: solid rgb(50, 50, 50) 5px;
 }
 
 .widget-bg:hover,
