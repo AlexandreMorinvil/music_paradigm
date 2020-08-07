@@ -77,7 +77,9 @@ const validateBlock = function (block, index = null) {
         "enableSoundFlag",
         "timeoutInSeconds",
         "playingMode",
-        "footnote"
+        "footnote",
+        "logFlag",
+        "successesForSkip"
     ]
     Object.keys(block).forEach(key => {
         if (!(allowedAttributes.includes(key)))
@@ -107,6 +109,7 @@ const validateAttributeType = function (key, value) {
         // Number
         case "numberRepetition":
         case "timeoutInSeconds":
+        case "successesForSkip":
             if (!(typeof value === "number"))
                 throw new Error(`The key '${key}' must be of type 'Number'`);
             break;
@@ -116,6 +119,7 @@ const validateAttributeType = function (key, value) {
         case "anyPianoKey":
         case "enableSoundFlag":
         case "footnote":
+        case "logFlag":
             if (!(typeof value === "boolean"))
                 throw new Error(`The key '${key}' must be of type 'Boolean'`);
             break;

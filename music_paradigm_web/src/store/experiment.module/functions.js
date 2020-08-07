@@ -261,7 +261,9 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
         enableSoundFlag,
         playingMode,
         timeoutInSeconds,
-        footnote
+        footnote,
+        logFlag,
+        successesForSkip
     } = currentBlock;
 
     // Set the settings for the state. If no value is found, an appropreate default value is set
@@ -270,7 +272,9 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
         enableSoundFlag: (typeof enableSoundFlag !== 'undefined') ? Boolean(enableSoundFlag) : generalSettings.enableSoundFlag,
         playingMode: (typeof playingMode === 'string') ? playingMode : generalSettings.playingMode,
         timeoutInSeconds: (typeof timeoutInSeconds === 'number') ? timeoutInSeconds : 0,
-        footnote: (typeof footnote !== 'undefined') ? Boolean(footnote) : generalSettings.footnote
+        footnote: (typeof footnote !== 'undefined') ? Boolean(footnote) : generalSettings.footnote,
+        logFlag: (typeof logFlag === 'boolean') ? logFlag : generalSettings.logFlag,
+        successesForSkip: (typeof successesForSkip === 'number') ? successesForSkip : generalSettings.successesForSkip
     };
 
     // Indicate that the state (current block's settings) was already initialized 

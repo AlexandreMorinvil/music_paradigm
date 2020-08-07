@@ -16,6 +16,8 @@ const schema = new Schema({
     enableSoundFlag: { type: Boolean, default: false },
     footnote: { type: Boolean, default: false },
     timeLimitInSeconds: { type: Number, default: 0 },
+    logFlag: { type: Boolean, default: true },
+    successesForSkip: { type: Number, default: 0 },
     flow: {
         required: true,
         default: {},
@@ -38,6 +40,8 @@ const schema = new Schema({
                 timeoutInSeconds: { type: Number, default: undefined },
                 playingMode: { type: String, default: undefined },
                 footnote: { type: Boolean, default: undefined },
+                logFlag: { type: Boolean, default: undefined },
+                successesForSkip: { type: Number, default: undefined }
             }
         ]
     }

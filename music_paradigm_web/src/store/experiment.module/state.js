@@ -20,7 +20,9 @@ export default {
         playingMode: constants.DEFAULT_PLAYING_MODE,                // Mode of the experiment ("rhythm" or "speed")
         timbreFile: constants.DEFAULT_TIMBRE_FILE,                  // URL or location of the timbre file used for the piano
         footnote: constants.DEFAULT_FOOTNOTE,                       // Whether or not the experiment must display the inidcative foot note in each state
-        timeLimitInSeconds: constants.DEFAULT_TIME_LIMIT            // Time limit of the experiment. If set to 0, ther is no limit and the timer will count up, otherwise the timer will count down
+        timeLimitInSeconds: constants.DEFAULT_TIME_LIMIT,           // Time limit of the experiment. If set to 0, ther is no limit and the timer will count up, otherwise the timer will count down
+        logFlag: constants.DEFAULT_LOG_FLAG,                        // Indicate wether or not the blocks must log it's data
+        successesForSkip: constants.DEFAULT_SUCCESSES_FOR_SKIP      // Indicate the number of successful 'Playing' states before being able to leave a group of blocks
     },
 
     // Data to navigate through the flow
@@ -71,7 +73,9 @@ export default {
             numberRepetition: 0,                                    // Number of repetitions of a block group
             timeoutInSeconds: 0,                                    // Time limit for a given block
             playingMode: constants.DEFAULT_PLAYING_MODE,            // Playing mode ("rhythm" or "speed")
-            footnote: constants.DEFAULT_FOOTNOTE                    // Block specific "footnote" superseding the general setting
+            footnote: constants.DEFAULT_FOOTNOTE,                   // Block specific "footnote" superseding the general setting
+            logFlag: constants.DEFAULT_LOG_FLAG,                    // Block specific "logFlag" superseding the general setting
+            successesForSkip: constants.DEFAULT_SUCCESSES_FOR_SKIP  // Block specific "successesForSkip" superseding the general setting
         }
     }
 };

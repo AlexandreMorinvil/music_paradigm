@@ -5,6 +5,8 @@ const DEFAULT_PLAYING_MODE = "rhythm";
 const DEFAULT_TIMBRE_FILE = "https://raw.githubusercontent.com/gleitz/midi-js-soundfonts/gh-pages/MusyngKite/acoustic_grand_piano-ogg.js";
 const DEFAULT_FOOTNOTE = false;
 const DEFAULT_TIME_LIMIT = 0;
+const DEFAULT_LOG_FLAG = true;
+const DEFAULT_SUCCESSES_FOR_SKIP = 0;
 
 module.exports = {
     DEFAULT_ANY_PIANO_KEY,
@@ -12,5 +14,7 @@ module.exports = {
     DEFAULT_PLAYING_MODE,
     DEFAULT_TIMBRE_FILE,
     DEFAULT_FOOTNOTE,
-    DEFAULT_TIME_LIMIT
+    DEFAULT_TIME_LIMIT,
+    DEFAULT_LOG_FLAG,
+    DEFAULT_SUCCESSES_FOR_SKIP
 }
