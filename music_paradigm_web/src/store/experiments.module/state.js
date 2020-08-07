@@ -1,6 +1,10 @@
 export default {
+    status: {
+        creating: false
+    },
+    
     selection: {
-        id: null,
+        _id: null,
         content: {
             name: "",
             folder: "",
@@ -14,7 +18,7 @@ export default {
     },
     experimentsReferences: [
         {
-            id: "",
+            _id: "",
             name: "",
             folder: ""
         }

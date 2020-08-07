@@ -12,7 +12,17 @@ module.exports = {
 
 async function create(description) {
     const experiment = new Experiment(description);
-    await timeout.dbQuery(experiment.save());
+    let value;
+    try {
+        value = await experiment.save();
+    } catch (e) {
+        return e;
+    }
+    return {
+        experiment: value
+    }
+    // await timeout.dbQuery(experiment.save());
+    // console.log(experiment);
 }
 
 // async function getAll() {

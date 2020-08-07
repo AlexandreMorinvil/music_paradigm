@@ -5,7 +5,7 @@ export default function (response, handleErrorStatus = () => {}) {
             handleErrorStatus(response.status);
 
             const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
+            return Promise.reject(new Error(error));
         }
 
         return data;

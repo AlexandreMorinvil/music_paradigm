@@ -1,23 +1,32 @@
 import defaultResponseHandler from './defaultResponseHandler';
-import { url, validator } from '@/_helpers';
+import { authHeader, url, validator } from '@/_helpers';
 
-
-let validateExperiment = function(experiment) {
+const validateExperiment = function (experiment) {
     return new Promise((resolve, reject) => {
         try {
             validator.validateExperiment(experiment);
             resolve();
         } catch (e) {
-            reject(e.message);
+            reject(e);
         }
     })
 }
 
-// const handleResponse = function (reponse) {
-//     return defaultResponseHandler(reponse);
-// }
+const create = function (experiment) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(experiment)
+    };
+    console.log(requestOptions)
+    return fetch(url.experiments("create"), requestOptions).then(handleResponse);
+}
 
+const handleResponse = function (reponse) {
+    return defaultResponseHandler(reponse);
+}
 
 export const experimentService = {
-    validateExperiment
+    validateExperiment,
+    create
 };

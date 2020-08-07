@@ -1,5 +1,5 @@
 export default {
-    experiment: (state) => {
-        return state;
+    experimentEdited: (state) => {
+        return state.edition;
     }
 }

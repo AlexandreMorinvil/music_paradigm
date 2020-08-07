@@ -2,13 +2,20 @@
   <div id="experiments-workshop" class="widget widget-box widget-bg">
     <div class="submit-position">
       <button>test</button>
-    </div>
-
-    <div class="buttons-position">
       <form v-on:submit.prevent="handleSubmit" ref="upload">
         <input type="file" id="myfile" name="myfile" v-on:change="handleExperimentFile" />
       </form>
+    </div>
+
+    <div class="edition-buttons-position">
       <button v-on:click="validateEdition">Compile Edition</button>
+      <button v-on:click="notEmplementedYet">Revert</button>
+      <button v-on:click="notEmplementedYet">Clear</button>
+    </div>
+
+    <div class="selection-buttons-position">
+      <button v-on:click="notEmplementedYet">Copy selection</button>
+      <button v-on:click="notEmplementedYet">Unselect</button>
     </div>
 
     <div class="editor-position editor-size-fix">
@@ -22,11 +29,12 @@
     </div>
 
     <div class="create-position">
-      <button>Create Experiment</button>
+      <button v-on:click="submitExperimentToCreate">Create Experiment</button>
     </div>
 
     <div class="update-position">
       <button>Update Selected Experiment</button>
+      <button>Delete Experiment</button>
     </div>
   </div>
 </template>
@@ -34,7 +42,7 @@
 <script>
 import "@/styles/widgetTemplate.css";
 import CodeEditor from "@/components/Admin/TextEditor.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "ExperimentsWorkshopWidget",
@@ -45,13 +53,14 @@ export default {
     return {};
   },
   computed: {
+    ...mapGetters("experiments", ["experimentEdited"]),
     editionContent() {
       return this.$refs.codeEditor.code;
     },
   },
   methods: {
     ...mapActions("alert", ["setInformationAlert", "setErrorAlert"]),
-    ...mapActions("experiments", ["setEditedExperiment"]),
+    ...mapActions("experiments", ["setEditedExperiment", "createExperiment"]),
     handleExperimentFile(event) {
       const input = event.target;
 
@@ -76,13 +85,13 @@ export default {
         .catch((error) => {
           this.setErrorAlert(error.message);
         })
-        .finally(()=> {
+        .finally(() => {
           this.$refs.upload.reset();
         });
     },
 
-    handleSubmit() {
-      // TODO: Submit file to backend
+    submitExperimentToCreate() {
+      this.createExperiment(this.experimentEdited);
       console.log("Handle submit was called");
     },
     validateEdition() {
@@ -97,6 +106,9 @@ export default {
       }
       this.setEditedExperiment(experimentObject);
     },
+    notEmplementedYet() {
+      console.log("Not yet ready");
+    }
   },
   mounted() {},
   destroyed() {},
@@ -110,8 +122,13 @@ export default {
   background-color: darkred;
 }
 
-.buttons-position {
-  grid-area: buttons;
+.edition-buttons-position {
+  grid-area: edition-btn;
+  background-color: darkblue;
+}
+
+.selection-buttons-position {
+  grid-area: selection-btn;
   background-color: darkblue;
 }
 
@@ -136,11 +153,11 @@ export default {
 }
 
 .widget {
-  /* grid-template-columns: 50% ; */
+  grid-template-columns: 1fr 1fr;
   /* grid-template-rows: 64pxx; */
   grid-template-areas:
     "submit submit"
-    "buttons buttons"
+    "edition-btn selection-btn"
     "editor reference"
     "create update";
 }
