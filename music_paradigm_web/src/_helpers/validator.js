@@ -34,8 +34,8 @@ const validateExperiment = function (experiment) {
     if (!(experiment.flow.length > 0))
         throw new Error("The experiment flow must have at least one block");
 
-    experiment.flow.forEach(element => {
-        validateBlock(element);
+    experiment.flow.forEach((element, index) => {
+        validateBlock(element, index);
     });
 
     return true;
@@ -44,28 +44,141 @@ const validateExperiment = function (experiment) {
 const validateBlock = function (block, index = null) {
     // Set the index message addon
     let indexMessage = ""
-    if (index !== null) {
-        indexMessage = `number ${index + 1} `
+    if (typeof index === 'number') {
+        indexMessage = ` number ${index + 1}`
     }
 
     // Verification of the validity of the experiment object type
     if (!(typeof block === 'object'))
-        throw new Error(`The block ${indexMessage}is not defined within a JSON object`);
+        throw new Error(`The block${indexMessage} is not defined within a JSON object`);
 
     // Verification of the type
     if (!(block.hasOwnProperty('type')))
-        throw new Error(`The block ${indexMessage}does not have a type`);
+        throw new Error(`The block${indexMessage} does not have a type`);
 
     if (!(typeof block.type === 'string'))
-        throw new Error(`The type of the block ${indexMessage}name must be a string`);
+        throw new Error(`The type of the block${indexMessage} name must be a string`);
 
-    var allowedTypes = ["cue", "end", "feedback", "instruction", "playing", "rest", "video"];
+    const allowedTypes = ["cue", "end", "feedback", "instruction", "playing", "rest", "video"];
     if (!(allowedTypes.includes(block.type)))
-        throw new Error(`The tyoe of the block ${indexMessage}is not allowed`);
+        throw new Error(`The type '${block.type}' of the block${indexMessage} is not allowed`);
+
+    // Verification of the attributes
+    const allowedAttributes = [
+        "type",
+        "textContent",
+        "interactivePiano",
+        "pictureFileName",
+        "midiFileName",
+        "videoFileName",
+        "numberRepetition",
+        "followedBy",
+        "anyPianoKey",
+        "enableSoundFlag",
+        "timeoutInSeconds",
+        "playingMode",
+        "footnote"
+    ]
+    Object.keys(block).forEach(key => {
+        if (!(allowedAttributes.includes(key)))
+            throw new Error(`The key '${key}' of the block${indexMessage} is not allowed`);
+
+        try {
+            validateAttributeType(key, block[key]);
+        } catch (e) {
+            throw new Error(`${e.message} for the block${indexMessage}`);
+        }
+    });
 
     return true;
 }
 
+const validateAttributeType = function (key, value) {
+    switch (key) {
+        // String
+        case "type":
+        case "name":
+        case "folder":
+        case "playingMode":
+            if (!(typeof value === "string"))
+                throw new Error(`The key '${key}' must be of type 'String'`);
+            break;
+
+        // Number
+        case "numberRepetition":
+        case "timeoutInSeconds":
+            if (!(typeof value === "number"))
+                throw new Error(`The key '${key}' must be of type 'Number'`);
+            break;
+
+        // Boolean
+        case "followedBy":
+        case "anyPianoKey":
+        case "enableSoundFlag":
+        case "footnote":
+            if (!(typeof value === "boolean"))
+                throw new Error(`The key '${key}' must be of type 'Boolean'`);
+            break;
+
+        // Array
+        case "textContent":
+        case "pictureFileName":
+        case "videoFileName":
+        case "interactivePiano":
+        case "midiFileName":
+            if (!(Array.isArray(value)))
+                throw new Error(`The key '${key}' must be of type 'Array'`);
+
+            // Verification in the elments of the array
+            switch (key) {
+                // Arrays of String
+                case "textContent":
+                case "pictureFileName":
+                case "videoFileName":
+                    value.forEach((element, index) => {
+                        if (!(typeof element === "string"))
+                            throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String'`);
+                    });
+                    break;
+
+                // Array of String or boolean    
+                case "interactivePiano":
+                    value.forEach((element, index) => {
+                        if (!(typeof element === "string" || typeof element === "boolean")) {
+                            throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String' or boolean`);
+                        }
+
+                        const allowedEntries = ["midi", "first"]
+                        if (typeof element === "string" && !allowedEntries.includes(element)) {
+                            throw new Error(`The element number ${index + 1} in the array of the key '${key}' cannot have the value ${element}`);
+                        }
+                    });
+                    break;
+
+                // Array of String or array of array of strings
+                case "midiFileName":
+                    value.forEach((element, index) => {
+                        if (!(typeof element === "string" || Array.isArray(element))) {
+                            throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String' or boolean`);
+                        }
+
+                        if (Array.isArray(element))
+                            element.forEach((subElement, subIndex) => {
+                                if (!(typeof subElement === "string"))
+                                    throw new Error(`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String'`);
+                            });
+                    });
+                    break;
+
+                default: break;
+            }
+            break;
+
+        default: throw new Error(`The attribut ${key} is not a recognized attribute`);
+    }
+
+    return true;
+}
 export default {
     validateExperiment,
     validateBlock

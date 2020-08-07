@@ -16,7 +16,7 @@
       <code-editor id="text-editor" ref="codeEditor" />
     </div>
 
-    <div class="reference-position">
+    <div class="reference-position editor-size-fix">
       Selected Experiment :
       <code-editor id="reference-editor" :readOnly="true" />
     </div>
@@ -78,7 +78,6 @@ export default {
         })
         .finally(()=> {
           this.$refs.upload.reset();
-          console.log("Reached here");
         });
     },
 
