@@ -1,0 +1,169 @@
+{
+    "name": "Platform Tutorial",
+    "folder": "platform_tutorial",
+    "mode": "rhythm",
+    "anyPianoKey": false,
+    "enableSoundFlag": false,
+    "footnote": true,
+    "timeLimitInSeconds": 0,
+    "flow": [
+        {
+            "type": "instruction",
+            "textContent": [
+                "Tutorial\n\nWelcome to the tutorial of the music paradigm platform. This tutorial will help you familiarize with this platform. Please note that this tutorial will be available at all times as a reference."
+            ]
+        },
+        {
+            "type": "instruction",
+            "textContent": [
+                "General Recommendations",
+                "Focusing on the experiment in progress\n\nWhile completing an experiment, it is recommended to concentrate solely on the session in progress and avoid any external distraction. It is particularily important that you pay attention to this point as the application will not monitor you.",
+                "Avoiding performance issues\n\n Some performance capabilities of the application are dependant on the computer it is being used on, for example : playing an audio file or a video file. Therefore, it is recommended that you close other windows running on the computer while completing an experiment in order to avoid potentially slowing down the computer and encountering performance issues with the application."
+            ]
+        },
+        {
+            "type": "instruction",
+            "textContent": [
+                "Interface Presentation",
+                "Upper Navigation Bar\n\nThrough the 'Leave' button in the upper right corner of the window, it is possible to exit a session in progress. Some experiments will allow you to resume a session from where you left it.",
+                "Session Status Bar\n\nThroughout the different experiments, a session status bar will provide you with some helpful information about the current state of the experiment.",
+                "Session Status Bar : Timer\n\nAt the left side of the session status bar, a timer will provide you with time related information about the session in progress. Some experiments will have a time limit, those experiments will indicate the time left through a countdown hinted by a hourglass icon. Other experiments are not restricted in their duration, those experiments will count the time of the session through a timer hinted by a clock icon.",
+                "Session Status Bar : Piano Sound Indicator\n\nAt the right side of the session status bar, an indicator will inform you of when the virtual piano is turned on and off. This can help you know when you are expected to use the piano. \n\nWhen turned off, no sound will be outputted from the application even if some keys are pressed on the piano. When turned on, the piano will produce a sound upon a key press.",
+                "Session Status Bar : Experiment Progress Bar\n\nAt the bottom of the session status bar is a blue line indicating the progression through the experiment. This blue line reflects the number of steps completed and it will reach the right end of the window at last step of the experiment. This bar will help you to know how many more steps should be expected before the end of the experiment.",
+                "Session Status Bar : State Indicator\n\nAt the center of the session status bar, a state indicator will inform you of the current and next state of the experiment in progress. The left-side indication stands for the current state and the right-side indication stands for the state of the next step."
+            ],
+            "pictureFileName": [
+                "",
+                "image/leave_button.PNG",
+                "image/experiment_status_bar.PNG",
+                "image/timer_countdown.PNG",
+                "image/piano_sound_indicator.PNG",
+                "",
+                "image/state_indicator.PNG"
+            ]
+        },
+        {
+            "type": "instruction",
+            "textContent": [
+                "Experiment States\n\nEach step of the experiments corresponds to a state.\nEach state will contribute differently to the progression of the experiment.",
+                "Experiment States : Instruction\n\nThe steps with the state 'Instruction' will provide you with information to progress in the experiment.\nFor instance, the application is currently in an 'Instruction' state."
+            ],
+            "pictureFileName": [
+                "",
+                "image/state_indicator_instruction.PNG"
+            ]
+        },
+        {
+            "type": "instruction",
+            "textContent": [
+                "Experiment States : Video\n\nThe steps with the state 'Video' will automatically play a video clip."
+            ],
+            "pictureFileName": [
+                "image/state_indicator_video.PNG"
+            ]
+        },
+        {
+            "type": "video",
+            "textContent": [
+                "This is an example of a step with the state 'Video'."
+            ],
+            "videoFileName": [
+                "video/5_seconds_count_down.mp4"
+            ]
+        },
+        {
+            "type": "instruction",
+            "textContent": [
+                "Interactive Piano\n\n Some steps might display an interactive piano to help you visually.\nThe keys corresponding to your key presses will be highlighted in blue. \nThe keys automatically played by the application will be highlighted in green. \nThe keys hinted by the application will be highlighted in yellow.",
+                "Experiment States : Cue\n\nThe steps with the state “Cue” will automatically play a musical cue to which you should pay attention."
+            ],
+            "interactivePiano": [
+                "midi",
+                false
+            ],
+            "pictureFileName": [
+                "",
+                "image/state_indicator_cue.PNG"
+            ],
+            "midiFileName": [
+                "melody/example_melody.mid"
+            ]
+        },
+        {
+            "type": "cue",
+            "textContent": [
+                "This is an example of a step with the state 'Cue'."
+            ],
+            "interactivePiano": [
+                "midi"
+            ]
+        },
+        {
+            "type": "instruction",
+            "textContent": [
+                "Experiment States : Playing\n\nThe steps with the state “Playing” will require you to play some notes according to some given specifications."
+            ],
+            "pictureFileName": [
+                "image/state_indicator_playing.PNG"
+            ]
+        },
+        {
+            "type": "playing",
+            "textContent": [
+                "This is an example of a step with the state 'Playing'. \nTry to reproduce the melody played at the 'Cue' step."
+            ],
+            "interactivePiano": [
+                "midi"
+            ],
+            "midiFileName": [
+                "melody/example_melody.mid"
+            ]
+        },
+        {
+            "type": "instruction",
+            "textContent": [
+                "Experiment States : Feedback\n\nThe steps with the state “Feedback” will give you a small evaluation of your performance during the last 'Playing' state. The feedback will also give you an indication of whether or not you have achieved the minimal objectives for various criterias."
+            ],
+            "pictureFileName": [
+                "image/state_indicator_feedback.PNG"
+            ]
+        },
+        {
+            "type": "feedback",
+            "textContent": [
+                "This is an example of a step with the state 'Feedback'."
+            ]
+        },
+        {
+            "type": "instruction",
+            "textContent": [
+                "Experiment States : Rest\n\nThe steps with the state 'Rest' will require you to wait momentarily."
+            ],
+            "pictureFileName": [
+                "image/state_inidicator_rest.PNG"
+            ]
+        },
+        {
+            "type": "rest",
+            "timeoutInSeconds": 15,
+            "textContent": [
+                "This is an example of a step with the state 'Rest'."
+            ]
+        },
+        {
+            "type": "instruction",
+            "textContent": [
+                "Experiment States : End\n\nFinally, the step with the state 'End' is always the last step of an experiment and will formally conclude an experiment."
+            ],
+            "pictureFileName": [
+                "image/state_indicator_end.PNG"
+            ]
+        },
+        {
+            "type": "end",
+            "textContent": [
+                "This is the end of the tutorial\n\nThis tutorial introduced you to the main elements of the platform.\n\nRemember that this tutorial will be available at all times if needed."
+            ]
+        }
+    ]
+}
