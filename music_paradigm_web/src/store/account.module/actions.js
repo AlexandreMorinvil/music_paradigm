@@ -18,7 +18,7 @@ export default {
                 },
                 error => {
                     commit('loginFailure', error);
-                    dispatch('alert/setErrorAlert', error, { root: true });
+                    dispatch('alert/setErrorAlert', error.message, { root: true });
                 }
             );
     },
