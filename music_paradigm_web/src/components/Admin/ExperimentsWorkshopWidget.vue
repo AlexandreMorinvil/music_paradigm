@@ -8,7 +8,7 @@
     </div>
 
     <div class="edition-buttons-position">
-      <button v-on:click="validateEdition">Compile Edition</button>
+      <button v-on:click="handleCompilation">Compile Edition</button>
       <button v-on:click="notEmplementedYet">Revert</button>
       <button v-on:click="notEmplementedYet">Clear</button>
     </div>
@@ -59,8 +59,12 @@ export default {
     },
   },
   methods: {
-    ...mapActions("alert", ["setInformationAlert", "setErrorAlert"]),
-    ...mapActions("experiments", ["setEditedExperiment", "createExperiment"]),
+    ...mapActions("alert", ["setErrorAlert"]),
+    ...mapActions("experiments", [
+      "compileExperiment",
+      "attemptExperimentCompilation",
+      "createExperiment",
+    ]),
     handleExperimentFile(event) {
       const input = event.target;
 
@@ -81,6 +85,9 @@ export default {
       readFileContent(input.files[0])
         .then((content) => {
           this.$refs.codeEditor.setValue(content);
+          this.attemptExperimentCompilation(
+            this.convertEditorTextToObject(content)
+          );
         })
         .catch((error) => {
           this.setErrorAlert(error.message);
@@ -89,26 +96,26 @@ export default {
           this.$refs.upload.reset();
         });
     },
-
     submitExperimentToCreate() {
       this.createExperiment(this.experimentEdited);
       console.log("Handle submit was called");
     },
-    validateEdition() {
-      let experimentObject;
+    handleCompilation() {
+      const experimentObject = this.convertEditorTextToObject();
+      this.compileExperiment(experimentObject);
+    },
+    convertEditorTextToObject() {
       try {
-        experimentObject = JSON.parse(this.editionContent);
+        return JSON.parse(this.editionContent);
       } catch (e) {
         this.setErrorAlert(
           "The JSON syntax of the experiment definition is not valid"
         );
-        return;
       }
-      this.setEditedExperiment(experimentObject);
     },
     notEmplementedYet() {
       console.log("Not yet ready");
-    }
+    },
   },
   mounted() {},
   destroyed() {},
