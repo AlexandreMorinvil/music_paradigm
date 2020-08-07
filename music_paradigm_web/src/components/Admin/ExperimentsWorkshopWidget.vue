@@ -5,7 +5,7 @@
     </div>
 
     <div class="buttons-position">
-      <form v-on:submit.prevent="handleSubmit">
+      <form v-on:submit.prevent="handleSubmit" ref="upload">
         <input type="file" id="myfile" name="myfile" v-on:change="handleExperimentFile" />
       </form>
       <button v-on:click="validateEdition">Compile Edition</button>
@@ -42,11 +42,13 @@ export default {
     codeEditor: CodeEditor,
   },
   data() {
-    return {
-      editionContent: "{}1",
-    };
+    return {};
   },
-  computed: {},
+  computed: {
+    editionContent() {
+      return this.$refs.codeEditor.code;
+    },
+  },
   methods: {
     ...mapActions("alert", ["setInformationAlert", "setErrorAlert"]),
     ...mapActions("experiments", ["setEditedExperiment"]),
@@ -63,17 +65,20 @@ export default {
       };
 
       if (!("files" in input) || !(input.files.length === 1)) {
-        console.log("A file must be selected");
-        // TODO: Add alarm
+        this.setErrorAlert("A file must be selected");
         return;
       }
 
       readFileContent(input.files[0])
         .then((content) => {
-          this.editionContent = content;
+          this.$refs.codeEditor.setValue(content);
         })
         .catch((error) => {
-          console.log(error);
+          this.setErrorAlert(error.message);
+        })
+        .finally(()=> {
+          this.$refs.upload.reset();
+          console.log("Reached here");
         });
     },
 
@@ -94,15 +99,7 @@ export default {
       this.setEditedExperiment(experimentObject);
     },
   },
-  mounted() {
-    this.$watch(
-      "$refs.codeEditor.code",
-      (new_value) => {
-        this.editionContent = new_value;
-      },
-      { immediate: true }
-    );
-  },
+  mounted() {},
   destroyed() {},
   watch: {},
 };

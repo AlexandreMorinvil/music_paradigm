@@ -93,6 +93,12 @@ export default {
     onCmCodeChange(newCode) {
       this.code = newCode;
     },
+    setValue(value) {
+      this.codemirror.setValue(value);
+    },
+    clearValue() {
+      this.codemirror.setValue("");
+    },
     setDefaultFontSize() {
       this.textSizeFactor = 1;
     },

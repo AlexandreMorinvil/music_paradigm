@@ -6,6 +6,6 @@ export default {
     },
     setEditedExperiment(state, experiment) {
         state.edition = {};
-        Object.assign(state.edition, editedExperiment);
+        Object.assign(state.edition, experiment);
     }
 };

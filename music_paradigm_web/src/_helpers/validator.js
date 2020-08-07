@@ -34,7 +34,7 @@ const validateExperiment = function (experiment) {
     if (!(experiment.flow.length > 0))
         throw new Error("The experiment flow must have at least one block");
 
-    experiment.flow.array.forEach(element => {
+    experiment.flow.forEach(element => {
         validateBlock(element);
     });
 
