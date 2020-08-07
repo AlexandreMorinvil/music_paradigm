@@ -34,7 +34,7 @@ function jwtMiddlewareAuthorization(roles = []) {
             if (roles.length && !roles.includes(req.user.role)) {
 
                 // The user's role does not grant authorization
-                return res.status(401).json({ message: 'Unauthorized' });
+                return res.status(403).json({ message: 'Unauthorized' });
             }
 
             // The user's role successfully grant authorization
