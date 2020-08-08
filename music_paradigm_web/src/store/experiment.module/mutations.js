@@ -21,7 +21,9 @@ export default {
         // Set the description (mandatory)
         state.description = {
             name: experiment.name,
-            folder: experiment.folder
+            folder: experiment.folder,
+            group: experiment.group || "",
+            version: experiment.version || 0
         };
 
         // Set the flow (mandatory)

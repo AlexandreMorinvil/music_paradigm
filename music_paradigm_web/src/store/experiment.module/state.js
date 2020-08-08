@@ -10,7 +10,9 @@ export default {
     // Mandatory description of the flow
     description: {
         name: "",                                                   // Name of the experiment
-        folder: ""                                                  // Folder in which the resources for the experiment are located
+        folder: "",                                                 // Folder in which the resources for the experiment are located
+        group: "",                                                  // Group of the experiment
+        version: 0                                                  // Version of the experiment
     },
 
     // General settings of the flow
