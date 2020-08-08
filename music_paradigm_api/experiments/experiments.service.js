@@ -1,5 +1,6 @@
 ﻿const db = require('database/db');
-const timeout = require('_helpers/timeout')
+const timeout = require('_helpers/timeout');
+const e = require('express');
 const Experiment = db.Experiment;
 
 module.exports = {
@@ -10,19 +11,21 @@ module.exports = {
     // delete: _delete
 };
 
-async function create(description) {
-    const experiment = new Experiment(description);
+async function create(experiment) {
     let value;
     try {
-        value = await experiment.save();
-    } catch (e) {
-        return e;
+        value = await Experiment.create(experiment);
+    } catch (err) {
+        switch (err.code) {
+            case 11000:
+                return new Error(`In the group "${ experiment.group || "Default" }", the experiment "${ experiment.name }" version ${ experiment.version || 1 } already exists`);
+            default:
+                return err;
+        }
     }
     return {
         experiment: value
     }
-    // await timeout.dbQuery(experiment.save());
-    // console.log(experiment);
 }
 
 // async function getAll() {

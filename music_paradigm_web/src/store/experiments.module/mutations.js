@@ -12,13 +12,15 @@ export default {
     setSelectedExperiment(state, experiment) {
         state.selection.content = {};
         const { _id, ...experimentWithoutID } = experiment;
-        Object.assign(state.selection._id, _id);
+        state.selection._id = _id;
         Object.assign(state.selection.content, experimentWithoutID);
+        delete state.selection.content._id;
     },
 
     setEditedExperiment(state, experiment) {
         state.edition = {};
         const { _id, ...experimentWithoutID } = experiment;
         Object.assign(state.edition, experimentWithoutID);
+        delete state.edition._id;
     }
 };
