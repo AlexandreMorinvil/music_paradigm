@@ -24,7 +24,6 @@ async function create(experiment) {
                 return err;
         }
     }
-
     return {
         experiment: createdExperiment.getDefinition()
     }

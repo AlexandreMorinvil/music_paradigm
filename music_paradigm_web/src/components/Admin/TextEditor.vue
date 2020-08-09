@@ -20,6 +20,7 @@
       ref="cmEditor"
       v-model="code"
       :options="cmOptions"
+      @ready="onCmReady"
       @input="onCmCodeChange"
       :style="textSizeFactorCSSvariable"
     />
@@ -29,7 +30,7 @@
 <script>
 // TODO: Link text to something external
 import { codemirror } from "vue-codemirror";
-import jsonlint from 'jsonlint-mod';
+import jsonlint from "jsonlint-mod";
 
 // import language js
 import "codemirror/mode/javascript/javascript.js";
@@ -37,11 +38,11 @@ import "codemirror/mode/javascript/javascript.js";
 // import theme style
 import "codemirror/theme/solarized.css";
 import "codemirror/lib/codemirror.css";
-import 'codemirror/addon/lint/lint.css';
+import "codemirror/addon/lint/lint.css";
 
 // Import addons
-import 'codemirror/addon/lint/lint';
-import 'codemirror/addon/lint/json-lint.js';
+import "codemirror/addon/lint/lint";
+import "codemirror/addon/lint/json-lint.js";
 
 export default {
   components: {
@@ -51,7 +52,7 @@ export default {
     startText: {
       type: String,
       default() {
-        return "{}";
+        return "";
       },
     },
     readOnly: {
@@ -76,8 +77,8 @@ export default {
         readOnly: this.readOnly,
         showCursorWhenSelecting: true,
         pasteLinesPerSelection: true,
-        gutters: ['CodeMirror-lint-markers'],
-        lint: true
+        gutters: ["CodeMirror-lint-markers"],
+        lint: true,
       },
       textSizeFactor: 1,
       minTextSizeFactor: 0.1,
@@ -86,6 +87,10 @@ export default {
     };
   },
   methods: {
+    onCmReady(cm) {
+      this.$emit("ready");
+    },
+    // onCmFocus(cm) {},
     onCmCodeChange(newCode) {
       this.code = newCode;
     },
@@ -120,7 +125,7 @@ export default {
   },
   mounted() {
     // Deep copy the text of the start value props
-    this.code = (" " + this.startText).slice(1);
+    if (this.startText) this.code = (" " + this.startText).slice(1);
   },
 };
 </script>

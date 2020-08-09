@@ -20,12 +20,17 @@
 
     <div class="editor-position editor-size-fix">
       Experiment Editor :
-      <code-editor id="text-editor" ref="codeEditor" />
+      <code-editor id="text-editor" v-on:ready="writeEditionToEditorChanges" ref="codeEditor" />
     </div>
 
     <div class="reference-position editor-size-fix">
       Selected Experiment :
-      <code-editor id="reference-editor" :readOnly="true" />
+      <code-editor
+        id="reference-editor"
+        v-on:ready="writeSelectionToReferenceChanges"
+        ref="codeReference"
+        :readOnly="true"
+      />
     </div>
 
     <div class="create-position">
@@ -56,7 +61,7 @@ export default {
     ...mapGetters("experiments", ["experimentEdited", "experimentSelected"]),
     editionContent() {
       return this.$refs.codeEditor.code;
-    }
+    },
   },
   methods: {
     ...mapActions("alert", ["setErrorAlert"]),
@@ -65,8 +70,11 @@ export default {
       "attemptExperimentCompilation",
       "createExperiment",
     ]),
-    setEditorContent(textContent){
+    setEditorContent(textContent) {
       this.$refs.codeEditor.setValue(textContent);
+    },
+    setReferenceContent(textContent) {
+      this.$refs.codeReference.setValue(textContent);
     },
     handleExperimentFile(event) {
       const input = event.target;
@@ -118,14 +126,42 @@ export default {
     notEmplementedYet() {
       console.log("Not yet ready");
     },
+    writeEditionToEditorChanges() {
+      this.$watch(
+        "experimentEdited",
+        (newValue) => {
+          console.log("Triggerd edi");
+          this.setEditorContent(JSON.stringify(newValue, null, "\t"));
+        },
+        { immediate: true }
+      );
+    },
+    writeSelectionToReferenceChanges() {
+      this.$watch(
+        "experimentSelected",
+        (newValue) => {
+          console.log("Triggerd ref");
+          this.setReferenceContent(JSON.stringify(newValue, null, "\t"));
+        },
+        { immediate: true }
+      );
+    },
   },
   mounted() {},
   destroyed() {},
   watch: {
-    experimentEdited(value) {
-      console.log(value);
-      this.setEditorContent(JSON.stringify(value, null, '\t'));
-    }
+    // experimentEdited: {
+    //   immediate: true,
+    //   handler(value) {
+    //     this.setEditorContent(JSON.stringify(value, null, "\t"));
+    //   },
+    // },
+    // experimentSelected: {
+    //   immediate: true,
+    //   handler(value) {
+    //     this.setReferenceContent(JSON.stringify(value, null, "\t"));
+    //   },
+    // },
   },
 };
 </script>

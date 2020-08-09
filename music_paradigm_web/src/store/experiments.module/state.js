@@ -2,13 +2,17 @@ export default {
     status: {
         creating: false
     },
-    
+
     selection: {
         _id: null,
         content: {
             name: "",
             folder: "",
-            flow: []
+            flow: [
+                {
+                    type: ""
+                }
+            ]
         }
     },
     edition: {

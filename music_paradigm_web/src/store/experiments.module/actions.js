@@ -36,7 +36,6 @@ export default {
                 response => {
                     commit('setEditedExperiment', response.experiment);
                     commit('setSelectedExperiment', response.experiment);
-                    console.log("It worked");
                     dispatch('alert/setSuccessAlert', "Experiment creation sucessful", { root: true });
                 },
                 error => {
