@@ -53,10 +53,10 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters("experiments", ["experimentEdited"]),
+    ...mapGetters("experiments", ["experimentEdited", "experimentSelected"]),
     editionContent() {
       return this.$refs.codeEditor.code;
-    },
+    }
   },
   methods: {
     ...mapActions("alert", ["setErrorAlert"]),
@@ -65,6 +65,9 @@ export default {
       "attemptExperimentCompilation",
       "createExperiment",
     ]),
+    setEditorContent(textContent){
+      this.$refs.codeEditor.setValue(textContent);
+    },
     handleExperimentFile(event) {
       const input = event.target;
 
@@ -98,7 +101,6 @@ export default {
     },
     submitExperimentToCreate() {
       this.createExperiment(this.experimentEdited);
-      console.log("Handle submit was called");
     },
     handleCompilation() {
       const experimentObject = this.convertEditorTextToObject();
@@ -119,7 +121,12 @@ export default {
   },
   mounted() {},
   destroyed() {},
-  watch: {},
+  watch: {
+    experimentEdited(value) {
+      console.log(value);
+      this.setEditorContent(JSON.stringify(value, null, '\t'));
+    }
+  },
 };
 </script>
 

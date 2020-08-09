@@ -20,8 +20,6 @@
       ref="cmEditor"
       v-model="code"
       :options="cmOptions"
-      @ready="onCmReady"
-      @focus="onCmFocus"
       @input="onCmCodeChange"
       :style="textSizeFactorCSSvariable"
     />
@@ -88,8 +86,6 @@ export default {
     };
   },
   methods: {
-    onCmReady(cm) {},
-    onCmFocus(cm) {},
     onCmCodeChange(newCode) {
       this.code = newCode;
     },

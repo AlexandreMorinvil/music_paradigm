@@ -12,9 +12,10 @@ module.exports = {
 };
 
 async function create(experiment) {
-    let value;
+    // let createdExperiment;
+    let createdExperiment = new Experiment(experiment);
     try {
-        value = await Experiment.create(experiment);
+        createdExperiment = await createdExperiment.save(experiment);
     } catch (err) {
         switch (err.code) {
             case 11000:
@@ -23,8 +24,9 @@ async function create(experiment) {
                 return err;
         }
     }
+
     return {
-        experiment: value
+        experiment: createdExperiment.getDefinition()
     }
 }
 

@@ -12,9 +12,14 @@ export default {
         }
     },
     edition: {
+        // Minimaal parameters guaranteed to exist
         name: "",
         folder: "",
-        flow: []
+        flow: [
+            {
+                type: ""
+            }
+        ]
     },
     experimentsReferences: [
         {

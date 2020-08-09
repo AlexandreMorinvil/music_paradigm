@@ -1,5 +1,3 @@
-import functions from './functions';
-
 export default {
     indicateRequest(state, statusIndicator) {
         state.status[statusIndicator] = true;
@@ -19,8 +17,7 @@ export default {
 
     setEditedExperiment(state, experiment) {
         state.edition = {};
-        const { _id, ...experimentWithoutID } = experiment;
-        Object.assign(state.edition, experimentWithoutID);
+        Object.assign(state.edition, experiment);
         delete state.edition._id;
     }
 };

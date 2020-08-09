@@ -54,19 +54,31 @@ const schema = new Schema(
 // Indexes cration
 schema.index({ "group": 1, "name": 1, "version": 1 }, { unique: true });
 
-// Static methods
-
-
 // Options for Object/JSON tranformations
 const transformationOprtions = {
     virtuals: true,
     transform: function (doc, ret) {
         if (ret.flow) ret.flow.forEach(element => { delete element._id });
-        delete ret.__v
+        delete ret.id;
+        delete ret.__v;
     }
 }
 schema.set('toObject', transformationOprtions);
 schema.set('toJSON', transformationOprtions);
+
+// Static methods
+// schema.statics.getExperimentList = function (experiment) {
+//     return this.find().select('group name version folder createdAt updatedAt');
+// };
+
+// Instance methods
+schema.methods.getDefinition = function () {
+    let experimentDefinition = {};
+    Object.assign(experimentDefinition, this.toObject());
+    delete experimentDefinition.createdAt;
+    delete experimentDefinition.updatedAt;
+    return experimentDefinition;
+};
 
 const model = mongoose.model('Experiment', schema);
 

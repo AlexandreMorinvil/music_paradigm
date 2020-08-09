@@ -1,9 +1,9 @@
 import { experimentService } from '@/_services';
 
 export default {
-    setSelectedExperiment({ commit }, experimentReference) {
+    // setSelectedExperiment({ commit }, experimentReference) {
 
-    },
+    // },
 
     compileExperiment({ commit, dispatch }, experiment) {
         experimentService.validateExperiment(experiment).then(
