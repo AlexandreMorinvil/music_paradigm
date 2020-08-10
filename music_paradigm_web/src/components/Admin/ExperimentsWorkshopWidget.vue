@@ -1,8 +1,8 @@
 <template>
   <div id="experiments-workshop" class="widget widget-box widget-bg">
-    <div class="submit-position">
-      <button>test</button>
-    </div>
+    <div
+      class="submit-position"
+    >//TODO: Form to create an experiment throug buttons and predefined areas instead of editing from de code editor</div>
 
     <div class="edition-buttons-position">
       <button v-on:click="handleCompilation" class="widget-button blue">Compile</button>
@@ -16,7 +16,7 @@
     </div>
 
     <div class="editor-position editor-size-fix">
-      <div class="text-editor-label">Experiment Editor : 1</div>
+      <div class="text-editor-label">Experiment Editor : {{editionStatus}}</div>
       <code-editor
         class="text-editor"
         v-on:ready="writeEditionToEditorChanges"
@@ -26,7 +26,7 @@
     </div>
 
     <div class="reference-position editor-size-fix">
-      <div class="text-editor-label">Selected Experiment : 2</div>
+      <div class="text-editor-label">Selected Experiment : {{selectionStatus}}</div>
       <div>
         <code-editor
           class="text-editor"
@@ -38,15 +38,16 @@
     </div>
 
     <div class="create-position">
-      <form v-on:submit.prevent="handleSubmit" ref="upload">
-        <input type="file" id="myfile" name="myfile" v-on:change="handleUploadExperiment" />
+      <form v-on:submit.prevent="handleSubmit" ref="upload" style="display: none">
+        <input type="file" id="myfile" name="myfile" v-on:change="handleUploadExperiment"  ref="fileInput"/>
       </form>
-      <button v-on:click="submitExperimentToCreate">Create</button>
+      <button v-on:click="redirectUploadClick" class="widget-button blue">Upload</button>
+      <button v-on:click="submitExperimentToCreate" class="widget-button green">Create</button>
     </div>
 
     <div class="update-position">
-      <button>Update Selected Experiment</button>
-      <button>Delete Experiment</button>
+      <button v-on:click="notEmplementedYet" class="widget-button blue">Update</button>
+      <button v-on:click="notEmplementedYet" class="widget-button red">Delete</button>
     </div>
   </div>
 </template>
@@ -72,10 +73,15 @@ export default {
     editionContent() {
       return this.$refs.codeEditor.code;
     },
-    editionStatus() {},
+    editionStatus() {
+      return "Edition Status (TODO)";
+    },
+    selectionStatus() {
+      return "Selection Status (TODO)";
+    },
   },
   methods: {
-    ...mapActions("alert", ["setErrorAlert"]),
+    ...mapActions("alert", ["setErrorAlert", "setInformationAlert"]),
     ...mapActions("experiments", [
       "compileExperiment",
       "attemptExperimentCompilation",
@@ -108,6 +114,13 @@ export default {
         )
       );
       this.isCodeCompiled = false;
+    },
+    handleCopying() {
+      this.compileExperiment;
+    },
+    redirectUploadClick() {
+      this.$refs.fileInput.click();
+      console.log("It worked");
     },
     handleUploadExperiment(event) {
       const input = event.target;
@@ -153,7 +166,6 @@ export default {
       this.$watch(
         "experimentEdited",
         (newValue) => {
-          console.log("Triggerd edi");
           this.setEditorContent(JSON.stringify(newValue, null, "\t"));
         },
         { immediate: true }
@@ -163,13 +175,13 @@ export default {
       this.$watch(
         "experimentSelected",
         (newValue) => {
-          console.log("Triggerd ref");
           this.setReferenceContent(JSON.stringify(newValue, null, "\t"));
         },
         { immediate: true }
       );
     },
     notEmplementedYet() {
+      this.setInformationAlert("TODO");
       console.log("Not yet ready");
     },
   },
@@ -196,16 +208,6 @@ export default {
   grid-template-columns: 1fr 1fr;
 }
 
-.create-position {
-  grid-area: create;
-  background-color: darkblue;
-}
-
-.update-position {
-  grid-area: update;
-  background-color: darkblue;
-}
-
 .editor-position {
   grid-area: editor;
   background-color: rgb(225, 225, 225);
@@ -220,6 +222,20 @@ export default {
   color: black;
   display: grid;
   /* grid-template-rows: auto; */
+}
+
+.create-position {
+  grid-area: create;
+  display: grid;
+  grid-gap: 15px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.update-position {
+  grid-area: update;
+  display: grid;
+  grid-gap: 15px;
+  grid-template-columns: 1fr 1fr;
 }
 
 .widget {
@@ -238,6 +254,6 @@ export default {
 }
 
 .text-editor-label {
-  padding: 10px
+  padding: 10px;
 }
 </style>

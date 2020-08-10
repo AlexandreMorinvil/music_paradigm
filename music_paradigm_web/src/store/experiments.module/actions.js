@@ -5,10 +5,16 @@ export default {
 
     // },
 
+    // copySelectionToEdition({ commit, getters }) {
+    //     // commit('setEditedExperiment', getters.experimentSelected);
+    //     // commit('indicateHasCompiledEdition');
+    // },
+
     compileExperiment({ commit, dispatch }, experiment) {
         experimentService.validateExperiment(experiment).then(
             () => {
                 commit('setEditedExperiment', experiment);
+                commit('indicateHasCompiledEdition');
                 dispatch('alert/setInformationAlert', "The experiment was compiled", { root: true });
             },
             error => {
@@ -21,6 +27,7 @@ export default {
         experimentService.validateExperiment(experiment).then(
             () => {
                 commit('setEditedExperiment', experiment);
+                commit('indicateHasCompiledEdition');
                 dispatch('alert/setInformationAlert', "The experiment is valid and was compiled", { root: true });
             },
             error => {
@@ -30,7 +37,7 @@ export default {
 
 
     createExperiment({ dispatch, commit }, experiment) {
-        commit('indicateRequest', "isCreating");
+        commit('indicateCreateRequest');
         experimentService.create(experiment)
             .then(
                 response => {
@@ -43,7 +50,7 @@ export default {
                 }
             )
             .finally(() => {
-                commit('indicateRequestEnd', "isCreating");
+                commit('indicateCreateRequestEnd');
             });
     },
 }

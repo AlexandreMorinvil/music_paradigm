@@ -8,7 +8,7 @@ export default {
     },
 
     // Status
-    isEditionCompiled: (state) => {
-        return state.status.isEditionCompiled;
+    hasCompiledEdition: (state) => {
+        return state.status.hasCompiledEdition;
     }
 }

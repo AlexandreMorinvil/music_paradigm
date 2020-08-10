@@ -3,7 +3,7 @@ import { validator } from "@/_helpers";
 export default {
     status: {
         isCreating: false,
-        isEditionCompiled: false,
+        hasCompiledEdition: false,
         isExperimentSelected: false
     },
 

@@ -1,10 +1,18 @@
 export default {
-    indicateRequest(state, statusIndicator) {
-        state.status[statusIndicator] = true;
+    indicateCreateRequest(state) {
+        state.status.isCreating = true;
     },
 
-    indicateRequestEnd(state, statusIndicator) {
-        state.status[statusIndicator] = false;
+    indicateCreateRequestEnd(state) {
+        state.status.isCreating = false;
+    },
+
+    indicateHasCompiledEdition(state) {
+        state.status.hasCompiledEdition = true;
+    },
+
+    indicateHasNoCompiledEdition(state) {
+        state.status.hasCompiledEdition = false;
     },
 
     setSelectedExperiment(state, experiment) {
