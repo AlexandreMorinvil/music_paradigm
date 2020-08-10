@@ -7,6 +7,10 @@ export default {
         return state.selection.content;
     },
 
+    experimentsHeadersList: (state) => {
+        return state.experimentsHeadersList;
+    },
+
     // Status
     hasCompiledEdition: (state) => {
         return state.status.hasCompiledEdition;

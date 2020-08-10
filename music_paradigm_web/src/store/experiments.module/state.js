@@ -2,20 +2,24 @@ import { validator } from "@/_helpers";
 
 export default {
     status: {
+        isFetchingExperimentHeadersList: false,
         isCreating: false,
         hasCompiledEdition: false,
-        isExperimentSelected: false
+        hasSelectedExperiment: false,
+        hasExperimentsHeaderList: false
     },
 
+    edition: validator.getMinimalValidExperimentStructure(),
     selection: {
         _id: null,
         content: validator.getMinimalValidExperimentStructure()
     },
-    edition: validator.getMinimalValidExperimentStructure(),
-    experimentsReferences: [
+    experimentsHeadersList: [
         {
             _id: "",
+            group: "",
             name: "",
+            version: 0,
             folder: ""
         }
     ]

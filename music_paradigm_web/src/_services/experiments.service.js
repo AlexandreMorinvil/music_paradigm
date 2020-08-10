@@ -2,14 +2,18 @@ import defaultResponseHandler from './defaultResponseHandler';
 import { authHeader, url, validator } from '@/_helpers';
 
 const validateExperiment = function (experiment) {
-    return new Promise((resolve, reject) => {
-        try {
-            validator.validateExperiment(experiment);
-            resolve();
-        } catch (e) {
-            reject(e);
-        }
+    return new Promise((resolve) => {
+        validator.validateExperiment(experiment);
+        resolve();
     })
+}
+
+const getListAllHeaders = function () {
+    const requestOptions = {
+        method: 'GET',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+    };
+    return fetch(url.experiments(""), requestOptions).then(handleResponse);
 }
 
 const create = function (experiment) {
@@ -18,8 +22,7 @@ const create = function (experiment) {
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
         body: JSON.stringify(experiment)
     };
-    console.log(requestOptions)
-    return fetch(url.experiments("create"), requestOptions).then(handleResponse);
+    return fetch(url.experiments(""), requestOptions).then(handleResponse);
 }
 
 const handleResponse = function (reponse) {
@@ -28,5 +31,6 @@ const handleResponse = function (reponse) {
 
 export const experimentService = {
     validateExperiment,
+    getListAllHeaders,
     create
 };

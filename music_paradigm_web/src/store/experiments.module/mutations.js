@@ -1,4 +1,13 @@
 export default {
+    // Status Updates
+    indicateFetchingExperimentList(state) {
+        state.status.isFetchingExperimentHeadersList = true;
+    },
+
+    indicateFetchingExperimentListEnd(state) {
+        state.status.isFetchingExperimentHeadersList = false;
+    },
+
     indicateCreateRequest(state) {
         state.status.isCreating = true;
     },
@@ -15,6 +24,7 @@ export default {
         state.status.hasCompiledEdition = false;
     },
 
+    // Setters
     setSelectedExperiment(state, experiment) {
         state.selection.content = {};
         const { _id, ...experimentWithoutID } = experiment;
@@ -27,5 +37,10 @@ export default {
         state.edition = {};
         Object.assign(state.edition, experiment);
         delete state.edition._id;
+    },
+
+    setHeadersList(state, experimentsHeadersLst) {
+        state.experimentsHeadersList = experimentsHeadersLst;
     }
+
 };

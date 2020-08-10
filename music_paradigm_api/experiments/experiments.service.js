@@ -5,9 +5,8 @@ const Experiment = db.Experiment;
 
 module.exports = {
     create,
-    getAll,
-    getById,
     getListAllHeaders,
+    getById,
     getDescriptionFromId,
     // update,
     // delete: _delete
@@ -21,17 +20,17 @@ async function getAll() {
     }
 }
 
-async function getById(id) {
+async function getListAllHeaders() {
     try {
-        return await Experiment.findById(id);
+        return await Experiment.getListAllHeaders();
     } catch (err) {
         throw err;
     }
 }
 
-async function getListAllHeaders() {
+async function getById(id) {
     try {
-        return await Experiment.getListAllHeaders();
+        return await Experiment.findById(id);
     } catch (err) {
         throw err;
     }
@@ -59,17 +58,6 @@ async function create(experiment) {
         }
     }
 }
-
-// async function getById(id) {
-//     return await timeout.dbQuery(
-//         Collection.findById(id).select('-passwordHash'));
-// }
-
-// async function create(param) {
-//     const collection = new Collection(param);
-//     await timeout.dbQuery(
-//         collection.save());
-// }
 
 // async function update(id, param) {
 //     const collection = await timeout.dbQuery(

@@ -1,7 +1,8 @@
 <template>
   <div class="page-grid">
     Admin Experiments page
-    <experiments-workshop />
+    <experiments-editor />
+    <experiments-board />
     <br />
     <br />INterface to create experiments
     <br />
@@ -12,20 +13,20 @@
 </template>
 
 <script>
-import ExperimentsWorkshop from "@/components/Admin/ExperimentsWorkshopWidget.vue";
+import experimentsEditor from "@/components/admin/experiments/ExperimentsEditorWidget.vue";
+import experimentsBoard from "@/components/admin/experiments/ExperimentsBoardWidget.vue";
 
 export default {
   name: "AdminExperiments",
   components: {
-    experimentsWorkshop: ExperimentsWorkshop,
+    experimentsEditor: experimentsEditor,
+    experimentsBoard: experimentsBoard,
   },
   data() {
     return {};
   },
   computed: {},
-  methods: {
-    handleExperimentFile(event) {},
-  },
+  methods: {},
   mounted() {},
   destroyed() {},
   watch: {},

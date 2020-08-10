@@ -1,6 +1,18 @@
 import { experimentService } from '@/_services';
 
 export default {
+    fetchAllExperimentsHeaders({ dispatch, commit }) {
+        commit('indicateFetchingExperimentList');
+        experimentService.getListAllHeaders()
+            .then(
+                experimentHeadersList => { commit('setHeadersList', experimentHeadersList) },
+                error => { dispatch('alert/setErrorAlert', error.message, { root: true }) }
+            )
+            .finally(() => {
+                commit('indicateFetchingExperimentListEnd');
+            });
+    },
+
     // setSelectedExperiment({ commit }, experimentReference) {
 
     // },
