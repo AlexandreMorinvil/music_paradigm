@@ -16,6 +16,14 @@ const getListAllHeaders = function () {
     return fetch(url.experiments(""), requestOptions).then(handleResponse);
 }
 
+const getDefinition = function (id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+    };
+    return fetch(url.experiments(`/description/${id}`), requestOptions).then(handleResponse);
+}
+
 const create = function (experiment) {
     const requestOptions = {
         method: 'POST',
@@ -32,5 +40,6 @@ const handleResponse = function (reponse) {
 export const experimentService = {
     validateExperiment,
     getListAllHeaders,
+    getDefinition,
     create
 };

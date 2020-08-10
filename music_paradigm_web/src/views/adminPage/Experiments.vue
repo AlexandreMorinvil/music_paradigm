@@ -1,26 +1,40 @@
 <template>
   <div class="page-grid">
     Admin Experiments page
-    <experiments-editor />
-    <experiments-board />
-    <br />
-    <br />INterface to create experiments
-    <br />
-    <br />FUcntionality to import curriculums (as Json files)
-    <br />
-    <br />List of all the existing experiments, their related information
+    <widget-context>
+      <template v-slot:title>Viewer</template>
+      <template v-slot:widget>
+        <experiments-viewer />
+      </template>
+    </widget-context>
+    <widget-context>
+      <template v-slot:title>Editor</template>
+      <template v-slot:widget>
+        <experiments-editor />
+      </template>
+    </widget-context>
+    <widget-context>
+      <template v-slot:title>Board</template>
+      <template v-slot:widget>
+        <experiments-board />
+      </template>
+    </widget-context>
   </div>
 </template>
 
 <script>
-import experimentsEditor from "@/components/admin/experiments/ExperimentsEditorWidget.vue";
-import experimentsBoard from "@/components/admin/experiments/ExperimentsBoardWidget.vue";
+import WidgetContext from "@/components/admin/WidgetContext.vue";
+import ExperimentsViewer from "@/components/admin/experiments/ExperimentsViewerWidget.vue";
+import ExperimentsEditor from "@/components/admin/experiments/ExperimentsEditorWidget.vue";
+import ExperimentsBoard from "@/components/admin/experiments/ExperimentsBoardWidget.vue";
 
 export default {
   name: "AdminExperiments",
   components: {
-    experimentsEditor: experimentsEditor,
-    experimentsBoard: experimentsBoard,
+    WidgetContext: WidgetContext,
+    experimentsViewer: ExperimentsViewer,
+    experimentsEditor: ExperimentsEditor,
+    experimentsBoard: ExperimentsBoard,
   },
   data() {
     return {};

@@ -1,7 +1,9 @@
 <template>
   <div id="experiments-workshop" class="widget widget-box widget-bg">
+    TODO: Make the display more properly
     <ul>
         <li v-for="header in experimentsHeadersList" :key="header._id">
+            <button v-on:click="runExperiment(header._id)"> Quick select and Start </button>
             {{ header.group }} - {{ header.name }} - {{ header.version }} - {{ header.folder }}
         </li>
     </ul>
@@ -11,7 +13,6 @@
 <script>
 import "@/styles/widgetTemplate.css";
 import { mapActions, mapGetters } from "vuex";
-import { validator } from "@/_helpers";
 
 export default {
   name: "ExperimentsWorkshopWidget",
@@ -23,7 +24,10 @@ export default {
     ...mapGetters("experiments", ["experimentsHeadersList"]),
   },
   methods: {
-    ...mapActions("experiments", ["fetchAllExperimentsHeaders"]),
+    ...mapActions("experiments", ["fetchAllExperimentsHeaders", "startExperiment"]),
+    runExperiment(id){
+      this.startExperiment(id)
+    }
   },
   mounted() {
     this.fetchAllExperimentsHeaders();

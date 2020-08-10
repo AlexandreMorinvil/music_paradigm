@@ -1,7 +1,7 @@
 import { experimentService } from '@/_services';
 
 export default {
-    fetchAllExperimentsHeaders({ dispatch, commit }) {
+    fetchAllExperimentsHeaders({ commit, dispatch }) {
         commit('indicateFetchingExperimentList');
         experimentService.getListAllHeaders()
             .then(
@@ -13,6 +13,20 @@ export default {
             });
     },
 
+    startExperiment({ commit, dispatch }, id) {
+        experimentService.getDefinition(id).then(
+            (description) => {
+                commit('setEditedExperiment', description);
+                commit('setSelectedExperiment', description);
+                dispatch('experiment/setExperiment', description, { root: true });
+                dispatch('experiment/initCursor', null, { root: true });
+                dispatch('experiment/initExperiment', null, { root: true });
+            },
+            error => {
+                dispatch('alert/setErrorAlert', `Compilation failed : ${error.message}`, { root: true });
+            })
+    },
+
     // setSelectedExperiment({ commit }, experimentReference) {
 
     // },
@@ -21,6 +35,7 @@ export default {
     //     // commit('setEditedExperiment', getters.experimentSelected);
     //     // commit('indicateHasCompiledEdition');
     // },
+
 
     compileExperiment({ commit, dispatch }, experiment) {
         experimentService.validateExperiment(experiment).then(
