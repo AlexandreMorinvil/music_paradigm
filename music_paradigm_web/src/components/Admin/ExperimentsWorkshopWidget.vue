@@ -17,17 +17,19 @@
 
     <div class="editor-position editor-size-fix">
       <div class="text-editor-label">Experiment Editor : {{editionStatus}}</div>
-      <code-editor
-        class="text-editor"
-        v-on:ready="writeEditionToEditorChanges"
-        :readOnly="false"
-        ref="codeEditor"
-      />
+      <div class="editor-size-fix">
+        <code-editor
+          class="text-editor"
+          v-on:ready="writeEditionToEditorChanges"
+          :readOnly="false"
+          ref="codeEditor"
+        />
+      </div>
     </div>
 
-    <div class="reference-position editor-size-fix">
+    <div class="reference-position">
       <div class="text-editor-label">Selected Experiment : {{selectionStatus}}</div>
-      <div>
+      <div class="editor-size-fix">
         <code-editor
           class="text-editor"
           v-on:ready="writeSelectionToReferenceChanges"
@@ -39,9 +41,15 @@
 
     <div class="create-position">
       <form v-on:submit.prevent="handleSubmit" ref="upload" style="display: none">
-        <input type="file" id="myfile" name="myfile" v-on:change="handleUploadExperiment"  ref="fileInput"/>
+        <input
+          type="file"
+          id="myfile"
+          name="myfile"
+          v-on:change="handleUploadExperiment"
+          ref="fileInput"
+        />
       </form>
-      <button v-on:click="redirectUploadClick" class="widget-button blue">Upload</button>
+      <button v-on:click="$refs.fileInput.click()" class="widget-button blue">Upload</button>
       <button v-on:click="submitExperimentToCreate" class="widget-button green">Create</button>
     </div>
 
@@ -117,10 +125,6 @@ export default {
     },
     handleCopying() {
       this.compileExperiment;
-    },
-    redirectUploadClick() {
-      this.$refs.fileInput.click();
-      console.log("It worked");
     },
     handleUploadExperiment(event) {
       const input = event.target;
@@ -251,6 +255,7 @@ export default {
 .text-editor {
   width: 100%;
   height: 100%;
+  z-index: inherit;
 }
 
 .text-editor-label {

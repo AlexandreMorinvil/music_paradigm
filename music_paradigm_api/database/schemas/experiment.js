@@ -63,16 +63,17 @@ const transformationOprtions = {
         delete ret.__v;
     }
 }
+
 schema.set('toObject', transformationOprtions);
 schema.set('toJSON', transformationOprtions);
 
 // Static methods
-// schema.statics.getExperimentList = function (experiment) {
-//     return this.find().select('group name version folder createdAt updatedAt');
-// };
+schema.statics.getListAllHeaders = function () {
+    return this.find({}, 'group name version folder createdAt updatedAt');
+};
 
 // Instance methods
-schema.methods.getDefinition = function () {
+schema.methods.getDefinition = async function () {
     let experimentDefinition = {};
     Object.assign(experimentDefinition, this.toObject());
     delete experimentDefinition.createdAt;

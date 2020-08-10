@@ -35,14 +35,13 @@ export default {
             })
     },
 
-
     createExperiment({ dispatch, commit }, experiment) {
         commit('indicateCreateRequest');
         experimentService.create(experiment)
             .then(
-                response => {
-                    commit('setEditedExperiment', response.experiment);
-                    commit('setSelectedExperiment', response.experiment);
+                experiment => {
+                    commit('setEditedExperiment', experiment);
+                    commit('setSelectedExperiment', experiment);
                     dispatch('alert/setSuccessAlert', "Experiment creation sucessful", { root: true });
                 },
                 error => {

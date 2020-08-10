@@ -5,34 +5,60 @@ const Experiment = db.Experiment;
 
 module.exports = {
     create,
-    // getAll,
-    // getById,
+    getAll,
+    getById,
+    getListAllHeaders,
+    getDescriptionFromId,
     // update,
     // delete: _delete
 };
 
-async function create(experiment) {
-    // let createdExperiment;
-    let createdExperiment = new Experiment(experiment);
+async function getAll() {
     try {
-        createdExperiment = await createdExperiment.save(experiment);
+        return await Experiment.find();
     } catch (err) {
-        switch (err.code) {
-            case 11000:
-                return new Error(`In the group "${ experiment.group || "Default" }", the experiment "${ experiment.name }" version ${ experiment.version || 1 } already exists`);
-            default:
-                return err;
-        }
-    }
-    return {
-        experiment: createdExperiment.getDefinition()
+        throw err;
     }
 }
 
-// async function getAll() {
-//     return await timeout.dbQuery(
-//         Collection.find().select('-passwordHash'));
-// }
+async function getById(id) {
+    try {
+        return await Experiment.findById(id);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function getListAllHeaders() {
+    try {
+        return await Experiment.getListAllHeaders();
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function getDescriptionFromId(id) {
+    try {
+        const exeperiment = await Experiment.findById(id);
+        return await exeperiment.getDefinition();
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function create(experiment) {
+    try {
+        const createdExperiment = await Experiment.create(experiment);
+        return await createdExperiment.getDefinition();
+    } catch (err) {
+        switch (err.code) {
+            case 11000:
+                throw new Error(`In the group "${ experiment.group || "Default" }", the experiment "${ experiment.name }" version ${ experiment.version || 1 } already exists`);
+            default:
+                throw err;
+        }
+    }
+}
 
 // async function getById(id) {
 //     return await timeout.dbQuery(

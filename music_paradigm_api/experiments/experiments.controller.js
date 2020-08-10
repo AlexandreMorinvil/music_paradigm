@@ -5,14 +5,47 @@ const role = require('_helpers/role');
 const service = require('./experiments.service');
 
 // routes
-router.post('/create', jwtAuthorize(role.admin), create);
+router.post('/create',          jwtAuthorize(role.admin), create);
+router.get('/',                 jwtAuthorize(role.admin), getAll);
+router.get('/:id',              jwtAuthorize(role.admin), getById);
+router.get('/listHeaders',      jwtAuthorize(role.admin), getListAllHeaders);
+router.get('/description/:id',  jwtAuthorize(role.admin), getDescription);
 
 module.exports = router;
 
 function create(req, res, next) {
     service.create(req.body)
-        .then(result => result.experiment ? res.json(result) : res.status(400).json({ message: result.message }))
-        .catch(err => next(err));
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
+function getAll(req, res, next) {
+    service.getAll()
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
+function getById(req, res, next) {
+    service.getById(req.params.id)
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
+function getListAllHeaders(req, res, next) {
+    service.getListAllHeaders()
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
+function getDescription(req, res, next) {
+    service.getDescriptionFromId(req.params.id)
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
 }
 
 // // routes
