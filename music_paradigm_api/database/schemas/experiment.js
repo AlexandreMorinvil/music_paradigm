@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 const schema = new Schema(
     {
-        group: { type: String, default: "Default" },
-        name: { type: String, required: true },
+        group: { type: String, default: "default", lowercase: true, trim: true },
+        name: { type: String, required: true, lowercase: true, trim: true },
         version: { type: Number, default: 1, min: 1 },
         folder: { type: String, reqired: true },
         mode: { type: String, default: "rhythm" },
@@ -69,7 +69,8 @@ schema.set('toJSON', transformationOprtions);
 
 // Static methods
 schema.statics.getListAllHeaders = function () {
-    return this.find({}, 'group name version folder createdAt updatedAt');
+    return this.find({}, 'group name version folder createdAt updatedAt')
+        .sort({ group: 1, name: 1, version: 1 });
 };
 
 // Instance methods
