@@ -30,7 +30,7 @@ export default {
 
 
     createExperiment({ dispatch, commit }, experiment) {
-        commit('indicateRequest', "creating");
+        commit('indicateRequest', "isCreating");
         experimentService.create(experiment)
             .then(
                 response => {
@@ -43,7 +43,7 @@ export default {
                 }
             )
             .finally(() => {
-                commit('indicateRequestEnd', "creating");
+                commit('indicateRequestEnd', "isCreating");
             });
     },
 }

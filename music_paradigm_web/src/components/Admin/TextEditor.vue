@@ -28,7 +28,6 @@
 </template>
 
 <script>
-// TODO: Link text to something external
 import { codemirror } from "vue-codemirror";
 import jsonlint from "jsonlint-mod";
 
@@ -87,7 +86,7 @@ export default {
     };
   },
   methods: {
-    onCmReady(cm) {
+    onCmReady() {
       this.$emit("ready");
     },
     // onCmFocus(cm) {},

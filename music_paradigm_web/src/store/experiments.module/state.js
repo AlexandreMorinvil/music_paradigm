@@ -1,30 +1,17 @@
+import { validator } from "@/_helpers";
+
 export default {
     status: {
-        creating: false
+        isCreating: false,
+        isEditionCompiled: false,
+        isExperimentSelected: false
     },
 
     selection: {
         _id: null,
-        content: {
-            name: "",
-            folder: "",
-            flow: [
-                {
-                    type: ""
-                }
-            ]
-        }
+        content: validator.getMinimalValidExperimentStructure()
     },
-    edition: {
-        // Minimaal parameters guaranteed to exist
-        name: "",
-        folder: "",
-        flow: [
-            {
-                type: ""
-            }
-        ]
-    },
+    edition: validator.getMinimalValidExperimentStructure(),
     experimentsReferences: [
         {
             _id: "",
@@ -32,5 +19,4 @@ export default {
             folder: ""
         }
     ]
-
 } 

@@ -2,39 +2,46 @@
   <div id="experiments-workshop" class="widget widget-box widget-bg">
     <div class="submit-position">
       <button>test</button>
-      <form v-on:submit.prevent="handleSubmit" ref="upload">
-        <input type="file" id="myfile" name="myfile" v-on:change="handleExperimentFile" />
-      </form>
     </div>
 
     <div class="edition-buttons-position">
-      <button v-on:click="handleCompilation">Compile Edition</button>
-      <button v-on:click="notEmplementedYet">Revert</button>
-      <button v-on:click="notEmplementedYet">Clear</button>
+      <button v-on:click="handleCompilation" class="widget-button blue">Compile</button>
+      <button v-on:click="handleReversion" class="widget-button blue">Revert</button>
+      <button v-on:click="handleClearance" class="widget-button blue">Clear</button>
     </div>
 
     <div class="selection-buttons-position">
-      <button v-on:click="notEmplementedYet">Copy selection</button>
-      <button v-on:click="notEmplementedYet">Unselect</button>
+      <button v-on:click="notEmplementedYet" class="widget-button blue">Copy to Editor</button>
+      <button v-on:click="notEmplementedYet" class="widget-button blue">Unselect</button>
     </div>
 
     <div class="editor-position editor-size-fix">
-      Experiment Editor :
-      <code-editor id="text-editor" v-on:ready="writeEditionToEditorChanges" ref="codeEditor" />
-    </div>
-
-    <div class="reference-position editor-size-fix">
-      Selected Experiment :
+      <div class="text-editor-label">Experiment Editor : 1</div>
       <code-editor
-        id="reference-editor"
-        v-on:ready="writeSelectionToReferenceChanges"
-        ref="codeReference"
-        :readOnly="true"
+        class="text-editor"
+        v-on:ready="writeEditionToEditorChanges"
+        :readOnly="false"
+        ref="codeEditor"
       />
     </div>
 
+    <div class="reference-position editor-size-fix">
+      <div class="text-editor-label">Selected Experiment : 2</div>
+      <div>
+        <code-editor
+          class="text-editor"
+          v-on:ready="writeSelectionToReferenceChanges"
+          :readOnly="true"
+          ref="codeReference"
+        />
+      </div>
+    </div>
+
     <div class="create-position">
-      <button v-on:click="submitExperimentToCreate">Create Experiment</button>
+      <form v-on:submit.prevent="handleSubmit" ref="upload">
+        <input type="file" id="myfile" name="myfile" v-on:change="handleUploadExperiment" />
+      </form>
+      <button v-on:click="submitExperimentToCreate">Create</button>
     </div>
 
     <div class="update-position">
@@ -46,8 +53,9 @@
 
 <script>
 import "@/styles/widgetTemplate.css";
-import CodeEditor from "@/components/Admin/TextEditor.vue";
 import { mapActions, mapGetters } from "vuex";
+import { validator } from "@/_helpers";
+import CodeEditor from "@/components/Admin/TextEditor.vue";
 
 export default {
   name: "ExperimentsWorkshopWidget",
@@ -55,13 +63,16 @@ export default {
     codeEditor: CodeEditor,
   },
   data() {
-    return {};
+    return {
+      isCodeCompiled: false,
+    };
   },
   computed: {
     ...mapGetters("experiments", ["experimentEdited", "experimentSelected"]),
     editionContent() {
       return this.$refs.codeEditor.code;
     },
+    editionStatus() {},
   },
   methods: {
     ...mapActions("alert", ["setErrorAlert"]),
@@ -76,7 +87,29 @@ export default {
     setReferenceContent(textContent) {
       this.$refs.codeReference.setValue(textContent);
     },
-    handleExperimentFile(event) {
+    submitExperimentToCreate() {
+      this.createExperiment(this.experimentEdited);
+    },
+    handleCompilation() {
+      const experimentObject = this.convertEditorTextToObject();
+      this.compileExperiment(experimentObject);
+      this.isCodeCompiled = true;
+    },
+    handleReversion() {
+      this.setEditorContent(JSON.stringify(this.experimentEdited, null, "\t"));
+      this.isCodeCompiled = false;
+    },
+    handleClearance() {
+      this.setEditorContent(
+        JSON.stringify(
+          validator.getMinimalValidExperimentStructure(),
+          null,
+          "\t"
+        )
+      );
+      this.isCodeCompiled = false;
+    },
+    handleUploadExperiment(event) {
       const input = event.target;
 
       const readFileContent = function (file) {
@@ -107,13 +140,6 @@ export default {
           this.$refs.upload.reset();
         });
     },
-    submitExperimentToCreate() {
-      this.createExperiment(this.experimentEdited);
-    },
-    handleCompilation() {
-      const experimentObject = this.convertEditorTextToObject();
-      this.compileExperiment(experimentObject);
-    },
     convertEditorTextToObject() {
       try {
         return JSON.parse(this.editionContent);
@@ -122,9 +148,6 @@ export default {
           "The JSON syntax of the experiment definition is not valid"
         );
       }
-    },
-    notEmplementedYet() {
-      console.log("Not yet ready");
     },
     writeEditionToEditorChanges() {
       this.$watch(
@@ -146,22 +169,9 @@ export default {
         { immediate: true }
       );
     },
-  },
-  mounted() {},
-  destroyed() {},
-  watch: {
-    // experimentEdited: {
-    //   immediate: true,
-    //   handler(value) {
-    //     this.setEditorContent(JSON.stringify(value, null, "\t"));
-    //   },
-    // },
-    // experimentSelected: {
-    //   immediate: true,
-    //   handler(value) {
-    //     this.setReferenceContent(JSON.stringify(value, null, "\t"));
-    //   },
-    // },
+    notEmplementedYet() {
+      console.log("Not yet ready");
+    },
   },
 };
 </script>
@@ -174,12 +184,16 @@ export default {
 
 .edition-buttons-position {
   grid-area: edition-btn;
-  background-color: darkblue;
+  display: grid;
+  grid-gap: 15px;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .selection-buttons-position {
   grid-area: selection-btn;
-  background-color: darkblue;
+  display: grid;
+  grid-gap: 15px;
+  grid-template-columns: 1fr 1fr;
 }
 
 .create-position {
@@ -194,12 +208,18 @@ export default {
 
 .editor-position {
   grid-area: editor;
-  background-color: deepskyblue;
+  background-color: rgb(225, 225, 225);
+  color: black;
+  display: grid;
+  /* grid-template-rows: auto; */
 }
 
 .reference-position {
   grid-area: reference;
-  background-color: deepskyblue;
+  background-color: rgb(225, 225, 225);
+  color: black;
+  display: grid;
+  /* grid-template-rows: auto; */
 }
 
 .widget {
@@ -214,5 +234,10 @@ export default {
 
 .text-editor {
   width: 100%;
+  height: 100%;
+}
+
+.text-editor-label {
+  padding: 10px
 }
 </style>

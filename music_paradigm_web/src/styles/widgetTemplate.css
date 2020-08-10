@@ -15,9 +15,33 @@
     border-left: solid rgb(50, 50, 50) 5px;
 }
 
-.widget-bg:hover,
-.widget-bg:focus-within,
-.widget-bg.activated {
+.widget-bg:hover, .widget-bg:focus-within, .widget-bg.activated {
     background-color: rgb(35, 35, 35);
     border-left: solid rgb(0, 100, 255) 5px;
+}
+
+.widget-button {
+    min-width: auto;
+    border-radius: 5px;
+    padding: 10px 10px;
+    text-align: center;
+    display: inline-block;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.widget-button.blue {
+    color: white;
+    background-color: rgb(0, 0, 120);
+    border: 2px solid rgb(0, 0, 140);
+}
+
+.widget-button.blue:hover {
+    background-color: rgb(0, 0, 100);
+    border-color:rgb(0, 0, 120);
+}
+
+.widget-button.blue:active {
+    background-color: rgb(0, 0, 80);
+    border-color: rgb(0, 0, 100);
 }

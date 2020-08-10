@@ -5,5 +5,10 @@ export default {
 
     experimentSelected: (state) => {
         return state.selection.content;
+    },
+
+    // Status
+    isEditionCompiled: (state) => {
+        return state.status.isEditionCompiled;
     }
 }

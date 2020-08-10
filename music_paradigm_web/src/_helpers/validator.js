@@ -1,3 +1,15 @@
+const getMinimalValidExperimentStructure = function () {
+    return {
+        name: "",
+        folder: "",
+        flow: [
+            {
+                type: ""
+            }
+        ]
+    }
+}
+
 const validateExperiment = function (experiment) {
     // Verification of the validity of the experiment object type
     if (!(typeof experiment === 'object'))
@@ -184,6 +196,7 @@ const validateAttributeType = function (key, value) {
     return true;
 }
 export default {
+    getMinimalValidExperimentStructure,
     validateExperiment,
     validateBlock
 }
