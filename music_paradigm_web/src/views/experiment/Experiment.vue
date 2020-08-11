@@ -83,8 +83,8 @@ export default {
     },
   },
   methods: {
-    ...mapActions("experiment", ["updateState", "goNextStep"]),
-    ...mapActions("piano", ["loadMidiFile", "resetPlayedNotesLogs"]),
+    ...mapActions("experiment", ["updateState", "goNextStep", "clearState"]),
+    ...mapActions("piano", ["loadMidiFile", "resetPlayedNotesLogs", "resetPianoState"]),
     getIconReference(stateType) {
       const iconFileName = "sprites.svg#";
       switch (stateType) {
@@ -136,6 +136,8 @@ export default {
   beforeDestroy() {
     window.removeEventListener("keydown", this.handleSpaceBarPress);
     window.removeEventListener("keyup", this.handleSpaceBarRelease);
+    this.resetPianoState();
+    this.clearState();
   },
   watch: {
     midiName: {

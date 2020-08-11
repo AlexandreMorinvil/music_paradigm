@@ -111,7 +111,7 @@ body {
 #app-header {
   width: 100%;
   height: 56px;
-  box-shadow: 0 4px 2px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0);
+  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0);
   background-color: rgb(25, 25, 25);
   border-bottom-color: rgb(35, 35, 35);
   border-bottom-width: 1px;

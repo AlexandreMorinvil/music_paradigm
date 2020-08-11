@@ -59,7 +59,7 @@ export default {
       defaultVideoWidth: 480,
       // Delay before playback variables
       referenceTime: 0,
-      playbackDelayInSeconds: 5,
+      playbackDelayInSeconds: 3,
       delayLeftInMilliseconds: 5000,
       timeStepInMilliseconds: 200,
       // Delay after playback variable
@@ -157,7 +157,6 @@ export default {
         this.playbackDelayInSeconds * 1000 - (Date.now() - this.referenceTime),
         0
       );
-      console.log(this.delayLeftInMilliseconds);
     },
     manageHavingNoVideo() {
       setTimeout(() => {

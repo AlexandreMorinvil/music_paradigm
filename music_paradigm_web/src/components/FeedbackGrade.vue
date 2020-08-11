@@ -83,7 +83,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: calc(2vh + 2vw);
+  font-size: calc(1vh + 1vw);
   height: 15%;
   width: 100%;
 }

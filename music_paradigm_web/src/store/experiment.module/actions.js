@@ -1,4 +1,7 @@
 export default {
+    clearState: ({ commit }) => {
+        commit('clearState');
+    },
     setExperiment: ({ commit }, experiment) => {
         commit('setExperiment', experiment);
     },

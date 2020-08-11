@@ -1,9 +1,14 @@
 import config from "@/config";
 import { Midi } from '@tonejs/midi';
 import { midiConversion, notePerformance } from "@/_helpers";
-import functions from './functions'
+import functions from './functions';
+import constants from './constants';
 
 export default {
+    resetPianoState: (state) => {
+        Object.assign(state, constants.DEFAULT_PIANO_STATE_VALUES());
+    },
+
     // Mutation on isPianoInitialized
     setInitializationState: (state, isInitialized) => {
         state.isPianoInitialized = isInitialized || false;
@@ -121,7 +126,6 @@ export default {
     },
 
     // Mutations for note performance evaluation
-    // FIXME: Ensure those functions work properly when no keys were pressed
     evaluateSpeedType: (state) => {
         // Evaluate the performance according to get specific metrics
         Object.assign(state.played.evaluation,

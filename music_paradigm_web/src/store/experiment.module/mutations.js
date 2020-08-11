@@ -3,6 +3,9 @@ import constants from './constants'
 import functions from './functions'
 
 export default {
+    clearState(state) {
+        Object.assign(state, constants.DEFAULT_EXPERIMENT_STATE_VALUES());
+    },
 
     /**
      * Set an experiment for the session and its general parameters (sets the flow and settings)
@@ -63,12 +66,15 @@ export default {
             content: false
         };
     },
+
     initExperiment: () => {
         routerNavigation.moveToExperimentPrelude();
     },
+    
     updateState: (state) => {
         functions.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
     },
+
     moveNextStep: (state) => {
         functions.moveCursorNext(state.flow, state.cursor, state.isInitialized);
         functions.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);

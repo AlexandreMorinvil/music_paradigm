@@ -64,7 +64,7 @@
 import "@/styles/widgetTemplate.css";
 import { mapActions, mapGetters } from "vuex";
 import { validator } from "@/_helpers";
-import CodeEditor from "@/components/Admin/TextEditor.vue";
+import CodeEditor from "@/components/admin/TextEditor.vue";
 
 export default {
   name: "ExperimentsWorkshopWidget",

@@ -19,7 +19,7 @@ export default {
                 commit('setEditedExperiment', description);
                 commit('setSelectedExperiment', description);
                 dispatch('experiment/setExperiment', description, { root: true });
-                dispatch('experiment/initCursor', null, { root: true });
+                dispatch('experiment/setStartingPoint', null, { root: true });
                 dispatch('experiment/initExperiment', null, { root: true });
             },
             error => {

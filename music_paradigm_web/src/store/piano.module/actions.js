@@ -1,6 +1,10 @@
 import { ressourceService } from '../../_services';
 
 export default {
+    resetPianoState: ({ commit }) => {
+        commit('resetPianoState');
+    },
+
     // Initialization actions
     setInitializationState: ({ commit }, isInitialized) => {
         commit('setInitializationState', isInitialized);
