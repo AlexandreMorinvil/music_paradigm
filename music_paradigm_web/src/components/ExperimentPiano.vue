@@ -166,6 +166,7 @@ export default {
           window.navigator.requestMIDIAccess().then((midiAccess) => {
             midiAccess.inputs.forEach((midiInput) => {
               midiInput.onmidimessage = this.manageMidiNote;
+              this.useMidiInput = true;
             });
           });
 
