@@ -22,12 +22,12 @@ const schema = new Schema(
                     type: {
                         type: String,
                         required: true,
-                        enum: ["cue", "end", "feedback", "instruction", "playing", "rest", "video"]
+                        //enum: ["cue", "end", "feedback", "instruction", "playing", "rest", "video"]
                     },
                     textContent: { type: [String], default: undefined },
                     interactivePiano: { type: [], default: undefined },
                     pictureFileName: { type: [String], default: undefined },
-                    midiFileName: { type: [String], default: undefined },
+                    midiFileName: { type: [], default: undefined },
                     videoFileName: { type: [String], default: undefined },
                     numberRepetition: { type: Number, default: undefined },
                     followedBy: { type: Boolean, default: undefined },
