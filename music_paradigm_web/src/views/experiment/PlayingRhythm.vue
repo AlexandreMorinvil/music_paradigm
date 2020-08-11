@@ -1,7 +1,7 @@
 <template>
   <div id="playing-rythm-area" class="playing-area">
     <div id="playing-visual-media" v-if="hasVisualMedia" class="playing-visual-media-area">
-      <visual-piano v-if="hasInteractivePiano" />
+      <visual-piano v-if="hasInteractivePiano" ref="piano" />
       <img
         id="playing-img"
         v-if="!hasInteractivePiano && hasPicture"
@@ -98,7 +98,7 @@ export default {
     },
     pressedKeys() {
       if (!this.isFirstNotePressed) {
-        this.stopHint();
+        // this.stopHint();
         this.isFirstNotePressed = true;
       }
     }

@@ -104,7 +104,7 @@ export default {
       if (!this.playingStarted) {
         this.startTimeLimit();
         this.updateFootnote(true);
-        this.stopHint();
+        // this.stopHint();
         this.playingStarted = true;
       }
     }
