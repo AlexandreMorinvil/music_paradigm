@@ -6,7 +6,16 @@ export default {
         router.push({ name: 'prelude' });
     },
     moveToState : function(blockTyoe) {
-        router.replace({ name: blockTyoe });
+        // The instantaneous "transition" page is to force Vue to unmount a page and then remount it
+        // for each block (which would not happen if two consecutive blocks were of the same type).
+        // The unmounting and remounting of a page will force vue to redo the "mounted" component
+        // each time we reach a new block, regardless of whether or not we move to twice the same
+        // type of vue page. 
+        router.replace({ name: "transition" });
+        const microDelay = setTimeout(() => {
+            router.replace({ name: blockTyoe });
+            clearTimeout(microDelay);
+        }, 1);
     },
     // Redirect to home page
     goToRootPage : function() {
