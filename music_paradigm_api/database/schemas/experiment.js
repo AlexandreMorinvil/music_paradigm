@@ -54,6 +54,12 @@ const schema = new Schema(
 // Indexes cration
 schema.index({ "group": 1, "name": 1, "version": 1 }, { unique: true });
 
+// Middleeare
+schema.pre("save", function() {
+    this.name = this.name.toLowerCase().trim();
+    this.group = this.graphLookup.toLowerCase().trim();
+});
+
 // Options for Object/JSON tranformations
 const transformationOprtions = {
     virtuals: true,

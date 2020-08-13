@@ -12,14 +12,6 @@ module.exports = {
     // delete: _delete
 };
 
-async function getAll() {
-    try {
-        return await Experiment.find();
-    } catch (err) {
-        throw err;
-    }
-}
-
 async function getListAllHeaders() {
     try {
         return await Experiment.getListAllHeaders();
@@ -52,7 +44,7 @@ async function create(experiment) {
     } catch (err) {
         switch (err.code) {
             case 11000:
-                throw new Error(`In the group "${ experiment.group || "Default" }", the experiment "${ experiment.name }" version ${ experiment.version || 1 } already exists`);
+                throw new Error(`In the group "${ experiment.group || "default" }", the experiment "${ experiment.name }" version ${ experiment.version || 1 } already exists`);
             default:
                 throw err;
         }
