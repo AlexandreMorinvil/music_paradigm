@@ -11,6 +11,8 @@ router.get('/description/:id',  jwtAuthorize(role.admin), getDescription);
 
 router.post('/',                jwtAuthorize(role.admin), create);
 
+router.put('/:id',              jwtAuthorize(role.admin), update);
+
 module.exports = router;
 
 function getListAllHeaders(req, res, next) {
@@ -41,9 +43,16 @@ function create(req, res, next) {
         .finally(() => next());
 }
 
+function update(req, res, next) {
+    service.create(req.params.id, req.body)
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
+
 // // routes
-// router.get('/:id',      jwtAuthorize(role.admin),   getById);
-// router.put('/:id',      jwtAuthorize(role.admin),   update);
+
 // router.delete('/:id',   jwtAuthorize(role.admin),   _delete);
 
 // module.exports = router;
@@ -51,12 +60,6 @@ function create(req, res, next) {
 // function getCurrent(req, res, next) {
 //     service.getById(req.user.sub)
 //         .then(user => user ? res.json(user) : res.sendStatus(404))
-//         .catch(err => next(err));
-// }
-
-// function update(req, res, next) {
-//     service.update(req.params.id, req.body)
-//         .then(() => res.json({}))
 //         .catch(err => next(err));
 // }
 

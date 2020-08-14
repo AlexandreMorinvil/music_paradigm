@@ -8,7 +8,7 @@ module.exports = {
     getListAllHeaders,
     getById,
     getDescriptionFromId,
-    // update,
+    update,
     // delete: _delete
 };
 
@@ -44,24 +44,35 @@ async function create(experiment) {
     } catch (err) {
         switch (err.code) {
             case 11000:
-                throw new Error(`In the group "${ experiment.group || "default" }", the experiment "${ experiment.name }" version ${ experiment.version || 1 } already exists`);
+                throw new Error(`In the group "${experiment.group || "default"}", the experiment "${experiment.name}" version ${experiment.version || 1} already exists`);
             default:
                 throw err;
         }
     }
 }
 
-// async function update(id, param) {
-//     const collection = await timeout.dbQuery(
-//         Collection.findById(id));
+async function update(id, description) {
+    try {
+        // Retreive the experiemtn to update
+        const experiment = await Experiment.findById(id);
+        if (!experiment) throw new Error('Experiment to update not found');
 
-//     // Validate
-//     if (!collection) throw 'Collection not found';
+        // Update the experiment
+        experiment = {};
+        Object.assign(experiment, description);
+        return experiment.save();
+    }
+    catch (err) {
+        switch (err.code) {
+            case 11000:
+                throw new Error(`In the group "${description.group || "default"}", the experiment "${description.name}" version ${description.version || 1} already exists`);
+            default:
+                throw err;
+        }
+    }
 
-//     // Copy param properties to collection
-//     Object.assign(collection, param);
-//     await timeout.dbQuery(collection.save());
-// }
+}
+
 
 // async function _delete(id) {
 //     await timeout.dbQuery(
