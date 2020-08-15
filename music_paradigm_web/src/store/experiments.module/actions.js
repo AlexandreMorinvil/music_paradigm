@@ -13,7 +13,28 @@ export default {
             });
     },
 
-    startExperiment({ commit, dispatch }, id) {
+    setEditorExperiment({ commit, dispatch }, id) {
+        experimentService.getDefinition(id).then(
+            (description) => {
+                commit('setEditedExperiment', description);
+                commit('setSelectedExperiment', description);
+            },
+            error => {
+                dispatch('alert/setErrorAlert', `Compilation failed : ${error.message}`, { root: true });
+            })
+    },
+
+    setSelectionExperiment({ commit, dispatch }, id) {
+        experimentService.getDefinition(id).then(
+            (description) => {
+                commit('setSelectedExperiment', description);
+            },
+            error => {
+                dispatch('alert/setErrorAlert', `Compilation failed : ${error.message}`, { root: true });
+            })
+    },
+
+    startExperimentQuick({ commit, dispatch }, id) {
         experimentService.getDefinition(id).then(
             (description) => {
                 commit('setEditedExperiment', description);
@@ -26,10 +47,6 @@ export default {
                 dispatch('alert/setErrorAlert', `Compilation failed : ${error.message}`, { root: true });
             })
     },
-
-    // setSelectedExperiment({ commit }, experimentReference) {
-
-    // },
 
     // copySelectionToEdition({ commit, getters }) {
     //     // commit('setEditedExperiment', getters.experimentSelected);

@@ -7,6 +7,10 @@ export default {
         return state.selection.content;
     },
 
+    selectedId: (state)=> {
+        return state.selection._id;
+    },
+
     experimentsHeadersList: (state) => {
         return state.experimentsHeadersList;
     },

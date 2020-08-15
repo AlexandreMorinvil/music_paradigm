@@ -1,7 +1,7 @@
 <template>
   <div id="experiments-workshop" class="widget widget-box widget-bg">
     TODO: Make the display more properly
-    <div class="table-context">
+    <div class="widget-table-context">
       <table class="widget-table">
         <thead>
           <tr>
@@ -15,27 +15,21 @@
         </thead>
 
         <tbody>
-          <tr v-for="(header, index) in experimentsHeadersList" :key="header._id">
+          <tr v-for="(header, index) in experimentsHeadersList" :key="header._id" :class="header._id === selectedId && 'selected'">
             <td>{{ index }}</td>
             <td>{{ header.group }}</td>
             <td>{{ header.name }}</td>
             <td>{{ header.version }}</td>
             <td>{{ header.folder }}</td>
             <td>
-              <button>Edit</button>
-              <button>Select</button>
-              <button>Run</button>
+              <button v-on:click="handleeSelectToEditor(header._id)">Edit</button>
+              <button v-on:click="handleSelectExperiment(header._id)">Select</button>
+              <button v-on:click="handleStart(header._id)">Run</button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <ul>
-      <li v-for="header in experimentsHeadersList" :key="header._id">
-        <button v-on:click="runExperiment(header._id)">Quick select and Start</button>
-        {{ header.group }} - {{ header.name }} - {{ header.version }} - {{ header.folder }}
-      </li>
-    </ul>
   </div>
 </template>
 
@@ -50,15 +44,23 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters("experiments", ["experimentsHeadersList"]),
+    ...mapGetters("experiments", ["experimentsHeadersList", "selectedId"]),
   },
   methods: {
     ...mapActions("experiments", [
       "fetchAllExperimentsHeaders",
-      "startExperiment",
+      "setEditorExperiment",
+      "setSelectionExperiment",
+      "startExperimentQuick",
     ]),
-    runExperiment(id) {
-      this.startExperiment(id);
+    handleeSelectToEditor(id) {
+      this.setEditorExperiment(id);
+    },
+    handleSelectExperiment(id) {
+      this.setSelectionExperiment(id);
+    },
+    handleStart(id) {
+      this.startExperimentQuick(id);
     },
   },
   mounted() {
@@ -68,7 +70,7 @@ export default {
 </script>
 
 <style scoped>
-.table-context {
+.widget-table-context {
   background-color: rgb(15, 15, 15);
   width: 100%;
   height: 750px;
@@ -76,46 +78,51 @@ export default {
   overflow-y: scroll;
 }
 
-table,
-th,
-td {
+.widget-table-context table,
+.widget-table-context th,
+.widget-table-context td {
   border-collapse: collapse;
 }
 
-table {
+.widget-table-context table {
   color: rgb(200, 200, 200);
   width: 100%;
 }
 
-thead {
+.widget-table-context thead {
   background-color: rgb(25, 25, 30);
   font-size: 0.9em;
   overflow-y: auto;
   width: 100%;
 }
 
-tbody {
+.widget-table-context tbody {
   font-size: 0.8em;
   width: 100%;
 }
 
-tbody > tr:nth-child(odd) {
+.widget-table-context tbody > tr:nth-child(odd) {
   background-color: rgb(45, 45, 50);
 }
 
-tbody > tr:nth-child(even) {
+.widget-table-context tbody > tr:nth-child(even) {
   background-color: rgb(30, 30, 35);
 }
 
-tbody > tr:hover {
-  background-color: rgb(100, 100, 105);
+.widget-table-context tbody > tr:hover {
+  background-color: rgb(100, 100, 105); 
 }
 
-thead > tr {
+.widget-table-context tbody > tr.selected {
+  background-color: rgb(100, 200, 0);
+  color: black;
+}
+
+.widget-table-context thead > tr {
   background-color: inherit;
 }
 
-th {
+.widget-table-context th {
   background-color: inherit;
   padding: 10px;
   text-align: center;
@@ -123,7 +130,7 @@ th {
   top: 0;
 }
 
-td {
+.widget-table-context td {
   padding: 10px;
   text-align: center;
 }
