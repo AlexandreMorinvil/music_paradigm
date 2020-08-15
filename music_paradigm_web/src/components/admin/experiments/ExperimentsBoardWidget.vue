@@ -1,7 +1,7 @@
 <template>
   <div id="experiments-workshop" class="widget widget-box widget-bg">
     <!-- TODO: FIX THE BUTTON HERE1111111111111111111111111111111 -->
-    <button v-on:click="handleRefresh"></button>
+    <button v-on:click="handleRefresh" class="widget-button blue"> Refresh </button>
     <div class="widget-table-context">
       <table class="widget-table">
         <colgroup>
@@ -87,68 +87,4 @@ export default {
 </script>
 
 <style scoped>
-.widget-table-context {
-  background-color: rgb(15, 15, 15);
-  width: 100%;
-  height: 750px;
-  display: inline-block;
-  overflow-y: scroll;
-}
-
-.widget-table-context table,
-.widget-table-context th,
-.widget-table-context td {
-  border-collapse: collapse;
-}
-
-.widget-table-context table {
-  color: rgb(200, 200, 200);
-  width: 100%;
-}
-
-.widget-table-context thead {
-  background-color: rgb(25, 25, 30);
-  font-size: 0.9em;
-  overflow-y: auto;
-  width: 100%;
-}
-
-.widget-table-context tbody {
-  font-size: 0.8em;
-  width: 100%;
-}
-
-.widget-table-context tbody > tr:nth-child(odd) {
-  background-color: rgb(45, 45, 50);
-}
-
-.widget-table-context tbody > tr:nth-child(even) {
-  background-color: rgb(30, 30, 35);
-}
-
-.widget-table-context tbody > tr:hover {
-  background-color: rgb(100, 100, 105);
-}
-
-.widget-table-context tbody > tr.selected {
-  background-color: rgb(100, 200, 50);
-  color: black;
-}
-
-.widget-table-context thead > tr {
-  background-color: inherit;
-}
-
-.widget-table-context th {
-  background-color: inherit;
-  padding: 10px;
-  text-align: center;
-  position: sticky;
-  top: 0;
-}
-
-.widget-table-context td {
-  padding: 10px;
-  text-align: center;
-}
 </style>
