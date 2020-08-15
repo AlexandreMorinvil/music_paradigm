@@ -79,7 +79,7 @@ export default {
             })
     },
 
-    createExperiment({ dispatch, commit }, experiment) {
+    createExperiment({ commit, dispatch }, experiment) {
         commit('indicateCreateRequest');
         experimentService.create(experiment)
             .then(
@@ -87,9 +87,10 @@ export default {
                     commit('setEditedExperiment', experiment);
                     commit('setSelectedExperiment', experiment);
                     dispatch('alert/setSuccessAlert', "Experiment creation sucessful", { root: true });
+                    dispatch('fetchAllExperimentsHeaders');
                 },
                 error => {
-                    dispatch('alert/setErrorAlert', error.message, { root: true });
+                    dispatch('alert/setSuccessAlert', error.message, { root: true });
                 }
             )
             .finally(() => {

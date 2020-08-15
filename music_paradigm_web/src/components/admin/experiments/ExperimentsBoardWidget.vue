@@ -1,8 +1,18 @@
 <template>
   <div id="experiments-workshop" class="widget widget-box widget-bg">
-    TODO: Make the display more properly
+    <!-- TODO: FIX THE BUTTON HERE1111111111111111111111111111111 -->
+    <button v-on:click="handleRefresh"></button>
     <div class="widget-table-context">
       <table class="widget-table">
+        <colgroup>
+          <col span="1" style="width: 10%;" />
+          <col span="1" style="width: 20%;" />
+          <col span="1" style="width: 20%;" />
+          <col span="1" style="width: 10%;" />
+          <col span="1" style="width: 20%;" />
+          <col span="1" style="width: 20%;" />
+        </colgroup>
+
         <thead>
           <tr>
             <th>#</th>
@@ -15,14 +25,18 @@
         </thead>
 
         <tbody>
-          <tr v-for="(header, index) in experimentsHeadersList" :key="header._id" :class="header._id === selectedId && 'selected'">
+          <tr
+            v-for="(header, index) in experimentsHeadersList"
+            :key="header._id"
+            :class="header._id === selectedId && 'selected'"
+          >
             <td>{{ index }}</td>
             <td>{{ header.group }}</td>
             <td>{{ header.name }}</td>
             <td>{{ header.version }}</td>
             <td>{{ header.folder }}</td>
             <td>
-              <button v-on:click="handleeSelectToEditor(header._id)">Edit</button>
+              <button v-on:click="handleeSelectToEditor(header._id)">&#xf044; Edit</button>
               <button v-on:click="handleSelectExperiment(header._id)">Select</button>
               <button v-on:click="handleStart(header._id)">Run</button>
             </td>
@@ -53,6 +67,9 @@ export default {
       "setSelectionExperiment",
       "startExperimentQuick",
     ]),
+    handleRefresh() {
+      this.fetchAllExperimentsHeaders();
+    },
     handleeSelectToEditor(id) {
       this.setEditorExperiment(id);
     },
@@ -110,11 +127,11 @@ export default {
 }
 
 .widget-table-context tbody > tr:hover {
-  background-color: rgb(100, 100, 105); 
+  background-color: rgb(100, 100, 105);
 }
 
 .widget-table-context tbody > tr.selected {
-  background-color: rgb(100, 200, 0);
+  background-color: rgb(100, 200, 50);
   color: black;
 }
 
