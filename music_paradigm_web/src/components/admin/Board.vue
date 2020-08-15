@@ -1,13 +1,17 @@
 <template>
   <div class="widget-tab">
-      <div class="widget-header"> Header </div>
-      <slot></slot>
+
+
+    <ul>
+      <li v-for="header in experimentsHeadersList" :key="header._id">
+        <button v-on:click="runExperiment(header._id)">Quick select and Start</button>
+        {{ header.group }} - {{ header.name }} - {{ header.version }} - {{ header.folder }}
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
-
-
 export default {
   name: "AdminExperiments",
   components: {},
