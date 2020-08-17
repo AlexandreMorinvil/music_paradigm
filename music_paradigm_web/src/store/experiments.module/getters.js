@@ -18,5 +18,9 @@ export default {
     // Status
     hasCompiledEdition: (state) => {
         return state.status.hasCompiledEdition;
+    },
+
+    isFetchingExperimentHeadersList: (state) => {
+        return state.status.isFetchingExperimentHeadersList;
     }
 }

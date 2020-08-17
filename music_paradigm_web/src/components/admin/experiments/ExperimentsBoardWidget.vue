@@ -1,9 +1,11 @@
 <template>
   <div id="experiments-workshop" class="widget widget-box widget-bg">
-    <!-- TODO: FIX THE BUTTON HERE1111111111111111111111111111111 -->
-    <button v-on:click="handleRefresh" class="widget-button blue"> Refresh </button>
-    <div class="widget-table-context">
-      <table class="widget-table">
+    <div class="options-position">
+      <button v-on:click="handleRefresh" class="widget-button blue">Refresh</button>
+    </div>
+    <div class="board-position widget-table-context">
+      <loader v-if="isListLoading" class="loader"></loader>
+      <table v-else class="widget-table">
         <colgroup>
           <col span="1" style="width: 10%;" />
           <col span="1" style="width: 20%;" />
@@ -50,15 +52,25 @@
 <script>
 import "@/styles/widgetTemplate.css";
 import { mapActions, mapGetters } from "vuex";
+import LoaderCircular from "@/components/LoaderCircular.vue";
 
 export default {
   name: "ExperimentsWorkshopWidget",
-  components: {},
+  components: {
+    loader: LoaderCircular,
+  },
   data() {
     return {};
   },
   computed: {
-    ...mapGetters("experiments", ["experimentsHeadersList", "selectedId"]),
+    ...mapGetters("experiments", [
+      "isFetchingExperimentHeadersList",
+      "experimentsHeadersList",
+      "selectedId",
+    ]),
+    isListLoading() {
+      return this.isFetchingExperimentHeadersList;
+    },
   },
   methods: {
     ...mapActions("experiments", [
@@ -87,4 +99,32 @@ export default {
 </script>
 
 <style scoped>
+.options-position {
+  grid-area: options;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.board-position {
+  grid-area: board;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.widget {
+  grid-template-areas:
+    "options"
+    "board";
+}
+
+.options-position > * {
+  margin: 5px 0px;
+}
+
+.loader {
+  width: 500px;
+  height: 500px;
+}
 </style>
