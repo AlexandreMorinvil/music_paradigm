@@ -94,8 +94,8 @@
     background-color: rgb(15, 15, 15);
     width: 100%;
     height: 750px;
-    display: inline-block;
-    overflow-y: scroll;
+    display: block;
+    /* overflow-y: scroll; */
   }
   
   .widget-table-context table,
@@ -140,14 +140,15 @@
   
   .widget-table-context thead > tr {
     background-color: inherit;
+    display: block;
   }
   
   .widget-table-context th {
-    background-color: inherit;
-    padding: 10px;
+    /* background-color: inherit;
+    padding: 0px;
     text-align: center;
     position: sticky;
-    top: 0;
+    top: 0; */
   }
   
   .widget-table-context td {

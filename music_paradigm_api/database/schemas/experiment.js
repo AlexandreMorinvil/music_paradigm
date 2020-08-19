@@ -14,6 +14,12 @@ const schema = new Schema(
         timeLimitInSeconds: { type: Number, default: 0 },
         logFlag: { type: Boolean, default: true },
         successesForSkip: { type: Number, default: 0 },
+        variable: [
+            {
+                name: String,
+                values: []
+            }
+        ],
         flow: {
             required: true,
             default: [],
@@ -55,7 +61,7 @@ const schema = new Schema(
 schema.index({ "group": 1, "name": 1, "version": 1 }, { unique: true });
 
 // Middleeare
-schema.pre("save", function() {
+schema.pre("save", function () {
     this.name = this.name.toLowerCase().trim();
     this.group = this.graphLookup.toLowerCase().trim();
 });

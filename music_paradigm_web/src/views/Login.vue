@@ -56,7 +56,7 @@ export default {
   },
   computed: {
     ...mapState(["alert"]),
-    ...mapState("account", ["status", "user"]),
+    ...mapState("account", ["status", "user"]), // TODO: Take the state away
     hasUsernameError() {
       return (
         (this.hasAttemptedSubmit || this.hasFocusedOnUsername) && !this.username
