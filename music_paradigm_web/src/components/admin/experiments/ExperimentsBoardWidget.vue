@@ -113,11 +113,11 @@ export default {
   align-items: center;
 }
 
-/* .widget {
+.widget {
   grid-template-areas:
     "options"
     "board";
-} */
+}
 
 .options-position > * {
   margin: 5px 0px;

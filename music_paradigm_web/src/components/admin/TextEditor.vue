@@ -116,7 +116,7 @@ export default {
       return this.$refs.cmEditor.codemirror;
     },
     textSizeFactorCSSvariable() {
-      return "--textSizeFactor: " + this.textSizeFactor;
+      return "--textSizeFactor: " + this.textSizeFactor + ";";
     },
   },
   beforeMount() {
@@ -130,7 +130,15 @@ export default {
 </script>
 
 <style scoped>
-/* .CodeMirror {} */
+.CodeMirror {
+  position: relative !important;
+  z-index: 0 !important;
+}
+
+.CodeMirror pre {
+  position: relative !important;
+  z-index: 0 !important;
+}
 
 .text-editor {
   font-size: calc(0.6em * var(--textSizeFactor));

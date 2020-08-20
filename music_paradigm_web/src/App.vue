@@ -93,6 +93,7 @@ body {
   grid-area: header;
   position: fixed;
   top: 0;
+  z-index: 1000;
 }
 
 .app-main-position {
