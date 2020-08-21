@@ -144,11 +144,11 @@
   }
   
   .widget-table-context th {
-    /* background-color: inherit;
+    background-color: inherit;
     padding: 0px;
     text-align: center;
     position: sticky;
-    top: 0; */
+    top: 0;
   }
   
   .widget-table-context td {
