@@ -100,23 +100,23 @@ export default {
 
 <style scoped>
 .options-position {
-  grid-area: options;
+  /* grid-area: options; */
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
 
 .board-position {
-  grid-area: board;
-  display: flex;
+  /* grid-area: board; */
+  /* display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
 }
 
 .widget {
-  grid-template-areas:
+  /* grid-template-areas:
     "options"
-    "board";
+    "board"; */
 }
 
 .options-position > * {
