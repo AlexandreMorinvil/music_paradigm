@@ -6,14 +6,14 @@
     <div class="board-position widget-table-context">
       <loader v-if="isListLoading" class="loader"></loader>
       <table v-else class="widget-table">
-        <colgroup>
+        <!-- <colgroup>
           <col span="1" style="width: 10%;" />
           <col span="1" style="width: 20%;" />
           <col span="1" style="width: 20%;" />
           <col span="1" style="width: 10%;" />
           <col span="1" style="width: 20%;" />
           <col span="1" style="width: 20%;" />
-        </colgroup>
+        </colgroup> -->
 
         <thead>
           <tr>

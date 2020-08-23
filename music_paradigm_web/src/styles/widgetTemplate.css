@@ -98,7 +98,7 @@
     /* overflow-y: scroll; */
   }
   
-  .widget-table-context table,
+  /* .widget-table-context table,
   .widget-table-context th,
   .widget-table-context td {
     border-collapse: collapse;
@@ -109,7 +109,7 @@
     width: 100%;
   }
   
-  .widget-table-context thead {
+  .widget-table-context > thead {
     background-color: rgb(25, 25, 30);
     font-size: 0.9em;
     overflow-y: auto;
@@ -154,4 +154,4 @@
   .widget-table-context td {
     padding: 10px;
     text-align: center;
-  }
+  } */
