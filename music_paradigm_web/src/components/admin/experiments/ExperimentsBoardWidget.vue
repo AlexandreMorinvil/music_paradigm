@@ -6,14 +6,14 @@
     <div class="board-position widget-table-context">
       <loader v-if="isListLoading" class="loader"></loader>
       <table v-else class="widget-table">
-        <!-- <colgroup>
+        <colgroup>
           <col span="1" style="width: 10%;" />
           <col span="1" style="width: 20%;" />
           <col span="1" style="width: 20%;" />
           <col span="1" style="width: 10%;" />
           <col span="1" style="width: 20%;" />
           <col span="1" style="width: 20%;" />
-        </colgroup> -->
+        </colgroup>
 
         <thead>
           <tr>
@@ -100,27 +100,21 @@ export default {
 
 <style scoped>
 .options-position {
-  /* grid-area: options; */
+  grid-area: options;
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
 }
 
 .board-position {
-  /* grid-area: board; */
-  /* display: flex;
+  grid-area: board;
+  display: flex;
   justify-content: center;
-  align-items: center; */
 }
 
 .widget {
-  /* grid-template-areas:
+  grid-template-areas:
     "options"
-    "board"; */
-}
-
-.options-position > * {
-  margin: 5px 0px;
+    "board";
 }
 
 .loader {
