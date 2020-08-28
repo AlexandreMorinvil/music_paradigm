@@ -44,7 +44,7 @@ function create(req, res, next) {
 }
 
 function update(req, res, next) {
-    service.create(req.params.id, req.body)
+    service.update(req.params.id, req.body)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());

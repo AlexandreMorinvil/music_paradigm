@@ -18,6 +18,14 @@ export default {
         state.status.isCreating = false;
     },
 
+    indicateUpdateRequest(state) {
+        state.status.isUpdating = true;
+    },
+
+    indicateUpdateRequestEnd(state) {
+        state.status.isUpdating = false;
+    },
+
     indicateHasCompiledEdition(state) {
         state.status.hasCompiledEdition = true;
     },

@@ -58,9 +58,9 @@ async function update(id, description) {
         if (!experiment) throw new Error('Experiment to update not found');
 
         // Update the experiment
-        experiment = {};
-        Object.assign(experiment, description);
-        return experiment.save();
+        await experiment.updateDescription(description);
+        await experiment.save();
+        return experiment.getDefinition();
     }
     catch (err) {
         switch (err.code) {

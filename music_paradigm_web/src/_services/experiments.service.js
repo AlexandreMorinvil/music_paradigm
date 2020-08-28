@@ -33,6 +33,15 @@ const create = function (experiment) {
     return fetch(url.experiments(""), requestOptions).then(handleResponse);
 }
 
+const update = function (id, experiment) {
+    const requestOptions = {
+        method: 'PUT',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(experiment)
+    };
+    return fetch(url.experiments(id), requestOptions).then(handleResponse);
+}
+
 const handleResponse = function (reponse) {
     return defaultResponseHandler(reponse);
 }
@@ -41,5 +50,6 @@ export const experimentService = {
     validateExperiment,
     getListAllHeaders,
     getDefinition,
-    create
+    create,
+    update
 };

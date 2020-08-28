@@ -54,7 +54,7 @@
     </div>
 
     <div class="update-position">
-      <button v-on:click="notEmplementedYet" class="widget-button blue">Update</button>
+      <button v-on:click="submitExperimentToUpdate" class="widget-button blue">Update</button>
       <button v-on:click="notEmplementedYet" class="widget-button red">Delete</button>
     </div>
   </div>
@@ -77,7 +77,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("experiments", ["experimentEdited", "experimentSelected"]),
+    ...mapGetters("experiments", [
+      "experimentEdited",
+      "experimentSelected",
+      "selectedId",
+    ]),
     editionContent() {
       return this.$refs.codeEditor.code;
     },
@@ -96,6 +100,7 @@ export default {
       "unsetSelectionExperiment",
       "attemptExperimentCompilation",
       "createExperiment",
+      "updateExperiment",
     ]),
     setEditorContent(textContent) {
       this.$refs.codeEditor.setValue(textContent);
@@ -105,6 +110,12 @@ export default {
     },
     submitExperimentToCreate() {
       this.createExperiment(this.experimentEdited);
+    },
+    submitExperimentToUpdate() {
+      this.updateExperiment({
+        id: this.selectedId,
+        experiment: this.experimentEdited,
+      });
     },
     handleCompilation() {
       const experimentObject = this.convertEditorTextToObject();

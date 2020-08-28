@@ -4,6 +4,7 @@ export default {
     status: {
         isFetchingExperimentHeadersList: false,
         isCreating: false,
+        isUpdating: false,
         hasCompiledEdition: false,
         hasSelectedExperiment: false,
         hasExperimentsHeaderList: false

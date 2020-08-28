@@ -94,6 +94,17 @@ schema.methods.getDefinition = async function () {
     return experimentDefinition;
 };
 
+schema.methods.updateDescription = async function (description) {
+    const oldDescription = await this.getDefinition();
+    for (var attribute in oldDescription)
+        if (oldDescription.hasOwnProperty(attribute))
+            delete this[attribute];
+    console.log(this);
+    Object.assign(this, description);
+    console.log(this);
+    return this;
+};
+
 const model = mongoose.model('Experiment', schema);
 
 module.exports = {
