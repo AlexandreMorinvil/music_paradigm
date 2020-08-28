@@ -26,6 +26,14 @@ export default {
         state.status.isUpdating = false;
     },
 
+    indicateDeleteRequest(state) {
+        state.status.isDeleting = true;
+    },
+
+    indicateDeleteRequestEnd(state) {
+        state.status.isDeleting = false;
+    },
+
     indicateHasCompiledEdition(state) {
         state.status.hasCompiledEdition = true;
     },

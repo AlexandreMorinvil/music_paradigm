@@ -13,6 +13,8 @@ router.post('/',                jwtAuthorize(role.admin), create);
 
 router.put('/:id',              jwtAuthorize(role.admin), update);
 
+router.delete('/:id',           jwtAuthorize(role.admin), _delete);
+
 module.exports = router;
 
 function getListAllHeaders(req, res, next) {
@@ -50,21 +52,9 @@ function update(req, res, next) {
         .finally(() => next());
 }
 
-
-// // routes
-
-// router.delete('/:id',   jwtAuthorize(role.admin),   _delete);
-
-// module.exports = router;
-
-// function getCurrent(req, res, next) {
-//     service.getById(req.user.sub)
-//         .then(user => user ? res.json(user) : res.sendStatus(404))
-//         .catch(err => next(err));
-// }
-
-// function _delete(req, res, next) {
-//     service.delete(req.params.id)
-//         .then(() => res.json({}))
-//         .catch(err => next(err));
-// }
+function _delete(req, res, next) {
+    service.delete(req.params.id)
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}

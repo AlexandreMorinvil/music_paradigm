@@ -118,4 +118,22 @@ export default {
                 commit('indicateUpdateRequestEnd');
             });
     },
+
+    deleteExperiment({ commit, dispatch }, id) {
+        commit('indicateDeleteRequest');
+        experimentService.delete(id)
+            .then(
+                () => {
+                    commit('unsetSelectedExperiment');
+                    dispatch('alert/setSuccessAlert', "Experiment deletion sucessful", { root: true });
+                    dispatch('fetchAllExperimentsHeaders');
+                },
+                error => {
+                    dispatch('alert/setErrorAlert', error.message, { root: true });
+                }
+            )
+            .finally(() => {
+                commit('indicateDeleteRequestEnd');
+            });
+    },
 }

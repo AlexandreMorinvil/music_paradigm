@@ -9,7 +9,7 @@ module.exports = {
     getById,
     getDescriptionFromId,
     update,
-    // delete: _delete
+    delete: _delete
 };
 
 async function getListAllHeaders() {
@@ -71,6 +71,20 @@ async function update(id, description) {
         }
     }
 
+}
+
+async function _delete(id) {
+    try {
+        // Retreive the experiemtn to update
+        const experiment = await Experiment.findById(id);
+        if (!experiment) throw new Error('Experiment to delete not found');
+
+        // Remove the experiment
+        return await experiment.remove();
+    }
+    catch (err) {
+        throw err;
+    }
 }
 
 

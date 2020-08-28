@@ -5,6 +5,7 @@ export default {
         isFetchingExperimentHeadersList: false,
         isCreating: false,
         isUpdating: false,
+        isDeleting: false,
         hasCompiledEdition: false,
         hasSelectedExperiment: false,
         hasExperimentsHeaderList: false

@@ -55,7 +55,7 @@
 
     <div class="update-position">
       <button v-on:click="submitExperimentToUpdate" class="widget-button blue">Update</button>
-      <button v-on:click="notEmplementedYet" class="widget-button red">Delete</button>
+      <button v-on:click="submitExperimentToDelete" class="widget-button red">Delete</button>
     </div>
   </div>
 </template>
@@ -101,6 +101,7 @@ export default {
       "attemptExperimentCompilation",
       "createExperiment",
       "updateExperiment",
+      "deleteExperiment"
     ]),
     setEditorContent(textContent) {
       this.$refs.codeEditor.setValue(textContent);
@@ -116,6 +117,9 @@ export default {
         id: this.selectedId,
         experiment: this.experimentEdited,
       });
+    },
+    submitExperimentToDelete() {
+      this.deleteExperiment(this.selectedId);
     },
     handleCompilation() {
       const experimentObject = this.convertEditorTextToObject();

@@ -42,6 +42,14 @@ const update = function (id, experiment) {
     return fetch(url.experiments(id), requestOptions).then(handleResponse);
 }
 
+const _delete = function (id) {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+    };
+    return fetch(url.experiments(id), requestOptions).then(handleResponse);
+}
+
 const handleResponse = function (reponse) {
     return defaultResponseHandler(reponse);
 }
@@ -51,5 +59,6 @@ export const experimentService = {
     getListAllHeaders,
     getDefinition,
     create,
-    update
+    update,
+    delete: _delete
 };
