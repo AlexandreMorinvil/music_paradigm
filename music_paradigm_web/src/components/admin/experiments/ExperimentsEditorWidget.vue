@@ -12,7 +12,7 @@
 
     <div class="selection-buttons-position">
       <button v-on:click="handleCopying" class="widget-button blue">Copy to Editor</button>
-      <button v-on:click="notEmplementedYet" class="widget-button blue">Unselect</button>
+      <button v-on:click="handleUnselection" class="widget-button blue">Unselect</button>
     </div>
 
     <div class="editor-position editor-size-fix">
@@ -93,6 +93,7 @@ export default {
     ...mapActions("experiments", [
       "compileExperiment",
       "copySelectionToEdition",
+      "unsetSelectionExperiment",
       "attemptExperimentCompilation",
       "createExperiment",
     ]),
@@ -126,6 +127,9 @@ export default {
     },
     handleCopying() {
       this.copySelectionToEdition();
+    },
+    handleUnselection() {
+      this.unsetSelectionExperiment();
     },
     handleUploadExperiment(event) {
       const input = event.target;

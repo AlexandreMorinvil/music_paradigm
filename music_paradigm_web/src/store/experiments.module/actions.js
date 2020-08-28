@@ -52,6 +52,9 @@ export default {
         commit('setEditedExperiment', getters.experimentSelected);
     },
 
+    unsetSelectionExperiment({ commit }) {
+        commit('unsetSelectedExperiment');
+    },
 
     compileExperiment({ commit, dispatch }, experiment) {
         experimentService.validateExperiment(experiment).then(

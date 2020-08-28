@@ -1,3 +1,5 @@
+import { validator } from "@/_helpers";
+
 export default {
     // Status Updates
     indicateFetchingExperimentList(state) {
@@ -31,6 +33,11 @@ export default {
         state.selection._id = _id;
         Object.assign(state.selection.content, experimentWithoutID);
         delete state.selection.content._id;
+    },
+
+    unsetSelectedExperiment(state) {
+        state.selection._id = null;
+        state.selection.content = validator.getMinimalValidExperimentStructure();
     },
 
     setEditedExperiment(state, experiment) {
