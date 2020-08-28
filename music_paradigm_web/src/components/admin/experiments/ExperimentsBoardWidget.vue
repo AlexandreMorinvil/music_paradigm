@@ -6,14 +6,6 @@
     <div class="board-position widget-table-context">
       <loader v-if="isListLoading" class="loader"></loader>
       <table v-else class="widget-table">
-        <colgroup>
-          <col span="1" style="width: 10%;" />
-          <col span="1" style="width: 20%;" />
-          <col span="1" style="width: 20%;" />
-          <col span="1" style="width: 10%;" />
-          <col span="1" style="width: 20%;" />
-          <col span="1" style="width: 20%;" />
-        </colgroup>
 
         <thead>
           <tr>
@@ -37,10 +29,16 @@
             <td>{{ header.name }}</td>
             <td>{{ header.version }}</td>
             <td>{{ header.folder }}</td>
-            <td>
-              <button v-on:click="handleeSelectToEditor(header._id)">&#xf044; Edit</button>
-              <button v-on:click="handleSelectExperiment(header._id)">Select</button>
-              <button v-on:click="handleStart(header._id)">Run</button>
+            <td class="experiment-actions-buttons">
+              <button
+                v-on:click="handleSelectExperiment(header._id)"
+                class="widget-button small blue"
+              >Select</button>
+              <button
+                v-on:click="handleeSelectToEditor(header._id)"
+                class="widget-button small orange"
+              >Edit</button>
+              <button v-on:click="handleStart(header._id)" class="widget-button small green">Run</button>
             </td>
           </tr>
         </tbody>
@@ -120,5 +118,13 @@ export default {
 .loader {
   width: 500px;
   height: 500px;
+}
+
+.experiment-actions-buttons > * {
+  min-width: auto;
+}
+
+.experiment-actions-buttons > * {
+  margin: 0 5px;
 }
 </style>

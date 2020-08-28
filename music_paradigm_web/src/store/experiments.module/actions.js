@@ -44,14 +44,13 @@ export default {
                 dispatch('experiment/initExperiment', null, { root: true });
             },
             error => {
-                dispatch('alert/setErrorAlert', `Compilation failed : ${error.message}`, { root: true });
+                dispatch('alert/setErrorAlert', `Failed to start the experiment: ${error.message}`, { root: true });
             })
     },
 
-    // copySelectionToEdition({ commit, getters }) {
-    //     // commit('setEditedExperiment', getters.experimentSelected);
-    //     // commit('indicateHasCompiledEdition');
-    // },
+    copySelectionToEdition({ commit, getters }) {
+        commit('setEditedExperiment', getters.experimentSelected);
+    },
 
 
     compileExperiment({ commit, dispatch }, experiment) {
