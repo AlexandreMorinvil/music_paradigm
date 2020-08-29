@@ -132,11 +132,10 @@ export default {
       this.refresh();
     },
     refresh() {
-      // FIXME : When transitioning to fullscreen mode, the scroll bar does not appear before a character is written
-      // FIXME : When changing the size of the characters, the first written character appear not at the expected place
-      // Hopefully, the refresh can help fix the to issues above mentioned
-      this.codemirror.refresh();
-      this.codemirror.setSize(null, null);
+      setTimeout(() => {
+        this.codemirror.refresh();
+        this.codemirror.setSize(null, null);
+      }, 10);
     },
   },
   beforeMount() {

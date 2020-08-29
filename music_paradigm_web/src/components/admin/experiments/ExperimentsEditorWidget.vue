@@ -18,11 +18,7 @@
     <div class="editor-position editor-size-fix">
       <div class="text-editor-label">Experiment Editor : {{editionStatus}}</div>
       <div class="editor-size-fix">
-        <code-editor
-          v-on:ready="writeEditionToEditorChanges"
-          :readOnly="false"
-          ref="codeEditor"
-        />
+        <code-editor v-on:ready="writeEditionToEditorChanges" :readOnly="false" ref="codeEditor" />
       </div>
     </div>
 
@@ -99,7 +95,7 @@ export default {
       "attemptExperimentCompilation",
       "createExperiment",
       "updateExperiment",
-      "deleteExperiment"
+      "deleteExperiment",
     ]),
     setEditorContent(textContent) {
       this.$refs.codeEditor.setValue(textContent);
@@ -111,13 +107,23 @@ export default {
       this.createExperiment(this.experimentEdited);
     },
     submitExperimentToUpdate() {
-      this.updateExperiment({
-        id: this.selectedId,
-        experiment: this.experimentEdited,
-      });
+      const answer = window.confirm(
+        "Changing this experiment will affect all the users who will do this experiment in the future. Are your sure you want to modify the experiment?"
+      );
+      if (answer) {
+        this.updateExperiment({
+          id: this.selectedId,
+          experiment: this.experimentEdited,
+        });
+      }
     },
     submitExperimentToDelete() {
-      this.deleteExperiment(this.selectedId);
+      const answer = window.confirm(
+        "Erasing this experiment will affect all the curriculums that might be including it. Are your sure you want to delete the experiment?"
+      );
+      if (answer) {
+        this.deleteExperiment(this.selectedId);
+      }
     },
     handleCompilation() {
       const experimentObject = this.convertEditorTextToObject();
