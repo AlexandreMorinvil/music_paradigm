@@ -19,7 +19,6 @@
       <div class="text-editor-label">Experiment Editor : {{editionStatus}}</div>
       <div class="editor-size-fix">
         <code-editor
-          class="text-editor"
           v-on:ready="writeEditionToEditorChanges"
           :readOnly="false"
           ref="codeEditor"
@@ -31,7 +30,6 @@
       <div class="text-editor-label">Selected Experiment : {{selectionStatus}}</div>
       <div class="editor-size-fix">
         <code-editor
-          class="text-editor"
           v-on:ready="writeSelectionToReferenceChanges"
           :readOnly="true"
           ref="codeReference"
@@ -270,12 +268,6 @@ export default {
     "edition-btn selection-btn"
     "editor reference"
     "create update";
-}
-
-.text-editor {
-  width: 100%;
-  height: 100%;
-  z-index: inherit;
 }
 
 .text-editor-label {
