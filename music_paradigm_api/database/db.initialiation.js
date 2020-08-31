@@ -25,12 +25,5 @@ async function createDefaultAdmin() {
             }));
         console.log(`A default admin was created with username : "${defaultAdminUsername}" as no admin existed.`);
     }
-
-    test();
-
     return;
-}
-
-const test = function() {
-    console.log("TEST");
 }

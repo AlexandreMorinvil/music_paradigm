@@ -15,15 +15,15 @@
       <button v-on:click="handleUnselection" class="widget-button blue">Unselect</button>
     </div>
 
-    <div class="editor-position editor-size-fix">
-      <div class="text-editor-label">Experiment Editor : {{editionStatus}}</div>
+    <div class="editor-position code-context">
+      <div class="text-editor-label">Editor : {{editionStatus}}</div>
       <div class="editor-size-fix">
         <code-editor v-on:ready="writeEditionToEditorChanges" :readOnly="false" ref="codeEditor" />
       </div>
     </div>
 
-    <div class="reference-position">
-      <div class="text-editor-label">Selected Experiment : {{selectionStatus}}</div>
+    <div class="reference-position code-context">
+      <div class="text-editor-label">Selection : {{selectionStatus}}</div>
       <div class="editor-size-fix">
         <code-editor
           v-on:ready="writeSelectionToReferenceChanges"
@@ -67,7 +67,7 @@ export default {
   },
   data() {
     return {
-      isCodeCompiled: false,
+      isEditorModified: false
     };
   },
   computed: {
@@ -75,12 +75,16 @@ export default {
       "experimentEdited",
       "experimentSelected",
       "selectedId",
+      "hasCompiledEdition"
     ]),
     editionContent() {
       return this.$refs.codeEditor.code;
     },
     editionStatus() {
-      return "Edition Status (TODO)";
+      let status = "EMPTY";
+      if (this.hasCompiledEdition) status = "COMPILED";
+      if (this.isEditorModified) status = "EDITED";
+      return status;
     },
     selectionStatus() {
       return "Selection Status (TODO)";
@@ -90,9 +94,10 @@ export default {
     ...mapActions("alert", ["setErrorAlert", "setInformationAlert"]),
     ...mapActions("experiments", [
       "compileExperiment",
+      "attemptExperimentCompilation",
+      "clearCompiledExperiment",
       "copySelectionToEdition",
       "unsetSelectionExperiment",
-      "attemptExperimentCompilation",
       "createExperiment",
       "updateExperiment",
       "deleteExperiment",
@@ -128,11 +133,9 @@ export default {
     handleCompilation() {
       const experimentObject = this.convertEditorTextToObject();
       this.compileExperiment(experimentObject);
-      this.isCodeCompiled = true;
     },
     handleReversion() {
       this.setEditorContent(JSON.stringify(this.experimentEdited, null, "\t"));
-      this.isCodeCompiled = false;
     },
     handleClearance() {
       this.setEditorContent(
@@ -142,7 +145,6 @@ export default {
           "\t"
         )
       );
-      this.isCodeCompiled = false;
     },
     handleCopying() {
       this.copySelectionToEdition();

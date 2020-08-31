@@ -7,8 +7,6 @@ export default {
         isUpdating: false,
         isDeleting: false,
         hasCompiledEdition: false,
-        hasSelectedExperiment: false,
-        hasExperimentsHeaderList: false
     },
 
     edition: validator.getMinimalValidExperimentStructure(),

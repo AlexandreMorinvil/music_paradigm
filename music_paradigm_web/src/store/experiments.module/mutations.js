@@ -62,6 +62,10 @@ export default {
         delete state.edition._id;
     },
 
+    clearCompiledExperiment(state) {
+        state.edition = validator.getMinimalValidExperimentStructure();
+    },
+
     setHeadersList(state, experimentsHeadersLst) {
         state.experimentsHeadersList = experimentsHeadersLst;
     }

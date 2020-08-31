@@ -195,8 +195,18 @@ const validateAttributeType = function (key, value) {
 
     return true;
 }
+
+const isExperimentValid = function (experiment) {
+    try {
+        validateExperiment(experiment);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
 export default {
     getMinimalValidExperimentStructure,
     validateExperiment,
-    validateBlock
+    validateBlock,
+    isExperimentValid
 }

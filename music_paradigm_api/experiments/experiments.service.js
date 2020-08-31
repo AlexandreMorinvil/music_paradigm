@@ -86,9 +86,3 @@ async function _delete(id) {
         throw err;
     }
 }
-
-
-// async function _delete(id) {
-//     await timeout.dbQuery(
-//         Collection.findByIdAndRemove(id));
-// }

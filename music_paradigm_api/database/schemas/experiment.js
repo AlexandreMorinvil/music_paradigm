@@ -99,9 +99,7 @@ schema.methods.updateDescription = async function (description) {
     for (var attribute in oldDescription)
         if (oldDescription.hasOwnProperty(attribute))
             delete this[attribute];
-    console.log(this);
     Object.assign(this, description);
-    console.log(this);
     return this;
 };
 

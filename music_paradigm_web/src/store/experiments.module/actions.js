@@ -60,7 +60,6 @@ export default {
         experimentService.validateExperiment(experiment).then(
             () => {
                 commit('setEditedExperiment', experiment);
-                commit('indicateHasCompiledEdition');
                 dispatch('alert/setInformationAlert', "The experiment was compiled", { root: true });
             },
             error => {
@@ -73,12 +72,15 @@ export default {
         experimentService.validateExperiment(experiment).then(
             () => {
                 commit('setEditedExperiment', experiment);
-                commit('indicateHasCompiledEdition');
                 dispatch('alert/setInformationAlert', "The experiment is valid and was compiled", { root: true });
             },
             error => {
                 dispatch('alert/setWarningAlert', `The experiment could not be compiled : ${error.message}`, { root: true });
             })
+    },
+
+    clearCompiledExperiment({ commit }) {
+        commit('clearCompiledExperiment');
     },
 
     createExperiment({ commit, dispatch }, experiment) {

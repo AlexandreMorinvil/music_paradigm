@@ -1,3 +1,5 @@
+import { validator } from "@/_helpers";
+
 export default {
     experimentEdited: (state) => {
         return state.edition;
@@ -17,7 +19,7 @@ export default {
 
     // Status
     hasCompiledEdition: (state) => {
-        return state.status.hasCompiledEdition;
+        return validator.isExperimentValid(state.edition);
     },
 
     isFetchingExperimentHeadersList: (state) => {
