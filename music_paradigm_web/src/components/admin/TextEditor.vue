@@ -187,14 +187,14 @@ export default {
   width: 100vw;
   height: calc(100vh - 56px);
   z-index: 10;
-  overflow: scroll;
 }
 
 .fullscreen-editor {
   z-index: 10;
-  height: calc(
-    100% - 15px
-  ); /* Purposely leaving a small space for the lower scroll bar */
+  /* Purposely leaving a small space for the right side scroll bar to not be hidden by the scroll bar of the page */
+  width: calc(100% - 15px);
+  /* Purposely leaving a small space for the lower scroll bar */
+  height: calc(100% - 30px);
 }
 
 .fullscreen-buttons > .text-editor-button {
