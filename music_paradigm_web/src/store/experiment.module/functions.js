@@ -340,13 +340,13 @@ const updateStateContent = function (currentState, flow, cursor, isInitialized) 
     Object.assign(isInitialized, { content: false });
 }
 
-const forceEndState = function (currentState, isInitialized) {
+const forceEndState = function (currentState, isInitialized, message) {
     
     // We update the route
     routerNavigation.moveToState("end");
 
     // We render the state display as empty
-    currentState.content.text = "";
+    currentState.content.text = message || "";
     currentState.content.pictureName = "";
     currentState.content.interactivePiano = false;
 
@@ -360,7 +360,7 @@ const moveCursorNext = function (flow, cursor, isInitialized) {
 }
 
 const updateState = function (currentState, flow, cursor, isInitialized, generalSettings) {
-    if (cursor.current.isBeyondEnd) forceEndState(currentState, flow, cursor, isInitialized);
+    if (cursor.current.isBeyondEnd) forceEndState(currentState, isInitialized);
     else {
         if (!isInitialized.route) updateRoute(currentState, flow, cursor, isInitialized);
         if (!isInitialized.state) updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings);
@@ -374,6 +374,7 @@ export default {
     assignCursor,
     moveCursorNext,
     updateCursorNavigation,
-    updateState
+    updateState,
+    forceEndState
 }
 // TODO: Instoring a break from the loop mechanism (end of loop parameter)

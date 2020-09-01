@@ -39,14 +39,13 @@
         :isSpaceBarPressed="isSpaceBarPressed"
         v-on:experimentReady="displayFirstStep"
         v-on:stateEnded="navigateExperiment"
-        v-on:experimentEnded="concludeExperiment"
+        v-on:experimentEnded="endExperiment"
       />
     </div>
   </div>
 </template>
 
 <script>
-import Vue from "vue";
 import ExperimentPiano from "@/components/ExperimentPiano.vue";
 import ExperimentTimer from "@/components/ExperimentTimer.vue";
 import { mapActions, mapGetters } from "vuex";
@@ -83,7 +82,13 @@ export default {
     },
   },
   methods: {
-    ...mapActions("experiment", ["updateState", "goNextStep", "clearState"]),
+    ...mapActions("experiment", [
+      "updateState",
+      "goNextStep",
+      "clearState",
+      "endExperimentByTimeout",
+      "concludeExperiment"
+    ]),
     ...mapActions("piano", [
       "loadMidiFile",
       "resetPlayedNotesLogs",
@@ -113,7 +118,7 @@ export default {
       }
     },
     handleTimesUp() {
-      console.log("Times up");
+      this.endExperimentByTimeout();
     },
     displayFirstStep() {
       this.updateState();
@@ -123,9 +128,9 @@ export default {
       this.resetPlayedNotesLogs();
       this.goNextStep();
     },
-    concludeExperiment() {
-      (this.needsConfirmationToLeave = false),
-        console.log("We are leaving the experiment");
+    endExperiment() {
+      this.needsConfirmationToLeave = false;
+      this.concludeExperiment();
     },
     handleSpaceBarPress(pressedKey) {
       if (pressedKey.key === " ") this.isSpaceBarPressed = true;
@@ -155,7 +160,7 @@ export default {
   beforeRouteLeave(to, from, next) {
     // We need to verify that the route departure is not a redirection, otherwise
     // a confirmation will be prompted twice (Once before and after the redirection)
-    if (this.needsConfirmationToLeave && !to.hasOwnProperty('redirectedFrom')) {
+    if (this.needsConfirmationToLeave && !to.hasOwnProperty("redirectedFrom")) {
       const answer = window.confirm(
         "Do you really want to leave the experiment in progress?"
       );

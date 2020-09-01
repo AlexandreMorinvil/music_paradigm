@@ -16,5 +16,11 @@ export default {
     },
     goNextStep: ({ commit }) => {
         commit('moveNextStep');
+    },
+    endExperimentByTimeout: ({ commit }) => {
+        commit('endExperimentByTimeout');
+    },
+    concludeExperiment: ({ commit }) => {
+        commit('leaveExperiment');
     }
 }

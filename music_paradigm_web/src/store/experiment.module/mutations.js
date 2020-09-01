@@ -78,5 +78,14 @@ export default {
     moveNextStep: (state) => {
         functions.moveCursorNext(state.flow, state.cursor, state.isInitialized);
         functions.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
+    },
+
+    endExperimentByTimeout: (state) => {
+        const message = "The time limit was reached.\nThe experiment ends here.";
+        functions.forceEndState(state.state, state.isInitialized, message);
+    },
+
+    leaveExperiment: () => {
+        routerNavigation.goToRootPage();
     }
 }
