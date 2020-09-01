@@ -33,47 +33,47 @@ const router = new Router({
       children: [
         {
           path: 'prelude',
-          name: 'prelude',
+          name: 'experiment.prelude',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Prelude.vue')
         },
         {
           path: 'transition',
-          name: 'transition',
+          name: 'experiment.transition',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Transition.vue')
         },
         {
           path: 'instruction',
-          name: 'instruction',
+          name: 'experiment.instruction',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Instruction.vue')
         },
         {
           path: 'cue',
-          name: 'cue',
+          name: 'experiment.cue',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Cue.vue')
         },
         {
           path: 'playing',
-          name: 'playing',
+          name: 'experiment.playing',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Playing.vue')
         },
         {
           path: 'video',
-          name: 'video',
+          name: 'experiment.video',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Video.vue')
         },
         {
           path: 'feedback',
-          name: 'feedback',
+          name: 'experiment.feedback',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Feedback.vue')
         },
         {
           path: 'rest',
-          name: 'rest',
+          name: 'experiment.rest',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/Rest.vue')
         },
         {
           path: 'end',
-          name: 'end',
+          name: 'experiment.end',
           component: () => import(/* webpackChunkName: "experiment" */ './views/experiment/End.vue')
         },
       ]
