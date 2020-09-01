@@ -1,11 +1,15 @@
 const state = {
     type: null,
-    message: null
+    message: null,
+    counter: 0 // Used to observe the apparition of new alerts
 };
 
 const getters = {
     hasAlert: (state) => {
         return !!(state.type);
+    },
+    alertCounter: (state) => {
+        return state.counter;
     },
     alertType: (state) => {
         return state.type || "No type";
@@ -37,22 +41,27 @@ const mutations = {
     setSuccessAlert(state, message) {
         state.type = 'success';
         state.message = message;
+        state.counter += 1;
     },    
     setInformationAlert(state, message) {
         state.type = 'information';
         state.message = message;
+        state.counter += 1;
     },
     setWarningAlert(state, message) {
         state.type = 'warning';
         state.message = message;
+        state.counter += 1;
     },
     setErrorAlert(state, message) {
         state.type = 'error';
         state.message = message;
+        state.counter += 1;
     },
     clearAlert(state) {
         state.type = null;
         state.message = null;
+        state.counter += 1;
     }
 };
 

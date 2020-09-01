@@ -69,7 +69,7 @@ export default {
       "currentStateType",
       "nextStateType",
       "midiName",
-      "timeLimitInSeconds",
+      "timeLimitInSeconds"
     ]),
     currentStateIcon() {
       return this.getIconReference(this.currentStateType);

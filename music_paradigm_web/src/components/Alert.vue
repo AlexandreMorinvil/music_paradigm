@@ -21,7 +21,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("alert", ["hasAlert", "alertType", "alertMessage"]),
+    ...mapGetters("alert", ["hasAlert", "alertCounter", "alertType", "alertMessage"]),
     alertTypeClass() {
       switch (this.alertType) {
         case "success":
@@ -51,10 +51,11 @@ export default {
     clearTimeout(this.timeoutUniqueIdentifier);
   },
   watch: {
-    hasAlert: {
+    alertCounter: {
       immediate: true,
       handler: function (value) {
         if (value) {
+          clearTimeout(this.timeoutUniqueIdentifier);
           this.timeoutUniqueIdentifier = setTimeout(
             this.clearAlert,
             this.timeoutInSeconds * 1000
