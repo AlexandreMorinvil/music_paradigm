@@ -60,7 +60,7 @@ export default {
   data() {
     return {
       isSpaceBarPressed: false,
-      pianoDataBus: new Vue(),
+      needsConfirmationToLeave: true,
     };
   },
   computed: {
@@ -84,7 +84,11 @@ export default {
   },
   methods: {
     ...mapActions("experiment", ["updateState", "goNextStep", "clearState"]),
-    ...mapActions("piano", ["loadMidiFile", "resetPlayedNotesLogs", "resetPianoState"]),
+    ...mapActions("piano", [
+      "loadMidiFile",
+      "resetPlayedNotesLogs",
+      "resetPianoState",
+    ]),
     getIconReference(stateType) {
       const iconFileName = "sprites.svg#";
       switch (stateType) {
@@ -120,7 +124,8 @@ export default {
       this.goNextStep();
     },
     concludeExperiment() {
-      console.log("We are leaving the experiment");
+      (this.needsConfirmationToLeave = false),
+        console.log("We are leaving the experiment");
     },
     handleSpaceBarPress(pressedKey) {
       if (pressedKey.key === " ") this.isSpaceBarPressed = true;
@@ -148,14 +153,16 @@ export default {
     },
   },
   beforeRouteLeave(to, from, next) {
-    // TODO: Do that only if we are with isBeyondEnd = true or at the end
-    const answer = window.confirm(
-      "Do you really want to leave the experiment in progress?"
-    );
-    if (answer) {
-      next();
+    // We need to verify that the route departure is not a redirection, otherwise
+    // a confirmation will be prompted twice (Once before and after the redirection)
+    if (this.needsConfirmationToLeave && !to.hasOwnProperty('redirectedFrom')) {
+      const answer = window.confirm(
+        "Do you really want to leave the experiment in progress?"
+      );
+      if (answer) next();
+      else next(false);
     } else {
-      next(false);
+      next();
     }
   },
 };

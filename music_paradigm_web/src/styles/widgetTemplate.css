@@ -135,7 +135,7 @@
 
 .widget-table-context {
     width: 100%;
-    height: 750px;
+    max-height: 750px;
     display: block;
     overflow-y: auto;
   }
