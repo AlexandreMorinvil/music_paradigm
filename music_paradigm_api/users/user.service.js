@@ -1,6 +1,5 @@
 ﻿const bcrypt = require('bcryptjs');
 const db = require('database/db');
-const timeout = require('_helpers/timeout')
 const jwt = require('jwt/jwt');
 const User = db.User;
 
@@ -22,79 +21,102 @@ module.exports = {
  *                              If the authentication fails, it returns null
  */
 async function authenticate({ username, password }) {
+    try {
+        // Fetch user in the database
+        const user = await User.findOne({ username });
+        if (!user) throw new Error;
 
-    // Fetch user in the database
-    const user = await timeout.dbQuery(User.findOne({ username }));
+        // Validate password
+        const { passwordHash, ...userWithoutPasswordHash } = user.toObject();
+        if (!bcrypt.compareSync(password, passwordHash)) throw new Error;
 
-    // Validate username
-    if (user === null) return null;
+        // Create jwt token
+        const token = jwt.generateToken(userWithoutPasswordHash);
 
-    // Validate password
-    const { passwordHash, ...userWithoutPasswordHash } = user.toObject();
-    if (!bcrypt.compareSync(password, passwordHash)) return null;
-
-    // Create jwt token
-    const token = jwt.generateToken(userWithoutPasswordHash);
-
-    return {
-        ...userWithoutPasswordHash,
-        token
-    };
-
+        return {
+            ...userWithoutPasswordHash,
+            token
+        };
+    } catch (err) {
+        if (!err.message)
+            throw new Error("Username or password is incorrect");
+        else
+            throw err;
+    }
 }
 
 async function getAll() {
-    return await timeout.dbQuery(User.find().select('-passwordHash'));
+    try {
+        return await User.find().select('-passwordHash');
+    } catch (err) {
+        throw err;
+    }
 }
 
 async function getById(id) {
-    return await timeout.dbQuery(User.findById(id).select('-passwordHash'));
+    try {
+        return await User.findById(id).select('-passwordHash');
+    } catch (err) {
+        throw err;
+    }
+
 }
 
 async function create(userParam) {
+    try {
+        // Validate the uniqueness of the username
+        const document = await User.findOne({ username: userParam.username });
+        if (document)
+            throw new Error('Username "' + userParam.username + '" is already taken');
 
-    // Validate the uniqueness of the username
-    const document = await timeout.dbQuery(
-        User.findOne({ username: userParam.username }));
-    if (document) {
-        throw 'Username "' + userParam.username + '" is already taken';
-    }
+        // Create the new user
+        const user = new User(userParam);
 
-    // Create the new user
-    const user = new User(userParam);
-
-    // Hash the password
-    if (userParam.password) {
+        // Hash the password
         user.passwordHash = bcrypt.hashSync(userParam.password, 10);
-    }
 
-    // Save the user
-    await timeout.dbQuery(user.save());
+        // Save the user
+        return await user.save();
+    } catch (err) {
+        throw err;
+    }
 }
 
 async function update(id, userParam) {
+    try {
+        // Fetch the user in the database
+        const user = await User.findById(id);
 
-    // Fetch the user in the database
-    const user = await timeout.dbQuery(User.findById(id));
+        // FIXME : Let the database validate the update when saving instead of validating manually
+        // Validate the user
+        if (!user) throw new Error('User not found');
+        if (user.username !== userParam.username && await User.findOne({ username: userParam.username }))
+            throw new Errpr('Username "' + userParam.username + '" is already taken');
 
-    // Validate the user
-    if (!user) throw 'User not found';
-    if (user.username !== userParam.username && await User.findOne({ username: userParam.username })) {
-        throw 'Username "' + userParam.username + '" is already taken';
+        // Hash password if it was entered
+        if (userParam.password)
+            userParam.passwordHash = bcrypt.hashSync(userParam.password, 10);
+
+        // Copy userParam properties to user
+        Object.assign(user, userParam);
+
+        // Save the user
+        return user.save();
+    } catch (err) {
+        throw err;
     }
-
-    // Hash password if it was entered
-    if (userParam.password) {
-        userParam.passwordHash = bcrypt.hashSync(userParam.password, 10);
-    }
-
-    // Copy userParam properties to user
-    Object.assign(user, userParam);
-
-    // Save the user
-    await timeout.dbQuery(user.save());
 }
 
 async function _delete(id) {
-    await timeout.dbQuery(User.findByIdAndRemove(id));
+    try {
+        // Retreive the user to update
+        const user = await User.findById(id);
+        if (!user) throw new Error('User to delete not found');
+
+        // Remove the experiment
+        return await user.remove();
+    } catch (err) {
+        throw err;
+    }
+
 }
