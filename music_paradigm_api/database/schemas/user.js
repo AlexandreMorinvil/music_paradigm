@@ -7,38 +7,52 @@ const progression = require('./curriculum').schemaProgression;
 
 const Schema = mongoose.Schema;
 
-const schema = new Schema({
-    
-    // Creation time of the user
-    createdDate: { type: Date, default: Date.now },
+const schema = new Schema(
+    {
+        // Management data
+        username: { type: String, unique: true, sparse: true },
+        email: { type: String, unique: true, sparse: true },
+        passwordHash: { type: String, required: true },
+        role: { type: String, default: roles.user, enum: ['user', 'admin'] },
+        groups: { type: [String], default: [] },
 
-    // Management data
-    username: { type: String, unique: true, required: true },
-    email: { type: String, unique: true, sparse: true },
-    passwordHash: { type: String, required: true },
-    role: { type: String, default: roles.user, enum: ['user', 'admin'] },
-    groups: { type: [String], default: [] },
+        // Description of the user
+        firstName: { type: String, default: "FirstName" },
+        middleName: { type: String, default: "MiddleName" },
+        lastName: { type: String, default: "LastName" },
 
-    // Description of the user
-    firstName: { type: String, default: "FirstName" },
-    middleName: { type: String, default: "MiddleName" },
-    lastName: { type: String, default: "LastName" },
-
-    //
-    tasks: {
-        curriculums: {
-            type: [curriculum]
-            // TODO: Add the default curriculum. default: {}
+        //
+        tasks: {
+            curriculums: {
+                type: [curriculum],
+                default: []
+            },
+            progression: {
+                type: [progression],
+                default: []
+            }
         },
-        progression: {
-            type: [progression],
-            // TODO: Add the default curriculum. default: {}
+
+        // Creation time of the user
+        lastLogin: { type: Date, default: null },
+    },
+    {
+        strict: false,
+        timestamps: {
+            createdAt: 'createdAt',
+            updatedAt: 'updatedAt'
         }
     }
-});
+);
 
 // Ensure that the virtual properties are also integrated in the schema
 schema.set('toJSON', { virtuals: true });
+
+// Static methods
+schema.statics.getListAllHeaders = function () {
+    return this.find({}, '-tasks')
+        .sort({ role: 1, username: 1 });
+};
 
 // Creating the model
 const model = mongoose.model('User', schema, 'users');

@@ -29,7 +29,7 @@
             <td>{{ header.name }}</td>
             <td>{{ header.version }}</td>
             <td>{{ header.folder }}</td>
-            <td class="experiment-actions-buttons">
+            <td class="widget-table-actions-buttons">
               <button
                 v-on:click="handleSelectExperiment(header._id)"
                 class="widget-button small blue"
@@ -118,13 +118,5 @@ export default {
 .loader {
   width: 500px;
   height: 500px;
-}
-
-.experiment-actions-buttons > * {
-  min-width: auto;
-}
-
-.experiment-actions-buttons > * {
-  margin: 0 5px;
 }
 </style>

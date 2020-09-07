@@ -194,3 +194,8 @@
     padding: 10px;
     text-align: center;
   }
+
+  .widget-table-actions-buttons > * {
+    min-width: auto;
+    margin: 0 5px;
+  }

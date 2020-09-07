@@ -55,7 +55,6 @@ export default {
   watch: {
     // On change of the route, we reevaluate the state of the application
     $route(to) {
-      this.clearAlert();
       let state = "default";
       if (to.matched.some((m) => m.name === "admin")) state = "admin";
       else if (to.matched.some((m) => m.name === "experiment"))

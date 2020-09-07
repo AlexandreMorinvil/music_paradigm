@@ -70,7 +70,6 @@ async function update(id, description) {
                 throw err;
         }
     }
-
 }
 
 async function _delete(id) {

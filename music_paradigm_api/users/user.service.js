@@ -47,7 +47,7 @@ async function authenticate({ username, password }) {
 
 async function getAll() {
     try {
-        return await User.find().select('-passwordHash');
+        return await User.getListAllHeaders();
     } catch (err) {
         throw err;
     }

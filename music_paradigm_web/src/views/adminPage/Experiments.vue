@@ -16,7 +16,7 @@
     <widget-context>
       <template v-slot:title>Board</template>
       <template v-slot:widget>
-        <experiments-board />
+        <experiments-table />
       </template>
     </widget-context>
   </div>
@@ -26,7 +26,7 @@
 import WidgetContext from "@/components/admin/WidgetContext.vue";
 import ExperimentsViewer from "@/components/admin/experiments/ExperimentsViewerWidget.vue";
 import ExperimentsEditor from "@/components/admin/experiments/ExperimentsEditorWidget.vue";
-import ExperimentsBoard from "@/components/admin/experiments/ExperimentsBoardWidget.vue";
+import ExperimentsTable from "@/components/admin/experiments/ExperimentsTableWidget.vue";
 
 export default {
   name: "AdminExperiments",
@@ -34,7 +34,7 @@ export default {
     WidgetContext: WidgetContext,
     experimentsViewer: ExperimentsViewer,
     experimentsEditor: ExperimentsEditor,
-    experimentsBoard: ExperimentsBoard,
+    ExperimentsTable: ExperimentsTable
   },
   data() {
     return {};

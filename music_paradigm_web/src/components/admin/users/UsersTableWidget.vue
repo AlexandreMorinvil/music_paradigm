@@ -6,7 +6,6 @@
     <div class="board-position widget-table-context">
       <loader v-if="isListLoading" class="loader"></loader>
       <table v-else class="widget-table">
-
         <thead>
           <tr>
             <th>#</th>
@@ -20,25 +19,20 @@
 
         <tbody>
           <tr
-            v-for="(header, index) in experimentsHeadersList"
+            v-for="(header, index) in usersHeadersList"
             :key="header._id"
             :class="header._id === selectedId && 'selected'"
           >
-            <td>{{ index }}</td>
-            <td>{{ header.group }}</td>
-            <td>{{ header.name }}</td>
-            <td>{{ header.version }}</td>
-            <td>{{ header.folder }}</td>
-            <td class="experiment-actions-buttons">
+            <td>{{ index + 1 }}</td>
+            <td>{{ header.role }}</td>
+            <td>{{ header.role }}</td>
+            <td>{{ header.role }}</td>
+            <td>{{ header.role }}</td>
+            <td class="widget-table-actions-buttons">
               <button
-                v-on:click="handleSelectExperiment(header._id)"
+                v-on:click="handleSelectUser(header._id)"
                 class="widget-button small blue"
               >Select</button>
-              <button
-                v-on:click="handleeSelectToEditor(header._id)"
-                class="widget-button small orange"
-              >Edit</button>
-              <button v-on:click="handleStart(header._id)" class="widget-button small green">Run</button>
             </td>
           </tr>
         </tbody>
@@ -53,7 +47,7 @@ import { mapActions, mapGetters } from "vuex";
 import LoaderCircular from "@/components/LoaderCircular.vue";
 
 export default {
-  name: "ExperimentsWorkshopWidget",
+  name: " UsersWorkshopWidget",
   components: {
     loader: LoaderCircular,
   },
@@ -61,37 +55,27 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters("experiments", [
-      "isFetchingExperimentHeadersList",
-      "experimentsHeadersList",
+    ...mapGetters("users", [
+      "isFetchingUserHeadersList",
+      "usersHeadersList",
       "selectedId",
     ]),
     isListLoading() {
-      return this.isFetchingExperimentHeadersList;
+      return this.isFetchingUserHeadersList;
     },
   },
   methods: {
-    ...mapActions("experiments", [
-      "fetchAllExperimentsHeaders",
-      "setEditorExperiment",
-      "setSelectionExperiment",
-      "startExperimentQuick",
-    ]),
+    ...mapActions("users", ["fetchAllUsersHeaders", "setSelectedUser"]),
     handleRefresh() {
-      this.fetchAllExperimentsHeaders();
+      this.fetchAllUsersHeaders();
     },
-    handleeSelectToEditor(id) {
-      this.setEditorExperiment(id);
-    },
-    handleSelectExperiment(id) {
-      this.setSelectionExperiment(id);
-    },
-    handleStart(id) {
-      this.startExperimentQuick(id);
-    },
+    handleSelectUser(id) {
+      this.setSelectedUser(id);
+    }
   },
   mounted() {
-    this.fetchAllExperimentsHeaders();
+    console.log("Ça se rend");
+    this.fetchAllUsersHeaders();
   },
 };
 </script>
@@ -118,13 +102,5 @@ export default {
 .loader {
   width: 500px;
   height: 500px;
-}
-
-.experiment-actions-buttons > * {
-  min-width: auto;
-}
-
-.experiment-actions-buttons > * {
-  margin: 0 5px;
 }
 </style>
