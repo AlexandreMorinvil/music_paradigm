@@ -73,8 +73,11 @@
             </div>
           </div>
           <div>
-            <label for="groups">Group(s)</label>
             <div class="form-groups">
+              <div class="form-group-input">
+                <button v-on:click="handleSubmit()" class="widget-button blue">Add</button>
+                <label for="groups">Group(s)</label>
+              </div>
               <div v-for="(group, index) in groups" :key="group" class="form-group-input">
                 <button v-on:click="handleSubmit()" class="widget-button small red">Delete</button>
                 <input
@@ -149,7 +152,7 @@ export default {
     },
     submitExperimentToUpdate() {
       const answer = window.confirm(
-        "Changing this experiment will affect all the users who will do this experiment in the future. Are your sure you want to modify the experiment?"
+        "Are your sure you want to edit the user(s)?"
       );
       if (answer) {
         this.updateExperiment({
@@ -160,7 +163,7 @@ export default {
     },
     submitExperimentToDelete() {
       const answer = window.confirm(
-        "Erasing this experiment will affect all the curriculums that might be including it. Are your sure you want to delete the experiment?"
+        "Are your sure you want to delete the user(s)?"
       );
       if (answer) {
         this.deleteExperiment(this.selectedId);
@@ -200,7 +203,7 @@ export default {
 .editor-position {
   grid-area: editor;
   background-color: rgb(40, 40, 40);
-  padding: 10px;
+  padding: 5px 25px 25px;
   display: grid;
 }
 
@@ -246,10 +249,7 @@ export default {
 .form-groups {
   display: grid;
   grid-gap: 10px;
-}
-
-.form-group-input input {
-  width: 20%;
+  margin-top: 15px;
 }
 
 .form-group-input button {
