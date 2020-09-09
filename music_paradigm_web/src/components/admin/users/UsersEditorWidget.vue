@@ -1,69 +1,97 @@
 <template>
-  <div id="experiments-workshop" class="widget widget-box widget-bg">
-    <div
-      class="submit-position"
-    >//TODO: Form to create an experiment throug buttons and predefined areas instead of editing from de code editor
-
-    <br />
-    <br />Display of all the existing users and their related information and progress in their curricula (and potentially, hability to sort them according to their information)
-    <br />
-    <br />Ability to register a new user
-    <br />Ability to modify or delete users
-    <br />
-    <br />EXAMPLE OF LEGACY CODE
-    <!-- <div>
-      <h2>Register (Presently not working)</h2>
-      <form @submit.prevent="handleSubmit">
-        <div class="form-group">
-          <label for="username">Username *</label>
-          <input type="text" v-model="newUser.username" name="username" class="form-control" />
-          <input type="text" v-model="user.username" name="username" class="form-control" :class="{ 'is-invalid': submitted && errors.has('username') }" />
-          <div v-if="submitted && errors.has('username')" class="invalid-feedback">{{ errors.first('username') }}</div>
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="text" v-model="newUser.password" name="password" class="form-control" />
-          <input type="password" v-model="user.password" name="password" class="form-control" :class="{ 'is-invalid': submitted && errors.has('password') }" />
-          <div v-if="submitted && errors.has('password')" class="invalid-feedback">{{ errors.first('password') }}</div>
-        </div>More thinsgs to add...
-        <div class="form-group">
-          <button class="btn btn-primary" :disabled="status.registering">Register</button>
-        </div>
-      </form>
-    </div> -->
-
-    </div>
-
+  <div id="users-editor" class="widget widget-box widget-bg">
     <div class="edition-buttons-position">
-      <button v-on:click="handleCompilation" class="widget-button blue">Compile</button>
-      <button v-on:click="handleReversion" class="widget-button blue">Revert</button>
-      <button v-on:click="handleClearance" class="widget-button blue">Clear</button>
-    </div>
-
-    <div class="selection-buttons-position">
-      <button v-on:click="handleCopying" class="widget-button blue">Copy to Editor</button>
-      <button v-on:click="handleUnselection" class="widget-button blue">Unselect</button>
+      <button v-on:click="handleTODO" class="widget-button blue">Revert</button>
+      <button v-on:click="handleTODO" class="widget-button blue">Unselect</button>
     </div>
 
     <div class="editor-position code-context">
-      <div class="text-editor-label">Editor : {{editionStatus}}</div>
-      <div class="editor-size-fix">
-        <code-editor v-on:ready="writeEditionToEditorChanges" :readOnly="false" ref="codeEditor" />
+      <div class="user-editor-box-form">
+        <form @submit.prevent="handleSubmit">
+          <!-- Us abreviated names as "un", "pw" instead of the full names ("username", "password") to not match the WHATWG autofill
+          specifications in order to prevent the autofill in Chrome. (The autocomple="off") does not disable the autocomplete in Chrome-->
+          <div>
+            <label for="username">Username</label>
+            <input
+              type="text"
+              v-model="username"
+              name="username"
+              autocomplete="new-username"
+              placeholder="Insert username"
+            />
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input
+              type="email"
+              v-model="email"
+              name="email"
+              autocomplete="new-email"
+              placeholder="Insert email"
+            />
+          </div>
+          <div>
+            <label for="password">Password</label>
+            <input
+              type="password"
+              v-model="password"
+              name="password"
+              autocomplete="new-password"
+              placeholder="Insert password"
+            />
+          </div>
+          <div class="form-name-row">
+            <div>
+              <label for="firstName">First Name</label>
+              <input
+                type="text"
+                v-model="firstName"
+                name="firstName"
+                autocomplete="new-first-name"
+                placeholder="Insert first name"
+              />
+            </div>
+            <div>
+              <label for="middleName">Middle Name</label>
+              <input
+                type="text"
+                v-model="middleName"
+                name="middleName"
+                autocomplete="new-middle-name"
+                placeholder="Insert middle name"
+              />
+            </div>
+            <div>
+              <label for="lastName">Last Name</label>
+              <input
+                type="text"
+                v-model="lastName"
+                name="lastName"
+                autocomplete="new-last-name"
+                placeholder="Insert last name"
+              />
+            </div>
+          </div>
+          <div>
+            <label for="groups">Group(s)</label>
+            <div class="form-groups">
+              <div v-for="(group, index) in groups" :key="group" class="form-group-input">
+                <button v-on:click="handleSubmit()" class="widget-button small red">Delete</button>
+                <input
+                  type="text"
+                  v-model="group[index]"
+                  name="group"
+                  autocomplete="new-group"
+                  placeholder="Insert group name"
+                />
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
 
-    <div class="reference-position code-context">
-      <div class="text-editor-label">Selection : {{selectionStatus}}</div>
-      <div class="editor-size-fix">
-        <code-editor
-          v-on:ready="writeSelectionToReferenceChanges"
-          :readOnly="true"
-          ref="codeReference"
-        />
-      </div>
-    </div>
-
-    <div class="create-position">
+    <div class="submission-buttons-position">
       <form v-on:submit.prevent="handleSubmit" ref="upload" style="display: none">
         <input
           type="file"
@@ -75,9 +103,6 @@
       </form>
       <button v-on:click="$refs.fileInput.click()" class="widget-button blue">Upload</button>
       <button v-on:click="submitExperimentToCreate" class="widget-button green">Create</button>
-    </div>
-
-    <div class="update-position">
       <button v-on:click="submitExperimentToUpdate" class="widget-button blue">Update</button>
       <button v-on:click="submitExperimentToDelete" class="widget-button red">Delete</button>
     </div>
@@ -87,56 +112,37 @@
 <script>
 import "@/styles/widgetTemplate.css";
 import { mapActions, mapGetters } from "vuex";
-import { validator } from "@/_helpers";
-import CodeEditor from "@/components/admin/TextEditor.vue";
 
 export default {
   name: "ExperimentsWorkshopWidget",
-  components: {
-    codeEditor: CodeEditor,
-  },
   data() {
     return {
-      isEditorModified: false
+      hasFocusedOnUsername: false,
+      hasAttemptedSubmit: false,
+      id: "",
+      role: "",
+      username: "",
+      password: "",
+      email: "",
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      groups: ["a", "b", "c", "d"],
     };
   },
   computed: {
-    ...mapGetters("experiments", [
-      "experimentEdited",
-      "experimentSelected",
-      "selectedId",
-      "hasCompiledEdition"
-    ]),
-    editionContent() {
-      return this.$refs.codeEditor.code;
-    },
-    editionStatus() {
-      let status = "EMPTY";
-      if (this.hasCompiledEdition) status = "COMPILED";
-      if (this.isEditorModified) status = "EDITED";
-      return status;
-    },
-    selectionStatus() {
-      return "Selection Status (TODO)";
-    },
+    ...mapGetters("experiments", ["userSelected", "userSelectedId"]),
   },
   methods: {
     ...mapActions("alert", ["setErrorAlert", "setInformationAlert"]),
-    ...mapActions("experiments", [
-      "compileExperiment",
-      "attemptExperimentCompilation",
-      "clearCompiledExperiment",
-      "copySelectionToEdition",
+    ...mapActions("users", [
       "unsetSelectionExperiment",
-      "createExperiment",
-      "updateExperiment",
-      "deleteExperiment",
+      "createUser",
+      "updateUser",
+      "deleteUser",
     ]),
-    setEditorContent(textContent) {
-      this.$refs.codeEditor.setValue(textContent);
-    },
-    setReferenceContent(textContent) {
-      this.$refs.codeReference.setValue(textContent);
+    handleSubmit() {
+      console.log(this.username);
     },
     submitExperimentToCreate() {
       this.createExperiment(this.experimentEdited);
@@ -160,89 +166,12 @@ export default {
         this.deleteExperiment(this.selectedId);
       }
     },
-    handleCompilation() {
-      const experimentObject = this.convertEditorTextToObject();
-      this.compileExperiment(experimentObject);
-    },
-    handleReversion() {
-      this.setEditorContent(JSON.stringify(this.experimentEdited, null, "\t"));
-    },
-    handleClearance() {
-      this.setEditorContent(
-        JSON.stringify(
-          validator.getMinimalValidExperimentStructure(),
-          null,
-          "\t"
-        )
-      );
-    },
-    handleCopying() {
-      this.copySelectionToEdition();
-    },
     handleUnselection() {
       this.unsetSelectionExperiment();
     },
     handleUploadExperiment(event) {
-      const input = event.target;
-
-      const readFileContent = function (file) {
-        const reader = new FileReader();
-        return new Promise((resolve, reject) => {
-          reader.onload = (event) => resolve(event.target.result);
-          reader.onerror = (error) => reject(error);
-          reader.readAsText(file);
-        });
-      };
-
-      if (!("files" in input) || !(input.files.length === 1)) {
-        this.setErrorAlert("A file must be selected");
-        return;
-      }
-
-      readFileContent(input.files[0])
-        .then((content) => {
-          this.$refs.codeEditor.setValue(content);
-          this.attemptExperimentCompilation(
-            this.convertEditorTextToObject(content)
-          );
-        })
-        .catch((error) => {
-          this.setErrorAlert(error.message);
-        })
-        .finally(() => {
-          this.$refs.upload.reset();
-        });
-    },
-    convertEditorTextToObject() {
-      try {
-        return JSON.parse(this.editionContent);
-      } catch (e) {
-        this.setErrorAlert(
-          "The JSON syntax of the experiment definition is not valid"
-        );
-      }
-    },
-    writeEditionToEditorChanges() {
-      this.$watch(
-        "experimentEdited",
-        (newValue) => {
-          this.setEditorContent(JSON.stringify(newValue, null, "\t"));
-        },
-        { immediate: true }
-      );
-    },
-    writeSelectionToReferenceChanges() {
-      this.$watch(
-        "experimentSelected",
-        (newValue) => {
-          this.setReferenceContent(JSON.stringify(newValue, null, "\t"));
-        },
-        { immediate: true }
-      );
-    },
-    notEmplementedYet() {
-      this.setInformationAlert("TODO");
-      console.log("Not yet ready");
+      // const input = event.target;
+      console.log("Todo", event);
     },
   },
 };
@@ -258,7 +187,7 @@ export default {
   grid-area: edition-btn;
   display: grid;
   grid-gap: 15px;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .selection-buttons-position {
@@ -270,45 +199,73 @@ export default {
 
 .editor-position {
   grid-area: editor;
-  background-color: rgb(225, 225, 225);
-  color: black;
+  background-color: rgb(40, 40, 40);
+  padding: 10px;
   display: grid;
-  /* grid-template-rows: auto; */
 }
 
-.reference-position {
-  grid-area: reference;
-  background-color: rgb(225, 225, 225);
-  color: black;
-  display: grid;
-  /* grid-template-rows: auto; */
-}
-
-.create-position {
-  grid-area: create;
+.submission-buttons-position {
+  grid-area: submission-btn;
   display: grid;
   grid-gap: 15px;
-  grid-template-columns: 1fr 1fr;
-}
-
-.update-position {
-  grid-area: update;
-  display: grid;
-  grid-gap: 15px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .widget {
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 100%;
   /* grid-template-rows: 64pxx; */
   grid-template-areas:
-    "submit submit"
-    "edition-btn selection-btn"
-    "editor reference"
-    "create update";
+    "edition-btn"
+    "editor"
+    "submission-btn";
 }
 
-.text-editor-label {
-  padding: 10px;
+/* Form  */
+
+.user-editor-box-form label {
+  display: block;
+  padding: 10px 0;
+  font-size: 1em;
+}
+
+.user-editor-box-form input {
+  display: inline-block;
+  min-width: 100%;
+  padding: 0.4em 0;
+  border-radius: 4px;
+  padding-left: 10px;
+  font-size: 0.8em;
+}
+
+.form-note-text {
+  text-align: right;
+  font-size: 0.75rem;
+  margin: 10px 0 10px;
+}
+
+.form-groups {
+  display: grid;
+  grid-gap: 10px;
+}
+
+.form-group-input input {
+  width: 20%;
+}
+
+.form-group-input button {
+  min-width: auto;
+  width: 100px;
+}
+
+.form-group-input {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 100px auto;
+}
+
+.form-name-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 20px;
 }
 </style>

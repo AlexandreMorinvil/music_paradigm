@@ -12,7 +12,7 @@ export default {
     },
 
     // Status
-    isFetchingExperimentHeadersList: (state) => {
-        return state.status.isFetchingExperimentHeadersList;
+    isFetchingUserHeadersList: (state) => {
+        return state.status.isFetchingUsersHeadersList;
     }
 }

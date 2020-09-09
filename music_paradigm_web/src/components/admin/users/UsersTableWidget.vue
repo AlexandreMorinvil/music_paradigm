@@ -9,10 +9,11 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Group</th>
-            <th>Name</th>
-            <th>Version</th>
-            <th>Ressource Folder</th>
+            <th>Role</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Full Name</th>
+            <th>Groups</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -21,13 +22,14 @@
           <tr
             v-for="(header, index) in usersHeadersList"
             :key="header._id"
-            :class="header._id === selectedId && 'selected'"
+            :class="header._id === userSelectedId && 'selected'"
           >
             <td>{{ index + 1 }}</td>
             <td>{{ header.role }}</td>
-            <td>{{ header.role }}</td>
-            <td>{{ header.role }}</td>
-            <td>{{ header.role }}</td>
+            <td>{{ header.username }}</td>
+            <td>{{ makeEmailDisplay(header.email) }}</td>
+            <td>{{ makeFullNameDisplay(header.firstName, header.middleName, header.lastName) }}</td>
+            <td>{{ makeGroupsDisplay(header.groups) }}</td>
             <td class="widget-table-actions-buttons">
               <button
                 v-on:click="handleSelectUser(header._id)"
@@ -42,6 +44,7 @@
 </template>
 
 <script>
+// TODO: Display the tasks summary
 import "@/styles/widgetTemplate.css";
 import { mapActions, mapGetters } from "vuex";
 import LoaderCircular from "@/components/LoaderCircular.vue";
@@ -58,7 +61,7 @@ export default {
     ...mapGetters("users", [
       "isFetchingUserHeadersList",
       "usersHeadersList",
-      "selectedId",
+      "userSelectedId",
     ]),
     isListLoading() {
       return this.isFetchingUserHeadersList;
@@ -71,10 +74,28 @@ export default {
     },
     handleSelectUser(id) {
       this.setSelectedUser(id);
-    }
+    },
+    makeEmailDisplay(email) {
+      if(!email) return "None";
+      else return email;
+    },
+    makeFullNameDisplay(firstName, middleName, lastName) {
+      return firstName + " " + middleName + " " + lastName;
+    },
+    makeGroupsDisplay(groupList) {
+      if (groupList.length === 0) {
+        return "None";
+      } else {
+        let display = "";
+        for (let i in groupList) {
+          if (i > 1) display += "\n";
+          display += groupList[i];
+        }
+        return display;
+      }
+    },
   },
   mounted() {
-    console.log("Ça se rend");
     this.fetchAllUsersHeaders();
   },
 };

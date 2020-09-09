@@ -32,19 +32,15 @@ export default {
     //     state.status.isDeleting = false;
     // },
 
-    // // Setters
-    // setSelectedUser(state, user) {
-    //     state.selection.content = {};
-    //     const { _id, ...userWithoutID } = experiment;
-    //     state.selection._id = _id;
-    //     Object.assign(state.selection.content, experimentWithoutID);
-    //     delete state.selection.content._id;
-    // },
+    // Setters
+    setSelectedUser(state, user) {
+        state.selection = {};
+        Object.assign(state.selection, user);
+    },
 
-    // unsetSelectedExperiment(state) {
-    //     state.selection._id = null;
-    //     state.selection.content = validator.getMinimalValidExperimentStructure();
-    // },
+    unsetSelectedExperiment(state) {
+        state.selection = {};
+    },
 
     // setEditedExperiment(state, experiment) {
     //     state.edition = {};

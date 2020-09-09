@@ -23,15 +23,15 @@ export default {
     //         })
     // },
 
-    // setSelectionExperiment({ commit, dispatch }, id) {
-    //     experimentService.getDefinition(id).then(
-    //         (description) => {
-    //             commit('setSelectedExperiment', description);
-    //         },
-    //         error => {
-    //             dispatch('alert/setErrorAlert', `Compilation failed : ${error.message}`, { root: true });
-    //         })
-    // },
+    setSelectedUser({ commit, dispatch }, id) {
+        userService.getById(id).then(
+            user => {
+                commit('setSelectedUser', user);
+            },
+            error => {
+                dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
+            })
+    },
 
     // startExperimentQuick({ commit, dispatch }, id) {
     //     experimentService.getDefinition(id).then(

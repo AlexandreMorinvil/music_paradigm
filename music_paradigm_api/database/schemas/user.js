@@ -11,7 +11,7 @@ const schema = new Schema(
     {
         // Management data
         username: { type: String, unique: true, sparse: true },
-        email: { type: String, unique: true, sparse: true },
+        email: { type: String, unique: true, sparse: true, default: null },
         passwordHash: { type: String, required: true },
         role: { type: String, default: roles.user, enum: ['user', 'admin'] },
         groups: { type: [String], default: [] },
