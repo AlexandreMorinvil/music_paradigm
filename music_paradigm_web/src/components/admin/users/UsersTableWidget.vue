@@ -50,7 +50,7 @@ import { mapActions, mapGetters } from "vuex";
 import LoaderCircular from "@/components/LoaderCircular.vue";
 
 export default {
-  name: " UsersWorkshopWidget",
+  name: "UsersTableWidget",
   components: {
     loader: LoaderCircular,
   },
@@ -61,7 +61,7 @@ export default {
     ...mapGetters("users", [
       "isFetchingUserHeadersList",
       "usersHeadersList",
-      "userSelectedId",
+      "userSelectedId"
     ]),
     isListLoading() {
       return this.isFetchingUserHeadersList;

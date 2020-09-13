@@ -1,33 +1,37 @@
 <template>
   <div id="users-editor" class="widget widget-box widget-bg">
     <div class="edition-buttons-position">
-      <button v-on:click="handleTODO" class="widget-button blue">Revert</button>
-      <button v-on:click="handleTODO" class="widget-button blue">Unselect</button>
+      <button v-on:click="handleRevert" class="widget-button blue">Revert</button>
+      <button v-on:click="handleUnselection" class="widget-button blue">Unselect TEST BUTTON</button>
     </div>
 
-    <div class="editor-position code-context">
+    <div class="editor-position">
       <div class="user-editor-box-form">
         <form @submit.prevent="handleSubmit">
-          <!-- Us abreviated names as "un", "pw" instead of the full names ("username", "password") to not match the WHATWG autofill
-          specifications in order to prevent the autofill in Chrome. (The autocomple="off") does not disable the autocomplete in Chrome-->
           <div>
-            <label for="username">Username</label>
+            <label for="username">
+              Username :
+              <span class="selected-user-attribute">{{ userSelectedUsernameDisplay }}</span>
+            </label>
             <input
               type="text"
               v-model="username"
               name="username"
               autocomplete="new-username"
-              placeholder="Insert username"
+              placeholder="Insert new username"
             />
           </div>
           <div>
-            <label for="email">Email</label>
+            <label for="email">
+              Email :
+              <span class="selected-user-attribute">{{ userSelectedEmailDisplay }}</span>
+            </label>
             <input
               type="email"
               v-model="email"
               name="email"
               autocomplete="new-email"
-              placeholder="Insert email"
+              placeholder="Insert new email"
             />
           </div>
           <div>
@@ -37,38 +41,46 @@
               v-model="password"
               name="password"
               autocomplete="new-password"
-              placeholder="Insert password"
+              placeholder="Insert new password"
             />
           </div>
           <div class="form-name-row">
             <div>
-              <label for="firstName">First Name</label>
+              <label for="firstName">
+                First Name :
+                <span class="selected-user-attribute">{{ userSelectedFirstNameDisplay }}</span>
+              </label>
               <input
                 type="text"
                 v-model="firstName"
                 name="firstName"
                 autocomplete="new-first-name"
-                placeholder="Insert first name"
+                placeholder="Insert new first name"
               />
             </div>
             <div>
-              <label for="middleName">Middle Name</label>
+              <label for="middleName">
+                Middle Name :
+                <span class="selected-user-attribute">{{ userSelectedMiddleNameDisplay }}</span>
+              </label>
               <input
                 type="text"
                 v-model="middleName"
                 name="middleName"
                 autocomplete="new-middle-name"
-                placeholder="Insert middle name"
+                placeholder="Insert new middle name"
               />
             </div>
             <div>
-              <label for="lastName">Last Name</label>
+              <label for="lastName">
+                Last Name :
+                <span class="selected-user-attribute">{{ userSelectedLastNameDisplay }}</span>
+              </label>
               <input
                 type="text"
-                v-model="lastName"
                 name="lastName"
                 autocomplete="new-last-name"
-                placeholder="Insert last name"
+                placeholder="Insert new last name"
               />
             </div>
           </div>
@@ -76,16 +88,18 @@
             <div class="form-groups">
               <div class="form-group-input">
                 <button v-on:click="handleSubmit()" class="widget-button blue">Add</button>
-                <label for="groups">Group(s)</label>
+                <label for="groups">
+                  Group(s) :
+                  <span class="selected-user-attribute">{{ userSelectedGroupsDisplay }}</span>
+                </label>
               </div>
-              <div v-for="(group, index) in groups" :key="group" class="form-group-input">
+              <div v-for="group in groups" :key="group" class="form-group-input">
                 <button v-on:click="handleSubmit()" class="widget-button small red">Delete</button>
                 <input
                   type="text"
-                  v-model="group[index]"
                   name="group"
                   autocomplete="new-group"
-                  placeholder="Insert group name"
+                  placeholder="Insert new group name"
                 />
               </div>
             </div>
@@ -123,18 +137,45 @@ export default {
       hasFocusedOnUsername: false,
       hasAttemptedSubmit: false,
       id: "",
-      role: "",
       username: "",
       password: "",
       email: "",
       firstName: "",
       middleName: "",
       lastName: "",
-      groups: ["a", "b", "c", "d"],
+      groups: [""],
+      role: "",
     };
   },
   computed: {
-    ...mapGetters("experiments", ["userSelected", "userSelectedId"]),
+    ...mapGetters("users", [
+      "hasSelectedUser",
+      "userSelectedId",
+      "userSelectedUsername",
+      "userSelectedEmail",
+      "userSelectedFirstName",
+      "userSelectedMiddleName",
+      "userSelectedLastName",
+      "userSelectedGroups",
+    ]),
+      userSelectedUsernameDisplay() {
+        return this.userSelectedUsername || "";
+      },
+      userSelectedEmailDisplay() {
+        return this.userSelectedEmail || (this.hasSelectedUser) ? "NO EMAIL" : "";
+      },
+      userSelectedFirstNameDisplay() {
+        return this.userSelectedFirstName || "";
+      },
+      userSelectedMiddleNameDisplay() {
+        return this.userSelectedMiddleName || "";
+      },
+      userSelectedLastNameDisplay() {
+        return this.userSelectedLastName || "";
+      },
+      userSelectedGroupsDisplay() {
+        return this.userSelectedGroups || (this.hasSelectedUser) ? "NO GROUP" : "";
+      },
   },
   methods: {
     ...mapActions("alert", ["setErrorAlert", "setInformationAlert"]),
@@ -142,8 +183,24 @@ export default {
       "unsetSelectionExperiment",
       "createUser",
       "updateUser",
-      "deleteUser",
+      "deleteUser"
     ]),
+    assignFormGroups(groups) {
+      this.groups = JSON.parse(JSON.stringify(groups));
+    },
+    assignSelectedToForm() {
+      this.id = this.userSelectedId;
+      this.username = this.userSelectedUsername;
+      this.email = this.userSelectedEmail;
+      this.firstName = this.userSelectedFirstName;
+      this.middleName = this.userSelectedMiddleName;
+      this.lastName = this.userSelectedLastName;
+      this.groups = JSON.parse(JSON.stringify(this.userSelectedGroups));
+      this.role = this.userSelectedRole;
+    },
+    handleRevert() {
+      this.assignSelectedToForm();
+    },
     handleSubmit() {
       console.log(this.username);
     },
@@ -170,11 +227,18 @@ export default {
       }
     },
     handleUnselection() {
-      this.unsetSelectionExperiment();
+      console.log("NOT IMPLEMENTERD YET");
     },
     handleUploadExperiment(event) {
-      // const input = event.target;
       console.log("Todo", event);
+    },
+  },
+  watch: {
+    userSelectedId: {
+      immediate: true,
+      handler: function () {
+        this.assignSelectedToForm();
+      },
     },
   },
 };
@@ -203,7 +267,7 @@ export default {
 .editor-position {
   grid-area: editor;
   background-color: rgb(40, 40, 40);
-  padding: 5px 25px 25px;
+  padding: 5px 30px 25px;
   display: grid;
 }
 
@@ -267,5 +331,9 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 20px;
+}
+
+.selected-user-attribute {
+  color: rgb(24, 210, 24);
 }
 </style>

@@ -34,8 +34,13 @@ export default {
 
     // Setters
     setSelectedUser(state, user) {
-        state.selection = {};
-        Object.assign(state.selection, user);
+        // for(let attribute in state.selection)
+        // state.selection[attribute] = null;
+        state.selection.firstName = user.firstName;
+        state.selection.middleName = user.middleName;
+        state.selection.lastName = user.lastName;
+        console.log(state.selection);
+        console.log("A");
     },
 
     unsetSelectedExperiment(state) {
