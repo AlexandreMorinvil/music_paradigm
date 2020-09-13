@@ -7,7 +7,7 @@
 
     <div class="editor-position">
       <div class="user-editor-box-form">
-        <form @submit.prevent="handleSubmit">
+        <form submit.prevent>
           <div>
             <label for="username">
               Username :
@@ -116,7 +116,7 @@
     </div>
 
     <div class="submission-buttons-position">
-      <form v-on:submit.prevent="handleSubmit" ref="upload" style="display: none">
+      <form submit.prevent ref="upload" style="display: none">
         <input
           type="file"
           id="myfile"
@@ -198,7 +198,7 @@ export default {
   methods: {
     ...mapActions("alert", ["setErrorAlert", "setInformationAlert"]),
     ...mapActions("users", [
-      "unsetSelectionExperiment",
+      "unsetSelectedUser",
       "createUser",
       "updateUser",
       "deleteUser",
@@ -222,7 +222,7 @@ export default {
       this.lastName = lastName;
     },
     assignFormGroups(groups) {
-      this.groups = JSON.parse(JSON.stringify(groups));
+      this.groups = (Array.isArray(groups)) ? JSON.parse(JSON.stringify(groups)) : [];
     },
     assignFormRole(role) {
       this.role = role;
@@ -234,9 +234,7 @@ export default {
       this.assignFormFirstName(this.userSelectedFirstName);
       this.assignFormMiddleName(this.userSelectedMiddleName);
       this.assignFormLastName(this.userSelectedLastName);
-      this.assignFormGroups(
-        JSON.parse(JSON.stringify(this.userSelectedGroups))
-      );
+      this.assignFormGroups(this.userSelectedGroups);
       this.assignFormRole(this.userSelectedRole);
     },
     handleRevert() {
@@ -268,7 +266,7 @@ export default {
       }
     },
     handleUnselection() {
-      console.log("NOT IMPLEMENTERD YET");
+      this.unsetSelectedUser();
     },
     handleUploadExperiment(event) {
       console.log("Todo", event);

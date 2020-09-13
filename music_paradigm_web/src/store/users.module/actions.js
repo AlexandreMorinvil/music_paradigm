@@ -33,6 +33,10 @@ export default {
             })
     },
 
+    unsetSelectedUser({ commit }) {
+        commit('unsetSelectedUser');
+    },
+
     // startExperimentQuick({ commit, dispatch }, id) {
     //     experimentService.getDefinition(id).then(
     //         (description) => {
@@ -49,10 +53,6 @@ export default {
 
     // copySelectionToEdition({ commit, getters }) {
     //     commit('setEditedExperiment', getters.experimentSelected);
-    // },
-
-    // unsetSelectionExperiment({ commit }) {
-    //     commit('unsetSelectedExperiment');
     // },
 
     // compileExperiment({ commit, dispatch }, experiment) {

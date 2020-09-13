@@ -38,7 +38,7 @@ export default {
         Object.assign(state.selection, user);
     },
 
-    unsetSelectedExperiment(state) {
+    unsetSelectedUser(state) {
         state.selection = {};
     },
 
