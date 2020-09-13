@@ -9,14 +9,13 @@ export default {
     selection: {
         _id: null,
         // The Rest of the parameters are also included
-
-        username: "abc",
-        email: "e@h.com",
-        role: "user",
-        groups: ["ijk"],
-        firstName: "lmn",
-        middleName: "opq",
-        lastName: "rst"
+        username: "",
+        email: "",
+        role: "",
+        groups: [""],
+        firstName: "",
+        middleName: "",
+        lastName: ""
     },
 
     usersHeadersList: [

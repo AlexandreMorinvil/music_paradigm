@@ -78,6 +78,7 @@
               </label>
               <input
                 type="text"
+                v-model="lastName"
                 name="lastName"
                 autocomplete="new-last-name"
                 placeholder="Insert new last name"
@@ -162,7 +163,7 @@ export default {
         return this.userSelectedUsername || "";
       },
       userSelectedEmailDisplay() {
-        return this.userSelectedEmail || (this.hasSelectedUser) ? "NO EMAIL" : "";
+        return this.userSelectedEmail || (this.hasSelectedUser) ? "---" : "";
       },
       userSelectedFirstNameDisplay() {
         return this.userSelectedFirstName || "";
@@ -174,7 +175,7 @@ export default {
         return this.userSelectedLastName || "";
       },
       userSelectedGroupsDisplay() {
-        return this.userSelectedGroups || (this.hasSelectedUser) ? "NO GROUP" : "";
+        return this.userSelectedGroups || (this.hasSelectedUser) ? "---" : "";
       },
   },
   methods: {
@@ -185,18 +186,39 @@ export default {
       "updateUser",
       "deleteUser"
     ]),
+    assignFormId(id) {
+      this.id = id;
+    },
+    assignFormUsername(username) {
+      this.username = username;
+    },
+    assignFormEmail(email) {
+      this.email = email;
+    },
+    assignFormFirstName(firstName) {
+      this.firstName = firstName;
+    },
+    assignFormMiddleName(middleName) {
+      this.middleName = middleName;
+    },
+    assignFormLastName(lastName) {
+      this.lastName = lastName;
+    },
     assignFormGroups(groups) {
       this.groups = JSON.parse(JSON.stringify(groups));
     },
+    assignFormRole(role) {
+      this.role = role;
+    },
     assignSelectedToForm() {
-      this.id = this.userSelectedId;
-      this.username = this.userSelectedUsername;
-      this.email = this.userSelectedEmail;
-      this.firstName = this.userSelectedFirstName;
-      this.middleName = this.userSelectedMiddleName;
-      this.lastName = this.userSelectedLastName;
-      this.groups = JSON.parse(JSON.stringify(this.userSelectedGroups));
-      this.role = this.userSelectedRole;
+      this.assignFormId(this.userSelectedId);
+      this.assignFormUsername(this.userSelectedUsername);
+      this.assignFormEmail(this.userSelectedEmail);
+      this.assignFormFirstName(this.userSelectedFirstName);
+      this.assignFormMiddleName(this.userSelectedMiddleName);
+      this.assignFormLastName(this.userSelectedLastName);
+      this.assignFormGroups(JSON.parse(JSON.stringify(this.userSelectedGroups)));
+      this.assignFormRole(this.userSelectedRole);
     },
     handleRevert() {
       this.assignSelectedToForm();
@@ -267,7 +289,7 @@ export default {
 .editor-position {
   grid-area: editor;
   background-color: rgb(40, 40, 40);
-  padding: 5px 30px 25px;
+  padding: 5px 40px 25px;
   display: grid;
 }
 
