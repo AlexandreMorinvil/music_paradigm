@@ -12,7 +12,7 @@ export default {
         username: "",
         email: "",
         role: "",
-        groups: [""],
+        groups: [],
         firstName: "",
         middleName: "",
         lastName: ""

@@ -35,7 +35,11 @@
             />
           </div>
           <div>
-            <label for="password">Password</label>
+            <label for="password">
+              Password :
+              <span class="selected-user-attribute">{{ userSelectedPasswordDisplay }}</span>
+            </label>
+
             <input
               type="password"
               v-model="password"
@@ -61,7 +65,9 @@
             <div>
               <label for="middleName">
                 Middle Name :
-                <span class="selected-user-attribute">{{ userSelectedMiddleNameDisplay }}</span>
+                <span
+                  class="selected-user-attribute"
+                >{{ userSelectedMiddleNameDisplay }}</span>
               </label>
               <input
                 type="text"
@@ -95,7 +101,7 @@
                 </label>
               </div>
               <div v-for="group in groups" :key="group" class="form-group-input">
-                <button v-on:click="handleSubmit()" class="widget-button small red">Delete</button>
+                <button v-on:click="handleSubmit()" class="widget-button small red">Remove</button>
                 <input
                   type="text"
                   name="group"
@@ -144,7 +150,7 @@ export default {
       firstName: "",
       middleName: "",
       lastName: "",
-      groups: [""],
+      groups: [],
       role: "",
     };
   },
@@ -159,24 +165,35 @@ export default {
       "userSelectedLastName",
       "userSelectedGroups",
     ]),
-      userSelectedUsernameDisplay() {
-        return this.userSelectedUsername || "";
-      },
-      userSelectedEmailDisplay() {
-        return this.userSelectedEmail || (this.hasSelectedUser) ? "---" : "";
-      },
-      userSelectedFirstNameDisplay() {
-        return this.userSelectedFirstName || "";
-      },
-      userSelectedMiddleNameDisplay() {
-        return this.userSelectedMiddleName || "";
-      },
-      userSelectedLastNameDisplay() {
-        return this.userSelectedLastName || "";
-      },
-      userSelectedGroupsDisplay() {
-        return this.userSelectedGroups || (this.hasSelectedUser) ? "---" : "";
-      },
+    userSelectedUsernameDisplay() {
+      return this.hasSelectedUser ? this.userSelectedUsername || "---" : "";
+    },
+    userSelectedEmailDisplay() {
+      return this.hasSelectedUser ? this.userSelectedEmail || "---" : "";
+    },
+    userSelectedPasswordDisplay() {
+      return this.hasSelectedUser ? "***" : "";
+    },
+    userSelectedFirstNameDisplay() {
+      return this.hasSelectedUser ? this.userSelectedFirstName || "---" : "";
+    },
+    userSelectedMiddleNameDisplay() {
+      return this.hasSelectedUser ? this.userSelectedMiddleName || "---" : "";
+    },
+    userSelectedLastNameDisplay() {
+      return this.hasSelectedUser ? this.userSelectedLastName || "---" : "";
+    },
+    userSelectedGroupsDisplay() {
+      if (this.hasSelectedUser) {
+        if (this.userSelectedGroups.length > 0) {
+          const display = "";
+          this.userSelectedGroups.forEach((element) => {
+            display += element + ", ";
+          });
+          return display.slice(0, -2);
+        } else return "---";
+      } else return "";
+    },
   },
   methods: {
     ...mapActions("alert", ["setErrorAlert", "setInformationAlert"]),
@@ -184,7 +201,7 @@ export default {
       "unsetSelectionExperiment",
       "createUser",
       "updateUser",
-      "deleteUser"
+      "deleteUser",
     ]),
     assignFormId(id) {
       this.id = id;
@@ -217,7 +234,9 @@ export default {
       this.assignFormFirstName(this.userSelectedFirstName);
       this.assignFormMiddleName(this.userSelectedMiddleName);
       this.assignFormLastName(this.userSelectedLastName);
-      this.assignFormGroups(JSON.parse(JSON.stringify(this.userSelectedGroups)));
+      this.assignFormGroups(
+        JSON.parse(JSON.stringify(this.userSelectedGroups))
+      );
       this.assignFormRole(this.userSelectedRole);
     },
     handleRevert() {
