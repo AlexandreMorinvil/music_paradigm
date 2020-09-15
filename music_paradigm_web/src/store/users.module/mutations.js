@@ -8,13 +8,13 @@ export default {
         state.status.isFetchingUsersHeadersList = false;
     },
 
-    // indicateCreateRequest(state) {
-    //     state.status.isCreating = true;
-    // },
+    indicateCreateRequest(state) {
+        state.status.isCreating = true;
+    },
 
-    // indicateCreateRequestEnd(state) {
-    //     state.status.isCreating = false;
-    // },
+    indicateCreateRequestEnd(state) {
+        state.status.isCreating = false;
+    },
 
     // indicateUpdateRequest(state) {
     //     state.status.isUpdating = true;
@@ -41,16 +41,6 @@ export default {
     unsetSelectedUser(state) {
         state.selection = {};
     },
-
-    // setEditedExperiment(state, experiment) {
-    //     state.edition = {};
-    //     Object.assign(state.edition, experiment);
-    //     delete state.edition._id;
-    // },
-
-    // clearCompiledExperiment(state) {
-    //     state.edition = validator.getMinimalValidExperimentStructure();
-    // },
 
     setHeadersList(state, usersHeadersLst) {
         state.usersHeadersList = usersHeadersLst;

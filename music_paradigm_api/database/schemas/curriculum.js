@@ -11,7 +11,7 @@ const Schema = mongoose.Schema;
 const schemaCurriculum = new Schema({
 
     // Title of the curriculum
-    title: { type: String, unique: true },
+    title: { type: String, unique: true, sparse: true },
 
     // Indicate whether the experiments are meant to be made accessible one after the other,
     // so that an experiment will be accessible only when the previous one was completed
@@ -21,7 +21,7 @@ const schemaCurriculum = new Schema({
     experiments: [
         {
             // Title of the experiment within the curriculum
-            title: { type: String, unique: true },
+            title: { type: String, unique: true, sparse: true },
 
             // Paths to schedule when the experiment will be available
             delayInDays: { type: Number, default: 0 },              // Number of days after the start date at which the experiment is to be made available
@@ -59,7 +59,7 @@ const schemaProgression = new Schema({
     experiments: [
         {
             // Title of the experiment within the curriculum
-            title: { type: String, unique: true },
+            title: { type: String, unique: true, sparse: true },
 
             // Number of times the experiment was completed
             completionCount: { type: Number, default: 0, min: 0 },

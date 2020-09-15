@@ -2,7 +2,7 @@
   <div id="users-editor" class="widget widget-box widget-bg">
     <div class="edition-buttons-position">
       <button v-on:click="handleRevert" class="widget-button blue">Revert</button>
-      <button v-on:click="handleUnselection" class="widget-button blue">Unselect TEST BUTTON</button>
+      <button v-on:click="handleUnselection" class="widget-button blue">Unselect</button>
     </div>
 
     <div class="editor-position">
@@ -126,9 +126,9 @@
         />
       </form>
       <button v-on:click="$refs.fileInput.click()" class="widget-button blue">Upload</button>
-      <button v-on:click="submitExperimentToCreate" class="widget-button green">Create</button>
-      <button v-on:click="submitExperimentToUpdate" class="widget-button blue">Update</button>
-      <button v-on:click="submitExperimentToDelete" class="widget-button red">Delete</button>
+      <button v-on:click="submitUserToCreate" class="widget-button green">Create</button>
+      <button v-on:click="submitUserToUpdate" class="widget-button blue">Update</button>
+      <button v-on:click="submitUserToDelete" class="widget-button red">Delete</button>
     </div>
   </div>
 </template>
@@ -186,7 +186,7 @@ export default {
     userSelectedGroupsDisplay() {
       if (this.hasSelectedUser) {
         if (this.userSelectedGroups.length > 0) {
-          const display = "";
+          let display = "";
           this.userSelectedGroups.forEach((element) => {
             display += element + ", ";
           });
@@ -222,7 +222,9 @@ export default {
       this.lastName = lastName;
     },
     assignFormGroups(groups) {
-      this.groups = (Array.isArray(groups)) ? JSON.parse(JSON.stringify(groups)) : [];
+      this.groups = Array.isArray(groups)
+        ? JSON.parse(JSON.stringify(groups))
+        : [];
     },
     assignFormRole(role) {
       this.role = role;
@@ -243,10 +245,20 @@ export default {
     handleSubmit() {
       console.log(this.username);
     },
-    submitExperimentToCreate() {
-      this.createExperiment(this.experimentEdited);
+    // TODO: I AM HERE MAKE THE CREATION WORK
+    submitUserToCreate() {
+      const userToCreate = {
+        username: this.username,
+        password: this.password,
+        email: this.email,
+        firstName: this.firstName,
+        middleName: this.middleName,
+        lastName: this.lastName,
+        groups: this.groups
+      };
+      this.createUser(userToCreate);
     },
-    submitExperimentToUpdate() {
+    submitUserToUpdate() {
       const answer = window.confirm(
         "Are your sure you want to edit the user(s)?"
       );
@@ -257,7 +269,7 @@ export default {
         });
       }
     },
-    submitExperimentToDelete() {
+    submitUserToDelete() {
       const answer = window.confirm(
         "Are your sure you want to delete the user(s)?"
       );
