@@ -20,7 +20,9 @@ async function createDefaultAdmin() {
             users.create({
                 username: defaultAdminUsername,
                 password: defaultAdminPassword,
-                role: role.admin
+                firstName: "Admin",
+                lastName: "Default",
+                role: role.admin,
             }));
         console.log(`A default admin was created with username : "${defaultAdminUsername}" as no admin existed.`);
     }

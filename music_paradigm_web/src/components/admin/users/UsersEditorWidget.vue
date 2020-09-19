@@ -269,7 +269,7 @@ export default {
         this.updateUser({
           id: this.userSelectedId,
           user: userToCreate
-        });
+        }).then(() => this.assignSelectedToForm());
       }
     },
     submitUserToDelete() {

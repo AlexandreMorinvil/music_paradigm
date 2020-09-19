@@ -3,7 +3,7 @@ import { userService } from '@/_services';
 export default {
     fetchAllUsersHeaders({ commit, dispatch }) {
         commit('indicateFetchingUserList');
-        userService.getListAllHeaders()
+        return userService.getListAllHeaders()
             .then(
                 usersHeadersList => { commit('setHeadersList', usersHeadersList) },
                 error => { dispatch('alert/setErrorAlert', error.message, { root: true }) }
@@ -12,7 +12,7 @@ export default {
     },
 
     setSelectedUser({ commit, dispatch }, id) {
-        userService.getById(id).then(
+        return userService.getById(id).then(
             user => {
                 commit('setSelectedUser', user);
             },
@@ -27,7 +27,7 @@ export default {
 
     createUser({ commit, dispatch }, user) {
         commit('indicateCreateRequest');
-        userService.register(user)
+        return userService.register(user)
             .then(
                 createdUser => {
                     commit('setSelectedUser', createdUser);
@@ -45,7 +45,7 @@ export default {
 
     updateUser({ commit, dispatch }, { id, user }) {
         commit('indicateUpdateRequest');
-        userService.update(id, user)
+        return userService.update(id, user)
             .then(
                 updatedUser => {
                     commit('setSelectedUser', updatedUser);

@@ -3,6 +3,7 @@ const roles = require('_helpers/role');
 const bcrypt = require('bcryptjs');
 
 const emailValidator = require('_helpers/emailValidator');
+const capitalizer = require('_helpers/stringModifier');
 
 // Required schemas
 const curriculum = require('./curriculum').schemaCurriculum;
@@ -21,7 +22,7 @@ const schema = new Schema(
             sparse: true,
             minlength: 1,
             maxlength: 100,
-            set: function (username) { 
+            set: function (username) {
                 return (username) ? username : this.id; 
             }
         },
@@ -31,15 +32,23 @@ const schema = new Schema(
             sparse: true,
             default: null,
             maxlength: 100,
-            validate: { validator: emailValidator.validateEmail }
+            validate: {
+                validator: emailValidator.validateEmail
+            },
+            set: function (email) { 
+                return (email) ? email : undefined; 
+            }
         },
         password: {
             type: String,
             required: true,
+            default: "music",
             alias: 'passwordHash',
             minlength: 1,
             maxlength: 100,
-            set: function (password) { return bcrypt.hashSync(password, 10) },
+            set: function (password) { 
+                return bcrypt.hashSync(password, 10)
+            },
         },
         role: {
             type: String,
@@ -55,17 +64,26 @@ const schema = new Schema(
         firstName: {
             type: String,
             default: "FirstName",
-            maxlength: 50
+            maxlength: 50,
+            set: function (name) { 
+                return capitalizer.capitalizeFirstLetters(name)
+            }
         },
         middleName: {
             type: String,
             default: "",
-            maxlength: 50
+            maxlength: 50,
+            set: function (name) { 
+                return capitalizer.capitalizeFirstLetters(name)
+            }
         },
         lastName: {
             type: String,
             default: "LastName",
-            maxlength: 50
+            maxlength: 50,
+            set: function (name) { 
+                return capitalizer.capitalizeFirstLetters(name)
+            }
         },
 
         tasks: {
