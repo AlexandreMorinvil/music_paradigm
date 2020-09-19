@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 const roles = require('_helpers/role');
 const bcrypt = require('bcryptjs');
 
-const emailValidator = require('_helpers/emailValidator');
-const capitalizer = require('_helpers/stringModifier');
+const stringHandler = require('_helpers/stringHandler');
 
 // Required schemas
 const curriculum = require('./curriculum').schemaCurriculum;
@@ -15,15 +14,15 @@ const schema = new Schema(
     {
         username: {
             type: String,
-            default: function () { 
-                return this.id; 
+            default: function () {
+                return this.id;
             },
             unique: true,
             sparse: true,
             minlength: 1,
             maxlength: 100,
             set: function (username) {
-                return (username) ? username : this.id; 
+                return (username) ? username : this.id;
             }
         },
         email: {
@@ -33,10 +32,13 @@ const schema = new Schema(
             default: null,
             maxlength: 100,
             validate: {
-                validator: emailValidator.validateEmail
+                validator: function (string) {
+                    if (!string) return true;
+                    else return isEmailString(string);
+                }
             },
-            set: function (email) { 
-                return (email) ? email : undefined; 
+            set: function (email) {
+                return (email) ? email : undefined;
             }
         },
         password: {
@@ -46,7 +48,7 @@ const schema = new Schema(
             alias: 'passwordHash',
             minlength: 1,
             maxlength: 100,
-            set: function (password) { 
+            set: function (password) {
                 return bcrypt.hashSync(password, 10)
             },
         },
@@ -57,7 +59,8 @@ const schema = new Schema(
         },
         tags: {
             type: [String],
-            default: []
+            default: [],
+            set: tagsSetter
         },
 
 
@@ -65,25 +68,19 @@ const schema = new Schema(
             type: String,
             default: "FirstName",
             maxlength: 50,
-            set: function (name) { 
-                return capitalizer.capitalizeFirstLetters(name)
-            }
+            set: nameSetter
         },
         middleName: {
             type: String,
             default: "",
             maxlength: 50,
-            set: function (name) { 
-                return capitalizer.capitalizeFirstLetters(name)
-            }
+            set: nameSetter
         },
         lastName: {
             type: String,
             default: "LastName",
             maxlength: 50,
-            set: function (name) { 
-                return capitalizer.capitalizeFirstLetters(name)
-            }
+            set: nameSetter
         },
 
         tasks: {
@@ -113,6 +110,19 @@ const schema = new Schema(
 // Ensure that the virtual properties are also integrated in the schema
 schema.set('toJSON', { virtuals: true });
 
+// Setters
+function nameSetter(name) {
+    if (name) return stringHandler.capitalizeFirstLetters(name);
+    else return undefined;
+}
+
+function tagsSetter(tags) {
+    let tagsFormated = [];
+    for (let i in tags) 
+        if(tags[i]) tagsFormated.push(stringHandler.fixSpaces(tags[i].toLowerCase()));
+    return [...new Set(tagsFormated)];;
+}
+
 // Static methods
 schema.statics.getListAllHeaders = function () {
     return this.find({}, '-tasks').sort({ role: 1, username: 1 });
@@ -140,13 +150,13 @@ schema.methods.create = async function () {
 }
 
 schema.methods.updateIdentity = async function (updatedUser) {
-    if (updatedUser.hasOwnProperty('username'))     this.username = updatedUser.username;
-    if (updatedUser.hasOwnProperty('email'))        this.email = updatedUser.email;
-    if (updatedUser.hasOwnProperty('password'))     this.password = updatedUser.password;
-    if (updatedUser.hasOwnProperty('tags'))         this.tags = updatedUser.tags;
-    if (updatedUser.hasOwnProperty('firstName'))    this.firstName = updatedUser.firstName;
-    if (updatedUser.hasOwnProperty('middleName'))   this.middleName = updatedUser.middleName;
-    if (updatedUser.hasOwnProperty('lastName'))     this.lastName = updatedUser.lastName;
+    if (updatedUser.hasOwnProperty('username')) this.username = updatedUser.username;
+    if (updatedUser.hasOwnProperty('email')) this.email = updatedUser.email;
+    if (updatedUser.hasOwnProperty('password')) this.password = updatedUser.password;
+    if (updatedUser.hasOwnProperty('tags')) this.tags = updatedUser.tags;
+    if (updatedUser.hasOwnProperty('firstName')) this.firstName = updatedUser.firstName;
+    if (updatedUser.hasOwnProperty('middleName')) this.middleName = updatedUser.middleName;
+    if (updatedUser.hasOwnProperty('lastName')) this.lastName = updatedUser.lastName;
 
     return this.save();
 };

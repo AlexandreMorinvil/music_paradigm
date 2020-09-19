@@ -7,7 +7,7 @@
 
     <div class="editor-position">
       <div class="user-editor-box-form">
-        <form submit.prevent>
+        <form v-on:submit.prevent="doNothing()">
           <div>
             <label for="username">
               Username :
@@ -93,20 +93,23 @@
           </div>
           <div>
             <div class="form-tags">
-              <div class="form-group-input">
-                <button v-on:click="handleSubmit()" class="widget-button blue">Add</button>
+              <div class="form-tags-input">
                 <label for="tags">
-                  Group(s) :
-                  <span class="selected-user-attribute">{{ userSelectedTagsDisplay }}</span>
+                  <button v-on:click="addTag()" class="widget-button blue">Add</button>
+                  Tag(s) :
+                  <span
+                    class="selected-user-attribute"
+                  >{{ userSelectedTagsDisplay }}</span>
                 </label>
               </div>
-              <div v-for="tag in tags" :key="tag" class="form-group-input">
-                <button v-on:click="handleSubmit()" class="widget-button small red">Remove</button>
+              <div v-for="(tag, index) in tags" :key="index" class="form-group-input">
+                <button v-on:click="removeTag(index)" class="widget-button small red">Remove</button>
                 <input
                   type="text"
-                  name="group"
-                  autocomplete="new-group"
-                  placeholder="Insert new group name"
+                  v-model="tags[index]"
+                  name="tags"
+                  autocomplete="new-tags"
+                  placeholder="Insert new tag name"
                 />
               </div>
             </div>
@@ -196,14 +199,13 @@ export default {
     },
   },
   methods: {
-    ...mapActions("alert", ["setErrorAlert", "setInformationAlert"]),
     ...mapActions("users", [
       "unsetSelectedUser",
       "createUser",
       "updateUser",
       "deleteUser",
     ]),
-    bundleUserFromForm(){
+    bundleUserFromForm() {
       return {
         username: this.username,
         password: this.password,
@@ -211,8 +213,14 @@ export default {
         firstName: this.firstName,
         middleName: this.middleName,
         lastName: this.lastName,
-        tags: this.tags
+        tags: this.tags,
       };
+    },
+    addTag() {
+      this.tags.push("");
+    },
+    removeTag(index) {
+      this.tags.splice(index, 1);
     },
     assignFormId(id) {
       this.id = id;
@@ -222,6 +230,9 @@ export default {
     },
     assignFormEmail(email) {
       this.email = email;
+    },
+    assignFormPassword(password) {
+      this.password = password;
     },
     assignFormFirstName(firstName) {
       this.firstName = firstName;
@@ -233,9 +244,7 @@ export default {
       this.lastName = lastName;
     },
     assignFormTags(tags) {
-      this.tags = Array.isArray(tags)
-        ? JSON.parse(JSON.stringify(tags))
-        : [];
+      this.tags = Array.isArray(tags) ? JSON.parse(JSON.stringify(tags)) : [];
     },
     assignFormRole(role) {
       this.role = role;
@@ -250,11 +259,19 @@ export default {
       this.assignFormTags(this.userSelectedTags);
       this.assignFormRole(this.userSelectedRole);
     },
+    clearForm() {
+      this.assignFormId("");
+      this.assignFormUsername("");
+      this.assignFormEmail("");
+      this.assignFormPassword("");
+      this.assignFormFirstName("");
+      this.assignFormMiddleName("");
+      this.assignFormLastName("");
+      this.assignFormTags([]);
+      this.assignFormRole("");
+    },
     handleRevert() {
       this.assignSelectedToForm();
-    },
-    handleSubmit() {
-      console.log(this.username);
     },
     submitUserToCreate() {
       const userToCreate = this.bundleUserFromForm();
@@ -268,7 +285,7 @@ export default {
         const userToCreate = this.bundleUserFromForm();
         this.updateUser({
           id: this.userSelectedId,
-          user: userToCreate
+          user: userToCreate,
         }).then(() => this.assignSelectedToForm());
       }
     },
@@ -277,11 +294,12 @@ export default {
         "Are your sure you want to delete the user(s)?"
       );
       if (answer) {
-        this.deleteUser(this.userSelectedId);
+        this.deleteUser(this.userSelectedId).then(this.clearForm());
       }
     },
     handleUnselection() {
       this.unsetSelectedUser();
+      this.clearForm();
     },
     handleUploadExperiment(event) {
       console.log("Todo", event);
