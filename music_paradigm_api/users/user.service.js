@@ -73,11 +73,9 @@ async function update(id, userIdentity) {
 
 async function _delete(id) {
     try {
-        // Retreive the user to update
         const user = await User.findById(id);
         if (!user) throw new Error('User to delete not found');
-
-        // Remove the experiment
+        
         return await user.remove();
     } catch (err) {
         throw err;

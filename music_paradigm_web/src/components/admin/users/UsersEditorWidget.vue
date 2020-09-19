@@ -277,7 +277,7 @@ export default {
         "Are your sure you want to delete the user(s)?"
       );
       if (answer) {
-        this.deleteExperiment(this.userSelectedId);
+        this.deleteUser(this.userSelectedId);
       }
     },
     handleUnselection() {
