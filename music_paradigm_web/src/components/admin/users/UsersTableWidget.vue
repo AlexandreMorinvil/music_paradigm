@@ -13,7 +13,7 @@
             <th>Username</th>
             <th>Email</th>
             <th>Full Name</th>
-            <th>Groups</th>
+            <th>Tags</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -29,7 +29,7 @@
             <td>{{ header.username }}</td>
             <td>{{ makeEmailDisplay(header.email) }}</td>
             <td>{{ makeFullNameDisplay(header.firstName, header.middleName, header.lastName) }}</td>
-            <td>{{ makeGroupsDisplay(header.groups) }}</td>
+            <td>{{ makeTagsDisplay(header.tags) }}</td>
             <td class="widget-table-actions-buttons">
               <button
                 v-on:click="handleSelectUser(header._id)"
@@ -82,14 +82,14 @@ export default {
     makeFullNameDisplay(firstName, middleName, lastName) {
       return firstName + " " + middleName + " " + lastName;
     },
-    makeGroupsDisplay(groupList) {
-      if (groupList.length === 0) {
+    makeTagsDisplay(tagList) {
+      if (tagList.length === 0) {
         return "None";
       } else {
         let display = "";
-        for (let i in groupList) {
+        for (let i in tagList) {
           if (i > 1) display += "\n";
-          display += groupList[i];
+          display += tagList[i];
         }
         return display;
       }

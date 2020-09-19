@@ -22,19 +22,11 @@ module.exports = {
  */
 async function authenticate({ username, password }) {
     try {
-        // Fetch user in the database
-        const user = await User.findOne({ username });
-        if (!user) throw new Error;
-
-        // Validate password
-        const { passwordHash, ...userWithoutPasswordHash } = user.toObject();
-        if (!bcrypt.compareSync(password, passwordHash)) throw new Error;
-
-        // Create jwt token
-        const token = jwt.generateToken(userWithoutPasswordHash);
-
+        const userWithoutPassword = await User.authenticate(username, password);
+        const token = jwt.generateToken(userWithoutPassword);
+        
         return {
-            ...userWithoutPasswordHash,
+            ...userWithoutPassword,
             token
         };
     } catch (err) {
@@ -55,7 +47,7 @@ async function getAll() {
 
 async function getById(id) {
     try {
-        return await User.findById(id).select('-passwordHash');
+        return await User.findById(id).select('-password');
     } catch (err) {
         throw err;
     }
@@ -65,15 +57,11 @@ async function getById(id) {
 async function create(userParam) {
     try {
         // Validate the uniqueness of the username
-        const document = await User.findOne({ username: userParam.username });
-        if (document)
-            throw new Error('Username "' + userParam.username + '" is already taken');
+        // const document = await User.findOne({ username: userParam.username });
+        // if (document) throw new Error('Username "' + userParam.username + '" is already taken');
 
         // Create the new user
         const user = new User(userParam);
-
-        // Hash the password
-        user.passwordHash = bcrypt.hashSync(userParam.password, 10);
 
         // Save the user
         return await user.save();
@@ -87,15 +75,10 @@ async function update(id, userParam) {
         // Fetch the user in the database
         const user = await User.findById(id);
 
-        // FIXME : Let the database validate the update when saving instead of validating manually
         // Validate the user
         if (!user) throw new Error('User not found');
         if (user.username !== userParam.username && await User.findOne({ username: userParam.username }))
-            throw new Errpr('Username "' + userParam.username + '" is already taken');
-
-        // Hash password if it was entered
-        if (userParam.password)
-            userParam.passwordHash = bcrypt.hashSync(userParam.password, 10);
+            throw new Error('Username "' + userParam.username + '" is already taken');
 
         // Copy userParam properties to user
         Object.assign(user, userParam);

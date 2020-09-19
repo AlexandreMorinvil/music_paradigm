@@ -12,7 +12,7 @@ export default {
         username: "",
         email: "",
         role: "",
-        groups: [],
+        tags: [],
         firstName: "",
         middleName: "",
         lastName: ""
@@ -24,7 +24,7 @@ export default {
             username: "",
             email: "",
             role: "",
-            groups: [],
+            tags: [],
             firstName: "",
             middleName: "",
             lastName: "",

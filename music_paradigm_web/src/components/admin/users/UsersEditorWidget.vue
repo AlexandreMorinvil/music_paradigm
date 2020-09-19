@@ -92,15 +92,15 @@
             </div>
           </div>
           <div>
-            <div class="form-groups">
+            <div class="form-tags">
               <div class="form-group-input">
                 <button v-on:click="handleSubmit()" class="widget-button blue">Add</button>
-                <label for="groups">
+                <label for="tags">
                   Group(s) :
-                  <span class="selected-user-attribute">{{ userSelectedGroupsDisplay }}</span>
+                  <span class="selected-user-attribute">{{ userSelectedTagsDisplay }}</span>
                 </label>
               </div>
-              <div v-for="group in groups" :key="group" class="form-group-input">
+              <div v-for="tag in tags" :key="tag" class="form-group-input">
                 <button v-on:click="handleSubmit()" class="widget-button small red">Remove</button>
                 <input
                   type="text"
@@ -150,7 +150,7 @@ export default {
       firstName: "",
       middleName: "",
       lastName: "",
-      groups: [],
+      tags: [],
       role: "",
     };
   },
@@ -163,7 +163,7 @@ export default {
       "userSelectedFirstName",
       "userSelectedMiddleName",
       "userSelectedLastName",
-      "userSelectedGroups",
+      "userSelectedTags",
     ]),
     userSelectedUsernameDisplay() {
       return this.hasSelectedUser ? this.userSelectedUsername || "---" : "";
@@ -183,11 +183,11 @@ export default {
     userSelectedLastNameDisplay() {
       return this.hasSelectedUser ? this.userSelectedLastName || "---" : "";
     },
-    userSelectedGroupsDisplay() {
+    userSelectedTagsDisplay() {
       if (this.hasSelectedUser) {
-        if (this.userSelectedGroups.length > 0) {
+        if (this.userSelectedTags.length > 0) {
           let display = "";
-          this.userSelectedGroups.forEach((element) => {
+          this.userSelectedTags.forEach((element) => {
             display += element + ", ";
           });
           return display.slice(0, -2);
@@ -221,9 +221,9 @@ export default {
     assignFormLastName(lastName) {
       this.lastName = lastName;
     },
-    assignFormGroups(groups) {
-      this.groups = Array.isArray(groups)
-        ? JSON.parse(JSON.stringify(groups))
+    assignFormTags(tags) {
+      this.tags = Array.isArray(tags)
+        ? JSON.parse(JSON.stringify(tags))
         : [];
     },
     assignFormRole(role) {
@@ -236,7 +236,7 @@ export default {
       this.assignFormFirstName(this.userSelectedFirstName);
       this.assignFormMiddleName(this.userSelectedMiddleName);
       this.assignFormLastName(this.userSelectedLastName);
-      this.assignFormGroups(this.userSelectedGroups);
+      this.assignFormTags(this.userSelectedTags);
       this.assignFormRole(this.userSelectedRole);
     },
     handleRevert() {
@@ -254,7 +254,7 @@ export default {
         firstName: this.firstName,
         middleName: this.middleName,
         lastName: this.lastName,
-        groups: this.groups
+        tags: this.tags
       };
       this.createUser(userToCreate);
     },
@@ -361,7 +361,7 @@ export default {
   margin: 10px 0 10px;
 }
 
-.form-groups {
+.form-tags {
   display: grid;
   grid-gap: 10px;
   margin-top: 15px;

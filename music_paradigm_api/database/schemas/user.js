@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const roles = require('_helpers/role');
+const bcrypt = require('bcryptjs');
 
 // Required schemas
 const curriculum = require('./curriculum').schemaCurriculum;
@@ -12,9 +13,14 @@ const schema = new Schema(
         // Management data
         username: { type: String, unique: true, sparse: true },
         email: { type: String, unique: true, sparse: true, default: null },
-        passwordHash: { type: String, required: true },
+        password: {
+            type: String,
+            required: true,
+            alias: 'passwordHash',
+            set: (password) => bcrypt.hashSync(password, 10)
+        },
         role: { type: String, default: roles.user, enum: ['user', 'admin'] },
-        groups: { type: [String], default: [] },
+        tags: { type: [String], default: [] },
 
         // Description of the user
         firstName: { type: String, default: "FirstName" },
@@ -38,6 +44,7 @@ const schema = new Schema(
     },
     {
         strict: false,
+        runValidators: true,
         timestamps: {
             createdAt: 'createdAt',
             updatedAt: 'updatedAt'
@@ -52,6 +59,27 @@ schema.set('toJSON', { virtuals: true });
 schema.statics.getListAllHeaders = function () {
     return this.find({}, '-tasks')
         .sort({ role: 1, username: 1 });
+};
+
+schema.statics.authenticate = async function (username, password) {
+    // Fetch user in the database
+    const user = await this.findOne({ username });
+    if (!user) throw new Error;
+
+    // Validate password
+    if (!bcrypt.compareSync(password, user.passwordHash)) throw new Error;
+    const userWithoutPassword = user.toObject();
+    delete userWithoutPassword.password;
+
+    return userWithoutPassword;
+};
+
+// Instance methods
+schema.methods.updateIdentity = async function (updatedUser) {
+    const oldDescription = await this.toObject();
+
+    Object.assign(this, updatedUser);
+    return this;
 };
 
 // Creating the model

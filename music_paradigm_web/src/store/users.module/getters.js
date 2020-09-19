@@ -23,8 +23,8 @@ export default {
         return state.selection.lastName;
     },
 
-    userSelectedGroups: (state) => {
-        return state.selection.groups;
+    userSelectedTags: (state) => {
+        return state.selection.tags;
     },
 
     userSelectedRole: (state) => {
