@@ -24,7 +24,7 @@ async function authenticate({ username, password }) {
     try {
         const userWithoutPassword = await User.authenticate(username, password);
         const token = jwt.generateToken(userWithoutPassword);
-        
+
         return {
             ...userWithoutPassword,
             token
@@ -51,40 +51,21 @@ async function getById(id) {
     } catch (err) {
         throw err;
     }
-
 }
 
 async function create(userParam) {
     try {
-        // Validate the uniqueness of the username
-        // const document = await User.findOne({ username: userParam.username });
-        // if (document) throw new Error('Username "' + userParam.username + '" is already taken');
-
-        // Create the new user
         const user = new User(userParam);
-
-        // Save the user
-        return await user.save();
+        return await user.create();
     } catch (err) {
         throw err;
     }
 }
 
-async function update(id, userParam) {
+async function update(id, userIdentity) {
     try {
-        // Fetch the user in the database
         const user = await User.findById(id);
-
-        // Validate the user
-        if (!user) throw new Error('User not found');
-        if (user.username !== userParam.username && await User.findOne({ username: userParam.username }))
-            throw new Error('Username "' + userParam.username + '" is already taken');
-
-        // Copy userParam properties to user
-        Object.assign(user, userParam);
-
-        // Save the user
-        return user.save();
+        return await user.updateIdentity(userIdentity);
     } catch (err) {
         throw err;
     }

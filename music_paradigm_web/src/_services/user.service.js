@@ -27,13 +27,13 @@ const getById = function (id) {
     return fetch(url.users(id), requestOptions).then(handleResponse);
 }
 
-const update = function (user) {
+const update = function (id, user) {
     const requestOptions = {
         method: 'PUT',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
         body: JSON.stringify(user)
     };
-    return fetch(url.users(user._id), requestOptions).then(handleResponse);
+    return fetch(url.users(id), requestOptions).then(handleResponse);
 }
 
 const _delete = function (id) {

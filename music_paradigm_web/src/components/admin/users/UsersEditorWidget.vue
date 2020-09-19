@@ -203,6 +203,17 @@ export default {
       "updateUser",
       "deleteUser",
     ]),
+    bundleUserFromForm(){
+      return {
+        username: this.username,
+        password: this.password,
+        email: this.email,
+        firstName: this.firstName,
+        middleName: this.middleName,
+        lastName: this.lastName,
+        tags: this.tags
+      };
+    },
     assignFormId(id) {
       this.id = id;
     },
@@ -245,17 +256,8 @@ export default {
     handleSubmit() {
       console.log(this.username);
     },
-    // TODO: I AM HERE MAKE THE CREATION WORK
     submitUserToCreate() {
-      const userToCreate = {
-        username: this.username,
-        password: this.password,
-        email: this.email,
-        firstName: this.firstName,
-        middleName: this.middleName,
-        lastName: this.lastName,
-        tags: this.tags
-      };
+      const userToCreate = this.bundleUserFromForm();
       this.createUser(userToCreate);
     },
     submitUserToUpdate() {
@@ -263,9 +265,10 @@ export default {
         "Are your sure you want to edit the user(s)?"
       );
       if (answer) {
-        this.updateExperiment({
-          id: this.selectedId,
-          experiment: this.experimentEdited,
+        const userToCreate = this.bundleUserFromForm();
+        this.updateUser({
+          id: this.userSelectedId,
+          user: userToCreate
         });
       }
     },
@@ -274,7 +277,7 @@ export default {
         "Are your sure you want to delete the user(s)?"
       );
       if (answer) {
-        this.deleteExperiment(this.selectedId);
+        this.deleteExperiment(this.userSelectedId);
       }
     },
     handleUnselection() {

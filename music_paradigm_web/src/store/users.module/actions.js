@@ -43,24 +43,23 @@ export default {
             });
     },
 
-    // updateExperiment({ commit, dispatch }, { id, experiment }) {
-    //     commit('indicateUpdateRequest');
-    //     experimentService.update(id, experiment)
-    //         .then(
-    //             experiment => {
-    //                 commit('setEditedExperiment', experiment);
-    //                 commit('setSelectedExperiment', experiment);
-    //                 dispatch('alert/setSuccessAlert', "Experiment update sucessful", { root: true });
-    //                 dispatch('fetchAllExperimentsHeaders');
-    //             },
-    //             error => {
-    //                 dispatch('alert/setErrorAlert', error.message, { root: true });
-    //             }
-    //         )
-    //         .finally(() => {
-    //             commit('indicateUpdateRequestEnd');
-    //         });
-    // },
+    updateUser({ commit, dispatch }, { id, user }) {
+        commit('indicateUpdateRequest');
+        userService.update(id, user)
+            .then(
+                updatedUser => {
+                    commit('setSelectedUser', updatedUser);
+                    dispatch('alert/setSuccessAlert', "User update sucessful", { root: true });
+                    dispatch('fetchAllUsersHeaders');
+                },
+                error => {
+                    dispatch('alert/setErrorAlert', error.message, { root: true });
+                }
+            )
+            .finally(() => {
+                commit('indicateUpdateRequestEnd');
+            });
+    },
 
     // deleteExperiment({ commit, dispatch }, id) {
     //     commit('indicateDeleteRequest');

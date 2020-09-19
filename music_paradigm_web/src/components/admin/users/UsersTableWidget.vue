@@ -76,7 +76,7 @@ export default {
       this.setSelectedUser(id);
     },
     makeEmailDisplay(email) {
-      if(!email) return "None";
+      if(!email) return "---";
       else return email;
     },
     makeFullNameDisplay(firstName, middleName, lastName) {
@@ -84,7 +84,7 @@ export default {
     },
     makeTagsDisplay(tagList) {
       if (tagList.length === 0) {
-        return "None";
+        return "---";
       } else {
         let display = "";
         for (let i in tagList) {

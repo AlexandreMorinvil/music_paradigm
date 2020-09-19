@@ -3,11 +3,6 @@ const roles = require('../_helpers/role');
 
 const Schema = mongoose.Schema;
 
-function validateEmail(email) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
-
 const schema = new Schema({
     username: { type: String, unique: true, required: true },
     password: { type: String, required: true },

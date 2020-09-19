@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const roles = require('_helpers/role');
 const bcrypt = require('bcryptjs');
 
+const emailValidator = require('_helpers/emailValidator');
+
 // Required schemas
 const curriculum = require('./curriculum').schemaCurriculum;
 const progression = require('./curriculum').schemaProgression;
@@ -10,24 +12,62 @@ const Schema = mongoose.Schema;
 
 const schema = new Schema(
     {
-        // Management data
-        username: { type: String, unique: true, sparse: true },
-        email: { type: String, unique: true, sparse: true, default: null },
+        username: {
+            type: String,
+            default: function () { 
+                return this.id; 
+            },
+            unique: true,
+            sparse: true,
+            minlength: 1,
+            maxlength: 100,
+            set: function (username) { 
+                return (username) ? username : this.id; 
+            }
+        },
+        email: {
+            type: String,
+            unique: true,
+            sparse: true,
+            default: null,
+            maxlength: 100,
+            validate: { validator: emailValidator.validateEmail }
+        },
         password: {
             type: String,
             required: true,
             alias: 'passwordHash',
-            set: (password) => bcrypt.hashSync(password, 10)
+            minlength: 1,
+            maxlength: 100,
+            set: function (password) { return bcrypt.hashSync(password, 10) },
         },
-        role: { type: String, default: roles.user, enum: ['user', 'admin'] },
-        tags: { type: [String], default: [] },
+        role: {
+            type: String,
+            default: roles.user,
+            enum: ['user', 'admin']
+        },
+        tags: {
+            type: [String],
+            default: []
+        },
 
-        // Description of the user
-        firstName: { type: String, default: "FirstName" },
-        middleName: { type: String, default: "MiddleName" },
-        lastName: { type: String, default: "LastName" },
 
-        //
+        firstName: {
+            type: String,
+            default: "FirstName",
+            maxlength: 50
+        },
+        middleName: {
+            type: String,
+            default: "",
+            maxlength: 50
+        },
+        lastName: {
+            type: String,
+            default: "LastName",
+            maxlength: 50
+        },
+
         tasks: {
             curriculums: {
                 type: [curriculum],
@@ -57,8 +97,7 @@ schema.set('toJSON', { virtuals: true });
 
 // Static methods
 schema.statics.getListAllHeaders = function () {
-    return this.find({}, '-tasks')
-        .sort({ role: 1, username: 1 });
+    return this.find({}, '-tasks').sort({ role: 1, username: 1 });
 };
 
 schema.statics.authenticate = async function (username, password) {
@@ -75,15 +114,27 @@ schema.statics.authenticate = async function (username, password) {
 };
 
 // Instance methods
-schema.methods.updateIdentity = async function (updatedUser) {
-    const oldDescription = await this.toObject();
+schema.methods.create = async function () {
+    if (!this.email) this.email = undefined;
+    if (!this.firstName) this.firstName = undefined;
+    if (!this.lastName) this.lastName = undefined;
+    return this.save();
+}
 
-    Object.assign(this, updatedUser);
-    return this;
+schema.methods.updateIdentity = async function (updatedUser) {
+    if (updatedUser.hasOwnProperty('username'))     this.username = updatedUser.username;
+    if (updatedUser.hasOwnProperty('email'))        this.email = updatedUser.email;
+    if (updatedUser.hasOwnProperty('password'))     this.password = updatedUser.password;
+    if (updatedUser.hasOwnProperty('tags'))         this.tags = updatedUser.tags;
+    if (updatedUser.hasOwnProperty('firstName'))    this.firstName = updatedUser.firstName;
+    if (updatedUser.hasOwnProperty('middleName'))   this.middleName = updatedUser.middleName;
+    if (updatedUser.hasOwnProperty('lastName'))     this.lastName = updatedUser.lastName;
+
+    return this.save();
 };
 
 // Creating the model
-const model = mongoose.model('User', schema, 'users');
+const model = mongoose.model('User', schema);
 
 module.exports = {
     schema: schema,
