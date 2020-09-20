@@ -14,16 +14,13 @@ const schema = new Schema(
     {
         username: {
             type: String,
-            default: function () {
-                return this.id;
-            },
+            default: function () { return this.id; },
             unique: true,
             sparse: true,
             minlength: 1,
             maxlength: 100,
-            set: function (username) {
-                return (username) ? username : this.id;
-            }
+            trim: true,
+            set: setterUsername
         },
         email: {
             type: String,
@@ -31,26 +28,21 @@ const schema = new Schema(
             sparse: true,
             default: null,
             maxlength: 100,
-            validate: {
-                validator: function (string) {
-                    if (!string) return true;
-                    else return isEmailString(string);
-                }
+            trim: true,
+            validate: { 
+                validator: validatorEmail,
+                message: "The eail is invalid"
             },
-            set: function (email) {
-                return (email) ? email : undefined;
-            }
+            set: setterEmail
         },
         password: {
             type: String,
-            required: true,
             default: "music",
+            required: true,
             alias: 'passwordHash',
             minlength: 1,
             maxlength: 100,
-            set: function (password) {
-                return bcrypt.hashSync(password, 10)
-            },
+            set: setterPassword,
         },
         role: {
             type: String,
@@ -60,7 +52,7 @@ const schema = new Schema(
         tags: {
             type: [String],
             default: [],
-            set: tagsSetter
+            set: setterTags
         },
 
 
@@ -68,19 +60,22 @@ const schema = new Schema(
             type: String,
             default: "FirstName",
             maxlength: 50,
-            set: nameSetter
+            trim: true,
+            set: setterName
         },
         middleName: {
             type: String,
             default: "",
             maxlength: 50,
-            set: nameSetter
+            trim: true,
+            set: setterName
         },
         lastName: {
             type: String,
             default: "LastName",
             maxlength: 50,
-            set: nameSetter
+            trim: true,
+            set: setterName
         },
 
         tasks: {
@@ -111,16 +106,35 @@ const schema = new Schema(
 schema.set('toJSON', { virtuals: true });
 
 // Setters
-function nameSetter(name) {
+function setterEmail(email) {
+    return (email) ? email : undefined;
+}
+
+function setterName(name) {
     if (name) return stringHandler.capitalizeFirstLetters(name);
     else return undefined;
 }
 
-function tagsSetter(tags) {
+function setterPassword(password) {
+    return bcrypt.hashSync(password, 10)
+}
+
+function setterTags(tags) {
     let tagsFormated = [];
-    for (let i in tags) 
-        if(tags[i]) tagsFormated.push(stringHandler.fixSpaces(tags[i].toLowerCase()));
-    return [...new Set(tagsFormated)];;
+    for (let i in tags)
+        if (tags[i])
+            tagsFormated.push(stringHandler.fixSpaces(tags[i].toLowerCase()));
+    return [...new Set(tagsFormated)];
+}
+
+function setterUsername(username) {
+    return (username) ? username : this.id;
+}
+
+// ValidatorEmail
+function validatorEmail(string) {
+    if (!string) return true;
+    else return isEmailString(string);
 }
 
 // Static methods

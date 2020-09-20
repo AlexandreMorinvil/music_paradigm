@@ -19,8 +19,9 @@ app.use('/experiment-ressources', express.static(__dirname + '/../experiment_res
 app.use(jwt());
 
 // api routes
-app.use('/users', require('users/users.controller'));
 app.use('/experiments', require('experiments/experiments.controller'));
+app.use('/curriculums', require('curriculums/curriculums.controller'));
+app.use('/users', require('users/users.controller'));
 
 // global error handler
 app.use(errorHandler);

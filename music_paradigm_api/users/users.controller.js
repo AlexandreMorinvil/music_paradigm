@@ -2,7 +2,6 @@
 const router = express.Router();
 const userService = require('./user.service');
 const jwtAuthorize = require('jwt/jwt.authorization');
-const timeout = require('_helpers/timeout')
 const role = require('_helpers/role');
 
 // routes
