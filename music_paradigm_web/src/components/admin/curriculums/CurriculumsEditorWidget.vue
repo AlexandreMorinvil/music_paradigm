@@ -8,20 +8,36 @@
     <div class="editor-position">
       <div class="editor-box-form">
         <form v-on:submit.prevent="doNothing()">
-          <div>
-            <label for="username">
-              Title :
-              <span
-                class="selected-element-text-color"
-              >{{ curriculumSelectedUsernameDisplay }}</span>
-            </label>
-            <input
-              type="text"
-              v-model="title"
-              name="title"
-              autocomplete="new-username"
-              placeholder="Insert new title"
-            />
+          <div class="general-parameters-section">
+            <div>
+              <label for="username">
+                Title :
+                <span
+                  class="selected-element-text-color"
+                >{{ curriculumSelectedUsernameDisplay }}</span>
+              </label>
+              <input
+                type="text"
+                v-model="title"
+                name="title"
+                autocomplete="new-username"
+                placeholder="Insert new title"
+              />
+            </div>
+            <div>
+              <label for="username">
+                Sequential :
+                <span
+                  class="selected-element-text-color"
+                >{{ curriculumSelectedUsernameDisplay }}</span>
+              </label>
+              <input 
+                class="checkbox"
+                v-model="isSequential"
+                name="isSequential"
+                type="checkbox" 
+              />
+            </div>
           </div>
         </form>
       </div>
@@ -56,13 +72,11 @@ export default {
     return {
       id: "",
       title: "abcefg",
+      isSequential: true
     };
   },
   computed: {
-    ...mapGetters("users", [
-      "hasSelectedCurriculum",
-      "curriculumSelectedId"
-    ]),
+    ...mapGetters("users", ["hasSelectedCurriculum", "curriculumSelectedId"]),
   },
   methods: {
     ...mapActions("alert", []),
@@ -137,7 +151,7 @@ export default {
 .editor-position {
   grid-area: editor;
   background-color: rgb(40, 40, 40);
-  padding: 5px 40px 25px;
+  padding: 20px 40px;
   display: grid;
 }
 
@@ -157,4 +171,31 @@ export default {
 }
 
 /* Form  */
+.general-parameters-section {
+  display: grid;
+  grid-template-columns: 2fr auto;
+  grid-gap: 15px;
+}
+
+.general-parameters-section div {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: 15px;
+}
+
+.general-parameters-section label {
+  /* background-color: khaki; */
+  display: inline-block;
+}
+
+.general-parameters-section input {
+  /* background-color: lightcoral; */
+  display: inline;
+  margin: auto;
+}
+
+.checkbox {
+  width: 30px;
+  height: 30px;
+}
 </style>
