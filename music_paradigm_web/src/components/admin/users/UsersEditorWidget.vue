@@ -93,7 +93,7 @@
           </div>
           <div>
             <div class="form-tags">
-              <div class="form-tags-input">
+              <div>
                 <label for="tags">
                   <button v-on:click="addTag()" class="widget-button blue">Add</button>
                   Tag(s) :

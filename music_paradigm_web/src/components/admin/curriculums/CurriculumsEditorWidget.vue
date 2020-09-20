@@ -10,7 +10,7 @@
         <form v-on:submit.prevent="doNothing()">
           <div class="general-parameters-section">
             <div>
-              <label for="username">
+              <label for="title">
                 Title :
                 <span
                   class="selected-element-text-color"
@@ -25,18 +25,126 @@
               />
             </div>
             <div>
-              <label for="username">
+              <label for="isSequential">
                 Sequential :
                 <span
                   class="selected-element-text-color"
                 >{{ curriculumSelectedUsernameDisplay }}</span>
               </label>
-              <input 
-                class="checkbox"
-                v-model="isSequential"
-                name="isSequential"
-                type="checkbox" 
-              />
+              <input class="checkbox" v-model="isSequential" name="isSequential" type="checkbox" />
+            </div>
+          </div>
+
+          <div class="experiments-parameters-section">
+            <div>
+              <button v-on:click="addTag()" class="widget-button blue small">Add</button>
+              <label class="inline-label">
+                Experiments(s) :
+                <span
+                  class="selected-element-text-color"
+                >{{ userSelectedTagsDisplay }}</span>
+              </label>
+            </div>
+
+            <div v-for="(experiment, index) in experiments" :key="index" class="experiment-input">
+              <button v-on:click="removeTag(index)" class="widget-button small red">Remove</button>
+
+              <div>
+                <label for="experiment-title" class="inline-label">
+                  Experiment Title :
+                  <span
+                    class="selected-element-text-color"
+                  >{{ userSelectedTagsDisplay }}</span>
+                </label>
+                <input
+                  type="text"
+                  v-model="experiments[index].title"
+                  name="experiment-title"
+                  autocomplete="new-experiment-title"
+                  placeholder="Insert new experiment title"
+                />
+              </div>
+
+              <div>
+                <label for="delay-in-days" class="inline-label">
+                  Delay in Days :
+                  <span
+                    class="selected-element-text-color"
+                  >{{ userSelectedTagsDisplay }}</span>
+                </label>
+                <input
+                  type="number"
+                  v-model="experiments[index].delayInDays"
+                  name="delay-in-days"
+                  autocomplete="new-delay-in-days"
+                  placeholder="Insert new delay in days"
+                />
+              </div>
+
+              <div>
+                <label for="is-unique-in-day">
+                  Unique in Day :
+                  <span
+                    class="selected-element-text-color"
+                  >{{ curriculumSelectedUsernameDisplay }}</span>
+                </label>
+                <input
+                  type="checkbox"
+                  class="checkbox"
+                  v-model="experiments[index].isUniqueIndDay"
+                  name="is-unique-in-day"
+                />
+              </div>
+
+              <div>
+                <label for="completion-target" class="inline-label">
+                  Completion Target :
+                  <span
+                    class="selected-element-text-color"
+                  >{{ userSelectedTagsDisplay }}</span>
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  v-model="experiments[index].completionTarget"
+                  name="completion-target"
+                  autocomplete="new-completion-target"
+                  placeholder="Insert new completion target"
+                />
+              </div>
+
+              <div>
+                <label for="completion-limit" class="inline-label">
+                  Completion Limit :
+                  <span
+                    class="selected-element-text-color"
+                  >{{ userSelectedTagsDisplay }}</span>
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  v-model="experiments[index].completionLimit"
+                  name="completion-limit"
+                  autocomplete="new-completion-limit"
+                  placeholder="Insert new completion limit"
+                />
+              </div>
+
+              <div>
+                <label for="completion-limit" class="inline-label">
+                  Experiment :
+                  <span
+                    class="selected-element-text-color"
+                  >{{ userSelectedTagsDisplay }}</span>
+                </label>
+                <select name="experiment-reference" v-model="experiments[index].experimentReference">
+                  <option
+                    v-for="(reference, index) in experimentsReferences"
+                    :key="index"
+                    :value="experimentsReferences[index].id"
+                  >{{ experimentsReferences[index].fullName }}</option>
+                </select>
+              </div>
             </div>
           </div>
         </form>
@@ -72,11 +180,33 @@ export default {
     return {
       id: "",
       title: "abcefg",
-      isSequential: true
+      isSequential: true,
+      experiments: [
+        {
+          title: "Introduction",
+          delayInDays: 7,
+          isUniqueIndDay: true,
+          completionTarget: 1,
+          completionLimit: 1,
+          experimentReference: "5f32ab693a6197f5e56ab748",
+        },
+      ],
     };
   },
   computed: {
+    ...mapGetters("experiments", ["experimentsHeadersList"]),
     ...mapGetters("users", ["hasSelectedCurriculum", "curriculumSelectedId"]),
+    experimentsReferences() {
+      const fullReference = [];
+      this.experimentsHeadersList.forEach((element) => {
+        fullReference.push({
+          id: element._id,
+          fullName: element.group + "/" + element.name + "/v" + element.version,
+        });
+      });
+      console.log(fullReference);
+      return fullReference;
+    },
   },
   methods: {
     ...mapActions("alert", []),
@@ -171,6 +301,12 @@ export default {
 }
 
 /* Form  */
+.widget form {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-gap: 15px;
+}
+
 .general-parameters-section {
   display: grid;
   grid-template-columns: 2fr auto;
@@ -184,14 +320,23 @@ export default {
 }
 
 .general-parameters-section label {
-  /* background-color: khaki; */
   display: inline-block;
 }
 
 .general-parameters-section input {
-  /* background-color: lightcoral; */
   display: inline;
   margin: auto;
+}
+
+.experiments-parameters-section {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-gap: 15px;
+}
+
+.inline-label {
+  display: inline;
+  margin: 0 15px;
 }
 
 .checkbox {
