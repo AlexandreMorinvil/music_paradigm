@@ -6,8 +6,23 @@
     </div>
 
     <div class="editor-position">
-      <div class="user-editor-box-form">
-        <form submit.prevent>
+      <div class="editor-box-form">
+        <form v-on:submit.prevent="doNothing()">
+          <div>
+            <label for="username">
+              Title :
+              <span
+                class="selected-element-text-color"
+              >{{ curriculumSelectedUsernameDisplay }}</span>
+            </label>
+            <input
+              type="text"
+              v-model="title"
+              name="title"
+              autocomplete="new-username"
+              placeholder="Insert new title"
+            />
+          </div>
         </form>
       </div>
     </div>
@@ -32,27 +47,22 @@
 
 <script>
 import "@/styles/widgetTemplate.css";
+import "@/styles/formTemplate.css";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "CurriculumWorkshopWidget",
   data() {
     return {
-      hasFocusedOnUsername: false,
-      hasAttemptedSubmit: false,
       id: "",
-      username: "",
-      password: "",
-      email: "",
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      groups: [],
-      role: "",
+      title: "abcefg",
     };
   },
   computed: {
-    ...mapGetters("users", [])
+    ...mapGetters("users", [
+      "hasSelectedCurriculum",
+      "curriculumSelectedId"
+    ]),
   },
   methods: {
     ...mapActions("alert", []),
@@ -65,12 +75,20 @@ export default {
     assignFormId(id) {
       this.id = id;
     },
-    handleRevert() {
+    assignFormTitle(title) {
+      this.title = title;
     },
-    handleSubmit() {
+    assignSelectedToForm() {
+      this.assignFormId(this.userSelectedId);
+      this.assignFormTitle(this.curriculumSelectedId);
     },
-    submitUserToCreate() {
+    clearForm() {
+      this.assignFormId("");
+      this.assignFormTitle("");
     },
+    handleRevert() {},
+    handleSubmit() {},
+    submitUserToCreate() {},
     submitUserToUpdate() {
       const answer = window.confirm(
         "Are your sure you want to edit the user(s)?"
@@ -109,20 +127,8 @@ export default {
 </script>
 
 <style scoped>
-.submit-position {
-  grid-area: submit;
-  background-color: darkred;
-}
-
 .edition-buttons-position {
   grid-area: edition-btn;
-  display: grid;
-  grid-gap: 15px;
-  grid-template-columns: 1fr 1fr;
-}
-
-.selection-buttons-position {
-  grid-area: selection-btn;
   display: grid;
   grid-gap: 15px;
   grid-template-columns: 1fr 1fr;
@@ -144,7 +150,6 @@ export default {
 
 .widget {
   grid-template-columns: 100%;
-  /* grid-template-rows: 64pxx; */
   grid-template-areas:
     "edition-btn"
     "editor"
@@ -152,52 +157,4 @@ export default {
 }
 
 /* Form  */
-
-.user-editor-box-form label {
-  display: block;
-  padding: 10px 0;
-  font-size: 1em;
-}
-
-.user-editor-box-form input {
-  display: inline-block;
-  min-width: 100%;
-  padding: 0.4em 0;
-  border-radius: 4px;
-  padding-left: 10px;
-  font-size: 0.8em;
-}
-
-.form-note-text {
-  text-align: right;
-  font-size: 0.75rem;
-  margin: 10px 0 10px;
-}
-
-.form-groups {
-  display: grid;
-  grid-gap: 10px;
-  margin-top: 15px;
-}
-
-.form-group-input button {
-  min-width: auto;
-  width: 100px;
-}
-
-.form-group-input {
-  display: grid;
-  grid-gap: 10px;
-  grid-template-columns: 100px auto;
-}
-
-.form-name-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 20px;
-}
-
-.selected-user-attribute {
-  color: rgb(24, 210, 24);
-}
 </style>

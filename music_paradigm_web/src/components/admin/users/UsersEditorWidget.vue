@@ -6,12 +6,12 @@
     </div>
 
     <div class="editor-position">
-      <div class="user-editor-box-form">
+      <div class="editor-box-form">
         <form v-on:submit.prevent="doNothing()">
           <div>
             <label for="username">
               Username :
-              <span class="selected-user-attribute">{{ userSelectedUsernameDisplay }}</span>
+              <span class="selected-element-text-color">{{ userSelectedUsernameDisplay }}</span>
             </label>
             <input
               type="text"
@@ -24,7 +24,7 @@
           <div>
             <label for="email">
               Email :
-              <span class="selected-user-attribute">{{ userSelectedEmailDisplay }}</span>
+              <span class="selected-element-text-color">{{ userSelectedEmailDisplay }}</span>
             </label>
             <input
               type="email"
@@ -37,7 +37,7 @@
           <div>
             <label for="password">
               Password :
-              <span class="selected-user-attribute">{{ userSelectedPasswordDisplay }}</span>
+              <span class="selected-element-text-color">{{ userSelectedPasswordDisplay }}</span>
             </label>
 
             <input
@@ -52,7 +52,7 @@
             <div>
               <label for="firstName">
                 First Name :
-                <span class="selected-user-attribute">{{ userSelectedFirstNameDisplay }}</span>
+                <span class="selected-element-text-color">{{ userSelectedFirstNameDisplay }}</span>
               </label>
               <input
                 type="text"
@@ -66,7 +66,7 @@
               <label for="middleName">
                 Middle Name :
                 <span
-                  class="selected-user-attribute"
+                  class="selected-element-text-color"
                 >{{ userSelectedMiddleNameDisplay }}</span>
               </label>
               <input
@@ -80,7 +80,7 @@
             <div>
               <label for="lastName">
                 Last Name :
-                <span class="selected-user-attribute">{{ userSelectedLastNameDisplay }}</span>
+                <span class="selected-element-text-color">{{ userSelectedLastNameDisplay }}</span>
               </label>
               <input
                 type="text"
@@ -98,7 +98,7 @@
                   <button v-on:click="addTag()" class="widget-button blue">Add</button>
                   Tag(s) :
                   <span
-                    class="selected-user-attribute"
+                    class="selected-element-text-color"
                   >{{ userSelectedTagsDisplay }}</span>
                 </label>
               </div>
@@ -138,6 +138,7 @@
 
 <script>
 import "@/styles/widgetTemplate.css";
+import "@/styles/formTemplate.css";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -317,20 +318,8 @@ export default {
 </script>
 
 <style scoped>
-.submit-position {
-  grid-area: submit;
-  background-color: darkred;
-}
-
 .edition-buttons-position {
   grid-area: edition-btn;
-  display: grid;
-  grid-gap: 15px;
-  grid-template-columns: 1fr 1fr;
-}
-
-.selection-buttons-position {
-  grid-area: selection-btn;
   display: grid;
   grid-gap: 15px;
   grid-template-columns: 1fr 1fr;
@@ -352,7 +341,6 @@ export default {
 
 .widget {
   grid-template-columns: 100%;
-  /* grid-template-rows: 64pxx; */
   grid-template-areas:
     "edition-btn"
     "editor"
@@ -360,27 +348,6 @@ export default {
 }
 
 /* Form  */
-
-.user-editor-box-form label {
-  display: block;
-  padding: 10px 0;
-  font-size: 1em;
-}
-
-.user-editor-box-form input {
-  display: inline-block;
-  min-width: 100%;
-  padding: 0.4em 0;
-  border-radius: 4px;
-  padding-left: 10px;
-  font-size: 0.8em;
-}
-
-.form-note-text {
-  text-align: right;
-  font-size: 0.75rem;
-  margin: 10px 0 10px;
-}
 
 .form-tags {
   display: grid;
@@ -403,9 +370,5 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 20px;
-}
-
-.selected-user-attribute {
-  color: rgb(24, 210, 24);
 }
 </style>

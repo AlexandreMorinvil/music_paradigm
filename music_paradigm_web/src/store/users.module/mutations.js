@@ -24,13 +24,13 @@ export default {
         state.status.isUpdating = false;
     },
 
-    // indicateDeleteRequest(state) {
-    //     state.status.isDeleting = true;
-    // },
+    indicateDeleteRequest(state) {
+        state.status.isDeleting = true;
+    },
 
-    // indicateDeleteRequestEnd(state) {
-    //     state.status.isDeleting = false;
-    // },
+    indicateDeleteRequestEnd(state) {
+        state.status.isDeleting = false;
+    },
 
     // Setters
     setSelectedUser(state, user) {
