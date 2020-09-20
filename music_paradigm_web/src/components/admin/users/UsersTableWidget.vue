@@ -29,7 +29,7 @@
             <td>{{ header.username }}</td>
             <td>{{ makeEmailDisplay(header.email) }}</td>
             <td>{{ makeFullNameDisplay(header.firstName, header.middleName, header.lastName) }}</td>
-            <td>{{ makeTagsDisplay(header.tags) }}</td>
+            <td style="white-space: pre-line">{{ makeTagsDisplay(header.tags) }}</td>
             <td class="widget-table-actions-buttons">
               <button
                 v-on:click="handleSelectUser(header._id)"
@@ -88,7 +88,7 @@ export default {
       } else {
         let display = "";
         for (let i in tagList) {
-          if (i > 1) display += "\n";
+          if (i > 0) display += "\n";
           display += tagList[i];
         }
         return display;
