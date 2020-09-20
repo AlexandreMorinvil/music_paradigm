@@ -19,7 +19,7 @@ mongoose.connection.on('error', handleError);
 module.exports = {
     Experiment: require('./schemas/experiment').model,
     Curriculum: require('./schemas/curriculum').model,
-    User: require('./schemas/user').model
+    User: require('./schemas/user/user.model')
 };
 
 /**

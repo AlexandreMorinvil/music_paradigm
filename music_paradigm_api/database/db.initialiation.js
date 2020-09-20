@@ -1,4 +1,4 @@
-const users = require('./schemas/user').model;
+const users = require('./schemas/user/user.model');
 const role = require('_helpers/role');
 const timeout = require('_helpers/timeout');
 

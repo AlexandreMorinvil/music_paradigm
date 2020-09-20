@@ -42,7 +42,8 @@ const schemaCurriculum = new Schema(
                 // Number of days after the start date at which the experiment is to be made available
                 delayInDays: {
                     type: Number,
-                    default: 0
+                    default: 0,
+                    min: 0
                 },
 
                 // Specify whether this experiment can be completed the same day as another experiment
