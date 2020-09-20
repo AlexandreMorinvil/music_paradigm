@@ -5,8 +5,8 @@ const bcrypt = require('bcryptjs');
 const stringHandler = require('_helpers/stringHandler');
 
 // Required schemas
-const curriculum = require('../curriculum').schemaCurriculum;
-const progression = require('../curriculum').schemaProgression;
+const curriculum = require('../curriculum/curriculum.schema').schemaCurriculum;
+const progression = require('../curriculum/curriculum.schema').schemaProgression;
 
 const Schema = mongoose.Schema;
 
@@ -31,7 +31,7 @@ const schema = new Schema(
             trim: true,
             validate: {
                 validator: validatorEmail,
-                message: msgValidationEmail
+                message: "The email is invalid"
             },
             set: setterEmail
         },
@@ -141,8 +141,5 @@ function validatorEmail(string) {
     if (!string) return true;
     else return isEmailString(string);
 }
-
-// Validation error messages
-let msgValidationEmail = "The email is invalid";
 
 module.exports = schema;

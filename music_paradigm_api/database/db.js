@@ -17,9 +17,9 @@ mongoose.connection.on('error', handleError);
 
 // Exporting the Schemas
 module.exports = {
-    Experiment: require('./schemas/experiment').model,
-    Curriculum: require('./schemas/curriculum').model,
-    User: require('./schemas/user/user.model')
+    Experiment: require('./models/experiment/experiment.model'),
+    Curriculum: require('./models/curriculum/curriculum.model'),
+    User: require('./models/user/user.model')
 };
 
 /**
