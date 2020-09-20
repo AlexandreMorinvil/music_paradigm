@@ -56,7 +56,7 @@ const schema = new Schema(
                 completionTarget: {
                     type: Number,
                     default: 1,
-                    min: 1
+                    min: 0
                 },
 
                 // Number of times the experiment was completed
