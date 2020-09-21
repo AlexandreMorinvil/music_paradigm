@@ -26,7 +26,7 @@
             </div>
             <div>
               <label for="isSequential">
-                Sequential :
+                Sequential:
                 <span
                   class="selected-element-text-color"
                 >{{ curriculumSelectedUsernameDisplay }}</span>
@@ -37,9 +37,9 @@
 
           <div class="experiments-parameters-section">
             <div>
-              <button v-on:click="addTag()" class="widget-button blue small">Add</button>
+              <button v-on:click="addExperiment()" class="widget-button blue">Add</button>
               <label class="inline-label">
-                Experiments(s) :
+                Experiments(s):
                 <span
                   class="selected-element-text-color"
                 >{{ userSelectedTagsDisplay }}</span>
@@ -47,16 +47,14 @@
             </div>
 
             <div v-for="(experiment, index) in experiments" :key="index" class="experiment-input">
-              <div class="delete-position"> 
-                <button v-on:click="removeTag(index)" class="widget-button red">Remove</button>
+              <div class="delete-position">
+                <button v-on:click="removeTag(index)" class="widget-button red">Remove #{{index}}</button>
               </div>
 
               <div class="experiment-position">
                 <label for="completion-limit">
-                  Experiment :
-                  <span
-                    class="selected-element-text-color"
-                  >{{ userSelectedTagsDisplay }}</span>
+                  Experiment:
+                  <span class="selected-element-text-color">{{ userSelectedTagsDisplay }}</span>
                 </label>
                 <select
                   name="experiment-reference"
@@ -71,7 +69,8 @@
               </div>
 
               <div class="title-position">
-                <label for="experiment-title">Experiment Title :
+                <label for="experiment-title">
+                  Experiment Title :
                   <span
                     class="selected-element-text-color"
                   >{{ userSelectedTagsDisplay }}</span>
@@ -87,7 +86,7 @@
 
               <div class="area1-position">
                 <label for="is-unique-in-day" class="inline-label">
-                  Unique in Day :
+                  Unique in Day:
                   <span
                     class="selected-element-text-color"
                   >{{ curriculumSelectedUsernameDisplay }}</span>
@@ -102,7 +101,7 @@
 
               <div>
                 <label for="delay-in-days">
-                  Delay in Days :
+                  Delay (Days):
                   <span
                     class="selected-element-text-color"
                   >{{ userSelectedTagsDisplay }}</span>
@@ -119,7 +118,7 @@
 
               <div>
                 <label for="completion-target">
-                  Completion Target :
+                  Completion Target:
                   <span
                     class="selected-element-text-color"
                   >{{ userSelectedTagsDisplay }}</span>
@@ -136,7 +135,7 @@
 
               <div>
                 <label for="completion-limit">
-                  Completion Limit :
+                  Completion Limit:
                   <span
                     class="selected-element-text-color"
                   >{{ userSelectedTagsDisplay }}</span>
@@ -229,6 +228,19 @@ export default {
       "updateUser",
       "deleteUser",
     ]),
+    addExperiment() {
+      this.experiments.push({
+        title: "",
+        delayInDays: 0,
+        isUniqueIndDay: true,
+        completionTarget: 1,
+        completionLimit: 1,
+        experimentReference: "",
+      });
+    },
+    removeTag(index) {
+      this.experiments.splice(index, 1);
+    },
     assignFormId(id) {
       this.id = id;
     },
@@ -355,7 +367,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 .experiment-position {
@@ -376,8 +387,8 @@ export default {
 .experiment-input {
   display: grid;
   grid-template-areas:
-    "delete experiment experiment title title"
-    "delete . . . area1";
+    "experiment experiment title title delete"
+    ". . . area1 delete";
   grid-gap: 15px;
 
   background-color: var(--inner-form-background-color);
