@@ -10,8 +10,9 @@ import { alert } from './alert.module';
 import { account } from './account.module';
 import { experiment } from './experiment.module';
 import { experiments } from './experiments.module';
-import { piano } from './piano.module';
+import { curriculums } from './curriculums.module';
 import { users } from './users.module';
+import { piano } from './piano.module';
 import { results } from './results.module';
 
 Vue.use(Vuex)
@@ -26,8 +27,9 @@ export default new Vuex.Store({
     account,
     experiment,
     experiments,
-    piano,
+    curriculums,
     users,
+    piano,
     results
   }
 })

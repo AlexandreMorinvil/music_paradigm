@@ -4,8 +4,9 @@ const staticDirectory = "/static/";
 const experimentRessourceDirectory = "/experiment-ressources/";
 
 // 
-const users = "/users/";
 const experiments = "/experiments/";
+const curriculums = "/curriculums/";
+const users = "/users/";
 
 export default {
     // File serving
@@ -17,10 +18,13 @@ export default {
     },
 
     // API calls
+    experiments : function(parameters) {
+        return config.apiUrl + experiments + parameters;
+    },
+    curriculums : function(parameters) {
+        return config.apiUrl + curriculums + parameters;
+    },
     users : function(parameters) {
         return config.apiUrl + users + parameters;
     },
-    experiments : function(parameters) {
-        return config.apiUrl + experiments + parameters;
-    }
 }

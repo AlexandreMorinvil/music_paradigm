@@ -42,7 +42,7 @@ export default {
     //     state.selection = {};
     // },
 
-    // setHeadersList(state, usersHeadersLst) {
-    //     state.usersHeadersList = usersHeadersLst;
-    // }
+    setHeadersList(state, usersHeadersLst) {
+        state.curriculumsHeadersList = usersHeadersLst;
+    }
 };

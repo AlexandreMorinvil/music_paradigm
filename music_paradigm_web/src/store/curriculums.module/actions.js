@@ -1,4 +1,4 @@
-import { userService } from '@/_services';
+import { curriculumService } from '@/_services';
 
 export default {
     fetchAllCurriculumHeaders({ commit, dispatch }) {

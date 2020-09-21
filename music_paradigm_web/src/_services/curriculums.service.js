@@ -1,5 +1,5 @@
-// import defaultResponseHandler from './defaultResponseHandler';
-// import { authHeader, url } from '@/_helpers';
+import defaultResponseHandler from './defaultResponseHandler';
+import { authHeader, url } from '@/_helpers';
 
 // const register = function(user) {
 //     const requestOptions = {
@@ -10,13 +10,13 @@
 //     return fetch(url.users("register"), requestOptions).then(handleResponse);
 // }
 
-// const getListAllHeaders = function() {
-//     const requestOptions = {
-//         method: 'GET',
-//         headers: authHeader()
-//     };
-//     return fetch(url.users(""), requestOptions).then(handleResponse);
-// }
+const getListAllHeaders = function() {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+    return fetch(url.curriculums(""), requestOptions).then(handleResponse);
+}
 
 
 // const getById = function (id) {
@@ -44,13 +44,13 @@
 //     return fetch(url.users(id), requestOptions).then(handleResponse);
 // }
 
-// const handleResponse = function (reponse) {
-//     return defaultResponseHandler(reponse);
-// }
+const handleResponse = function (reponse) {
+    return defaultResponseHandler(reponse);
+}
 
 export const curriculumService = {
     // register,
-    // getListAllHeaders,
+    getListAllHeaders,
     // getById,
     // update,
     // delete: _delete

@@ -31,16 +31,16 @@ export default {
     //     return state.selection.role;
     // },
 
-    // usersHeadersList: (state) => {
-    //     return state.usersHeadersList;
-    // },
+    curriculumsHeadersList: (state) => {
+        return state.curriculumsHeadersList;
+    },
 
-    // // Status
+    // Status
     hasSelectedCurriculum: (state) => {
         return Boolean(state.selection._id);
     },
 
-    // isFetchingUserHeadersList: (state) => {
-    //     return state.status.isFetchingUsersHeadersList;
-    // }
+    isFetchingCurriculumsHeadersList: (state) => {
+        return state.status.isFetchingCurriculumsHeadersList;
+    }
 }

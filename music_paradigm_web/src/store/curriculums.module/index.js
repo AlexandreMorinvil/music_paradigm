@@ -4,7 +4,7 @@ import actions from './actions'
 import getters from './getters'
 
 
-export const users = {
+export const curriculums = {
   namespaced: true,
   state,
   getters,

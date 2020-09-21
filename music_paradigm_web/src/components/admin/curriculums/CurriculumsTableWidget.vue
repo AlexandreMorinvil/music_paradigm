@@ -9,27 +9,23 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Role</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Full Name</th>
-            <th>Groups</th>
-            <th>Actions</th>
+            <th>Title</th>
+            <th>Sequential</th>
+            <th>Experiment Count</th>
+            <th>Action</th>
           </tr>
         </thead>
 
         <tbody>
           <tr
-            v-for="(header, index) in usersHeadersList"
+            v-for="(header, index) in curriculumsHeadersList"
             :key="header._id"
-            :class="header._id === userSelectedId && 'selected'"
+            :class="header._id === curriculumSelectedId && 'selected'"
           >
             <td>{{ index + 1 }}</td>
-            <td>{{ header.role }}</td>
-            <td>{{ header.username }}</td>
-            <td>{{ makeEmailDisplay(header.email) }}</td>
-            <td>{{ makeFullNameDisplay(header.firstName, header.middleName, header.lastName) }}</td>
-            <td>{{ makeGroupsDisplay(header.groups) }}</td>
+            <td>{{ header.title }}</td>
+            <td>{{ header.isSequential }}</td>
+            <td>{{ header.experimentsCount }}</td>
             <td class="widget-table-actions-buttons">
               <button
                 v-on:click="handleSelectUser(header._id)"
@@ -44,13 +40,12 @@
 </template>
 
 <script>
-// TODO: Display the tasks summary
 import "@/styles/widgetTemplate.css";
 import { mapActions, mapGetters } from "vuex";
 import LoaderCircular from "@/components/LoaderCircular.vue";
 
 export default {
-  name: "UsersTableWidget",
+  name: "CurriculumsTableWidget",
   components: {
     loader: LoaderCircular,
   },
@@ -58,25 +53,25 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters("users", [
-      "isFetchingUserHeadersList",
-      "usersHeadersList",
-      "userSelectedId"
+    ...mapGetters("curriculums", [
+      "isFetchingCurriculumsHeadersList",
+      "curriculumsHeadersList",
+      "curriculumSelectedId"
     ]),
     isListLoading() {
       return this.isFetchingUserHeadersList;
     },
   },
   methods: {
-    ...mapActions("users", ["fetchAllUsersHeaders", "setSelectedUser"]),
+    ...mapActions("curriculums", ["fetchAllCurriculumHeaders", "setSelectedUser"]),
     handleRefresh() {
-      this.fetchAllUsersHeaders();
+      this.fetchAllCurriculumHeaders();
     },
     handleSelectUser(id) {
       this.setSelectedUser(id);
     },
     makeEmailDisplay(email) {
-      if(!email) return "None";
+      if (!email) return "None";
       else return email;
     },
     makeFullNameDisplay(firstName, middleName, lastName) {
@@ -96,7 +91,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchAllUsersHeaders();
+    this.fetchAllCurriculumHeaders();
   },
 };
 </script>

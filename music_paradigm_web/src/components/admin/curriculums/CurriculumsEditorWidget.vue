@@ -224,7 +224,7 @@ export default {
     ...mapActions("alert", []),
     ...mapActions("users", [
       "unsetSelectedUser",
-      "createUser",
+      "createCurriculum",
       "updateUser",
       "deleteUser",
     ]),

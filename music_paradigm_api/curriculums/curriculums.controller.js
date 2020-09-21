@@ -6,7 +6,7 @@ const curriculumService = require('./curriculums.service');
 
 // routes
 router.post('/create',          jwtAuthorize(role.admin),  create);
-router.get('/',                 jwtAuthorize(role.admin),  getAll);
+router.get('/',                 jwtAuthorize(role.admin),  getListAllHeaders);
 // router.get('/current',                                     getCurrent);
 // router.get('/:id',              jwtAuthorize(role.admin),  getById);
 // router.put('/:id',              jwtAuthorize(role.admin),  update);
@@ -21,8 +21,8 @@ function create(req, res, next) {
         .finally(() => next());
 }
 
-function getAll(req, res, next) {
-    curriculumService.getAll()
+function getListAllHeaders(req, res, next) {
+    curriculumService.getListAllHeaders()
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
