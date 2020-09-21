@@ -47,11 +47,31 @@
             </div>
 
             <div v-for="(experiment, index) in experiments" :key="index" class="experiment-input">
-              <button v-on:click="removeTag(index)" class="widget-button small red">Remove</button>
+              <div class="delete-position"> 
+                <button v-on:click="removeTag(index)" class="widget-button red">Remove</button>
+              </div>
 
-              <div>
-                <label for="experiment-title" class="inline-label">
-                  Experiment Title :
+              <div class="experiment-position">
+                <label for="completion-limit">
+                  Experiment :
+                  <span
+                    class="selected-element-text-color"
+                  >{{ userSelectedTagsDisplay }}</span>
+                </label>
+                <select
+                  name="experiment-reference"
+                  v-model="experiments[index].experimentReference"
+                >
+                  <option
+                    v-for="(reference, index) in experimentsReferences"
+                    :key="index"
+                    :value="experimentsReferences[index].id"
+                  >{{ experimentsReferences[index].fullName }}</option>
+                </select>
+              </div>
+
+              <div class="title-position">
+                <label for="experiment-title">Experiment Title :
                   <span
                     class="selected-element-text-color"
                   >{{ userSelectedTagsDisplay }}</span>
@@ -65,24 +85,8 @@
                 />
               </div>
 
-              <div>
-                <label for="delay-in-days" class="inline-label">
-                  Delay in Days :
-                  <span
-                    class="selected-element-text-color"
-                  >{{ userSelectedTagsDisplay }}</span>
-                </label>
-                <input
-                  type="number"
-                  v-model="experiments[index].delayInDays"
-                  name="delay-in-days"
-                  autocomplete="new-delay-in-days"
-                  placeholder="Insert new delay in days"
-                />
-              </div>
-
-              <div>
-                <label for="is-unique-in-day">
+              <div class="area1-position">
+                <label for="is-unique-in-day" class="inline-label">
                   Unique in Day :
                   <span
                     class="selected-element-text-color"
@@ -97,7 +101,24 @@
               </div>
 
               <div>
-                <label for="completion-target" class="inline-label">
+                <label for="delay-in-days">
+                  Delay in Days :
+                  <span
+                    class="selected-element-text-color"
+                  >{{ userSelectedTagsDisplay }}</span>
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  v-model="experiments[index].delayInDays"
+                  name="delay-in-days"
+                  autocomplete="new-delay-in-days"
+                  placeholder="Insert new delay in days"
+                />
+              </div>
+
+              <div>
+                <label for="completion-target">
                   Completion Target :
                   <span
                     class="selected-element-text-color"
@@ -114,7 +135,7 @@
               </div>
 
               <div>
-                <label for="completion-limit" class="inline-label">
+                <label for="completion-limit">
                   Completion Limit :
                   <span
                     class="selected-element-text-color"
@@ -128,22 +149,6 @@
                   autocomplete="new-completion-limit"
                   placeholder="Insert new completion limit"
                 />
-              </div>
-
-              <div>
-                <label for="completion-limit" class="inline-label">
-                  Experiment :
-                  <span
-                    class="selected-element-text-color"
-                  >{{ userSelectedTagsDisplay }}</span>
-                </label>
-                <select name="experiment-reference" v-model="experiments[index].experimentReference">
-                  <option
-                    v-for="(reference, index) in experimentsReferences"
-                    :key="index"
-                    :value="experimentsReferences[index].id"
-                  >{{ experimentsReferences[index].fullName }}</option>
-                </select>
               </div>
             </div>
           </div>
@@ -182,6 +187,14 @@ export default {
       title: "abcefg",
       isSequential: true,
       experiments: [
+        {
+          title: "Introduction",
+          delayInDays: 7,
+          isUniqueIndDay: true,
+          completionTarget: 1,
+          completionLimit: 1,
+          experimentReference: "5f32ab693a6197f5e56ab748",
+        },
         {
           title: "Introduction",
           delayInDays: 7,
@@ -301,6 +314,7 @@ export default {
 }
 
 /* Form  */
+
 .widget form {
   display: grid;
   grid-template-columns: 100%;
@@ -328,15 +342,52 @@ export default {
   margin: auto;
 }
 
+/* Experiment list */
+
 .experiments-parameters-section {
   display: grid;
   grid-template-columns: 100%;
   grid-gap: 15px;
 }
 
+.delete-position {
+  grid-area: delete;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.experiment-position {
+  grid-area: experiment;
+}
+
+.title-position {
+  grid-area: title;
+}
+
+.area1-position {
+  grid-area: area1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.experiment-input {
+  display: grid;
+  grid-template-areas:
+    "delete experiment experiment title title"
+    "delete . . . area1";
+  grid-gap: 15px;
+
+  background-color: var(--inner-form-background-color);
+  padding: 5px 20px 20px;
+}
+
+/* Modifiers */
+
 .inline-label {
   display: inline;
-  margin: 0 15px;
 }
 
 .checkbox {
