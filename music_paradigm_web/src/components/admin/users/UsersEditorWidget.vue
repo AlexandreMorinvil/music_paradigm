@@ -1,120 +1,143 @@
 <template>
   <div id="users-editor" class="widget widget-box widget-bg">
     <div class="edition-buttons-position">
-      <button v-on:click="handleRevert" class="widget-button blue">Revert</button>
-      <button v-on:click="handleUnselection" class="widget-button blue">Unselect</button>
+      <button v-on:click="handleRevert" class="widget-button blue">
+        Revert
+      </button>
+      <button v-on:click="handleUnselection" class="widget-button blue">
+        Unselect
+      </button>
     </div>
 
     <div class="editor-position">
       <div class="editor-box-form">
-        <form v-on:submit.prevent="doNothing()">
+        <div>
+          <label for="username">
+            Username :
+            <span class="selected-element-text-color">{{
+              userSelectedUsernameDisplay
+            }}</span>
+          </label>
+          <input
+            type="text"
+            v-model="username"
+            name="username"
+            autocomplete="new-username"
+            placeholder="Insert new username"
+          />
+        </div>
+        <div>
+          <label for="email">
+            Email :
+            <span class="selected-element-text-color">{{
+              userSelectedEmailDisplay
+            }}</span>
+          </label>
+          <input
+            type="email"
+            v-model="email"
+            name="email"
+            autocomplete="new-email"
+            placeholder="Insert new email"
+          />
+        </div>
+        <div>
+          <label for="password">
+            Password :
+            <span class="selected-element-text-color">{{
+              userSelectedPasswordDisplay
+            }}</span>
+          </label>
+
+          <input
+            type="password"
+            v-model="password"
+            name="password"
+            autocomplete="new-password"
+            placeholder="Insert new password"
+          />
+        </div>
+        <div class="form-name-row">
           <div>
-            <label for="username">
-              Username :
-              <span class="selected-element-text-color">{{ userSelectedUsernameDisplay }}</span>
+            <label for="firstName">
+              First Name :
+              <span class="selected-element-text-color">{{
+                userSelectedFirstNameDisplay
+              }}</span>
             </label>
             <input
               type="text"
-              v-model="username"
-              name="username"
-              autocomplete="new-username"
-              placeholder="Insert new username"
+              v-model="firstName"
+              name="firstName"
+              autocomplete="new-first-name"
+              placeholder="Insert new first name"
             />
           </div>
           <div>
-            <label for="email">
-              Email :
-              <span class="selected-element-text-color">{{ userSelectedEmailDisplay }}</span>
+            <label for="middleName">
+              Middle Name :
+              <span class="selected-element-text-color">{{
+                userSelectedMiddleNameDisplay
+              }}</span>
             </label>
             <input
-              type="email"
-              v-model="email"
-              name="email"
-              autocomplete="new-email"
-              placeholder="Insert new email"
+              type="text"
+              v-model="middleName"
+              name="middleName"
+              autocomplete="new-middle-name"
+              placeholder="Insert new middle name"
             />
           </div>
           <div>
-            <label for="password">
-              Password :
-              <span class="selected-element-text-color">{{ userSelectedPasswordDisplay }}</span>
+            <label for="lastName">
+              Last Name :
+              <span class="selected-element-text-color">{{
+                userSelectedLastNameDisplay
+              }}</span>
             </label>
-
             <input
-              type="password"
-              v-model="password"
-              name="password"
-              autocomplete="new-password"
-              placeholder="Insert new password"
+              type="text"
+              v-model="lastName"
+              name="lastName"
+              autocomplete="new-last-name"
+              placeholder="Insert new last name"
             />
           </div>
-          <div class="form-name-row">
+        </div>
+        <div>
+          <div class="form-tags">
             <div>
-              <label for="firstName">
-                First Name :
-                <span class="selected-element-text-color">{{ userSelectedFirstNameDisplay }}</span>
+              <label for="tags">
+                <button v-on:click="addTag()" class="widget-button blue">
+                  Add
+                </button>
+                Tag(s) :
+                <span class="selected-element-text-color">{{
+                  userSelectedTagsDisplay
+                }}</span>
               </label>
-              <input
-                type="text"
-                v-model="firstName"
-                name="firstName"
-                autocomplete="new-first-name"
-                placeholder="Insert new first name"
-              />
             </div>
-            <div>
-              <label for="middleName">
-                Middle Name :
-                <span
-                  class="selected-element-text-color"
-                >{{ userSelectedMiddleNameDisplay }}</span>
-              </label>
+            <div
+              v-for="(tag, index) in tags"
+              :key="index"
+              class="form-group-input"
+            >
+              <button
+                v-on:click="removeTag(index)"
+                class="widget-button small red"
+              >
+                Remove
+              </button>
               <input
                 type="text"
-                v-model="middleName"
-                name="middleName"
-                autocomplete="new-middle-name"
-                placeholder="Insert new middle name"
-              />
-            </div>
-            <div>
-              <label for="lastName">
-                Last Name :
-                <span class="selected-element-text-color">{{ userSelectedLastNameDisplay }}</span>
-              </label>
-              <input
-                type="text"
-                v-model="lastName"
-                name="lastName"
-                autocomplete="new-last-name"
-                placeholder="Insert new last name"
+                v-model="tags[index]"
+                name="tags"
+                autocomplete="new-tags"
+                placeholder="Insert new tag name"
               />
             </div>
           </div>
-          <div>
-            <div class="form-tags">
-              <div>
-                <label for="tags">
-                  <button v-on:click="addTag()" class="widget-button blue">Add</button>
-                  Tag(s) :
-                  <span
-                    class="selected-element-text-color"
-                  >{{ userSelectedTagsDisplay }}</span>
-                </label>
-              </div>
-              <div v-for="(tag, index) in tags" :key="index" class="form-group-input">
-                <button v-on:click="removeTag(index)" class="widget-button small red">Remove</button>
-                <input
-                  type="text"
-                  v-model="tags[index]"
-                  name="tags"
-                  autocomplete="new-tags"
-                  placeholder="Insert new tag name"
-                />
-              </div>
-            </div>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
 
@@ -128,10 +151,18 @@
           ref="fileInput"
         />
       </form>
-      <button v-on:click="$refs.fileInput.click()" class="widget-button blue">Upload</button>
-      <button v-on:click="submitUserToCreate" class="widget-button green">Create</button>
-      <button v-on:click="submitUserToUpdate" class="widget-button blue">Update</button>
-      <button v-on:click="submitUserToDelete" class="widget-button red">Delete</button>
+      <button v-on:click="$refs.fileInput.click()" class="widget-button blue">
+        Upload
+      </button>
+      <button v-on:click="submitUserToCreate" class="widget-button green">
+        Create
+      </button>
+      <button v-on:click="submitUserToUpdate" class="widget-button blue">
+        Update
+      </button>
+      <button v-on:click="submitUserToDelete" class="widget-button red">
+        Delete
+      </button>
     </div>
   </div>
 </template>
@@ -309,7 +340,7 @@ export default {
   watch: {
     userSelectedId: {
       immediate: true,
-      handler: function () {
+      handler: function() {
         this.assignSelectedToForm();
       },
     },

@@ -264,7 +264,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("alert", []),
+    ...mapActions("experiments", ["fetchAllExperimentsHeaders"]),
     ...mapActions("users", [
       "unsetSelectedUser",
       "createCurriculum",
@@ -313,7 +313,9 @@ export default {
       this.isSequential = isSequential;
     },
     assignFormExperiments(experiments) {
-      this.experiments = Array.isArray(experiments) ? JSON.parse(JSON.stringify(experiments)) : [];
+      this.experiments = Array.isArray(experiments)
+        ? JSON.parse(JSON.stringify(experiments))
+        : [];
     },
     assignSelectedToForm() {
       this.assignFormId(this.curriculumSelectedId);
@@ -355,6 +357,9 @@ export default {
     handleUploadExperiment(event) {
       console.log("Todo", event);
     },
+  },
+  beforeMount() {
+    this.fetchAllExperimentsHeaders();
   },
   watch: {
     curriculumSelectedId: {
