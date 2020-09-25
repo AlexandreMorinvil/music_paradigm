@@ -9,14 +9,17 @@ export default {
     selection: {
         _id: null,
         // The Rest of the parameters are also included
-        title: ""
+        title: "",
+        isSequential: true,
+        experiments: []
     },
 
-    curriculumsHeadersList: [{
+    curriculumsHeadersList: [
+        {
             _id: null,
             title: "",
             isSequential: true,
-            experimentsCount: 0 
+            experimentsCount: 0
         }
     ]
 } 

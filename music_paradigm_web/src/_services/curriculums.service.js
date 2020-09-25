@@ -18,14 +18,13 @@ const getListAllHeaders = function() {
     return fetch(url.curriculums(""), requestOptions).then(handleResponse);
 }
 
-
-// const getById = function (id) {
-//     const requestOptions = {
-//         method: 'GET',
-//         headers: authHeader()
-//     };
-//     return fetch(url.users(id), requestOptions).then(handleResponse);
-// }
+const getById = function (id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+    return fetch(url.curriculums(id), requestOptions).then(handleResponse);
+}
 
 // const update = function (id, user) {
 //     const requestOptions = {
@@ -51,7 +50,7 @@ const handleResponse = function (reponse) {
 export const curriculumService = {
     // register,
     getListAllHeaders,
-    // getById,
+    getById,
     // update,
     // delete: _delete
 };

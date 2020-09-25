@@ -1,35 +1,23 @@
 export default {
-    curriculumSelectedId: (state)=> {
+    curriculumSelectedId: (state) => {
         return state.selection._id;
     },
-    
-    // userSelectedUsername: (state) => {
-    //     return state.selection.username;
-    // },
 
-    // userSelectedEmail: (state) => {
-    //     return state.selection.email;
-    // },
+    curriculumSelectedTitle: (state) => {
+        return state.selection.title;
+    },
 
-    // userSelectedFirstName: (state) => {
-    //     return state.selection.firstName;
-    // },
+    curriculumSelectedIsSequential: (state) => {
+        return state.selection.isSequential;
+    },
 
-    // userSelectedMiddleName: (state) => {
-    //     return state.selection.middleName;
-    // },
+    curriculumSelectedExperiments: (state) => {
+        return state.selection.experiments;
+    },
 
-    // userSelectedLastName: (state) => {
-    //     return state.selection.lastName;
-    // },
-
-    // userSelectedTags: (state) => {
-    //     return state.selection.tags;
-    // },
-
-    // userSelectedRole: (state) => {
-    //     return state.selection.role;
-    // },
+    curriculumSelectedExperimentAtIndex: (state) => (index) => {
+        return state.selection.experiments[index] || {};
+    },
 
     curriculumsHeadersList: (state) => {
         return state.curriculumsHeadersList;

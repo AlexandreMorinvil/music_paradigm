@@ -11,15 +11,15 @@ export default {
             .finally(() => { commit('indicateFetchingCurriculumListEnd'); });
     },
 
-    // setSelectedUser({ commit, dispatch }, id) {
-    //     return userService.getById(id).then(
-    //         user => {
-    //             commit('setSelectedUser', user);
-    //         },
-    //         error => {
-    //             dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
-    //         })
-    // },
+    setSelectedCurriculum({ commit, dispatch }, id) {
+        return curriculumService.getById(id).then(
+            user => {
+                commit('setSelectedCurriculum', user);
+            },
+            error => {
+                dispatch('alert/setErrorAlert', `Curriculum selection failed : ${error.message}`, { root: true });
+            })
+    },
 
     // unsetSelectedUser({ commit }) {
     //     commit('unsetSelectedUser');

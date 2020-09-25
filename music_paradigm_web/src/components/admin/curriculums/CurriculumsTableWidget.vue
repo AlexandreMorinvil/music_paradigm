@@ -28,7 +28,7 @@
             <td>{{ header.experimentsCount }}</td>
             <td class="widget-table-actions-buttons">
               <button
-                v-on:click="handleSelectUser(header._id)"
+                v-on:click="handleSelection(header._id)"
                 class="widget-button small blue"
               >Select</button>
             </td>
@@ -63,12 +63,12 @@ export default {
     },
   },
   methods: {
-    ...mapActions("curriculums", ["fetchAllCurriculumHeaders", "setSelectedUser"]),
+    ...mapActions("curriculums", ["fetchAllCurriculumHeaders", "setSelectedCurriculum"]),
     handleRefresh() {
       this.fetchAllCurriculumHeaders();
     },
-    handleSelectUser(id) {
-      this.setSelectedUser(id);
+    handleSelection(id) {
+      this.setSelectedCurriculum(id);
     },
     makeEmailDisplay(email) {
       if (!email) return "None";
