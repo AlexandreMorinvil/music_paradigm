@@ -16,7 +16,8 @@ export default {
     },
 
     curriculumSelectedExperimentAtIndex: (state) => (index) => {
-        return state.selection.experiments[index] || {};
+        if (Array.isArray(state.selection.experiments)) return state.selection.experiments[index] || {};
+        else return {};
     },
 
     curriculumsHeadersList: (state) => {

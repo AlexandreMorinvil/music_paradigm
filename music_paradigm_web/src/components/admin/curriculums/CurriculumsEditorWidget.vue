@@ -210,8 +210,8 @@ export default {
   data() {
     return {
       id: "",
-      title: "abcefg",
-      isSequential: true,
+      title: "",
+      isSequential: false,
       experiments: [
         {
           title: "Introduction",
@@ -326,7 +326,7 @@ export default {
     clearForm() {
       this.assignFormId("");
       this.assignFormTitle("");
-      this.assignFormIsSequential(true);
+      this.assignFormIsSequential(false);
       this.assignFormExperiments([]);
     },
     handleRevert() {
