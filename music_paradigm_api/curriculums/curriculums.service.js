@@ -4,7 +4,7 @@ const Curriculum = db.Curriculum;
 module.exports = {
     create,
     getListAllHeaders,
-    // getById,
+    getById,
     // getDescriptionFromId,
     // update,
     // delete: _delete
@@ -18,13 +18,13 @@ async function getListAllHeaders() {
     }
 }
 
-// async function getById(id) {
-//     try {
-//         return await Experiment.findById(id);
-//     } catch (err) {
-//         throw err;
-//     }
-// }
+async function getById(id) {
+    try {
+        return await Curriculum.findById(id);
+    } catch (err) {
+        throw err;
+    }
+}
 
 // async function getDescriptionFromId(id) {
 //     try {

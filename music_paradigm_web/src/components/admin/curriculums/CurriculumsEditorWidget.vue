@@ -187,7 +187,7 @@
       <button v-on:click="$refs.fileInput.click()" class="widget-button blue">
         Upload
       </button>
-      <button v-on:click="submitUserToCreate" class="widget-button green">
+      <button v-on:click="submitCurriculumToCreate" class="widget-button green">
         Create
       </button>
       <button v-on:click="submitUserToUpdate" class="widget-button blue">
@@ -220,15 +220,7 @@ export default {
           completionTarget: 1,
           completionLimit: 1,
           experimentReference: "5f32ab693a6197f5e56ab748",
-        },
-        {
-          title: "Introduction",
-          delayInDays: 7,
-          isUniqueIndDay: true,
-          completionTarget: 1,
-          completionLimit: 1,
-          experimentReference: "5f32ab693a6197f5e56ab748",
-        },
+        }
       ],
     };
   },
@@ -271,6 +263,14 @@ export default {
       "updateUser",
       "deleteUser",
     ]),
+    bundleCurrirulumFromForm() {
+      return {
+        id: this.id,
+        title: this.title,
+        isSequential: this.isSequential,
+        experiments: this.experiments,
+      };
+    },
     getExperimentFullNameFromList(id) {
       const experiment = this.experimentsReferences.filter((obj) => {
         return obj.id === id;
@@ -332,7 +332,10 @@ export default {
     handleRevert() {
       this.assignSelectedToForm();
     },
-    submitUserToCreate() {},
+    submitCurriculumToCreate() {
+      const curriculumToCreate = this.bundleCurrirulumFromForm();
+      this.createCurriculum(curriculumToCreate);
+    },
     submitUserToUpdate() {
       const answer = window.confirm(
         "Are your sure you want to edit the curriculum?"

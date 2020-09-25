@@ -1,14 +1,14 @@
 import defaultResponseHandler from './defaultResponseHandler';
 import { authHeader, url } from '@/_helpers';
 
-// const register = function(user) {
-//     const requestOptions = {
-//         method: 'POST',
-//         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-//         body: JSON.stringify(user)
-//     };
-//     return fetch(url.users("register"), requestOptions).then(handleResponse);
-// }
+const create = function(curriculum) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(curriculum)
+    };
+    return fetch(url.curriculums(""), requestOptions).then(handleResponse);
+}
 
 const getListAllHeaders = function() {
     const requestOptions = {
@@ -48,7 +48,7 @@ const handleResponse = function (reponse) {
 }
 
 export const curriculumService = {
-    // register,
+    create,
     getListAllHeaders,
     getById,
     // update,

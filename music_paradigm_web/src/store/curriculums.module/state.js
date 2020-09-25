@@ -1,9 +1,9 @@
 export default {
     status: {
         isFetchingCurriculumsHeadersList: false,
-        //     isCreating: false,
-        //     isUpdating: false,
-        //     isDeleting: false
+        isCreating: false,
+        isUpdating: false,
+        isDeleting: false
     },
 
     selection: {

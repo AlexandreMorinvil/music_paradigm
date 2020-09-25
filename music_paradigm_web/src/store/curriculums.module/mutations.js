@@ -8,13 +8,13 @@ export default {
         state.status.isFetchingCurriculumsHeadersList = false;
     },
 
-    // indicateCreateRequest(state) {
-    //     state.status.isCreating = true;
-    // },
+    indicateCreateRequest(state) {
+        state.status.isCreating = true;
+    },
 
-    // indicateCreateRequestEnd(state) {
-    //     state.status.isCreating = false;
-    // },
+    indicateCreateRequestEnd(state) {
+        state.status.isCreating = false;
+    },
 
     // indicateUpdateRequest(state) {
     //     state.status.isUpdating = true;
