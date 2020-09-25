@@ -32,15 +32,15 @@ export default {
     //     state.status.isDeleting = false;
     // },
 
-    // // Setters
+    // Setters
     setSelectedCurriculum(state, curriculum) {
         state.selection = {};
         Object.assign(state.selection, curriculum);
     },
 
-    // unsetSelectedUser(state) {
-    //     state.selection = {};
-    // },
+    unsetSelectedCurriculum(state) {
+        state.selection = {};
+    },
 
     setHeadersList(state, usersHeadersLst) {
         state.curriculumsHeadersList = usersHeadersLst;

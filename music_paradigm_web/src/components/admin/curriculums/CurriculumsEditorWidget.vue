@@ -265,8 +265,8 @@ export default {
   },
   methods: {
     ...mapActions("experiments", ["fetchAllExperimentsHeaders"]),
-    ...mapActions("users", [
-      "unsetSelectedUser",
+    ...mapActions("curriculums", [
+      "unsetSelectedCurriculum",
       "createCurriculum",
       "updateUser",
       "deleteUser",
@@ -329,8 +329,9 @@ export default {
       this.assignFormIsSequential(true);
       this.assignFormExperiments([]);
     },
-    handleRevert() {},
-    handleSubmit() {},
+    handleRevert() {
+      this.assignSelectedToForm();
+    },
     submitUserToCreate() {},
     submitUserToUpdate() {
       const answer = window.confirm(
@@ -352,7 +353,7 @@ export default {
       }
     },
     handleUnselection() {
-      this.unsetSelectedUser();
+      this.unsetSelectedCurriculum();
     },
     handleUploadExperiment(event) {
       console.log("Todo", event);

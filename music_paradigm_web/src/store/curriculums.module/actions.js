@@ -21,9 +21,9 @@ export default {
             })
     },
 
-    // unsetSelectedUser({ commit }) {
-    //     commit('unsetSelectedUser');
-    // },
+    unsetSelectedCurriculum({ commit }) {
+        commit('unsetSelectedCurriculum');
+    },
 
     createCurriculum({ commit, dispatch }, curriculum) {
         commit('indicateCreateRequest');
