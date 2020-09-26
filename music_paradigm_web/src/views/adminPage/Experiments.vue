@@ -1,34 +1,30 @@
 <template>
-  <div class="page-grid">
-    <admin-page-context title="Experiments">
-
-        <widget-context>
-          <template v-slot:title
-            >Viewer</template
-          >
-          <template v-slot:widget>
-            <experiments-viewer />
-          </template>
-        </widget-context>
-        <widget-context>
-          <template v-slot:title
-            >Editor</template
-          >
-          <template v-slot:widget>
-            <experiments-editor />
-          </template>
-        </widget-context>
-        <widget-context>
-          <template v-slot:title
-            >Board</template
-          >
-          <template v-slot:widget>
-            <experiments-table />
-          </template>
-        </widget-context>
-
-    </admin-page-context>
-  </div>
+  <admin-page-context title="Experiments">
+    <widget-context>
+      <template v-slot:title
+        >Viewer</template
+      >
+      <template v-slot:widget>
+        <experiments-viewer />
+      </template>
+    </widget-context>
+    <widget-context>
+      <template v-slot:title
+        >Editor</template
+      >
+      <template v-slot:widget>
+        <experiments-editor />
+      </template>
+    </widget-context>
+    <widget-context>
+      <template v-slot:title
+        >Board</template
+      >
+      <template v-slot:widget>
+        <experiments-table />
+      </template>
+    </widget-context>
+  </admin-page-context>
 </template>
 
 <script>

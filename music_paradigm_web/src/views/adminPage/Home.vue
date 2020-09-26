@@ -1,16 +1,20 @@
 <template>
-  <div class="page-grid">
+  <admin-page-context title="Home">
     Admin Home page
-    <br><br>
+    <br /><br />
     Recent activity on the server and important information from the users
-  </div>
+  </admin-page-context>
 </template>
 
 <script>
+import AdminPageContext from "@/components/admin/AdminPageContext.vue";
+
 export default {
   name: "AdminHome",
+  components: {
+    AdminPageContext: AdminPageContext,
+  },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
