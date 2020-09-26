@@ -4,10 +4,6 @@ const bcrypt = require('bcryptjs');
 
 const stringHandler = require('_helpers/stringHandler');
 
-// Required schemas
-// const curriculum = require('../curriculum/curriculum.schema').schemaCurriculum;
-// const progression = require('../curriculum/curriculum.schema').schemaProgression;
-
 const Schema = mongoose.Schema;
 
 const schema = new Schema(
@@ -22,6 +18,7 @@ const schema = new Schema(
             trim: true,
             set: setterUsername
         },
+        
         email: {
             type: String,
             unique: true,
@@ -35,6 +32,7 @@ const schema = new Schema(
             },
             set: setterEmail
         },
+
         password: {
             type: String,
             default: "music",
@@ -44,11 +42,13 @@ const schema = new Schema(
             maxlength: 100,
             set: setterPassword,
         },
+
         role: {
             type: String,
             default: roles.user,
             enum: ['user', 'admin']
         },
+
         tags: {
             type: [String],
             default: [],
@@ -63,6 +63,7 @@ const schema = new Schema(
             trim: true,
             set: setterName
         },
+
         middleName: {
             type: String,
             default: "",
@@ -70,6 +71,7 @@ const schema = new Schema(
             trim: true,
             set: setterName
         },
+
         lastName: {
             type: String,
             default: "LastName",
@@ -78,21 +80,20 @@ const schema = new Schema(
             set: setterName
         },
 
-        tasks: {
-            curriculum: {
-                type: Schema.Types.ObjectId,
-                ref: 'Curriculum',
-                default: null
-            },
-            progressions: {
-                type: [
-                    {
-                        type: Schema.Types.ObjectId,
-                        ref: 'Progression',
-                    }
-                ],
-                default: []
-            }
+        curriculum: {
+            type: Schema.Types.ObjectId,
+            ref: 'Curriculum',
+            default: null
+        },
+
+        progressions: {
+            type: [
+                {
+                    type: Schema.Types.ObjectId,
+                    ref: 'Progression',
+                }
+            ],
+            default: []
         },
 
         // Creation time of the user

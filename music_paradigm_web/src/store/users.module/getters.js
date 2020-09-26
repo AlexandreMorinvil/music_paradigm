@@ -31,6 +31,10 @@ export default {
         return state.selection.role;
     },
 
+    userSelectedCurriculum: (state) => {
+        return state.selection.curriculum;
+    },
+
     usersHeadersList: (state) => {
         return state.usersHeadersList;
     },

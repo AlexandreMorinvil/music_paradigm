@@ -104,6 +104,25 @@
             />
           </div>
         </div>
+
+        <div>
+          <label for="curriculum">
+            Curriculum :
+            <span class="selected-element-text-color">{{
+              userSelectedCurriculumDisplay
+            }}</span>
+          </label>
+          <select name="curriculum-reference" v-model="curriculum">
+            <option
+              v-for="(reference, index) in curriculumsReferences"
+              :key="index"
+              :value="curriculumsReferences[index]._id"
+            >
+              {{ curriculumsReferences[index].title }}
+            </option>
+          </select>
+        </div>
+
         <div>
           <div class="form-tags">
             <div>
@@ -187,9 +206,11 @@ export default {
       lastName: "",
       tags: [],
       role: "",
+      curriculum: null,
     };
   },
   computed: {
+    ...mapGetters("curriculums", ["curriculumsHeadersList"]),
     ...mapGetters("users", [
       "hasSelectedUser",
       "userSelectedId",
@@ -199,7 +220,11 @@ export default {
       "userSelectedMiddleName",
       "userSelectedLastName",
       "userSelectedTags",
+      "userSelectedCurriculum",
     ]),
+    curriculumsReferences() {
+      return this.curriculumsHeadersList;
+    },
     userSelectedUsernameDisplay() {
       return this.hasSelectedUser ? this.userSelectedUsername || "---" : "";
     },
@@ -229,8 +254,14 @@ export default {
         } else return "---";
       } else return "";
     },
+    userSelectedCurriculumDisplay() {
+      return this.hasSelectedUser
+        ? this.getCurriculumTitleFromList(this.userSelectedCurriculum) || "---"
+        : "";
+    },
   },
   methods: {
+    ...mapActions("curriculums", ["fetchAllCurriculumHeaders"]),
     ...mapActions("users", [
       "unsetSelectedUser",
       "createUser",
@@ -246,7 +277,15 @@ export default {
         middleName: this.middleName,
         lastName: this.lastName,
         tags: this.tags,
+        curriculum: this.curriculum,
       };
+    },
+    getCurriculumTitleFromList(id) {
+      const curriculum = this.curriculumsHeadersList.filter((obj) => {
+        return obj._id === id;
+      });
+      if (curriculum[0]) return curriculum[0].title;
+      else return "";
     },
     addTag() {
       this.tags.push("");
@@ -281,6 +320,9 @@ export default {
     assignFormRole(role) {
       this.role = role;
     },
+    assignFormCurriculum(curriculum) {
+      this.curriculum = curriculum;
+    },
     assignSelectedToForm() {
       this.assignFormId(this.userSelectedId);
       this.assignFormUsername(this.userSelectedUsername);
@@ -290,6 +332,7 @@ export default {
       this.assignFormLastName(this.userSelectedLastName);
       this.assignFormTags(this.userSelectedTags);
       this.assignFormRole(this.userSelectedRole);
+      this.assignFormCurriculum(this.userSelectedCurriculum);
     },
     clearForm() {
       this.assignFormId("");
@@ -301,6 +344,7 @@ export default {
       this.assignFormLastName("");
       this.assignFormTags([]);
       this.assignFormRole("");
+      this.assignFormCurriculum(null);
     },
     handleRevert() {
       this.assignSelectedToForm();
@@ -336,6 +380,9 @@ export default {
     handleUploadExperiment(event) {
       console.log("Todo", event);
     },
+  },
+  beforeMount() {
+    this.fetchAllCurriculumHeaders();
   },
   watch: {
     userSelectedId: {

@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 schema = require('./user.schema');
 
+const roles = require('_helpers/role');
 const bcrypt = require('bcryptjs');
 
 // Static methods
 schema.statics.getListAllHeaders = function () {
-    return this.find({}, '-tasks').sort({ role: 1, username: 1 });
+    return this.find({ role: roles.user }, '-tasks').sort({ role: 1, username: 1 });
 };
 
 schema.statics.authenticate = async function (username, password) {
@@ -37,6 +38,7 @@ schema.methods.updateIdentity = async function (updatedUser) {
     if (updatedUser.hasOwnProperty('firstName')) this.firstName = updatedUser.firstName;
     if (updatedUser.hasOwnProperty('middleName')) this.middleName = updatedUser.middleName;
     if (updatedUser.hasOwnProperty('lastName')) this.lastName = updatedUser.lastName;
+    if (updatedUser.hasOwnProperty('curriculum')) this.curriculum = updatedUser.curriculum;
 
     return this.save();
 };

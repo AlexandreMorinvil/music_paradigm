@@ -15,7 +15,8 @@ export default {
         tags: [],
         firstName: "",
         middleName: "",
-        lastName: ""
+        lastName: "",
+        curriculum: null
     },
 
     usersHeadersList: [
