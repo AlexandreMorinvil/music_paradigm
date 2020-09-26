@@ -1,6 +1,6 @@
 <template>
   <div class="page-grid">
-    <admin-page-context title="Experiment Management">
+    <admin-page-context title="Experiments">
 
         <widget-context>
           <template v-slot:title

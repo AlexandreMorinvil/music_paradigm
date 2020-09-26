@@ -2,6 +2,7 @@
   <div class="page-grid">
     <header class="area-title">
       <h1>{{ title }}</h1>
+      <hr />
       <h2>{{ subTitle }}</h2>
     </header>
 
@@ -11,56 +12,18 @@
       </slot>
     </main>
 
-    <div class="area-footer">
-      <footer id="footer">
-        <div>
-          <h1>Footer</h1>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </p>
-
-          <h1>Footer</h1>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </p>
-
-          <h1>Footer</h1>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </p>
-        </div>
-      </footer>
-    </div>
+    <application-footer> </application-footer>
   </div>
 </template>
 
 <script>
+import ApplicationFooter from "@/components/ApplicationFooter.vue";
+
 export default {
   name: "AdminPageFrame",
+  components: {
+    ApplicationFooter: ApplicationFooter,
+  },
   props: {
     title: {
       type: String,
@@ -71,7 +34,7 @@ export default {
     subTitle: {
       type: String,
       default() {
-        return "";
+        return "Administrator Management Board";
       },
     },
   },
@@ -87,23 +50,27 @@ export default {
 </script>
 
 <style scoped>
-#footer {
-  display: block;
-  position: static;
-}
-
 .page-grid {
   display: grid;
   grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
   grid-template-areas:
     "title"
     "main"
     "footer";
+  height: 100%;
 }
 
 .area-title {
   grid-area: title;
   display: block;
+  padding: 20px;
+  background-color: rgb(15, 15, 15);
+  color: rgb(230, 230, 230);
+}
+
+.area-title h2 {
+  font-size: 1em;
 }
 
 .area-main {
