@@ -10,15 +10,13 @@
     <div id="app-main" class="app-main-position">
       <router-view />
     </div>
-
-    <!-- <footer v-if="appState!=='experiment'"> Footer display </footer> -->
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import NavigationBarDefault from "@/components/NavigationBarDefault";
-import NavigationBarExperiment from "@/components/NavigationBarExperiment";
+import NavigationBarDefault from "@/components/navigationBar/NavigationBarDefault";
+import NavigationBarExperiment from "@/components/navigationBar/NavigationBarExperiment";
 import Alert from "@/components/Alert";
 
 export default {

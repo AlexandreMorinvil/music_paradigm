@@ -84,7 +84,7 @@ export default {
 .area-main {
   grid-area: main;
   display: block;
-  background-image: linear-gradient(to bottom right, rgb(20, 20, 20), rgb(0, 0, 0));
+  background-image: linear-gradient(to bottom right, rgb(20, 20, 2), rgb(0, 0, 0));
 }
 
 .area-footer {
