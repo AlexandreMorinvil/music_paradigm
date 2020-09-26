@@ -5,8 +5,7 @@ module.exports = {
     create,
     getListAllHeaders,
     getById,
-    // getDescriptionFromId,
-    // update,
+    update,
     // delete: _delete
 };
 
@@ -26,15 +25,6 @@ async function getById(id) {
     }
 }
 
-// async function getDescriptionFromId(id) {
-//     try {
-//         const exeperiment = await Experiment.findById(id);
-//         return await exeperiment.getDefinition();
-//     } catch (err) {
-//         throw err;
-//     }
-// }
-
 async function create(curriculumParameters) {
     try {
         const curriculum = new Curriculum(curriculumParameters);
@@ -50,27 +40,20 @@ async function create(curriculumParameters) {
     }
 }
 
-// async function update(id, description) {
-//     try {
-//         // Retreive the experiemtn to update
-//         const experiment = await Experiment.findById(id);
-//         if (!experiment) throw new Error('Experiment to update not found');
+async function update(id, updatedCurriculum) {
+    try {
+        // Retreive the experiemtn to update
+        const curriculum = await Curriculum.findById(id);
+        if (!curriculum) throw new Error('Curriculum to update not found');
 
-//         // Update the experiment
-//         experiment = {};
-//         Object.assign(experiment, description);
-//         return experiment.save();
-//     }
-//     catch (err) {
-//         switch (err.code) {
-//             case 11000:
-//                 throw new Error(`In the group "${description.group || "default"}", the experiment "${description.name}" version ${description.version || 1} already exists`);
-//             default:
-//                 throw err;
-//         }
-//     }
-
-// }
+        // Update the experiment
+        curriculum.update(updatedCurriculum);
+        return curriculum.save();
+    }
+    catch (err) {
+        throw err;
+    }
+}
 
 
 // async function _delete(id) {

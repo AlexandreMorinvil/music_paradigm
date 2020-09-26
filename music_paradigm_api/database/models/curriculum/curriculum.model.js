@@ -17,6 +17,16 @@ schema.statics.getListAllHeaders = async function () {
     return curriculumHeaderList;
 };
 
+// Instance methods
+schema.methods.update = async function (updatedCurriculum) {
+    if (updatedCurriculum.hasOwnProperty('title')) this.title = updatedCurriculum.title;
+    if (updatedCurriculum.hasOwnProperty('isSequential')) this.isSequential = updatedCurriculum.isSequential;
+    if (updatedCurriculum.hasOwnProperty('experiments')) this.experiments = updatedCurriculum.experiments;
+
+    return this;
+};
+
+
 // Creating the model
 const model = mongoose.model('Curriculum', schema);
 

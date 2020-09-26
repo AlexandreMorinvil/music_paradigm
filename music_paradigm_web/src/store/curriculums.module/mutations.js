@@ -16,13 +16,13 @@ export default {
         state.status.isCreating = false;
     },
 
-    // indicateUpdateRequest(state) {
-    //     state.status.isUpdating = true;
-    // },
+    indicateUpdateRequest(state) {
+        state.status.isUpdating = true;
+    },
 
-    // indicateUpdateRequestEnd(state) {
-    //     state.status.isUpdating = false;
-    // },
+    indicateUpdateRequestEnd(state) {
+        state.status.isUpdating = false;
+    },
 
     // indicateDeleteRequest(state) {
     //     state.status.isDeleting = true;

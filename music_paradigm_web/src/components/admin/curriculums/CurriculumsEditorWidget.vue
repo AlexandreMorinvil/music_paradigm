@@ -190,7 +190,7 @@
       <button v-on:click="submitCurriculumToCreate" class="widget-button green">
         Create
       </button>
-      <button v-on:click="submitUserToUpdate" class="widget-button blue">
+      <button v-on:click="submitCurriculumToUpdate" class="widget-button blue">
         Update
       </button>
       <button v-on:click="submitUserToDelete" class="widget-button red">
@@ -260,7 +260,7 @@ export default {
     ...mapActions("curriculums", [
       "unsetSelectedCurriculum",
       "createCurriculum",
-      "updateUser",
+      "updateCurriculum",
       "deleteUser",
     ]),
     bundleCurrirulumFromForm() {
@@ -336,14 +336,15 @@ export default {
       const curriculumToCreate = this.bundleCurrirulumFromForm();
       this.createCurriculum(curriculumToCreate);
     },
-    submitUserToUpdate() {
+    submitCurriculumToUpdate() {
       const answer = window.confirm(
         "Are your sure you want to edit the curriculum?"
       );
       if (answer) {
-        this.updateExperiment({
-          id: this.selectedId,
-          experiment: this.experimentEdited,
+        const curriculumUpdated = this.bundleCurrirulumFromForm();
+        this.updateCurriculum({
+          id: this.curriculumSelectedId,
+          curriculum: curriculumUpdated,
         });
       }
     },

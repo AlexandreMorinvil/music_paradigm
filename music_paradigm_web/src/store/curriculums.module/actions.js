@@ -43,23 +43,23 @@ export default {
             });
     },
 
-    // updateUser({ commit, dispatch }, { id, user }) {
-    //     commit('indicateUpdateRequest');
-    //     return userService.update(id, user)
-    //         .then(
-    //             updatedUser => {
-    //                 commit('setSelectedUser', updatedUser);
-    //                 dispatch('alert/setSuccessAlert', "User update sucessful", { root: true });
-    //                 dispatch('fetchAllUsersHeaders');
-    //             },
-    //             error => {
-    //                 dispatch('alert/setErrorAlert', error.message, { root: true });
-    //             }
-    //         )
-    //         .finally(() => {
-    //             commit('indicateUpdateRequestEnd');
-    //         });
-    // },
+    updateCurriculum({ commit, dispatch }, { id, curriculum }) {
+        commit('indicateUpdateRequest');
+        return curriculumService.update(id, curriculum)
+            .then(
+                updatedCurriculum => {
+                    commit('setSelectedCurriculum', updatedCurriculum);
+                    dispatch('alert/setSuccessAlert', "Curriculum update sucessful", { root: true });
+                    dispatch('fetchAllCurriculumHeaders');
+                },
+                error => {
+                    dispatch('alert/setErrorAlert', error.message, { root: true });
+                }
+            )
+            .finally(() => {
+                commit('indicateUpdateRequestEnd');
+            });
+    },
 
     // deleteUser({ commit, dispatch }, id) {
     //     commit('indicateDeleteRequest');
