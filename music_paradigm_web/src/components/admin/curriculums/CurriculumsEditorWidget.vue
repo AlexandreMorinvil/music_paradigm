@@ -261,7 +261,7 @@ export default {
       "unsetSelectedCurriculum",
       "createCurriculum",
       "updateCurriculum",
-      "deleteUser",
+      "deleteCurriculum",
     ]),
     bundleCurrirulumFromForm() {
       return {
@@ -353,7 +353,7 @@ export default {
         "Are your sure you want to delete the curriculum?"
       );
       if (answer) {
-        this.deleteExperiment(this.selectedId);
+        this.deleteCurriculum(this.curriculumSelectedId);
       }
     },
     handleUnselection() {

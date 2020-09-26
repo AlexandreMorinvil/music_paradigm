@@ -61,21 +61,21 @@ export default {
             });
     },
 
-    // deleteUser({ commit, dispatch }, id) {
-    //     commit('indicateDeleteRequest');
-    //     return userService.delete(id)
-    //         .then(
-    //             () => {
-    //                 commit('unsetSelectedUser');
-    //                 dispatch('alert/setSuccessAlert', "User deletion sucessful", { root: true });
-    //                 dispatch('fetchAllUsersHeaders');
-    //             },
-    //             error => {
-    //                 dispatch('alert/setErrorAlert', error.message, { root: true });
-    //             }
-    //         )
-    //         .finally(() => {
-    //             commit('indicateDeleteRequestEnd');
-    //         });
-    // }
+    deleteCurriculum({ commit, dispatch }, id) {
+        commit('indicateDeleteRequest');
+        return curriculumService.delete(id)
+            .then(
+                () => {
+                    commit('unsetSelectedCurriculum');
+                    dispatch('alert/setSuccessAlert', "Currirulum deletion sucessful", { root: true });
+                    dispatch('fetchAllCurriculumHeaders');
+                },
+                error => {
+                    dispatch('alert/setErrorAlert', error.message, { root: true });
+                }
+            )
+            .finally(() => {
+                commit('indicateDeleteRequestEnd');
+            });
+    }
 }

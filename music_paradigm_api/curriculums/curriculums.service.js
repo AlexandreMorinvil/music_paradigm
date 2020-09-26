@@ -6,7 +6,7 @@ module.exports = {
     getListAllHeaders,
     getById,
     update,
-    // delete: _delete
+    delete: _delete
 };
 
 async function getListAllHeaders() {
@@ -55,8 +55,13 @@ async function update(id, updatedCurriculum) {
     }
 }
 
-
-// async function _delete(id) {
-//     await timeout.dbQuery(
-//         Collection.findByIdAndRemove(id));
-// }
+async function _delete(id) {
+    try {
+        const curriculum = await Curriculum.findById(id);
+        if (!curriculum) throw new Error('Curriculum to delete not found');
+        
+        return await curriculum.remove();
+    } catch (err) {
+        throw err;
+    }
+}

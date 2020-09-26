@@ -26,22 +26,22 @@ const getById = function (id) {
     return fetch(url.curriculums(id), requestOptions).then(handleResponse);
 }
 
-const update = function (id, user) {
+const update = function (id, curriculum) {
     const requestOptions = {
         method: 'PUT',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
+        body: JSON.stringify(curriculum)
     };
     return fetch(url.curriculums(id), requestOptions).then(handleResponse);
 }
 
-// const _delete = function (id) {
-//     const requestOptions = {
-//         method: 'DELETE',
-//         headers: authHeader()
-//     };
-//     return fetch(url.users(id), requestOptions).then(handleResponse);
-// }
+const _delete = function (id) {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: authHeader()
+    };
+    return fetch(url.curriculums(id), requestOptions).then(handleResponse);
+}
 
 const handleResponse = function (reponse) {
     return defaultResponseHandler(reponse);
@@ -52,5 +52,5 @@ export const curriculumService = {
     getListAllHeaders,
     getById,
     update,
-    // delete: _delete
+    delete: _delete
 };
