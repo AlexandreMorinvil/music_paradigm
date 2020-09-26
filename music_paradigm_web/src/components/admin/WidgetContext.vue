@@ -22,9 +22,9 @@
 
 <script>
 export default {
-  name: "AdminExperiments",
+  name: "WidgetContext",
   props: {
-    isShown: {
+    isShownInitial: {
       type: Boolean,
       default() {
         return true;
@@ -32,7 +32,9 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      isShown: true
+    };
   },
   computed: {
     widgetDisplay() {
@@ -45,7 +47,9 @@ export default {
       this.isShown = !this.isShown;
     },
   },
-  mounted() {},
+  mounted() {
+    this.isShown = this.isShownInitial;
+  },
   destroyed() {},
   watch: {},
 };
@@ -58,6 +62,7 @@ export default {
   background-color: rgb(225, 225, 230);
   color: black;
   padding: 5px;
+  border: solid rgb(210, 210, 215) 2px;
 }
 
 .display {
