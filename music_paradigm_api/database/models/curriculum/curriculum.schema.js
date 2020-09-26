@@ -1,7 +1,4 @@
 const mongoose = require('mongoose');
-// const Experiment = require('database/db').Experiment;
-const Experiment = require('database/models/experiment/experiment.model');
-
 const Schema = mongoose.Schema;
 
 // Error messages
@@ -35,6 +32,7 @@ const schema = new Schema(
             unique: [true, titleUnivqueMessage],
             minlength: [1, titleMinLengthMessage],
             maxlength: [100, titleMaxLengthMessage],
+            set: setterTitle
         },
 
         // Indicate whether the experiments are meant to be made accessible one after the other,
@@ -53,7 +51,8 @@ const schema = new Schema(
                         type: String,
                         default: "",
                         sparse: true,
-                        trim: true
+                        trim: true,
+                        set: setterTitle
                     },
 
                     //  === Paths to schedule when the experiment will be available ===
@@ -118,9 +117,12 @@ function defaultCompletionLimit() {
 }
 
 // Setter functions
+function setterTitle(title) {
+    if (title) return title.toLowerCase();
+    else return undefined;
+}
 
-
-// Validator
+// Validators
 function validatorExperiments(array) {
     return array.length > 0;
 }

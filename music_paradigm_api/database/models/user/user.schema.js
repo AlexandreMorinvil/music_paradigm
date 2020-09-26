@@ -5,8 +5,8 @@ const bcrypt = require('bcryptjs');
 const stringHandler = require('_helpers/stringHandler');
 
 // Required schemas
-const curriculum = require('../curriculum/curriculum.schema').schemaCurriculum;
-const progression = require('../curriculum/curriculum.schema').schemaProgression;
+// const curriculum = require('../curriculum/curriculum.schema').schemaCurriculum;
+// const progression = require('../curriculum/curriculum.schema').schemaProgression;
 
 const Schema = mongoose.Schema;
 
@@ -79,12 +79,18 @@ const schema = new Schema(
         },
 
         tasks: {
-            curriculums: {
-                type: [curriculum],
-                default: []
+            curriculum: {
+                type: Schema.Types.ObjectId,
+                ref: 'Curriculum',
+                default: null
             },
-            progression: {
-                type: [progression],
+            progressions: {
+                type: [
+                    {
+                        type: Schema.Types.ObjectId,
+                        ref: 'Progression',
+                    }
+                ],
                 default: []
             }
         },
