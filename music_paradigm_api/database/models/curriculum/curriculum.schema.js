@@ -1,6 +1,20 @@
 const mongoose = require('mongoose');
+// const Experiment = require('database/db').Experiment;
+const Experiment = require('database/models/experiment/experiment.model');
 
 const Schema = mongoose.Schema;
+
+// Error messages
+const titleRequiredMessage = "The title of the curriculum is required";
+const titleUnivqueMessage = "The title of the curriculum is already used";
+const titleMinLengthMessage = "The title of the curriculum must contain at least one character";
+const titleMaxLengthMessage = "The title of the curriculum must contain a maximum of 100 characters";
+
+const experimentDelauInDaysMinMessage = "The delay in days of the expriment(s) must be greater or equal to 0";
+const experimentCompletionTargetMinMessage = "The completion target of the expriment(s) must be greater or equal to 0";
+const experimentsCompletionLimitMinMessage = "The completion limit of the expriment(s) must be greater or equal to 0";
+const experimentsCompletionLimitValidatorMessage = "The completion limmit of the experiments cannot be lower than the completion target";
+const experimentsExperimentReferenceValidatorMessage = "The experiment reference must be specified";
 
 /**
  * The curriculums are a collection of experiments that are made availale according to a set of rules
@@ -14,9 +28,12 @@ const schema = new Schema(
         // Title of the curriculum
         title: {
             type: String,
-            unique: true,
             sparse: true,
-            trim: true
+            trim: true,
+            required: [true, titleRequiredMessage],
+            unique: [true, titleUnivqueMessage],
+            minlength: [1, titleMinLengthMessage],
+            maxlength: [100, titleMaxLengthMessage],
         },
 
         // Indicate whether the experiments are meant to be made accessible one after the other,
@@ -32,7 +49,7 @@ const schema = new Schema(
                 // Title of the experiment within the curriculum
                 title: {
                     type: String,
-                    required: true,
+                    default: "",
                     sparse: true,
                     trim: true
                 },
@@ -42,7 +59,7 @@ const schema = new Schema(
                 delayInDays: {
                     type: Number,
                     default: 0,
-                    min: 0
+                    min: [0, experimentDelauInDaysMinMessage]
                 },
 
                 // Specify whether this experiment can be completed the same day as another experiment
@@ -56,24 +73,25 @@ const schema = new Schema(
                 completionTarget: {
                     type: Number,
                     default: 1,
-                    min: 0
+                    min: [0, experimentCompletionTargetMinMessage]
                 },
 
                 // Number of times the experiment was completed
                 completionLimit: {
                     type: Number,
-                    default: function () { return this.completionTarget; },
-                    min: 0,
+                    default: defaultCompletionLimit,
+                    min: [0, experimentsCompletionLimitMinMessage],
                     validate: {
                         validator: validatorCompletionLimit,
-                        message: "The completion limmit cannot be lower than the completion target"
+                        message: experimentsCompletionLimitValidatorMessage
                     },
                 },
 
                 // Reference to the experiment
                 experimentReference: {
                     type: Schema.Types.ObjectId,
-                    ref: 'Experiment'
+                    ref: 'Experiment',
+                    required: [true, experimentsExperimentReferenceValidatorMessage]
                 },
             }
         ]
@@ -87,6 +105,14 @@ const schema = new Schema(
         }
     }
 );
+
+// Computed default values
+function defaultCompletionLimit() {
+    return this.completionTarget;
+}
+
+// Setter functions
+
 
 // Validator
 function validatorCompletionLimit(value) {

@@ -40,6 +40,12 @@ async function create(curriculumParameters) {
         const curriculum = new Curriculum(curriculumParameters);
         return await curriculum.save();
     } catch (err) {
+        // Add a cast error in the error answer handlinf as Mongoose doesn't allow custom cast error messages 
+        Object.values(err.errors)
+            .filter(fieldError => fieldError.name === 'CastError')
+            .forEach(() => {
+                err.message = "A proper experiment must be specified for all experiments";
+            });
         throw err;
     }
 }
