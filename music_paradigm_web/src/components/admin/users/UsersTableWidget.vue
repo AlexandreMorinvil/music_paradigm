@@ -9,11 +9,11 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Role</th>
             <th>Username</th>
             <th>Email</th>
             <th>Full Name</th>
             <th>Tags</th>
+            <th>Curriculum</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -25,11 +25,11 @@
             :class="header._id === userSelectedId && 'selected'"
           >
             <td>{{ index + 1 }}</td>
-            <td>{{ header.role }}</td>
             <td>{{ header.username }}</td>
             <td>{{ makeEmailDisplay(header.email) }}</td>
             <td>{{ makeFullNameDisplay(header.firstName, header.middleName, header.lastName) }}</td>
             <td style="white-space: pre-line">{{ makeTagsDisplay(header.tags) }}</td>
+            <td>{{ makeCurriculumTitleDisplay(header.curriculumTitle) }}</td>
             <td class="widget-table-actions-buttons">
               <button
                 v-on:click="handleSelectUser(header._id)"
@@ -93,6 +93,10 @@ export default {
         }
         return display;
       }
+    },
+    makeCurriculumTitleDisplay(curriculumName) {
+      if(!curriculumName) return "---";
+      else return curriculumName;
     },
   },
   mounted() {

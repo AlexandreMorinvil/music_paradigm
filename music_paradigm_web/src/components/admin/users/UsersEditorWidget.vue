@@ -113,6 +113,7 @@
             }}</span>
           </label>
           <select name="curriculum-reference" v-model="curriculum">
+            <option value="null"> -- No curriculum is assigned -- </option>
             <option
               v-for="(reference, index) in curriculumsReferences"
               :key="index"

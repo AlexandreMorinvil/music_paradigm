@@ -5,8 +5,22 @@ const roles = require('_helpers/role');
 const bcrypt = require('bcryptjs');
 
 // Static methods
-schema.statics.getListAllHeaders = function () {
-    return this.find({ role: roles.user }, '-tasks').sort({ role: 1, username: 1 });
+schema.statics.getListAllHeaders = async function () {
+    const usersList = await this.find({ role: roles.user }).populate({ path: 'curriculum', select: 'title' }).sort({ role: 1, username: 1 });
+    const usersHeaderList = [];
+
+    usersList.forEach(element => {
+        const userHeader = element.toObject();
+        
+        // Adding the name of the current curriculum
+        if (userHeader.curriculum) userHeader.curriculumTitle = userHeader.curriculum.title;
+        else userHeader.curriculumTitle = "";
+        delete userHeader.curriculum;
+
+        usersHeaderList.push(userHeader);
+    });
+
+    return usersHeaderList;
 };
 
 schema.statics.authenticate = async function (username, password) {
