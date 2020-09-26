@@ -10,7 +10,8 @@ const titleUnivqueMessage = "The title of the curriculum is already used";
 const titleMinLengthMessage = "The title of the curriculum must contain at least one character";
 const titleMaxLengthMessage = "The title of the curriculum must contain a maximum of 100 characters";
 
-const experimentDelauInDaysMinMessage = "The delay in days of the expriment(s) must be greater or equal to 0";
+const experimentsValidatorMessage = "At least one experiment must be specified in a curriculum";
+const experimentsDelauInDaysMinMessage = "The delay in days of the expriment(s) must be greater or equal to 0";
 const experimentCompletionTargetMinMessage = "The completion target of the expriment(s) must be greater or equal to 0";
 const experimentsCompletionLimitMinMessage = "The completion limit of the expriment(s) must be greater or equal to 0";
 const experimentsCompletionLimitValidatorMessage = "The completion limmit of the experiments cannot be lower than the completion target";
@@ -44,57 +45,62 @@ const schema = new Schema(
         },
 
         // List of the experiments composing the curriculum
-        experiments: [
-            {
-                // Title of the experiment within the curriculum
-                title: {
-                    type: String,
-                    default: "",
-                    sparse: true,
-                    trim: true
-                },
-
-                //  === Paths to schedule when the experiment will be available ===
-                // Number of days after the start date at which the experiment is to be made available
-                delayInDays: {
-                    type: Number,
-                    default: 0,
-                    min: [0, experimentDelauInDaysMinMessage]
-                },
-
-                // Specify whether this experiment can be completed the same day as another experiment
-                isUniqueIndDay: {
-                    type: Boolean,
-                    default: true
-                },
-
-                // === Paths to limit the amount of repetitions of an experiment ===
-                // Number of times the experiment is meant to be completed minimally
-                completionTarget: {
-                    type: Number,
-                    default: 1,
-                    min: [0, experimentCompletionTargetMinMessage]
-                },
-
-                // Number of times the experiment was completed
-                completionLimit: {
-                    type: Number,
-                    default: defaultCompletionLimit,
-                    min: [0, experimentsCompletionLimitMinMessage],
-                    validate: {
-                        validator: validatorCompletionLimit,
-                        message: experimentsCompletionLimitValidatorMessage
+        experiments: {
+            type: [
+                {
+                    // Title of the experiment within the curriculum
+                    title: {
+                        type: String,
+                        default: "",
+                        sparse: true,
+                        trim: true
                     },
-                },
 
-                // Reference to the experiment
-                experimentReference: {
-                    type: Schema.Types.ObjectId,
-                    ref: 'Experiment',
-                    required: [true, experimentsExperimentReferenceValidatorMessage]
-                },
-            }
-        ]
+                    //  === Paths to schedule when the experiment will be available ===
+                    // Number of days after the start date at which the experiment is to be made available
+                    delayInDays: {
+                        type: Number,
+                        default: 0,
+                        min: [0, experimentsDelauInDaysMinMessage]
+                    },
+
+                    // Specify whether this experiment can be completed the same day as another experiment
+                    isUniqueIndDay: {
+                        type: Boolean,
+                        default: true
+                    },
+
+                    // === Paths to limit the amount of repetitions of an experiment ===
+                    // Number of times the experiment is meant to be completed minimally
+                    completionTarget: {
+                        type: Number,
+                        default: 1,
+                        min: [0, experimentCompletionTargetMinMessage]
+                    },
+
+                    // Number of times the experiment was completed
+                    completionLimit: {
+                        type: Number,
+                        default: defaultCompletionLimit,
+                        min: [0, experimentsCompletionLimitMinMessage],
+                        validate: {
+                            validator: validatorCompletionLimit,
+                            message: experimentsCompletionLimitValidatorMessage
+                        },
+                    },
+
+                    // Reference to the experiment
+                    experimentReference: {
+                        type: Schema.Types.ObjectId,
+                        ref: 'Experiment',
+                        required: [true, experimentsExperimentReferenceValidatorMessage]
+                    },
+                }
+            ],
+            validate: [validatorExperiments, experimentsValidatorMessage]
+
+        }
+
     },
     {
         strict: false,
@@ -115,6 +121,10 @@ function defaultCompletionLimit() {
 
 
 // Validator
+function validatorExperiments(array) {
+    return array.length > 0;
+}
+
 function validatorCompletionLimit(value) {
     return value >= this.completionTarget;
 }
