@@ -52,7 +52,7 @@ schema.methods.updateIdentity = async function (updatedUser) {
     if (updatedUser.hasOwnProperty('firstName')) this.firstName = updatedUser.firstName;
     if (updatedUser.hasOwnProperty('middleName')) this.middleName = updatedUser.middleName;
     if (updatedUser.hasOwnProperty('lastName')) this.lastName = updatedUser.lastName;
-    if (updatedUser.hasOwnProperty('curriculum')) this.curriculum = updatedUser.curriculum;
+    if (updatedUser.hasOwnProperty('curriculum')) this.curriculum = updatedUser.curriculum || undefined;
 
     return this.save();
 };

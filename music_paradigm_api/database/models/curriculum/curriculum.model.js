@@ -5,7 +5,7 @@ schema.set('toJSON', { virtuals: true });
 
 // Static methods
 schema.statics.getListAllHeaders = async function () {
-    const curriculumList = await this.find({}).sort({ updatedAt: 1, createdAt: 1, title: 1 });
+    const curriculumList = await this.find({}).sort({ updatedAt: -1, createdAt: 1, title: 1 });
     const curriculumHeaderList = [];
 
     curriculumList.forEach(element => {

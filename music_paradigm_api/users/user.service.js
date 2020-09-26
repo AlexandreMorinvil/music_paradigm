@@ -58,7 +58,12 @@ async function create(userParam) {
         const user = new User(userParam);
         return await user.create();
     } catch (err) {
-        throw err;
+        switch (err.code) {
+            case 11000:
+                throw new Error(`The username and/or the email address is already used`);
+            default:
+                throw err;
+        }
     }
 }
 
@@ -67,7 +72,12 @@ async function update(id, userIdentity) {
         const user = await User.findById(id);
         return await user.updateIdentity(userIdentity);
     } catch (err) {
-        throw err;
+        switch (err.code) {
+            case 11000:
+                throw new Error(`The username and/or the email address is already used`);
+            default:
+                throw err;
+        }
     }
 }
 

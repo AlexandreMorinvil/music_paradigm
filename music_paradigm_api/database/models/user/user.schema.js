@@ -1,34 +1,49 @@
 const mongoose = require('mongoose');
-const roles = require('_helpers/role');
-const bcrypt = require('bcryptjs');
-
-const stringHandler = require('_helpers/stringHandler');
-
 const Schema = mongoose.Schema;
 
+const bcrypt = require('bcryptjs');
+const roles = require('_helpers/role');
+const stringHandler = require('_helpers/stringHandler');
+
+// Error messages
+const usernameMinLengthMessage = "The username must have at least one character";
+const usernameMaxLengthMessage = "The username must have a maximum of 100 characters";
+
+const emailMaxLengthMessage = "The email must have a maximum of 100 characters";
+const emailValidatorMessage = "The email entered is not a valid email adress with the structure 'address@domain.ext'";
+
+const passwordRequiredMessage = "The password is required"
+const passwordMinLengthMessage = "The password must have a minimum of one character";
+const passwordMaxLengthMessage = "The password must have a maximum of 100 characters";
+
+const firstNameMaxLengthMessage = "The first name must have a maximum of 50 characters";
+const middleNameMaxLengthMessage = "The middle name must have a maximum of 50 characters";
+const lastNameMaxLengthMessage = "The last names must have a maximum of 50 characters";
+
+// Schema
 const schema = new Schema(
     {
         username: {
             type: String,
             default: defaultUsername,
-            unique: true,
             sparse: true,
-            minlength: 1,
-            maxlength: 100,
             trim: true,
+            unique: true,
+            minlength: [1, usernameMinLengthMessage],
+            maxlength: [100, usernameMaxLengthMessage],
             set: setterUsername
         },
         
         email: {
             type: String,
-            unique: true,
-            sparse: true,
             default: null,
-            maxlength: 100,
+            sparse: true,
             trim: true,
+            unique: true,
+            maxlength: [100, emailMaxLengthMessage],
             validate: {
                 validator: validatorEmail,
-                message: "The email is invalid"
+                message: emailValidatorMessage
             },
             set: setterEmail
         },
@@ -36,10 +51,10 @@ const schema = new Schema(
         password: {
             type: String,
             default: "music",
-            required: true,
             alias: 'passwordHash',
-            minlength: 1,
-            maxlength: 100,
+            required: [true, passwordRequiredMessage],
+            minlength: [1, passwordMinLengthMessage],
+            maxlength: [100, passwordMaxLengthMessage],
             set: setterPassword,
         },
 
@@ -58,25 +73,25 @@ const schema = new Schema(
 
         firstName: {
             type: String,
-            default: "FirstName",
-            maxlength: 50,
+            default: "Firstname",
             trim: true,
+            maxlength: [50, firstNameMaxLengthMessage],
             set: setterName
         },
 
         middleName: {
             type: String,
             default: "",
-            maxlength: 50,
             trim: true,
+            maxlength: [50, middleNameMaxLengthMessage],
             set: setterName
         },
 
         lastName: {
             type: String,
-            default: "LastName",
-            maxlength: 50,
+            default: "Lastname",
             trim: true,
+            maxlength: [50, lastNameMaxLengthMessage],
             set: setterName
         },
 
@@ -96,8 +111,10 @@ const schema = new Schema(
             default: []
         },
 
-        // Creation time of the user
-        lastLogin: { type: Date, default: null },
+        lastLogin: { 
+            type: Date, 
+            default: null
+        },
     },
     {
         strict: false,
