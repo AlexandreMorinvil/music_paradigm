@@ -1,26 +1,19 @@
 <template>
   <admin-page-context title="Users">
-    <widget-context>
-      <template v-slot:title
-        >Viewer</template
-      >
-      <template v-slot:widget>
+    <widget-context title="Reviewing Tool">
+      <template>
         <users-viewer />
       </template>
     </widget-context>
-    <widget-context>
-      <template v-slot:title
-        >Editor</template
-      >
-      <template v-slot:widget>
+
+    <widget-context title="Editior Tool">
+      <template>
         <users-editor />
       </template>
     </widget-context>
-    <widget-context>
-      <template v-slot:title
-        >Board</template
-      >
-      <template v-slot:widget>
+
+    <widget-context title="Overview Table">
+      <template>
         <users-table />
       </template>
     </widget-context>

@@ -6,17 +6,14 @@
         <div class="bar2"></div>
         <div class="bar3"></div>
       </div>
-
-      <slot name="title">Header</slot>
+      {{ title }}
     </div>
 
     <div :style="!isShown && 'display: none;'">
-      <slot name="widget"></slot>
+      <slot></slot>
     </div>
 
-    <div :style="isShown && 'display: none;'" class="padding"> 
-    </div>
-
+    <div :style="isShown && 'display: none;'" class="padding"></div>
   </div>
 </template>
 
@@ -24,6 +21,12 @@
 export default {
   name: "WidgetContext",
   props: {
+    title: {
+      type: String,
+      default() {
+        return "Unspecified Title";
+      },
+    },
     isShownInitial: {
       type: Boolean,
       default() {
@@ -33,7 +36,7 @@ export default {
   },
   data() {
     return {
-      isShown: true
+      isShown: true,
     };
   },
   computed: {

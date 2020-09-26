@@ -12,6 +12,7 @@
 
 .widget-bg {
     background-color: rgb(25, 25, 25);
+    border-bottom: solid rgb(30, 30, 30) 1px;
     border-left: solid rgb(50, 50, 50) 5px;
 }
 

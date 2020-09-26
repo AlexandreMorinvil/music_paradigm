@@ -6,6 +6,8 @@
       <h2>{{ subTitle }}</h2>
     </header>
 
+    <div class="area-separation"></div>
+
     <main class="area-main">
       <slot>
         Page to be implemented
@@ -53,9 +55,10 @@ export default {
 .page-grid {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto auto 1fr auto;
   grid-template-areas:
     "title"
+    "separation"
     "main"
     "footer";
   height: 100%;
@@ -73,9 +76,15 @@ export default {
   font-size: 1em;
 }
 
+.area-separation {
+  background-color: rgb(35, 35, 35);
+  height: 10px;
+}
+
 .area-main {
   grid-area: main;
   display: block;
+  background-image: linear-gradient(to bottom right, rgb(20, 20, 20), rgb(0, 0, 0));
 }
 
 .area-footer {

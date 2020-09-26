@@ -1,26 +1,19 @@
 <template>
   <admin-page-context title="Experiments">
-    <widget-context>
-      <template v-slot:title
-        >Viewer</template
-      >
-      <template v-slot:widget>
+    <widget-context title="Reviewing Tool">
+      <template>
         <experiments-viewer />
       </template>
     </widget-context>
-    <widget-context>
-      <template v-slot:title
-        >Editor</template
-      >
-      <template v-slot:widget>
+
+    <widget-context title="Editor Tool">
+      <template>
         <experiments-editor />
       </template>
     </widget-context>
-    <widget-context>
-      <template v-slot:title
-        >Board</template
-      >
-      <template v-slot:widget>
+
+    <widget-context title="Overview Table">
+      <template>
         <experiments-table />
       </template>
     </widget-context>
