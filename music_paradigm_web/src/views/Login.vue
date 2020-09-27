@@ -1,49 +1,64 @@
 <template>
   <div class="content">
-    <div id="login-box" class="login-box">
-      <div id="login-box-title" class="login-box-title">
-        <h1>Login</h1>
-      </div>
+    <div class="main-area">
+      <div id="login-box" class="login-box">
+        <div id="login-box-title" class="login-box-title">
+          <h1>Login</h1>
+        </div>
 
-      <div id="login-box-form" class="login-box-form">
-        <loader v-if="isLoggingIn" class="loader"></loader>
-        <form v-else @submit.prevent="handleSubmit">
-          <div>
-            <label for="username">Username</label>
-            <input
-              type="text"
-              v-on:blur="setUsernameHadFocus"
-              v-bind:class="{ 'input-text-danger': hasUsernameError }"
-              v-model="username"
-              name="username"
-              placeholder="Enter Username"
-            />
-            <div v-if="hasUsernameError" class="invalid-input">{{ usernameValidityMessage }}</div>
-          </div>
-          <div>
-            <label for="password">Password</label>
-            <input type="password" v-model="password" name="password" placeholder="Enter Password" />
-            <p class="form-note-text">
-              Forgot
-              <a class="form-note-text" href="#">password? (not implemented yet)</a>
-            </p>
-          </div>
-          <div>
-            <button class="login-button">Login</button>
-          </div>
-        </form>
+        <div id="login-box-form" class="login-box-form">
+          <loader v-if="isLoggingIn" class="loader"></loader>
+          <form v-else @submit.prevent="handleSubmit">
+            <div>
+              <label for="username">Username</label>
+              <input
+                type="text"
+                v-on:blur="setUsernameHadFocus"
+                v-bind:class="{ 'input-text-danger': hasUsernameError }"
+                v-model="username"
+                name="username"
+                placeholder="Enter Username"
+              />
+              <div v-if="hasUsernameError" class="invalid-input">
+                {{ usernameValidityMessage }}
+              </div>
+            </div>
+            <div>
+              <label for="password">Password</label>
+              <input
+                type="password"
+                v-model="password"
+                name="password"
+                placeholder="Enter Password"
+              />
+              <p class="form-note-text">
+                Forgot
+                <a class="form-note-text" href="#"
+                  >password? (not implemented yet)</a
+                >
+              </p>
+            </div>
+            <div>
+              <button class="login-button">Login</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
+
+    <application-footer> </application-footer>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import ApplicationFooter from "@/components/ApplicationFooter.vue";
 import LoaderCircular from "@/components/LoaderCircular.vue";
 
 export default {
   name: "Home",
   components: {
+    applicationFooter: ApplicationFooter,
     loader: LoaderCircular,
   },
   data() {
@@ -77,8 +92,8 @@ export default {
       if (username) {
         this.login({ username, password });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -88,6 +103,16 @@ export default {
   justify-content: center;
   align-content: center;
   height: 100%;
+  width: 100%;
+
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+}
+
+.main-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #login-box {
