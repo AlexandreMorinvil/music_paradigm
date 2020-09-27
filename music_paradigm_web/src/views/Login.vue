@@ -6,7 +6,7 @@
       </div>
 
       <div id="login-box-form" class="login-box-form">
-        <loader v-if="status.loggingIn" class="loader"></loader>
+        <loader v-if="isLoggingIn" class="loader"></loader>
         <form v-else @submit.prevent="handleSubmit">
           <div>
             <label for="username">Username</label>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import LoaderCircular from "@/components/LoaderCircular.vue";
 
 export default {
@@ -55,8 +55,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["alert"]),
-    ...mapState("account", ["status", "user"]), // TODO: Take the state away
+    ...mapGetters("account", ["isLoggingIn"]),
     hasUsernameError() {
       return (
         (this.hasAttemptedSubmit || this.hasFocusedOnUsername) && !this.username
@@ -179,5 +178,9 @@ export default {
   background-color: rgb(0, 80, 200);
   border: 2px solid rgb(0, 100, 255);
   color: white;
+}
+
+h1 {
+  font-size: 1.5em;
 }
 </style>
