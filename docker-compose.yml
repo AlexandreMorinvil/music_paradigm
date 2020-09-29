@@ -6,6 +6,7 @@ services:
     ports:
       - 81:8080
     environment:
+      - NODE_ENV=production
       - VIRTUAL_HOST=learn.coffeylab.ca
       - LETSENCRYPT_HOST=learn.coffeylab.ca
       - LESTENCRYPT_EMAIL=emily@coffeylab.ca
@@ -19,6 +20,7 @@ services:
     ports:
       - 4000:4000
     environment:
+      - NODE_ENV=production
       - DEFAULT_ADMIN_USERNAME=LabMaster
       - DEFAULT_ADMIN_PASSWORD=CoffeyLabInConcordia
     depends_on:

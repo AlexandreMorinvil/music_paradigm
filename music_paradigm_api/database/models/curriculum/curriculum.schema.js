@@ -28,8 +28,8 @@ const schema = new Schema(
             type: String,
             sparse: true,
             trim: true,
+            unique: [true, titleUnivqueMessage], // TODO: Put the uniqueness verifier in the service
             required: [true, titleRequiredMessage],
-            unique: [true, titleUnivqueMessage],
             minlength: [1, titleMinLengthMessage],
             maxlength: [100, titleMaxLengthMessage],
             set: setterTitle

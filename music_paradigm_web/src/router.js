@@ -89,7 +89,7 @@ const router = new Router({
         },
         {
           path: 'experiments',
-          name: 'user.experiments',
+          name: 'user.experiment',
           component: () => import(/* webpackChunkName: "user" */ './views/userPage/Experiments.vue')
         },
         {

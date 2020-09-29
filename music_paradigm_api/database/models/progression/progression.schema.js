@@ -10,10 +10,10 @@ const Schema = mongoose.Schema;
  */
 const schema = new Schema(
     {
-        // TODO: In the toObject and to toJSON, make sure the user is not populated
         referenceUser: {
             type: Schema.Types.ObjectId,
-            ref: 'User'
+            ref: 'User',
+            required: [true, titleRequiredMessage],
         },
         
         // Indicate the start time of the curriculum. The delays in days are counted starting from that date

@@ -1,30 +1,20 @@
 <template>
-  <div class="page-grid">
-    <div id="sidebar" class="sidebar-position sidebar">
-      <router-link
-        :to="{ name: 'user.home' }"
-        :class="{'currentLink' : (activePage === 'home')}"
-      >Home</router-link>
-      <router-link
-        :to="{ name: 'user.experiments' }"
-        :class="{'currentLink' : (activePage === 'experiments')}"
-      >Experiments</router-link>
-      <router-link
-        :to="{ name: 'user.account' }"
-        :class="{'currentLink' : (activePage === 'account')}"
-      >Account</router-link>
-    </div>
-    <div id="user-main" class="main-position">
+  <div class="user-page-grid">
+    <div id="user-main">
       <router-view class="main-display" />
     </div>
+    <application-footer> </application-footer>
   </div>
 </template>
 
 <script>
-import "@/styles/loggedInPageTemplate.css";
+import ApplicationFooter from "@/components/ApplicationFooter.vue";
 
 export default {
   name: "UserPage",
+  components: {
+    applicationFooter: ApplicationFooter,
+  },
   data() {
     return {
       activePage: "undefined",
@@ -54,4 +44,11 @@ export default {
 </script>
 
 <style scoped>
+.user-page-grid {
+  display: grid;
+  height: 100%;
+  width: 100%;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+}
 </style>
