@@ -3,7 +3,7 @@ import config from "@/config";
 const staticDirectory = "/static/";
 const experimentRessourceDirectory = "/experiment-ressources/";
 
-// 
+const account = "/account/";
 const experiments = "/experiments/";
 const curriculums = "/curriculums/";
 const users = "/users/";
@@ -18,6 +18,9 @@ export default {
     },
 
     // API calls
+    account : function(parameters) {
+        return config.apiUrl + account + parameters;
+    },
     experiments : function(parameters) {
         return config.apiUrl + experiments + parameters;
     },

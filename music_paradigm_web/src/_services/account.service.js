@@ -23,7 +23,7 @@ function login(username, password) {
         body: JSON.stringify({ username, password })
     };
 
-    return fetch(url.users("authenticate"), requestOptions)
+    return fetch(url.account("authenticate"), requestOptions)
         .then(handleResponse)
         .then(user => {
             // Login successful if there's a jwt token in the response
