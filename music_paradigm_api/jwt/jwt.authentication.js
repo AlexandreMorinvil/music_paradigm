@@ -19,7 +19,7 @@ function jwtMiddlewareAuthentication() {
     return expressJwt({ secret, isRevoked }).unless({
         // Public routes that don't require authentication
         path: [
-            '/users/authenticate',
+            '/account/authenticate',
             '/static/'
         ]
     });

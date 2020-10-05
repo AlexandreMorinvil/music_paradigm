@@ -1,15 +1,35 @@
 ﻿const db = require('database/db');
+const jwt = require('jwt/jwt');
 const Experiment = db.Experiment;
 const Curriculum = db.Curriculum;
 const User = db.User;
 
 module.exports = {
+    authenticate,
     getTodayExperiment,
     // getListAllHeaders,
     // getById,
     // update,
     // delete: _delete
 };
+
+async function authenticate({ username, password }) {
+    try {
+        const userWithoutPassword = await User.authenticate(username, password);
+        const token = jwt.generateToken(userWithoutPassword);
+
+        return {
+            ...userWithoutPassword,
+            token
+        };
+    } catch (err) {
+        if (!err.message)
+            throw new Error("Username or password is incorrect");
+        else
+            throw err;
+    }
+}
+
 
 async function getTodayExperiment(userId) {
     try {

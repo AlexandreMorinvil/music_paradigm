@@ -1,41 +1,15 @@
 ﻿const bcrypt = require('bcryptjs');
 const db = require('database/db');
-const jwt = require('jwt/jwt');
 const User = db.User;
 
 // Exports
 module.exports = {
-    authenticate,
     getAll,
     getById,
     create,
     update,
     delete: _delete
 };
-
-/**
- * Method for authenticating a user attempting to login
- * @param {string} username     The date
- * @param {string} password     The password (non-encrypted)
- * @return {Object}             The user without hash of its password and the token
- *                              If the authentication fails, it returns null
- */
-async function authenticate({ username, password }) {
-    try {
-        const userWithoutPassword = await User.authenticate(username, password);
-        const token = jwt.generateToken(userWithoutPassword);
-
-        return {
-            ...userWithoutPassword,
-            token
-        };
-    } catch (err) {
-        if (!err.message)
-            throw new Error("Username or password is incorrect");
-        else
-            throw err;
-    }
-}
 
 async function getAll() {
     try {

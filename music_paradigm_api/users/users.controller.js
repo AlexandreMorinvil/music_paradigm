@@ -5,7 +5,6 @@ const jwtAuthorize = require('jwt/jwt.authorization');
 const role = require('_helpers/role');
 
 // routes
-router.post('/authenticate',                               authenticate);
 router.post('/register',        jwtAuthorize(role.admin),  register);
 router.get('/',                 jwtAuthorize(role.admin),  getAll);
 router.get('/current',                                     getCurrent);
@@ -14,13 +13,6 @@ router.put('/:id',              jwtAuthorize(role.admin),  update);
 router.delete('/:id',           jwtAuthorize(role.admin),  _delete);
 
 module.exports = router;
-
-function authenticate(req, res, next) {
-    userService.authenticate(req.body)
-        .then(result => res.status(200).json(result))
-        .catch(error => res.status(400).json({ message: error.message }))
-        .finally(() => next());
-}
 
 function register(req, res, next) {
     userService.create(req.body)

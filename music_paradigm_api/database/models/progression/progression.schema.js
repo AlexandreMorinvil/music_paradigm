@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+// Error messages
+const userRequiredMessage = "The user Object ID of the user progressing in the curriculum is required";
+const curriculumRequiredMessage = "The curriculum Object ID of the associated curriculum is required";
+
 /**
  * The progressions contain the informations concerning the completion of the experiments of a curriculum for given user.
  * 
@@ -10,12 +14,18 @@ const Schema = mongoose.Schema;
  */
 const schema = new Schema(
     {
-        referenceUser: {
+        userReference: {
             type: Schema.Types.ObjectId,
             ref: 'User',
-            required: [true, titleRequiredMessage],
+            required: [true, userRequiredMessage],
         },
-        
+
+        curriculumReference: {
+            type: Schema.Types.ObjectId,
+            ref: 'Curriculum',
+            required: [true, curriculumRequiredMessage],
+        },
+
         // Indicate the start time of the curriculum. The delays in days are counted starting from that date
         startTime: {
             type: Date,
@@ -26,17 +36,17 @@ const schema = new Schema(
         // to for the sequential curriculum to know if a subsequent experiment can be made available)
         lastProgressionDate: {
             type: Date,
-            default: Date.now
+            default: null
         },
 
         // List of the experiments composing the curriculum
         experiments: [
             {
                 // Title of the experiment within the curriculum
-                title: {
-                    type: String,
-                    unique: true,
-                    sparse: true
+                experimentReference: {
+                    type: Schema.Types.ObjectId,
+                    ref: 'Curriculum',
+                    required: [true, curriculumRequiredMessage],
                 },
 
                 // Number of times the experiment was completed
@@ -47,19 +57,22 @@ const schema = new Schema(
                 },
 
                 // Paths to save the state of an ongoing session
-                sessionStatus: {
-                    hasSessionInProgress: {
-                        type: Boolean,
-                        default: false
+                ongoingSessionStatus: {
+                    type: {
+                        hasSessionInProgress: {
+                            type: Boolean,
+                            default: false
+                        },
+                        cursor: {
+                            type: Object,
+                            default: null
+                        },
+                        state: {
+                            type: Object,
+                            default: null
+                        }
                     },
-                    cursor: {
-                        type: Object,
-                        default: null
-                    },
-                    state: {
-                        type: Object,
-                        default: null
-                    }
+                    default: null
                 },
 
                 // Reference to the log files associated to each completion of the experiment
@@ -69,7 +82,6 @@ const schema = new Schema(
                 }
             }
         ]
-
     },
     {
         strict: false,
