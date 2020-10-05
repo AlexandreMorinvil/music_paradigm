@@ -1,6 +1,6 @@
 <template>
   <div class="page-grid">
-    <div class="area-overview">Overview</div>
+    <div class="area-overview">Overview: Status of the curriculum</div>
 
     <button>
       <router-link :to="{ name: 'user.experiment' }">Home</router-link>
@@ -10,15 +10,11 @@
     <br /><br />
     Important messages from the experiment administrators
     <br /><br />
-    Start button to the latest experiment available
-    <br /><br />
-    Status of the curriculum
+    Change password or email
   </div>
 </template>
 
 <script>
-
-
 export default {
   name: "UserHome",
   data() {

@@ -1,6 +1,6 @@
 <template>
   <div class="user-page-grid">
-    <div id="user-main">
+    <div id="user-main" class="widget widget-bg">
       <router-view class="main-display" />
     </div>
     <application-footer> </application-footer>
@@ -9,6 +9,7 @@
 
 <script>
 import ApplicationFooter from "@/components/ApplicationFooter.vue";
+import "@/styles/widgetTemplate.css";
 
 export default {
   name: "UserPage",

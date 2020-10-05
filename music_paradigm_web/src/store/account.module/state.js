@@ -7,9 +7,9 @@ export default {
     user: {
         username: "",
         email: "",
-        firstName: "First",
-        middleName: "Middle",
-        lastName: "Last",
+        firstName: "",
+        middleName: "",
+        lastName: "",
         role: "",
         curriculum: null,
         progressions: []
