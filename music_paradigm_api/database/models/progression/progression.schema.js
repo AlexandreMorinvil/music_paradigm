@@ -40,48 +40,52 @@ const schema = new Schema(
         },
 
         // List of the experiments composing the curriculum
-        experiments: [
-            {
-                // Title of the experiment within the curriculum
-                experimentReference: {
-                    type: Schema.Types.ObjectId,
-                    ref: 'Curriculum',
-                    required: [true, curriculumRequiredMessage],
-                },
-
-                // Number of times the experiment was completed
-                completionCount: {
-                    type: Number,
-                    default: 0,
-                    min: 0
-                },
-
-                // Paths to save the state of an ongoing session
-                ongoingSessionStatus: {
-                    type: {
-                        hasSessionInProgress: {
-                            type: Boolean,
-                            default: false
-                        },
-                        cursor: {
-                            type: Object,
-                            default: null
-                        },
-                        state: {
-                            type: Object,
-                            default: null
-                        }
+        experiments: {
+            type: [
+                {
+                    // Title of the experiment within the curriculum
+                    experimentReference: {
+                        type: Schema.Types.ObjectId,
+                        ref: 'Curriculum',
+                        required: [true, curriculumRequiredMessage],
                     },
-                    default: null
-                },
 
-                // Reference to the log files associated to each completion of the experiment
-                logReference: {
-                    type: Schema.Types.ObjectId,
-                    ref: 'Completion'
+                    // Number of times the experiment was completed
+                    completionCount: {
+                        type: Number,
+                        default: 0,
+                        min: 0
+                    },
+
+                    // Paths to save the state of an ongoing session
+                    ongoingSessionStatus: {
+                        type: {
+                            hasSessionInProgress: {
+                                type: Boolean,
+                                default: false
+                            },
+                            cursor: {
+                                type: Object,
+                                default: null
+                            },
+                            state: {
+                                type: Object,
+                                default: null
+                            }
+                        },
+                        default: null
+                    },
+
+                    // Reference to the log files associated to each completion of the experiment
+                    logReference: {
+                        type: Schema.Types.ObjectId,
+                        ref: 'Completion'
+                    }
                 }
-            }
-        ]
+            ],
+            default: []
+        }
+
     },
     {
         strict: false,

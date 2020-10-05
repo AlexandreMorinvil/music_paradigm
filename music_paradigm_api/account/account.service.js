@@ -1,11 +1,13 @@
 ﻿const db = require('database/db');
 const jwt = require('jwt/jwt');
+const progressionService = require('account/progression.service');
 const Experiment = db.Experiment;
 const Curriculum = db.Curriculum;
 const User = db.User;
 
 module.exports = {
     authenticate,
+    getProgressionSummary,
     getTodayExperiment,
     // getListAllHeaders,
     // getById,
@@ -16,6 +18,7 @@ module.exports = {
 async function authenticate({ username, password }) {
     try {
         const userWithoutPassword = await User.authenticate(username, password);
+        await progressionService.updateProgression(userWithoutPassword._id.toString());
         const token = jwt.generateToken(userWithoutPassword);
 
         return {
@@ -30,6 +33,14 @@ async function authenticate({ username, password }) {
     }
 }
 
+async function getProgressionSummary(userId) {
+    try {
+        return await progressionService.generateProgressionSummary(userId);
+
+    } catch (err) {
+        throw err;
+    }
+}
 
 async function getTodayExperiment(userId) {
     try {

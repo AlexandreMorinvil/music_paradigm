@@ -19,6 +19,7 @@ mongoose.connection.on('error', handleError);
 module.exports = {
     Experiment: require('./models/experiment/experiment.model'),
     Curriculum: require('./models/curriculum/curriculum.model'),
+    Progression: require('./models/progression/progression.model'),
     User: require('./models/user/user.model')
 };
 

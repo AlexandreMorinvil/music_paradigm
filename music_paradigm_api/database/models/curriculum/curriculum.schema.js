@@ -128,7 +128,7 @@ function validatorExperiments(array) {
 }
 
 function validatorCompletionLimit(value) {
-    return value >= this.completionTarget;
+    return value >= this.completionTarget || value === 0;
 }
 
 schema.set('toJSON', { virtuals: true });
