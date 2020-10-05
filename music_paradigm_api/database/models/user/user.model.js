@@ -5,6 +5,19 @@ const roles = require('_helpers/role');
 const bcrypt = require('bcryptjs');
 
 // Static methods
+schema.statics.authenticate = async function (username, password) {
+    // Fetch user in the database
+    const user = await this.findOne({ username });
+    if (!user) throw new Error;
+
+    // Validate password
+    if (!bcrypt.compareSync(password, user.passwordHash)) throw new Error;
+    const userWithoutPassword = user.toObject();
+    delete userWithoutPassword.password;
+
+    return userWithoutPassword;
+};
+
 schema.statics.getListAllHeaders = async function () {
     const usersList = await this.find({ role: roles.user }).populate({ path: 'curriculum', select: 'title' }).sort({ role: 1, username: 1 });
     const usersHeaderList = [];
@@ -23,18 +36,11 @@ schema.statics.getListAllHeaders = async function () {
     return usersHeaderList;
 };
 
-schema.statics.authenticate = async function (username, password) {
-    // Fetch user in the database
-    const user = await this.findOne({ username });
-    if (!user) throw new Error;
-
-    // Validate password
-    if (!bcrypt.compareSync(password, user.passwordHash)) throw new Error;
-    const userWithoutPassword = user.toObject();
-    delete userWithoutPassword.password;
-
-    return userWithoutPassword;
+schema.statics.getProgressionData = async function (userId) {
+    const curriculumProgression = await this.findById(userId, 'curriculum progressions').populate({ path: 'curriculum progressions' });
+    return curriculumProgression.toObject();
 };
+
 
 // Instance methods
 schema.methods.create = async function () {

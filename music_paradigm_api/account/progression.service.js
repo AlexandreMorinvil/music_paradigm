@@ -11,8 +11,7 @@ module.exports = {
 };
 
 async function updateProgression(userId) {
-    const curriculumProgression = await User.findById(userId, 'curriculum progressions').populate({ path: 'curriculum progressions' });
-    const { curriculum, progressions } = curriculumProgression.toObject();
+    const { curriculum, progressions } = await User.getProgressionData(userId);
 
     // Do not generate a progression if no curriculum is associated to the user
     if (!curriculum) return;
@@ -26,6 +25,16 @@ async function updateProgression(userId) {
     if (curriculumId !== curriculumIdLastProgression) return await generateProgression(userId)
 }
 
+async function generateProgressionSummary(userId) {
+    const { curriculum, progressions } = await User.getProgressionData(userId);
+
+    console.log(curriculum);
+    console.log(progressions);
+
+    const a = curriculumProgression.toObject();
+    console.log(a);
+}
+
 async function generateProgression(userId) {
     const user = await User.findById(userId);
     const progression = new Progression({
@@ -37,15 +46,3 @@ async function generateProgression(userId) {
     user.save();
 }
 
-
-async function generateProgressionSummary(userId) {
-    // Fetch the curriculum and the progressions from the user
-    const curriculumProgression = await User.findById(userId, 'curriculum progressions').populate({ path: 'curriculum progressions' });
-    const { curriculum, progressions } = curriculumProgression.toObject();
-
-    console.log(curriculum);
-    console.log(progressions);
-
-    const a = curriculumProgression.toObject();
-    console.log(a);
-}
