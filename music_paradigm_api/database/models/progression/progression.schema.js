@@ -52,7 +52,7 @@ const schema = new Schema(
 
                     // Reference to the log files associated to each completion of the experiment
                     logReference: {
-                        type: Schema.Types.ObjectId,
+                        type: [Schema.Types.ObjectId],
                         ref: 'Completion'
                     },
 

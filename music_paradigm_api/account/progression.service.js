@@ -53,27 +53,32 @@ async function generateProgressionSummary(userId) {
 
     // Generate the progression summary
     const timeElapsed = timeHandler.calculateDaysElapsed(progression.startTime);
-    const hasBlockingIncompleteInSequence = false;
-    const hasBlockingUniqueInDayDoneToday = false;
+    let hasBlockingIncompleteInSequence = false;
+    let hasBlockingUniqueInDayDoneToday = false;
     const progressionSummary = [];
 
     for (i in curriculum.experiments) {
-        curriculumExperiment = (association.length >= i) ? association[i].curriculum : curriculum.experiments[i];
-        progressionExperiment = (association.length >= i) ? association[i].progression : {};
-        const element = {
-            title: experiment.experiments[index].title,
-            delayPreAvailability: getDelayInDaysLeft(curriculumExperiment.delayInDays, timeElapsed),
-            completionsRequiredLeft: getCompletionsRequiredLeft(curriculumExperiment.completionTarget, progressionExperiment.completionCount),
-            completionsLimitLeft: getCompletionsLimitLeft(curriculumExperiment.completionLimit, progressionExperiment.completionCount),
-            isPreviousSequentialDelayed: false, //TODO: I am here
-            isPreviousUniqueInDayDelayed: false,
-        }
-        progressionSummary.push(element);
-    }
+        curriculumExperiment = (association.length > i) ? association[i].curriculum : curriculum.experiments[i];
+        progressionExperiment = (association.length > i) ? association[i].progression : {};
 
-    console.log(curriculum);
-    console.log(progression);
-    console.log("print here");
+        const element = {};
+        element.title = curriculumExperiment.title;
+        element.delayPreAvailability = getDelayInDaysLeft(curriculumExperiment.delayInDays, timeElapsed);
+        element.completionsRequiredLeft = getCompletionsRequiredLeft(curriculumExperiment.completionTarget, progressionExperiment.completionCount);
+        element.completionsLimitLeft = getCompletionsLimitLeft(curriculumExperiment.completionLimit, progressionExperiment.completionCount);
+
+        const wouldBeFree = getWouldBeFreeStatus(element.delayPreAvailability, element.completionsLimitLeft);
+
+        element.isDelayedByPreviousSequential = hasBlockingIncompleteInSequence;
+        element.isDelayedByPreviousUniqueInDay = hasBlockingUniqueInDayDoneToday;
+        progressionSummary.push(element);
+
+        hasBlockingIncompleteInSequence = updateHasBlockingIncompleteInSequence(wouldBeFree, hasBlockingIncompleteInSequence,
+            curriculum.isSequential, element.completionsRequiredLeft);
+        hasBlockingUniqueInDayDoneToday = updateHasBlockingUniqueInDayDoneToday(wouldBeFree, hasBlockingUniqueInDayDoneToday,
+            curriculumExperiment.isUniqueIndDay, curriculum.lastProgressionDate);
+    }
+    return progressionSummary;
 }
 
 async function generateProgression(userId) {
@@ -99,4 +104,24 @@ function getCompletionsRequiredLeft(completionsRequired, completionsDone = 0) {
 function getCompletionsLimitLeft(completionLimit, completionsDone = 0) {
     if (completionLimit === 0) return -1;
     else return Math.max(0, completionLimit - completionsDone);
+}
+
+function getWouldBeFreeStatus(delay, completionLimitLeft) {
+    if (delay > 0) return false;
+    else if (completionLimitLeft === 0 && completionsLimitLeft !== -1) return false;
+    else return true
+}
+
+function updateHasBlockingIncompleteInSequence(isCurrentFree, hasBlockingInSequence, isCurriculumSequential, completionsRequiredLeft) {
+    if (hasBlockingInSequence) return true;
+    else if (completionsRequiredLeft > 0) return true;
+    else if (isCurriculumSequential && !isCurrentFree) return true;
+    else return false;
+}
+
+function updateHasBlockingUniqueInDayDoneToday(isCurrentFree, hasBlockingUniqueInDay, isExperimentUniqueInDay, lastProgressionDate) {
+    if (hasBlockingUniqueInDay) return true;
+    else if (isExperimentUniqueInDay && !isCurrentFree) return true;
+    else if (timeHandler.isToday(lastProgressionDate)) return true;
+    else return false;
 }
