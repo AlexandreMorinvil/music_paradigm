@@ -46,8 +46,14 @@ const schema = new Schema(
                     // Title of the experiment within the curriculum
                     experimentReference: {
                         type: Schema.Types.ObjectId,
-                        ref: 'Curriculum',
+                        ref: 'Experiment',
                         required: [true, curriculumRequiredMessage],
+                    },
+
+                    // Reference to the log files associated to each completion of the experiment
+                    logReference: {
+                        type: Schema.Types.ObjectId,
+                        ref: 'Completion'
                     },
 
                     // Number of times the experiment was completed
@@ -57,30 +63,15 @@ const schema = new Schema(
                         min: 0
                     },
 
-                    // Paths to save the state of an ongoing session
-                    ongoingSessionStatus: {
-                        type: {
-                            hasSessionInProgress: {
-                                type: Boolean,
-                                default: false
-                            },
-                            cursor: {
-                                type: Object,
-                                default: null
-                            },
-                            state: {
-                                type: Object,
-                                default: null
-                            }
-                        },
+                    cursor: {
+                        type: Object,
                         default: null
                     },
 
-                    // Reference to the log files associated to each completion of the experiment
-                    logReference: {
-                        type: Schema.Types.ObjectId,
-                        ref: 'Completion'
-                    }
+                    state: {
+                        type: Object,
+                        default: null
+                    },
                 }
             ],
             default: []

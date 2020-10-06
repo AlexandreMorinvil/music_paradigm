@@ -24,7 +24,7 @@ schema.statics.getListAllHeaders = async function () {
 
     usersList.forEach(element => {
         const userHeader = element.toObject();
-        
+
         // Adding the name of the current curriculum
         if (userHeader.curriculum) userHeader.curriculumTitle = userHeader.curriculum.title;
         else userHeader.curriculumTitle = "";
@@ -37,8 +37,9 @@ schema.statics.getListAllHeaders = async function () {
 };
 
 schema.statics.getProgressionData = async function (userId) {
-    const curriculumProgression = await this.findById(userId, 'curriculum progressions').populate({ path: 'curriculum progressions' });
-    return curriculumProgression.toObject();
+    const curriculumAndProgression = await this.findById(userId, { curriculum: 1, progressions: { $slice: -1 } }).populate({ path: 'curriculum progressions' });
+    const { curriculum, progressions } = curriculumAndProgression.toObject();
+    return { curriculum: curriculum || null, progression: (progressions) ? progressions[0] : null }
 };
 
 
