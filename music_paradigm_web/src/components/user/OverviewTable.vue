@@ -3,7 +3,7 @@
     Overview: Status of the curriculum
     <div class="table-context" :style="'--elements-per-row:' + elementsPerRow">
       <button
-        v-for="(summary, index) in curriculumProgression"
+        v-for="(summary, index) in progressionSummary"
         :key="index"
         class="summary"
       >
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-//import { mapGetters, mapActions } from "vuex";
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: "OverviewTable",
@@ -55,13 +55,19 @@ export default {
     };
   },
   computed: {
+    ...mapGetters("account", ["progressionSummary"]),
     elementsPerRow() {
       return Math.min(7, this.curriculumProgression.length);
     },
   },
-  methods: {},
-  beforeMount() {},
-  mounted() {},
+  methods: {
+    ...mapActions("account", ["fetchProgressionSummary"])
+  },
+  beforeMount() {
+  },
+  mounted() {
+        this.fetchProgressionSummary();
+  },
   watch: {},
 };
 </script>

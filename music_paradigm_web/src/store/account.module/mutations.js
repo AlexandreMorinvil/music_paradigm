@@ -40,27 +40,15 @@ export default {
         });
     },
 
-    registerRequest(state) {
-        state.status = { registering: true };
+    indicateFetchingProgressionSummary(state) {
+        state.status.isFetchingProgressionSummary = true;
     },
 
-    registerSuccess(state) {
-        state.status = { registered: true };
+    indicateFetchingProgressionSummaryEnd(state) {
+        state.status.isFetchingProgressionSummary = false;
     },
 
-    registerFailure(state) {
-        state.status = {};
-    },
-
-    updateRequest(state) {
-        state.status = { updating: true };
-    },
-
-    updateSuccess(state) {
-        state.status = { updated: true };
-    },
-
-    updateFailure(state) {
-        state.status = {};
+    setProgressionSummary(state, progressionSummary) {
+        state.progressionSummary = progressionSummary
     }
 };

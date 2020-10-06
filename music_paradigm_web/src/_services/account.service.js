@@ -1,11 +1,12 @@
 import defaultResponseHandler from './defaultResponseHandler';
 import { routerNavigation } from '@/_helpers';
-import { url } from '@/_helpers';
+import { authHeader, url } from '@/_helpers';
 
 export const accountService = {
     resumeLogin,
     login,
-    logout
+    logout,
+    fetchProgressionSummary
 };
 
 function resumeLogin() {
@@ -41,6 +42,15 @@ function logout() {
     localStorage.removeItem('user');
     routerNavigation.goToRootPage();
 }
+
+function fetchProgressionSummary() {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+    return fetch(url.account("progressionSummary"), requestOptions).then(handleResponse);
+}
+
 
 const handleResponse = function (reponse) {
     return defaultResponseHandler(reponse, (status) => {

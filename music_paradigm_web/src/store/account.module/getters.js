@@ -11,5 +11,13 @@ export default {
         return state.user.firstName + " " +
             (state.user.middleName ? state.user.middleName + " " : "") +
             state.user.lastName;
+    },
+
+    isFetchingProgressionSummary: (state) => {
+        return state.status.isFetchingProgressionSummary;
+    },
+
+    progressionSummary: (state) => {
+        return state.progressionSummary;
     }
 }

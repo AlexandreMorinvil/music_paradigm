@@ -1,7 +1,8 @@
 export default {
     status: {
         loggingIn: false,
-        loggedIn: false
+        loggedIn: false,
+        isFetchingProgressionSummary: false,
     },
 
     user: {
@@ -13,5 +14,13 @@ export default {
         role: "",
         curriculum: null,
         progressions: []
-    }
+    },
+
+    progressionSummary: [{
+        delayPreAvailability: null,
+        completionsRequiredLeft: null,
+        completionsLimitLeft: null,
+        isDelayedByPreviousSequential: true,
+        isDelayedByPreviousUniqueInDay: true,
+    }]
 }

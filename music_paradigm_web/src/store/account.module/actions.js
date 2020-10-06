@@ -1,4 +1,4 @@
-import { accountService, userService } from '@/_services';
+import { accountService } from '@/_services';
 
 export default {
     resumeLoginStatus({ commit }) {
@@ -28,38 +28,13 @@ export default {
         commit('logout');
     },
 
-    register({ dispatch, commit }, user) {
-        commit('registerRequest', user);
-
-        userService.register(user)
+    fetchProgressionSummary({ commit, dispatch }) {
+        commit('indicateFetchingProgressionSummary');
+        return accountService.fetchProgressionSummary()
             .then(
-                user => {
-                    commit('registerSuccess', user);
-                    dispatch('alert/setSuccessAlert', 'Registration successful', { root: true });
-                },
-                error => {
-                    commit('registerFailure', error);
-                    dispatch('alert/setErrorAlert', error, { root: true });
-                }
-            );
-    },
-
-    update({ dispatch, commit }, user) {
-        commit('updateRequest', user);
-
-        userService.update(user)
-            .then(
-                user => {
-                    commit('updateSuccess', user);
-                    setTimeout(() => {
-                        // display success message after route change completes
-                        dispatch('alert/setSuccessAlert', 'Update successful', { root: true });
-                    })
-                },
-                error => {
-                    commit('updateFailure', error);
-                    dispatch('alert/setErrorAlert', error, { root: true });
-                }
-            );
+                progressionSummary => { commit('setProgressionSummary', progressionSummary) },
+                error => { dispatch('alert/setErrorAlert', error.message, { root: true }) }
+            )
+            .finally(() => { commit('indicateFetchingProgressionSummaryEnd'); });
     }
 }
