@@ -44,6 +44,15 @@ const schema = new Schema(
             type: [
                 {
                     // Title of the experiment within the curriculum
+                    associativeId: {
+                        type: String,
+                        default: "",
+                        sparse: true,
+                        trim: true,
+                        set: setterAssociativeId
+                    },
+
+                    // Title of the experiment within the curriculum
                     experimentReference: {
                         type: Schema.Types.ObjectId,
                         ref: 'Experiment',
@@ -87,6 +96,12 @@ const schema = new Schema(
         }
     }
 );
+
+// Setter functions
+function setterAssociativeId(title) {
+    if (title) return title.toLowerCase();
+    else return undefined;
+}
 
 schema.set('toJSON', { virtuals: true });
 

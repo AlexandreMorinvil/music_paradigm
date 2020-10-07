@@ -16,7 +16,9 @@ export default {
         progressions: []
     },
 
+    dueExperiment: "",
     progressionSummary: [{
+        associativeId: "",
         title: "",
         delayPreAvailability: null,
         completionsRequiredLeft: null,

@@ -31,27 +31,25 @@ async function generateProgressionSummary(userId) {
     const { curriculum, progression } = await User.getProgressionData(userId);
 
     // Generate progression to curriculum association
-    // This conversion table is necessary to handle the situations where the curriculum
-    // would be modified while a user's prgression was already well advanced. This way, it
-    // is possible to retreive the completed part of the curriculum from the progression,
-    // even though the two might not correspond 1 to 1 anymore.
+    // This conversion table is particularily useful to handle the situations where the curriculum would be modified 
+    // while a user's prgression was already well advanced. This way, it is possible to retreive the completed part 
+    // of the curriculum from the progression, even though the two might not correspond 1 to 1 anymore.
     const association = []
-    for (let i = 0; i < curriculum.experiments.length && i < progression.experiments.length; i++) {
-        let hasAssociationMissing = true;
-        for (let j = i; j < progression.experiments.length; j++) {
-            if (curriculum.experiments[i]._id === progression.experiments[j]._id) {
+    for (let i = 0; i < curriculum.experiments.length; i++) {
+        for (let j = 0; j < progression.experiments.length; j++) {
+            if (curriculum.experiments[i].associativeId === progression.experiments[j].associativeId) {
                 association.push({
                     curriculum: curriculum.experiments[i],
                     progression: progression.experiments[j]
                 });
-                hasAssociationMissing = false
                 break;
             }
         }
-        if (hasAssociationMissing) break;
     }
 
     // Generate the progression summary
+    let dueExperiment = null;
+    const wasTodayCompleted = timeHandler.isToday(curriculum.lastProgressionDate);
     const timeElapsed = timeHandler.calculateDaysElapsed(progression.startTime);
     let hasBlockingIncompleteInSequence = false;
     let hasBlockingUniqueInDayDoneToday = false;
@@ -62,6 +60,7 @@ async function generateProgressionSummary(userId) {
         progressionExperiment = (association.length > i) ? association[i].progression : {};
 
         const element = {};
+        element.associativeId = curriculumExperiment.associativeId;
         element.title = curriculumExperiment.title;
         element.delayPreAvailability = getDelayInDaysLeft(curriculumExperiment.delayInDays, timeElapsed);
         element.completionsRequiredLeft = getCompletionsRequiredLeft(curriculumExperiment.completionTarget, progressionExperiment.completionCount);
@@ -73,12 +72,15 @@ async function generateProgressionSummary(userId) {
         element.isDelayedByPreviousUniqueInDay = hasBlockingUniqueInDayDoneToday;
         progressionSummary.push(element);
 
+        const isAvailable = (wouldBeFree && !hasBlockingIncompleteInSequence && !hasBlockingUniqueInDayDoneToday);
+        if(!wasTodayCompleted && isAvailable) dueExperiment = curriculumExperiment.associativeId;
+        
         hasBlockingIncompleteInSequence = updateHasBlockingIncompleteInSequence(wouldBeFree, hasBlockingIncompleteInSequence,
             curriculum.isSequential, element.completionsRequiredLeft);
         hasBlockingUniqueInDayDoneToday = updateHasBlockingUniqueInDayDoneToday(wouldBeFree, hasBlockingUniqueInDayDoneToday,
             curriculumExperiment.isUniqueIndDay, curriculum.lastProgressionDate);
     }
-    return progressionSummary;
+    return { history : progressionSummary, dueExperiment: dueExperiment};
 }
 
 async function generateProgression(userId) {
@@ -122,6 +124,6 @@ function updateHasBlockingIncompleteInSequence(isCurrentFree, hasBlockingInSeque
 function updateHasBlockingUniqueInDayDoneToday(isCurrentFree, hasBlockingUniqueInDay, isExperimentUniqueInDay, lastProgressionDate) {
     if (hasBlockingUniqueInDay) return true;
     else if (isExperimentUniqueInDay && !isCurrentFree) return true;
-    else if (timeHandler.isToday(lastProgressionDate)) return true;
+    else if (isExperimentUniqueInDay && timeHandler.isToday(lastProgressionDate)) return true;
     else return false;
 }

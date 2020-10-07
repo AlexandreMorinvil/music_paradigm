@@ -7,6 +7,7 @@ const titleMinLengthMessage = "The title of the curriculum must contain at least
 const titleMaxLengthMessage = "The title of the curriculum must contain a maximum of 100 characters";
 
 const experimentsValidatorMessage = "At least one experiment must be specified in a curriculum and all experiments must have a unique associative ID";
+const experimentAssociativeIdRequiredMessage = "An associative ID must be specified for each experiment";
 const experimentsDelauInDaysMinMessage = "The delay in days of the expriment(s) must be greater or equal to 0";
 const experimentCompletionTargetMinMessage = "The completion target of the expriment(s) must be greater or equal to 0";
 const experimentsCompletionLimitMinMessage = "The completion limit of the expriment(s) must be greater or equal to 0";
@@ -51,6 +52,7 @@ const schema = new Schema(
                         default: "",
                         sparse: true,
                         trim: true,
+                        required: [true, experimentAssociativeIdRequiredMessage],
                         set: setterTitle
                     },
 

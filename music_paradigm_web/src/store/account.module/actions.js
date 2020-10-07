@@ -32,7 +32,10 @@ export default {
         commit('indicateFetchingProgressionSummary');
         return accountService.fetchProgressionSummary()
             .then(
-                progressionSummary => { commit('setProgressionSummary', progressionSummary) },
+                progressionSummary => {
+                    commit('setProgressionSummary', progressionSummary.history);
+                    commit('setDueExperiment', progressionSummary.dueExperiment);
+                },
                 error => { dispatch('alert/setErrorAlert', error.message, { root: true }) }
             )
             .finally(() => { commit('indicateFetchingProgressionSummaryEnd'); });
