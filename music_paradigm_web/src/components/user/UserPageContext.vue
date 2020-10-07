@@ -2,24 +2,21 @@
   <div class="page-grid">
     <header class="area-title">
       <h1>{{ title }}</h1>
-      <hr />
-      <h2>{{ subTitle }}</h2>
     </header>
 
     <div class="area-separation"></div>
 
-    <main class="area-main">
+    <main class="area-user-main widget widget-bg">
       <slot>
         Page to be implemented
       </slot>
     </main>
-
-    <application-footer> </application-footer>
   </div>
 </template>
 
 <script>
 import ApplicationFooter from "@/components/ApplicationFooter.vue";
+import "@/styles/widgetTemplate.css";
 
 export default {
   name: "AdminPageFrame",
@@ -47,12 +44,11 @@ export default {
 .page-grid {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto auto 1fr auto;
+  grid-template-rows: auto auto 1fr;
   grid-template-areas:
     "title"
     "separation"
-    "main"
-    "footer";
+    "main";
   height: 100%;
 }
 
@@ -62,6 +58,7 @@ export default {
   padding: 20px;
   background-color: rgb(15, 15, 15);
   color: rgb(230, 230, 230);
+  text-align: center;
 }
 
 .area-title h2 {
@@ -69,18 +66,12 @@ export default {
 }
 
 .area-separation {
-  background-color: rgb(35, 35, 35);
+  background-color: rgb(45, 45, 45);
   height: 10px;
 }
 
-.area-main {
+.area-user-main {
   grid-area: main;
-  display: block;
-  background-image: linear-gradient(to bottom right, rgb(20, 20, 2), rgb(0, 0, 0));
-}
-
-.area-footer {
-  grid-area: footer;
   display: block;
 }
 </style>

@@ -48,6 +48,10 @@ export default {
         state.status.isFetchingProgressionSummary = false;
     },
 
+    setDueExperiment(state, dueExperiment) {
+        state.dueExperiment = dueExperiment;
+    },
+
     setProgressionSummary(state, progressionSummary) {
         state.progressionSummary = progressionSummary;
     }

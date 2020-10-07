@@ -1,7 +1,7 @@
 <template>
   <div class="user-page-grid">
-    <div id="user-main" class="widget widget-bg">
-      <router-view class="main-display" />
+    <div id="user-main" class="fill">
+      <router-view />
     </div>
     <application-footer> </application-footer>
   </div>
@@ -9,7 +9,6 @@
 
 <script>
 import ApplicationFooter from "@/components/ApplicationFooter.vue";
-import "@/styles/widgetTemplate.css";
 
 export default {
   name: "UserPage",
@@ -51,5 +50,10 @@ export default {
   width: 100%;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr auto;
+}
+
+.fill {
+  height: 100%;
+  width: 100%;
 }
 </style>

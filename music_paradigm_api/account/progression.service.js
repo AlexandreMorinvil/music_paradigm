@@ -39,8 +39,8 @@ async function generateProgressionSummary(userId) {
         for (let j = 0; j < progression.experiments.length; j++) {
             if (curriculum.experiments[i].associativeId === progression.experiments[j].associativeId) {
                 association.push({
-                    curriculum: curriculum.experiments[i],
-                    progression: progression.experiments[j]
+                    curriculumExperiment: curriculum.experiments[i],
+                    progressionExperiment: progression.experiments[j]
                 });
                 break;
             }
@@ -56,8 +56,8 @@ async function generateProgressionSummary(userId) {
     const progressionSummary = [];
 
     for (i in curriculum.experiments) {
-        curriculumExperiment = (association.length > i) ? association[i].curriculum : curriculum.experiments[i];
-        progressionExperiment = (association.length > i) ? association[i].progression : {};
+        curriculumExperiment = (association.length > i) ? association[i].curriculumExperiment : curriculum.experiments[i];
+        progressionExperiment = (association.length > i) ? association[i].progressionExperiment : {};
 
         const element = {};
         element.associativeId = curriculumExperiment.associativeId;

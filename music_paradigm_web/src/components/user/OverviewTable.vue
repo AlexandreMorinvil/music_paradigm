@@ -1,18 +1,16 @@
 <template>
-  <div>
-    <div class="table-context" :style="'--elements-per-row:' + elementsPerRow">
-      <button
-        v-for="(summary, index) in progressionSummary"
-        :key="index"
-        class="summary"
-      >
-        <span class="number-label">
-          {{ index + 1 }}
-        </span>
+  <div class="table-context" :style="'--elements-per-row:' + elementsPerRow">
+    <button
+      v-for="(summary, index) in progressionSummary"
+      :key="index"
+      class="summary"
+    >
+      <span class="number-label">
+        {{ index + 1 }}
+      </span>
 
-        {{ summary.title }}
-      </button>
-    </div>
+      {{ summary.title }}
+    </button>
   </div>
 </template>
 
