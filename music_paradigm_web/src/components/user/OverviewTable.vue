@@ -1,6 +1,5 @@
 <template>
   <div>
-    Overview: Status of the curriculum
     <div class="table-context" :style="'--elements-per-row:' + elementsPerRow">
       <button
         v-for="(summary, index) in progressionSummary"
@@ -11,63 +10,37 @@
           {{ index + 1 }}
         </span>
 
-        Available in 7 days or TItle
+        {{ summary.title }}
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   name: "OverviewTable",
   data() {
-    return {
-      curriculumProgression: [
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-        "a",
-      ],
-    };
+    return {};
   },
   computed: {
     ...mapGetters("account", ["progressionSummary"]),
     elementsPerRow() {
-      return Math.min(7, this.curriculumProgression.length);
+      const elementsCount = this.progressionSummary.length;
+      if (elementsCount <= 7) return Math.min(7, elementsCount);
+      if (elementsCount <= 10) return 5;
+      if (elementsCount <= 12) return 6;
+      if (elementsCount <= 14) return 7;
+      if (elementsCount <= 18) return 6;
+      if (elementsCount <= 21) return 7;
+      if (elementsCount <= 24) return 6;
+      else return 7;
     },
   },
-  methods: {
-    ...mapActions("account", ["fetchProgressionSummary"])
-  },
-  beforeMount() {
-  },
-  mounted() {
-        this.fetchProgressionSummary();
-  },
+  methods: {},
+  beforeMount() {},
+  mounted() {},
   watch: {},
 };
 </script>

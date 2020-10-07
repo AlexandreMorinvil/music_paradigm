@@ -3,25 +3,21 @@
     <div class="area-title">Home Page</div>
 
     <div class="area-overview">
+      <h2>Progression</h2>
       <overview-table />
     </div>
 
     <div class="area-button">
-      <button>
+      <button class="main-button">
         <router-link :to="{ name: 'user.experiment' }">Home</router-link>
         Run Today’s Session
       </button>
-    </div>
-
-    <div class="area-other">
-      Important messages from the experiment administrators
-      <br /><br />
-      Change password or email
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import OverviewTable from "@/components/user/OverviewTable.vue";
 
 export default {
@@ -33,9 +29,12 @@ export default {
     return {};
   },
   computed: {},
-  methods: {},
-  created() {},
-  watch: {},
+  methods: {
+    ...mapActions("account", ["fetchProgressionSummary"]),
+  },
+  beforeMount() {
+    this.fetchProgressionSummary();
+  },
 };
 </script>
 
@@ -44,12 +43,11 @@ export default {
   display: grid;
   grid-gap: 20px;
   grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 50% auto;
   grid-template-areas:
     "title"
     "overview"
-    "button"
-    "other";
+    "button";
   height: 100%;
   width: 100%;
 }
@@ -64,9 +62,16 @@ export default {
 
 .area-button {
   grid-area: button;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.area-other {
-  grid-area: other;
+.main-button {
+  width: 75%;
+  min-width: 500px;
+  max-width: 1000px;
+  padding: 40px;
+  font-size: 2em;
 }
 </style>

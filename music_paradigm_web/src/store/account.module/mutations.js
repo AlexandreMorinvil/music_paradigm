@@ -49,6 +49,6 @@ export default {
     },
 
     setProgressionSummary(state, progressionSummary) {
-        state.progressionSummary = progressionSummary
+        state.progressionSummary = progressionSummary;
     }
 };
