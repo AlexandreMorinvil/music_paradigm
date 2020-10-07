@@ -120,6 +120,22 @@
             </div>
 
             <div>
+              <label for="experiment-id">
+                Associative ID:
+                <span class="selected-element-text-color">{{
+                  curriculumSelectedExperimentAtIndex(index).associativeId
+                }}</span>
+              </label>
+              <input
+                type="text"
+                v-model="experiments[index].associativeId"
+                name="experiment-id"
+                autocomplete="new-experiment-id"
+                placeholder="Insert associative id"
+              />
+            </div>
+
+            <div>
               <label for="delay-in-days">
                 Delay (Days):
                 <span class="selected-element-text-color">{{
@@ -209,6 +225,7 @@ export default {
   name: "CurriculumWorkshopWidget",
   data() {
     return {
+      experimentsCount: 1,
       id: "",
       title: "",
       isSequential: false,
@@ -220,7 +237,8 @@ export default {
           completionTarget: 1,
           completionLimit: 1,
           experimentReference: "5f32ab693a6197f5e56ab748",
-        }
+          associativeId: "a"
+        },
       ],
     };
   },
@@ -292,6 +310,7 @@ export default {
     },
     addExperiment() {
       this.experiments.push({
+        associativeId: "id" + this.experiments.length,
         title: "",
         delayInDays: 0,
         isUniqueIndDay: true,
@@ -451,6 +470,10 @@ export default {
   align-items: center;
 }
 
+.delete-position button {
+  margin-top: auto;
+}
+
 .experiment-position {
   grid-area: experiment;
 }
@@ -470,7 +493,7 @@ export default {
   display: grid;
   grid-template-areas:
     "experiment experiment title title delete"
-    ". . . area1 delete";
+    ". . . . area1";
   grid-gap: 15px;
 
   background-color: var(--inner-form-background-color);

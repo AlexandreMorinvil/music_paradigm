@@ -3,11 +3,10 @@ const Schema = mongoose.Schema;
 
 // Error messages
 const titleRequiredMessage = "The title of the curriculum is required";
-const titleUnivqueMessage = "The title of the curriculum is already used";
 const titleMinLengthMessage = "The title of the curriculum must contain at least one character";
 const titleMaxLengthMessage = "The title of the curriculum must contain a maximum of 100 characters";
 
-const experimentsValidatorMessage = "At least one experiment must be specified in a curriculum";
+const experimentsValidatorMessage = "At least one experiment must be specified in a curriculum and all experiments must have a unique associative ID";
 const experimentsDelauInDaysMinMessage = "The delay in days of the expriment(s) must be greater or equal to 0";
 const experimentCompletionTargetMinMessage = "The completion target of the expriment(s) must be greater or equal to 0";
 const experimentsCompletionLimitMinMessage = "The completion limit of the expriment(s) must be greater or equal to 0";
@@ -28,7 +27,7 @@ const schema = new Schema(
             type: String,
             sparse: true,
             trim: true,
-            unique: [true, titleUnivqueMessage], // TODO: Put the uniqueness verifier in the service
+            unique: true,
             required: [true, titleRequiredMessage],
             minlength: [1, titleMinLengthMessage],
             maxlength: [100, titleMaxLengthMessage],
@@ -46,6 +45,15 @@ const schema = new Schema(
         experiments: {
             type: [
                 {
+                    // Title of the experiment within the curriculum
+                    associativeId: {
+                        type: String,
+                        default: "",
+                        sparse: true,
+                        trim: true,
+                        set: setterTitle
+                    },
+
                     // Title of the experiment within the curriculum
                     title: {
                         type: String,
@@ -97,9 +105,7 @@ const schema = new Schema(
                 }
             ],
             validate: [validatorExperiments, experimentsValidatorMessage]
-
         }
-
     },
     {
         strict: false,
@@ -124,7 +130,15 @@ function setterTitle(title) {
 
 // Validators
 function validatorExperiments(array) {
-    return array.length > 0;
+    // Verify the the curriculum contains at least one experiment
+    if (array.length <= 0) return false
+
+    // Verify the uniqueness of the associative IDs
+    const idArray = [];
+    for (experiment of array) idArray.push(experiment.associativeId)
+    if (((new Set(idArray)).size !== array.length)) return false
+
+    else return true;
 }
 
 function validatorCompletionLimit(value) {

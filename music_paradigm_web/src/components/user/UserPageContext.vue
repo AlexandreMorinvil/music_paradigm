@@ -40,14 +40,6 @@ export default {
       },
     },
   },
-  data() {
-    return {};
-  },
-  computed: {},
-  methods: {},
-  mounted() {},
-  destroyed() {},
-  watch: {},
 };
 </script>
 

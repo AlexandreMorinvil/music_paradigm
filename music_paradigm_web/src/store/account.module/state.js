@@ -17,6 +17,7 @@ export default {
     },
 
     progressionSummary: [{
+        title: "",
         delayPreAvailability: null,
         completionsRequiredLeft: null,
         completionsLimitLeft: null,
