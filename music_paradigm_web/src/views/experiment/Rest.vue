@@ -1,74 +1,71 @@
 <template>
   <div id="rest-state" class="experiment-state-container" :class="gridClass">
-    <div
-      v-if="hasText || hasNoContent"
-      id="text-area"
-      class="experiment-state-division state-division-text"
-    >
+    <img
+      v-if="hasHelperImage"
+      id="helper-img"
+      :src="urlExperimentRessource(helperImageName)"
+      alt="Helper"
+      class="helper"
+    />
+    <div v-if="hasText || hasNoContent" id="text-area" class="experiment-state-division state-division-text">
       <p>{{ textToDisplay }}</p>
       <!-- Default display if no content is provided -->
       <p v-if="hasNoContent">Rest</p>
     </div>
 
-    <div
-      v-if="hasVisualMedia"
-      id="visual-media-area"
-      class="experiment-state-division state-division-visual-media"
-    >
+    <div v-if="hasVisualMedia" id="visual-media-area" class="experiment-state-division state-division-visual-media">
       <visual-piano v-if="hasInteractivePiano" />
       <img id="cue-img" v-else :src="urlExperimentRessource(pictureName)" alt="Rest" />
     </div>
 
-    <div
-      id="note-area"
-      v-if="hasFootnote"
-      class="experiment-state-division state-division-text"
-    >{{ footnote }}</div>
+    <div id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text">{{ footnote }}</div>
   </div>
 </template>
 
 <script>
-import "@/styles/experimentStateTemplate.css";
-import { mapGetters } from "vuex";
-import VisualPiano from "@/components/VisualPiano.vue";
+import '@/styles/experimentStateTemplate.css';
+import { mapGetters } from 'vuex';
+import VisualPiano from '@/components/VisualPiano.vue';
 
 export default {
-  name: "Rest",
+  name: 'Rest',
   components: {
-    visualPiano: VisualPiano
+    visualPiano: VisualPiano,
   },
   data() {
     return {
       defaultTimeLimitInSeconds: 15, // Default time limit if no time is specified in the experiment
       counterUniqueIdentifier: 0, // Unique Identifier of the countdown used for clean up
       timeLeftInMilliseconds: 0, // Time left to the countdown
-      timeStepInMilliseconds: 500 // Timesteps of the countdown in miliseconds
+      timeStepInMilliseconds: 500, // Timesteps of the countdown in miliseconds
     };
   },
   computed: {
-    ...mapGetters(["urlExperimentRessource"]),
-    ...mapGetters("experiment", ["pictureName", "timeoutInSeconds"]),
-    ...mapGetters("experiment", [
-      "hasNoContent",
-      "hasInteractivePiano",
-      "hasText",
-      "hasVisualMedia",
-      "hasFootnote",
-      "textContent",
-      "pictureName",
-      "timeoutInSeconds"
+    ...mapGetters(['urlExperimentRessource']),
+    ...mapGetters('experiment', ['pictureName', 'timeoutInSeconds']),
+    ...mapGetters('experiment', [
+      'hasNoContent',
+      'hasInteractivePiano',
+      'hasText',
+      'hasVisualMedia',
+      'hasFootnote',
+      'hasHelperImage',
+      'textContent',
+      'pictureName',
+      'helperImageName',
+      'timeoutInSeconds',
     ]),
     gridClass() {
       if (this.hasFootnote) {
-        if (this.hasText && this.hasVisualMedia) return "grid-area-area-note";
-        else return "grid-area-note";
+        if (this.hasText && this.hasVisualMedia) return 'grid-area-area-note';
+        else return 'grid-area-note';
       } else {
-        if (this.hasText && this.hasVisualMedia) return "grid-area-area";
-        else return "grid-single-area";
+        if (this.hasText && this.hasVisualMedia) return 'grid-area-area';
+        else return 'grid-single-area';
       }
     },
     textToDisplay() {
-      if (this.hasNoContent) return "";
+      if (this.hasNoContent) return '';
       else return this.textContent;
     },
     footnote() {
@@ -78,33 +75,25 @@ export default {
       return (this.timeoutInSeconds || this.defaultTimeLimitInSeconds) * 1000;
     },
     timeLeftDisplay() {
-      var display = "";
-      const minutes = Math.floor(
-        (this.timeLeftInMilliseconds / 1000 / 60) % 60
-      );
+      var display = '';
+      const minutes = Math.floor((this.timeLeftInMilliseconds / 1000 / 60) % 60);
       const seconds = Math.floor((this.timeLeftInMilliseconds / 1000) % 60);
       if (minutes > 0) {
         display += `${minutes} minutes `;
       }
       display += `${seconds} seconds`;
       return display;
-    }
+    },
   },
   methods: {
     startCountdown() {
       this.timeLeftInMilliseconds = this.timeLimitInSeconds * 1000;
       this.referenceTime = Date.parse(new Date());
-      this.counterUniqueIdentifier = window.setInterval(
-        this.countdown,
-        this.timeStepInMilliseconds
-      );
+      this.counterUniqueIdentifier = window.setInterval(this.countdown, this.timeStepInMilliseconds);
     },
     countdown() {
-      this.timeLeftInMilliseconds = Math.max(
-        this.timeLimitInMiliseconds - (Date.now() - this.referenceTime),
-        0
-      );
-    }
+      this.timeLeftInMilliseconds = Math.max(this.timeLimitInMiliseconds - (Date.now() - this.referenceTime), 0);
+    },
   },
   mounted() {
     // Starting the countdown of the maximum time for the rest
@@ -117,12 +106,11 @@ export default {
     timeLeftInMilliseconds(value) {
       // When the time is over we indicate the end of the playing state
       if (value <= 0) {
-        this.$emit("stateEnded");
+        this.$emit('stateEnded');
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

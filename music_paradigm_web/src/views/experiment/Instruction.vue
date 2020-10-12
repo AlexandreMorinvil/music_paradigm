@@ -1,9 +1,10 @@
 <template>
   <div id="instruction-state" class="experiment-state-container" :class="gridClass">
     <img
+      v-if="hasHelperImage"
       id="helper-img"
-      :src="urlExperimentRessource('twins_experiment/image/right_hand_numbered.bmp')"
-      alt="Instruction"
+      :src="urlExperimentRessource(helperImageName)"
+      alt="Helper"
       class="helper"
     />
     <div v-if="hasText || hasNoContent" id="text-area" class="experiment-state-division state-division-text">
@@ -51,7 +52,9 @@ export default {
       'hasText',
       'hasVisualMedia',
       'hasFootnote',
+      'hasHelperImage',
       'pictureName',
+      'helperImageName',
       'textContent',
       'anyPianoKey',
     ]),

@@ -1,10 +1,13 @@
 <template>
   <div id="video-state" class="experiment-state-container grid-area-area-note" :class="gridClass">
-    <div
-      v-if="hasText"
-      id="text-area"
-      class="experiment-state-division state-division-text"
-    >{{ textContent }}</div>
+    <img
+      v-if="hasHelperImage"
+      id="helper-img"
+      :src="urlExperimentRessource(helperImageName)"
+      alt="Helper"
+      class="helper"
+    />
+    <div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">{{ textContent }}</div>
 
     <div id="visual-media-area" class="experiment-state-division state-division-visual-media">
       <div class="visual-media-board">
@@ -12,8 +15,10 @@
           <div
             v-show="!isPlaying"
             class="video-hidding-thumbnail"
-            :style="videoWidthCSSvariable +';'+videoHeightCSSvariable"
-          >{{ videoWaitingMessage }}</div>
+            :style="videoWidthCSSvariable + ';' + videoHeightCSSvariable"
+          >
+            {{ videoWaitingMessage }}
+          </div>
           <video-player
             v-if="hasVideo"
             v-show="isPlaying"
@@ -30,25 +35,21 @@
       </div>
     </div>
 
-    <div
-      id="note-area"
-      v-if="hasFootnote"
-      class="experiment-state-division state-division-text"
-    >{{ footnote }}</div>
+    <div id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text">{{ footnote }}</div>
   </div>
 </template>
 
 <script>
-import "@/styles/experimentStateTemplate.css";
-import { mapGetters } from "vuex";
-import VideoPlayer from "@/components/VideoPlayer.vue";
-import VisualPiano from "@/components/VisualPiano.vue";
+import '@/styles/experimentStateTemplate.css';
+import { mapGetters } from 'vuex';
+import VideoPlayer from '@/components/VideoPlayer.vue';
+import VisualPiano from '@/components/VisualPiano.vue';
 
 export default {
-  name: "Video",
+  name: 'Video',
   components: {
     visualPiano: VisualPiano,
-    VideoPlayer: VideoPlayer
+    VideoPlayer: VideoPlayer,
   },
   data() {
     return {
@@ -68,39 +69,42 @@ export default {
       isPlaying: false,
       playBack: {
         startTime: 0,
-        endTime: 0
-      }
+        endTime: 0,
+      },
     };
   },
   computed: {
-    ...mapGetters(["urlExperimentRessource"]),
-    ...mapGetters("experiment", [
-      "hasInteractivePiano",
-      "hasText",
-      "hasFootnote",
-      "textContent",
-      "videoName"
+    ...mapGetters(['urlExperimentRessource']),
+    ...mapGetters('experiment', [
+      'hasInteractivePiano',
+      'hasText',
+      'hasFootnote',
+      'hasHelperImage',
+      'textContent',
+      'videoName',
+      'helperImageName',
     ]),
     gridClass() {
       if (this.hasFootnote) {
-        if (this.hasText) return "grid-small-area-big-area-note";
-        else return "grid-area-note";
+        if (this.hasText) return 'grid-small-area-big-area-note';
+        else return 'grid-area-note';
       } else {
-        if (this.hasText) return "grid-small-area-big-area";
-        else return "grid-single-area";
+        if (this.hasText) return 'grid-small-area-big-area';
+        else return 'grid-single-area';
       }
     },
     footnote() {
       var noteMessage;
       if (!this.hasVideo)
-        noteMessage = `There is no video to be played, the experiment will automatically  go to the next step in ${this.errorAutomaticTransitionSeconds} seconds`;
-      else
-        return `The experiment will automatically go to the next step after the video playback`;
+        noteMessage = `There is no video to be played, the experiment will automatically  go to the next step in ${
+          this.errorAutomaticTransitionSeconds
+        } seconds`;
+      else return `The experiment will automatically go to the next step after the video playback`;
 
       return noteMessage;
     },
     hasVideo() {
-      return this.videoName !== "";
+      return this.videoName !== '';
     },
     videoDimensions() {
       var height = this.defaultVideoHeight;
@@ -114,17 +118,17 @@ export default {
       }
       return {
         height: height,
-        width: width
+        width: width,
       };
     },
     videoHeightCSSvariable() {
-      return "--videoHeight: " + this.videoDimensions.height + "px;";
+      return '--videoHeight: ' + this.videoDimensions.height + 'px;';
     },
     videoWidthCSSvariable() {
-      return "--videoWidth: " + this.videoDimensions.width + "px;";
+      return '--videoWidth: ' + this.videoDimensions.width + 'px;';
     },
     delayLeftDisplay() {
-      var display = "";
+      var display = '';
       const minutes = Math.floor((this.delayLeftInMilliseconds / 60000) % 60);
       const seconds = Math.floor((this.delayLeftInMilliseconds / 1000) % 60);
       if (minutes > 0) {
@@ -134,42 +138,39 @@ export default {
       return display;
     },
     videoWaitingMessage() {
-      if (this.videoName === "") return "There is no video to be played";
+      if (this.videoName === '') return 'There is no video to be played';
       else return `The video will start in ${this.delayLeftDisplay}`;
-    }
+    },
   },
   methods: {
     handdleEndOfVideo() {
       setTimeout(() => {
-        this.$emit("stateEnded");
+        this.$emit('stateEnded');
       }, this.endOfStatedelayInMilliseconds);
     },
     startDelayCountdown() {
       this.delayLeftInMilliseconds = this.playbackDelayInSeconds * 1000;
       this.referenceTime = Date.parse(new Date());
-      this.counterUniqueIdentifier = window.setInterval(
-        this.countdown,
-        this.timeStepInMilliseconds
-      );
+      this.counterUniqueIdentifier = window.setInterval(this.countdown, this.timeStepInMilliseconds);
     },
     countdown() {
       this.delayLeftInMilliseconds = Math.max(
         this.playbackDelayInSeconds * 1000 - (Date.now() - this.referenceTime),
-        0
+        0,
       );
     },
     manageHavingNoVideo() {
       setTimeout(() => {
-        this.$emit("stateEnded");
+        this.$emit('stateEnded');
       }, this.errorAutomaticTransitionSeconds * 1000);
     },
     startVideo() {
       this.isPlaying = true;
       this.$refs.video.playerPlay();
-    }
+    },
   },
   mounted() {
-    if (this.videoName === "") this.manageHavingNoVideo();
+    if (this.videoName === '') this.manageHavingNoVideo();
     else this.startDelayCountdown();
   },
   beforeDestroy() {
@@ -182,8 +183,8 @@ export default {
         window.clearInterval(this.counterUniqueIdentifier);
         this.startVideo();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

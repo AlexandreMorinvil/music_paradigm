@@ -4,7 +4,7 @@
       <h1>{{ grade.criteria }}</h1>
     </div>
 
-    <div class="feedback-grade-emoji">
+    <div v-if="false" class="feedback-grade-emoji">
       <svg class="emoji smile" v-if="isSuccess">
         <use xlink:href="sprites.svg#emoji-smile" />
       </svg>

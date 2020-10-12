@@ -1,10 +1,13 @@
 <template>
   <div id="feedback-state" class="experiment-state-container" :class="gridClass">
-    <div
-      v-if="hasText"
-      id="text-area"
-      class="experiment-state-division state-division-text"
-    >{{ textContent }}</div>
+    <img
+      v-if="hasHelperImage"
+      id="helper-img"
+      :src="urlExperimentRessource(helperImageName)"
+      alt="Helper"
+      class="helper"
+    />
+    <div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">{{ textContent }}</div>
 
     <div id="visual-media-area" class="experiment-state-division state-division-visual-media">
       <div class="feedback-grade-board">
@@ -16,75 +19,72 @@
       </div>
     </div>
 
-    <div
-      id="note-area"
-      v-if="hasFootnote"
-      class="experiment-state-division state-division-text"
-    >{{ footnote }}</div>
+    <div id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text">{{ footnote }}</div>
   </div>
 </template>
 
 <script>
-import "@/styles/experimentStateTemplate.css";
-import { mapGetters } from "vuex";
-import FeedbackGrade from "@/components/FeedbackGrade";
+import '@/styles/experimentStateTemplate.css';
+import { mapGetters } from 'vuex';
+import FeedbackGrade from '@/components/FeedbackGrade';
 
 export default {
-  name: "Feedback",
+  name: 'Feedback',
   components: {
-    feedbackGrade: FeedbackGrade
+    feedbackGrade: FeedbackGrade,
   },
   props: {
     isSpaceBarPressed: {
       type: Boolean,
       default() {
         return false;
-      }
-    }
+      },
+    },
   },
   data() {
     return {};
   },
   computed: {
-    ...mapGetters("piano", ["grades", "pressedKeys"]),
-    ...mapGetters("experiment", [
-      "hasText",
-      "hasFootnote",
-      "textContent",
-      "anyPianoKey"
+    ...mapGetters('piano', ['grades', 'pressedKeys']),
+    ...mapGetters('experiment', [
+      'hasText',
+      'hasFootnote',
+      'hasHelperImage',
+      'textContent',
+      'helperImageName',
+      'anyPianoKey',
     ]),
     gridClass() {
       if (this.hasFootnote) {
-        if (this.hasText) return "grid-small-area-big-area-note";
-        else return "grid-area-note";
+        if (this.hasText) return 'grid-small-area-big-area-note';
+        else return 'grid-area-note';
       } else {
-        if (this.hasText) return "grid-small-area-big-area";
-        else return "grid-single-area";
+        if (this.hasText) return 'grid-small-area-big-area';
+        else return 'grid-single-area';
       }
     },
     footnote() {
-      if (this.anyPianoKey)
-        return "Press any piano key or the space bar for going to the next step";
-      else return "Press the space bar for going to the next step";
+      if (this.anyPianoKey) return 'Press any piano key or the space bar for going to the next step';
+      else return 'Press the space bar for going to the next step';
     },
     hasGrades() {
       if (Array.isArray(this.grades) && this.grades.length > 0) return true;
       else return false;
-    }
+    },
   },
 
   watch: {
     isSpaceBarPressed(isPressed) {
       if (isPressed) {
-        this.$emit("stateEnded");
+        this.$emit('stateEnded');
       }
     },
     pressedKeys(keys) {
       if (this.anyPianoKey && keys.length > 0) {
-        this.$emit("stateEnded");
+        this.$emit('stateEnded');
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

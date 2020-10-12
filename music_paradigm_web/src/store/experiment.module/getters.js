@@ -239,5 +239,9 @@ export default {
 
     hasNoContent: (state) => {
         return !(state.state.content.text) && !(Boolean(state.state.content.pictureName) || Boolean(state.state.content.interactivePiano));
+    },
+
+    hasHelperImage: (state) => {
+        return Boolean(state.state.content.helperImageName);
     }
 }
