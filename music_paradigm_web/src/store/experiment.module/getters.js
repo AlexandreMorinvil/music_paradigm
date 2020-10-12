@@ -49,6 +49,13 @@ export default {
         return `${state.description.folder}/${pictureName}`;
     },
 
+    helperImageName: (state) => {
+        // Fetch the helper image name
+        const pictureName = state.state.content.helperImageName;
+        if (pictureName === "") return "";
+        else return `${state.description.folder}/${pictureName}`;
+    },
+
     // Interactive piano
     interactivePiano: (state) => {
         return state.state.content.interactivePiano || false;

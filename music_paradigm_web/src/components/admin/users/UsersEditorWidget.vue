@@ -14,9 +14,7 @@
         <div>
           <label for="username">
             Username :
-            <span class="selected-element-text-color">{{
-              userSelectedUsernameDisplay
-            }}</span>
+            <span class="selected-element-text-color">{{ userSelectedUsernameDisplay }}</span>
           </label>
           <input
             type="text"
@@ -29,24 +27,14 @@
         <div>
           <label for="email">
             Email :
-            <span class="selected-element-text-color">{{
-              userSelectedEmailDisplay
-            }}</span>
+            <span class="selected-element-text-color">{{ userSelectedEmailDisplay }}</span>
           </label>
-          <input
-            type="email"
-            v-model="email"
-            name="email"
-            autocomplete="new-email"
-            placeholder="Insert new email"
-          />
+          <input type="email" v-model="email" name="email" autocomplete="new-email" placeholder="Insert new email" />
         </div>
         <div>
           <label for="password">
             Password :
-            <span class="selected-element-text-color">{{
-              userSelectedPasswordDisplay
-            }}</span>
+            <span class="selected-element-text-color">{{ userSelectedPasswordDisplay }}</span>
           </label>
 
           <input
@@ -61,9 +49,7 @@
           <div>
             <label for="firstName">
               First Name :
-              <span class="selected-element-text-color">{{
-                userSelectedFirstNameDisplay
-              }}</span>
+              <span class="selected-element-text-color">{{ userSelectedFirstNameDisplay }}</span>
             </label>
             <input
               type="text"
@@ -76,9 +62,7 @@
           <div>
             <label for="middleName">
               Middle Name :
-              <span class="selected-element-text-color">{{
-                userSelectedMiddleNameDisplay
-              }}</span>
+              <span class="selected-element-text-color">{{ userSelectedMiddleNameDisplay }}</span>
             </label>
             <input
               type="text"
@@ -91,9 +75,7 @@
           <div>
             <label for="lastName">
               Last Name :
-              <span class="selected-element-text-color">{{
-                userSelectedLastNameDisplay
-              }}</span>
+              <span class="selected-element-text-color">{{ userSelectedLastNameDisplay }}</span>
             </label>
             <input
               type="text"
@@ -108,9 +90,7 @@
         <div>
           <label for="curriculum">
             Curriculum :
-            <span class="selected-element-text-color">{{
-              userSelectedCurriculumDisplay
-            }}</span>
+            <span class="selected-element-text-color">{{ userSelectedCurriculumDisplay }}</span>
           </label>
           <select name="curriculum-reference" v-model="curriculum">
             <option :value="null"> -- No curriculum is assigned -- </option>
@@ -128,24 +108,12 @@
           <div class="form-tags">
             <div>
               <label for="tags">
-                <button v-on:click="addTag()" class="widget-button blue">
-                  Add
-                </button>
-                Tag(s) :
-                <span class="selected-element-text-color">{{
-                  userSelectedTagsDisplay
-                }}</span>
+                <button v-on:click="addTag()" class="widget-button blue"> Add </button>
+                Tag(s) : <span class="selected-element-text-color">{{ userSelectedTagsDisplay }}</span>
               </label>
             </div>
-            <div
-              v-for="(tag, index) in tags"
-              :key="index"
-              class="form-group-input"
-            >
-              <button
-                v-on:click="removeTag(index)"
-                class="widget-button small red"
-              >
+            <div v-for="(tag, index) in tags" :key="index" class="form-group-input">
+              <button v-on:click="removeTag(index)" class="widget-button small red">
                 Remove
               </button>
               <input
@@ -163,112 +131,91 @@
 
     <div class="submission-buttons-position">
       <form submit.prevent ref="upload" style="display: none">
-        <input
-          type="file"
-          id="myfile"
-          name="myfile"
-          v-on:change="handleUploadExperiment"
-          ref="fileInput"
-        />
+        <input type="file" id="myfile" name="myfile" v-on:change="handleUploadExperiment" ref="fileInput" />
       </form>
-      <button v-on:click="$refs.fileInput.click()" class="widget-button blue">
-        Upload
-      </button>
-      <button v-on:click="submitUserToCreate" class="widget-button green">
-        Create
-      </button>
-      <button v-on:click="submitUserToUpdate" class="widget-button blue">
-        Update
-      </button>
-      <button v-on:click="submitUserToDelete" class="widget-button red">
-        Delete
-      </button>
+      <button v-on:click="$refs.fileInput.click()" class="widget-button blue">Upload</button>
+      <button v-on:click="submitUserToCreate" class="widget-button green">Create</button>
+      <button v-on:click="submitUserToUpdate" class="widget-button blue">Update</button>
+      <button v-on:click="submitUserToDelete" class="widget-button red">Delete</button>
     </div>
   </div>
 </template>
 
 <script>
-import "@/styles/widgetTemplate.css";
-import "@/styles/formTemplate.css";
-import { mapActions, mapGetters } from "vuex";
+import '@/styles/widgetTemplate.css';
+import '@/styles/formTemplate.css';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
-  name: "ExperimentsWorkshopWidget",
+  name: 'ExperimentsWorkshopWidget',
   data() {
     return {
       hasFocusedOnUsername: false,
       hasAttemptedSubmit: false,
-      id: "",
-      username: "",
-      password: "",
-      email: "",
-      firstName: "",
-      middleName: "",
-      lastName: "",
+      id: '',
+      username: '',
+      password: '',
+      email: '',
+      firstName: '',
+      middleName: '',
+      lastName: '',
       tags: [],
-      role: "",
+      role: '',
       curriculum: null,
     };
   },
   computed: {
-    ...mapGetters("curriculums", ["curriculumsHeadersList"]),
-    ...mapGetters("users", [
-      "hasSelectedUser",
-      "userSelectedId",
-      "userSelectedUsername",
-      "userSelectedEmail",
-      "userSelectedFirstName",
-      "userSelectedMiddleName",
-      "userSelectedLastName",
-      "userSelectedTags",
-      "userSelectedCurriculum",
+    ...mapGetters('curriculums', ['curriculumsHeadersList']),
+    ...mapGetters('users', [
+      'hasSelectedUser',
+      'userSelectedId',
+      'userSelectedUsername',
+      'userSelectedEmail',
+      'userSelectedFirstName',
+      'userSelectedMiddleName',
+      'userSelectedLastName',
+      'userSelectedTags',
+      'userSelectedCurriculum',
     ]),
     curriculumsReferences() {
       return this.curriculumsHeadersList;
     },
     userSelectedUsernameDisplay() {
-      return this.hasSelectedUser ? this.userSelectedUsername || "---" : "";
+      return this.hasSelectedUser ? this.userSelectedUsername || '---' : '';
     },
     userSelectedEmailDisplay() {
-      return this.hasSelectedUser ? this.userSelectedEmail || "---" : "";
+      return this.hasSelectedUser ? this.userSelectedEmail || '---' : '';
     },
     userSelectedPasswordDisplay() {
-      return this.hasSelectedUser ? "***" : "";
+      return this.hasSelectedUser ? '***' : '';
     },
     userSelectedFirstNameDisplay() {
-      return this.hasSelectedUser ? this.userSelectedFirstName || "---" : "";
+      return this.hasSelectedUser ? this.userSelectedFirstName || '---' : '';
     },
     userSelectedMiddleNameDisplay() {
-      return this.hasSelectedUser ? this.userSelectedMiddleName || "---" : "";
+      return this.hasSelectedUser ? this.userSelectedMiddleName || '---' : '';
     },
     userSelectedLastNameDisplay() {
-      return this.hasSelectedUser ? this.userSelectedLastName || "---" : "";
+      return this.hasSelectedUser ? this.userSelectedLastName || '---' : '';
     },
     userSelectedTagsDisplay() {
       if (this.hasSelectedUser) {
         if (this.userSelectedTags.length > 0) {
-          let display = "";
-          this.userSelectedTags.forEach((element) => {
-            display += element + ", ";
+          let display = '';
+          this.userSelectedTags.forEach(element => {
+            display += element + ', ';
           });
           return display.slice(0, -2);
-        } else return "---";
-      } else return "";
+        } else return '---';
+      } else return '';
     },
     userSelectedCurriculumDisplay() {
-      return this.hasSelectedUser
-        ? this.getCurriculumTitleFromList(this.userSelectedCurriculum) || "---"
-        : "";
+      return this.hasSelectedUser ? this.getCurriculumTitleFromList(this.userSelectedCurriculum) || '---' : '';
     },
   },
   methods: {
-    ...mapActions("curriculums", ["fetchAllCurriculumHeaders"]),
-    ...mapActions("users", [
-      "unsetSelectedUser",
-      "createUser",
-      "updateUser",
-      "deleteUser",
-    ]),
+    ...mapActions('curriculums', ['fetchAllCurriculumHeaders']),
+    ...mapActions('users', ['unsetSelectedUser', 'createUser', 'updateUser', 'deleteUser']),
     bundleUserFromForm() {
       return {
         username: this.username,
@@ -282,14 +229,14 @@ export default {
       };
     },
     getCurriculumTitleFromList(id) {
-      const curriculum = this.curriculumsHeadersList.filter((obj) => {
+      const curriculum = this.curriculumsHeadersList.filter(obj => {
         return obj._id === id;
       });
       if (curriculum[0]) return curriculum[0].title;
-      else return "";
+      else return '';
     },
     addTag() {
-      this.tags.push("");
+      this.tags.push('');
     },
     removeTag(index) {
       this.tags.splice(index, 1);
@@ -336,15 +283,15 @@ export default {
       this.assignFormCurriculum(this.userSelectedCurriculum);
     },
     clearForm() {
-      this.assignFormId("");
-      this.assignFormUsername("");
-      this.assignFormEmail("");
-      this.assignFormPassword("");
-      this.assignFormFirstName("");
-      this.assignFormMiddleName("");
-      this.assignFormLastName("");
+      this.assignFormId('');
+      this.assignFormUsername('');
+      this.assignFormEmail('');
+      this.assignFormPassword('');
+      this.assignFormFirstName('');
+      this.assignFormMiddleName('');
+      this.assignFormLastName('');
       this.assignFormTags([]);
-      this.assignFormRole("");
+      this.assignFormRole('');
       this.assignFormCurriculum(null);
     },
     handleRevert() {
@@ -355,9 +302,7 @@ export default {
       this.createUser(userToCreate);
     },
     submitUserToUpdate() {
-      const answer = window.confirm(
-        "Are your sure you want to edit the user(s)?"
-      );
+      const answer = window.confirm('Are your sure you want to edit the user(s)?');
       if (answer) {
         const userToCreate = this.bundleUserFromForm();
         this.updateUser({
@@ -367,9 +312,7 @@ export default {
       }
     },
     submitUserToDelete() {
-      const answer = window.confirm(
-        "Are your sure you want to delete the user(s)?"
-      );
+      const answer = window.confirm('Are your sure you want to delete the user(s)?');
       if (answer) {
         this.deleteUser(this.userSelectedId).then(this.clearForm());
       }
@@ -379,7 +322,7 @@ export default {
       this.clearForm();
     },
     handleUploadExperiment(event) {
-      console.log("Todo", event);
+      console.log('Todo', event);
     },
   },
   beforeMount() {
@@ -421,9 +364,9 @@ export default {
 .widget {
   grid-template-columns: 100%;
   grid-template-areas:
-    "edition-btn"
-    "editor"
-    "submission-btn";
+    'edition-btn'
+    'editor'
+    'submission-btn';
 }
 
 /* Form  */

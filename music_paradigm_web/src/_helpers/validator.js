@@ -81,6 +81,7 @@ const validateBlock = function (block, index = null) {
         "textContent",
         "interactivePiano",
         "pictureFileName",
+        "helperImageFileName",
         "midiFileName",
         "videoFileName",
         "numberRepetition",
@@ -139,6 +140,7 @@ const validateAttributeType = function (key, value) {
         // Array
         case "textContent":
         case "pictureFileName":
+        case "helperImageFileName":
         case "videoFileName":
         case "interactivePiano":
         case "midiFileName":
@@ -150,6 +152,7 @@ const validateAttributeType = function (key, value) {
                 // Arrays of String
                 case "textContent":
                 case "pictureFileName":
+                case "helperImageFileName":
                 case "videoFileName":
                     value.forEach((element, index) => {
                         if (!(typeof element === "string"))
@@ -190,7 +193,7 @@ const validateAttributeType = function (key, value) {
             }
             break;
 
-        default: throw new Error(`The attribut ${key} is not a recognized attribute`);
+        default: break
     }
 
     return true;

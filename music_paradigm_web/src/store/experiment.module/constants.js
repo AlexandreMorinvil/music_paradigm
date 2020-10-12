@@ -8,14 +8,14 @@ const DEFAULT_TIME_LIMIT = 0;
 const DEFAULT_LOG_FLAG = true;
 const DEFAULT_SUCCESSES_FOR_SKIP = 0;
 
-const DEFAULT_EXPERIMENT_STATE_VALUES = function() {
+const DEFAULT_EXPERIMENT_STATE_VALUES = function () {
     return {
         // Indicator of wether or not the experiment was set
         hasExperiment: false,                                   // Indicator of whether or not an experiment was parsed
-    
+
         // The sequence of the experiment
         flow: [],                                               // Description of the different steps of the experiment
-    
+
         // Mandatory description of the flow
         description: {
             name: "",                                           // Name of the experiment
@@ -23,7 +23,7 @@ const DEFAULT_EXPERIMENT_STATE_VALUES = function() {
             group: "",                                          // Group of the experiment
             version: 0                                          // Version of the experiment
         },
-    
+
         // General settings of the flow
         settings: {
             anyPianoKey: DEFAULT_ANY_PIANO_KEY,                 // Allowing any piano key press to advance to the next page
@@ -35,12 +35,12 @@ const DEFAULT_EXPERIMENT_STATE_VALUES = function() {
             logFlag: DEFAULT_LOG_FLAG,                          // Indicate wether or not the blocks must log it's data
             successesForSkip: DEFAULT_SUCCESSES_FOR_SKIP        // Indicate the number of successful 'Playing' states before being able to leave a group of blocks
         },
-    
+
         // Data to navigate through the flow
         cursor: {
             current: {
                 index: 0,                                       // Index of the current block of the flow
-                piledMediaIndex : 0,                            // Index of the current step of the block (browses the midi and video file names)
+                piledMediaIndex: 0,                            // Index of the current step of the block (browses the midi and video file names)
                 innerStepIndex: 0,                              // Index of the current step of the block (browses the picture file names)
                 isBeyondEnd: false                              // Indicator of whether the index as reached the end of the flow (is checked before moving the cursor forward)
             },
@@ -54,15 +54,15 @@ const DEFAULT_EXPERIMENT_STATE_VALUES = function() {
                 numberPiledMedia: 0,                            // Number of media content piled at the index pile start
             }
         },
-    
+
         // Initialization status of vue pages
-        isInitialized : {
+        isInitialized: {
             route: false,                                       // Flag indicating whether the route needs to be updated
             state: false,                                       // Flag indicating whether the state's settings need to be opdated
             media: false,                                       // Flag indicating whether the state's media files need to be updated
             content: false                                      // Flag indicating whether the state's content need to be updated
         },
-        
+
         // Data used by the view pages
         state: {
             type: "",                                           // Type of the current state
@@ -70,6 +70,7 @@ const DEFAULT_EXPERIMENT_STATE_VALUES = function() {
             content: {
                 text: "",                                       // Text to display
                 pictureName: "",                                // Name of the current picture to display
+                helperImageName: "",                            // Name of the helper image to display
                 interactivePiano: false                         // <Boolean|String> Directive to display the interactive piano
             },
             // Multimedia elements
