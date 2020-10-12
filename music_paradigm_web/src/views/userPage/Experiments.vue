@@ -1,14 +1,5 @@
 <template>
-  <div class="page-grid">
-    Experiments page <br /><br />
-    List of all the experiments related to the given user (Tutorials, completed
-    experiments (which are not active anymore), Experiments available and not
-    done yet (Which are active and can be started), and the experiments that
-    will be available in the future).
-    <br /><br />
-    The completed, not completed, due, not available yet experiments must be
-    clearly indicated and color coded
-
+  <user-page-context title="Experiment Preamble">
     <div>
       When pressing this button pts come to a page with an image of the
       MIDI-keyboard attached to a computer, and a
@@ -46,12 +37,17 @@
       <br />
       <br />“Continue to today’s training”. This takes you to the training.
     </div>
-  </div>
+  </user-page-context>
 </template>
 
 <script>
+import UserPageContext from "@/components/user/UserPageContext.vue";
+
 export default {
   name: "UserExperiments",
+  components: {
+    UserPageContext: UserPageContext,
+  },
 };
 </script>
 
