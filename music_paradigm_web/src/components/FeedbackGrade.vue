@@ -4,7 +4,7 @@
       <h1>{{ grade.criteria }}</h1>
     </div>
 
-    <div v-if="false" class="feedback-grade-emoji">
+    <div v-if="!hideFeedbackSmiley" class="feedback-grade-emoji">
       <svg class="emoji smile" v-if="isSuccess">
         <use xlink:href="sprites.svg#emoji-smile" />
       </svg>
@@ -15,7 +15,7 @@
 
     <div class="progress-bar">
       <div class="position-wrapper" :style="checkpointOverlay">
-        <div :class="'checkpoint-content '+ this.checkpointColor" :style="passingWidth"></div>
+        <div :class="'checkpoint-content ' + this.checkpointColor" :style="passingWidth"></div>
       </div>
       <div class="progress-content content-color">
         <div :class="'progress-line ' + this.barColor" :style="progressWidth"></div>
@@ -25,45 +25,44 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
-  name: "feedbackGrade",
+  name: 'feedbackGrade',
   props: {
     grade: {
       type: Object,
       default() {
         return {
-          criteria: "No criteria",
+          criteria: 'No criteria',
           mark: 0,
           passMark: 60,
-          topMark: 100
+          topMark: 100,
         };
-      }
-    }
+      },
+    },
   },
   computed: {
+    ...mapGetters('experiment', ['hideFeedbackSmiley']),
     isSuccess() {
       return this.grade.mark >= this.grade.passMark;
     },
     passingWidth() {
-      return (
-        "--checkpointPosition: " +
-        (this.grade.passMark / this.grade.topMark) * 100 * 0.925 +
-        "%;"
-      );
+      return '--checkpointPosition: ' + (this.grade.passMark / this.grade.topMark) * 100 * 0.925 + '%;';
     },
     progressWidth() {
-      return "width: " + (this.grade.mark / this.grade.topMark) * 100 + "%;";
+      return 'width: ' + (this.grade.mark / this.grade.topMark) * 100 + '%;';
     },
     barColor() {
-      return this.isSuccess ? " success-color " : " info-color ";
+      return this.isSuccess ? ' success-color ' : ' info-color ';
     },
     checkpointColor() {
-      return this.isSuccess ? " success-color " : " content-color ";
+      return this.isSuccess ? ' success-color ' : ' content-color ';
     },
     checkpointOverlay() {
-      return this.isSuccess ? " z-index: 1; " : " z-index: 0;";
-    }
-  }
+      return this.isSuccess ? ' z-index: 1; ' : ' z-index: 0;';
+    },
+  },
 };
 </script>
 

@@ -41,7 +41,8 @@ export default {
             footnote: (typeof experiment.footnote !== 'undefined') ? Boolean(experiment.footnote) : constants.DEFAULT_FOOTNOTE,
             timeLimitInSeconds: (typeof experiment.timeLimitInSeconds === 'number') ? experiment.timeLimitInSeconds : constants.DEFAULT_TIME_LIMIT,
             logFlag: (typeof experiment.logFlag === 'boolean') ? experiment.logFlag : constants.DEFAULT_LOG_FLAG,
-            successesForSkip: (typeof experiment.successesForSkip === 'number') ? experiment.successesForSkip : constants.DEFAULT_SUCCESSES_FOR_SKIP
+            successesForSkip: (typeof experiment.successesForSkip === 'number') ? experiment.successesForSkip : constants.DEFAULT_SUCCESSES_FOR_SKIP,
+            hideFeedbackSmiley: (typeof experiment.hideFeedbackSmiley === 'boolean') ? experiment.hideFeedbackSmiley : constants.DEFAULT_HIDE_FEEDBACK_SMILEY
         };
 
         // Toggle the boolean value indicating that an experiment is mounted
@@ -70,7 +71,7 @@ export default {
     initExperiment: () => {
         routerNavigation.moveToExperimentPrelude();
     },
-    
+
     updateState: (state) => {
         functions.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
     },

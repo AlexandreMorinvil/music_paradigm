@@ -128,7 +128,7 @@ export default {
     window.playerEvents = this;
     this.playerInitialize();
     this.playerSetSrc(this.src);
-    this.playerSetVolume(1.0);
+    this.playerSetVolume(0.2);
     this.playerSetTime(this.playBack.startTime || 0.0);
     this.playerSetupEndEvents();
     this.setEndTime(this.playBack.endTime || 0.0);

@@ -205,6 +205,10 @@ export default {
         return state.state.settings.timeoutInSeconds || 0;
     },
 
+    skipStepButton: (state) => {
+        return state.state.settings.skipStepButton || "";
+    },
+
     hasFootnote: (state) => {
         let hasFootNote;
 
@@ -218,6 +222,21 @@ export default {
             hasFootNote = constants.DEFAULT_FOOTNOTE;
 
         return hasFootNote;
+    },
+
+    hideFeedbackSmiley: (state) => {
+        let hideFeedbackSmiley;
+
+        if (typeof state.state.settings.hideFeedbackSmiley === "boolean")
+            hideFeedbackSmiley = state.state.settings.hideFeedbackSmiley;
+
+        if (typeof state.settings.hideFeedbackSmiley === "boolean")
+            hideFeedbackSmiley = state.settings.hideFeedbackSmiley;
+
+        else
+            hideFeedbackSmiley = constants.DEFAULT_HIDE_FEEDBACK_SMILEY;
+
+        return hideFeedbackSmiley;
     },
 
     // Getters used for the content disposition on the screen

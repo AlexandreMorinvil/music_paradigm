@@ -7,6 +7,7 @@ const DEFAULT_FOOTNOTE = false;
 const DEFAULT_TIME_LIMIT = 0;
 const DEFAULT_LOG_FLAG = true;
 const DEFAULT_SUCCESSES_FOR_SKIP = 0;
+const DEFAULT_HIDE_FEEDBACK_SMILEY = false;
 
 const DEFAULT_EXPERIMENT_STATE_VALUES = function () {
     return {
@@ -87,6 +88,7 @@ const DEFAULT_EXPERIMENT_STATE_VALUES = function () {
                 playingMode: DEFAULT_PLAYING_MODE,              // Playing mode ("rhythm" or "speed")
                 footnote: DEFAULT_FOOTNOTE,                     // Block specific "footnote" superseding the general setting
                 logFlag: DEFAULT_LOG_FLAG,                      // Block specific "logFlag" superseding the general setting
+                skipStepButton: "",                             // Button to press to skip the next block (is valid only if a button is specified)
                 successesForSkip: DEFAULT_SUCCESSES_FOR_SKIP    // Block specific "successesForSkip" superseding the general setting
             }
         }
@@ -102,5 +104,6 @@ export default {
     DEFAULT_TIME_LIMIT,
     DEFAULT_LOG_FLAG,
     DEFAULT_SUCCESSES_FOR_SKIP,
+    DEFAULT_HIDE_FEEDBACK_SMILEY,
     DEFAULT_EXPERIMENT_STATE_VALUES
 }

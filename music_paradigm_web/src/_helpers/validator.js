@@ -92,7 +92,9 @@ const validateBlock = function (block, index = null) {
         "playingMode",
         "footnote",
         "logFlag",
-        "successesForSkip"
+        "hideFeedbackSmiley",
+        "skipStepButton",
+        "successesForSkip",
     ]
     Object.keys(block).forEach(key => {
         if (!(allowedAttributes.includes(key)))
@@ -115,6 +117,7 @@ const validateAttributeType = function (key, value) {
         case "name":
         case "folder":
         case "playingMode":
+        case "skipStepButton":
             if (!(typeof value === "string"))
                 throw new Error(`The key '${key}' must be of type 'String'`);
             break;
@@ -133,6 +136,7 @@ const validateAttributeType = function (key, value) {
         case "enableSoundFlag":
         case "footnote":
         case "logFlag":
+        case "hideFeedbackSmiley":
             if (!(typeof value === "boolean"))
                 throw new Error(`The key '${key}' must be of type 'Boolean'`);
             break;
