@@ -8,7 +8,7 @@ const countStepsLeft = function (flow, startPointCursor) {
     // Count the number of steps before being at the end state (or beyond 
     // the last block if no end state is specified in the flow description)
     let stepsCounter = 0;
-    
+
     while (!stepTracerCursor.current.isBeyondEnd && !(flow[stepTracerCursor.current.index].type === "end")) {
         moveCursorNext(flow, stepTracerCursor);
         stepsCounter += 1;
@@ -115,7 +115,11 @@ const updateCursorNavigation = function (flow, cursor) {
         // Cursor parameters
         numberRepetition, maxNumBlock, numBlock, // Those three names are kept for backward compatibility
         followedBy,
+        isInSkipableChain,
     } = currentBlock;
+
+    // Set the current index parameter
+    cursor.current.isInSkipableChain = (typeof isInSkipableChain === 'boolean') ? isInSkipableChain : false;
 
     // Set all the navigation parameters
     setCursorInnerStepsTotal(cursor, type, textContent, pictureFileName);
@@ -264,8 +268,8 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
         footnote,
         logFlag,
         hideFeedbackSmiley,
-        skipStepButton,
         successesForSkip,
+        skipStepButton,
     } = currentBlock;
 
     // Set the settings for the state. If no value is found, an appropreate default value is set
@@ -277,8 +281,8 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
         footnote: (typeof footnote !== 'undefined') ? Boolean(footnote) : generalSettings.footnote,
         logFlag: (typeof logFlag === 'boolean') ? logFlag : generalSettings.logFlag,
         hideFeedbackSmiley: (typeof hideFeedbackSmiley === 'boolean') ? hideFeedbackSmiley : generalSettings.hideFeedbackSmiley,
-        skipStepButton: (typeof hideFeedbackSmiley === 'string') ? skipStepButton : "",
         successesForSkip: (typeof successesForSkip === 'number') ? successesForSkip : generalSettings.successesForSkip,
+        skipStepButton: (typeof skipStepButton === 'string') ? skipStepButton : "",
     };
 
     // Indicate that the state (current block's settings) was already initialized 
@@ -348,7 +352,7 @@ const updateStateContent = function (currentState, flow, cursor, isInitialized) 
 }
 
 const forceEndState = function (currentState, isInitialized, message) {
-    
+
     // We update the route
     routerNavigation.moveToState("end");
 
@@ -364,6 +368,11 @@ const forceEndState = function (currentState, isInitialized, message) {
 const moveCursorNext = function (flow, cursor, isInitialized) {
     moveCursorNextStep(flow, cursor, isInitialized);
     updateCursorNavigation(flow, cursor);
+}
+
+const updateStateOnSkip = function (currentState, flow, cursor, isInitialized) {
+    if (cursor.current.isBeyondEnd) forceEndState(currentState, isInitialized);
+    else if (!isInitialized.media) updateStateMediaFiles(currentState, flow, cursor, isInitialized);
 }
 
 const updateState = function (currentState, flow, cursor, isInitialized, generalSettings) {
@@ -382,6 +391,7 @@ export default {
     moveCursorNext,
     updateCursorNavigation,
     updateState,
+    updateStateOnSkip,
     forceEndState
 }
 // TODO: Instoring a break from the loop mechanism (end of loop parameter)

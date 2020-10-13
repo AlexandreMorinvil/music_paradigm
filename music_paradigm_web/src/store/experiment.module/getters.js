@@ -206,7 +206,7 @@ export default {
     },
 
     skipStepButton: (state) => {
-        return state.state.settings.skipStepButton || "";
+        return state.state.settings.skipStepButton.toLowerCase() || "";
     },
 
     hasFootnote: (state) => {
@@ -262,5 +262,9 @@ export default {
 
     hasHelperImage: (state) => {
         return Boolean(state.state.content.helperImageName);
-    }
+    },
+
+    hasSkipOption: (state) => {
+        return (Boolean(state.state.settings.skipStepButton) && state.flow[state.cursor.navigation.indexNext].isInSkipableChain) || false;
+    },
 }

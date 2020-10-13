@@ -14,6 +14,7 @@ const schema = new Schema(
         timeLimitInSeconds: { type: Number, default: 0 },
         logFlag: { type: Boolean, default: true },
         successesForSkip: { type: Number, default: 0 },
+        hideFeedbackSmiley: { type: Boolean, default: false },
         variable: [
             {
                 name: String,
@@ -43,7 +44,11 @@ const schema = new Schema(
                     playingMode: { type: String, default: undefined },
                     footnote: { type: Boolean, default: undefined },
                     logFlag: { type: Boolean, default: undefined },
-                    successesForSkip: { type: Number, default: undefined }
+                    successesForSkip: { type: Number, default: undefined },
+                    helperImageFileName: { type: [String], default: undefined },
+                    hideFeedbackSmiley: { type: Boolean, default: undefined },
+                    skipStepButton: { type: String, default: undefined },
+                    isInSkipableChain: { type: Boolean, default: undefined }
                 }
             ]
         }

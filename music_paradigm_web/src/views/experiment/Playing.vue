@@ -1,12 +1,6 @@
 <template>
   <div id="playing-state" class="experiment-state-container" :class="gridClass">
-    <img
-      v-if="hasHelperImage"
-      id="helper-img"
-      :src="urlExperimentRessource(helperImageName)"
-      alt="Helper"
-      class="helper"
-    />
+    <img v-if="hasHelperImage" id="helper-img" :src="urlExperimentRessource(helperImageName)" alt="Helper" class="helper" />
     <div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">{{ textContent }}</div>
 
     <div id="visual-media-area" class="experiment-state-division state-division-visual-media">
@@ -41,6 +35,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(['urlExperimentRessource']),
     ...mapGetters('experiment', [
       'hasText',
       'hasFootnote',

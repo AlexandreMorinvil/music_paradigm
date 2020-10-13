@@ -81,6 +81,14 @@ export default {
         functions.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
     },
 
+    movePostSkip: (state) => {
+        do {
+            functions.moveCursorNext(state.flow, state.cursor, state.isInitialized);
+            functions.updateStateOnSkip(state.state, state.flow, state.cursor, state.isInitialized);
+        } while (state.cursor.current.isInSkipableChain)
+        functions.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
+    },
+
     endExperimentByTimeout: (state) => {
         const message = "The time limit was reached.\nThe experiment ends here.";
         functions.forceEndState(state.state, state.isInitialized, message);

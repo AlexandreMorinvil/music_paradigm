@@ -36,7 +36,9 @@
 
     <div id="experiment-state">
       <router-view
+        :lastPressedKey="lastPressedKey"
         :isSpaceBarPressed="isSpaceBarPressed"
+        v-on:skipRequest="navigateExperimentSkip"
         v-on:experimentReady="displayFirstStep"
         v-on:stateEnded="navigateExperiment"
         v-on:experimentEnded="endExperiment"
@@ -46,12 +48,12 @@
 </template>
 
 <script>
-import ExperimentPiano from "@/components/ExperimentPiano.vue";
-import ExperimentTimer from "@/components/ExperimentTimer.vue";
-import { mapActions, mapGetters } from "vuex";
+import ExperimentPiano from '@/components/ExperimentPiano.vue';
+import ExperimentTimer from '@/components/ExperimentTimer.vue';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
-  name: "Experiment",
+  name: 'Experiment',
   components: {
     piano: ExperimentPiano,
     timer: ExperimentTimer,
@@ -60,16 +62,17 @@ export default {
     return {
       isSpaceBarPressed: false,
       needsConfirmationToLeave: true,
+      lastPressedKey: '',
     };
   },
   computed: {
-    ...mapGetters("experiment", [
-      "stepsTotalCount",
-      "stepsLeftCount",
-      "currentStateType",
-      "nextStateType",
-      "midiName",
-      "timeLimitInSeconds"
+    ...mapGetters('experiment', [
+      'stepsTotalCount',
+      'stepsLeftCount',
+      'currentStateType',
+      'nextStateType',
+      'midiName',
+      'timeLimitInSeconds',
     ]),
     currentStateIcon() {
       return this.getIconReference(this.currentStateType);
@@ -82,39 +85,36 @@ export default {
     },
   },
   methods: {
-    ...mapActions("experiment", [
-      "updateState",
-      "goNextStep",
-      "clearState",
-      "endExperimentByTimeout",
-      "concludeExperiment"
+    ...mapActions('experiment', [
+      'updateState',
+      'goNextStep',
+      'goStepPostSkip',
+      'clearState',
+      'endExperimentByTimeout',
+      'concludeExperiment',
     ]),
-    ...mapActions("piano", [
-      "loadMidiFile",
-      "resetPlayedNotesLogs",
-      "resetPianoState",
-    ]),
+    ...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
     getIconReference(stateType) {
-      const iconFileName = "sprites.svg#";
+      const iconFileName = 'sprites.svg#';
       switch (stateType) {
-        case "cue":
-          return iconFileName + "icon-volume-high";
-        case "end":
-          return iconFileName + "icon-finish";
-        case "feedback":
-          return iconFileName + "icon-check-circle";
-        case "introduction":
-          return iconFileName + "icon-location";
-        case "instruction":
-          return iconFileName + "icon-info";
-        case "playing":
-          return iconFileName + "icon-piano";
-        case "rest":
-          return iconFileName + "icon-pause";
-        case "video":
-          return iconFileName + "icon-film";
+        case 'cue':
+          return iconFileName + 'icon-volume-high';
+        case 'end':
+          return iconFileName + 'icon-finish';
+        case 'feedback':
+          return iconFileName + 'icon-check-circle';
+        case 'introduction':
+          return iconFileName + 'icon-location';
+        case 'instruction':
+          return iconFileName + 'icon-info';
+        case 'playing':
+          return iconFileName + 'icon-piano';
+        case 'rest':
+          return iconFileName + 'icon-pause';
+        case 'video':
+          return iconFileName + 'icon-film';
         default:
-          return iconFileName + "icon-three-dots";
+          return iconFileName + 'icon-three-dots';
       }
     },
     handleTimesUp() {
@@ -128,42 +128,45 @@ export default {
       this.resetPlayedNotesLogs();
       this.goNextStep();
     },
+    navigateExperimentSkip() {
+      this.resetPlayedNotesLogs();
+      this.goStepPostSkip();
+    },
     endExperiment() {
       this.needsConfirmationToLeave = false;
       this.concludeExperiment();
     },
-    handleSpaceBarPress(pressedKey) {
-      if (pressedKey.key === " ") this.isSpaceBarPressed = true;
+    handleButtonPress(pressedKey) {
+      if (pressedKey.key === ' ') this.isSpaceBarPressed = true;
+      this.lastPressedKey = pressedKey.key.toLowerCase();
     },
-    handleSpaceBarRelease(releasedKey) {
-      if (releasedKey.key === " ") this.isSpaceBarPressed = false;
+    handleButtonRelease(releasedKey) {
+      if (releasedKey.key === ' ') this.isSpaceBarPressed = false;
     },
   },
   mounted() {
-    window.addEventListener("keydown", this.handleSpaceBarPress);
-    window.addEventListener("keyup", this.handleSpaceBarRelease);
+    window.addEventListener('keydown', this.handleButtonPress);
+    window.addEventListener('keyup', this.handleButtonRelease);
   },
   beforeDestroy() {
-    window.removeEventListener("keydown", this.handleSpaceBarPress);
-    window.removeEventListener("keyup", this.handleSpaceBarRelease);
+    window.removeEventListener('keydown', this.handleButtonPress);
+    window.removeEventListener('keyup', this.handleButtonRelease);
     this.resetPianoState();
     this.clearState();
   },
   watch: {
     midiName: {
       immediate: true,
-      handler: function (midiName) {
-        if (midiName !== "") this.loadMidiFile(this.midiName);
+      handler: function(midiName) {
+        if (midiName !== '') this.loadMidiFile(this.midiName);
       },
     },
   },
   beforeRouteLeave(to, from, next) {
     // We need to verify that the route departure is not a redirection, otherwise
     // a confirmation will be prompted twice (Once before and after the redirection)
-    if (this.needsConfirmationToLeave && !to.hasOwnProperty("redirectedFrom")) {
-      const answer = window.confirm(
-        "Do you really want to leave the experiment in progress?"
-      );
+    if (this.needsConfirmationToLeave && !to.hasOwnProperty('redirectedFrom')) {
+      const answer = window.confirm('Do you really want to leave the experiment in progress?');
       if (answer) next();
       else next(false);
     } else {
@@ -172,7 +175,6 @@ export default {
   },
 };
 </script>
-
 
 <style>
 #experiment {
@@ -193,9 +195,9 @@ export default {
   grid-template-columns: auto;
   grid-template-rows: 64px 10px;
   grid-template-areas:
-    "header" /* Status of the experiment */
-    "progress" /* Progress bar of the experiment */
-    "main"; /* State of the experiment */
+    'header' /* Status of the experiment */
+    'progress' /* Progress bar of the experiment */
+    'main'; /* State of the experiment */
   grid-gap: 0px;
 }
 #experiment-status {

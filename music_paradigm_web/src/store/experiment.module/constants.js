@@ -41,9 +41,10 @@ const DEFAULT_EXPERIMENT_STATE_VALUES = function () {
         cursor: {
             current: {
                 index: 0,                                       // Index of the current block of the flow
-                piledMediaIndex: 0,                            // Index of the current step of the block (browses the midi and video file names)
+                piledMediaIndex: 0,                             // Index of the current step of the block (browses the midi and video file names)
                 innerStepIndex: 0,                              // Index of the current step of the block (browses the picture file names)
-                isBeyondEnd: false                              // Indicator of whether the index as reached the end of the flow (is checked before moving the cursor forward)
+                isBeyondEnd: false,                             // Indicator of whether the index as reached the end of the flow (is checked before moving the cursor forward)
+                isInSkipableChain: false,                       // Indicates whether the block must be skipped upon a skip request
             },
             navigation: {
                 indexNext: 1,                                   // Index of the next block of the flow

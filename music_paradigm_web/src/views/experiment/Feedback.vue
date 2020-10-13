@@ -34,6 +34,12 @@ export default {
     feedbackGrade: FeedbackGrade,
   },
   props: {
+    lastPressedKey: {
+      type: String,
+      default() {
+        return "";
+      },
+    },
     isSpaceBarPressed: {
       type: Boolean,
       default() {
@@ -45,14 +51,17 @@ export default {
     return {};
   },
   computed: {
+    ...mapGetters(['urlExperimentRessource']),
     ...mapGetters('piano', ['grades', 'pressedKeys']),
     ...mapGetters('experiment', [
       'hasText',
       'hasFootnote',
       'hasHelperImage',
+      'hasSkipOption',
       'textContent',
       'helperImageName',
       'anyPianoKey',
+      'skipStepButton',
     ]),
     gridClass() {
       if (this.hasFootnote) {
@@ -64,8 +73,12 @@ export default {
       }
     },
     footnote() {
-      if (this.anyPianoKey) return 'Press any piano key or the space bar for going to the next step';
-      else return 'Press the space bar for going to the next step';
+      let footnote = '';
+      if (this.anyPianoKey) footnote += 'Press any piano key or the space bar for going to the next step';
+      else footnote += 'Press the space bar for going to the next step';
+      if (this.hasSkipOption) footnote += ' or press ' + this.skipStepButton.toUpperCase() + ' to skip';
+
+      return footnote;
     },
     hasGrades() {
       if (Array.isArray(this.grades) && this.grades.length > 0) return true;
@@ -74,6 +87,10 @@ export default {
   },
 
   watch: {
+    lastPressedKey(lastPressedKey) {
+      if(this.hasSkipOption && lastPressedKey === this.skipStepButton)
+        this.$emit('skipRequest');
+    },
     isSpaceBarPressed(isPressed) {
       if (isPressed) {
         this.$emit('stateEnded');

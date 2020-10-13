@@ -93,6 +93,7 @@ const validateBlock = function (block, index = null) {
         "footnote",
         "logFlag",
         "hideFeedbackSmiley",
+        "isInSkipableChain",
         "skipStepButton",
         "successesForSkip",
     ]

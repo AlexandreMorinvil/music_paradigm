@@ -17,6 +17,9 @@ export default {
     goNextStep: ({ commit }) => {
         commit('moveNextStep');
     },
+    goStepPostSkip: ({ commit }) => {
+        commit('movePostSkip')
+    },
     endExperimentByTimeout: ({ commit }) => {
         commit('endExperimentByTimeout');
     },
