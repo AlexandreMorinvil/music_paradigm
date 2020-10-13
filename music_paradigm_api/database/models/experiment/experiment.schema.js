@@ -48,6 +48,7 @@ const schema = new Schema(
                     helperImageFileName: { type: [String], default: undefined },
                     hideFeedbackSmiley: { type: Boolean, default: undefined },
                     skipStepButton: { type: String, default: undefined },
+                    skipStepButtonMessage: { type: String, default: undefined },
                     isInSkipableChain: { type: Boolean, default: undefined }
                 }
             ]

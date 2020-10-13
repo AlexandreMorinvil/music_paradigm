@@ -90,6 +90,7 @@ const DEFAULT_EXPERIMENT_STATE_VALUES = function () {
                 footnote: DEFAULT_FOOTNOTE,                     // Block specific "footnote" superseding the general setting
                 logFlag: DEFAULT_LOG_FLAG,                      // Block specific "logFlag" superseding the general setting
                 skipStepButton: "",                             // Button to press to skip the next block (is valid only if a button is specified)
+                skipStepButtonMessage: "",                      // Message indicated on the skip button if there is a skip button
                 successesForSkip: DEFAULT_SUCCESSES_FOR_SKIP    // Block specific "successesForSkip" superseding the general setting
             }
         }

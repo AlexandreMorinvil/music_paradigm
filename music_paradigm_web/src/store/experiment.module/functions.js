@@ -270,6 +270,7 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
         hideFeedbackSmiley,
         successesForSkip,
         skipStepButton,
+        skipStepButtonMessage,
     } = currentBlock;
 
     // Set the settings for the state. If no value is found, an appropreate default value is set
@@ -283,6 +284,7 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
         hideFeedbackSmiley: (typeof hideFeedbackSmiley === 'boolean') ? hideFeedbackSmiley : generalSettings.hideFeedbackSmiley,
         successesForSkip: (typeof successesForSkip === 'number') ? successesForSkip : generalSettings.successesForSkip,
         skipStepButton: (typeof skipStepButton === 'string') ? skipStepButton : "",
+        skipStepButtonMessage: (typeof skipStepButtonMessage === 'string') ? skipStepButtonMessage : "",
     };
 
     // Indicate that the state (current block's settings) was already initialized 

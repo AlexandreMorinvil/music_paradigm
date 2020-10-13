@@ -7,6 +7,9 @@
       alt="Helper"
       class="helper"
     />
+
+    <skip-button v-if="hasSkipOption" class="skip-button" v-on:skipButtonClicked="emitSkipSignal" />
+
     <div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">{{ textContent }}</div>
 
     <div id="visual-media-area" class="experiment-state-division state-division-visual-media">
@@ -26,18 +29,20 @@
 <script>
 import '@/styles/experimentStateTemplate.css';
 import { mapGetters } from 'vuex';
-import FeedbackGrade from '@/components/FeedbackGrade';
+import FeedbackGrade from '@/components/FeedbackGrade.vue';
+import SkipButton from '@/components/experiment/SkipButton.vue';
 
 export default {
   name: 'Feedback',
   components: {
     feedbackGrade: FeedbackGrade,
+    skipButton: SkipButton,
   },
   props: {
     lastPressedKey: {
       type: String,
       default() {
-        return "";
+        return '';
       },
     },
     isSpaceBarPressed: {
@@ -73,23 +78,22 @@ export default {
       }
     },
     footnote() {
-      let footnote = '';
-      if (this.anyPianoKey) footnote += 'Press any piano key or the space bar for going to the next step';
-      else footnote += 'Press the space bar for going to the next step';
-      if (this.hasSkipOption) footnote += ' or press ' + this.skipStepButton.toUpperCase() + ' to skip';
-
-      return footnote;
+      if (this.anyPianoKey) return 'Press any piano key or the space bar for going to the next step';
+      else return 'Press the space bar for going to the next step';
     },
     hasGrades() {
       if (Array.isArray(this.grades) && this.grades.length > 0) return true;
       else return false;
     },
   },
-
+  methods: {
+    emitSkipSignal() {
+      this.$emit('skipRequest');
+    },
+  },
   watch: {
     lastPressedKey(lastPressedKey) {
-      if(this.hasSkipOption && lastPressedKey === this.skipStepButton)
-        this.$emit('skipRequest');
+      if (this.hasSkipOption && lastPressedKey === this.skipStepButton) this.emitSkipSignal();
     },
     isSpaceBarPressed(isPressed) {
       if (isPressed) {

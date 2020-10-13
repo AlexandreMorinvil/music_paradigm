@@ -96,3 +96,12 @@
     right: 0;
     width: 9%;
 }
+
+.skip-button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 9%;
+    min-height: 10%;
+    max-height: 30%;
+}

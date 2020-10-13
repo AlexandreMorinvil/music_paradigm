@@ -95,6 +95,7 @@ const validateBlock = function (block, index = null) {
         "hideFeedbackSmiley",
         "isInSkipableChain",
         "skipStepButton",
+        "skipStepButtonMessage",
         "successesForSkip",
     ]
     Object.keys(block).forEach(key => {
@@ -119,6 +120,7 @@ const validateAttributeType = function (key, value) {
         case "folder":
         case "playingMode":
         case "skipStepButton":
+        case "skipStepButtonMessage":
             if (!(typeof value === "string"))
                 throw new Error(`The key '${key}' must be of type 'String'`);
             break;

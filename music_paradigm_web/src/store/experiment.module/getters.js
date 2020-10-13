@@ -209,6 +209,10 @@ export default {
         return state.state.settings.skipStepButton.toLowerCase() || "";
     },
 
+    skipStepButtonMessage: (state) => {
+        return state.state.settings.skipStepButtonMessage || "";
+    },
+
     hasFootnote: (state) => {
         let hasFootNote;
 
