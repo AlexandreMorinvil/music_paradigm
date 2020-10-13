@@ -7,6 +7,9 @@
       alt="Helper"
       class="helper"
     />
+
+    <skip-button v-if="hasSkipOption" class="skip-button" v-on:skipButtonClicked="emitSkipSignal" />
+
     <div v-if="hasText || hasNoContent" id="text-area" class="experiment-state-division state-division-text">
       {{ textToDisplay }}
     </div>
@@ -26,13 +29,21 @@
 import '@/styles/experimentStateTemplate.css';
 import { mapGetters } from 'vuex';
 import VisualPiano from '@/components/VisualPiano.vue';
+import SkipButton from '@/components/experiment/SkipButton.vue';
 
 export default {
   name: 'Instruction',
   components: {
     visualPiano: VisualPiano,
+    skipButton: SkipButton,
   },
   props: {
+    lastPressedKey: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
     isSpaceBarPressed: {
       type: Boolean,
       default() {
@@ -53,10 +64,12 @@ export default {
       'hasVisualMedia',
       'hasFootnote',
       'hasHelperImage',
+      'hasSkipOption',
       'pictureName',
       'helperImageName',
       'textContent',
       'anyPianoKey',
+      'skipStepButton',
     ]),
     gridClass() {
       if (this.hasFootnote) {
@@ -76,7 +89,15 @@ export default {
       else return this.textContent;
     },
   },
+  methods: {
+    emitSkipSignal() {
+      this.$emit('skipRequest');
+    },
+  },
   watch: {
+    lastPressedKey(lastPressedKey) {
+      if (this.hasSkipOption && lastPressedKey === this.skipStepButton) this.emitSkipSignal();
+    },
     isSpaceBarPressed(isPressed) {
       if (isPressed) {
         this.$emit('stateEnded');

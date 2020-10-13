@@ -1,6 +1,15 @@
 <template>
   <div id="playing-state" class="experiment-state-container" :class="gridClass">
-    <img v-if="hasHelperImage" id="helper-img" :src="urlExperimentRessource(helperImageName)" alt="Helper" class="helper" />
+    <img
+      v-if="hasHelperImage"
+      id="helper-img"
+      :src="urlExperimentRessource(helperImageName)"
+      alt="Helper"
+      class="helper"
+    />
+
+    <skip-button v-if="hasSkipOption" class="skip-button" v-on:skipButtonClicked="emitSkipSignal" />
+
     <div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">{{ textContent }}</div>
 
     <div id="visual-media-area" class="experiment-state-division state-division-visual-media">
@@ -22,12 +31,22 @@ import { mapGetters } from 'vuex';
 
 import PlayingSpeedComponent from './PlayingSpeed';
 import PlayingRhythmComponent from './PlayingRhythm';
+import SkipButton from '@/components/experiment/SkipButton.vue';
 
 export default {
   name: 'Playing',
   components: {
+    skipButton: SkipButton,
     speed: PlayingSpeedComponent,
     rhythm: PlayingRhythmComponent,
+  },
+  props: {
+    lastPressedKey: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
   },
   data() {
     return {
@@ -40,9 +59,11 @@ export default {
       'hasText',
       'hasFootnote',
       'hasHelperImage',
+      'hasSkipOption',
       'textContent',
       'helperImageName',
       'playingMode',
+      'skipStepButton',
     ]),
     gridClass() {
       if (this.hasFootnote) {
@@ -64,6 +85,14 @@ export default {
     },
     evaluatePlayedNotes() {
       this.$refs.playingMode.evaluate();
+    },
+    emitSkipSignal() {
+      this.$emit('skipRequest');
+    },
+  },
+  watch: {
+    lastPressedKey(lastPressedKey) {
+      if (this.hasSkipOption && lastPressedKey === this.skipStepButton) this.emitSkipSignal();
     },
   },
 };

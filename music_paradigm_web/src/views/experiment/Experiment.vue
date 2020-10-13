@@ -138,6 +138,7 @@ export default {
     },
     handleButtonPress(pressedKey) {
       if (pressedKey.key === ' ') this.isSpaceBarPressed = true;
+      this.lastPressedKey = "";
       this.lastPressedKey = pressedKey.key.toLowerCase();
     },
     handleButtonRelease(releasedKey) {

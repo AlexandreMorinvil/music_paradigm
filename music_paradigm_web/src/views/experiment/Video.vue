@@ -7,6 +7,9 @@
       alt="Helper"
       class="helper"
     />
+
+    <skip-button v-if="hasSkipOption" class="skip-button" v-on:skipButtonClicked="emitSkipSignal" />
+
     <div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">{{ textContent }}</div>
 
     <div id="visual-media-area" class="experiment-state-division state-division-visual-media">
@@ -44,12 +47,22 @@ import '@/styles/experimentStateTemplate.css';
 import { mapGetters } from 'vuex';
 import VideoPlayer from '@/components/VideoPlayer.vue';
 import VisualPiano from '@/components/VisualPiano.vue';
+import SkipButton from '@/components/experiment/SkipButton.vue';
 
 export default {
   name: 'Video',
   components: {
+    skipButton: SkipButton,
     visualPiano: VisualPiano,
     VideoPlayer: VideoPlayer,
+  },
+  props: {
+    lastPressedKey: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
   },
   data() {
     return {
@@ -80,9 +93,11 @@ export default {
       'hasText',
       'hasFootnote',
       'hasHelperImage',
+      'hasSkipOption',
       'textContent',
       'videoName',
       'helperImageName',
+      'skipStepButton',
     ]),
     gridClass() {
       if (this.hasFootnote) {
@@ -168,6 +183,9 @@ export default {
       this.isPlaying = true;
       this.$refs.video.playerPlay();
     },
+    emitSkipSignal() {
+      this.$emit('skipRequest');
+    },
   },
   mounted() {
     if (this.videoName === '') this.manageHavingNoVideo();
@@ -183,6 +201,9 @@ export default {
         window.clearInterval(this.counterUniqueIdentifier);
         this.startVideo();
       }
+    },
+    lastPressedKey(lastPressedKey) {
+      if (this.hasSkipOption && lastPressedKey === this.skipStepButton) this.emitSkipSignal();
     },
   },
 };

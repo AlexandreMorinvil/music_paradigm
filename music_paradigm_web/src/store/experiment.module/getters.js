@@ -273,6 +273,6 @@ export default {
     },
 
     hasSkipOption: (state) => {
-        return (Boolean(state.state.settings.skipStepButton) && state.flow[state.cursor.navigation.indexNext].isInSkipableChain) || false;
+        return Boolean(state.state.settings.skipStepButton) || false;
     },
 }

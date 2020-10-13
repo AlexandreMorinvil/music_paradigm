@@ -7,6 +7,9 @@
       alt="Helper"
       class="helper"
     />
+
+    <skip-button v-if="hasSkipOption" class="skip-button" v-on:skipButtonClicked="emitSkipSignal" />
+
     <div v-if="hasText || hasNoContent" id="text-area" class="experiment-state-division state-division-text">
       <p>{{ textToDisplay }}</p>
       <!-- Default display if no content is provided -->
@@ -26,11 +29,21 @@
 import '@/styles/experimentStateTemplate.css';
 import { mapGetters } from 'vuex';
 import VisualPiano from '@/components/VisualPiano.vue';
+import SkipButton from '@/components/experiment/SkipButton.vue';
 
 export default {
   name: 'Rest',
   components: {
     visualPiano: VisualPiano,
+    skipButton: SkipButton,
+  },
+  props: {
+    lastPressedKey: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
   },
   data() {
     return {
@@ -50,9 +63,11 @@ export default {
       'hasVisualMedia',
       'hasFootnote',
       'hasHelperImage',
+      'hasSkipOption',
       'textContent',
       'pictureName',
       'helperImageName',
+      'skipStepButton',
       'timeoutInSeconds',
     ]),
     gridClass() {
@@ -94,6 +109,9 @@ export default {
     countdown() {
       this.timeLeftInMilliseconds = Math.max(this.timeLimitInMiliseconds - (Date.now() - this.referenceTime), 0);
     },
+    emitSkipSignal() {
+      this.$emit('skipRequest');
+    },
   },
   mounted() {
     // Starting the countdown of the maximum time for the rest
@@ -103,6 +121,9 @@ export default {
     window.clearInterval(this.counterUniqueIdentifier);
   },
   watch: {
+    lastPressedKey(lastPressedKey) {
+      if (this.hasSkipOption && lastPressedKey === this.skipStepButton) this.emitSkipSignal();
+    },
     timeLeftInMilliseconds(value) {
       // When the time is over we indicate the end of the playing state
       if (value <= 0) {
