@@ -14,11 +14,13 @@
 
     <div id="visual-media-area" class="experiment-state-division state-division-visual-media">
       <div class="feedback-grade-board">
-        <!-- Default display if no performance was graded -->
         <p v-if="!hasGrades">No performance was graded</p>
-        <div class="feedback-box" v-for="grade in grades" :key="grade.criteria">
+        <div v-else class="feedback-box" v-for="grade in grades" :key="grade.criteria">
           <feedback-grade :grade="grade" />
         </div>
+      </div>
+      <div v-if="hasSuccessFeedbackMessage && isSuccessful" class="success-feedback-message">
+        {{ successFeedbackMessage }}
       </div>
     </div>
 
@@ -67,6 +69,7 @@ export default {
       'helperImageName',
       'anyPianoKey',
       'skipStepButton',
+      'successFeedbackMessage',
     ]),
     gridClass() {
       if (this.hasFootnote) {
@@ -84,6 +87,16 @@ export default {
     hasGrades() {
       if (Array.isArray(this.grades) && this.grades.length > 0) return true;
       else return false;
+    },
+    isSuccessful() {
+      if (this.grades.length <= 0) return false;
+      for (let grade of this.grades) {
+        if (grade.mark < grade.passMark) return false;
+      }
+      return true;
+    },
+    hasSuccessFeedbackMessage() {
+      return Boolean(this.successFeedbackMessage);
     },
   },
   methods: {
@@ -110,6 +123,12 @@ export default {
 </script>
 
 <style scoped>
+#visual-media-area {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  grid-template-columns: 1fr;
+}
+
 .feedback-grade-board {
   display: flex;
   flex-direction: row;
@@ -126,5 +145,10 @@ export default {
   margin: 0 2% 0;
   width: auto;
   height: 100%;
+}
+
+.success-feedback-message {
+  text-align: center;
+  font-size: calc(1vh + 1vw);
 }
 </style>

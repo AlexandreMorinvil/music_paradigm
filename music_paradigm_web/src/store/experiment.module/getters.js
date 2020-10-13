@@ -213,6 +213,10 @@ export default {
         return state.state.settings.skipStepButtonMessage || "";
     },
 
+    successFeedbackMessage: (state) => {
+        return state.state.settings.successFeedbackMessage || "";
+    },
+
     hasFootnote: (state) => {
         let hasFootNote;
 

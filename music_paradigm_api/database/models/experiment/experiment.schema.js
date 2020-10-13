@@ -44,12 +44,13 @@ const schema = new Schema(
                     playingMode: { type: String, default: undefined },
                     footnote: { type: Boolean, default: undefined },
                     logFlag: { type: Boolean, default: undefined },
-                    successesForSkip: { type: Number, default: undefined },
                     helperImageFileName: { type: [String], default: undefined },
                     hideFeedbackSmiley: { type: Boolean, default: undefined },
                     skipStepButton: { type: String, default: undefined },
                     skipStepButtonMessage: { type: String, default: undefined },
-                    isInSkipableChain: { type: Boolean, default: undefined }
+                    isInSkipableChain: { type: Boolean, default: undefined },
+                    successFeedbackMessage: { type: String, default: undefined },
+                    successesForSkip: { type: Number, default: undefined },
                 }
             ]
         }
