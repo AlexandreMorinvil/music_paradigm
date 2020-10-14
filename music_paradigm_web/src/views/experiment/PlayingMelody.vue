@@ -28,6 +28,8 @@ export default {
   },
   data() {
     return {
+      maxInactivityALlowedInMilliSeconds: 3000,
+      incativityUniqueIdentifier: 0,
       timeLimitUniqueIdentifier: 0,
       isFirstNotePressed: false,
     };
@@ -80,11 +82,17 @@ export default {
   },
   destroyed() {
     window.clearTimeout(this.timeLimitUniqueIdentifier);
+    window.clearTimeout(this.incativityUniqueIdentifier);
   },
   watch: {
     playedNotesMidi: {
       deep: true,
       handler: function() {
+        window.clearTimeout(this.incativityUniqueIdentifier);
+        this.incativityUniqueIdentifier = setTimeout(() => {
+          this.$emit('finishedPlaying');
+        }, this.maxInactivityALlowedInMilliSeconds);
+
         const playedNoteIndex = (this.playedNotesMidi.length - 1);
         const referenceIndex = playedNoteIndex % this.midiFileNotesMidi.length;
         const hasError = this.playedNotesMidi[playedNoteIndex] !== this.midiFileNotesMidi[referenceIndex];
