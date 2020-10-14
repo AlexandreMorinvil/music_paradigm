@@ -217,6 +217,10 @@ export default {
         return state.state.settings.successFeedbackMessage || "";
     },
 
+    failureFeedbackMessage: (state) => {
+        return state.state.settings.failureFeedbackMessage || "";
+    },
+
     melodyRepetition: (state) => {
         return state.state.settings.melodyRepetition || 1;
     },
@@ -278,5 +282,5 @@ export default {
 
     hasSkipOption: (state) => {
         return Boolean(state.state.settings.skipStepButton) || false;
-    },
+    }
 }

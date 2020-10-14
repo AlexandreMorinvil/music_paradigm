@@ -97,6 +97,7 @@ const validateBlock = function (block, index = null) {
         "skipStepButton",
         "skipStepButtonMessage",
         "successFeedbackMessage",
+        "failureFeedbackMessage",
         "melodyRepetition",
         "successesForSkip",
     ]
@@ -124,6 +125,7 @@ const validateAttributeType = function (key, value) {
         case "skipStepButton":
         case "skipStepButtonMessage":
         case "successFeedbackMessage":
+        case "failureFeedbackMessage":
             if (!(typeof value === "string"))
                 throw new Error(`The key '${key}' must be of type 'String'`);
             break;

@@ -92,6 +92,7 @@ const DEFAULT_EXPERIMENT_STATE_VALUES = function () {
                 skipStepButton: "",                             // Button to press to skip the next block (is valid only if a button is specified)
                 skipStepButtonMessage: "",                      // Message indicated on the skip button if there is a skip button
                 successFeedbackMessage: "",                     // Additional message displayed upon sucessfull feedback for all criteras
+                failureFeedbackMessage: "",                     // Additional message displayed upon feedback with at least one failed critera
                 melodyRepetition: 1,                            // Number of times a melody is repeated in a block
                 successesForSkip: DEFAULT_SUCCESSES_FOR_SKIP    // Block specific "successesForSkip" superseding the general setting
             }

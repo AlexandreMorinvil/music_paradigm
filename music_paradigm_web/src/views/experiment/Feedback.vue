@@ -22,6 +22,9 @@
       <div v-if="hasSuccessFeedbackMessage && isSuccessful" class="success-feedback-message">
         {{ successFeedbackMessage }}
       </div>
+      <div v-if="hasFailureFeedbackMessage && !isSuccessful" class="success-feedback-message">
+        {{ failureFeedbackMessage }}
+      </div>
     </div>
 
     <div id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text">{{ footnote }}</div>
@@ -70,6 +73,7 @@ export default {
       'anyPianoKey',
       'skipStepButton',
       'successFeedbackMessage',
+      'failureFeedbackMessage',
     ]),
     gridClass() {
       if (this.hasFootnote) {
@@ -97,6 +101,9 @@ export default {
     },
     hasSuccessFeedbackMessage() {
       return Boolean(this.successFeedbackMessage);
+    },
+    hasFailureFeedbackMessage() {
+      return Boolean(this.failureFeedbackMessage);
     },
   },
   methods: {
