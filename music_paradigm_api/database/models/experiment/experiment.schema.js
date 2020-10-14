@@ -50,6 +50,7 @@ const schema = new Schema(
                     skipStepButtonMessage: { type: String, default: undefined },
                     isInSkipableChain: { type: Boolean, default: undefined },
                     successFeedbackMessage: { type: String, default: undefined },
+                    melodyRepetition: { type: Number, default: undefined },
                     successesForSkip: { type: Number, default: undefined },
                 }
             ]

@@ -62,11 +62,11 @@ var arraysValid = function (arr1, arr2) {
     return true;
 }
 
-const average = data => data.length > 0 ? data.reduce((sum, value) => sum + value) / data.length : 0;
-const standardDeviation = values => Math.sqrt(average(values.map(value => (value - average(values)) ** 2)));
+// const average = data => data.length > 0 ? data.reduce((sum, value) => sum + value) / data.length : 0;
+// const standardDeviation = values => Math.sqrt(average(values.map(value => (value - average(values)) ** 2)));
 
 
-// speed mode (task 1) performance measures
+// speed mode (task 1) perfaaormance measures
 // Walker: number of correctly typed sequence per block
 // Old name : getSpeedW
 const getCorrectSequenceCount = function (refNoteArr, noteArr) {
@@ -155,7 +155,7 @@ const getSequenceErrorCount = function (refNoteArr, noteArr, sequenceLength) {
 const getPitchAccuracy = function (refNoteArr, noteArr) {
     if (!arraysValid(noteArr, refNoteArr)) return -1;
     const { length } = findSubarraySegment(refNoteArr, noteArr);
-    return length / noteArr.length * 100;
+    return length / refNoteArr.length * 100;
 }
 
 // (Duke: mean) number of pitch errors per sequence

@@ -31,6 +31,7 @@ import { mapGetters } from 'vuex';
 
 import PlayingSpeedComponent from './PlayingSpeed';
 import PlayingRhythmComponent from './PlayingRhythm';
+import PlayingMelodyComponent from './PlayingMelody';
 import SkipButton from '@/components/experiment/SkipButton.vue';
 
 export default {
@@ -39,6 +40,7 @@ export default {
     skipButton: SkipButton,
     speed: PlayingSpeedComponent,
     rhythm: PlayingRhythmComponent,
+    melody: PlayingMelodyComponent,
   },
   props: {
     lastPressedKey: {

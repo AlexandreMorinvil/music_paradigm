@@ -16,8 +16,7 @@ const DEFAULT_PIANO_STATE_VALUES = function () {
             name: "",           // Name of the midi file
             notes: {
                 midi: [],       // Midi number, e.g. 60 
-                time: [],       // (Unused) Time in seconds
-                ticks: [],      // (Unused) Time in ticks
+                time: [],       // Time in seconds
                 name: [],       // (Unused) Note name, e.g. "C4",
                 pitch: [],      // (Unused) The pitch class, e.g. "C",
                 octave: [],     // (Unused) The octave, e.g. 4

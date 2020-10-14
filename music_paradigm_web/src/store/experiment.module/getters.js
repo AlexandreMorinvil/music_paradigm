@@ -217,6 +217,10 @@ export default {
         return state.state.settings.successFeedbackMessage || "";
     },
 
+    melodyRepetition: (state) => {
+        return state.state.settings.melodyRepetition || 1;
+    },
+
     hasFootnote: (state) => {
         let hasFootNote;
 

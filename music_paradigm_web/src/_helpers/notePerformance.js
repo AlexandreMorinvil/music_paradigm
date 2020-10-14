@@ -88,6 +88,45 @@ const evaluateRhythmType = function (midiFileNotes, playedNotes) {
     };
 }
 
+const evaluateMelodyType = function (midiFileNotes, playedNotes) {
+
+    const pitchAccuracy = noteAlgorithm.getPitchAccuracy(
+        midiFileNotes.midi,
+        playedNotes.midi
+    );
+
+    const durationsRelativeError = noteAlgorithm.getDurationsRelativeError(
+        midiFileNotes.duration,
+        playedNotes.duration
+    );
+
+    const interOnsetInterval = noteAlgorithm.getInterOnsetIntervals(
+        playedNotes.time
+    );
+
+    const interOnsetIntervalsRelativeError = noteAlgorithm.getInterOnsetIntervalsRelativeError(
+        midiFileNotes.time,
+        playedNotes.time
+    );
+
+    const sequenceDuration = noteAlgorithm.getSequenceDuration(
+        playedNotes.time,
+        playedNotes.duration
+    );
+
+    return {
+        type: "melody",
+        results: {
+            pitchAccuracy: pitchAccuracy,                                       // Brown and Penhune: percentage of pitches performed in the correct order (%)
+            durationsRelativeError: durationsRelativeError,                     // Average relative duration error (%)
+            interOnsetInterval: interOnsetInterval,                             // Interval between onsets of stimuli (Array of ms)
+            interOnsetIntervalsRelativeError: interOnsetIntervalsRelativeError, // Relative 
+            sequenceDuration: sequenceDuration,                                 // Duration of the corresponding sequence of notes played (ms)
+        }
+    };
+}
+
+
 const gradeSpeedType = function (evaluationResults, { minSequencePlayed }) {
     const grades = [
         {
@@ -119,9 +158,23 @@ const gradeRhythmType = function (evaluationResults, { minNoteAccuracy, maxRhyth
     return grades;
 }
 
+const gradeMelodyType = function (evaluationResults, { minNoteAccuracy }) {
+    const grades = [
+        {
+            criteria: "Melody Accuracy",
+            mark: Math.max(evaluationResults.pitchAccuracy, 0),
+            passMark: Math.min(Math.max(minNoteAccuracy, 0), 100),
+            topMark: 100
+        }
+    ];
+    return grades;
+}
+
 export default {
     evaluateSpeedType,
     evaluateRhythmType,
+    evaluateMelodyType,
     gradeSpeedType,
-    gradeRhythmType
+    gradeRhythmType,
+    gradeMelodyType
 }

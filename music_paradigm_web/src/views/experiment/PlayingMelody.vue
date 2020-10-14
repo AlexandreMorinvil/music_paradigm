@@ -40,20 +40,21 @@ export default {
       'hasInteractivePiano',
       'pictureName',
       'timeoutInSeconds',
+      'melodyRepetition',
     ]),
-    ...mapGetters('piano', ['midiFileNotesMidi', 'midiFileNotesDuration', 'playedNotesMidi']),
+    ...mapGetters('piano', ['midiFileNotesMidi', 'pressedKeys', 'midiFileNotesDuration', 'playedNotesMidi']),
     playProgress() {
       return this.playedNotesMidi.length;
     },
     maxPlayProgress() {
-      return this.midiFileNotesMidi.length;
+      return this.midiFileNotesMidi.length * this.melodyRepetition;
     },
     lastNoteDuration() {
       return this.midiFileNotesDuration[this.midiFileNotesDuration.length - 1];
     },
   },
   methods: {
-    ...mapActions('piano', ['evaluateRhythmType']),
+    ...mapActions('piano', ['evaluateMelodyType']),
     setTimeLimit() {
       if (this.timeoutInSeconds !== 0) {
         this.timeLimitUniqueIdentifier = window.setTimeout(() => {
@@ -70,7 +71,7 @@ export default {
       this.$emit('footnote', noteMessage);
     },
     evaluate() {
-      this.evaluateRhythmType();
+      this.evaluateMelodyType(this.melodyRepetition);
     },
   },
   mounted() {
@@ -81,6 +82,15 @@ export default {
     window.clearTimeout(this.timeLimitUniqueIdentifier);
   },
   watch: {
+    playedNotesMidi: {
+      deep: true,
+      handler: function() {
+        const playedNoteIndex = (this.playedNotesMidi.length - 1);
+        const referenceIndex = playedNoteIndex % this.midiFileNotesMidi.length;
+        const hasError = this.playedNotesMidi[playedNoteIndex] !== this.midiFileNotesMidi[referenceIndex];
+        if (hasError) this.$emit('finishedPlaying');
+      },
+    },
     playProgress(value) {
       // When the last note was pressed, we wait the duration of the last note
       // plus a second before indicating the end of the playing state
@@ -88,12 +98,6 @@ export default {
         this.timerUniqueIdentifier = setTimeout(() => {
           this.$emit('finishedPlaying');
         }, this.lastNoteDuration + 1000);
-      }
-    },
-    pressedKeys() {
-      if (!this.isFirstNotePressed) {
-        // this.stopHint();
-        this.isFirstNotePressed = true;
       }
     },
   },

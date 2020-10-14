@@ -77,5 +77,8 @@ export default {
     },
     evaluateSpeedType: ({ commit }) => {
         commit('evaluateSpeedType');
+    },
+    evaluateMelodyType: ({ commit }, melodyRepetion) => {
+        commit('evaluateMelodyType', melodyRepetion);
     }
 }

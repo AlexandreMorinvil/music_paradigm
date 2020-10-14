@@ -116,7 +116,6 @@ export default {
         for (let i in notes) {
             state.midiFile.notes.midi.push(notes[i].midi);
             state.midiFile.notes.time.push(notes[i].time * 1000);
-            state.midiFile.notes.ticks.push(notes[i].ticks);
             state.midiFile.notes.name.push(notes[i].name);
             state.midiFile.notes.pitch.push(notes[i].pitch);
             state.midiFile.notes.octave.push(notes[i].octave);
@@ -137,6 +136,7 @@ export default {
             minSequencePlayed: config.minSequencePlayed || 1
         });
     },
+
     evaluateRhythmType: (state) => {
         // Evaluate the performance according to get specific metrics
         Object.assign(state.played.evaluation,
@@ -147,6 +147,20 @@ export default {
             state.played.evaluation.results, {
             minNoteAccuracy: config.minNoteAccuracy || 100,
             maxRhythmError: config.maxRhythmError || 15
+        });
+    },
+
+    evaluateMelodyType: (state, melodyRepetion) => {
+        const reference = functions.multiplyMidiFileNotes(state, melodyRepetion);
+
+        // Evaluate the performance according to get specific metrics
+        Object.assign(state.played.evaluation,
+            notePerformance.evaluateMelodyType(reference, state.played.notes));
+
+        // Grade the performance according to obtained metrics to provide feedback
+        state.played.evaluation.grades = notePerformance.gradeMelodyType(
+            state.played.evaluation.results, {
+            minNoteAccuracy: config.minNoteAccuracy || 100
         });
     }
 }

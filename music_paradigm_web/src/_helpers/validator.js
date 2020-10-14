@@ -97,6 +97,7 @@ const validateBlock = function (block, index = null) {
         "skipStepButton",
         "skipStepButtonMessage",
         "successFeedbackMessage",
+        "melodyRepetition",
         "successesForSkip",
     ]
     Object.keys(block).forEach(key => {
@@ -131,6 +132,7 @@ const validateAttributeType = function (key, value) {
         case "numberRepetition":
         case "timeoutInSeconds":
         case "successesForSkip":
+        case "melodyRepetition":
             if (!(typeof value === "number"))
                 throw new Error(`The key '${key}' must be of type 'Number'`);
             break;
