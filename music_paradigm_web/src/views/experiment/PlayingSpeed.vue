@@ -11,20 +11,20 @@
     </div>
 
     <div id="playing-progress-bar" class="playing-progress-bar-area">
-      <progress id="progress-bar" :value="timeProgress" :max="maxPlayProgress"></progress>
+      <progress id="progress-bar" :value="playProgress" :max="maxPlayProgress"></progress>
     </div>
   </div>
 </template>
 
 <script>
-import "@/styles/playingTemplate.css";
-import { mapActions, mapGetters } from "vuex";
-import VisualPiano from "@/components/VisualPiano.vue";
+import '@/styles/playingTemplate.css';
+import { mapActions, mapGetters } from 'vuex';
+import VisualPiano from '@/components/VisualPiano.vue';
 
 export default {
-  name: "PlayingSpeed",
+  name: 'PlayingSpeed',
   components: {
-    visualPiano: VisualPiano
+    visualPiano: VisualPiano,
   },
   data() {
     return {
@@ -32,59 +32,65 @@ export default {
       defaultTimeLimitInSeconds: 30,
       counterUniqueIdentifier: 0,
       referenceTime: 0,
-      timeProgress: 0,
-      timeStepInMilliseconds: 100
+      playProgress: 0,
+      timeStepInMilliseconds: 100,
+      timeLeftInMilliseconds: 0,
+      minMelodyRepetitionDisplayed: 20,
     };
   },
   computed: {
-    ...mapGetters(["urlExperimentRessource"]),
-    ...mapGetters("experiment", [
-      "hasVisualMedia",
-      "hasPicture",
-      "hasInteractivePiano",
-      "pictureName",
-      "timeoutInSeconds"
+    ...mapGetters(['urlExperimentRessource']),
+    ...mapGetters('experiment', [
+      'hasVisualMedia',
+      'hasPicture',
+      'hasInteractivePiano',
+      'pictureName',
+      'timeoutInSeconds',
+      'melodyRepetition',
     ]),
-    ...mapGetters("piano", ["midiFileNotesMidi", "pressedKeys"]),
+    ...mapGetters('piano', ['midiFileNotesMidi', 'playedNotesMidi']),
     timeLimit() {
       return this.timeoutInSeconds || this.defaultTimeLimitInSeconds;
     },
-    playProgress() {
-      return this.timeProgress;
-    },
     maxPlayProgress() {
-      return this.timeLimit * 1000;
-    }
+      const factor = Math.max(this.minMelodyRepetitionDisplayed, this.melodyRepetition);
+      return this.midiFileNotesMidi.length * factor;
+    },
+    timeLimitInMiliseconds() {
+      return (this.timeoutInSeconds || this.defaultTimeLimitInSeconds) * 1000;
+    },
+    timeLeftDisplay() {
+      var display = '';
+      const minutes = Math.floor((this.timeLeftInMilliseconds / 1000 / 60) % 60);
+      const seconds = Math.floor((this.timeLeftInMilliseconds / 1000) % 60);
+      if (minutes > 0) {
+        display += `${minutes} minutes `;
+      }
+      display += `${seconds} seconds`;
+      return display;
+    },
   },
   methods: {
-    ...mapActions("piano", ["evaluateSpeedType"]),
-    startTimeLimit() {
+    ...mapActions('piano', ['evaluateSpeedType']),
+    startCountdown() {
       this.referenceTime = Date.parse(new Date());
-      this.counterUniqueIdentifier = window.setInterval(
-        this.countUp,
-        this.timeStepInMilliseconds
-      );
+      this.counterUniqueIdentifier = window.setInterval(this.countdown, this.timeStepInMilliseconds);
     },
-    countUp() {
-      this.timeProgress = Date.now() - this.referenceTime;
-    },
-    stopHint() {
-      if (this.hasInteractivePiano) this.$refs.piano.clearDesignatedKeys();
+    countdown() {
+      this.timeLeftInMilliseconds = Math.max(this.timeLimitInMiliseconds - (Date.now() - this.referenceTime), 0);
     },
     updateFootnote(firstNotePressed) {
       var noteMessage;
       if (firstNotePressed) {
-        noteMessage =
-          "The experiment will go to the next step after the time allowed";
+        noteMessage = `The experiment will go to the next step in ${this.timeLeftDisplay}`;
       } else {
-        noteMessage = "The time limit will start after the first key press";
+        noteMessage = 'The time limit will start after the first key press';
       }
-
-      this.$emit("footnote", noteMessage);
+      this.$emit('footnote', noteMessage);
     },
     evaluate() {
       this.evaluateSpeedType();
-    }
+    },
   },
   beforeMount() {},
   mounted() {
@@ -94,23 +100,25 @@ export default {
     window.clearInterval(this.counterUniqueIdentifier);
   },
   watch: {
-    playProgress(value) {
-      // When the time is over we indicate the end of the playing state
-      if (value >= this.maxPlayProgress) {
-        this.$emit("finishedPlaying");
-      }
-    },
-    pressedKeys() {
+    playedNotesMidi() {
       if (!this.playingStarted) {
-        this.startTimeLimit();
-        this.updateFootnote(true);
-        // this.stopHint();
+        this.startCountdown();
         this.playingStarted = true;
       }
-    }
-  }
+      if (this.midiFileNotesMidi.includes(this.playedNotesMidi[this.playedNotesMidi.length - 1])) {
+        this.playProgress += 1;
+      }
+    },
+    timeLeftInMilliseconds(value) {
+      // When the time is over we indicate the end of the playing state
+      if (value <= 0) {
+        this.$emit('finishedPlaying');
+      } else {
+        this.updateFootnote(true);
+      }
+    },
+  },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

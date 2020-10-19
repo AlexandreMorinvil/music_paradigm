@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     startCountdown() {
-      this.timeLeftInMilliseconds = this.timeLimitInSeconds * 1000;
+      // this.timeLeftInMilliseconds = this.timeLimitInSeconds * 1000;
       this.referenceTime = Date.parse(new Date());
       this.counterUniqueIdentifier = window.setInterval(this.countdown, this.timeStepInMilliseconds);
     },
