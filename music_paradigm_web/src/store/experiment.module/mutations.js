@@ -94,5 +94,4 @@ export default {
     }
 }
 
-// IMPLEMENT THE Text Image stacks
 // Speed Play fixed

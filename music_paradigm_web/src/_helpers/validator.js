@@ -165,32 +165,43 @@ const validateAttributeType = function (key, value) {
             // Verification in the elments of the array
             switch (key) {
                 // Arrays of String
-                case "textContent":
-                case "pictureFileName":
                 case "helperImageFileName":
-                case "videoFileName":
                     value.forEach((element, index) => {
                         if (!(typeof element === "string"))
                             throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String'`);
                     });
                     break;
 
-                // Array of String or boolean    
+                // Array of String or boolean OR array of array of string or boolean  
                 case "interactivePiano":
                     value.forEach((element, index) => {
-                        if (!(typeof element === "string" || typeof element === "boolean")) {
-                            throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String' or boolean`);
+                        if (!(typeof element === "string" || typeof element === "boolean" || Array.isArray(element))) {
+                            throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String' or boolean or array`);
                         }
 
                         const allowedEntries = ["midi", "first"]
                         if (typeof element === "string" && !allowedEntries.includes(element)) {
                             throw new Error(`The element number ${index + 1} in the array of the key '${key}' cannot have the value ${element}`);
                         }
+
+                        if (Array.isArray(element))
+                            element.forEach((subElement, subIndex) => {
+                                if (!(typeof subElement === "string" || typeof subElement === "boolean")) {
+                                    throw new Error(`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String' or boolean`);
+                                }
+
+                                if (typeof subElement === "string" && !allowedEntries.includes(subElement)) {
+                                    throw new Error(`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' cannot have the value ${subElement}`);
+                                }
+                            });
                     });
                     break;
 
                 // Array of String or array of array of strings
                 case "midiFileName":
+                case "pictureFileName":
+                case "textContent":
+                case "videoFileName":
                     value.forEach((element, index) => {
                         if (!(typeof element === "string" || Array.isArray(element))) {
                             throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String' or boolean`);

@@ -31,10 +31,10 @@ const schema = new Schema(
                         required: true,
                         //enum: ["cue", "end", "feedback", "instruction", "playing", "rest", "video"]
                     },
-                    textContent: { type: [String], default: undefined },
+                    textContent: { type: [], default: undefined },
+                    pictureFileName: { type: [], default: undefined },
                     interactivePiano: { type: [], default: undefined },
-                    pictureFileName: { type: [String], default: undefined },
-                    midiFileName: { type: [], default: undefined },
+                    midiFileName: { type: [String], default: undefined },
                     videoFileName: { type: [String], default: undefined },
                     numberRepetition: { type: Number, default: undefined },
                     followedBy: { type: Boolean, default: undefined },

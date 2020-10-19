@@ -52,7 +52,7 @@ function assignCursor(flow, cursorToCopy) {
             current: {
                 index: 0,
                 innerStepIndex: 0,
-                piledMediaIndex: 0,
+                piledContentIndex: 0,
                 isBeyondEnd: false
             },
             navigation: {
@@ -79,13 +79,13 @@ function moveCursorNext(flow, cursor, isInitialized) {
 }
 
 function moveCursorSkipRepetions(state, flow, cursor, isInitialized) {
-    const initialPiledMediaIndex = cursor.current.piledMediaIndex;
+    const initialpiledContentIndex = cursor.current.piledContentIndex;
     do {
         moveCursorNext(flow, cursor, isInitialized);
         stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
     } while (
         cursor.current.index <= cursor.navigation.indexGroupEnd &&
-        cursor.current.piledMediaIndex === initialPiledMediaIndex
+        cursor.current.piledContentIndex === initialpiledContentIndex
     )
 }
 
@@ -109,13 +109,13 @@ function moveCursorNextStep(flow, cursor, isInitialized = {}) {
 
             else if (cursor.navigation.numberPiledMedia > 1) {
                 cursor.navigation.numberPiledMedia -= 1;
-                cursor.current.piledMediaIndex += 1;
+                cursor.current.piledContentIndex += 1;
             }
         }
 
         // Otherwise, if the next step is beyond a group of blocks, we reset the piled content index
         else if (cursor.navigation.indexNext > cursor.navigation.indexGroupEnd) {
-            cursor.current.piledMediaIndex = 0;
+            cursor.current.piledContentIndex = 0;
         }
 
         // We move the current intdex to the next step
@@ -134,10 +134,7 @@ function updateCursorNavigation(flow, cursor) {
     // Parsing the block's flow navigation parameters
     const currentBlock = flow[cursor.current.index];
     const {
-        // Type of block
-        type,
-
-        // Media files array
+        // Content arrays
         textContent,
         pictureFileName,
         midiFileName,
@@ -153,28 +150,28 @@ function updateCursorNavigation(flow, cursor) {
     cursor.current.isInSkipableChain = (typeof isInSkipableChain === 'boolean') ? isInSkipableChain : false;
 
     // Set all the navigation parameters
-    setCursorInnerStepsTotal(cursor, type, textContent, pictureFileName);
+    setCursorInnerStepsTotal(cursor, textContent, pictureFileName);
     setCursorLoopStart(cursor, numberRepetition);
-    setCursorMediaDepilingStart(cursor, midiFileName, videoFileName);
+    setCursorMediaDepilingStart(cursor, midiFileName, videoFileName, textContent, pictureFileName);
     setCursorNextStep(cursor, followedBy);
 }
 
-function setCursorInnerStepsTotal(cursor, type, textContent, pictureFileName) {
-    // The only type of blocks to have inner steps is "intruction" blocks. All other block do not have inner steps
-    if (type !== "instruction") {
-        cursor.navigation.totalInnerSteps = 0;
+function setCursorInnerStepsTotal(cursor, textContent, pictureFileName) {
+
+    let innerStepsTextContent = UNSET_INDEX;
+    if (Array.isArray(textContent)) {
+        const currentTextContent = textContent[cursor.current.piledContentIndex];
+        innerStepsTextContent = Array.isArray(currentTextContent) ? (currentTextContent.length - 1) : UNSET_INDEX;
     }
 
-    // If we are in an instruction block, the total amount of inner steps the maximum number of content elements
-    // (text or pictures) in the block to which we substract 1 in order to compare the inner index to the total indexes.
-    else {
-        // Count the number of piled content elements of each type and detemine the maximum number of content elements 
-        const numberTextContent = Array.isArray(textContent) ? (textContent.length) : 0;
-        const numberPictureFiles = Array.isArray(pictureFileName) ? (pictureFileName.length) : 0;
-
-        const maxNumberContentElement = Math.max(numberTextContent, numberPictureFiles);
-        cursor.navigation.totalInnerSteps = (maxNumberContentElement - 1);
+    let innerStepsPictureFile = UNSET_INDEX;
+    if (Array.isArray(pictureFileName)) {
+        const currentPictureFile = pictureFileName[cursor.current.piledContentIndex];
+        innerStepsPictureFile = Array.isArray(currentPictureFile) ? (currentPictureFile.length - 1) : UNSET_INDEX;
     }
+
+    const maxNumberContentElement = Math.max(innerStepsTextContent, innerStepsPictureFile);
+    cursor.navigation.totalInnerSteps = maxNumberContentElement;
 }
 
 function setCursorLoopStart(cursor, numberRepetition) {
@@ -204,9 +201,9 @@ function setCursorLoopStart(cursor, numberRepetition) {
     }
 }
 
-function setCursorMediaDepilingStart(cursor, midiFileName, videoFileName) {
+function setCursorMediaDepilingStart(cursor, midiFileName, videoFileName, textContent, pictureFileName) {
 
-    // The cursor will loop to the start of the pile and use the content corresponding to the index named "piledMediaIndex"
+    // The cursor will loop to the start of the pile and use the content corresponding to the index named "piledContentIndex"
     // Let A, B, C and D be three blocks, that are not instruction blocks.
     //
     //              A                                   B                               C                               D
@@ -221,11 +218,13 @@ function setCursorMediaDepilingStart(cursor, midiFileName, videoFileName) {
     //  The execution order would be :
     //  A[0] - B[0] - C[0] - A[1] - B[1] - C[1] - D[0] - D[1] - D[2]
 
-    // Count the number of piled media elements of each type and detemine the maximum number of piled media content. 
+    // Count the number of piled media elements of each type and detemine the maximum number of piled content. 
     const numberMidiFiles = Array.isArray(midiFileName) ? (midiFileName.length) : 0;
     const numberVideoFiles = Array.isArray(videoFileName) ? (videoFileName.length) : 0;
+    const numberTextContent = Array.isArray(textContent) ? (textContent.length) : 0;
+    const numberPictureFile = Array.isArray(pictureFileName) ? (pictureFileName.length) : 0;
 
-    const maxNumberContentElement = Math.max(numberMidiFiles, numberVideoFiles);
+    const maxNumberContentElement = Math.max(numberMidiFiles, numberVideoFiles, numberTextContent, numberPictureFile);
 
     // Initialize the number of piled media content (playable media pile index & number of medias) if :
     // 1. There is more than one media content element (midi/video) (so the total index > 1), 

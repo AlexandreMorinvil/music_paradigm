@@ -67,10 +67,10 @@ function updateStateMediaFiles(currentState, flow, cursor, isInitialized) {
     } = currentBlock;
 
     // Parsing the cursor
-    const piledMediaIndex = cursor.current.piledMediaIndex;
+    const piledContentIndex = cursor.current.piledContentIndex;
 
     // Update the media files. If no new value is found, the previous value is used (it is kept unchanged)
-    const mediaIndex = piledMediaIndex;
+    const mediaIndex = piledContentIndex;
 
     const updatedMidiFileName = Array.isArray(midiFileName) ? (midiFileName[mediaIndex] || null) : null;
     const updatedVideoFileName = Array.isArray(videoFileName) ? (videoFileName[mediaIndex] || null) : null;
@@ -88,8 +88,6 @@ function updateStateContent(currentState, flow, cursor, isInitialized) {
     // Parsing the current block
     const currentBlock = flow[cursor.current.index];
     const {
-        // Type of block
-        type,
         // Content elements
         textContent,
         pictureFileName,
@@ -98,16 +96,19 @@ function updateStateContent(currentState, flow, cursor, isInitialized) {
     } = currentBlock;
 
     // Parsing the cursor
+    const piledContentIndex = cursor.current.piledContentIndex;
+
+    let updatedTextContent = Array.isArray(textContent) ? (textContent[piledContentIndex] || null) : null;
+    let updatedPictureFileName = Array.isArray(pictureFileName) ? (pictureFileName[piledContentIndex] || null) : null;
+    let updatedHelperImageFileName = Array.isArray(helperImageFileName) ? (helperImageFileName[piledContentIndex] || null) : null;
+    let updatedInteractivePiano = Array.isArray(interactivePiano) ? (interactivePiano[piledContentIndex] || false) : false;
+
     const innerStepIndex = cursor.current.innerStepIndex;
-    const piledMediaIndex = cursor.current.piledMediaIndex;
 
-    // Update the content. If no value is found, no value is set
-    const contentIndex = (type === "instruction") ? innerStepIndex : piledMediaIndex;
-
-    const updatedTextContent = Array.isArray(textContent) ? (textContent[contentIndex] || null) : null;
-    const updatedPictureFileName = Array.isArray(pictureFileName) ? (pictureFileName[contentIndex] || null) : null;
-    const updatedHelperImageFileName = Array.isArray(helperImageFileName) ? (helperImageFileName[contentIndex] || null) : null;
-    const updatedInteractivePiano = Array.isArray(interactivePiano) ? (interactivePiano[contentIndex] || false) : false;
+    if (Array.isArray(updatedTextContent)) updatedTextContent = updatedTextContent[innerStepIndex];
+    if (Array.isArray(updatedPictureFileName)) updatedPictureFileName = updatedPictureFileName[innerStepIndex];
+    if (Array.isArray(updatedHelperImageFileName)) updatedHelperImageFileName = updatedHelperImageFileName[innerStepIndex];
+    if (Array.isArray(updatedInteractivePiano)) updatedInteractivePiano = updatedInteractivePiano[innerStepIndex];
 
     currentState.content.text = updatedTextContent || "";
     currentState.content.pictureName = updatedPictureFileName || "";
