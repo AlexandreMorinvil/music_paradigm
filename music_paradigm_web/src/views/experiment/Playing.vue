@@ -27,7 +27,7 @@
 
 <script>
 import '@/styles/experimentStateTemplate.css';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 import PlayingSpeedComponent from './PlayingSpeed';
 import PlayingRhythmComponent from './PlayingRhythm';
@@ -57,6 +57,7 @@ export default {
   },
   computed: {
     ...mapGetters(['urlExperimentRessource']),
+    ...mapGetters('piano', ['hasSuccess']),
     ...mapGetters('experiment', [
       'hasText',
       'hasFootnote',
@@ -78,6 +79,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions('experiment', ['addSuccess']),
     handleFootnote(footNote) {
       this.footnote = footNote;
     },
@@ -87,6 +89,7 @@ export default {
     },
     evaluatePlayedNotes() {
       this.$refs.playingMode.evaluate();
+      if(this.hasSuccess) this.addSuccess();
     },
     emitSkipSignal() {
       this.$emit('skipRequest');

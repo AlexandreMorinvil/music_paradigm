@@ -65,12 +65,12 @@ export default {
     },
 
     moveNextStep: (state) => {
-        cursorHandler.moveCursorNext(state.flow, state.cursor, state.isInitialized);
+        cursorHandler.advanceCursor(state.state, state.flow, state.cursor, state.isInitialized);
         stateHandler.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
     },
 
     movePostSkip: (state) => {
-        cursorHandler.movePostSkip(state.state, state.flow, state.cursor, state.isInitialized);
+        cursorHandler.skipCursor(state.state, state.flow, state.cursor, state.isInitialized);
         stateHandler.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
     },
 
@@ -86,5 +86,15 @@ export default {
 
     leaveExperiment: () => {
         routerNavigation.goToRootPage();
+    },
+
+    addSuccess: (state) => {
+        state.state.record.sucesses += 1;
+        state.state.record.successesInLoop += 1;
     }
 }
+
+/// IMPLEMENT THE HANDLING OF SKIPS ON SUCCESSES
+// IMPLEMENT THE COSTUMIZED FOOTNOTES
+// IMPLEMENT THE Text Image stacks
+// Speed Play fixed

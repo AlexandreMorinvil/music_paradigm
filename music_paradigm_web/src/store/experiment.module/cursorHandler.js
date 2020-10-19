@@ -1,6 +1,28 @@
-import stateHandler from './stateHandler'
+import stateHandler from './stateHandler';
+import { UNSET_INDEX } from './constants';
 
-function countStepsLeft (flow, startPointCursor) {
+export default {
+    countStepsLeft,
+    assignCursor,
+    skipCursor,
+    advanceCursor
+}
+
+function skipCursor(state, flow, cursor, isInitialized) {
+    do {
+        moveCursorNext(flow, cursor, isInitialized);
+        stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
+    } while (cursor.current.isInSkipableChain)
+}
+
+function advanceCursor(state, flow, cursor, isInitialized) {
+    if (state.record.successesInLoop >= flow[cursor.current.index].successesForSkipLoop)
+        moveCursorSkipRepetions(state, flow, cursor, isInitialized);
+    else
+        moveCursorNext(flow, cursor, isInitialized)
+}
+
+function countStepsLeft(flow, startPointCursor) {
 
     // Deep copy the cursor (or initialize the cursor at the start by default)
     let stepTracerCursor = assignCursor(flow, startPointCursor);
@@ -17,11 +39,7 @@ function countStepsLeft (flow, startPointCursor) {
     return Math.max(0, stepsCounter);
 }
 
-/**
- * Deep clone a cursor in parameter or assignes default initial values
- * @param {Objecy} cursorToCopy 
- */
-function assignCursor (flow, cursorToCopy) {
+function assignCursor(flow, cursorToCopy) {
 
     // If no cursor is set to be cloned, 
     if (cursorToCopy) {
@@ -39,9 +57,9 @@ function assignCursor (flow, cursorToCopy) {
             },
             navigation: {
                 indexNext: 1,
-                indexPileStart: -1,
-                indexLoopStart: -1,
-                indexGroupEnd: -1,
+                indexPileStart: UNSET_INDEX,
+                indexLoopStart: UNSET_INDEX,
+                indexGroupEnd: UNSET_INDEX,
                 totalInnerSteps: 0,
                 numberRepetition: 1,
                 numberPiledMedia: 0,
@@ -54,7 +72,24 @@ function assignCursor (flow, cursorToCopy) {
     }
 }
 
-function moveCursorNextStep (flow, cursor, isInitialized = {}) {
+
+function moveCursorNext(flow, cursor, isInitialized) {
+    moveCursorNextStep(flow, cursor, isInitialized);
+    updateCursorNavigation(flow, cursor);
+}
+
+function moveCursorSkipRepetions(state, flow, cursor, isInitialized) {
+    const initialPiledMediaIndex = cursor.current.piledMediaIndex;
+    do {
+        moveCursorNext(flow, cursor, isInitialized);
+        stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
+    } while (
+        cursor.current.index <= cursor.navigation.indexGroupEnd &&
+        cursor.current.piledMediaIndex === initialPiledMediaIndex
+    )
+}
+
+function moveCursorNextStep(flow, cursor, isInitialized = {}) {
 
     // Moving to the next inner step if there remains inner steps (only in instruction blocks)
     if (cursor.current.innerStepIndex < cursor.navigation.totalInnerSteps) {
@@ -64,12 +99,10 @@ function moveCursorNextStep (flow, cursor, isInitialized = {}) {
 
     // Moving to a new block
     else if (cursor.navigation.indexNext < flow.length) {
-
         cursor.current.innerStepIndex = 0;
 
         // If the index of the next block is lower than or equal to the index of the current block, this means that we are looping
         if (cursor.navigation.indexNext <= cursor.current.index) {
-
             if (cursor.navigation.numberRepetition > 1) {
                 cursor.navigation.numberRepetition -= 1;
             }
@@ -96,19 +129,20 @@ function moveCursorNextStep (flow, cursor, isInitialized = {}) {
     }
 }
 
-// Read the block for the index specific parameters
-function updateCursorNavigation (flow, cursor) {
+function updateCursorNavigation(flow, cursor) {
 
     // Parsing the block's flow navigation parameters
     const currentBlock = flow[cursor.current.index];
     const {
         // Type of block
         type,
+
         // Media files array
         textContent,
         pictureFileName,
         midiFileName,
         videoFileName,
+
         // Cursor parameters
         numberRepetition,
         followedBy,
@@ -125,8 +159,7 @@ function updateCursorNavigation (flow, cursor) {
     setCursorNextStep(cursor, followedBy);
 }
 
-function setCursorInnerStepsTotal (cursor, type, textContent, pictureFileName) {
-
+function setCursorInnerStepsTotal(cursor, type, textContent, pictureFileName) {
     // The only type of blocks to have inner steps is "intruction" blocks. All other block do not have inner steps
     if (type !== "instruction") {
         cursor.navigation.totalInnerSteps = 0;
@@ -144,7 +177,7 @@ function setCursorInnerStepsTotal (cursor, type, textContent, pictureFileName) {
     }
 }
 
-function setCursorLoopStart (cursor, numberRepetition) {
+function setCursorLoopStart(cursor, numberRepetition) {
 
     // Let A, B, C and D be three blocks, that are not instruction blocks.
     //
@@ -171,7 +204,7 @@ function setCursorLoopStart (cursor, numberRepetition) {
     }
 }
 
-function setCursorMediaDepilingStart (cursor, midiFileName, videoFileName) {
+function setCursorMediaDepilingStart(cursor, midiFileName, videoFileName) {
 
     // The cursor will loop to the start of the pile and use the content corresponding to the index named "piledMediaIndex"
     // Let A, B, C and D be three blocks, that are not instruction blocks.
@@ -229,7 +262,7 @@ function setCursorNextStep(cursor, followedBy) {
         // Reset the loop start in order to be able to loop again with the new media content
         else if (cursor.navigation.numberPiledMedia > 1) {
             cursor.navigation.indexNext = cursor.navigation.indexPileStart;
-            cursor.navigation.indexLoopStart = -1; 
+            cursor.navigation.indexLoopStart = UNSET_INDEX;
         }
 
         // By default, the next block is the following block
@@ -237,32 +270,4 @@ function setCursorNextStep(cursor, followedBy) {
             cursor.navigation.indexNext = cursor.current.index + 1;
         }
     }
-}
-
-function moveCursorNext (flow, cursor, isInitialized) {
-    moveCursorNextStep(flow, cursor, isInitialized);
-    updateCursorNavigation(flow, cursor);
-}
-
-function moveCursorPostSkipRepetions(state, flow, cursor, isInitialized) {
-    do {
-        moveCursorNext(flow, cursor, isInitialized);
-        stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
-    } while (cursor.navigation.numberRepetition > 1 || cursor.current.index < cursor.navigation.indexGroupEnd)
-}
-
-function movePostSkip(state, flow, cursor, isInitialized) {
-    do {
-        moveCursorNext(flow, cursor, isInitialized);
-        stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
-    } while (cursor.current.isInSkipableChain)
-}
-
-export default {
-    countStepsLeft,
-    assignCursor,
-    moveCursorNext,
-    updateCursorNavigation,
-    movePostSkip,
-    moveCursorPostSkipRepetions
 }

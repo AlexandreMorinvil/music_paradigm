@@ -52,7 +52,7 @@ const schema = new Schema(
                     successFeedbackMessage: { type: String, default: undefined },
                     failureFeedbackMessage: { type: String, default: undefined },
                     melodyRepetition: { type: Number, default: undefined },
-                    successesForSkip: { type: Number, default: undefined },
+                    successesForSkipLoop: { type: Number, default: undefined },
                 }
             ]
         }

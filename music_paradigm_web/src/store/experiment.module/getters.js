@@ -139,12 +139,10 @@ export default {
     },
 
     anyPianoKey: (state) => {
-        // Return the "anyPianoKey" value specified by the block if it exists,
-        // otherwise, the default "anyPianoKey" of the experiment is returned.
-        // The "anyPianoKey" parameter indicates whether the user of the experiment
-        // can move to the next step by pressing any piano key (if the value is "true"),
-        // otherwise the experiment will move to the next step only by pressing the
-        // space bar key (if the value is false).
+        // Return the "anyPianoKey" value specified by the block if it exists, otherwise, the default "anyPianoKey" of the 
+        // experiment is returned. The "anyPianoKey" parameter indicates whether the user of the experiment can move to the
+        // next step by pressing any piano key (if the value is "true"), otherwise the experiment will move to the next
+        // step only by pressing the space bar key (if the value is false).
         let anyPianoKey;
 
         if (typeof state.state.settings.anyPianoKey === "boolean")

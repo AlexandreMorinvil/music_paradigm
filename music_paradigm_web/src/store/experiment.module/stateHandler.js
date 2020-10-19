@@ -1,17 +1,19 @@
 import { routerNavigation } from '@/_helpers'
+import { UNSET_INDEX } from './constants';
 
-const updateRoute = function (currentState, flow, cursor, isInitialized) {
-
-    // We update the route
+function updateRoute(currentState, flow, cursor, isInitialized) {
     currentState.type = flow[cursor.current.index].type;
     routerNavigation.moveToState(currentState.type);
-    Object.assign(isInitialized, { route: true, state: false, media: false, content: false });
+    Object.assign(isInitialized, { route: true, record: false, state: false, media: false, content: false });
 }
 
-/**
- * Initializes the state of the experiment according to the block pointed by the cursor
- */
-const updateStateSettings = function (currentState, flow, cursor, isInitialized, generalSettings) {
+function updateRecords(currentState, cursor, isInitialized) {
+    if (cursor.navigation.indexLoopStart === UNSET_INDEX)
+        currentState.record.successesInLoop = 0;
+    Object.assign(isInitialized, { record: true });
+}
+
+function updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings) {
 
     // Parsing the current block's state settings
     const currentBlock = flow[cursor.current.index];
@@ -28,7 +30,7 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
         successFeedbackMessage,
         failureFeedbackMessage,
         melodyRepetition,
-        successesForSkip,
+        successesForSkipLoop,
     } = currentBlock;
 
     // Set the settings for the state. If no value is found, an appropreate default value is set
@@ -45,14 +47,14 @@ const updateStateSettings = function (currentState, flow, cursor, isInitialized,
         successFeedbackMessage: (typeof successFeedbackMessage === 'string') ? successFeedbackMessage : "",
         failureFeedbackMessage: (typeof failureFeedbackMessage === 'string') ? failureFeedbackMessage : "",
         melodyRepetition: (typeof melodyRepetition === 'number') ? melodyRepetition : 1,
-        successesForSkip: (typeof successesForSkip === 'number') ? successesForSkip : generalSettings.successesForSkip,
+        successesForSkipLoop: (typeof successesForSkipLoop === 'number') ? successesForSkipLoop : generalSettings.successesForSkipLoop,
     };
 
     // Indicate that the state (current block's settings) was already initialized 
-    Object.assign(isInitialized, { state: true, media: false, content: false });
+    Object.assign(isInitialized, { state: true });
 }
 
-const updateStateMediaFiles = function (currentState, flow, cursor, isInitialized) {
+function updateStateMediaFiles(currentState, flow, cursor, isInitialized) {
 
     // Parsing the current block
     const currentBlock = flow[cursor.current.index];
@@ -76,10 +78,10 @@ const updateStateMediaFiles = function (currentState, flow, cursor, isInitialize
     currentState.mediaFile.videoName = updatedVideoFileName || oldMediaFile.videoName;
 
     // Indicate that the media files is initialized 
-    Object.assign(isInitialized, { media: true, content: false });
+    Object.assign(isInitialized, { media: true });
 }
 
-const updateStateContent = function (currentState, flow, cursor, isInitialized) {
+function updateStateContent(currentState, flow, cursor, isInitialized) {
 
     // Parsing the current block
     const currentBlock = flow[cursor.current.index];
@@ -114,7 +116,7 @@ const updateStateContent = function (currentState, flow, cursor, isInitialized) 
     Object.assign(isInitialized, { content: false });
 }
 
-const forceEndState = function (currentState, isInitialized, message) {
+function forceEndState(currentState, isInitialized, message) {
 
     // We update the route
     routerNavigation.moveToState("end");
@@ -125,18 +127,19 @@ const forceEndState = function (currentState, isInitialized, message) {
     currentState.content.interactivePiano = false;
 
     // We set the initialization status to true
-    Object.assign(isInitialized, { route: true, state: true, media: true, content: true });
+    Object.assign(isInitialized, { route: true, record: true, state: true, media: true, content: true });
 }
 
-const updateStateOnSkip = function (currentState, flow, cursor, isInitialized) {
+function updateStateOnSkip(currentState, flow, cursor, isInitialized) {
     if (cursor.current.isBeyondEnd) forceEndState(currentState, isInitialized);
     else if (!isInitialized.media) updateStateMediaFiles(currentState, flow, cursor, isInitialized);
 }
 
-const updateState = function (currentState, flow, cursor, isInitialized, generalSettings) {
+function updateState(currentState, flow, cursor, isInitialized, generalSettings) {
     if (cursor.current.isBeyondEnd) forceEndState(currentState, isInitialized);
     else {
         if (!isInitialized.route) updateRoute(currentState, flow, cursor, isInitialized);
+        if (!isInitialized.record) updateRecords(currentState, cursor, isInitialized);
         if (!isInitialized.state) updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings);
         if (!isInitialized.media) updateStateMediaFiles(currentState, flow, cursor, isInitialized);
         if (!isInitialized.content) updateStateContent(currentState, flow, cursor, isInitialized);
