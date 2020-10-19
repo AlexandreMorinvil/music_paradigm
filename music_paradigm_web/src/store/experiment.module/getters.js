@@ -1,14 +1,14 @@
 import constants from "./constants"
-import functions from "./functions"
+import cursorHandler from "./cursorHandler"
 
 export default {
     // Getters for the experiment flow's information
     stepsTotalCount: (state) => {
-        return functions.countStepsLeft(state.flow);
+        return cursorHandler.countStepsLeft(state.flow);
     },
 
     stepsLeftCount: (state) => {
-        return functions.countStepsLeft(state.flow, state.cursor);
+        return cursorHandler.countStepsLeft(state.flow, state.cursor);
     },
 
     // Getters for the experiment settings

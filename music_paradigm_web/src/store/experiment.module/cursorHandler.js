@@ -1,6 +1,6 @@
-import { routerNavigation } from '@/_helpers'
+import stateHandler from './stateHandler'
 
-const countStepsLeft = function (flow, startPointCursor) {
+function countStepsLeft (flow, startPointCursor) {
 
     // Deep copy the cursor (or initialize the cursor at the start by default)
     let stepTracerCursor = assignCursor(flow, startPointCursor);
@@ -21,7 +21,7 @@ const countStepsLeft = function (flow, startPointCursor) {
  * Deep clone a cursor in parameter or assignes default initial values
  * @param {Objecy} cursorToCopy 
  */
-const assignCursor = function (flow, cursorToCopy) {
+function assignCursor (flow, cursorToCopy) {
 
     // If no cursor is set to be cloned, 
     if (cursorToCopy) {
@@ -54,7 +54,7 @@ const assignCursor = function (flow, cursorToCopy) {
     }
 }
 
-const moveCursorNextStep = function (flow, cursor, isInitialized = {}) {
+function moveCursorNextStep (flow, cursor, isInitialized = {}) {
 
     // Moving to the next inner step if there remains inner steps (only in instruction blocks)
     if (cursor.current.innerStepIndex < cursor.navigation.totalInnerSteps) {
@@ -65,18 +65,15 @@ const moveCursorNextStep = function (flow, cursor, isInitialized = {}) {
     // Moving to a new block
     else if (cursor.navigation.indexNext < flow.length) {
 
-        // We systematically reset the inner step index to 0 when moving to a new block
         cursor.current.innerStepIndex = 0;
 
         // If the index of the next block is lower than or equal to the index of the current block, this means that we are looping
         if (cursor.navigation.indexNext <= cursor.current.index) {
 
-            // If there remains reptitions: we loop back and substract a repetition
             if (cursor.navigation.numberRepetition > 1) {
                 cursor.navigation.numberRepetition -= 1;
             }
 
-            // If there remains media content to depile: we loop back and decrement the count of piled content
             else if (cursor.navigation.numberPiledMedia > 1) {
                 cursor.navigation.numberPiledMedia -= 1;
                 cursor.current.piledMediaIndex += 1;
@@ -100,7 +97,7 @@ const moveCursorNextStep = function (flow, cursor, isInitialized = {}) {
 }
 
 // Read the block for the index specific parameters
-const updateCursorNavigation = function (flow, cursor) {
+function updateCursorNavigation (flow, cursor) {
 
     // Parsing the block's flow navigation parameters
     const currentBlock = flow[cursor.current.index];
@@ -113,7 +110,7 @@ const updateCursorNavigation = function (flow, cursor) {
         midiFileName,
         videoFileName,
         // Cursor parameters
-        numberRepetition, maxNumBlock, numBlock, // Those three names are kept for backward compatibility
+        numberRepetition,
         followedBy,
         isInSkipableChain,
     } = currentBlock;
@@ -123,12 +120,12 @@ const updateCursorNavigation = function (flow, cursor) {
 
     // Set all the navigation parameters
     setCursorInnerStepsTotal(cursor, type, textContent, pictureFileName);
-    setCursorLoopStart(cursor, Math.max(numberRepetition || 0, maxNumBlock || 0, numBlock || 0));
+    setCursorLoopStart(cursor, numberRepetition);
     setCursorMediaDepilingStart(cursor, midiFileName, videoFileName);
     setCursorNextStep(cursor, followedBy);
 }
 
-const setCursorInnerStepsTotal = function (cursor, type, textContent, pictureFileName) {
+function setCursorInnerStepsTotal (cursor, type, textContent, pictureFileName) {
 
     // The only type of blocks to have inner steps is "intruction" blocks. All other block do not have inner steps
     if (type !== "instruction") {
@@ -147,7 +144,7 @@ const setCursorInnerStepsTotal = function (cursor, type, textContent, pictureFil
     }
 }
 
-const setCursorLoopStart = function (cursor, numberRepetition) {
+function setCursorLoopStart (cursor, numberRepetition) {
 
     // Let A, B, C and D be three blocks, that are not instruction blocks.
     //
@@ -174,7 +171,7 @@ const setCursorLoopStart = function (cursor, numberRepetition) {
     }
 }
 
-const setCursorMediaDepilingStart = function (cursor, midiFileName, videoFileName) {
+function setCursorMediaDepilingStart (cursor, midiFileName, videoFileName) {
 
     // The cursor will loop to the start of the pile and use the content corresponding to the index named "piledMediaIndex"
     // Let A, B, C and D be three blocks, that are not instruction blocks.
@@ -201,8 +198,7 @@ const setCursorMediaDepilingStart = function (cursor, midiFileName, videoFileNam
     // 1. There is more than one media content element (midi/video) (so the total index > 1), 
     // 2. The cursor is not currently depiling a content pile (thus the number of piled content left is 1 or 0)
     // 3. The current index is not the start index of a previous pile (to avoid depiling a pile twice)
-    // 4. The current index is beyond the loop end (in order to not start a loop of depilement within 
-    //    a group of blocks)
+    // 4. The current index is beyond the loop end (in order to not start a loop of depilement within a group of blocks)
     if (maxNumberContentElement > 1 &&
         cursor.navigation.numberPiledMedia <= 1 &&
         cursor.current.index !== cursor.navigation.indexPileStart &&
@@ -212,11 +208,10 @@ const setCursorMediaDepilingStart = function (cursor, midiFileName, videoFileNam
     }
 }
 
-const setCursorNextStep = function (cursor, followedBy) {
+function setCursorNextStep(cursor, followedBy) {
 
     // Updating the next index
-    // If the block is followed by the next block, we will necessarily go to the next block
-    // and we know that we are within a group of blocks
+    // If the block is followed by the next block, we will necessarily go to the next block and we know that we are within a group of blocks
     if (followedBy) {
         cursor.navigation.indexNext = cursor.current.index + 1;
     }
@@ -231,11 +226,10 @@ const setCursorNextStep = function (cursor, followedBy) {
         }
 
         // If there remains content to depile:
-        //  - We will loop back to that point
-        //  - We reset the loop start in order to be able to loop again with the new media content
+        // Reset the loop start in order to be able to loop again with the new media content
         else if (cursor.navigation.numberPiledMedia > 1) {
             cursor.navigation.indexNext = cursor.navigation.indexPileStart;
-            cursor.navigation.indexLoopStart = -1;
+            cursor.navigation.indexLoopStart = -1; 
         }
 
         // By default, the next block is the following block
@@ -245,152 +239,23 @@ const setCursorNextStep = function (cursor, followedBy) {
     }
 }
 
-const updateRoute = function (currentState, flow, cursor, isInitialized) {
-
-    // We update the route
-    currentState.type = flow[cursor.current.index].type;
-    routerNavigation.moveToState(currentState.type);
-    Object.assign(isInitialized, { route: true, state: false, media: false, content: false });
-}
-
-/**
- * Initializes the state of the experiment according to the block pointed by the cursor
- */
-const updateStateSettings = function (currentState, flow, cursor, isInitialized, generalSettings) {
-
-    // Parsing the current block's state settings
-    const currentBlock = flow[cursor.current.index];
-    const {
-        anyPianoKey,
-        enableSoundFlag,
-        playingMode,
-        timeoutInSeconds,
-        footnote,
-        logFlag,
-        hideFeedbackSmiley,
-        skipStepButton,
-        skipStepButtonMessage,
-        successFeedbackMessage,
-        failureFeedbackMessage,
-        melodyRepetition,
-        successesForSkip,
-    } = currentBlock;
-
-    // Set the settings for the state. If no value is found, an appropreate default value is set
-    currentState.settings = {
-        anyPianoKey: (typeof anyPianoKey !== 'undefined') ? Boolean(anyPianoKey) : generalSettings.anyPianoKey,
-        enableSoundFlag: (typeof enableSoundFlag !== 'undefined') ? Boolean(enableSoundFlag) : generalSettings.enableSoundFlag,
-        playingMode: (typeof playingMode === 'string') ? playingMode : generalSettings.playingMode,
-        timeoutInSeconds: (typeof timeoutInSeconds === 'number') ? timeoutInSeconds : 0,
-        footnote: (typeof footnote !== 'undefined') ? Boolean(footnote) : generalSettings.footnote,
-        logFlag: (typeof logFlag === 'boolean') ? logFlag : generalSettings.logFlag,
-        hideFeedbackSmiley: (typeof hideFeedbackSmiley === 'boolean') ? hideFeedbackSmiley : generalSettings.hideFeedbackSmiley,
-        skipStepButton: (typeof skipStepButton === 'string') ? skipStepButton : "",
-        skipStepButtonMessage: (typeof skipStepButtonMessage === 'string') ? skipStepButtonMessage : "",
-        successFeedbackMessage: (typeof successFeedbackMessage === 'string') ? successFeedbackMessage : "",
-        failureFeedbackMessage: (typeof failureFeedbackMessage === 'string') ? failureFeedbackMessage : "",
-        melodyRepetition: (typeof melodyRepetition === 'number') ? melodyRepetition : 1,
-        successesForSkip: (typeof successesForSkip === 'number') ? successesForSkip : generalSettings.successesForSkip,
-    };
-
-    // Indicate that the state (current block's settings) was already initialized 
-    Object.assign(isInitialized, { state: true, media: false, content: false });
-}
-
-const updateStateMediaFiles = function (currentState, flow, cursor, isInitialized) {
-
-    // Parsing the current block
-    const currentBlock = flow[cursor.current.index];
-    const {
-        // Media files
-        midiFileName,
-        videoFileName
-    } = currentBlock;
-
-    // Parsing the cursor
-    const piledMediaIndex = cursor.current.piledMediaIndex;
-
-    // Update the media files. If no new value is found, the previous value is used (it is kept unchanged)
-    const mediaIndex = piledMediaIndex;
-
-    const updatedMidiFileName = Array.isArray(midiFileName) ? (midiFileName[mediaIndex] || null) : null;
-    const updatedVideoFileName = Array.isArray(videoFileName) ? (videoFileName[mediaIndex] || null) : null;
-
-    const oldMediaFile = currentState.mediaFile;
-    currentState.mediaFile.midiName = updatedMidiFileName || oldMediaFile.midiName;
-    currentState.mediaFile.videoName = updatedVideoFileName || oldMediaFile.videoName;
-
-    // Indicate that the media files is initialized 
-    Object.assign(isInitialized, { media: true, content: false });
-}
-
-const updateStateContent = function (currentState, flow, cursor, isInitialized) {
-
-    // Parsing the current block
-    const currentBlock = flow[cursor.current.index];
-    const {
-        // Type of block
-        type,
-        // Content elements
-        textContent,
-        pictureFileName,
-        helperImageFileName,
-        interactivePiano
-    } = currentBlock;
-
-    // Parsing the cursor
-    const innerStepIndex = cursor.current.innerStepIndex;
-    const piledMediaIndex = cursor.current.piledMediaIndex;
-
-    // Update the content. If no value is found, no value is set
-    const contentIndex = (type === "instruction") ? innerStepIndex : piledMediaIndex;
-
-    const updatedTextContent = Array.isArray(textContent) ? (textContent[contentIndex] || null) : null;
-    const updatedPictureFileName = Array.isArray(pictureFileName) ? (pictureFileName[contentIndex] || null) : null;
-    const updatedHelperImageFileName = Array.isArray(helperImageFileName) ? (helperImageFileName[contentIndex] || null) : null;
-    const updatedInteractivePiano = Array.isArray(interactivePiano) ? (interactivePiano[contentIndex] || false) : false;
-
-    currentState.content.text = updatedTextContent || "";
-    currentState.content.pictureName = updatedPictureFileName || "";
-    currentState.content.helperImageName = updatedHelperImageFileName || "";
-    currentState.content.interactivePiano = updatedInteractivePiano || false;
-
-    // Indicate that the media files is initialized 
-    Object.assign(isInitialized, { content: false });
-}
-
-const forceEndState = function (currentState, isInitialized, message) {
-
-    // We update the route
-    routerNavigation.moveToState("end");
-
-    // We render the state display as empty
-    currentState.content.text = message || "";
-    currentState.content.pictureName = "";
-    currentState.content.interactivePiano = false;
-
-    // We set the initialization status to true
-    Object.assign(isInitialized, { route: true, state: true, media: true, content: true });
-}
-
-const moveCursorNext = function (flow, cursor, isInitialized) {
+function moveCursorNext (flow, cursor, isInitialized) {
     moveCursorNextStep(flow, cursor, isInitialized);
     updateCursorNavigation(flow, cursor);
 }
 
-const updateStateOnSkip = function (currentState, flow, cursor, isInitialized) {
-    if (cursor.current.isBeyondEnd) forceEndState(currentState, isInitialized);
-    else if (!isInitialized.media) updateStateMediaFiles(currentState, flow, cursor, isInitialized);
+function moveCursorPostSkipRepetions(state, flow, cursor, isInitialized) {
+    do {
+        moveCursorNext(flow, cursor, isInitialized);
+        stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
+    } while (cursor.navigation.numberRepetition > 1 || cursor.current.index < cursor.navigation.indexGroupEnd)
 }
 
-const updateState = function (currentState, flow, cursor, isInitialized, generalSettings) {
-    if (cursor.current.isBeyondEnd) forceEndState(currentState, isInitialized);
-    else {
-        if (!isInitialized.route) updateRoute(currentState, flow, cursor, isInitialized);
-        if (!isInitialized.state) updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings);
-        if (!isInitialized.media) updateStateMediaFiles(currentState, flow, cursor, isInitialized);
-        if (!isInitialized.content) updateStateContent(currentState, flow, cursor, isInitialized);
-    }
+function movePostSkip(state, flow, cursor, isInitialized) {
+    do {
+        moveCursorNext(flow, cursor, isInitialized);
+        stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
+    } while (cursor.current.isInSkipableChain)
 }
 
 export default {
@@ -398,8 +263,6 @@ export default {
     assignCursor,
     moveCursorNext,
     updateCursorNavigation,
-    updateState,
-    updateStateOnSkip,
-    forceEndState
+    movePostSkip,
+    moveCursorPostSkipRepetions
 }
-// TODO: Instoring a break from the loop mechanism (end of loop parameter)
