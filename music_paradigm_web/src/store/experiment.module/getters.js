@@ -219,6 +219,10 @@ export default {
         return state.state.settings.failureFeedbackMessage || "";
     },
 
+    footnoteMessage: (state) => {
+        return state.state.settings.footnoteMessage || "";
+    },
+
     melodyRepetition: (state) => {
         return state.state.settings.melodyRepetition || 1;
     },

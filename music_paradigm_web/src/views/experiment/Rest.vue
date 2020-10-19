@@ -69,6 +69,7 @@ export default {
       'helperImageName',
       'skipStepButton',
       'timeoutInSeconds',
+      'footnoteMessage',
     ]),
     gridClass() {
       if (this.hasFootnote) {
@@ -84,6 +85,7 @@ export default {
       else return this.textContent;
     },
     footnote() {
+      if (this.footnoteMessage) return this.footnoteMessage;
       return `The experiment will go to the next step in ${this.timeLeftDisplay}`;
     },
     timeLimitInMiliseconds() {

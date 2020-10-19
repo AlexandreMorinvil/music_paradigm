@@ -65,6 +65,7 @@ export default {
       'textContent',
       'helperImageName',
       'skipStepButton',
+      'footnoteMessage',
     ]),
     gridClass() {
       if (this.hasFootnote) {
@@ -76,6 +77,7 @@ export default {
       }
     },
     footnote() {
+      if (this.footnoteMessage) return this.footnoteMessage;
       var noteMessage;
       if (this.midiName === '')
         noteMessage = `There is no melody to be played, the experiment will automatically  go to the next step in ${

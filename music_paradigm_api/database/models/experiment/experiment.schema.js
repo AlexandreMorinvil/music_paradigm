@@ -51,6 +51,7 @@ const schema = new Schema(
                     isInSkipableChain: { type: Boolean, default: undefined },
                     successFeedbackMessage: { type: String, default: undefined },
                     failureFeedbackMessage: { type: String, default: undefined },
+                    footnoteMessage: { type: String, default: undefined },
                     melodyRepetition: { type: Number, default: undefined },
                     successesForSkipLoop: { type: Number, default: undefined },
                 }

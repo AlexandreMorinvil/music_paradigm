@@ -98,6 +98,7 @@ const validateBlock = function (block, index = null) {
         "skipStepButtonMessage",
         "successFeedbackMessage",
         "failureFeedbackMessage",
+        "footnoteMessage",
         "melodyRepetition",
         "successesForSkipLoop",
     ]
@@ -126,6 +127,7 @@ const validateAttributeType = function (key, value) {
         case "skipStepButtonMessage":
         case "successFeedbackMessage":
         case "failureFeedbackMessage":
+        case "footnoteMessage":
             if (!(typeof value === "string"))
                 throw new Error(`The key '${key}' must be of type 'String'`);
             break;
@@ -133,7 +135,7 @@ const validateAttributeType = function (key, value) {
         // Number
         case "numberRepetition":
         case "timeoutInSeconds":
-        case "successesForSkip":
+        case "successesForSkipLoop":
         case "melodyRepetition":
             if (!(typeof value === "number"))
                 throw new Error(`The key '${key}' must be of type 'Number'`);

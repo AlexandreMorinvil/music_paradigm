@@ -67,6 +67,7 @@ export default {
       'helperImageName',
       'playingMode',
       'skipStepButton',
+      'footnoteMessage',
     ]),
     gridClass() {
       if (this.hasFootnote) {
@@ -81,7 +82,8 @@ export default {
   methods: {
     ...mapActions('experiment', ['addSuccess']),
     handleFootnote(footNote) {
-      this.footnote = footNote;
+      if (this.footnoteMessage) this.footnote = this.footnoteMessage;
+      else this.footnote = footNote;
     },
     handdleEndOfPlaying() {
       this.evaluatePlayedNotes();

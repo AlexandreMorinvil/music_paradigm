@@ -29,6 +29,7 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
         skipStepButtonMessage,
         successFeedbackMessage,
         failureFeedbackMessage,
+        footnoteMessage,
         melodyRepetition,
         successesForSkipLoop,
     } = currentBlock;
@@ -46,6 +47,7 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
         skipStepButtonMessage: (typeof skipStepButtonMessage === 'string') ? skipStepButtonMessage : "",
         successFeedbackMessage: (typeof successFeedbackMessage === 'string') ? successFeedbackMessage : "",
         failureFeedbackMessage: (typeof failureFeedbackMessage === 'string') ? failureFeedbackMessage : "",
+        footnoteMessage: (typeof footnoteMessage === 'string') ? footnoteMessage : "",
         melodyRepetition: (typeof melodyRepetition === 'number') ? melodyRepetition : 1,
         successesForSkipLoop: (typeof successesForSkipLoop === 'number') ? successesForSkipLoop : generalSettings.successesForSkipLoop,
     };

@@ -94,7 +94,5 @@ export default {
     }
 }
 
-/// IMPLEMENT THE HANDLING OF SKIPS ON SUCCESSES
-// IMPLEMENT THE COSTUMIZED FOOTNOTES
 // IMPLEMENT THE Text Image stacks
 // Speed Play fixed
