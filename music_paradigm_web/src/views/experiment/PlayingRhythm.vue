@@ -87,7 +87,7 @@ export default {
       if (value >= this.maxPlayProgress) {
         this.timerUniqueIdentifier = setTimeout(() => {
           this.$emit('finishedPlaying');
-        }, this.lastNoteDuration + 1000);
+        }, this.lastNoteDuration + 500);
       }
     },
     pressedKeys() {

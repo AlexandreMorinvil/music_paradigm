@@ -93,5 +93,3 @@ export default {
         state.state.record.successesInLoop += 1;
     }
 }
-
-// Speed Play fixed
