@@ -70,6 +70,7 @@ export default {
       'textContent',
       'anyPianoKey',
       'skipStepButton',
+      'footnoteMessage',
     ]),
     gridClass() {
       if (this.hasFootnote) {
@@ -81,6 +82,7 @@ export default {
       }
     },
     footnote() {
+      if (this.footnoteMessage) return this.footnoteMessage;
       if (this.anyPianoKey) return 'Press any piano key or the space bar for going to the next step';
       else return 'Press the space bar for going to the next step';
     },

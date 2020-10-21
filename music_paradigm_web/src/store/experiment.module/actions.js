@@ -25,5 +25,10 @@ export default {
     },
     concludeExperiment: ({ commit }) => {
         commit('leaveExperiment');
+    },
+
+    // Record methods
+    addSuccess: ({commit}) => {
+        commit('addSuccess');
     }
 }

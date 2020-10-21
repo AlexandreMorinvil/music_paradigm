@@ -1,14 +1,14 @@
 import constants from "./constants"
-import functions from "./functions"
+import cursorHandler from "./cursorHandler"
 
 export default {
     // Getters for the experiment flow's information
     stepsTotalCount: (state) => {
-        return functions.countStepsLeft(state.flow);
+        return cursorHandler.countStepsLeft(state.flow);
     },
 
     stepsLeftCount: (state) => {
-        return functions.countStepsLeft(state.flow, state.cursor);
+        return cursorHandler.countStepsLeft(state.flow, state.cursor);
     },
 
     // Getters for the experiment settings
@@ -139,12 +139,10 @@ export default {
     },
 
     anyPianoKey: (state) => {
-        // Return the "anyPianoKey" value specified by the block if it exists,
-        // otherwise, the default "anyPianoKey" of the experiment is returned.
-        // The "anyPianoKey" parameter indicates whether the user of the experiment
-        // can move to the next step by pressing any piano key (if the value is "true"),
-        // otherwise the experiment will move to the next step only by pressing the
-        // space bar key (if the value is false).
+        // Return the "anyPianoKey" value specified by the block if it exists, otherwise, the default "anyPianoKey" of the 
+        // experiment is returned. The "anyPianoKey" parameter indicates whether the user of the experiment can move to the
+        // next step by pressing any piano key (if the value is "true"), otherwise the experiment will move to the next
+        // step only by pressing the space bar key (if the value is false).
         let anyPianoKey;
 
         if (typeof state.state.settings.anyPianoKey === "boolean")
@@ -219,6 +217,10 @@ export default {
 
     failureFeedbackMessage: (state) => {
         return state.state.settings.failureFeedbackMessage || "";
+    },
+
+    footnoteMessage: (state) => {
+        return state.state.settings.footnoteMessage || "";
     },
 
     melodyRepetition: (state) => {

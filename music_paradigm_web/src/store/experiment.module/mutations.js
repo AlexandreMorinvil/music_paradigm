@@ -1,20 +1,13 @@
 import { routerNavigation } from '@/_helpers'
 import constants from './constants'
-import functions from './functions'
+import cursorHandler from './cursorHandler'
+import stateHandler from './stateHandler'
 
 export default {
     clearState(state) {
         Object.assign(state, constants.DEFAULT_EXPERIMENT_STATE_VALUES());
     },
 
-    /**
-     * Set an experiment for the session and its general parameters (sets the flow and settings)
-     * @param {Object} state                Vuex state from a store (automatic argument)
-     * @param {Object} experiment           Experiment object
-     * @param {Object} experiment.name      Name of the experiment
-     * @param {Object} experiment.folder    Name of the folder of the assets of the experiement
-     * @param {Array} experiment.flow       Flow with the sequence of blocks
-     */
     setExperiment(state, experiment) {
         // Verify the minimal required properties
         if (!experiment.hasOwnProperty("name")) throw new Error("No name was found in the experiment");
@@ -49,15 +42,10 @@ export default {
         state.hasExperiment = true;
     },
 
-    /**
-     * Initializes the cursor to start navigating through the experiment
-     * @param {Object} state            Vuex state from a store (automatic argument)
-     * @param {Object} presetCursor     Cursor from another session, in order to restart where the experiment was left
-     */
     initCursor(state, presetCursor = null) {
         // If a cursor is provided, the experiment is resumed with the state of the cursor.
         // If no cursor is provided, the default values of the cursor is the start ofthe experiment.
-        state.cursor = functions.assignCursor(state.flow, presetCursor);
+        state.cursor = cursorHandler.assignCursor(state.flow, presetCursor);
 
         // Set the initialization indicators to false
         state.isInitialized = {
@@ -73,28 +61,35 @@ export default {
     },
 
     updateState: (state) => {
-        functions.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
+        stateHandler.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
     },
 
     moveNextStep: (state) => {
-        functions.moveCursorNext(state.flow, state.cursor, state.isInitialized);
-        functions.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
+        cursorHandler.advanceCursor(state.state, state.flow, state.cursor, state.isInitialized);
+        stateHandler.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
     },
 
     movePostSkip: (state) => {
-        do {
-            functions.moveCursorNext(state.flow, state.cursor, state.isInitialized);
-            functions.updateStateOnSkip(state.state, state.flow, state.cursor, state.isInitialized);
-        } while (state.cursor.current.isInSkipableChain)
-        functions.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
+        cursorHandler.skipCursor(state.state, state.flow, state.cursor, state.isInitialized);
+        stateHandler.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
+    },
+
+    movePostSkipRepetions: (state) => {
+        cursorHandler.moveCursorPostSkipRepetions(state.state, state.flow, state.cursor, state.isInitialized);
+        stateHandler.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
     },
 
     endExperimentByTimeout: (state) => {
         const message = "The time limit was reached.\nThe experiment ends here.";
-        functions.forceEndState(state.state, state.isInitialized, message);
+        stateHandler.forceEndState(state.state, state.isInitialized, message);
     },
 
     leaveExperiment: () => {
         routerNavigation.goToRootPage();
+    },
+
+    addSuccess: (state) => {
+        state.state.record.sucesses += 1;
+        state.state.record.successesInLoop += 1;
     }
 }

@@ -1,3 +1,6 @@
+
+export const UNSET_INDEX = -1;
+
 // Default settings values
 const DEFAULT_ANY_PIANO_KEY = false;
 const DEFAULT_ENABLE_SOUND_FLAG = false;
@@ -41,16 +44,16 @@ const DEFAULT_EXPERIMENT_STATE_VALUES = function () {
         cursor: {
             current: {
                 index: 0,                                       // Index of the current block of the flow
-                piledMediaIndex: 0,                             // Index of the current step of the block (browses the midi and video file names)
+                piledContentIndex: 0,                           // Index of the current step of the block (browses the midi and video file names)
                 innerStepIndex: 0,                              // Index of the current step of the block (browses the picture file names)
                 isBeyondEnd: false,                             // Indicator of whether the index as reached the end of the flow (is checked before moving the cursor forward)
                 isInSkipableChain: false,                       // Indicates whether the block must be skipped upon a skip request
             },
             navigation: {
                 indexNext: 1,                                   // Index of the next block of the flow
-                indexLoopStart: -1,                             // Index to which a loop start
-                indexPileStart: -1,                             // Index to which there remains content to depile
-                indexGroupEnd: -1,                              // Index of the end of a group of blocks (the last index with a followedBy or an individual block)
+                indexLoopStart: UNSET_INDEX,                    // Index to which a loop start
+                indexPileStart: UNSET_INDEX,                    // Index to which there remains content to depile
+                indexGroupEnd: UNSET_INDEX,                     // Index of the end of a group of blocks (the last index with a followedBy or an individual block)
                 totalInnerSteps: 0,                             // Number of steps in a given block
                 numberRepetition: 1,                            // Number of repetitions left to do
                 numberPiledMedia: 0,                            // Number of media content piled at the index pile start
@@ -95,12 +98,18 @@ const DEFAULT_EXPERIMENT_STATE_VALUES = function () {
                 failureFeedbackMessage: "",                     // Additional message displayed upon feedback with at least one failed critera
                 melodyRepetition: 1,                            // Number of times a melody is repeated in a block
                 successesForSkip: DEFAULT_SUCCESSES_FOR_SKIP    // Block specific "successesForSkip" superseding the general setting
+            },
+            // Session specific informations
+            record: {
+                sucesses: 0,                                    // Number of successes recorded
+                successesInLoop: 0                              // Number of successes recorded in the loop
             }
         }
     };
 }
 
 export default {
+    UNSET_INDEX,
     DEFAULT_ANY_PIANO_KEY,
     DEFAULT_ENABLE_SOUND_FLAG,
     DEFAULT_PLAYING_MODE,

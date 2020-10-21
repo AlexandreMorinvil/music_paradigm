@@ -38,5 +38,13 @@ export default {
     // Getters for the evaluations
     grades: () => {
         return state.played.evaluation.grades;
+    },
+
+    hasSuccess: (state) => {
+        if (state.played.evaluation.grades.length <= 0) return false;
+        for (let grade of state.played.evaluation.grades) {
+          if (grade.mark < grade.passMark) return false;
+        }
+        return true;
     }
 }

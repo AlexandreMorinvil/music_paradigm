@@ -98,6 +98,7 @@ export default {
       'videoName',
       'helperImageName',
       'skipStepButton',
+      'footnoteMessage',
     ]),
     gridClass() {
       if (this.hasFootnote) {
@@ -109,6 +110,7 @@ export default {
       }
     },
     footnote() {
+      if (this.footnoteMessage) return this.footnoteMessage;
       var noteMessage;
       if (!this.hasVideo)
         noteMessage = `There is no video to be played, the experiment will automatically  go to the next step in ${

@@ -69,6 +69,7 @@ export default {
       'helperImageName',
       'skipStepButton',
       'timeoutInSeconds',
+      'footnoteMessage',
     ]),
     gridClass() {
       if (this.hasFootnote) {
@@ -84,6 +85,7 @@ export default {
       else return this.textContent;
     },
     footnote() {
+      if (this.footnoteMessage) return this.footnoteMessage;
       return `The experiment will go to the next step in ${this.timeLeftDisplay}`;
     },
     timeLimitInMiliseconds() {
@@ -102,7 +104,7 @@ export default {
   },
   methods: {
     startCountdown() {
-      this.timeLeftInMilliseconds = this.timeLimitInSeconds * 1000;
+      // this.timeLeftInMilliseconds = this.timeLimitInSeconds * 1000;
       this.referenceTime = Date.parse(new Date());
       this.counterUniqueIdentifier = window.setInterval(this.countdown, this.timeStepInMilliseconds);
     },
