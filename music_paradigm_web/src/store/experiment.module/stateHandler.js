@@ -7,7 +7,8 @@ function updateRoute(currentState, flow, cursor, isInitialized) {
 }
 
 function updateRecords(currentState, cursor, isInitialized) {
-    if (cursor.flag.needsResetLoopParameters) currentState.record.successesInLoop = 0;
+    if (cursor.flag.needsResetLoopParameters) 
+        currentState.record.successesInLoop = 0;
     Object.assign(isInitialized, { record: true });
 }
 
