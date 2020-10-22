@@ -1,15 +1,13 @@
 import { routerNavigation } from '@/_helpers'
-import { UNSET_INDEX } from './constants';
 
 function updateRoute(currentState, flow, cursor, isInitialized) {
     currentState.type = flow[cursor.current.index].type;
     routerNavigation.moveToState(currentState.type);
-    Object.assign(isInitialized, { route: true, record: false, state: false, media: false, content: false });
+    Object.assign(isInitialized, { route: true });
 }
 
 function updateRecords(currentState, cursor, isInitialized) {
-    if (cursor.navigation.indexLoopStart === UNSET_INDEX)
-        currentState.record.successesInLoop = 0;
+    if (cursor.flag.needsResetLoopParameters) currentState.record.successesInLoop = 0;
     Object.assign(isInitialized, { record: true });
 }
 

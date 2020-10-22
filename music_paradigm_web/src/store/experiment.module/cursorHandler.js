@@ -1,25 +1,11 @@
 import stateHandler from './stateHandler';
-import { UNSET_INDEX } from './constants';
+import constants from './constants';
 
 export default {
     countStepsLeft,
     assignCursor,
     skipCursor,
     advanceCursor
-}
-
-function skipCursor(state, flow, cursor, isInitialized) {
-    do {
-        moveCursorNext(flow, cursor, isInitialized);
-        stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
-    } while (cursor.current.isInSkipableChain)
-}
-
-function advanceCursor(state, flow, cursor, isInitialized) {
-    if (state.record.successesInLoop >= flow[cursor.current.index].successesForSkipLoop)
-        moveCursorSkipRepetions(state, flow, cursor, isInitialized);
-    else
-        moveCursorNext(flow, cursor, isInitialized)
 }
 
 function countStepsLeft(flow, startPointCursor) {
@@ -43,33 +29,28 @@ function assignCursor(flow, cursorToCopy) {
 
     // If no cursor is set to be cloned, 
     if (cursorToCopy) {
-        // Deep copy the the cursor set in parameter
         return JSON.parse(JSON.stringify(cursorToCopy));
     }
     else {
-        // Set the default values
-        const defaultCursor = {
-            current: {
-                index: 0,
-                innerStepIndex: 0,
-                piledContentIndex: 0,
-                isBeyondEnd: false
-            },
-            navigation: {
-                indexNext: 1,
-                indexPileStart: UNSET_INDEX,
-                indexLoopStart: UNSET_INDEX,
-                indexGroupEnd: UNSET_INDEX,
-                totalInnerSteps: 0,
-                numberRepetition: 1,
-                numberPiledMedia: 0,
-            }
-        };
-        // Adjust the navigation values so that it corresponds to the actual flow
+        // Set the default values and adjust the navigation values so that it corresponds to the actual flow
+        const defaultCursor = constants.DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES();
         updateCursorNavigation(flow, defaultCursor);
-
         return defaultCursor;
     }
+}
+
+function skipCursor(state, flow, cursor, isInitialized) {
+    do {
+        moveCursorNext(flow, cursor, isInitialized);
+        stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
+    } while (cursor.current.isInSkipableChain)
+}
+
+function advanceCursor(state, flow, cursor, isInitialized) {
+    if (state.record.successesInLoop >= flow[cursor.current.index].successesForSkipLoop)
+        moveCursorSkipRepetions(state, flow, cursor, isInitialized);
+    else
+        moveCursorNext(flow, cursor, isInitialized)
 }
 
 
@@ -79,17 +60,14 @@ function moveCursorNext(flow, cursor, isInitialized) {
 }
 
 function moveCursorSkipRepetions(state, flow, cursor, isInitialized) {
-    const initialpiledContentIndex = cursor.current.piledContentIndex;
     do {
         moveCursorNext(flow, cursor, isInitialized);
         stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
-    } while (
-        cursor.current.index <= cursor.navigation.indexGroupEnd &&
-        cursor.current.piledContentIndex === initialpiledContentIndex
-    )
+    } while (!cursor.flag.needsResetLoopParameters)
 }
 
 function moveCursorNextStep(flow, cursor, isInitialized = {}) {
+    let needsResetLoopParameters = false;
 
     // Moving to the next inner step if there remains inner steps (only in instruction blocks)
     if (cursor.current.innerStepIndex < cursor.navigation.totalInnerSteps) {
@@ -110,23 +88,28 @@ function moveCursorNextStep(flow, cursor, isInitialized = {}) {
             else if (cursor.navigation.numberPiledMedia > 1) {
                 cursor.navigation.numberPiledMedia -= 1;
                 cursor.current.piledContentIndex += 1;
+                needsResetLoopParameters = true; // Flag asjustment
             }
         }
 
         // Otherwise, if the next step is beyond a group of blocks, we reset the piled content index
         else if (cursor.navigation.indexNext > cursor.navigation.indexGroupEnd) {
             cursor.current.piledContentIndex = 0;
+            needsResetLoopParameters = (cursor.indexNext > cursor.indexGroupEnd) ? true : false; // Flag asjustment
         }
 
         // We move the current intdex to the next step
         cursor.current.index = cursor.navigation.indexNext;
-        Object.assign(isInitialized, { route: false, state: false, media: false, content: false });
+        Object.assign(isInitialized, constants.IS_FULLY_NOT_INITIALIZED_STATUS());
     }
 
     // Moving beyond the last block of the flow
     else {
         cursor.current.isBeyondEnd = true;
     }
+
+    // Proceeding to adjusting the flags
+    cursor.flag.needsResetLoopParameters = needsResetLoopParameters;
 }
 
 function updateCursorNavigation(flow, cursor) {
@@ -158,16 +141,16 @@ function updateCursorNavigation(flow, cursor) {
 
 function setCursorInnerStepsTotal(cursor, textContent, pictureFileName) {
 
-    let innerStepsTextContent = UNSET_INDEX;
+    let innerStepsTextContent = constants.UNSET_INDEX;
     if (Array.isArray(textContent)) {
         const currentTextContent = textContent[cursor.current.piledContentIndex];
-        innerStepsTextContent = Array.isArray(currentTextContent) ? (currentTextContent.length - 1) : UNSET_INDEX;
+        innerStepsTextContent = Array.isArray(currentTextContent) ? (currentTextContent.length - 1) : constants.UNSET_INDEX;
     }
 
-    let innerStepsPictureFile = UNSET_INDEX;
+    let innerStepsPictureFile = constants.UNSET_INDEX;
     if (Array.isArray(pictureFileName)) {
         const currentPictureFile = pictureFileName[cursor.current.piledContentIndex];
-        innerStepsPictureFile = Array.isArray(currentPictureFile) ? (currentPictureFile.length - 1) : UNSET_INDEX;
+        innerStepsPictureFile = Array.isArray(currentPictureFile) ? (currentPictureFile.length - 1) : constants.UNSET_INDEX;
     }
 
     const maxNumberContentElement = Math.max(innerStepsTextContent, innerStepsPictureFile);
@@ -261,7 +244,7 @@ function setCursorNextStep(cursor, followedBy) {
         // Reset the loop start in order to be able to loop again with the new media content
         else if (cursor.navigation.numberPiledMedia > 1) {
             cursor.navigation.indexNext = cursor.navigation.indexPileStart;
-            cursor.navigation.indexLoopStart = UNSET_INDEX;
+            cursor.navigation.indexLoopStart = constants.UNSET_INDEX;
         }
 
         // By default, the next block is the following block
