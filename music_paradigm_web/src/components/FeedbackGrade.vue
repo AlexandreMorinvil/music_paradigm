@@ -51,7 +51,7 @@ export default {
       return '--checkpointPosition: ' + (this.grade.passMark / this.grade.topMark) * 100 * 0.925 + '%;';
     },
     progressWidth() {
-      return 'width: ' + (this.grade.mark / this.grade.topMark) * 100 + '%;';
+      return 'width: ' + (Math.min(this.grade.mark, this.grade.topMark) / this.grade.topMark) * 100 + '%;';
     },
     barColor() {
       return this.isSuccess ? ' success-color ' : ' info-color ';

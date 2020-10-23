@@ -40,6 +40,10 @@ function assignCursor(flow, cursorToCopy) {
 }
 
 function skipCursor(state, flow, cursor, isInitialized) {
+    if (state.record.successesInLoop >= flow[cursor.current.index].successesForSkipLoop)
+        moveCursorSkipRepetions(state, flow, cursor, isInitialized);
+    
+    else
     do {
         moveCursorNext(flow, cursor, isInitialized);
         stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
