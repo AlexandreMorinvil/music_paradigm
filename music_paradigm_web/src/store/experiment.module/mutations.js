@@ -26,16 +26,18 @@ export default {
         state.flow = experiment.flow;
 
         // Set the settings (optionals, default values if not set)
+        state.settings = constants.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
+        Object.assign(state.settings, { record: true });
         state.settings = {
-            anyPianoKey: (typeof experiment.anyPianoKey !== 'undefined') ? Boolean(experiment.anyPianoKey) : constants.DEFAULT_ANY_PIANO_KEY,
-            enableSoundFlag: (typeof experiment.enableSoundFlag !== 'undefined') ? Boolean(experiment.enableSoundFlag) : constants.DEFAULT_ENABLE_SOUND_FLAG,
-            playingMode: (typeof experiment.mode === 'string') ? experiment.mode : constants.DEFAULT_PLAYING_MODE,
-            timbreFile: (typeof experiment.timbreFile === 'string') ? experiment.timbreFile : constants.DEFAULT_TIMBRE_FILE,
-            footnote: (typeof experiment.footnote !== 'undefined') ? Boolean(experiment.footnote) : constants.DEFAULT_FOOTNOTE,
-            timeLimitInSeconds: (typeof experiment.timeLimitInSeconds === 'number') ? experiment.timeLimitInSeconds : constants.DEFAULT_TIME_LIMIT,
-            logFlag: (typeof experiment.logFlag === 'boolean') ? experiment.logFlag : constants.DEFAULT_LOG_FLAG,
-            successesForSkip: (typeof experiment.successesForSkip === 'number') ? experiment.successesForSkip : constants.DEFAULT_SUCCESSES_FOR_SKIP,
-            hideFeedbackSmiley: (typeof experiment.hideFeedbackSmiley === 'boolean') ? experiment.hideFeedbackSmiley : constants.DEFAULT_HIDE_FEEDBACK_SMILEY
+            anyPianoKey: (typeof experiment.anyPianoKey !== 'undefined') ? Boolean(experiment.anyPianoKey) : state.settings.anyPianoKey,
+            enableSoundFlag: (typeof experiment.enableSoundFlag !== 'undefined') ? Boolean(experiment.enableSoundFlag) : state.settings.enableSoundFlag,
+            playingMode: (typeof experiment.mode === 'string') ? experiment.mode : state.settings.playingMode,
+            timbreFile: (typeof experiment.timbreFile === 'string') ? experiment.timbreFile : state.settings.timbreFile,
+            footnote: (typeof experiment.footnote !== 'undefined') ? Boolean(experiment.footnote) : state.settings.footnote,
+            timeLimitInSeconds: (typeof experiment.timeLimitInSeconds === 'number') ? experiment.timeLimitInSeconds : state.settings.timeLimitInSeconds,
+            logFlag: (typeof experiment.logFlag === 'boolean') ? experiment.logFlag : state.settings.logFlag,
+            successesForSkip: (typeof experiment.successesForSkip === 'number') ? experiment.successesForSkip : state.settings.successesForSkip,
+            hideFeedbackSmiley: (typeof experiment.hideFeedbackSmiley === 'boolean') ? experiment.hideFeedbackSmiley : state.settings.hideFeedbackSmiley
         };
 
         // Toggle the boolean value indicating that an experiment is mounted
