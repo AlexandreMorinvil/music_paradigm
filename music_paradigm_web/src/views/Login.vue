@@ -3,7 +3,7 @@
     <div class="main-area">
       <div id="login-box" class="login-box">
         <div id="login-box-title" class="login-box-title">
-          <h1>Login *Update worked*</h1>
+          <h1>Login *Update 18/11/2020*</h1>
         </div>
 
         <div id="login-box-form" class="login-box-form">
