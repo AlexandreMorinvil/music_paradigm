@@ -101,6 +101,7 @@ const validateBlock = function (block, index = null) {
         "footnoteMessage",
         "melodyRepetition",
         "successesForSkipLoop",
+        "lastRepetitionVersion",
     ]
     Object.keys(block).forEach(key => {
         if (!(allowedAttributes.includes(key)))
