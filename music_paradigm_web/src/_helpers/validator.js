@@ -103,12 +103,16 @@ const validateBlock = function (block, index = null) {
         "successesForSkipLoop",
         "lastRepetitionVersion",
     ]
+    const innerBlockAttributes = [
+        "lastRepetitionVersion"
+    ]
     Object.keys(block).forEach(key => {
         if (!(allowedAttributes.includes(key)))
             throw new Error(`The key '${key}' of the block${indexMessage} is not allowed`);
 
         try {
             validateAttributeType(key, block[key]);
+            if (innerBlockAttributes.includes(key)) validateBlock(block[key]);
         } catch (e) {
             throw new Error(`${e.message} for the block${indexMessage}`);
         }

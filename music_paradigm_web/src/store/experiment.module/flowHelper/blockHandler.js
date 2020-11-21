@@ -4,6 +4,14 @@ export default {
     getNextBlockType
 }
 
+function getCurrentBlockType(flow, cursor) {
+    return flow[cursor.current.index].type;
+}
+
+function getNextBlockType(flow, cursor) {
+    return flow[cursor.navigation.indexNext].type;
+}
+
 function getCurrentBlock(flow, cursor) {
 
     let currentBlock = flow[cursor.current.index];
@@ -11,16 +19,8 @@ function getCurrentBlock(flow, cursor) {
         lastRepetitionVersion,
     } = currentBlock;
 
-    if (cursor.flag.isLastRepetition && lastRepetitionVersion)
+    if (lastRepetitionVersion && (cursor.navigation.numberRepetition <= 1))
         currentBlock = lastRepetitionVersion;
 
     return currentBlock;
-}
-
-function getCurrentBlockType(flow, cursor) {
-    return flow[cursor.current.index].type;
-}
-
-function getNextBlockType(flow, cursor) {
-    return flow[cursor.navigation.indexNext].type;
 }
