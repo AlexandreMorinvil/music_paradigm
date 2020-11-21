@@ -67,12 +67,12 @@ export default {
     },
 
     moveNextStep: (state) => {
-        cursorHandler.advanceCursor(state.state, state.flow, state.cursor, state.isInitialized);
+        cursorHandler.advance(state.state, state.flow, state.cursor, state.isInitialized);
         stateHandler.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
     },
 
     movePostSkip: (state) => {
-        cursorHandler.skipCursor(state.state, state.flow, state.cursor, state.isInitialized);
+        cursorHandler.skip(state.state, state.flow, state.cursor, state.isInitialized);
         stateHandler.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
     },
 

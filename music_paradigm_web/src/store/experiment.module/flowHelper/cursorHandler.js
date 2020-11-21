@@ -5,15 +5,14 @@ import constants from '../constants';
 export default {
     countStepsLeft,
     assignCursor,
-    skipCursor,
-    advanceCursor
+    skip,
+    advance
 }
 
 function countStepsLeft(flow, startPointCursor) {
-
     // Deep copy the cursor (or initialize the cursor at the start by default)
     let stepTracerCursor = assignCursor(flow, startPointCursor);
-    
+
     let stepsCounter = 0;
     while (!stepTracerCursor.current.isBeyondEnd && !(blockHandler.getCurrentBlockType(flow, stepTracerCursor) === "end")) {
         moveCursorNext(flow, stepTracerCursor);
@@ -24,31 +23,27 @@ function countStepsLeft(flow, startPointCursor) {
 }
 
 function assignCursor(flow, cursorToCopy) {
-
-    // If no cursor is set to be cloned, 
     if (cursorToCopy) {
         return JSON.parse(JSON.stringify(cursorToCopy));
-    }
-    else {
-        // Set the default values and adjust the navigation values so that it corresponds to the actual flow
+    } else {
         const defaultCursor = constants.DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES();
         updateCursorNavigation(flow, defaultCursor);
         return defaultCursor;
     }
 }
 
-function skipCursor(state, flow, cursor, isInitialized) {
-    if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop)
+function skip(state, flow, cursor, isInitialized) {
+    if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop) {
         moveCursorSkipRepetions(state, flow, cursor, isInitialized);
-
-    else
+    } else {
         do {
             moveCursorNext(flow, cursor, isInitialized);
             stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
         } while (cursor.current.isInSkipableChain)
+    }
 }
 
-function advanceCursor(state, flow, cursor, isInitialized) {
+function advance(state, flow, cursor, isInitialized) {
     determineGroupEnd(flow, cursor);
     if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop)
         moveCursorSkipRepetions(state, flow, cursor, isInitialized);
