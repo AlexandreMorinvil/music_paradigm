@@ -1,5 +1,6 @@
+import blockHandler from './blockHandler';
 import stateHandler from './stateHandler';
-import constants from './constants';
+import constants from '../constants';
 
 export default {
     countStepsLeft,
@@ -12,12 +13,9 @@ function countStepsLeft(flow, startPointCursor) {
 
     // Deep copy the cursor (or initialize the cursor at the start by default)
     let stepTracerCursor = assignCursor(flow, startPointCursor);
-
-    // Count the number of steps before being at the end state (or beyond 
-    // the last block if no end state is specified in the flow description)
+    
     let stepsCounter = 0;
-
-    while (!stepTracerCursor.current.isBeyondEnd && !(flow[stepTracerCursor.current.index].type === "end")) {
+    while (!stepTracerCursor.current.isBeyondEnd && !(blockHandler.getCurrentBlockType(flow, stepTracerCursor) === "end")) {
         moveCursorNext(flow, stepTracerCursor);
         stepsCounter += 1;
     }
@@ -40,19 +38,19 @@ function assignCursor(flow, cursorToCopy) {
 }
 
 function skipCursor(state, flow, cursor, isInitialized) {
-    if (state.record.successesInLoop >= flow[cursor.current.index].successesForSkipLoop)
+    if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop)
         moveCursorSkipRepetions(state, flow, cursor, isInitialized);
-    
+
     else
-    do {
-        moveCursorNext(flow, cursor, isInitialized);
-        stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
-    } while (cursor.current.isInSkipableChain)
+        do {
+            moveCursorNext(flow, cursor, isInitialized);
+            stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
+        } while (cursor.current.isInSkipableChain)
 }
 
 function advanceCursor(state, flow, cursor, isInitialized) {
     determineGroupEnd(flow, cursor);
-    if (state.record.successesInLoop >= flow[cursor.current.index].successesForSkipLoop)
+    if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop)
         moveCursorSkipRepetions(state, flow, cursor, isInitialized);
     else
         moveCursorNext(flow, cursor, isInitialized)
@@ -120,7 +118,7 @@ function moveCursorNextStep(flow, cursor, isInitialized = {}) {
 function updateCursorNavigation(flow, cursor) {
 
     // Parsing the block's flow navigation parameters
-    const currentBlock = flow[cursor.current.index];
+    const currentBlock = blockHandler.getCurrentBlock(flow, cursor);
     const {
         // Content arrays
         textContent,
@@ -240,8 +238,7 @@ function setCursorNextStep(cursor, followedBy) {
             cursor.navigation.indexNext = cursor.navigation.indexLoopStart;
         }
 
-        // If there remains content to depile:
-        // Reset the loop start in order to be able to loop again with the new media content
+        // If there remains content to depile, reset the loop start in order to be able to loop again with the new media content
         else if (cursor.navigation.numberPiledMedia > 1) {
             cursor.navigation.indexNext = cursor.navigation.indexPileStart;
             cursor.navigation.indexLoopStart = constants.UNSET_INDEX;
@@ -256,7 +253,7 @@ function setCursorNextStep(cursor, followedBy) {
 
 function determineGroupEnd(flow, cursor) {
     let cursorCopy = assignCursor(flow, cursor);
-    while (flow[cursorCopy.current.index].followedBy && !cursorCopy.current.isBeyondEnd)
+    while (blockHandler.getCurrentBlock(flow, cursorCopy).followedBy && !cursorCopy.current.isBeyondEnd)
         moveCursorNext(flow, cursorCopy);
     cursor.navigation.indexGroupEnd = cursorCopy.current.index;
 }

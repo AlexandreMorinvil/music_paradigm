@@ -1,7 +1,14 @@
 import { routerNavigation } from '@/_helpers'
+import blockHandler from './blockHandler';
+
+export default {
+    updateState,
+    updateStateOnSkip,
+    forceEndState
+}
 
 function updateRoute(currentState, flow, cursor, isInitialized) {
-    currentState.type = flow[cursor.current.index].type;
+    currentState.type = blockHandler.getCurrentBlock(flow, cursor).type // flow[cursor.current.index].type;
     routerNavigation.moveToState(currentState.type);
     Object.assign(isInitialized, { route: true });
 }
@@ -15,7 +22,7 @@ function updateRecords(currentState, cursor, isInitialized) {
 function updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings) {
 
     // Parsing the current block's state settings
-    const currentBlock = flow[cursor.current.index];
+    const currentBlock = blockHandler.getCurrentBlock(flow, cursor) //flow[cursor.current.index];
     const {
         anyPianoKey,
         enableSoundFlag,
@@ -58,7 +65,7 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
 function updateStateMediaFiles(currentState, flow, cursor, isInitialized) {
 
     // Parsing the current block
-    const currentBlock = flow[cursor.current.index];
+    const currentBlock = blockHandler.getCurrentBlock(flow, cursor) // flow[cursor.current.index];
     const {
         // Media files
         midiFileName,
@@ -85,7 +92,7 @@ function updateStateMediaFiles(currentState, flow, cursor, isInitialized) {
 function updateStateContent(currentState, flow, cursor, isInitialized) {
 
     // Parsing the current block
-    const currentBlock = flow[cursor.current.index];
+    const currentBlock = blockHandler.getCurrentBlock(flow, cursor) // flow[cursor.current.index];
     const {
         // Content elements
         textContent,
@@ -146,10 +153,4 @@ function updateState(currentState, flow, cursor, isInitialized, generalSettings)
         if (!isInitialized.media) updateStateMediaFiles(currentState, flow, cursor, isInitialized);
         if (!isInitialized.content) updateStateContent(currentState, flow, cursor, isInitialized);
     }
-}
-
-export default {
-    updateState,
-    updateStateOnSkip,
-    forceEndState
 }

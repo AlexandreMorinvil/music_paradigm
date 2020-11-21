@@ -153,6 +153,12 @@ const validateAttributeType = function (key, value) {
                 throw new Error(`The key '${key}' must be of type 'Boolean'`);
             break;
 
+        // Object
+        case "lastRepetitionVersion":
+            if (!(typeof value === "object"))
+                throw new Error(`The key '${key}' must be of type 'Object'`);
+            break;
+
         // Array
         case "textContent":
         case "pictureFileName":

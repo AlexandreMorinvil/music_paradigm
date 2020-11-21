@@ -1,5 +1,6 @@
 import constants from "./constants"
-import cursorHandler from "./cursorHandler"
+import cursorHandler from "./flowHelper/cursorHandler"
+import blockHandler from './flowHelper/blockHandler';
 
 export default {
     // Getters for the experiment flow's information
@@ -130,12 +131,12 @@ export default {
 
         // If There remains inner steps in the current block, the next step is of the same type as the current step
         else if (state.cursor.current.innerStepIndex < state.cursor.navigation.totalInnerSteps) {
-            return state.flow[state.cursor.current.index].type;
+            return state.state.type;
         }
 
         // Otherwise, if it is none of the edge casess, the type of the next step is the type of the following block
         else
-            return state.flow[state.cursor.navigation.indexNext].type;
+            return blockHandler.getNextBlockType(state.flow, state.cursor);
     },
 
     anyPianoKey: (state) => {

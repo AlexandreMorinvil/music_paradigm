@@ -1,7 +1,7 @@
 import { routerNavigation } from '@/_helpers'
 import constants from './constants'
-import cursorHandler from './cursorHandler'
-import stateHandler from './stateHandler'
+import cursorHandler from './flowHelper/cursorHandler'
+import stateHandler from './flowHelper/stateHandler'
 
 export default {
     clearState(state) {

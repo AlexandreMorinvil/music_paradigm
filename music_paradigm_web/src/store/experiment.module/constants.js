@@ -92,7 +92,8 @@ function DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES() {
             numberPiledMedia: 0,                            // Number of media content piled at the index pile start
         },
         flag: {
-            needsResetLoopParameters: false                 // Indicator of whether he loop specific parameters need to be restarted (only when we enter a need block)
+            needsResetLoopParameters: false,                // Indicator of whether he loop specific parameters need to be restarted (only when we enter a need block)
+            isLastRepetition: false                         // Indicator of whether the current step is the last repetition of a given block
         }
     }
 }
