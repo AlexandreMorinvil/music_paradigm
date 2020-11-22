@@ -228,21 +228,6 @@ export default {
         return state.state.settings.melodyRepetition || 1;
     },
 
-    hasFootnote: (state) => {
-        let hasFootNote;
-
-        if (typeof state.state.settings.footnote === "boolean")
-            hasFootNote = state.state.settings.footnote;
-
-        if (typeof state.settings.footnote === "boolean")
-            hasFootNote = state.settings.footnote;
-
-        else
-            hasFootNote = constants.DEFAULT_FOOTNOTE;
-
-        return hasFootNote;
-    },
-
     hideFeedbackSmiley: (state) => {
         let hideFeedbackSmiley;
 
@@ -258,7 +243,37 @@ export default {
         return hideFeedbackSmiley;
     },
 
+    footnoteType: (state) => {
+        let footnoteType;
+
+        if (typeof state.state.settings.footnoteType === "string")
+            footnoteType = state.state.settings.footnoteType;
+
+        if (typeof state.settings.footnoteType === "string")
+            footnoteType = state.settings.footnoteType;
+
+        else
+            footnoteType = constants.DEFAULT_FOOTNOTE_TYPE;
+
+        return footnoteType;
+    },
+
     // Getters used for the content disposition on the screen
+    hasFootnote: (state) => {
+        let hasFootNote;
+
+        if (typeof state.state.settings.footnote === "boolean")
+            hasFootNote = state.state.settings.footnote;
+
+        if (typeof state.settings.footnote === "boolean")
+            hasFootNote = state.settings.footnote;
+
+        else
+            hasFootNote = constants.DEFAULT_FOOTNOTE;
+
+        return hasFootNote;
+    },
+
     hasText: (state) => {
         return Boolean(state.state.content.text);
     },

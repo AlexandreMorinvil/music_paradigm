@@ -24,6 +24,7 @@ const DEFAULT_ENABLE_SOUND_FLAG = false;
 const DEFAULT_PLAYING_MODE = "rhythm";
 const DEFAULT_TIMBRE_FILE = "https://raw.githubusercontent.com/gleitz/midi-js-soundfonts/gh-pages/MusyngKite/acoustic_grand_piano-ogg.js";
 const DEFAULT_FOOTNOTE = false;
+const DEFAULT_FOOTNOTE_TYPE = "simple";
 const DEFAULT_TIME_LIMIT = 0;
 const DEFAULT_LOG_FLAG = true;
 const DEFAULT_SUCCESSES_FOR_SKIP = 0;
@@ -66,6 +67,7 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
         playingMode: DEFAULT_PLAYING_MODE,                  // Mode of the experiment ("rhythm" or "speed")
         timbreFile: DEFAULT_TIMBRE_FILE,                    // URL or location of the timbre file used for the piano
         footnote: DEFAULT_FOOTNOTE,                         // Whether or not the experiment must display the inidcative foot note in each state
+        footnoteType: DEFAULT_FOOTNOTE_TYPE,                // Whether the footnote is made of simple text or buttons
         timeLimitInSeconds: DEFAULT_TIME_LIMIT,             // Time limit of the experiment. If set to 0, ther is no limit and the timer will count up, otherwise the timer will count down
         logFlag: DEFAULT_LOG_FLAG,                          // Indicate wether or not the blocks must log it's data
         successesForSkip: DEFAULT_SUCCESSES_FOR_SKIP,       // Indicate the number of successful 'Playing' states before being able to leave a group of blocks
@@ -120,6 +122,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
             timeoutInSeconds: 0,                            // Time limit for a given block
             playingMode: DEFAULT_PLAYING_MODE,              // Playing mode ("rhythm" or "speed")
             footnote: DEFAULT_FOOTNOTE,                     // Block specific "footnote" superseding the general setting
+            footnoteType: DEFAULT_FOOTNOTE_TYPE,            // Block specific "footnoteType" superseding the general setting
             logFlag: DEFAULT_LOG_FLAG,                      // Block specific "logFlag" superseding the general setting
             skipStepButton: "",                             // Button to press to skip the next block (is valid only if a button is specified)
             skipStepButtonMessage: "",                      // Message indicated on the skip button if there is a skip button

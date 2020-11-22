@@ -29,6 +29,7 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
         playingMode,
         timeoutInSeconds,
         footnote,
+        footnoteType,
         logFlag,
         hideFeedbackSmiley,
         skipStepButton,
@@ -42,11 +43,12 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
 
     // Set the settings for the state. If no value is found, an appropreate default value is set
     currentState.settings = {
-        anyPianoKey: (typeof anyPianoKey !== 'undefined') ? Boolean(anyPianoKey) : generalSettings.anyPianoKey,
-        enableSoundFlag: (typeof enableSoundFlag !== 'undefined') ? Boolean(enableSoundFlag) : generalSettings.enableSoundFlag,
+        anyPianoKey: (typeof anyPianoKey === 'boolean') ? anyPianoKey : generalSettings.anyPianoKey,
+        enableSoundFlag: (typeof enableSoundFlag === 'boolean') ? enableSoundFlag : generalSettings.enableSoundFlag,
         playingMode: (typeof playingMode === 'string') ? playingMode : generalSettings.playingMode,
         timeoutInSeconds: (typeof timeoutInSeconds === 'number') ? timeoutInSeconds : 0,
-        footnote: (typeof footnote !== 'undefined') ? Boolean(footnote) : generalSettings.footnote,
+        footnote: (typeof footnote === 'boolean') ? footnote : generalSettings.footnote,
+        footnoteType: (typeof footnoteType === 'string') ? footnoteType : generalSettings.footnoteType,
         logFlag: (typeof logFlag === 'boolean') ? logFlag : generalSettings.logFlag,
         hideFeedbackSmiley: (typeof hideFeedbackSmiley === 'boolean') ? hideFeedbackSmiley : generalSettings.hideFeedbackSmiley,
         skipStepButton: (typeof skipStepButton === 'string') ? skipStepButton : "",

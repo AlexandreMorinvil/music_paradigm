@@ -19,9 +19,7 @@
       <img id="instruction-img" v-else :src="urlExperimentRessource(pictureName)" alt="Instruction" />
     </div>
 
-    <div id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text">
-      {{ footnote }}
-    </div>
+    <footnote id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text" :message="footnote" />
   </div>
 </template>
 
@@ -30,12 +28,14 @@ import '@/styles/experimentStateTemplate.css';
 import { mapGetters } from 'vuex';
 import VisualPiano from '@/components/VisualPiano.vue';
 import SkipButton from '@/components/experiment/SkipButton.vue';
+import Footnote from '@/components/experiment/footnote/Footnote.vue';
 
 export default {
   name: 'Instruction',
   components: {
     visualPiano: VisualPiano,
     skipButton: SkipButton,
+    footnote: Footnote,
   },
   props: {
     lastPressedKey: {

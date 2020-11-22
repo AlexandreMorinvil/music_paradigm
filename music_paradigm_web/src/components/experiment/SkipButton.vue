@@ -2,7 +2,7 @@
   <button v-on:click="emitSkipSignal">
     {{ buttonMessage }}
     <br />
-    (Press {{ skipStepButtonValue }})
+    Press {{ skipStepButtonValue }}
   </button>
 </template>
 

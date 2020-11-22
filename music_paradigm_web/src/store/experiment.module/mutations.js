@@ -29,11 +29,12 @@ export default {
         state.settings = constants.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
         Object.assign(state.settings, { record: true });
         state.settings = {
-            anyPianoKey: (typeof experiment.anyPianoKey !== 'undefined') ? Boolean(experiment.anyPianoKey) : state.settings.anyPianoKey,
-            enableSoundFlag: (typeof experiment.enableSoundFlag !== 'undefined') ? Boolean(experiment.enableSoundFlag) : state.settings.enableSoundFlag,
+            anyPianoKey: (typeof experiment.anyPianoKey === 'boolean') ? Boolean(experiment.anyPianoKey) : state.settings.anyPianoKey,
+            enableSoundFlag: (typeof experiment.enableSoundFlag === 'boolean') ? Boolean(experiment.enableSoundFlag) : state.settings.enableSoundFlag,
             playingMode: (typeof experiment.mode === 'string') ? experiment.mode : state.settings.playingMode,
             timbreFile: (typeof experiment.timbreFile === 'string') ? experiment.timbreFile : state.settings.timbreFile,
-            footnote: (typeof experiment.footnote !== 'undefined') ? Boolean(experiment.footnote) : state.settings.footnote,
+            footnote: (typeof experiment.footnote === 'boolean') ? experiment.footnote : state.settings.footnote,
+            footnoteType: (typeof experiment.footnoteType === 'string') ? experiment.footnoteType : state.settings.footnoteType,
             timeLimitInSeconds: (typeof experiment.timeLimitInSeconds === 'number') ? experiment.timeLimitInSeconds : state.settings.timeLimitInSeconds,
             logFlag: (typeof experiment.logFlag === 'boolean') ? experiment.logFlag : state.settings.logFlag,
             successesForSkip: (typeof experiment.successesForSkip === 'number') ? experiment.successesForSkip : state.settings.successesForSkip,

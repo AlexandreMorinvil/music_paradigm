@@ -91,6 +91,7 @@ const validateBlock = function (block, index = null) {
         "timeoutInSeconds",
         "playingMode",
         "footnote",
+        "footnoteType",
         "logFlag",
         "hideFeedbackSmiley",
         "isInSkipableChain",
@@ -127,6 +128,7 @@ const validateAttributeType = function (key, value) {
         case "type":
         case "name":
         case "folder":
+        case "footnoteType":
         case "playingMode":
         case "skipStepButton":
         case "skipStepButtonMessage":
@@ -148,9 +150,9 @@ const validateAttributeType = function (key, value) {
 
         // Boolean
         case "followedBy":
+        case "footnote":
         case "anyPianoKey":
         case "enableSoundFlag":
-        case "footnote":
         case "logFlag":
         case "hideFeedbackSmiley":
             if (!(typeof value === "boolean"))
