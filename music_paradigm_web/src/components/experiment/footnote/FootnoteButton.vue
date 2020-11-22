@@ -1,7 +1,7 @@
 <template>
   <div class="button-grid">
     <button>{{ message }}</button>
-    <skip-button v-on:skipButtonClicked="emitSkipSignal"></skip-button>
+    <skip-button v-on:skip-request="emitSkipSignal"></skip-button>
   </div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     emitSkipSignal() {
-      this.$emit('skipButtonClicked');
+      this.$emit('skip-request');
     },
   },
 };

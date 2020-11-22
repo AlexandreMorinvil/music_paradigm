@@ -5,7 +5,7 @@
       :is="type"
       :message="message"
       v-on:advanceButtonClicked="emitAdvanceSignal"
-      v-on:skipButtonClicked="emitSkipSignal"
+      v-on:skip-request="emitSkipSignal"
     />
   </div>
 </template>
@@ -44,7 +44,7 @@ export default {
       this.$emit('advanceButtonClicked');
     },
     emitSkipSignal() {
-      this.$emit('skipButtonClicked');
+      this.$emit('skip-request');
     },
   },
 };

@@ -8,7 +8,7 @@
       class="helper"
     />
 
-    <skip-button v-if="hasSkipOption" class="skip-button" v-on:skipButtonClicked="emitSkipSignal" />
+    <skip-button v-if="hasSkipOption" class="skip-button" v-on:skip-request="emitSkipSignal" />
 
     <div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">{{ textContent }}</div>
 
@@ -110,7 +110,7 @@ export default {
   },
   methods: {
     emitSkipSignal() {
-      this.$emit('skipRequest');
+      this.$emit('skip-request');
     },
   },
   watch: {

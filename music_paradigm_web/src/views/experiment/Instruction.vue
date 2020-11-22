@@ -8,11 +8,7 @@
       class="helper"
     />
 
-    <skip-button
-      v-if="hasSkipOption && !isSkipButtonInFootnote"
-      class="skip-button"
-      v-on:skipButtonClicked="emitSkipSignal"
-    />
+    <skip-button v-if="hasSkipOption && !isSkipButtonInFootnote" class="skip-button" />
 
     <div v-if="hasText || hasNoContent" id="text-area" class="experiment-state-division state-division-text">
       {{ textToDisplay }}
@@ -101,15 +97,7 @@ export default {
       else return this.textContent;
     },
   },
-  methods: {
-    emitSkipSignal() {
-      this.$emit('skipRequest');
-    },
-  },
   watch: {
-    lastPressedKey(lastPressedKey) {
-      if (this.hasSkipOption && lastPressedKey === this.skipStepButton) this.emitSkipSignal();
-    },
     isSpaceBarPressed(isPressed) {
       if (isPressed) {
         this.$emit('stateEnded');
