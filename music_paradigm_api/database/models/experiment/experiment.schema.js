@@ -16,6 +16,7 @@ const schema = new Schema(
         logFlag: { type: Boolean, default: true },
         successesForSkip: { type: Number, default: 0 },
         hideFeedbackSmiley: { type: Boolean, default: false },
+        isSkipStepButtonInFootnote: { type: Boolean, default: undefined },
         variable: [
             {
                 name: String,
@@ -49,6 +50,7 @@ const schema = new Schema(
                     helperImageFileName: { type: [String], default: undefined },
                     hideFeedbackSmiley: { type: Boolean, default: undefined },
                     skipStepButton: { type: String, default: undefined },
+                    isSkipStepButtonInFootnote: { type: Boolean, default: undefined },
                     skipStepButtonMessage: { type: String, default: undefined },
                     isInSkipableChain: { type: Boolean, default: undefined },
                     successFeedbackMessage: { type: String, default: undefined },

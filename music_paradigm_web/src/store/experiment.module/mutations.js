@@ -38,7 +38,8 @@ export default {
             timeLimitInSeconds: (typeof experiment.timeLimitInSeconds === 'number') ? experiment.timeLimitInSeconds : state.settings.timeLimitInSeconds,
             logFlag: (typeof experiment.logFlag === 'boolean') ? experiment.logFlag : state.settings.logFlag,
             successesForSkip: (typeof experiment.successesForSkip === 'number') ? experiment.successesForSkip : state.settings.successesForSkip,
-            hideFeedbackSmiley: (typeof experiment.hideFeedbackSmiley === 'boolean') ? experiment.hideFeedbackSmiley : state.settings.hideFeedbackSmiley
+            hideFeedbackSmiley: (typeof experiment.hideFeedbackSmiley === 'boolean') ? experiment.hideFeedbackSmiley : state.settings.hideFeedbackSmiley,
+            isSkipStepButtonInFootnote: (typeof experiment.isSkipStepButtonInFootnote === 'boolean') ? experiment.isSkipStepButtonInFootnote : state.settings.isSkipStepButtonInFootnote
         };
 
         // Toggle the boolean value indicating that an experiment is mounted

@@ -96,6 +96,7 @@ const validateBlock = function (block, index = null) {
         "hideFeedbackSmiley",
         "isInSkipableChain",
         "skipStepButton",
+        "isSkipStepButtonInFootnote",
         "skipStepButtonMessage",
         "successFeedbackMessage",
         "failureFeedbackMessage",
@@ -155,6 +156,7 @@ const validateAttributeType = function (key, value) {
         case "enableSoundFlag":
         case "logFlag":
         case "hideFeedbackSmiley":
+        case "skipStepButtonInFootnote":
             if (!(typeof value === "boolean"))
                 throw new Error(`The key '${key}' must be of type 'Boolean'`);
             break;

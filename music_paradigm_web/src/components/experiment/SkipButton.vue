@@ -1,9 +1,5 @@
 <template>
-  <button v-on:click="emitSkipSignal">
-    {{ buttonMessage }}
-    <br />
-    Press {{ skipStepButtonValue }}
-  </button>
+  <button v-on:click="emitSkipSignal">Press {{ skipStepButtonValue }} {{ buttonMessage }}</button>
 </template>
 
 <script>
@@ -19,7 +15,6 @@ export default {
       return this.skipStepButton.toUpperCase() || 'Here';
     },
     buttonMessage() {
-      console.log(!this.skipStepButtonMessage);
       if (!this.skipStepButtonMessage) return 'To skip';
       return this.skipStepButtonMessage || 'This is displayed';
     },

@@ -8,7 +8,11 @@
       class="helper"
     />
 
-    <skip-button v-if="hasSkipOption" class="skip-button" v-on:skipButtonClicked="emitSkipSignal" />
+    <skip-button
+      v-if="hasSkipOption && !isSkipButtonInFootnote"
+      class="skip-button"
+      v-on:skipButtonClicked="emitSkipSignal"
+    />
 
     <div v-if="hasText || hasNoContent" id="text-area" class="experiment-state-division state-division-text">
       {{ textToDisplay }}
@@ -19,7 +23,12 @@
       <img id="instruction-img" v-else :src="urlExperimentRessource(pictureName)" alt="Instruction" />
     </div>
 
-    <footnote id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text" :message="footnote" />
+    <footnote
+      id="note-area"
+      v-if="hasFootnote"
+      class="experiment-state-division state-division-text"
+      :message="footnote"
+    />
   </div>
 </template>
 
@@ -71,6 +80,7 @@ export default {
       'anyPianoKey',
       'skipStepButton',
       'footnoteMessage',
+      'isSkipButtonInFootnote',
     ]),
     gridClass() {
       if (this.hasFootnote) {

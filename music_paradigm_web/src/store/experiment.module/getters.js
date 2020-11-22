@@ -234,7 +234,7 @@ export default {
         if (typeof state.state.settings.hideFeedbackSmiley === "boolean")
             hideFeedbackSmiley = state.state.settings.hideFeedbackSmiley;
 
-        if (typeof state.settings.hideFeedbackSmiley === "boolean")
+        else if (typeof state.settings.hideFeedbackSmiley === "boolean")
             hideFeedbackSmiley = state.settings.hideFeedbackSmiley;
 
         else
@@ -249,7 +249,7 @@ export default {
         if (typeof state.state.settings.footnoteType === "string")
             footnoteType = state.state.settings.footnoteType;
 
-        if (typeof state.settings.footnoteType === "string")
+        else if (typeof state.settings.footnoteType === "string")
             footnoteType = state.settings.footnoteType;
 
         else
@@ -265,7 +265,7 @@ export default {
         if (typeof state.state.settings.footnote === "boolean")
             hasFootNote = state.state.settings.footnote;
 
-        if (typeof state.settings.footnote === "boolean")
+        else if (typeof state.settings.footnote === "boolean")
             hasFootNote = state.settings.footnote;
 
         else
@@ -300,5 +300,9 @@ export default {
 
     hasSkipOption: (state) => {
         return Boolean(state.state.settings.skipStepButton) || false;
+    },
+
+    isSkipButtonInFootnote: (state) => {
+        return (state.state.settings.footnote) && (state.state.settings.footnoteType === 'button') && (state.state.settings.isSkipStepButtonInFootnote);
     }
 }

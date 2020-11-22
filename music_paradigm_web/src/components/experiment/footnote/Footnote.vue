@@ -1,6 +1,7 @@
 <template>
   <div>
     <component
+      class="fill"
       :is="type"
       :message="message"
       v-on:advanceButtonClicked="emitAdvanceSignal"
@@ -12,11 +13,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import FootnoteSimple from '@/components/experiment/footnote/FootnoteSimple.vue';
+import FootnoteButton from '@/components/experiment/footnote/FootnoteButton.vue';
 
 export default {
   name: 'Footnote',
   components: {
     footnoteSimple: FootnoteSimple,
+    footnoteButton: FootnoteButton,
   },
   props: {
     message: {
@@ -47,4 +50,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.fill {
+  width: 100%;
+  height: 100%;
+}
+</style>

@@ -29,6 +29,7 @@ const DEFAULT_TIME_LIMIT = 0;
 const DEFAULT_LOG_FLAG = true;
 const DEFAULT_SUCCESSES_FOR_SKIP = 0;
 const DEFAULT_HIDE_FEEDBACK_SMILEY = false;
+const DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE = false
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
     return {
@@ -71,7 +72,8 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
         timeLimitInSeconds: DEFAULT_TIME_LIMIT,             // Time limit of the experiment. If set to 0, ther is no limit and the timer will count up, otherwise the timer will count down
         logFlag: DEFAULT_LOG_FLAG,                          // Indicate wether or not the blocks must log it's data
         successesForSkip: DEFAULT_SUCCESSES_FOR_SKIP,       // Indicate the number of successful 'Playing' states before being able to leave a group of blocks
-        hideFeedbackSmiley: DEFAULT_HIDE_FEEDBACK_SMILEY    // Indicate whether the feedback state contains a smiley by default
+        hideFeedbackSmiley: DEFAULT_HIDE_FEEDBACK_SMILEY,   // Indicate whether the feedback state contains a smiley by default
+        isSkipStepButtonInFootnote: DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE,    // Indicates wether the skip buttons are displayed by default in the footnote when there is a button footnote
     }
 }
 
@@ -125,6 +127,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
             footnoteType: DEFAULT_FOOTNOTE_TYPE,            // Block specific "footnoteType" superseding the general setting
             logFlag: DEFAULT_LOG_FLAG,                      // Block specific "logFlag" superseding the general setting
             skipStepButton: "",                             // Button to press to skip the next block (is valid only if a button is specified)
+            isSkipStepButtonInFootnote: DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE,    // Block specific isSkipStepButtonInFootnote superceeding the general parameter
             skipStepButtonMessage: "",                      // Message indicated on the skip button if there is a skip button
             successFeedbackMessage: "",                     // Additional message displayed upon sucessfull feedback for all criteras
             failureFeedbackMessage: "",                     // Additional message displayed upon feedback with at least one failed critera

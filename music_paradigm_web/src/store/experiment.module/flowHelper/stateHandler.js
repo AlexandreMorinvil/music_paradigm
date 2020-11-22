@@ -39,6 +39,7 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
         footnoteMessage,
         melodyRepetition,
         successesForSkipLoop,
+        isSkipStepButtonInFootnote,
     } = currentBlock;
 
     // Set the settings for the state. If no value is found, an appropreate default value is set
@@ -58,6 +59,7 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
         footnoteMessage: (typeof footnoteMessage === 'string') ? footnoteMessage : "",
         melodyRepetition: (typeof melodyRepetition === 'number') ? melodyRepetition : 1,
         successesForSkipLoop: (typeof successesForSkipLoop === 'number') ? successesForSkipLoop : generalSettings.successesForSkipLoop,
+        isSkipStepButtonInFootnote: (typeof isSkipStepButtonInFootnote === 'boolean') ? isSkipStepButtonInFootnote : generalSettings.isSkipStepButtonInFootnote
     };
 
     // Indicate that the state (current block's settings) was already initialized 
