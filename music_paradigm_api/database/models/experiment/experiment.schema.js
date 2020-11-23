@@ -20,6 +20,11 @@ const schema = new Schema(
         variable: [
             {
                 name: String,
+                type: { 
+                    type: String, 
+                    enum: ['counter', 'variable', 'parameter'], 
+                    default: "variable",
+                },
                 values: []
             }
         ],
