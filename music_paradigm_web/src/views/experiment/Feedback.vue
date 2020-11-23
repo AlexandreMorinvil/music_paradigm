@@ -8,7 +8,7 @@
       class="helper"
     />
 
-    <skip-button v-if="hasSkipOption" class="skip-button" v-on:skip-request="emitSkipSignal" />
+    <skip-button v-if="hasSkipOption && !isSkipButtonInFootnote" class="skip-button" />
 
     <div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">{{ textContent }}</div>
 
@@ -27,21 +27,29 @@
       </div>
     </div>
 
-    <div id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text">{{ footnote }}</div>
+    <footnote
+      id="note-area"
+      v-if="hasFootnote"
+      class="experiment-state-division state-division-text"
+      :message="footnote"
+    />
   </div>
 </template>
 
 <script>
 import '@/styles/experimentStateTemplate.css';
 import { mapGetters } from 'vuex';
+import { ExperimentEventBus } from '@/_services/eventBus.service.js';
 import FeedbackGrade from '@/components/FeedbackGrade.vue';
 import SkipButton from '@/components/experiment/SkipButton.vue';
+import Footnote from '@/components/experiment/footnote/Footnote.vue';
 
 export default {
   name: 'Feedback',
   components: {
     feedbackGrade: FeedbackGrade,
     skipButton: SkipButton,
+    footnote: Footnote,
   },
   props: {
     lastPressedKey: {
@@ -75,6 +83,7 @@ export default {
       'successFeedbackMessage',
       'failureFeedbackMessage',
       'footnoteMessage',
+      'isSkipButtonInFootnote',
     ]),
     gridClass() {
       if (this.hasFootnote) {
@@ -109,22 +118,25 @@ export default {
     },
   },
   methods: {
-    emitSkipSignal() {
-      this.$emit('skip-request');
+    emitStateEndedSignal() {
+      this.$emit('state-ended');
     },
   },
+  mounted() {
+    ExperimentEventBus.$on('advance-request', this.emitStateEndedSignal);
+  },
+  beforeDestroy() {
+    ExperimentEventBus.$off('advance-request', this.emitStateEndedSignal);
+  },
   watch: {
-    lastPressedKey(lastPressedKey) {
-      if (this.hasSkipOption && lastPressedKey === this.skipStepButton) this.emitSkipSignal();
-    },
     isSpaceBarPressed(isPressed) {
       if (isPressed) {
-        this.$emit('state-ended');
+        this.emitStateEndedSignal();
       }
     },
     pressedKeys(keys) {
       if (this.anyPianoKey && keys.length > 0) {
-        this.$emit('state-ended');
+        this.emitStateEndedSignal();
       }
     },
   },
