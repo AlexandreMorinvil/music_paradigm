@@ -13,7 +13,10 @@
       </svg>
     </div>
 
-    <div class="progress-bar">
+    <div v-if="feedbackNumerical" class="numerical-feedback">
+      {{ grade.mark }}
+    </div>
+    <div v-if="!feedbackNumerical" class="progress-bar">
       <div class="position-wrapper" :style="checkpointOverlay">
         <div :class="'checkpoint-content ' + this.checkpointColor" :style="passingWidth"></div>
       </div>
@@ -43,7 +46,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters('experiment', ['hideFeedbackSmiley']),
+    ...mapGetters('experiment', ['hideFeedbackSmiley', 'feedbackNumerical']),
     isSuccess() {
       return this.grade.mark >= this.grade.passMark;
     },
@@ -85,6 +88,10 @@ export default {
   font-size: calc(1vh + 1vw);
   height: 15%;
   width: 100%;
+}
+
+.numerical-feedback {
+  font-size: calc(2vh + 2vw);
 }
 
 .feedback-grade-emoji {

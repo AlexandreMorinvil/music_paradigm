@@ -216,6 +216,10 @@ export default {
         return state.state.settings.skipStepButtonMessage || "";
     },
 
+    feedbackNumerical: (state) => {
+        return state.state.settings.feedbackNumerical || false;
+    },
+
     successFeedbackMessage: (state) => {
         return state.state.settings.successFeedbackMessage || "";
     },

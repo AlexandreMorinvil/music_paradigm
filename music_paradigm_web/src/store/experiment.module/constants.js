@@ -133,7 +133,8 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
             failureFeedbackMessage: "",                     // Additional message displayed upon feedback with at least one failed critera
             melodyRepetition: 1,                            // Number of times a melody is repeated in a block
             successesForSkip: DEFAULT_SUCCESSES_FOR_SKIP,   // Block specific "successesForSkip" superseding the general setting
-            startSignal: 0                                  // Signal countdown (if is 0, there is no signal countdown)
+            startSignal: 0,                                 // Signal countdown (if is 0, there is no signal countdown)
+            feedbackNumerical: false                        // Indicator of whether the feedback must be given in its numerical form instead of with range bars
         },
         // Session specific informations
         record: {

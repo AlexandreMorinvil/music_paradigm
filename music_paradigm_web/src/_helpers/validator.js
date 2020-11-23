@@ -105,6 +105,7 @@ const validateBlock = function (block, index = null) {
         "successesForSkipLoop",
         "lastRepetitionVersion",
         "startSignal",
+        "feedbackNumerical",
     ]
     const innerBlockAttributes = [
         "lastRepetitionVersion"
@@ -159,6 +160,7 @@ const validateAttributeType = function (key, value) {
         case "logFlag":
         case "hideFeedbackSmiley":
         case "skipStepButtonInFootnote":
+        case "feedbackNumerical":
             if (!(typeof value === "boolean"))
                 throw new Error(`The key '${key}' must be of type 'Boolean'`);
             break;

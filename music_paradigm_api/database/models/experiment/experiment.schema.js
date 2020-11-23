@@ -59,6 +59,7 @@ const schema = new Schema(
                     melodyRepetition: { type: Number, default: undefined },
                     successesForSkipLoop: { type: Number, default: undefined },
                     startSignal: { type: Number, default: undefined },
+                    feedbackNumerical: { type: Boolean, default: undefined },
 
                     lastRepetitionVersion: { type: Object, default: undefined }
                 }
