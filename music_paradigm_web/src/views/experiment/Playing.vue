@@ -87,7 +87,7 @@ export default {
     },
     handdleEndOfPlaying() {
       this.evaluatePlayedNotes();
-      this.$emit('stateEnded');
+      this.$emit('state-ended');
     },
     evaluatePlayedNotes() {
       this.$refs.playingMode.evaluate();

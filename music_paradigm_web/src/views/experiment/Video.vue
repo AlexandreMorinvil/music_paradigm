@@ -162,7 +162,7 @@ export default {
   methods: {
     handdleEndOfVideo() {
       setTimeout(() => {
-        this.$emit('stateEnded');
+        this.$emit('state-ended');
       }, this.endOfStatedelayInMilliseconds);
     },
     startDelayCountdown() {
@@ -178,7 +178,7 @@ export default {
     },
     manageHavingNoVideo() {
       setTimeout(() => {
-        this.$emit('stateEnded');
+        this.$emit('state-ended');
       }, this.errorAutomaticTransitionSeconds * 1000);
     },
     startVideo() {

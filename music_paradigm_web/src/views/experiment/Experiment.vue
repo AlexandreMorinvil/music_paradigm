@@ -40,7 +40,7 @@
         :isSpaceBarPressed="isSpaceBarPressed"
         v-on:skip-request="navigateExperimentSkip"
         v-on:experimentReady="displayFirstStep"
-        v-on:stateEnded="navigateExperiment"
+        v-on:state-ended="navigateExperiment"
         v-on:experimentEnded="endExperiment"
       />
     </div>

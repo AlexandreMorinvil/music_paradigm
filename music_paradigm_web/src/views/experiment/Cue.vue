@@ -94,10 +94,10 @@ export default {
   methods: {
     ...mapActions('piano', ['playMidiFile', 'addPlayerEndOfFileAction', 'removePlayerEndOfFileAction']),
     handleEndOfMidiFile() {
-      this.$emit('stateEnded');
+      this.$emit('state-ended');
     },
     manageHavingNoMidiFile() {
-      this.$emit('stateEnded');
+      this.$emit('state-ended');
     },
     emitSkipSignal() {
       this.$emit('skip-request');

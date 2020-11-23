@@ -1,12 +1,13 @@
 <template>
   <div class="button-grid">
-    <button>{{ message }}</button>
-    <skip-button v-on:skip-request="emitSkipSignal"></skip-button>
+    <button v-on:click="emitAdvanceSignal">{{ message }}</button>
+    <skip-button />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import { ExperimentEventBus } from '@/_services/eventBus.service.js';
 import SkipButton from '@/components/experiment/SkipButton.vue';
 
 export default {
@@ -29,8 +30,8 @@ export default {
     ...mapGetters('experiment', ['skipStepButton', 'skipStepButtonMessage']),
   },
   methods: {
-    emitSkipSignal() {
-      this.$emit('skip-request');
+    emitAdvanceSignal() {
+      ExperimentEventBus.$emit('advance-request');
     },
   },
 };

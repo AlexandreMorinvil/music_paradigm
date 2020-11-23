@@ -119,12 +119,12 @@ export default {
     },
     isSpaceBarPressed(isPressed) {
       if (isPressed) {
-        this.$emit('stateEnded');
+        this.$emit('state-ended');
       }
     },
     pressedKeys(keys) {
       if (this.anyPianoKey && keys.length > 0) {
-        this.$emit('stateEnded');
+        this.$emit('state-ended');
       }
     },
   },

@@ -31,6 +31,7 @@
 <script>
 import '@/styles/experimentStateTemplate.css';
 import { mapGetters } from 'vuex';
+import { ExperimentEventBus } from '@/_services/eventBus.service.js';
 import VisualPiano from '@/components/VisualPiano.vue';
 import SkipButton from '@/components/experiment/SkipButton.vue';
 import Footnote from '@/components/experiment/footnote/Footnote.vue';
@@ -97,16 +98,23 @@ export default {
       else return this.textContent;
     },
   },
+  methods: {
+    emitStateEndedSignal() {
+      this.$emit('state-ended');
+    },
+  },
+  mounted() {
+    ExperimentEventBus.$on('advance-request', this.emitStateEndedSignal);
+  },
+  beforeDestroy() {
+    ExperimentEventBus.$off('advance-request', this.emitStateEndedSignal);
+  },
   watch: {
     isSpaceBarPressed(isPressed) {
-      if (isPressed) {
-        this.$emit('stateEnded');
-      }
+      if (isPressed) this.emitStateEndedSignal();
     },
     pressedKeys(keys) {
-      if (this.anyPianoKey && keys.length > 0) {
-        this.$emit('stateEnded');
-      }
+      if (this.anyPianoKey && keys.length > 0) this.emitStateEndedSignal();
     },
   },
 };
