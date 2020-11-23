@@ -57,6 +57,7 @@ export default {
   },
   methods: {
     ...mapActions('piano', ['evaluateMelodyType']),
+    start() {},
     setTimeLimit() {
       if (this.timeoutInSeconds !== 0) {
         this.timeLimitUniqueIdentifier = window.setTimeout(() => {
@@ -93,7 +94,7 @@ export default {
           this.$emit('finishedPlaying');
         }, this.maxInactivityALlowedInMilliSeconds);
 
-        const playedNoteIndex = (this.playedNotesMidi.length - 1);
+        const playedNoteIndex = this.playedNotesMidi.length - 1;
         const referenceIndex = playedNoteIndex % this.midiFileNotesMidi.length;
         const hasError = this.playedNotesMidi[playedNoteIndex] !== this.midiFileNotesMidi[referenceIndex];
         if (hasError) this.$emit('finishedPlaying');

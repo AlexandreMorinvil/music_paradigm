@@ -14,7 +14,7 @@ function updateRoute(currentState, flow, cursor, isInitialized) {
 }
 
 function updateRecords(currentState, cursor, isInitialized) {
-    if (cursor.flag.needsResetLoopParameters) 
+    if (cursor.flag.needsResetLoopParameters)
         currentState.record.successesInLoop = 0;
     Object.assign(isInitialized, { record: true });
 }
@@ -40,6 +40,7 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
         melodyRepetition,
         successesForSkipLoop,
         isSkipStepButtonInFootnote,
+        startSignal,
     } = currentBlock;
 
     // Set the settings for the state. If no value is found, an appropreate default value is set
@@ -59,7 +60,8 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
         footnoteMessage: (typeof footnoteMessage === 'string') ? footnoteMessage : "",
         melodyRepetition: (typeof melodyRepetition === 'number') ? melodyRepetition : 1,
         successesForSkipLoop: (typeof successesForSkipLoop === 'number') ? successesForSkipLoop : generalSettings.successesForSkipLoop,
-        isSkipStepButtonInFootnote: (typeof isSkipStepButtonInFootnote === 'boolean') ? isSkipStepButtonInFootnote : generalSettings.isSkipStepButtonInFootnote
+        isSkipStepButtonInFootnote: (typeof isSkipStepButtonInFootnote === 'boolean') ? isSkipStepButtonInFootnote : generalSettings.isSkipStepButtonInFootnote,
+        startSignal: (typeof startSignal === 'number') ? startSignal : 0,
     };
 
     // Indicate that the state (current block's settings) was already initialized 

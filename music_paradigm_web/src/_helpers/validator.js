@@ -104,6 +104,7 @@ const validateBlock = function (block, index = null) {
         "melodyRepetition",
         "successesForSkipLoop",
         "lastRepetitionVersion",
+        "startSignal",
     ]
     const innerBlockAttributes = [
         "lastRepetitionVersion"
@@ -145,6 +146,7 @@ const validateAttributeType = function (key, value) {
         case "timeoutInSeconds":
         case "successesForSkipLoop":
         case "melodyRepetition":
+        case "startSignal":
             if (!(typeof value === "number"))
                 throw new Error(`The key '${key}' must be of type 'Number'`);
             break;

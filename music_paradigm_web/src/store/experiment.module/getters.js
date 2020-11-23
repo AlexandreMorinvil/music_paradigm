@@ -204,6 +204,10 @@ export default {
         return state.state.settings.timeoutInSeconds || 0;
     },
 
+    startSignal: (state) => {
+        return state.state.settings.startSignal || 0;
+    },
+
     skipStepButton: (state) => {
         return state.state.settings.skipStepButton.toLowerCase() || "";
     },

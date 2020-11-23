@@ -54,6 +54,7 @@ export default {
   },
   methods: {
     ...mapActions('piano', ['evaluateRhythmType']),
+    start() {},
     setTimeLimit() {
       if (this.timeoutInSeconds !== 0) {
         this.timeLimitUniqueIdentifier = window.setTimeout(() => {

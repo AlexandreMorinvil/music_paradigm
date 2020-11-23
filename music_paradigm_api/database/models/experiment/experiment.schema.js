@@ -58,6 +58,7 @@ const schema = new Schema(
                     footnoteMessage: { type: String, default: undefined },
                     melodyRepetition: { type: Number, default: undefined },
                     successesForSkipLoop: { type: Number, default: undefined },
+                    startSignal: { type: Number, default: undefined },
 
                     lastRepetitionVersion: { type: Object, default: undefined }
                 }
