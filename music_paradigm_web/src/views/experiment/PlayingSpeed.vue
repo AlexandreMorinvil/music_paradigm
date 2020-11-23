@@ -72,6 +72,10 @@ export default {
   },
   methods: {
     ...mapActions('piano', ['evaluateSpeedType']),
+    start() {
+      this.startCountdown();
+      this.playingStarted = true;
+    },
     startCountdown() {
       this.referenceTime = Date.parse(new Date());
       this.counterUniqueIdentifier = window.setInterval(this.countdown, this.timeStepInMilliseconds);
@@ -102,8 +106,7 @@ export default {
   watch: {
     playedNotesMidi() {
       if (!this.playingStarted) {
-        this.startCountdown();
-        this.playingStarted = true;
+        this.start();
       }
       if (this.midiFileNotesMidi.includes(this.playedNotesMidi[this.playedNotesMidi.length - 1])) {
         this.playProgress += 1;

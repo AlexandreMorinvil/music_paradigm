@@ -11,13 +11,20 @@ const schema = new Schema(
         anyPianoKey: { type: Boolean, default: false },
         enableSoundFlag: { type: Boolean, default: false },
         footnote: { type: Boolean, default: false },
+        footnoteType: { type: String, default: 'simple' },
         timeLimitInSeconds: { type: Number, default: 0 },
         logFlag: { type: Boolean, default: true },
         successesForSkip: { type: Number, default: 0 },
         hideFeedbackSmiley: { type: Boolean, default: false },
+        isSkipStepButtonInFootnote: { type: Boolean, default: undefined },
         variable: [
             {
                 name: String,
+                type: { 
+                    type: String, 
+                    enum: ['counter', 'variable', 'parameter'], 
+                    default: "variable",
+                },
                 values: []
             }
         ],
@@ -43,10 +50,12 @@ const schema = new Schema(
                     timeoutInSeconds: { type: Number, default: undefined },
                     playingMode: { type: String, default: undefined },
                     footnote: { type: Boolean, default: undefined },
+                    footnoteType: { type: String, default: undefined },
                     logFlag: { type: Boolean, default: undefined },
                     helperImageFileName: { type: [String], default: undefined },
                     hideFeedbackSmiley: { type: Boolean, default: undefined },
                     skipStepButton: { type: String, default: undefined },
+                    isSkipStepButtonInFootnote: { type: Boolean, default: undefined },
                     skipStepButtonMessage: { type: String, default: undefined },
                     isInSkipableChain: { type: Boolean, default: undefined },
                     successFeedbackMessage: { type: String, default: undefined },
@@ -54,6 +63,10 @@ const schema = new Schema(
                     footnoteMessage: { type: String, default: undefined },
                     melodyRepetition: { type: Number, default: undefined },
                     successesForSkipLoop: { type: Number, default: undefined },
+                    startSignal: { type: Number, default: undefined },
+                    feedbackNumerical: { type: Boolean, default: undefined },
+
+                    lastRepetitionVersion: { type: Object, default: undefined }
                 }
             ]
         }

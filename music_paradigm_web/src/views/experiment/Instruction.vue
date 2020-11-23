@@ -8,7 +8,7 @@
       class="helper"
     />
 
-    <skip-button v-if="hasSkipOption" class="skip-button" v-on:skipButtonClicked="emitSkipSignal" />
+    <skip-button v-if="hasSkipOption && !isSkipButtonInFootnote" class="skip-button" />
 
     <div v-if="hasText || hasNoContent" id="text-area" class="experiment-state-division state-division-text">
       {{ textToDisplay }}
@@ -19,23 +19,29 @@
       <img id="instruction-img" v-else :src="urlExperimentRessource(pictureName)" alt="Instruction" />
     </div>
 
-    <div id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text">
-      {{ footnote }}
-    </div>
+    <footnote
+      id="note-area"
+      v-if="hasFootnote"
+      class="experiment-state-division state-division-text"
+      :message="footnote"
+    />
   </div>
 </template>
 
 <script>
 import '@/styles/experimentStateTemplate.css';
 import { mapGetters } from 'vuex';
+import { ExperimentEventBus } from '@/_services/eventBus.service.js';
 import VisualPiano from '@/components/VisualPiano.vue';
 import SkipButton from '@/components/experiment/SkipButton.vue';
+import Footnote from '@/components/experiment/footnote/Footnote.vue';
 
 export default {
   name: 'Instruction',
   components: {
     visualPiano: VisualPiano,
     skipButton: SkipButton,
+    footnote: Footnote,
   },
   props: {
     lastPressedKey: {
@@ -71,6 +77,7 @@ export default {
       'anyPianoKey',
       'skipStepButton',
       'footnoteMessage',
+      'isSkipButtonInFootnote',
     ]),
     gridClass() {
       if (this.hasFootnote) {
@@ -92,23 +99,22 @@ export default {
     },
   },
   methods: {
-    emitSkipSignal() {
-      this.$emit('skipRequest');
+    emitStateEndedSignal() {
+      this.$emit('state-ended');
     },
   },
+  mounted() {
+    ExperimentEventBus.$on('advance-request', this.emitStateEndedSignal);
+  },
+  beforeDestroy() {
+    ExperimentEventBus.$off('advance-request', this.emitStateEndedSignal);
+  },
   watch: {
-    lastPressedKey(lastPressedKey) {
-      if (this.hasSkipOption && lastPressedKey === this.skipStepButton) this.emitSkipSignal();
-    },
     isSpaceBarPressed(isPressed) {
-      if (isPressed) {
-        this.$emit('stateEnded');
-      }
+      if (isPressed) this.emitStateEndedSignal();
     },
     pressedKeys(keys) {
-      if (this.anyPianoKey && keys.length > 0) {
-        this.$emit('stateEnded');
-      }
+      if (this.anyPianoKey && keys.length > 0) this.emitStateEndedSignal();
     },
   },
 };

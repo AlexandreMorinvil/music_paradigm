@@ -1,7 +1,7 @@
 import { routerNavigation } from '@/_helpers'
 import constants from './constants'
-import cursorHandler from './cursorHandler'
-import stateHandler from './stateHandler'
+import cursorHandler from './flowHelper/cursorHandler'
+import stateHandler from './flowHelper/stateHandler'
 
 export default {
     clearState(state) {
@@ -29,15 +29,17 @@ export default {
         state.settings = constants.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
         Object.assign(state.settings, { record: true });
         state.settings = {
-            anyPianoKey: (typeof experiment.anyPianoKey !== 'undefined') ? Boolean(experiment.anyPianoKey) : state.settings.anyPianoKey,
-            enableSoundFlag: (typeof experiment.enableSoundFlag !== 'undefined') ? Boolean(experiment.enableSoundFlag) : state.settings.enableSoundFlag,
+            anyPianoKey: (typeof experiment.anyPianoKey === 'boolean') ? Boolean(experiment.anyPianoKey) : state.settings.anyPianoKey,
+            enableSoundFlag: (typeof experiment.enableSoundFlag === 'boolean') ? Boolean(experiment.enableSoundFlag) : state.settings.enableSoundFlag,
             playingMode: (typeof experiment.mode === 'string') ? experiment.mode : state.settings.playingMode,
             timbreFile: (typeof experiment.timbreFile === 'string') ? experiment.timbreFile : state.settings.timbreFile,
-            footnote: (typeof experiment.footnote !== 'undefined') ? Boolean(experiment.footnote) : state.settings.footnote,
+            footnote: (typeof experiment.footnote === 'boolean') ? experiment.footnote : state.settings.footnote,
+            footnoteType: (typeof experiment.footnoteType === 'string') ? experiment.footnoteType : state.settings.footnoteType,
             timeLimitInSeconds: (typeof experiment.timeLimitInSeconds === 'number') ? experiment.timeLimitInSeconds : state.settings.timeLimitInSeconds,
             logFlag: (typeof experiment.logFlag === 'boolean') ? experiment.logFlag : state.settings.logFlag,
             successesForSkip: (typeof experiment.successesForSkip === 'number') ? experiment.successesForSkip : state.settings.successesForSkip,
-            hideFeedbackSmiley: (typeof experiment.hideFeedbackSmiley === 'boolean') ? experiment.hideFeedbackSmiley : state.settings.hideFeedbackSmiley
+            hideFeedbackSmiley: (typeof experiment.hideFeedbackSmiley === 'boolean') ? experiment.hideFeedbackSmiley : state.settings.hideFeedbackSmiley,
+            isSkipStepButtonInFootnote: (typeof experiment.isSkipStepButtonInFootnote === 'boolean') ? experiment.isSkipStepButtonInFootnote : state.settings.isSkipStepButtonInFootnote
         };
 
         // Toggle the boolean value indicating that an experiment is mounted
@@ -67,12 +69,12 @@ export default {
     },
 
     moveNextStep: (state) => {
-        cursorHandler.advanceCursor(state.state, state.flow, state.cursor, state.isInitialized);
+        cursorHandler.advance(state.state, state.flow, state.cursor, state.isInitialized);
         stateHandler.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
     },
 
     movePostSkip: (state) => {
-        cursorHandler.skipCursor(state.state, state.flow, state.cursor, state.isInitialized);
+        cursorHandler.skip(state.state, state.flow, state.cursor, state.isInitialized);
         stateHandler.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
     },
 

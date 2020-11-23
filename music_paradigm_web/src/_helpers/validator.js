@@ -91,16 +91,24 @@ const validateBlock = function (block, index = null) {
         "timeoutInSeconds",
         "playingMode",
         "footnote",
+        "footnoteType",
         "logFlag",
         "hideFeedbackSmiley",
         "isInSkipableChain",
         "skipStepButton",
+        "isSkipStepButtonInFootnote",
         "skipStepButtonMessage",
         "successFeedbackMessage",
         "failureFeedbackMessage",
         "footnoteMessage",
         "melodyRepetition",
         "successesForSkipLoop",
+        "lastRepetitionVersion",
+        "startSignal",
+        "feedbackNumerical",
+    ]
+    const innerBlockAttributes = [
+        "lastRepetitionVersion"
     ]
     Object.keys(block).forEach(key => {
         if (!(allowedAttributes.includes(key)))
@@ -108,6 +116,7 @@ const validateBlock = function (block, index = null) {
 
         try {
             validateAttributeType(key, block[key]);
+            if (innerBlockAttributes.includes(key)) validateBlock(block[key]);
         } catch (e) {
             throw new Error(`${e.message} for the block${indexMessage}`);
         }
@@ -122,6 +131,7 @@ const validateAttributeType = function (key, value) {
         case "type":
         case "name":
         case "folder":
+        case "footnoteType":
         case "playingMode":
         case "skipStepButton":
         case "skipStepButtonMessage":
@@ -137,19 +147,28 @@ const validateAttributeType = function (key, value) {
         case "timeoutInSeconds":
         case "successesForSkipLoop":
         case "melodyRepetition":
+        case "startSignal":
             if (!(typeof value === "number"))
                 throw new Error(`The key '${key}' must be of type 'Number'`);
             break;
 
         // Boolean
         case "followedBy":
+        case "footnote":
         case "anyPianoKey":
         case "enableSoundFlag":
-        case "footnote":
         case "logFlag":
         case "hideFeedbackSmiley":
+        case "skipStepButtonInFootnote":
+        case "feedbackNumerical":
             if (!(typeof value === "boolean"))
                 throw new Error(`The key '${key}' must be of type 'Boolean'`);
+            break;
+
+        // Object
+        case "lastRepetitionVersion":
+            if (!(typeof value === "object"))
+                throw new Error(`The key '${key}' must be of type 'Object'`);
             break;
 
         // Array

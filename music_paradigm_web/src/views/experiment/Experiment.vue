@@ -38,9 +38,9 @@
       <router-view
         :lastPressedKey="lastPressedKey"
         :isSpaceBarPressed="isSpaceBarPressed"
-        v-on:skipRequest="navigateExperimentSkip"
+        v-on:skip-request="navigateExperimentSkip"
         v-on:experimentReady="displayFirstStep"
-        v-on:stateEnded="navigateExperiment"
+        v-on:state-ended="navigateExperiment"
         v-on:experimentEnded="endExperiment"
       />
     </div>
@@ -48,9 +48,10 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+import { ExperimentEventBus } from '@/_services/eventBus.service.js';
 import ExperimentPiano from '@/components/ExperimentPiano.vue';
 import ExperimentTimer from '@/components/ExperimentTimer.vue';
-import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'Experiment',
@@ -148,10 +149,12 @@ export default {
   mounted() {
     window.addEventListener('keydown', this.handleButtonPress);
     window.addEventListener('keyup', this.handleButtonRelease);
+    ExperimentEventBus.$on('skip-request', this.navigateExperimentSkip)
   },
   beforeDestroy() {
     window.removeEventListener('keydown', this.handleButtonPress);
     window.removeEventListener('keyup', this.handleButtonRelease);
+    ExperimentEventBus.$off('skip-request', this.navigateExperimentSkip)
     this.resetPianoState();
     this.clearState();
   },

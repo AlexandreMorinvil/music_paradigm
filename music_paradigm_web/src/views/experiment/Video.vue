@@ -8,7 +8,7 @@
       class="helper"
     />
 
-    <skip-button v-if="hasSkipOption" class="skip-button" v-on:skipButtonClicked="emitSkipSignal" />
+    <skip-button v-if="hasSkipOption" class="skip-button" v-on:skip-request="emitSkipSignal" />
 
     <div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">{{ textContent }}</div>
 
@@ -162,7 +162,7 @@ export default {
   methods: {
     handdleEndOfVideo() {
       setTimeout(() => {
-        this.$emit('stateEnded');
+        this.$emit('state-ended');
       }, this.endOfStatedelayInMilliseconds);
     },
     startDelayCountdown() {
@@ -178,7 +178,7 @@ export default {
     },
     manageHavingNoVideo() {
       setTimeout(() => {
-        this.$emit('stateEnded');
+        this.$emit('state-ended');
       }, this.errorAutomaticTransitionSeconds * 1000);
     },
     startVideo() {
@@ -186,7 +186,7 @@ export default {
       this.$refs.video.playerPlay();
     },
     emitSkipSignal() {
-      this.$emit('skipRequest');
+      this.$emit('skip-request');
     },
   },
   mounted() {
