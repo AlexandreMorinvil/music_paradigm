@@ -2,7 +2,7 @@
   <admin-page-context title="Home">
     <widget-context title="Not Implemented Yet">
       <div class="widget widget-box widget-bg">
-        <br /> *Update from the 18/11/2020*
+        <br /> *Update from the 23/11/2020*
         <br /><br />
         Recent activity on the server and important information from the users
       </div>
