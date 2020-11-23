@@ -1,13 +1,11 @@
 <template>
-  <button v-on:click="emitSkipSignal">
-    {{ buttonMessage }}
-    <br />
-    (Press {{ skipStepButtonValue }})
-  </button>
+  <button v-on:click="emitSkipSignal">{{ buttonMessage }}</button>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import { ExperimentEventBus } from '@/_services/eventBus.service.js';
+
 export default {
   name: 'Alert',
   data() {
@@ -16,18 +14,26 @@ export default {
   computed: {
     ...mapGetters('experiment', ['skipStepButton', 'skipStepButtonMessage']),
     skipStepButtonValue() {
-      return this.skipStepButton.toUpperCase() || 'Here';
+      return this.skipStepButton.toUpperCase();
     },
     buttonMessage() {
-      console.log(!this.skipStepButtonMessage);
-      if (!this.skipStepButtonMessage) return 'To skip';
-      return this.skipStepButtonMessage || 'This is displayed';
+      if (!this.skipStepButtonMessage) return 'Press ' + this.skipStepButtonValue + ' to skip';
+      return this.skipStepButtonMessage;
     },
   },
   methods: {
     emitSkipSignal() {
-      this.$emit('skipButtonClicked');
+      ExperimentEventBus.$emit('skip-request');
     },
+    verifySkipButton(event) {
+      if (event.key.toUpperCase() === this.skipStepButtonValue) this.emitSkipSignal();
+    },
+  },
+  mounted() {
+    window.addEventListener('keydown', this.verifySkipButton);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.verifySkipButton);
   },
 };
 </script>

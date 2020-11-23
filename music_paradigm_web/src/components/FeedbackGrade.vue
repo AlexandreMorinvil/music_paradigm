@@ -13,9 +13,12 @@
       </svg>
     </div>
 
-    <div class="progress-bar">
-      <div class="position-wrapper" :style="checkpointOverlay">
-        <div :class="'checkpoint-content ' + this.checkpointColor" :style="passingWidth"></div>
+    <div v-if="feedbackNumerical" class="numerical-feedback">
+      {{ grade.mark }}
+    </div>
+    <div v-if="!feedbackNumerical" class="progress-bar">
+      <div class="position-wrapper" style="z-index: 1">
+        <div class='checkpoint-content checkmark-color' :style="passingWidth"></div>
       </div>
       <div class="progress-content content-color">
         <div :class="'progress-line ' + this.barColor" :style="progressWidth"></div>
@@ -43,25 +46,19 @@ export default {
     },
   },
   computed: {
-    ...mapGetters('experiment', ['hideFeedbackSmiley']),
+    ...mapGetters('experiment', ['hideFeedbackSmiley', 'feedbackNumerical']),
     isSuccess() {
       return this.grade.mark >= this.grade.passMark;
     },
     passingWidth() {
-      return '--checkpointPosition: ' + (this.grade.passMark / this.grade.topMark) * 100 * 0.925 + '%;';
+      return '--checkpointPosition: ' + (this.grade.passMark / this.grade.topMark) * 100 * 0.955 + '%;';
     },
     progressWidth() {
       return 'width: ' + (Math.min(this.grade.mark, this.grade.topMark) / this.grade.topMark) * 100 + '%;';
     },
     barColor() {
       return this.isSuccess ? ' success-color ' : ' info-color ';
-    },
-    checkpointColor() {
-      return this.isSuccess ? ' success-color ' : ' content-color ';
-    },
-    checkpointOverlay() {
-      return this.isSuccess ? ' z-index: 1; ' : ' z-index: 0;';
-    },
+    }
   },
 };
 </script>
@@ -85,6 +82,10 @@ export default {
   font-size: calc(1vh + 1vw);
   height: 15%;
   width: 100%;
+}
+
+.numerical-feedback {
+  font-size: calc(2vh + 2vw);
 }
 
 .feedback-grade-emoji {
@@ -118,7 +119,7 @@ export default {
   margin-right: auto;
 
   border-style: solid;
-  border-radius: 10px;
+  border-radius: 3px;
   border-left-width: 5px;
   border-right-width: 5px;
   border-color: rgb(235, 235, 235);
@@ -133,7 +134,7 @@ export default {
   border-radius: 100px;
   background-color: inherit;
   height: 25px;
-  width: 25px;
+  width: 5px;
   left: var(--checkpointPosition);
   z-index: inherit;
 }
@@ -156,6 +157,9 @@ export default {
 }
 .success-color {
   background-color: rgb(0, 200, 0);
+}
+.checkmark-color {
+  background-color: rgb(0, 150, 0);
 }
 .info-color {
   background-color: rgb(53, 206, 253);

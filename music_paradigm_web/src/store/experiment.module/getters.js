@@ -1,5 +1,6 @@
 import constants from "./constants"
-import cursorHandler from "./cursorHandler"
+import cursorHandler from "./flowHelper/cursorHandler"
+import blockHandler from './flowHelper/blockHandler';
 
 export default {
     // Getters for the experiment flow's information
@@ -130,12 +131,12 @@ export default {
 
         // If There remains inner steps in the current block, the next step is of the same type as the current step
         else if (state.cursor.current.innerStepIndex < state.cursor.navigation.totalInnerSteps) {
-            return state.flow[state.cursor.current.index].type;
+            return state.state.type;
         }
 
         // Otherwise, if it is none of the edge casess, the type of the next step is the type of the following block
         else
-            return state.flow[state.cursor.navigation.indexNext].type;
+            return blockHandler.getNextBlockType(state.flow, state.cursor);
     },
 
     anyPianoKey: (state) => {
@@ -203,12 +204,20 @@ export default {
         return state.state.settings.timeoutInSeconds || 0;
     },
 
+    startSignal: (state) => {
+        return state.state.settings.startSignal || 0;
+    },
+
     skipStepButton: (state) => {
         return state.state.settings.skipStepButton.toLowerCase() || "";
     },
 
     skipStepButtonMessage: (state) => {
         return state.state.settings.skipStepButtonMessage || "";
+    },
+
+    feedbackNumerical: (state) => {
+        return state.state.settings.feedbackNumerical || false;
     },
 
     successFeedbackMessage: (state) => {
@@ -227,28 +236,13 @@ export default {
         return state.state.settings.melodyRepetition || 1;
     },
 
-    hasFootnote: (state) => {
-        let hasFootNote;
-
-        if (typeof state.state.settings.footnote === "boolean")
-            hasFootNote = state.state.settings.footnote;
-
-        if (typeof state.settings.footnote === "boolean")
-            hasFootNote = state.settings.footnote;
-
-        else
-            hasFootNote = constants.DEFAULT_FOOTNOTE;
-
-        return hasFootNote;
-    },
-
     hideFeedbackSmiley: (state) => {
         let hideFeedbackSmiley;
 
         if (typeof state.state.settings.hideFeedbackSmiley === "boolean")
             hideFeedbackSmiley = state.state.settings.hideFeedbackSmiley;
 
-        if (typeof state.settings.hideFeedbackSmiley === "boolean")
+        else if (typeof state.settings.hideFeedbackSmiley === "boolean")
             hideFeedbackSmiley = state.settings.hideFeedbackSmiley;
 
         else
@@ -257,7 +251,37 @@ export default {
         return hideFeedbackSmiley;
     },
 
+    footnoteType: (state) => {
+        let footnoteType;
+
+        if (typeof state.state.settings.footnoteType === "string")
+            footnoteType = state.state.settings.footnoteType;
+
+        else if (typeof state.settings.footnoteType === "string")
+            footnoteType = state.settings.footnoteType;
+
+        else
+            footnoteType = constants.DEFAULT_FOOTNOTE_TYPE;
+
+        return footnoteType;
+    },
+
     // Getters used for the content disposition on the screen
+    hasFootnote: (state) => {
+        let hasFootNote;
+
+        if (typeof state.state.settings.footnote === "boolean")
+            hasFootNote = state.state.settings.footnote;
+
+        else if (typeof state.settings.footnote === "boolean")
+            hasFootNote = state.settings.footnote;
+
+        else
+            hasFootNote = constants.DEFAULT_FOOTNOTE;
+
+        return hasFootNote;
+    },
+
     hasText: (state) => {
         return Boolean(state.state.content.text);
     },
@@ -284,5 +308,9 @@ export default {
 
     hasSkipOption: (state) => {
         return Boolean(state.state.settings.skipStepButton) || false;
+    },
+
+    isSkipButtonInFootnote: (state) => {
+        return (state.state.settings.footnote) && (state.state.settings.footnoteType === 'button') && (state.state.settings.isSkipStepButtonInFootnote);
     }
 }

@@ -1,13 +1,20 @@
 import { routerNavigation } from '@/_helpers'
+import blockHandler from './blockHandler';
+
+export default {
+    updateState,
+    updateStateOnSkip,
+    forceEndState
+}
 
 function updateRoute(currentState, flow, cursor, isInitialized) {
-    currentState.type = flow[cursor.current.index].type;
+    currentState.type = blockHandler.getCurrentBlock(flow, cursor).type // flow[cursor.current.index].type;
     routerNavigation.moveToState(currentState.type);
     Object.assign(isInitialized, { route: true });
 }
 
 function updateRecords(currentState, cursor, isInitialized) {
-    if (cursor.flag.needsResetLoopParameters) 
+    if (cursor.flag.needsResetLoopParameters)
         currentState.record.successesInLoop = 0;
     Object.assign(isInitialized, { record: true });
 }
@@ -15,13 +22,14 @@ function updateRecords(currentState, cursor, isInitialized) {
 function updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings) {
 
     // Parsing the current block's state settings
-    const currentBlock = flow[cursor.current.index];
+    const currentBlock = blockHandler.getCurrentBlock(flow, cursor) //flow[cursor.current.index];
     const {
         anyPianoKey,
         enableSoundFlag,
         playingMode,
         timeoutInSeconds,
         footnote,
+        footnoteType,
         logFlag,
         hideFeedbackSmiley,
         skipStepButton,
@@ -31,24 +39,31 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
         footnoteMessage,
         melodyRepetition,
         successesForSkipLoop,
+        isSkipStepButtonInFootnote,
+        startSignal,
+        feedbackNumerical,
     } = currentBlock;
 
     // Set the settings for the state. If no value is found, an appropreate default value is set
     currentState.settings = {
-        anyPianoKey: (typeof anyPianoKey !== 'undefined') ? Boolean(anyPianoKey) : generalSettings.anyPianoKey,
-        enableSoundFlag: (typeof enableSoundFlag !== 'undefined') ? Boolean(enableSoundFlag) : generalSettings.enableSoundFlag,
-        playingMode: (typeof playingMode === 'string') ? playingMode : generalSettings.playingMode,
-        timeoutInSeconds: (typeof timeoutInSeconds === 'number') ? timeoutInSeconds : 0,
-        footnote: (typeof footnote !== 'undefined') ? Boolean(footnote) : generalSettings.footnote,
-        logFlag: (typeof logFlag === 'boolean') ? logFlag : generalSettings.logFlag,
-        hideFeedbackSmiley: (typeof hideFeedbackSmiley === 'boolean') ? hideFeedbackSmiley : generalSettings.hideFeedbackSmiley,
-        skipStepButton: (typeof skipStepButton === 'string') ? skipStepButton : "",
-        skipStepButtonMessage: (typeof skipStepButtonMessage === 'string') ? skipStepButtonMessage : "",
-        successFeedbackMessage: (typeof successFeedbackMessage === 'string') ? successFeedbackMessage : "",
-        failureFeedbackMessage: (typeof failureFeedbackMessage === 'string') ? failureFeedbackMessage : "",
-        footnoteMessage: (typeof footnoteMessage === 'string') ? footnoteMessage : "",
-        melodyRepetition: (typeof melodyRepetition === 'number') ? melodyRepetition : 1,
-        successesForSkipLoop: (typeof successesForSkipLoop === 'number') ? successesForSkipLoop : generalSettings.successesForSkipLoop,
+        anyPianoKey:                (typeof anyPianoKey === 'boolean') ?                anyPianoKey : generalSettings.anyPianoKey,
+        enableSoundFlag:            (typeof enableSoundFlag === 'boolean') ?            enableSoundFlag : generalSettings.enableSoundFlag,
+        playingMode:                (typeof playingMode === 'string') ?                 playingMode : generalSettings.playingMode,
+        timeoutInSeconds:           (typeof timeoutInSeconds === 'number') ?            timeoutInSeconds : 0,
+        footnote:                   (typeof footnote === 'boolean') ?                   footnote : generalSettings.footnote,
+        footnoteType:               (typeof footnoteType === 'string') ?                footnoteType : generalSettings.footnoteType,
+        logFlag:                    (typeof logFlag === 'boolean') ?                    logFlag : generalSettings.logFlag,
+        hideFeedbackSmiley:         (typeof hideFeedbackSmiley === 'boolean') ?         hideFeedbackSmiley : generalSettings.hideFeedbackSmiley,
+        skipStepButton:             (typeof skipStepButton === 'string') ?              skipStepButton : "",
+        skipStepButtonMessage:      (typeof skipStepButtonMessage === 'string') ?       skipStepButtonMessage : "",
+        successFeedbackMessage:     (typeof successFeedbackMessage === 'string') ?      successFeedbackMessage : "",
+        failureFeedbackMessage:     (typeof failureFeedbackMessage === 'string') ?      failureFeedbackMessage : "",
+        footnoteMessage:            (typeof footnoteMessage === 'string') ?             footnoteMessage : "",
+        melodyRepetition:           (typeof melodyRepetition === 'number') ?            melodyRepetition : 1,
+        successesForSkipLoop:       (typeof successesForSkipLoop === 'number') ?        successesForSkipLoop : generalSettings.successesForSkipLoop,
+        isSkipStepButtonInFootnote: (typeof isSkipStepButtonInFootnote === 'boolean') ? isSkipStepButtonInFootnote : generalSettings.isSkipStepButtonInFootnote,
+        startSignal:                (typeof startSignal === 'number') ?                 startSignal : 0,
+        feedbackNumerical:          (typeof feedbackNumerical === 'boolean') ?          feedbackNumerical : false,
     };
 
     // Indicate that the state (current block's settings) was already initialized 
@@ -58,7 +73,7 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
 function updateStateMediaFiles(currentState, flow, cursor, isInitialized) {
 
     // Parsing the current block
-    const currentBlock = flow[cursor.current.index];
+    const currentBlock = blockHandler.getCurrentBlock(flow, cursor) // flow[cursor.current.index];
     const {
         // Media files
         midiFileName,
@@ -85,7 +100,7 @@ function updateStateMediaFiles(currentState, flow, cursor, isInitialized) {
 function updateStateContent(currentState, flow, cursor, isInitialized) {
 
     // Parsing the current block
-    const currentBlock = flow[cursor.current.index];
+    const currentBlock = blockHandler.getCurrentBlock(flow, cursor) // flow[cursor.current.index];
     const {
         // Content elements
         textContent,
@@ -146,10 +161,4 @@ function updateState(currentState, flow, cursor, isInitialized, generalSettings)
         if (!isInitialized.media) updateStateMediaFiles(currentState, flow, cursor, isInitialized);
         if (!isInitialized.content) updateStateContent(currentState, flow, cursor, isInitialized);
     }
-}
-
-export default {
-    updateState,
-    updateStateOnSkip,
-    forceEndState
 }

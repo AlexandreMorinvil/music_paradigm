@@ -8,7 +8,7 @@
       class="helper"
     />
 
-    <skip-button v-if="hasSkipOption" class="skip-button" v-on:skipButtonClicked="emitSkipSignal" />
+    <skip-button v-if="hasSkipOption" class="skip-button" v-on:skip-request="emitSkipSignal" />
 
     <div v-if="hasText || hasNoContent" id="text-area" class="experiment-state-division state-division-text">
       <p>{{ textToDisplay }}</p>
@@ -112,7 +112,7 @@ export default {
       this.timeLeftInMilliseconds = Math.max(this.timeLimitInMiliseconds - (Date.now() - this.referenceTime), 0);
     },
     emitSkipSignal() {
-      this.$emit('skipRequest');
+      this.$emit('skip-request');
     },
   },
   mounted() {
@@ -129,7 +129,7 @@ export default {
     timeLeftInMilliseconds(value) {
       // When the time is over we indicate the end of the playing state
       if (value <= 0) {
-        this.$emit('stateEnded');
+        this.$emit('state-ended');
       }
     },
   },

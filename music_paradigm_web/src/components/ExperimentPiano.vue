@@ -32,7 +32,8 @@ export default {
       playingNotes: {},
       currentOctave: 4, // FIXME: This should be directly in the keyboard mapping
       keyboardTracker: {}, // Keeps track of keydown and keyup events for each key
-      bus: null,
+      midiAccess: null,
+      midiInputs: [],
     };
   },
   computed: {
@@ -117,7 +118,7 @@ export default {
     recordKeyPress(midiMessage) {
       this.addPressedKey(midiMessage.note);
       this.addPressedNoteLog({
-        volume: this.enableSoundFlag, //TODO: Integrate the volume concept
+        volume: this.enableSoundFlag,
         note: midiMessage.note,
         time: new Date().getTime(),
         velocity: midiMessage.velocity,
@@ -158,9 +159,9 @@ export default {
 
         // MIDI input (piano) events
         window.navigator.requestMIDIAccess().then((midiAccess) => {
-          midiAccess.inputs.forEach((midiInput) => {
+          this.midiAccess = midiAccess.inputs.forEach((midiInput) => {
             midiInput.onmidimessage = this.manageMidiNote;
-            this.useMidiInput = true;
+            this.midiInputs.push(midiInput);
           });
         });
 
@@ -264,6 +265,8 @@ export default {
     window.removeEventListener('keyup', this.handleKeyRelease);
     this.player.off('midiEvent', this.handleMidiMessage);
     this.player.off('endOfFile', this.handleMidiFileEndOfFile);
+    while (this.midiInputs.length > 0) this.midiInputs.pop().onmidimessage = null;
+    this.midiAccess = null;
     this.setInitializationState(false);
   },
   watch: {},
