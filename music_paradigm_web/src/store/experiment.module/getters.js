@@ -3,6 +3,10 @@ import cursorHandler from "./flowHelper/cursorHandler"
 import blockHandler from './flowHelper/blockHandler';
 
 export default {
+    experimentId: (state) => {
+        return state._id;
+    },
+
     // Getters for the experiment flow's information
     stepsTotalCount: (state) => {
         return cursorHandler.countStepsLeft(state.flow);
@@ -13,8 +17,16 @@ export default {
     },
 
     // Getters for the experiment settings
+    experimentGroup: (state) => {
+        return state.description.group || "UNKNOWN_GROUP";
+    },
+
     experimentName: (state) => {
         return state.description.name || "UNKNOWN_NAME";
+    },
+    
+    experimentVersion: (state) => {
+        return state.description.version || 0;
     },
 
     timbreFile: (state) => {

@@ -14,6 +14,9 @@ export default {
         if (!experiment.hasOwnProperty("folder")) throw new Error("No folder was found in the experiment");
         if (!experiment.hasOwnProperty("flow")) throw new Error("No flow was found in the experiment");
 
+        // Set the experiment ID
+        state._id = experiment._id;
+
         // Set the description (mandatory)
         state.description = {
             name: experiment.name,

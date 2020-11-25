@@ -4,19 +4,19 @@ const Schema = mongoose.Schema;
 
 const schema = new Schema(
     {
-        userId: { type: Schema.Types.ObjectId, /*required: true*/ },
-        experimentId: { type: Schema.Types.ObjectId, /*required: true*/ },
+        userId: { type: Schema.Types.ObjectId, default: null },
+        experimentId: { type: Schema.Types.ObjectId, default: null },
 
-        username: { type: String, /*required: true*/ },
-        experimentGroup: { type: String, /*required: true*/ },
-        experimentName: { type: String, /*required: true*/ },
-        experimentVersion: { type: Number, /*required: true*/ },
+        username: { type: String, default: undefined },
+        experimentGroup: { type: String,  default: undefined },
+        experimentName: { type: String,  default: undefined },
+        experimentVersion: { type: Number, default: undefined },
 
-        startTimestamp: { type: [Date], required: true, default: Date.now },
+        startTimestamp: { type: [Date], default: Date.now },
         endTimestamp: { type: Date, default: null },
 
         // List of blocks encountered in the session
-        state: {
+        states: {
             type: [
                 {
                     blockType: { type: String },

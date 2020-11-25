@@ -34,7 +34,9 @@ const DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE = false
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
     return {
         // Indicator of wether or not the experiment was set
+        _id: null,                                              // Id of the experiment
         hasExperiment: false,                                   // Indicator of whether or not an experiment was parsed
+        
 
         // The sequence of the experiment
         flow: [],                                               // Description of the different steps of the experiment

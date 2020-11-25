@@ -3,6 +3,10 @@ export default {
         return state.user._id;
     },
 
+    username: (state) => {
+        return state.user.username;
+    },
+
     isLoggedIn: (state) => {
         return state.status.loggedIn;
     },

@@ -123,6 +123,7 @@ export default {
       this.endExperimentByTimeout();
     },
     displayFirstStep() {
+      this.initializeLogSession();
       this.updateState();
       this.$refs.timer.startTimer();
     },
@@ -148,7 +149,6 @@ export default {
     },
   },
   mounted() {
-    this.initializeLogSession();
     window.addEventListener('keydown', this.handleButtonPress);
     window.addEventListener('keyup', this.handleButtonRelease);
     ExperimentEventBus.$on('skip-request', this.navigateExperimentSkip)
