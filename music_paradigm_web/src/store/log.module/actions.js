@@ -13,8 +13,8 @@ export default {
             startTimestamp: Date.now(),
         })
             .then(
-                () => {
-                    // commit('setSelectedCurriculum');
+                (initializedLogSession) => {
+                    commit('setAdminLogSessionId', initializedLogSession);
                 },
                 () => {
                     // commit('setSelectedCurriculum', createdCurriculum);

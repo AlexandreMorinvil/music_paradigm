@@ -7,4 +7,8 @@ export default {
     indicateCreateRequestEnd(state) {
         state.status.isCreating = false;
     },
+
+    setAdminLogSessionId(state, initializedLogSession) {
+        state._id = initializedLogSession._id;
+    }
 };

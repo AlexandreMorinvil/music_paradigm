@@ -12,6 +12,10 @@ schema.methods.create = async function () {
     return this.save();
 }
 
+schema.methods.addBlock = async function (block) {
+    this.states.push(block);
+    return this.save();
+};
 
 // Creating the model
 const model = mongoose.model('Session', schema);
