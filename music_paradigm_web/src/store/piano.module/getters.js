@@ -46,5 +46,30 @@ export default {
           if (grade.mark < grade.passMark) return false;
         }
         return true;
+    },
+
+    pianoLogSummary: (state) => {
+        return {
+            reference: {
+                name: state.midiFile.name,
+                midi: state.midiFile.notes.midi,
+                time: state.midiFile.notes.time, 
+                duration: state.midiFile.notes.duration, 
+                velocity: state.midiFile.notes.velocity, 
+            },
+            played: {
+                startTime: state.played.startTime,
+                // volume: state.played.notes.volume,
+                midi: state.played.notes.midi,
+                time: state.played.notes.time,
+                velocity: state.played.notes.velocity,
+                duration: state.played.notes.duration,
+            },
+            evaluation: { 
+                type: state.played.evaluation.type,
+                grades: state.played.evaluation.grades
+             },
+            preprocessedMetrics: state.played.evaluation.results
+        }
     }
 }
