@@ -95,6 +95,7 @@ export default {
       'concludeExperiment',
     ]),
     ...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
+    ...mapActions('log', ['initializeLogSession']),
     getIconReference(stateType) {
       const iconFileName = 'sprites.svg#';
       switch (stateType) {
@@ -147,6 +148,7 @@ export default {
     },
   },
   mounted() {
+    this.initializeLogSession();
     window.addEventListener('keydown', this.handleButtonPress);
     window.addEventListener('keyup', this.handleButtonRelease);
     ExperimentEventBus.$on('skip-request', this.navigateExperimentSkip)

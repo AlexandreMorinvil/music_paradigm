@@ -1,6 +1,7 @@
 const assignUser = function (targetUser, sourceUser) {
     // Destructure only the required data from the received user
     const {
+        _id,
         username,
         email,
         role,
@@ -13,6 +14,7 @@ const assignUser = function (targetUser, sourceUser) {
 
     // Assign only the required data to store user
     Object.assign(targetUser, {
+        _id: _id || null,
         username: username || null,
         email: email || null,
         role: role || null,

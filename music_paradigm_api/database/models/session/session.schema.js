@@ -4,15 +4,22 @@ const Schema = mongoose.Schema;
 
 const schema = new Schema(
     {
-        userId: { type: String, required: true },
-        username: { type: String, required: true },
+        userId: { type: Schema.Types.ObjectId, /*required: true*/ },
+        experimentId: { type: Schema.Types.ObjectId, /*required: true*/ },
 
-        experimentName: { type: String, required: true },
-        // List of the experiments composing the curriculum
+        username: { type: String, /*required: true*/ },
+        experimentGroup: { type: String, /*required: true*/ },
+        experimentName: { type: String, /*required: true*/ },
+        experimentVersion: { type: Number, /*required: true*/ },
+
+        startTimestamp: { type: [Date], required: true, default: Date.now },
+        endTimestamp: { type: Date, default: null },
+
+        // List of blocks encountered in the session
         state: {
             type: [
                 {
-                    type: { type: String },
+                    blockType: { type: String },
                     header: {
                         timestamp: { type: Date }
                     },
@@ -53,7 +60,5 @@ const schema = new Schema(
         }
     }
 );
-
-schema.set('toJSON', { virtuals: true });
 
 module.exports = schema;

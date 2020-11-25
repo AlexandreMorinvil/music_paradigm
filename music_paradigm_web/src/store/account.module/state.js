@@ -6,6 +6,7 @@ export default {
     },
 
     user: {
+        _id: null,
         username: "",
         email: "",
         firstName: "",

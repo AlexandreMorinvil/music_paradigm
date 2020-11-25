@@ -11,6 +11,7 @@ import { account } from './account.module';
 import { experiment } from './experiment.module';
 import { experiments } from './experiments.module';
 import { curriculums } from './curriculums.module';
+import { log } from './log.module';
 import { users } from './users.module';
 import { piano } from './piano.module';
 import { results } from './results.module';
@@ -25,11 +26,12 @@ export default new Vuex.Store({
   modules: {
     alert,
     account,
+    curriculums,
     experiment,
     experiments,
-    curriculums,
-    users,
+    log,
     piano,
-    results
+    results,
+    users,
   }
 })

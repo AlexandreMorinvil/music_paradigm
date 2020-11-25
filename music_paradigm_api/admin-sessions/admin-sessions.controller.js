@@ -16,7 +16,7 @@ module.exports = router;
 
 function create(req, res, next) {
     service.create(req.body)
-        .then(() => res.json({}))
+        .then((createdSession) => res.json(createdSession))
         .catch(err => next(err));
 }
 

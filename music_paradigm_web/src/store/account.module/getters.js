@@ -1,4 +1,8 @@
 export default {
+    accountId: (state) => {
+        return state.user._id;
+    },
+
     isLoggedIn: (state) => {
         return state.status.loggedIn;
     },
@@ -19,5 +23,5 @@ export default {
 
     progressionSummary: (state) => {
         return state.progressionSummary;
-    }
+    },
 }
