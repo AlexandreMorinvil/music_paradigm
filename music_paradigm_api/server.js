@@ -19,6 +19,7 @@ app.use('/experiment-ressources', express.static(__dirname + '/../experiment_res
 app.use(jwt());
 
 // api routes
+app.use('/admin-sessions', require('admin-sessions/admin-sessions.controller'));
 app.use('/account', require('account/account.controller'));
 app.use('/experiments', require('experiments/experiments.controller'));
 app.use('/curriculums', require('curriculums/curriculums.controller'));

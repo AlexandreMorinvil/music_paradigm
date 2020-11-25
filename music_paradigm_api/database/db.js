@@ -20,6 +20,7 @@ module.exports = {
     Experiment: require('./models/experiment/experiment.model'),
     Curriculum: require('./models/curriculum/curriculum.model'),
     Progression: require('./models/progression/progression.model'),
+    AdminSession: require('./models/session/session.model').adminModel,
     User: require('./models/user/user.model')
 };
 

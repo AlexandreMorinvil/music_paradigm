@@ -12,7 +12,7 @@ const DEFAULT_PIANO_STATE_VALUES = function () {
 
         // Data from the current MIDI file
         midiFile: {
-            isLoaded: false,      // Indicator of whether or not the midi file has been loaded
+            isLoaded: false,    // Indicator of whether or not the midi file has been loaded
             name: "",           // Name of the midi file
             notes: {
                 midi: [],       // Midi number, e.g. 60 
