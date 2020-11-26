@@ -1,13 +1,12 @@
 ﻿const db = require('database/db');
+const AdminSimpleLog = db.AdminSimpleLog;
 const AdminSession = db.AdminSession;
 
 // Exports
 module.exports = {
-    // getAll,
-    // getById,
+    createSimpleLog,
     initialize,
     addBlock,
-    // delete: _delete
 };
 
 // async function getAll() {
@@ -25,6 +24,15 @@ module.exports = {
 //         throw err;
 //     }
 // }
+
+async function createSimpleLog(logInformation) {
+    try {
+        const adminSimpleLog = new AdminSimpleLog(logInformation);
+        return await adminSimpleLog.create();
+    } catch (err) {
+        throw err;
+    }
+}
 
 async function initialize(adminSessionToCreate) {
     try {

@@ -43,9 +43,31 @@ export default {
     hasSuccess: (state) => {
         if (state.played.evaluation.grades.length <= 0) return false;
         for (let grade of state.played.evaluation.grades) {
-          if (grade.mark < grade.passMark) return false;
+            if (grade.mark < grade.passMark) return false;
         }
         return true;
+    },
+
+    pianoSimpleLogSummary: (state) => {
+        return {
+            referenceName: state.midiFile.name,
+            referenceMidi: state.midiFile.notes.midi,
+            referenceTime: state.midiFile.notes.time,
+            referenceDuration: state.midiFile.notes.duration,
+            referenceVelocity: state.midiFile.notes.velocity,
+
+            playedStartTime: state.played.startTime,
+            playedMidi: state.played.notes.midi,
+            playedTime: state.played.notes.time,
+            playedVelocity: state.played.notes.velocity,
+            playedDuration: state.played.notes.duration,
+        }
+    },
+
+    pianoSimpleLogPreprocesed: (state) => {
+        return {
+            ...state.played.evaluation.results
+        }
     },
 
     pianoLogSummary: (state) => {
@@ -53,9 +75,9 @@ export default {
             reference: {
                 name: state.midiFile.name,
                 midi: state.midiFile.notes.midi,
-                time: state.midiFile.notes.time, 
-                duration: state.midiFile.notes.duration, 
-                velocity: state.midiFile.notes.velocity, 
+                time: state.midiFile.notes.time,
+                duration: state.midiFile.notes.duration,
+                velocity: state.midiFile.notes.velocity,
             },
             played: {
                 startTime: state.played.startTime,
@@ -65,10 +87,10 @@ export default {
                 velocity: state.played.notes.velocity,
                 duration: state.played.notes.duration,
             },
-            evaluation: { 
+            evaluation: {
                 type: state.played.evaluation.type,
                 grades: state.played.evaluation.grades
-             },
+            },
             preprocessedMetrics: state.played.evaluation.results
         }
     }

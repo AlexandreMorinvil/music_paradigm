@@ -5,6 +5,7 @@ const role = require('_helpers/role');
 const service = require('./admin-sessions.service');
 
 // routes
+router.post('/create-simple',    jwtAuthorize(role.admin),   createSimpleLog);
 router.post('/create',          jwtAuthorize(role.admin),   initialize);
 router.patch('/add-block/:id',  jwtAuthorize(role.admin),   addBlock);
 // router.get('/',         jwtAuthorize(role.admin),   getAll);
@@ -14,6 +15,12 @@ router.patch('/add-block/:id',  jwtAuthorize(role.admin),   addBlock);
 // router.delete('/:id',   jwtAuthorize(role.admin),   _delete);
 
 module.exports = router;
+
+function createSimpleLog(req, res, next) {
+    service.createSimpleLog(req.body)
+        .then((createdSession) => res.json(createdSession))
+        .catch(err => next(err));
+}
 
 function initialize(req, res, next) {
     service.initialize(req.body)

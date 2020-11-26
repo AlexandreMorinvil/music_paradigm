@@ -2,9 +2,19 @@ import defaultResponseHandler from './defaultResponseHandler';
 import { authHeader, url } from '@/_helpers';
 
 export const adminSessionService = {
+    createSimpleLog,
     createAdminSession,
     addBlock
 };
+
+function createSimpleLog(simpleLog) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(simpleLog)
+    };
+    return fetch(url.adminSessions("create-simple/"), requestOptions).then(handleResponse);
+}
 
 function createAdminSession(sessionLogHeader) {
     const requestOptions = {
@@ -23,6 +33,8 @@ function addBlock(id, block) {
     };
     return fetch(url.adminSessions("add-block/" + id), requestOptions).then(handleResponse);
 }
+
+
 
 function handleResponse(reponse) {
     return defaultResponseHandler(reponse);

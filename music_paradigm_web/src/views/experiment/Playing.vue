@@ -92,14 +92,14 @@ export default {
   },
   methods: {
     ...mapActions('experiment', ['addSuccess']),
-    ...mapActions('log', ['addBlockToLogSession']),
+    ...mapActions('log', ['createSimpleLog']),
     handleFootnote(footNote) {
       if (this.footnoteMessage) this.footnote = this.footnoteMessage;
       else this.footnote = footNote;
     },
     handdleEndOfPlaying() {
       this.evaluatePlayedNotes();
-      this.addBlockToLogSession();
+      this.createSimpleLog();
       this.$emit('state-ended');
     },
     evaluatePlayedNotes() {

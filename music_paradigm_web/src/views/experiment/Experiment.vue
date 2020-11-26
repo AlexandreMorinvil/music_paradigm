@@ -123,7 +123,7 @@ export default {
       this.endExperimentByTimeout();
     },
     displayFirstStep() {
-      this.initializeLogSession();
+      // this.initializeLogSession();
       this.updateState();
       this.$refs.timer.startTimer();
     },

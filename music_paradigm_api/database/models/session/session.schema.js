@@ -8,12 +8,18 @@ const schema = new Schema(
         experimentId: { type: Schema.Types.ObjectId, default: null },
 
         username: { type: String, default: undefined },
-        experimentGroup: { type: String,  default: undefined },
-        experimentName: { type: String,  default: undefined },
+        experimentGroup: { type: String, default: undefined },
+        experimentName: { type: String, default: undefined },
         experimentVersion: { type: Number, default: undefined },
 
         startTimestamp: { type: [Date], default: Date.now },
         endTimestamp: { type: Date, default: null },
+
+        // List of midi files referenced
+        referenceMidi: {
+            type: [Object],
+            default: []
+        },
 
         // List of blocks encountered in the session
         states: {
