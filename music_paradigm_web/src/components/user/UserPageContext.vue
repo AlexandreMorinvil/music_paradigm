@@ -15,14 +15,10 @@
 </template>
 
 <script>
-import ApplicationFooter from "@/components/ApplicationFooter.vue";
 import "@/styles/widgetTemplate.css";
 
 export default {
   name: "AdminPageFrame",
-  components: {
-    ApplicationFooter: ApplicationFooter,
-  },
   props: {
     title: {
       type: String,

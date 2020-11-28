@@ -36,7 +36,7 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
         // Indicator of wether or not the experiment was set
         _id: null,                                              // Id of the experiment
         hasExperiment: false,                                   // Indicator of whether or not an experiment was parsed
-        
+
 
         // The sequence of the experiment
         flow: [],                                               // Description of the different steps of the experiment
@@ -57,7 +57,7 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 
         // Data used by the view pages
         state: DEFAULT_EXPERIMENT_STATE_STATE_VALUES(),
-        
+
         // Initialization status of vue pages
         isInitialized: IS_FULLY_NOT_INITIALIZED_STATUS()
     };
@@ -142,7 +142,10 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
         record: {
             sucesses: 0,                                    // Number of successes recorded
             successesInLoop: 0                              // Number of successes recorded in the loop
-        }
+        },
+
+        // Variables
+        variables: []
     }
 }
 

@@ -17,15 +17,20 @@ const schema = new Schema(
         successesForSkip: { type: Number, default: 0 },
         hideFeedbackSmiley: { type: Boolean, default: false },
         isSkipStepButtonInFootnote: { type: Boolean, default: undefined },
-        variable: [
+        variables: [
             {
-                name: String,
-                type: { 
-                    type: String, 
-                    enum: ['counter', 'variable', 'parameter'], 
+                name: { type: String, required: true },
+                type: {
+                    type: String,
+                    enum: ['counter', 'variable', 'parameter'],
                     default: "variable",
                 },
-                values: []
+                assignedValue: { 
+                    type: Schema.Types.Mixed, 
+                    default : undefined, 
+                    required: true 
+                },
+                optionValues: { type: [], default: undefined },
             }
         ],
         flow: {

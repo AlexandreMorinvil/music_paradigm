@@ -1,6 +1,7 @@
 import { routerNavigation } from '@/_helpers'
 import constants from './constants'
 import cursorHandler from './flowHelper/cursorHandler'
+import experimentHandler from './flowHelper/experiment-handler'
 import stateHandler from './flowHelper/stateHandler'
 
 export default {
@@ -14,38 +15,11 @@ export default {
         if (!experiment.hasOwnProperty("folder")) throw new Error("No folder was found in the experiment");
         if (!experiment.hasOwnProperty("flow")) throw new Error("No flow was found in the experiment");
 
-        // Set the experiment ID
-        state._id = experiment._id;
-
-        // Set the description (mandatory)
-        state.description = {
-            name: experiment.name,
-            folder: experiment.folder,
-            group: experiment.group || "",
-            version: experiment.version || 0
-        };
-
-        // Set the flow (mandatory)
-        state.flow = experiment.flow;
-
-        // Set the settings (optionals, default values if not set)
-        state.settings = constants.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
-        Object.assign(state.settings, { record: true });
-        state.settings = {
-            anyPianoKey: (typeof experiment.anyPianoKey === 'boolean') ? Boolean(experiment.anyPianoKey) : state.settings.anyPianoKey,
-            enableSoundFlag: (typeof experiment.enableSoundFlag === 'boolean') ? Boolean(experiment.enableSoundFlag) : state.settings.enableSoundFlag,
-            playingMode: (typeof experiment.mode === 'string') ? experiment.mode : state.settings.playingMode,
-            timbreFile: (typeof experiment.timbreFile === 'string') ? experiment.timbreFile : state.settings.timbreFile,
-            footnote: (typeof experiment.footnote === 'boolean') ? experiment.footnote : state.settings.footnote,
-            footnoteType: (typeof experiment.footnoteType === 'string') ? experiment.footnoteType : state.settings.footnoteType,
-            timeLimitInSeconds: (typeof experiment.timeLimitInSeconds === 'number') ? experiment.timeLimitInSeconds : state.settings.timeLimitInSeconds,
-            logFlag: (typeof experiment.logFlag === 'boolean') ? experiment.logFlag : state.settings.logFlag,
-            successesForSkip: (typeof experiment.successesForSkip === 'number') ? experiment.successesForSkip : state.settings.successesForSkip,
-            hideFeedbackSmiley: (typeof experiment.hideFeedbackSmiley === 'boolean') ? experiment.hideFeedbackSmiley : state.settings.hideFeedbackSmiley,
-            isSkipStepButtonInFootnote: (typeof experiment.isSkipStepButtonInFootnote === 'boolean') ? experiment.isSkipStepButtonInFootnote : state.settings.isSkipStepButtonInFootnote
-        };
-
-        // Toggle the boolean value indicating that an experiment is mounted
+        experimentHandler.setExperimentId(state, experiment);
+        experimentHandler.setExperimentDescription(state, experiment);
+        experimentHandler.setExperimentFlow(state, experiment);
+        experimentHandler.setExperimentGeneralSettings(state, experiment);
+        
         state.hasExperiment = true;
     },
 
@@ -55,12 +29,7 @@ export default {
         state.cursor = cursorHandler.assignCursor(state.flow, presetCursor);
 
         // Set the initialization indicators to false
-        state.isInitialized = {
-            route: false,
-            state: false,
-            media: false,
-            content: false
-        };
+        state.isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
     },
 
     initExperiment: () => {

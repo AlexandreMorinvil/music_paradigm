@@ -100,7 +100,7 @@ export default {
     },
     midiFileNotesMidi: {
       immediate: true,
-      handler: function(value) {
+      handler: function() {
         this.clearDesignatedKeys();
         if (this.interactivePiano === "first") this.hintFirstNote();
         if (this.interactivePiano === "midi") this.hintAllNotes();

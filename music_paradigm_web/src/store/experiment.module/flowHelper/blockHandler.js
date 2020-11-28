@@ -24,3 +24,7 @@ function getCurrentBlock(flow, cursor) {
 
     return currentBlock;
 }
+
+function populateVariables(flow, cursor) {
+    
+}
