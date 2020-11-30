@@ -8,7 +8,7 @@ export default {
 }
 
 function updateRoute(currentState, flow, cursor, isInitialized) {
-    currentState.type = blockHandler.getCurrentBlock(flow, cursor).type // flow[cursor.current.index].type;
+    currentState.type = blockHandler.getCurrentBlock(flow, cursor).type
     routerNavigation.moveToState(currentState.type);
     Object.assign(isInitialized, { route: true });
 }
@@ -19,10 +19,25 @@ function updateRecords(currentState, cursor, isInitialized) {
     Object.assign(isInitialized, { record: true });
 }
 
+function updateVariables(currentState, cursor, isInitialized) {
+    // Parsing the current block's state settings
+    const currentBlock = blockHandler.getCurrentBlock(flow, cursor)
+    const {
+        resetVariableValue,
+        incrementVariable,
+        decrementVariable,
+        incrementVariableOnSucess,
+        decrementVariableOnSucces,
+    } = currentBlock;
+
+    Object.assign(isInitialized, { variables: true });
+}
+
+
 function updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings) {
 
     // Parsing the current block's state settings
-    const currentBlock = blockHandler.getCurrentBlock(flow, cursor) //flow[cursor.current.index];
+    const currentBlock = blockHandler.getCurrentBlock(flow, cursor)
     const {
         anyPianoKey,
         enableSoundFlag,

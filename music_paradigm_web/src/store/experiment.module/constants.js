@@ -145,7 +145,8 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
         // Session specific informations
         record: {
             sucesses: 0,                                    // Number of successes recorded
-            successesInLoop: 0                              // Number of successes recorded in the loop
+            successesInLoop: 0,                             // Number of successes recorded in the loop
+            isSuccess: false                                // Indicate whether the current step was a success
         },
     }
 }

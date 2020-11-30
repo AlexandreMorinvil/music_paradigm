@@ -33,13 +33,18 @@ function populateVariables(block) {
     for (let section in blocToUse) {
         if (typeof blocToUse[section] === 'string') {
             for (let variable of variables.variables) blocToUse[section] = blocToUse[section].replace(variable.name, variable.value);
-            for (let counter of variables.counters) blocToUse[section] =blocToUse[section].replace(counter.name, counter.value);
         }
         else if (Array.isArray(blocToUse[section])) {
             for (let index in blocToUse[section]) {
-                if (typeof index === 'string') {
+                if (typeof blocToUse[section][index] === 'string') {
                     for (let variable of variables.variables) blocToUse[section][index] = blocToUse[section][index].replace(variable.name, variable.value);
-                    for (let counter of variables.counters) blocToUse[section][index] = blocToUse[section][index].replace(counter.name, counter.value);
+                }
+                else if (Array.isArray(blocToUse[section][index])) {
+                    for (let subIndex in blocToUse[section][index]) {
+                        if (typeof blocToUse[section][index][subIndex] === 'string') {
+                            for (let variable of variables.variables) blocToUse[section][index][subIndex] = blocToUse[section][index][subIndex].replace(variable.name, variable.value);
+                        }
+                    }
                 }
             }
         }

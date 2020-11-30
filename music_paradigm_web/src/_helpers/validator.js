@@ -106,6 +106,12 @@ const validateBlock = function (block, index = null) {
         "lastRepetitionVersion",
         "startSignal",
         "feedbackNumerical",
+
+        "resetVariableValue",
+        "incrementVariable",
+        "decrementVariable",
+        "incrementVariableOnSucess",
+        "decrementVariableOnSucces",
     ]
     const innerBlockAttributes = [
         "lastRepetitionVersion"
@@ -128,6 +134,12 @@ const validateBlock = function (block, index = null) {
 const validateAttributeType = function (key, value) {
     switch (key) {
         // String
+        case "resetVariableValue":
+        case "incrementVariable":
+        case "decrementVariable":
+        case "incrementVariableOnSucess":
+        case "decrementVariableOnSucces":
+
         case "type":
         case "name":
         case "folder":

@@ -70,6 +70,7 @@ export default {
     },
 
     addSuccess: (state) => {
+        state.record.isSuccess = true;
         state.state.record.sucesses += 1;
         state.state.record.successesInLoop += 1;
     }

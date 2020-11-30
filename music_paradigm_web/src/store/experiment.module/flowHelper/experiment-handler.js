@@ -69,19 +69,7 @@ function setExperimentVariables(state, experiment) {
     if(!Array.isArray(variables)) return;
 
     for(let variable of variables) {
-        const entry = { name: '$' + variable.name + '$', value: variable.assignedValue };
-        switch (variable.type) {
-            case 'counter':
-                state.variables.counters.push(entry);
-                break;
-            
-            case 'variable':
-            case 'parameter':
-                state.variables.variables.push(entry);
-                break;
-        
-            default:
-                break;
-        }
+        const entry = { name: '$' + variable.name + '$', value: variable.assignedValue, initialValue: variable.assignedValue };
+        state.variables.variables.push(entry);
     }
 }
