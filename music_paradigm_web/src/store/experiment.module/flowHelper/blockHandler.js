@@ -32,17 +32,17 @@ function populateVariables(block) {
     const blocToUse = JSON.parse(JSON.stringify(block));
     for (let section in blocToUse) {
         if (typeof blocToUse[section] === 'string') {
-            for (let variable of variables.variables) blocToUse[section] = blocToUse[section].replace(variable.name, variable.value);
+            for (let variable in variables.variables) blocToUse[section] = blocToUse[section].replace(variable, variables.value[variable]);
         }
         else if (Array.isArray(blocToUse[section])) {
             for (let index in blocToUse[section]) {
                 if (typeof blocToUse[section][index] === 'string') {
-                    for (let variable of variables.variables) blocToUse[section][index] = blocToUse[section][index].replace(variable.name, variable.value);
+                    for (let variable in variables.value) blocToUse[section][index] = blocToUse[section][index].replace(variable, variables.value[variable]);
                 }
                 else if (Array.isArray(blocToUse[section][index])) {
                     for (let subIndex in blocToUse[section][index]) {
                         if (typeof blocToUse[section][index][subIndex] === 'string') {
-                            for (let variable of variables.variables) blocToUse[section][index][subIndex] = blocToUse[section][index][subIndex].replace(variable.name, variable.value);
+                            for (let variable in variables.value) blocToUse[section][index][subIndex] = blocToUse[section][index][subIndex].replace(variable, variables.value[variable]);
                         }
                     }
                 }

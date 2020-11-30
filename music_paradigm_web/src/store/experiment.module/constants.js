@@ -153,8 +153,8 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 
 function DEFAULT_EXPERIMENT_VARIABLE_VALUES() {
     return {
-        variables: [],                                      // Variables and parameters
-        counters: [],                                       // Numerical values manipulated through experiment description keywords
+        value: {},                                          // Value of the variable
+        initial: {},                                        // Initial value assigned to the variable
     }
 }
 

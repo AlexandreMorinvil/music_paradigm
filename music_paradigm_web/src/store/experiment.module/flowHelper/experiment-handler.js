@@ -69,7 +69,7 @@ function setExperimentVariables(state, experiment) {
     if(!Array.isArray(variables)) return;
 
     for(let variable of variables) {
-        const entry = { name: '$' + variable.name + '$', value: variable.assignedValue, initialValue: variable.assignedValue };
-        state.variables.variables.push(entry);
+        state.variables.value[ '$' + variable.name + '$'] = variable.assignedValue;
+        state.variables.initial = JSON.parse(JSON.stringify(state.variables.value));
     }
 }

@@ -1,5 +1,6 @@
 import { routerNavigation } from '@/_helpers'
 import blockHandler from './blockHandler';
+import variableHandler from './variableHandler';
 
 export default {
     updateState,
@@ -14,25 +15,11 @@ function updateRoute(currentState, flow, cursor, isInitialized) {
 }
 
 function updateRecords(currentState, cursor, isInitialized) {
+    currentState.record.isSuccess = false;
     if (cursor.flag.needsResetLoopParameters)
         currentState.record.successesInLoop = 0;
     Object.assign(isInitialized, { record: true });
 }
-
-function updateVariables(currentState, cursor, isInitialized) {
-    // Parsing the current block's state settings
-    const currentBlock = blockHandler.getCurrentBlock(flow, cursor)
-    const {
-        resetVariableValue,
-        incrementVariable,
-        decrementVariable,
-        incrementVariableOnSucess,
-        decrementVariableOnSucces,
-    } = currentBlock;
-
-    Object.assign(isInitialized, { variables: true });
-}
-
 
 function updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings) {
 
