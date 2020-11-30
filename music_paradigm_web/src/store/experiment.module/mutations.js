@@ -19,6 +19,7 @@ export default {
         experimentHandler.setExperimentDescription(state, experiment);
         experimentHandler.setExperimentFlow(state, experiment);
         experimentHandler.setExperimentGeneralSettings(state, experiment);
+        experimentHandler.setExperimentVariables(state, experiment);
         
         state.hasExperiment = true;
     },
@@ -37,22 +38,26 @@ export default {
     },
 
     updateState: (state) => {
-        stateHandler.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
+        const { flow, cursor, isInitialized, settings } = state;
+        stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
     },
 
     moveNextStep: (state) => {
-        cursorHandler.advance(state.state, state.flow, state.cursor, state.isInitialized);
-        stateHandler.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
+        const { flow, cursor, isInitialized, settings } = state;
+        cursorHandler.advance(state.state, flow, cursor, isInitialized);
+        stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
     },
 
     movePostSkip: (state) => {
-        cursorHandler.skip(state.state, state.flow, state.cursor, state.isInitialized);
-        stateHandler.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
+        const { flow, cursor, isInitialized, settings } = state;
+        cursorHandler.skip(state.state, flow, cursor, isInitialized);
+        stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
     },
 
     movePostSkipRepetions: (state) => {
-        cursorHandler.moveCursorPostSkipRepetions(state.state, state.flow, state.cursor, state.isInitialized);
-        stateHandler.updateState(state.state, state.flow, state.cursor, state.isInitialized, state.settings);
+        const { flow, cursor, isInitialized, settings } = state;
+        cursorHandler.moveCursorPostSkipRepetions(state.state, flow, cursor, isInitialized);
+        stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
     },
 
     endExperimentByTimeout: (state) => {

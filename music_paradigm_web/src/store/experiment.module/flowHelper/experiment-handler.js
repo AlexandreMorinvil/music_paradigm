@@ -5,6 +5,7 @@ export default {
     setExperimentDescription,
     setExperimentGeneralSettings,
     setExperimentFlow,
+    setExperimentVariables,
 }
 
 function setExperimentId(state, experiment) {
@@ -61,4 +62,26 @@ function setExperimentGeneralSettings(state, experiment) {
 
 function setExperimentFlow(state, experiment) { 
     state.flow = experiment.flow;
+}
+
+function setExperimentVariables(state, experiment) {
+    const { variables } = experiment;
+    if(!Array.isArray(variables)) return;
+
+    for(let variable of variables) {
+        const entry = { name: '$' + variable.name + '$', value: variable.assignedValue };
+        switch (variable.type) {
+            case 'counter':
+                state.variables.counters.push(entry);
+                break;
+            
+            case 'variable':
+            case 'parameter':
+                state.variables.variables.push(entry);
+                break;
+        
+            default:
+                break;
+        }
+    }
 }

@@ -12,6 +12,7 @@ export default {
     DEFAULT_EXPERIMENT_STATE_VALUES,
     DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES,
     DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES,
+    DEFAULT_EXPERIMENT_VARIABLE_VALUES,
     IS_FULLY_NOT_INITIALIZED_STATUS
 }
 
@@ -58,8 +59,11 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
         // Data used by the view pages
         state: DEFAULT_EXPERIMENT_STATE_STATE_VALUES(),
 
+        // Variables used in the experiment
+        variables: DEFAULT_EXPERIMENT_VARIABLE_VALUES(),
+
         // Initialization status of vue pages
-        isInitialized: IS_FULLY_NOT_INITIALIZED_STATUS()
+        isInitialized: IS_FULLY_NOT_INITIALIZED_STATUS(),
     };
 }
 
@@ -143,9 +147,13 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
             sucesses: 0,                                    // Number of successes recorded
             successesInLoop: 0                              // Number of successes recorded in the loop
         },
+    }
+}
 
-        // Variables
-        variables: []
+function DEFAULT_EXPERIMENT_VARIABLE_VALUES() {
+    return {
+        variables: [],                                      // Variables and parameters
+        counters: [],                                       // Numerical values manipulated through experiment description keywords
     }
 }
 
