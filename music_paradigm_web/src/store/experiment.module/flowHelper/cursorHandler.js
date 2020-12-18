@@ -1,5 +1,6 @@
 import blockHandler from './blockHandler';
 import stateHandler from './stateHandler';
+import variableHandler from './variableHandler';
 import constants from '../constants';
 
 export default {
@@ -53,6 +54,7 @@ function advance(state, flow, cursor, isInitialized) {
 
 
 function moveCursorNext(flow, cursor, isInitialized) {
+    variableHandler.updateVariables(flow, cursor);
     moveCursorNextStep(flow, cursor, isInitialized);
     updateCursorNavigation(flow, cursor);
 }

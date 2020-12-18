@@ -71,7 +71,13 @@ const schema = new Schema(
                     startSignal: { type: Number, default: undefined },
                     feedbackNumerical: { type: Boolean, default: undefined },
 
-                    lastRepetitionVersion: { type: Object, default: undefined }
+                    lastRepetitionVersion: { type: Object, default: undefined },
+
+                    resetVariable: { type: String, default: undefined },
+                    incrementVariable: { type: String, default: undefined },
+                    decrementVariable: { type: String, default: undefined },
+                    incrementVariableOnSucess: { type: String, default: undefined },
+                    decrementVariableOnSucces: { type: String, default: undefined },
                 }
             ]
         }

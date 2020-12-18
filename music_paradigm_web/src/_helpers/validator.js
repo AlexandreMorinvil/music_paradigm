@@ -139,7 +139,6 @@ const validateAttributeType = function (key, value) {
         case "decrementVariable":
         case "incrementVariableOnSucess":
         case "decrementVariableOnSucces":
-
         case "type":
         case "name":
         case "folder":

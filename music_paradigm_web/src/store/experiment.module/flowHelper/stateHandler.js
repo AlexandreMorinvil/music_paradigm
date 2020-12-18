@@ -1,6 +1,5 @@
 import { routerNavigation } from '@/_helpers'
 import blockHandler from './blockHandler';
-import variableHandler from './variableHandler';
 
 export default {
     updateState,
@@ -151,7 +150,10 @@ function forceEndState(currentState, isInitialized, message) {
 
 function updateStateOnSkip(currentState, flow, cursor, isInitialized) {
     if (cursor.current.isBeyondEnd) forceEndState(currentState, isInitialized);
-    else if (!isInitialized.media) updateStateMediaFiles(currentState, flow, cursor, isInitialized);
+    else if (!isInitialized.media) {
+        updateRecords(currentState, cursor, isInitialized);
+        updateStateMediaFiles(currentState, flow, cursor, isInitialized);
+    }
 }
 
 function updateState(currentState, flow, cursor, isInitialized, generalSettings) {

@@ -73,7 +73,7 @@ export default {
     manageMidiNote(midiNote) {
       const midiMessage = {
         type: midiNote.data[0] === 144 ? 'Note On' : 'Note Off',
-        note: midiNote.data[1],
+        note: midiNote.data[1] + 12,
         velocity: midiNote.data[2],
       };
 
