@@ -142,200 +142,200 @@
 </template>
 
 <script>
-import '@/styles/widgetTemplate.css';
-import '@/styles/formTemplate.css';
-import { mapActions, mapGetters } from 'vuex';
+import'@/styles/widgetTemplate.css';
+import'@/styles/formTemplate.css';
+import{ mapActions, mapGetters } from'vuex';
 
-export default {
-  name: 'ExperimentsWorkshopWidget',
-  data() {
-    return {
-      hasFocusedOnUsername: false,
-      hasAttemptedSubmit: false,
-      id: '',
-      username: '',
-      password: '',
-      email: '',
-      firstName: '',
-      middleName: '',
-      lastName: '',
-      tags: [],
-      role: '',
-      curriculum: null,
-    };
-  },
-  computed: {
-    ...mapGetters('curriculums', ['curriculumsHeadersList']),
-    ...mapGetters('users', [
-      'hasSelectedUser',
-      'userSelectedId',
-      'userSelectedUsername',
-      'userSelectedEmail',
-      'userSelectedFirstName',
-      'userSelectedMiddleName',
-      'userSelectedLastName',
-      'userSelectedTags',
-      'userSelectedCurriculum',
-    ]),
-    curriculumsReferences() {
-      return this.curriculumsHeadersList;
-    },
-    userSelectedUsernameDisplay() {
-      return this.hasSelectedUser ? this.userSelectedUsername || '---' : '';
-    },
-    userSelectedEmailDisplay() {
-      return this.hasSelectedUser ? this.userSelectedEmail || '---' : '';
-    },
-    userSelectedPasswordDisplay() {
-      return this.hasSelectedUser ? '***' : '';
-    },
-    userSelectedFirstNameDisplay() {
-      return this.hasSelectedUser ? this.userSelectedFirstName || '---' : '';
-    },
-    userSelectedMiddleNameDisplay() {
-      return this.hasSelectedUser ? this.userSelectedMiddleName || '---' : '';
-    },
-    userSelectedLastNameDisplay() {
-      return this.hasSelectedUser ? this.userSelectedLastName || '---' : '';
-    },
-    userSelectedTagsDisplay() {
-      if (this.hasSelectedUser) {
-        if (this.userSelectedTags.length > 0) {
-          let display = '';
-          this.userSelectedTags.forEach(element => {
-            display += element + ', ';
-          });
-          return display.slice(0, -2);
-        } else return '---';
-      } else return '';
-    },
-    userSelectedCurriculumDisplay() {
-      return this.hasSelectedUser ? this.getCurriculumTitleFromList(this.userSelectedCurriculum) || '---' : '';
-    },
-  },
-  methods: {
-    ...mapActions('curriculums', ['fetchAllCurriculumHeaders']),
-    ...mapActions('users', ['unsetSelectedUser', 'createUser', 'updateUser', 'deleteUser']),
-    bundleUserFromForm() {
-      return {
-        username: this.username,
-        password: this.password,
-        email: this.email,
-        firstName: this.firstName,
-        middleName: this.middleName,
-        lastName: this.lastName,
-        tags: this.tags,
-        curriculum: this.curriculum,
-      };
-    },
-    getCurriculumTitleFromList(id) {
-      const curriculum = this.curriculumsHeadersList.filter(obj => {
-        return obj._id === id;
-      });
-      if (curriculum[0]) return curriculum[0].title;
-      else return '';
-    },
-    addTag() {
-      this.tags.push('');
-    },
-    removeTag(index) {
-      this.tags.splice(index, 1);
-    },
-    assignFormId(id) {
-      this.id = id;
-    },
-    assignFormUsername(username) {
-      this.username = username;
-    },
-    assignFormEmail(email) {
-      this.email = email;
-    },
-    assignFormPassword(password) {
-      this.password = password;
-    },
-    assignFormFirstName(firstName) {
-      this.firstName = firstName;
-    },
-    assignFormMiddleName(middleName) {
-      this.middleName = middleName;
-    },
-    assignFormLastName(lastName) {
-      this.lastName = lastName;
-    },
-    assignFormTags(tags) {
-      this.tags = Array.isArray(tags) ? JSON.parse(JSON.stringify(tags)) : [];
-    },
-    assignFormRole(role) {
-      this.role = role;
-    },
-    assignFormCurriculum(curriculum) {
-      this.curriculum = curriculum;
-    },
-    assignSelectedToForm() {
-      this.assignFormId(this.userSelectedId);
-      this.assignFormUsername(this.userSelectedUsername);
-      this.assignFormEmail(this.userSelectedEmail);
-      this.assignFormFirstName(this.userSelectedFirstName);
-      this.assignFormMiddleName(this.userSelectedMiddleName);
-      this.assignFormLastName(this.userSelectedLastName);
-      this.assignFormTags(this.userSelectedTags);
-      this.assignFormRole(this.userSelectedRole);
-      this.assignFormCurriculum(this.userSelectedCurriculum);
-    },
-    clearForm() {
-      this.assignFormId('');
-      this.assignFormUsername('');
-      this.assignFormEmail('');
-      this.assignFormPassword('');
-      this.assignFormFirstName('');
-      this.assignFormMiddleName('');
-      this.assignFormLastName('');
-      this.assignFormTags([]);
-      this.assignFormRole('');
-      this.assignFormCurriculum(null);
-    },
-    handleRevert() {
-      this.assignSelectedToForm();
-    },
-    submitUserToCreate() {
-      const userToCreate = this.bundleUserFromForm();
-      this.createUser(userToCreate);
-    },
-    submitUserToUpdate() {
-      const answer = window.confirm('Are your sure you want to edit the user(s)?');
-      if (answer) {
-        const userToCreate = this.bundleUserFromForm();
-        this.updateUser({
-          id: this.userSelectedId,
-          user: userToCreate,
-        }).then(() => this.assignSelectedToForm());
-      }
-    },
-    submitUserToDelete() {
-      const answer = window.confirm('Are your sure you want to delete the user(s)?');
-      if (answer) {
-        this.deleteUser(this.userSelectedId).then(this.clearForm());
-      }
-    },
-    handleUnselection() {
-      this.unsetSelectedUser();
-      this.clearForm();
-    },
-    handleUploadExperiment(event) {
-      console.log('Todo', event);
-    },
-  },
-  beforeMount() {
-    this.fetchAllCurriculumHeaders();
-  },
-  watch: {
-    userSelectedId: {
-      immediate: true,
-      handler: function() {
-        this.assignSelectedToForm();
-      },
-    },
-  },
+export default{
+	'name': 'ExperimentsWorkshopWidget',
+	data() {
+		return{
+			'hasFocusedOnUsername': false,
+			'hasAttemptedSubmit': false,
+			'id': '',
+			'username': '',
+			'password': '',
+			'email': '',
+			'firstName': '',
+			'middleName': '',
+			'lastName': '',
+			'tags': [],
+			'role': '',
+			'curriculum': null
+		};
+	},
+	'computed': {
+		...mapGetters('curriculums', ['curriculumsHeadersList']),
+		...mapGetters('users', [
+			'hasSelectedUser',
+			'userSelectedId',
+			'userSelectedUsername',
+			'userSelectedEmail',
+			'userSelectedFirstName',
+			'userSelectedMiddleName',
+			'userSelectedLastName',
+			'userSelectedTags',
+			'userSelectedCurriculum'
+		]),
+		curriculumsReferences() {
+			return this.curriculumsHeadersList;
+		},
+		userSelectedUsernameDisplay() {
+			return this.hasSelectedUser ? this.userSelectedUsername || '---' : '';
+		},
+		userSelectedEmailDisplay() {
+			return this.hasSelectedUser ? this.userSelectedEmail || '---' : '';
+		},
+		userSelectedPasswordDisplay() {
+			return this.hasSelectedUser ? '***' : '';
+		},
+		userSelectedFirstNameDisplay() {
+			return this.hasSelectedUser ? this.userSelectedFirstName || '---' : '';
+		},
+		userSelectedMiddleNameDisplay() {
+			return this.hasSelectedUser ? this.userSelectedMiddleName || '---' : '';
+		},
+		userSelectedLastNameDisplay() {
+			return this.hasSelectedUser ? this.userSelectedLastName || '---' : '';
+		},
+		userSelectedTagsDisplay() {
+			if(this.hasSelectedUser) {
+				if(this.userSelectedTags.length > 0) {
+					let display = '';
+					this.userSelectedTags.forEach(element => {
+						display += element + ', ';
+					});
+					return display.slice(0, -2);
+				} else return'---';
+			} else return'';
+		},
+		userSelectedCurriculumDisplay() {
+			return this.hasSelectedUser ? this.getCurriculumTitleFromList(this.userSelectedCurriculum) || '---' : '';
+		}
+	},
+	'methods': {
+		...mapActions('curriculums', ['fetchAllCurriculumHeaders']),
+		...mapActions('users', ['unsetSelectedUser', 'createUser', 'updateUser', 'deleteUser']),
+		bundleUserFromForm() {
+			return{
+				'username': this.username,
+				'password': this.password,
+				'email': this.email,
+				'firstName': this.firstName,
+				'middleName': this.middleName,
+				'lastName': this.lastName,
+				'tags': this.tags,
+				'curriculum': this.curriculum
+			};
+		},
+		getCurriculumTitleFromList(id) {
+			const curriculum = this.curriculumsHeadersList.filter(obj => {
+				return obj._id === id;
+			});
+			if(curriculum[0]) return curriculum[0].title;
+			else return'';
+		},
+		addTag() {
+			this.tags.push('');
+		},
+		removeTag(index) {
+			this.tags.splice(index, 1);
+		},
+		assignFormId(id) {
+			this.id = id;
+		},
+		assignFormUsername(username) {
+			this.username = username;
+		},
+		assignFormEmail(email) {
+			this.email = email;
+		},
+		assignFormPassword(password) {
+			this.password = password;
+		},
+		assignFormFirstName(firstName) {
+			this.firstName = firstName;
+		},
+		assignFormMiddleName(middleName) {
+			this.middleName = middleName;
+		},
+		assignFormLastName(lastName) {
+			this.lastName = lastName;
+		},
+		assignFormTags(tags) {
+			this.tags = Array.isArray(tags) ? JSON.parse(JSON.stringify(tags)) : [];
+		},
+		assignFormRole(role) {
+			this.role = role;
+		},
+		assignFormCurriculum(curriculum) {
+			this.curriculum = curriculum;
+		},
+		assignSelectedToForm() {
+			this.assignFormId(this.userSelectedId);
+			this.assignFormUsername(this.userSelectedUsername);
+			this.assignFormEmail(this.userSelectedEmail);
+			this.assignFormFirstName(this.userSelectedFirstName);
+			this.assignFormMiddleName(this.userSelectedMiddleName);
+			this.assignFormLastName(this.userSelectedLastName);
+			this.assignFormTags(this.userSelectedTags);
+			this.assignFormRole(this.userSelectedRole);
+			this.assignFormCurriculum(this.userSelectedCurriculum);
+		},
+		clearForm() {
+			this.assignFormId('');
+			this.assignFormUsername('');
+			this.assignFormEmail('');
+			this.assignFormPassword('');
+			this.assignFormFirstName('');
+			this.assignFormMiddleName('');
+			this.assignFormLastName('');
+			this.assignFormTags([]);
+			this.assignFormRole('');
+			this.assignFormCurriculum(null);
+		},
+		handleRevert() {
+			this.assignSelectedToForm();
+		},
+		submitUserToCreate() {
+			const userToCreate = this.bundleUserFromForm();
+			this.createUser(userToCreate);
+		},
+		submitUserToUpdate() {
+			const answer = window.confirm('Are your sure you want to edit the user(s)?');
+			if(answer) {
+				const userToCreate = this.bundleUserFromForm();
+				this.updateUser({
+					'id': this.userSelectedId,
+					'user': userToCreate
+				}).then(() => this.assignSelectedToForm());
+			}
+		},
+		submitUserToDelete() {
+			const answer = window.confirm('Are your sure you want to delete the user(s)?');
+			if(answer) {
+				this.deleteUser(this.userSelectedId).then(this.clearForm());
+			}
+		},
+		handleUnselection() {
+			this.unsetSelectedUser();
+			this.clearForm();
+		},
+		handleUploadExperiment(event) {
+			console.log('Todo', event);
+		}
+	},
+	beforeMount() {
+		this.fetchAllCurriculumHeaders();
+	},
+	'watch': {
+		'userSelectedId': {
+			'immediate': true,
+			'handler': function() {
+				this.assignSelectedToForm();
+			}
+		}
+	}
 };
 </script>
 

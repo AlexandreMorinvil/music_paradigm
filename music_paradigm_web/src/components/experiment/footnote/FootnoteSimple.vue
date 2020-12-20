@@ -5,16 +5,16 @@
 </template>
 
 <script>
-export default {
-  name: 'FootnoteSimple',
-  props: {
-    message: {
-      type: String,
-      default() {
-        return '';
-      },
-    },
-  },
+export default{
+	'name': 'FootnoteSimple',
+	'props': {
+		'message': {
+			'type': String,
+			default() {
+				return'';
+			}
+		}
+	}
 };
 </script>
 

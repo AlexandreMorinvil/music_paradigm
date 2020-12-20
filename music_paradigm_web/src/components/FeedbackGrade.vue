@@ -28,38 +28,38 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import{ mapGetters } from'vuex';
 
-export default {
-  name: 'feedbackGrade',
-  props: {
-    grade: {
-      type: Object,
-      default() {
-        return {
-          criteria: 'No criteria',
-          mark: 0,
-          passMark: 60,
-          topMark: 100,
-        };
-      },
-    },
-  },
-  computed: {
-    ...mapGetters('experiment', ['hideFeedbackSmiley', 'feedbackNumerical']),
-    isSuccess() {
-      return this.grade.mark >= this.grade.passMark;
-    },
-    passingWidth() {
-      return '--checkpointPosition: ' + (this.grade.passMark / this.grade.topMark) * 100 * 0.955 + '%;';
-    },
-    progressWidth() {
-      return 'width: ' + (Math.min(this.grade.mark, this.grade.topMark) / this.grade.topMark) * 100 + '%;';
-    },
-    barColor() {
-      return this.isSuccess ? ' success-color ' : ' info-color ';
-    }
-  },
+export default{
+	'name': 'feedbackGrade',
+	'props': {
+		'grade': {
+			'type': Object,
+			default() {
+				return{
+					'criteria': 'No criteria',
+					'mark': 0,
+					'passMark': 60,
+					'topMark': 100
+				};
+			}
+		}
+	},
+	'computed': {
+		...mapGetters('experiment', ['hideFeedbackSmiley', 'feedbackNumerical']),
+		isSuccess() {
+			return this.grade.mark >= this.grade.passMark;
+		},
+		passingWidth() {
+			return'--checkpointPosition: ' + (this.grade.passMark / this.grade.topMark) * 100 * 0.955 + '%;';
+		},
+		progressWidth() {
+			return'width: ' + (Math.min(this.grade.mark, this.grade.topMark) / this.grade.topMark) * 100 + '%;';
+		},
+		barColor() {
+			return this.isSuccess ? ' success-color ' : ' info-color ';
+		}
+	}
 };
 </script>
 

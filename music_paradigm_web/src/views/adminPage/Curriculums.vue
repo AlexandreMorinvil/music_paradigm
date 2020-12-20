@@ -21,21 +21,21 @@
 </template>
 
 <script>
-import AdminPageContext from "@/components/admin/AdminPageContext.vue";
-import WidgetContext from "@/components/admin/WidgetContext.vue";
-import CurriculumsViewer from "@/components/admin/curriculums/CurriculumsViewerWidget.vue";
-import CurriculumsEditor from "@/components/admin/curriculums/CurriculumsEditorWidget.vue";
-import CurriculumsTable from "@/components/admin/curriculums/CurriculumsTableWidget.vue";
+import AdminPageContext from'@/components/admin/AdminPageContext.vue';
+import WidgetContext from'@/components/admin/WidgetContext.vue';
+import CurriculumsViewer from'@/components/admin/curriculums/CurriculumsViewerWidget.vue';
+import CurriculumsEditor from'@/components/admin/curriculums/CurriculumsEditorWidget.vue';
+import CurriculumsTable from'@/components/admin/curriculums/CurriculumsTableWidget.vue';
 
-export default {
-  components: {
-    AdminPageContext: AdminPageContext,
-    WidgetContext: WidgetContext,
-    CurriculumsViewer: CurriculumsViewer,
-    CurriculumsEditor: CurriculumsEditor,
-    CurriculumsTable: CurriculumsTable,
-  },
-  name: "AdminCurriculums",
+export default{
+	'components': {
+		'AdminPageContext': AdminPageContext,
+		'WidgetContext': WidgetContext,
+		'CurriculumsViewer': CurriculumsViewer,
+		'CurriculumsEditor': CurriculumsEditor,
+		'CurriculumsTable': CurriculumsTable
+	},
+	'name': 'AdminCurriculums'
 };
 </script>
 

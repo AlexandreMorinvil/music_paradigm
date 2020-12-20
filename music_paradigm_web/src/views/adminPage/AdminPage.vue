@@ -37,43 +37,43 @@
 </template>
 
 <script>
-import "@/styles/loggedInPageTemplate.css";
+import'@/styles/loggedInPageTemplate.css';
 
-export default {
-  name: "AdminPage",
-  data() {
-    return {
-      activePage: "undefined",
-    };
-  },
-  computed: {},
-  methods: {},
-  created() {},
-  watch: {
-    // On change of the route, we reevaluate the current page
-    $route: {
-      immediate: true,
-      handler(to) {
-        let currentPage = "undefined";
-        const pageList = [
-          "home",
-          "users",
-          "experiments",
-          "curriculums",
-          "ressources",
-          "data",
-          "account",
-        ];
-        for (var i in pageList) {
-          var page = pageList[i];
-          if (to.name === `admin.${page}`) {
-            currentPage = page;
-          }
-        }
-        this.activePage = currentPage;
-      },
-    },
-  },
+export default{
+	'name': 'AdminPage',
+	data() {
+		return{
+			'activePage': 'undefined'
+		};
+	},
+	'computed': {},
+	'methods': {},
+	created() {},
+	'watch': {
+		// On change of the route, we reevaluate the current page
+		'$route': {
+			'immediate': true,
+			handler(to) {
+				let currentPage = 'undefined';
+				const pageList = [
+					'home',
+					'users',
+					'experiments',
+					'curriculums',
+					'ressources',
+					'data',
+					'account'
+				];
+				for(const i in pageList) {
+					const page = pageList[i];
+					if(to.name === `admin.${page}`) {
+						currentPage = page;
+					}
+				}
+				this.activePage = currentPage;
+			}
+		}
+	}
 };
 </script>
 

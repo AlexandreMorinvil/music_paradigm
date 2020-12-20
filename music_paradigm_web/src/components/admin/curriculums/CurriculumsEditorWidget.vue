@@ -217,182 +217,181 @@
 </template>
 
 <script>
-import "@/styles/widgetTemplate.css";
-import "@/styles/formTemplate.css";
-import { mapActions, mapGetters } from "vuex";
+import'@/styles/widgetTemplate.css';
+import'@/styles/formTemplate.css';
+import{ mapActions, mapGetters } from'vuex';
 
-export default {
-  name: "CurriculumWorkshopWidget",
-  data() {
-    return {
-      experimentsCount: 1,
-      id: "",
-      title: "",
-      isSequential: false,
-      experiments: [
-        {
-          title: "Introduction",
-          delayInDays: 7,
-          isUniqueIndDay: true,
-          completionTarget: 1,
-          completionLimit: 1,
-          experimentReference: "5f32ab693a6197f5e56ab748",
-          associativeId: "a"
-        },
-      ],
-    };
-  },
-  computed: {
-    ...mapGetters("experiments", ["experimentsHeadersList"]),
-    ...mapGetters("curriculums", [
-      "hasSelectedCurriculum",
-      "curriculumSelectedId",
-      "curriculumSelectedTitle",
-      "curriculumSelectedIsSequential",
-      "curriculumSelectedExperiments",
-      "curriculumSelectedExperimentAtIndex",
-    ]),
-    experimentsReferences() {
-      const fullReference = [];
-      this.experimentsHeadersList.forEach((element) => {
-        fullReference.push({
-          id: element._id,
-          fullName: this.formatExperimentUniqueName(element),
-        });
-      });
-      return fullReference;
-    },
-    curriculumSelectedTitleDisplay() {
-      return this.hasSelectedCurriculum
-        ? this.curriculumSelectedTitle || "---"
-        : "";
-    },
-    curriculumSelectedIsSequentialDisplay() {
-      return this.hasSelectedCurriculum
-        ? this.curriculumSelectedIsSequential || "---"
-        : "";
-    },
-  },
-  methods: {
-    ...mapActions("experiments", ["fetchAllExperimentsHeaders"]),
-    ...mapActions("curriculums", [
-      "unsetSelectedCurriculum",
-      "createCurriculum",
-      "updateCurriculum",
-      "deleteCurriculum",
-    ]),
-    bundleCurrirulumFromForm() {
-      return {
-        id: this.id,
-        title: this.title,
-        isSequential: this.isSequential,
-        experiments: this.experiments,
-      };
-    },
-    getExperimentFullNameFromList(id) {
-      const experiment = this.experimentsReferences.filter((obj) => {
-        return obj.id === id;
-      });
-      if (experiment[0]) return experiment[0].fullName;
-      else return "";
-    },
-    formatExperimentUniqueName(experiment) {
-      if (experiment)
-        return (
-          "" +
-          experiment.group +
-          "/" +
-          experiment.name +
-          "/v" +
-          experiment.version
-        );
-      else return "";
-    },
-    addExperiment() {
-      this.experiments.push({
-        associativeId: "id" + this.experiments.length,
-        title: "",
-        delayInDays: 0,
-        isUniqueIndDay: true,
-        completionTarget: 1,
-        completionLimit: 1,
-        experimentReference: "",
-      });
-    },
-    removeTag(index) {
-      this.experiments.splice(index, 1);
-    },
-    assignFormId(id) {
-      this.id = id;
-    },
-    assignFormTitle(title) {
-      this.title = title;
-    },
-    assignFormIsSequential(isSequential) {
-      this.isSequential = isSequential;
-    },
-    assignFormExperiments(experiments) {
-      this.experiments = Array.isArray(experiments)
-        ? JSON.parse(JSON.stringify(experiments))
-        : [];
-    },
-    assignSelectedToForm() {
-      this.assignFormId(this.curriculumSelectedId);
-      this.assignFormTitle(this.curriculumSelectedTitle);
-      this.assignFormIsSequential(this.curriculumSelectedIsSequential);
-      this.assignFormExperiments(this.curriculumSelectedExperiments);
-    },
-    clearForm() {
-      this.assignFormId("");
-      this.assignFormTitle("");
-      this.assignFormIsSequential(false);
-      this.assignFormExperiments([]);
-    },
-    handleRevert() {
-      this.assignSelectedToForm();
-    },
-    submitCurriculumToCreate() {
-      const curriculumToCreate = this.bundleCurrirulumFromForm();
-      this.createCurriculum(curriculumToCreate);
-    },
-    submitCurriculumToUpdate() {
-      const answer = window.confirm(
-        "Are your sure you want to edit the curriculum?"
-      );
-      if (answer) {
-        const curriculumUpdated = this.bundleCurrirulumFromForm();
-        this.updateCurriculum({
-          id: this.curriculumSelectedId,
-          curriculum: curriculumUpdated,
-        });
-      }
-    },
-    submitUserToDelete() {
-      const answer = window.confirm(
-        "Are your sure you want to delete the curriculum?"
-      );
-      if (answer) {
-        this.deleteCurriculum(this.curriculumSelectedId);
-      }
-    },
-    handleUnselection() {
-      this.unsetSelectedCurriculum();
-    },
-    handleUploadExperiment(event) {
-      console.log("Todo", event);
-    },
-  },
-  beforeMount() {
-    this.fetchAllExperimentsHeaders();
-  },
-  watch: {
-    curriculumSelectedId: {
-      immediate: true,
-      handler: function() {
-        this.assignSelectedToForm();
-      },
-    },
-  },
+export default{
+	'name': 'CurriculumWorkshopWidget',
+	data() {
+		return{
+			'experimentsCount': 1,
+			'id': '',
+			'title': '',
+			'isSequential': false,
+			'experiments': [
+				{
+					'title': 'Introduction',
+					'delayInDays': 7,
+					'isUniqueIndDay': true,
+					'completionTarget': 1,
+					'completionLimit': 1,
+					'experimentReference': '5f32ab693a6197f5e56ab748',
+					'associativeId': 'a'
+				}
+			]
+		};
+	},
+	'computed': {
+		...mapGetters('experiments', ['experimentsHeadersList']),
+		...mapGetters('curriculums', [
+			'hasSelectedCurriculum',
+			'curriculumSelectedId',
+			'curriculumSelectedTitle',
+			'curriculumSelectedIsSequential',
+			'curriculumSelectedExperiments',
+			'curriculumSelectedExperimentAtIndex'
+		]),
+		experimentsReferences() {
+			const fullReference = [];
+			this.experimentsHeadersList.forEach((element) => {
+				fullReference.push({
+					'id': element._id,
+					'fullName': this.formatExperimentUniqueName(element)
+				});
+			});
+			return fullReference;
+		},
+		curriculumSelectedTitleDisplay() {
+			return this.hasSelectedCurriculum
+				? this.curriculumSelectedTitle || '---'
+				: '';
+		},
+		curriculumSelectedIsSequentialDisplay() {
+			return this.hasSelectedCurriculum
+				? this.curriculumSelectedIsSequential || '---'
+				: '';
+		}
+	},
+	'methods': {
+		...mapActions('experiments', ['fetchAllExperimentsHeaders']),
+		...mapActions('curriculums', [
+			'unsetSelectedCurriculum',
+			'createCurriculum',
+			'updateCurriculum',
+			'deleteCurriculum'
+		]),
+		bundleCurrirulumFromForm() {
+			return{
+				'id': this.id,
+				'title': this.title,
+				'isSequential': this.isSequential,
+				'experiments': this.experiments
+			};
+		},
+		getExperimentFullNameFromList(id) {
+			const experiment = this.experimentsReferences.filter((obj) => {
+				return obj.id === id;
+			});
+			if(experiment[0]) return experiment[0].fullName;
+			else return'';
+		},
+		formatExperimentUniqueName(experiment) {
+			if(experiment)
+				return(
+					String(experiment.group)
+          + '/'
+          + experiment.name
+          + '/v'
+          + experiment.version
+				);
+			else return'';
+		},
+		addExperiment() {
+			this.experiments.push({
+				'associativeId': 'id' + this.experiments.length,
+				'title': '',
+				'delayInDays': 0,
+				'isUniqueIndDay': true,
+				'completionTarget': 1,
+				'completionLimit': 1,
+				'experimentReference': ''
+			});
+		},
+		removeTag(index) {
+			this.experiments.splice(index, 1);
+		},
+		assignFormId(id) {
+			this.id = id;
+		},
+		assignFormTitle(title) {
+			this.title = title;
+		},
+		assignFormIsSequential(isSequential) {
+			this.isSequential = isSequential;
+		},
+		assignFormExperiments(experiments) {
+			this.experiments = Array.isArray(experiments)
+				? JSON.parse(JSON.stringify(experiments))
+				: [];
+		},
+		assignSelectedToForm() {
+			this.assignFormId(this.curriculumSelectedId);
+			this.assignFormTitle(this.curriculumSelectedTitle);
+			this.assignFormIsSequential(this.curriculumSelectedIsSequential);
+			this.assignFormExperiments(this.curriculumSelectedExperiments);
+		},
+		clearForm() {
+			this.assignFormId('');
+			this.assignFormTitle('');
+			this.assignFormIsSequential(false);
+			this.assignFormExperiments([]);
+		},
+		handleRevert() {
+			this.assignSelectedToForm();
+		},
+		submitCurriculumToCreate() {
+			const curriculumToCreate = this.bundleCurrirulumFromForm();
+			this.createCurriculum(curriculumToCreate);
+		},
+		submitCurriculumToUpdate() {
+			const answer = window.confirm(
+				'Are your sure you want to edit the curriculum?'
+			);
+			if(answer) {
+				const curriculumUpdated = this.bundleCurrirulumFromForm();
+				this.updateCurriculum({
+					'id': this.curriculumSelectedId,
+					'curriculum': curriculumUpdated
+				});
+			}
+		},
+		submitUserToDelete() {
+			const answer = window.confirm(
+				'Are your sure you want to delete the curriculum?'
+			);
+			if(answer) {
+				this.deleteCurriculum(this.curriculumSelectedId);
+			}
+		},
+		handleUnselection() {
+			this.unsetSelectedCurriculum();
+		},
+		handleUploadExperiment(event) {
+			console.log('Todo', event);
+		}
+	},
+	beforeMount() {
+		this.fetchAllExperimentsHeaders();
+	},
+	'watch': {
+		'curriculumSelectedId': {
+			'immediate': true,
+			'handler': function() {
+				this.assignSelectedToForm();
+			}
+		}
+	}
 };
 </script>
 

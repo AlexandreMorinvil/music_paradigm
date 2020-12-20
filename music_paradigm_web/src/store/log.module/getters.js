@@ -1,5 +1,5 @@
-export default {
-    logSessionId: (state) => {
-        return state._id;
-    }
-}
+export default{
+	'logSessionId': (state) => {
+		return state._id;
+	}
+};

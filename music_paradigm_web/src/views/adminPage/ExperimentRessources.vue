@@ -17,17 +17,17 @@
 </template>
 
 <script>
-import AdminPageContext from "@/components/admin/AdminPageContext.vue";
-import WidgetContext from "@/components/admin/WidgetContext.vue";
+import AdminPageContext from'@/components/admin/AdminPageContext.vue';
+import WidgetContext from'@/components/admin/WidgetContext.vue';
 
-import "@/styles/widgetTemplate.css";
+import'@/styles/widgetTemplate.css';
 
-export default {
-  name: "AdminExperimentRessources",
-  components: {
-    AdminPageContext: AdminPageContext,
-    WidgetContext: WidgetContext,
-  },
+export default{
+	'name': 'AdminExperimentRessources',
+	'components': {
+		'AdminPageContext': AdminPageContext,
+		'WidgetContext': WidgetContext
+	}
 };
 </script>
 

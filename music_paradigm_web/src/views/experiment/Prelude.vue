@@ -7,41 +7,41 @@
 </template>
 
 <script>
-import "@/styles/experimentStateTemplate.css";
-import { mapGetters } from "vuex";
+import'@/styles/experimentStateTemplate.css';
+import{ mapGetters } from'vuex';
 
-export default {
-  name: "Prelude",
-  components: {},
-  props: {
-    isSpaceBarPressed: {
-      type: Boolean,
-      default() {
-        return false;
-      },
-    },
-  },
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapGetters("piano", ["isPianoInitialized"]),
-    footnote() {
-      return "Please wait a moment";
-    },
-    textToDisplay() {
-      if (!this.isPianoInitialized) return "Loading...";
-      else return "Ready";
-    },
-  },
-  watch: {
-    isPianoInitialized: {
-      immediate: true,
-      handler: function (isReady) {
-        if (isReady) this.$emit("experimentReady");
-      },
-    },
-  },
+export default{
+	'name': 'Prelude',
+	'components': {},
+	'props': {
+		'isSpaceBarPressed': {
+			'type': Boolean,
+			default() {
+				return false;
+			}
+		}
+	},
+	data() {
+		return{};
+	},
+	'computed': {
+		...mapGetters('piano', ['isPianoInitialized']),
+		footnote() {
+			return'Please wait a moment';
+		},
+		textToDisplay() {
+			if(!this.isPianoInitialized) return'Loading...';
+			else return'Ready';
+		}
+	},
+	'watch': {
+		'isPianoInitialized': {
+			'immediate': true,
+			'handler': function(isReady) {
+				if(isReady) this.$emit('experimentReady');
+			}
+		}
+	}
 };
 </script>
 

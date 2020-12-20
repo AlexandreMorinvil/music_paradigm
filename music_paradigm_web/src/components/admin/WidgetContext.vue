@@ -18,43 +18,43 @@
 </template>
 
 <script>
-export default {
-  name: "WidgetContext",
-  props: {
-    title: {
-      type: String,
-      default() {
-        return "Unspecified Title";
-      },
-    },
-    isShownInitial: {
-      type: Boolean,
-      default() {
-        return true;
-      },
-    },
-  },
-  data() {
-    return {
-      isShown: true,
-    };
-  },
-  computed: {
-    widgetDisplay() {
-      if (this.isShown) return "initial";
-      else return "none";
-    },
-  },
-  methods: {
-    toggle() {
-      this.isShown = !this.isShown;
-    },
-  },
-  mounted() {
-    this.isShown = this.isShownInitial;
-  },
-  destroyed() {},
-  watch: {},
+export default{
+	'name': 'WidgetContext',
+	'props': {
+		'title': {
+			'type': String,
+			default() {
+				return'Unspecified Title';
+			}
+		},
+		'isShownInitial': {
+			'type': Boolean,
+			default() {
+				return true;
+			}
+		}
+	},
+	data() {
+		return{
+			'isShown': true
+		};
+	},
+	'computed': {
+		widgetDisplay() {
+			if(this.isShown) return'initial';
+			else return'none';
+		}
+	},
+	'methods': {
+		toggle() {
+			this.isShown = !this.isShown;
+		}
+	},
+	mounted() {
+		this.isShown = this.isShownInitial;
+	},
+	destroyed() {},
+	'watch': {}
 };
 </script>
 

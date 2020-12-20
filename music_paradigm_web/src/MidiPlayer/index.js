@@ -1,9 +1,9 @@
-import {Player} from './player';
-import {Utils} from './utils';
-import {Constants} from './constants';
+import{ Player } from'./player';
+import{ Utils } from'./utils';
+import{ Constants } from'./constants';
 
-export default {
+export default{
 	Player,
 	Utils,
-	Constants,
-}
+	Constants
+};

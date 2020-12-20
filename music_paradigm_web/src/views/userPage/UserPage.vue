@@ -8,38 +8,38 @@
 </template>
 
 <script>
-import ApplicationFooter from "@/components/ApplicationFooter.vue";
+import ApplicationFooter from'@/components/ApplicationFooter.vue';
 
-export default {
-  name: "UserPage",
-  components: {
-    applicationFooter: ApplicationFooter,
-  },
-  data() {
-    return {
-      activePage: "undefined",
-    };
-  },
-  computed: {},
-  methods: {},
-  created() {},
-  watch: {
-    // On change of the route, we reevaluate the current page
-    $route: {
-      immediate: true,
-      handler(to) {
-        let currentPage = "undefined";
-        const pageList = ["home", "experiments", "account"];
-        for (var i in pageList) {
-          var page = pageList[i];
-          if (to.name === `user.${page}`) {
-            currentPage = page;
-          }
-        }
-        this.activePage = currentPage;
-      },
-    },
-  },
+export default{
+	'name': 'UserPage',
+	'components': {
+		'applicationFooter': ApplicationFooter
+	},
+	data() {
+		return{
+			'activePage': 'undefined'
+		};
+	},
+	'computed': {},
+	'methods': {},
+	created() {},
+	'watch': {
+		// On change of the route, we reevaluate the current page
+		'$route': {
+			'immediate': true,
+			handler(to) {
+				let currentPage = 'undefined';
+				const pageList = ['home', 'experiments', 'account'];
+				for(const i in pageList) {
+					const page = pageList[i];
+					if(to.name === `user.${page}`) {
+						currentPage = page;
+					}
+				}
+				this.activePage = currentPage;
+			}
+		}
+	}
 };
 </script>
 

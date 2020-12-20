@@ -48,137 +48,137 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-import { ExperimentEventBus } from '@/_services/eventBus.service.js';
-import ExperimentPiano from '@/components/ExperimentPiano.vue';
-import ExperimentTimer from '@/components/ExperimentTimer.vue';
+import{ mapActions, mapGetters } from'vuex';
+import{ ExperimentEventBus } from'@/_services/eventBus.service.js';
+import ExperimentPiano from'@/components/ExperimentPiano.vue';
+import ExperimentTimer from'@/components/ExperimentTimer.vue';
 
-export default {
-  name: 'Experiment',
-  components: {
-    piano: ExperimentPiano,
-    timer: ExperimentTimer,
-  },
-  data() {
-    return {
-      isSpaceBarPressed: false,
-      needsConfirmationToLeave: true,
-      lastPressedKey: '',
-    };
-  },
-  computed: {
-    ...mapGetters('experiment', [
-      'stepsTotalCount',
-      'stepsLeftCount',
-      'currentStateType',
-      'nextStateType',
-      'midiName',
-      'timeLimitInSeconds',
-    ]),
-    currentStateIcon() {
-      return this.getIconReference(this.currentStateType);
-    },
-    nextStateIcon() {
-      return this.getIconReference(this.nextStateType);
-    },
-    progressBarWith() {
-      return 100 * (1 - this.stepsLeftCount / this.stepsTotalCount);
-    },
-  },
-  methods: {
-    ...mapActions('experiment', [
-      'updateState',
-      'goNextStep',
-      'goStepPostSkip',
-      'clearState',
-      'endExperimentByTimeout',
-      'concludeExperiment',
-    ]),
-    ...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
-    ...mapActions('log', ['initializeLogSession']),
-    getIconReference(stateType) {
-      const iconFileName = 'sprites.svg#';
-      switch (stateType) {
-        case 'cue':
-          return iconFileName + 'icon-volume-high';
-        case 'end':
-          return iconFileName + 'icon-finish';
-        case 'feedback':
-          return iconFileName + 'icon-check-circle';
-        case 'introduction':
-          return iconFileName + 'icon-location';
-        case 'instruction':
-          return iconFileName + 'icon-info';
-        case 'playing':
-          return iconFileName + 'icon-piano';
-        case 'rest':
-          return iconFileName + 'icon-pause';
-        case 'video':
-          return iconFileName + 'icon-film';
-        default:
-          return iconFileName + 'icon-three-dots';
-      }
-    },
-    handleTimesUp() {
-      this.endExperimentByTimeout();
-    },
-    displayFirstStep() {
-      // this.initializeLogSession();
-      this.updateState();
-      this.$refs.timer.startTimer();
-    },
-    navigateExperiment() {
-      this.resetPlayedNotesLogs();
-      this.goNextStep();
-    },
-    navigateExperimentSkip() {
-      this.resetPlayedNotesLogs();
-      this.goStepPostSkip();
-    },
-    endExperiment() {
-      this.needsConfirmationToLeave = false;
-      this.concludeExperiment();
-    },
-    handleButtonPress(pressedKey) {
-      if (pressedKey.key === ' ') this.isSpaceBarPressed = true;
-      this.lastPressedKey = "";
-      this.lastPressedKey = pressedKey.key.toLowerCase();
-    },
-    handleButtonRelease(releasedKey) {
-      if (releasedKey.key === ' ') this.isSpaceBarPressed = false;
-    },
-  },
-  mounted() {
-    window.addEventListener('keydown', this.handleButtonPress);
-    window.addEventListener('keyup', this.handleButtonRelease);
-    ExperimentEventBus.$on('skip-request', this.navigateExperimentSkip)
-  },
-  beforeDestroy() {
-    window.removeEventListener('keydown', this.handleButtonPress);
-    window.removeEventListener('keyup', this.handleButtonRelease);
-    ExperimentEventBus.$off('skip-request', this.navigateExperimentSkip)
-    this.resetPianoState();
-    this.clearState();
-  },
-  watch: {
-    midiName: {
-      immediate: true,
-      handler: function(midiName) {
-        if (midiName !== '') this.loadMidiFile(this.midiName);
-      },
-    },
-  },
-  beforeRouteLeave(to, from, next) {
-    // We need to verify that the route departure is not a redirection, otherwise
-    // a confirmation will be prompted twice (Once before and after the redirection)
-    if (this.needsConfirmationToLeave && !to.hasOwnProperty('redirectedFrom')) {
-      const answer = window.confirm('Do you really want to leave the experiment in progress?');
-      if (answer) next();
-      else next(false);
-    } else {
-      next();
-    }
-  },
+export default{
+	'name': 'Experiment',
+	'components': {
+		'piano': ExperimentPiano,
+		'timer': ExperimentTimer
+	},
+	data() {
+		return{
+			'isSpaceBarPressed': false,
+			'needsConfirmationToLeave': true,
+			'lastPressedKey': ''
+		};
+	},
+	'computed': {
+		...mapGetters('experiment', [
+			'stepsTotalCount',
+			'stepsLeftCount',
+			'currentStateType',
+			'nextStateType',
+			'midiName',
+			'timeLimitInSeconds'
+		]),
+		currentStateIcon() {
+			return this.getIconReference(this.currentStateType);
+		},
+		nextStateIcon() {
+			return this.getIconReference(this.nextStateType);
+		},
+		progressBarWith() {
+			return 100 * (1 - this.stepsLeftCount / this.stepsTotalCount);
+		}
+	},
+	'methods': {
+		...mapActions('experiment', [
+			'updateState',
+			'goNextStep',
+			'goStepPostSkip',
+			'clearState',
+			'endExperimentByTimeout',
+			'concludeExperiment'
+		]),
+		...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
+		...mapActions('log', ['initializeLogSession']),
+		getIconReference(stateType) {
+			const iconFileName = 'sprites.svg#';
+			switch(stateType) {
+			case'cue':
+				return iconFileName + 'icon-volume-high';
+			case'end':
+				return iconFileName + 'icon-finish';
+			case'feedback':
+				return iconFileName + 'icon-check-circle';
+			case'introduction':
+				return iconFileName + 'icon-location';
+			case'instruction':
+				return iconFileName + 'icon-info';
+			case'playing':
+				return iconFileName + 'icon-piano';
+			case'rest':
+				return iconFileName + 'icon-pause';
+			case'video':
+				return iconFileName + 'icon-film';
+			default:
+				return iconFileName + 'icon-three-dots';
+			}
+		},
+		handleTimesUp() {
+			this.endExperimentByTimeout();
+		},
+		displayFirstStep() {
+			// This.initializeLogSession();
+			this.updateState();
+			this.$refs.timer.startTimer();
+		},
+		navigateExperiment() {
+			this.resetPlayedNotesLogs();
+			this.goNextStep();
+		},
+		navigateExperimentSkip() {
+			this.resetPlayedNotesLogs();
+			this.goStepPostSkip();
+		},
+		endExperiment() {
+			this.needsConfirmationToLeave = false;
+			this.concludeExperiment();
+		},
+		handleButtonPress(pressedKey) {
+			if(pressedKey.key === ' ') this.isSpaceBarPressed = true;
+			this.lastPressedKey = '';
+			this.lastPressedKey = pressedKey.key.toLowerCase();
+		},
+		handleButtonRelease(releasedKey) {
+			if(releasedKey.key === ' ') this.isSpaceBarPressed = false;
+		}
+	},
+	mounted() {
+		window.addEventListener('keydown', this.handleButtonPress);
+		window.addEventListener('keyup', this.handleButtonRelease);
+		ExperimentEventBus.$on('skip-request', this.navigateExperimentSkip);
+	},
+	beforeDestroy() {
+		window.removeEventListener('keydown', this.handleButtonPress);
+		window.removeEventListener('keyup', this.handleButtonRelease);
+		ExperimentEventBus.$off('skip-request', this.navigateExperimentSkip);
+		this.resetPianoState();
+		this.clearState();
+	},
+	'watch': {
+		'midiName': {
+			'immediate': true,
+			'handler': function(midiName) {
+				if(midiName !== '') this.loadMidiFile(this.midiName);
+			}
+		}
+	},
+	beforeRouteLeave(to, from, next) {
+		// We need to verify that the route departure is not a redirection, otherwise
+		// a confirmation will be prompted twice (Once before and after the redirection)
+		if(this.needsConfirmationToLeave && !to.hasOwnProperty('redirectedFrom')) {
+			const answer = window.confirm('Do you really want to leave the experiment in progress?');
+			if(answer) next();
+			else next(false);
+		} else{
+			next();
+		}
+	}
 };
 </script>
 

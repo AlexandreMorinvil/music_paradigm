@@ -15,31 +15,31 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import{ mapGetters } from'vuex';
 
-export default {
-  name: "OverviewTable",
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapGetters("account", ["progressionSummary"]),
-    elementsPerRow() {
-      const elementsCount = this.progressionSummary.length;
-      if (elementsCount <= 7) return Math.min(7, elementsCount);
-      if (elementsCount <= 10) return 5;
-      if (elementsCount <= 12) return 6;
-      if (elementsCount <= 14) return 7;
-      if (elementsCount <= 18) return 6;
-      if (elementsCount <= 21) return 7;
-      if (elementsCount <= 24) return 6;
-      else return 7;
-    },
-  },
-  methods: {},
-  beforeMount() {},
-  mounted() {},
-  watch: {},
+export default{
+	'name': 'OverviewTable',
+	data() {
+		return{};
+	},
+	'computed': {
+		...mapGetters('account', ['progressionSummary']),
+		elementsPerRow() {
+			const elementsCount = this.progressionSummary.length;
+			if(elementsCount <= 7) return Math.min(7, elementsCount);
+			if(elementsCount <= 10) return 5;
+			if(elementsCount <= 12) return 6;
+			if(elementsCount <= 14) return 7;
+			if(elementsCount <= 18) return 6;
+			if(elementsCount <= 21) return 7;
+			if(elementsCount <= 24) return 6;
+			else return 7;
+		}
+	},
+	'methods': {},
+	beforeMount() {},
+	mounted() {},
+	'watch': {}
 };
 </script>
 

@@ -40,59 +40,59 @@
 </template>
 
 <script>
-import "@/styles/widgetTemplate.css";
-import { mapActions, mapGetters } from "vuex";
-import LoaderCircular from "@/components/LoaderCircular.vue";
+import'@/styles/widgetTemplate.css';
+import{ mapActions, mapGetters } from'vuex';
+import LoaderCircular from'@/components/LoaderCircular.vue';
 
-export default {
-  name: "CurriculumsTableWidget",
-  components: {
-    loader: LoaderCircular,
-  },
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapGetters("curriculums", [
-      "isFetchingCurriculumsHeadersList",
-      "curriculumsHeadersList",
-      "curriculumSelectedId"
-    ]),
-    isListLoading() {
-      return this.isFetchingUserHeadersList;
-    },
-  },
-  methods: {
-    ...mapActions("curriculums", ["fetchAllCurriculumHeaders", "setSelectedCurriculum"]),
-    handleRefresh() {
-      this.fetchAllCurriculumHeaders();
-    },
-    handleSelection(id) {
-      this.setSelectedCurriculum(id);
-    },
-    makeEmailDisplay(email) {
-      if (!email) return "None";
-      else return email;
-    },
-    makeFullNameDisplay(firstName, middleName, lastName) {
-      return firstName + " " + middleName + " " + lastName;
-    },
-    makeGroupsDisplay(groupList) {
-      if (groupList.length === 0) {
-        return "None";
-      } else {
-        let display = "";
-        for (let i in groupList) {
-          if (i > 1) display += "\n";
-          display += groupList[i];
-        }
-        return display;
-      }
-    },
-  },
-  mounted() {
-    this.fetchAllCurriculumHeaders();
-  },
+export default{
+	'name': 'CurriculumsTableWidget',
+	'components': {
+		'loader': LoaderCircular
+	},
+	data() {
+		return{};
+	},
+	'computed': {
+		...mapGetters('curriculums', [
+			'isFetchingCurriculumsHeadersList',
+			'curriculumsHeadersList',
+			'curriculumSelectedId'
+		]),
+		isListLoading() {
+			return this.isFetchingUserHeadersList;
+		}
+	},
+	'methods': {
+		...mapActions('curriculums', ['fetchAllCurriculumHeaders', 'setSelectedCurriculum']),
+		handleRefresh() {
+			this.fetchAllCurriculumHeaders();
+		},
+		handleSelection(id) {
+			this.setSelectedCurriculum(id);
+		},
+		makeEmailDisplay(email) {
+			if(!email) return'None';
+			else return email;
+		},
+		makeFullNameDisplay(firstName, middleName, lastName) {
+			return firstName + ' ' + middleName + ' ' + lastName;
+		},
+		makeGroupsDisplay(groupList) {
+			if(groupList.length === 0) {
+				return'None';
+			} else{
+				let display = '';
+				for(const i in groupList) {
+					if(i > 1) display += '\n';
+					display += groupList[i];
+				}
+				return display;
+			}
+		}
+	},
+	mounted() {
+		this.fetchAllCurriculumHeaders();
+	}
 };
 </script>
 

@@ -9,17 +9,17 @@
 </template>
 
 <script>
-import "@/styles/widgetTemplate.css";
+import'@/styles/widgetTemplate.css';
 
-export default {
-  name: "ExperimentsViewerWidget",
-  components: {},
-  data() {
-    return {};
-  },
-  computed: {},
-  methods: {},
-  mounted() {},
+export default{
+	'name': 'ExperimentsViewerWidget',
+	'components': {},
+	data() {
+		return{};
+	},
+	'computed': {},
+	'methods': {},
+	mounted() {}
 };
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <user-page-context title="Experiment Preamble">
+  <user-page-context title="Before Starting">
     <div>
       When pressing this button pts come to a page with an image of the
       MIDI-keyboard attached to a computer, and a
@@ -41,13 +41,13 @@
 </template>
 
 <script>
-import UserPageContext from "@/components/user/UserPageContext.vue";
+import UserPageContext from'@/components/user/user-page-context.vue';
 
-export default {
-  name: "UserExperiments",
-  components: {
-    UserPageContext: UserPageContext,
-  },
+export default{
+	'name': 'UserExperiments',
+	'components': {
+		'UserPageContext': UserPageContext
+	}
 };
 </script>
 

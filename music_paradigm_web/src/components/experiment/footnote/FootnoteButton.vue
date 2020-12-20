@@ -6,34 +6,34 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import { ExperimentEventBus } from '@/_services/eventBus.service.js';
-import SkipButton from '@/components/experiment/SkipButton.vue';
+import{ mapGetters } from'vuex';
+import{ ExperimentEventBus } from'@/_services/eventBus.service.js';
+import SkipButton from'@/components/experiment/SkipButton.vue';
 
-export default {
-  name: 'FootnoteButton',
-  components: {
-    skipButton: SkipButton,
-  },
-  props: {
-    message: {
-      type: String,
-      default() {
-        return '';
-      },
-    },
-  },
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapGetters('experiment', ['skipStepButton', 'skipStepButtonMessage']),
-  },
-  methods: {
-    emitAdvanceSignal() {
-      ExperimentEventBus.$emit('advance-request');
-    },
-  },
+export default{
+	'name': 'FootnoteButton',
+	'components': {
+		'skipButton': SkipButton
+	},
+	'props': {
+		'message': {
+			'type': String,
+			default() {
+				return'';
+			}
+		}
+	},
+	data() {
+		return{};
+	},
+	'computed': {
+		...mapGetters('experiment', ['skipStepButton', 'skipStepButtonMessage'])
+	},
+	'methods': {
+		emitAdvanceSignal() {
+			ExperimentEventBus.$emit('advance-request');
+		}
+	}
 };
 </script>
 

@@ -21,29 +21,29 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import "@/styles/navigationBarTemplate.css";
+import{ mapActions, mapGetters } from'vuex';
+import'@/styles/navigationBarTemplate.css';
 
-export default {
-  name: "NavigationBarDefault",
-  components: {},
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapGetters("account", ["isLoggedIn", "fullName"]),
-  },
-  methods: {
-    ...mapActions("account", ["logout"]),
-    handleLogout() {
-      this.logout();
-    },
-  },
-  beforeMount() {},
-  mounted() {},
-  beforeDestroy() {},
-  destroyed() {},
-  watch: {},
+export default{
+	'name': 'NavigationBarDefault',
+	'components': {},
+	data() {
+		return{};
+	},
+	'computed': {
+		...mapGetters('account', ['isLoggedIn', 'fullName'])
+	},
+	'methods': {
+		...mapActions('account', ['logout']),
+		handleLogout() {
+			this.logout();
+		}
+	},
+	beforeMount() {},
+	mounted() {},
+	beforeDestroy() {},
+	destroyed() {},
+	'watch': {}
 };
 </script>
 

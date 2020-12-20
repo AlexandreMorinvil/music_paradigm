@@ -6,8 +6,8 @@
 </template>
 
 <script>
-export default {
-  name: "UserAccount",
+export default{
+	'name': 'UserAccount'
 };
 </script>
 

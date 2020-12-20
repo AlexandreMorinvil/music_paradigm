@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint --type-check --format stylish"
+    "lint": "vue-cli-service lint --type-check --format stylish --ext js,.vue"
   },
   "dependencies": {
     "@tonejs/midi": "^2.0.23",
@@ -24,8 +24,9 @@
     "@vue/cli-plugin-eslint": "^3.8.0",
     "@vue/cli-service": "^3.8.0",
     "babel-eslint": "^10.0.1",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.2.2",
+    "eslint": "^7.16.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-vue": "^7.3.0",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {

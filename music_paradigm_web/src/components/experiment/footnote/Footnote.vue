@@ -11,42 +11,42 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import FootnoteSimple from '@/components/experiment/footnote/FootnoteSimple.vue';
-import FootnoteButton from '@/components/experiment/footnote/FootnoteButton.vue';
+import{ mapGetters } from'vuex';
+import FootnoteSimple from'@/components/experiment/footnote/FootnoteSimple.vue';
+import FootnoteButton from'@/components/experiment/footnote/FootnoteButton.vue';
 
-export default {
-  name: 'Footnote',
-  components: {
-    footnoteSimple: FootnoteSimple,
-    footnoteButton: FootnoteButton,
-  },
-  props: {
-    message: {
-      type: String,
-      default() {
-        return '';
-      },
-    },
-  },
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapGetters('experiment', ['footnoteType']),
-    type() {
-      if (this.footnoteType === 'button') return 'footnoteButton';
-      else return 'footnoteSimple';
-    },
-  },
-  methods: {
-    emitAdvanceSignal() {
-      this.$emit('advanceButtonClicked');
-    },
-    emitSkipSignal() {
-      this.$emit('skip-request');
-    },
-  },
+export default{
+	'name': 'Footnote',
+	'components': {
+		'footnoteSimple': FootnoteSimple,
+		'footnoteButton': FootnoteButton
+	},
+	'props': {
+		'message': {
+			'type': String,
+			default() {
+				return'';
+			}
+		}
+	},
+	data() {
+		return{};
+	},
+	'computed': {
+		...mapGetters('experiment', ['footnoteType']),
+		type() {
+			if(this.footnoteType === 'button') return'footnoteButton';
+			else return'footnoteSimple';
+		}
+	},
+	'methods': {
+		emitAdvanceSignal() {
+			this.$emit('advanceButtonClicked');
+		},
+		emitSkipSignal() {
+			this.$emit('skip-request');
+		}
+	}
 };
 </script>
 

@@ -11,61 +11,61 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-export default {
-  name: "Alert",
-  data() {
-    return {
-      timeoutUniqueIdentifier: 0,
-      timeoutInSeconds: 15,
-    };
-  },
-  computed: {
-    ...mapGetters("alert", ["hasAlert", "alertCounter", "alertType", "alertMessage"]),
-    alertTypeClass() {
-      switch (this.alertType) {
-        case "success":
-          return "success";
-        case "info":
-          return "information";
-        case "warning":
-          return "warning";
-        case "error":
-          return "error";
-        default:
-          return "information";
-      }
-    },
-    alertMessageClass() {
-      return this.alertTypeClass + "-message";
-    },
+import{ mapActions, mapGetters } from'vuex';
+export default{
+	'name': 'Alert',
+	data() {
+		return{
+			'timeoutUniqueIdentifier': 0,
+			'timeoutInSeconds': 15
+		};
+	},
+	'computed': {
+		...mapGetters('alert', ['hasAlert', 'alertCounter', 'alertType', 'alertMessage']),
+		alertTypeClass() {
+			switch(this.alertType) {
+			case'success':
+				return'success';
+			case'info':
+				return'information';
+			case'warning':
+				return'warning';
+			case'error':
+				return'error';
+			default:
+				return'information';
+			}
+		},
+		alertMessageClass() {
+			return this.alertTypeClass + '-message';
+		},
 
-    alertPrefix() {
-      return this.alertType.toUpperCase() + ":";
-    },
-  },
-  methods: {
-    ...mapActions("alert", ["clearAlert"])
-  },
-  beforeDestroy() {
-    clearTimeout(this.timeoutUniqueIdentifier);
-  },
-  watch: {
-    alertCounter: {
-      immediate: true,
-      handler: function (value) {
-        if (value) {
-          clearTimeout(this.timeoutUniqueIdentifier);
-          this.timeoutUniqueIdentifier = setTimeout(
-            this.clearAlert,
-            this.timeoutInSeconds * 1000
-          );
-        } else {
-          clearTimeout(this.timeoutUniqueIdentifier);
-        }
-      },
-    },
-  },
+		alertPrefix() {
+			return this.alertType.toUpperCase() + ':';
+		}
+	},
+	'methods': {
+		...mapActions('alert', ['clearAlert'])
+	},
+	beforeDestroy() {
+		clearTimeout(this.timeoutUniqueIdentifier);
+	},
+	'watch': {
+		'alertCounter': {
+			'immediate': true,
+			'handler': function(value) {
+				if(value) {
+					clearTimeout(this.timeoutUniqueIdentifier);
+					this.timeoutUniqueIdentifier = setTimeout(
+						this.clearAlert,
+						this.timeoutInSeconds * 1000
+					);
+				} else{
+					clearTimeout(this.timeoutUniqueIdentifier);
+				}
+			}
+		}
+	}
 };
 </script>
 

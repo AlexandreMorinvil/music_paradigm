@@ -19,27 +19,27 @@
 </template>
 
 <script>
-import ApplicationFooter from "@/components/ApplicationFooter.vue";
+import ApplicationFooter from'@/components/ApplicationFooter.vue';
 
-export default {
-  name: "AdminPageFrame",
-  components: {
-    ApplicationFooter: ApplicationFooter,
-  },
-  props: {
-    title: {
-      type: String,
-      default() {
-        return "Title";
-      },
-    },
-    subTitle: {
-      type: String,
-      default() {
-        return "Administrator Management Board";
-      },
-    },
-  },
+export default{
+	'name': 'AdminPageFrame',
+	'components': {
+		'ApplicationFooter': ApplicationFooter
+	},
+	'props': {
+		'title': {
+			'type': String,
+			default() {
+				return'Title';
+			}
+		},
+		'subTitle': {
+			'type': String,
+			default() {
+				return'Administrator Management Board';
+			}
+		}
+	}
 };
 </script>
 

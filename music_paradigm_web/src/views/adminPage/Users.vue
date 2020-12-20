@@ -21,20 +21,20 @@
 </template>
 
 <script>
-import AdminPageContext from "@/components/admin/AdminPageContext.vue";
-import WidgetContext from "@/components/admin/WidgetContext.vue";
-import UsersViewer from "@/components/admin/users/UsersViewerWidget.vue";
-import UsersEditor from "@/components/admin/users/UsersEditorWidget.vue";
-import UsersTable from "@/components/admin/users/UsersTableWidget.vue";
+import AdminPageContext from'@/components/admin/AdminPageContext.vue';
+import WidgetContext from'@/components/admin/WidgetContext.vue';
+import UsersViewer from'@/components/admin/users/UsersViewerWidget.vue';
+import UsersEditor from'@/components/admin/users/UsersEditorWidget.vue';
+import UsersTable from'@/components/admin/users/UsersTableWidget.vue';
 
-export default {
-  components: {
-    AdminPageContext: AdminPageContext,
-    WidgetContext: WidgetContext,
-    UsersViewer: UsersViewer,
-    UsersEditor: UsersEditor,
-    UsersTable: UsersTable,
-  },
+export default{
+	'components': {
+		'AdminPageContext': AdminPageContext,
+		'WidgetContext': WidgetContext,
+		'UsersViewer': UsersViewer,
+		'UsersEditor': UsersEditor,
+		'UsersTable': UsersTable
+	}
 };
 </script>
 

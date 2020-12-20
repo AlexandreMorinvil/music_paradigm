@@ -1,28 +1,28 @@
-import { validator } from "@/_helpers";
+import{ validator } from'@/_helpers';
 
-export default {
-    experimentEdited: (state) => {
-        return state.edition;
-    },
+export default{
+	'experimentEdited': (state) => {
+		return state.edition;
+	},
 
-    experimentSelected: (state) => {
-        return state.selection.content;
-    },
+	'experimentSelected': (state) => {
+		return state.selection.content;
+	},
 
-    selectedId: (state)=> {
-        return state.selection._id;
-    },
+	'selectedId': (state)=> {
+		return state.selection._id;
+	},
 
-    experimentsHeadersList: (state) => {
-        return state.experimentsHeadersList;
-    },
+	'experimentsHeadersList': (state) => {
+		return state.experimentsHeadersList;
+	},
 
-    // Status
-    hasCompiledEdition: (state) => {
-        return validator.isExperimentValid(state.edition);
-    },
+	// Status
+	'hasCompiledEdition': (state) => {
+		return validator.isExperimentValid(state.edition);
+	},
 
-    isFetchingExperimentHeadersList: (state) => {
-        return state.status.isFetchingExperimentHeadersList;
-    }
-}
+	'isFetchingExperimentHeadersList': (state) => {
+		return state.status.isFetchingExperimentHeadersList;
+	}
+};

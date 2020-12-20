@@ -16,26 +16,26 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-import UserPageContext from "@/components/user/UserPageContext.vue";
-import OverviewTable from "@/components/user/OverviewTable.vue";
+import{ mapActions } from'vuex';
+import UserPageContext from'@/components/user/user-page-context.vue';
+import OverviewTable from'@/components/user/home/overview-table.vue';
 
-export default {
-  name: "UserHome",
-  components: {
-    overviewTable: OverviewTable,
-    UserPageContext: UserPageContext,
-  },
-  data() {
-    return {};
-  },
-  computed: {},
-  methods: {
-    ...mapActions("account", ["fetchProgressionSummary"]),
-  },
-  beforeMount() {
-    this.fetchProgressionSummary();
-  },
+export default{
+	'name': 'UserHome',
+	'components': {
+		'overviewTable': OverviewTable,
+		'UserPageContext': UserPageContext
+	},
+	data() {
+		return{};
+	},
+	'computed': {},
+	'methods': {
+		...mapActions('account', ['fetchProgressionSummary'])
+	},
+	beforeMount() {
+		this.fetchProgressionSummary();
+	}
 };
 </script>
 

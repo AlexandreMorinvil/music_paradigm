@@ -48,51 +48,51 @@
 </template>
 
 <script>
-import "@/styles/widgetTemplate.css";
-import { mapActions, mapGetters } from "vuex";
-import LoaderCircular from "@/components/LoaderCircular.vue";
+import'@/styles/widgetTemplate.css';
+import{ mapActions, mapGetters } from'vuex';
+import LoaderCircular from'@/components/LoaderCircular.vue';
 
-export default {
-  name: "ExperimentsWorkshopWidget",
-  components: {
-    loader: LoaderCircular,
-  },
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapGetters("experiments", [
-      "isFetchingExperimentHeadersList",
-      "experimentsHeadersList",
-      "selectedId",
-    ]),
-    isListLoading() {
-      return this.isFetchingExperimentHeadersList;
-    },
-  },
-  methods: {
-    ...mapActions("experiments", [
-      "fetchAllExperimentsHeaders",
-      "setEditorExperiment",
-      "setSelectionExperiment",
-      "startExperimentQuick",
-    ]),
-    handleRefresh() {
-      this.fetchAllExperimentsHeaders();
-    },
-    handleeSelectToEditor(id) {
-      this.setEditorExperiment(id);
-    },
-    handleSelectExperiment(id) {
-      this.setSelectionExperiment(id);
-    },
-    handleStart(id) {
-      this.startExperimentQuick(id);
-    },
-  },
-  mounted() {
-    this.fetchAllExperimentsHeaders();
-  },
+export default{
+	'name': 'ExperimentsWorkshopWidget',
+	'components': {
+		'loader': LoaderCircular
+	},
+	data() {
+		return{};
+	},
+	'computed': {
+		...mapGetters('experiments', [
+			'isFetchingExperimentHeadersList',
+			'experimentsHeadersList',
+			'selectedId'
+		]),
+		isListLoading() {
+			return this.isFetchingExperimentHeadersList;
+		}
+	},
+	'methods': {
+		...mapActions('experiments', [
+			'fetchAllExperimentsHeaders',
+			'setEditorExperiment',
+			'setSelectionExperiment',
+			'startExperimentQuick'
+		]),
+		handleRefresh() {
+			this.fetchAllExperimentsHeaders();
+		},
+		handleeSelectToEditor(id) {
+			this.setEditorExperiment(id);
+		},
+		handleSelectExperiment(id) {
+			this.setSelectionExperiment(id);
+		},
+		handleStart(id) {
+			this.startExperimentQuick(id);
+		}
+	},
+	mounted() {
+		this.fetchAllExperimentsHeaders();
+	}
 };
 </script>
 

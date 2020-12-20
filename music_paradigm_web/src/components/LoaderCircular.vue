@@ -3,8 +3,8 @@
 </template>
 
 <script>
-export default {
-  name: "LoaderCircular",
+export default{
+	'name': 'LoaderCircular'
 };
 </script>
 

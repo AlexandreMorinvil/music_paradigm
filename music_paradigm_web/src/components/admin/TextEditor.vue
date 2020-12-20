@@ -33,127 +33,127 @@
 </template>
 
 <script>
-import { codemirror } from "vue-codemirror";
-import jsonlint from "jsonlint-mod";
+import{ codemirror } from'vue-codemirror';
+import jsonlint from'jsonlint-mod';
 
-// import language js
-import "codemirror/mode/javascript/javascript.js";
+// Import language js
+import'codemirror/mode/javascript/javascript.js';
 
-// import theme style
-import "codemirror/theme/solarized.css";
-import "codemirror/lib/codemirror.css";
-import "codemirror/addon/lint/lint.css";
+// Import theme style
+import'codemirror/theme/solarized.css';
+import'codemirror/lib/codemirror.css';
+import'codemirror/addon/lint/lint.css';
 
 // Import addons
-import "codemirror/addon/lint/lint";
-import "codemirror/addon/lint/json-lint.js";
+import'codemirror/addon/lint/lint';
+import'codemirror/addon/lint/json-lint.js';
 
-export default {
-  components: {
-    codemirror,
-  },
-  props: {
-    startText: {
-      type: String,
-      default() {
-        return "";
-      },
-    },
-    readOnly: {
-      type: Boolean,
-      default() {
-        return false;
-      },
-    },
-  },
-  data() {
-    return {
-      isFullScreen: false,
-      code: "",
-      cmOptions: {
-        tabSize: 4,
-        mode: "application/json", //"text/javascript",
-        theme: "solarized",
-        lineNumbers: true,
-        line: true,
-        indentUnit: 4,
-        electricChars: true,
-        lineWrapping: false,
-        readOnly: this.readOnly,
-        showCursorWhenSelecting: true,
-        pasteLinesPerSelection: true,
-        gutters: ["CodeMirror-lint-markers"],
-        lint: true,
-      },
-      textSizeFactor: 1,
-      minTextSizeFactor: 0.1,
-      maxTextSizeFactor: 3,
-      textSizeFactorVariationStep: 0.2,
-    };
-  },
-  computed: {
-    codemirror() {
-      return this.$refs.cmEditor.codemirror;
-    },
-    textSizeFactorCSSvariable() {
-      return "--textSizeFactor: " + this.textSizeFactor + ";";
-    },
-  },
-  methods: {
-    onCmReady() {
-      this.$emit("ready");
-    },
-    // onCmFocus(cm) {},
-    onCmCodeChange(newCode) {
-      this.code = newCode;
-    },
-    setValue(value) {
-      this.codemirror.setValue(value);
-    },
-    clearValue() {
-      this.codemirror.setValue("");
-    },
-    setDefaultFontSize() {
-      this.textSizeFactor = 1;
-      this.refresh();
-    },
-    increaseFontSize() {
-      const newSize = this.textSizeFactor + this.textSizeFactorVariationStep;
-      if (newSize <= this.maxTextSizeFactor) this.textSizeFactor = newSize;
-      this.refresh();
-    },
-    decreaseFontSize() {
-      const newSize = this.textSizeFactor - this.textSizeFactorVariationStep;
-      if (newSize >= this.minTextSizeFactor) this.textSizeFactor = newSize;
-      this.refresh();
-    },
-    setFullScreenMode() {
-      this.isFullScreen = !this.isFullScreen;
-      this.refresh();
-    },
-    refresh() {
-      setTimeout(() => {
-        this.codemirror.refresh();
-        this.codemirror.setSize(null, null);
-      }, 10);
-    },
-  },
-  beforeMount() {
-    window.jsonlint = jsonlint;
-  },
-  mounted() {
-    // Deep copy the text of the start value props
-    if (this.startText) this.code = (" " + this.startText).slice(1);
-  },
-  watch: {
-    isFullScreen(isTrue) {
-      if (isTrue) {
-        this.codemirror.setSize("100%", "100%");
-      } else {
-        this.codemirror.setSize("", "");
-      }
-    },
-  },
+export default{
+	'components': {
+		codemirror
+	},
+	'props': {
+		'startText': {
+			'type': String,
+			default() {
+				return'';
+			}
+		},
+		'readOnly': {
+			'type': Boolean,
+			default() {
+				return false;
+			}
+		}
+	},
+	data() {
+		return{
+			'isFullScreen': false,
+			'code': '',
+			'cmOptions': {
+				'tabSize': 4,
+				'mode': 'application/json', // "text/javascript",
+				'theme': 'solarized',
+				'lineNumbers': true,
+				'line': true,
+				'indentUnit': 4,
+				'electricChars': true,
+				'lineWrapping': false,
+				'readOnly': this.readOnly,
+				'showCursorWhenSelecting': true,
+				'pasteLinesPerSelection': true,
+				'gutters': ['CodeMirror-lint-markers'],
+				'lint': true
+			},
+			'textSizeFactor': 1,
+			'minTextSizeFactor': 0.1,
+			'maxTextSizeFactor': 3,
+			'textSizeFactorVariationStep': 0.2
+		};
+	},
+	'computed': {
+		codemirror() {
+			return this.$refs.cmEditor.codemirror;
+		},
+		textSizeFactorCSSvariable() {
+			return'--textSizeFactor: ' + this.textSizeFactor + ';';
+		}
+	},
+	'methods': {
+		onCmReady() {
+			this.$emit('ready');
+		},
+		// OnCmFocus(cm) {},
+		onCmCodeChange(newCode) {
+			this.code = newCode;
+		},
+		setValue(value) {
+			this.codemirror.setValue(value);
+		},
+		clearValue() {
+			this.codemirror.setValue('');
+		},
+		setDefaultFontSize() {
+			this.textSizeFactor = 1;
+			this.refresh();
+		},
+		increaseFontSize() {
+			const newSize = this.textSizeFactor + this.textSizeFactorVariationStep;
+			if(newSize <= this.maxTextSizeFactor) this.textSizeFactor = newSize;
+			this.refresh();
+		},
+		decreaseFontSize() {
+			const newSize = this.textSizeFactor - this.textSizeFactorVariationStep;
+			if(newSize >= this.minTextSizeFactor) this.textSizeFactor = newSize;
+			this.refresh();
+		},
+		setFullScreenMode() {
+			this.isFullScreen = !this.isFullScreen;
+			this.refresh();
+		},
+		refresh() {
+			setTimeout(() => {
+				this.codemirror.refresh();
+				this.codemirror.setSize(null, null);
+			}, 10);
+		}
+	},
+	beforeMount() {
+		window.jsonlint = jsonlint;
+	},
+	mounted() {
+		// Deep copy the text of the start value props
+		if(this.startText) this.code = (' ' + this.startText).slice(1);
+	},
+	'watch': {
+		isFullScreen(isTrue) {
+			if(isTrue) {
+				this.codemirror.setSize('100%', '100%');
+			} else{
+				this.codemirror.setSize('', '');
+			}
+		}
+	}
 };
 </script>
 

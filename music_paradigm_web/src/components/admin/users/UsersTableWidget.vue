@@ -45,63 +45,63 @@
 
 <script>
 // TODO: Display the tasks summary
-import "@/styles/widgetTemplate.css";
-import { mapActions, mapGetters } from "vuex";
-import LoaderCircular from "@/components/LoaderCircular.vue";
+import'@/styles/widgetTemplate.css';
+import{ mapActions, mapGetters } from'vuex';
+import LoaderCircular from'@/components/LoaderCircular.vue';
 
-export default {
-  name: "UsersTableWidget",
-  components: {
-    loader: LoaderCircular,
-  },
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapGetters("users", [
-      "isFetchingUserHeadersList",
-      "usersHeadersList",
-      "userSelectedId"
-    ]),
-    isListLoading() {
-      return this.isFetchingUserHeadersList;
-    },
-  },
-  methods: {
-    ...mapActions("users", ["fetchAllUsersHeaders", "setSelectedUser"]),
-    handleRefresh() {
-      this.fetchAllUsersHeaders();
-    },
-    handleSelectUser(id) {
-      this.setSelectedUser(id);
-    },
-    makeEmailDisplay(email) {
-      if(!email) return "---";
-      else return email;
-    },
-    makeFullNameDisplay(firstName, middleName, lastName) {
-      return firstName + " " + middleName + " " + lastName;
-    },
-    makeTagsDisplay(tagList) {
-      if (tagList.length === 0) {
-        return "---";
-      } else {
-        let display = "";
-        for (let i in tagList) {
-          if (i > 0) display += "\n";
-          display += tagList[i];
-        }
-        return display;
-      }
-    },
-    makeCurriculumTitleDisplay(curriculumName) {
-      if(!curriculumName) return "---";
-      else return curriculumName;
-    },
-  },
-  mounted() {
-    this.fetchAllUsersHeaders();
-  },
+export default{
+	'name': 'UsersTableWidget',
+	'components': {
+		'loader': LoaderCircular
+	},
+	data() {
+		return{};
+	},
+	'computed': {
+		...mapGetters('users', [
+			'isFetchingUserHeadersList',
+			'usersHeadersList',
+			'userSelectedId'
+		]),
+		isListLoading() {
+			return this.isFetchingUserHeadersList;
+		}
+	},
+	'methods': {
+		...mapActions('users', ['fetchAllUsersHeaders', 'setSelectedUser']),
+		handleRefresh() {
+			this.fetchAllUsersHeaders();
+		},
+		handleSelectUser(id) {
+			this.setSelectedUser(id);
+		},
+		makeEmailDisplay(email) {
+			if(!email) return'---';
+			else return email;
+		},
+		makeFullNameDisplay(firstName, middleName, lastName) {
+			return firstName + ' ' + middleName + ' ' + lastName;
+		},
+		makeTagsDisplay(tagList) {
+			if(tagList.length === 0) {
+				return'---';
+			} else{
+				let display = '';
+				for(const i in tagList) {
+					if(i > 0) display += '\n';
+					display += tagList[i];
+				}
+				return display;
+			}
+		},
+		makeCurriculumTitleDisplay(curriculumName) {
+			if(!curriculumName) return'---';
+			else return curriculumName;
+		}
+	},
+	mounted() {
+		this.fetchAllUsersHeaders();
+	}
 };
 </script>
 

@@ -55,166 +55,166 @@
 </template>
 
 <script>
-import "@/styles/widgetTemplate.css";
-import { mapActions, mapGetters } from "vuex";
-import { validator } from "@/_helpers";
-import CodeEditor from "@/components/admin/TextEditor.vue";
+import'@/styles/widgetTemplate.css';
+import{ mapActions, mapGetters } from'vuex';
+import{ validator } from'@/_helpers';
+import CodeEditor from'@/components/admin/TextEditor.vue';
 
-export default {
-  name: "ExperimentsWorkshopWidget",
-  components: {
-    codeEditor: CodeEditor,
-  },
-  data() {
-    return {
-      isEditorModified: false
-    };
-  },
-  computed: {
-    ...mapGetters("experiments", [
-      "experimentEdited",
-      "experimentSelected",
-      "selectedId",
-      "hasCompiledEdition"
-    ]),
-    editionContent() {
-      return this.$refs.codeEditor.code;
-    },
-    editionStatus() {
-      let status = "EMPTY";
-      if (this.hasCompiledEdition) status = "COMPILED";
-      if (this.isEditorModified) status = "EDITED";
-      return status;
-    },
-    selectionStatus() {
-      return "Selection Status (TODO)";
-    },
-  },
-  methods: {
-    ...mapActions("alert", ["setErrorAlert", "setInformationAlert"]),
-    ...mapActions("experiments", [
-      "compileExperiment",
-      "attemptExperimentCompilation",
-      "clearCompiledExperiment",
-      "copySelectionToEdition",
-      "unsetSelectionExperiment",
-      "createExperiment",
-      "updateExperiment",
-      "deleteExperiment",
-    ]),
-    setEditorContent(textContent) {
-      this.$refs.codeEditor.setValue(textContent);
-    },
-    setReferenceContent(textContent) {
-      this.$refs.codeReference.setValue(textContent);
-    },
-    submitExperimentToCreate() {
-      this.createExperiment(this.experimentEdited);
-    },
-    submitExperimentToUpdate() {
-      const answer = window.confirm(
-        "Changing this experiment will affect all the users who will do this experiment in the future. Are your sure you want to modify the experiment?"
-      );
-      if (answer) {
-        this.updateExperiment({
-          id: this.selectedId,
-          experiment: this.experimentEdited,
-        });
-      }
-    },
-    submitExperimentToDelete() {
-      const answer = window.confirm(
-        "Erasing this experiment will affect all the curriculums that might be including it. Are your sure you want to delete the experiment?"
-      );
-      if (answer) {
-        this.deleteExperiment(this.selectedId);
-      }
-    },
-    handleCompilation() {
-      const experimentObject = this.convertEditorTextToObject();
-      this.compileExperiment(experimentObject);
-    },
-    handleReversion() {
-      this.setEditorContent(JSON.stringify(this.experimentEdited, null, "\t"));
-    },
-    handleClearance() {
-      this.setEditorContent(
-        JSON.stringify(
-          validator.getMinimalValidExperimentStructure(),
-          null,
-          "\t"
-        )
-      );
-    },
-    handleCopying() {
-      this.copySelectionToEdition();
-    },
-    handleUnselection() {
-      this.unsetSelectionExperiment();
-    },
-    handleUploadExperiment(event) {
-      const input = event.target;
+export default{
+	'name': 'ExperimentsWorkshopWidget',
+	'components': {
+		'codeEditor': CodeEditor
+	},
+	data() {
+		return{
+			'isEditorModified': false
+		};
+	},
+	'computed': {
+		...mapGetters('experiments', [
+			'experimentEdited',
+			'experimentSelected',
+			'selectedId',
+			'hasCompiledEdition'
+		]),
+		editionContent() {
+			return this.$refs.codeEditor.code;
+		},
+		editionStatus() {
+			let status = 'EMPTY';
+			if(this.hasCompiledEdition) status = 'COMPILED';
+			if(this.isEditorModified) status = 'EDITED';
+			return status;
+		},
+		selectionStatus() {
+			return'Selection Status (TODO)';
+		}
+	},
+	'methods': {
+		...mapActions('alert', ['setErrorAlert', 'setInformationAlert']),
+		...mapActions('experiments', [
+			'compileExperiment',
+			'attemptExperimentCompilation',
+			'clearCompiledExperiment',
+			'copySelectionToEdition',
+			'unsetSelectionExperiment',
+			'createExperiment',
+			'updateExperiment',
+			'deleteExperiment'
+		]),
+		setEditorContent(textContent) {
+			this.$refs.codeEditor.setValue(textContent);
+		},
+		setReferenceContent(textContent) {
+			this.$refs.codeReference.setValue(textContent);
+		},
+		submitExperimentToCreate() {
+			this.createExperiment(this.experimentEdited);
+		},
+		submitExperimentToUpdate() {
+			const answer = window.confirm(
+				'Changing this experiment will affect all the users who will do this experiment in the future. Are your sure you want to modify the experiment?'
+			);
+			if(answer) {
+				this.updateExperiment({
+					'id': this.selectedId,
+					'experiment': this.experimentEdited
+				});
+			}
+		},
+		submitExperimentToDelete() {
+			const answer = window.confirm(
+				'Erasing this experiment will affect all the curriculums that might be including it. Are your sure you want to delete the experiment?'
+			);
+			if(answer) {
+				this.deleteExperiment(this.selectedId);
+			}
+		},
+		handleCompilation() {
+			const experimentObject = this.convertEditorTextToObject();
+			this.compileExperiment(experimentObject);
+		},
+		handleReversion() {
+			this.setEditorContent(JSON.stringify(this.experimentEdited, null, '\t'));
+		},
+		handleClearance() {
+			this.setEditorContent(
+				JSON.stringify(
+					validator.getMinimalValidExperimentStructure(),
+					null,
+					'\t'
+				)
+			);
+		},
+		handleCopying() {
+			this.copySelectionToEdition();
+		},
+		handleUnselection() {
+			this.unsetSelectionExperiment();
+		},
+		handleUploadExperiment(event) {
+			const input = event.target;
 
-      const readFileContent = function (file) {
-        const reader = new FileReader();
-        return new Promise((resolve, reject) => {
-          reader.onload = (event) => resolve(event.target.result);
-          reader.onerror = (error) => reject(error);
-          reader.readAsText(file);
-        });
-      };
+			const readFileContent = function(file) {
+				const reader = new FileReader();
+				return new Promise((resolve, reject) => {
+					reader.onload = (event) => resolve(event.target.result);
+					reader.onerror = (error) => reject(error);
+					reader.readAsText(file);
+				});
+			};
 
-      if (!("files" in input) || !(input.files.length === 1)) {
-        this.setErrorAlert("A file must be selected");
-        return;
-      }
+			if(!('files' in input) || !(input.files.length === 1)) {
+				this.setErrorAlert('A file must be selected');
+				return;
+			}
 
-      readFileContent(input.files[0])
-        .then((content) => {
-          this.$refs.codeEditor.setValue(content);
-          this.attemptExperimentCompilation(
-            this.convertEditorTextToObject(content)
-          );
-        })
-        .catch((error) => {
-          this.setErrorAlert(error.message);
-        })
-        .finally(() => {
-          this.$refs.upload.reset();
-        });
-    },
-    convertEditorTextToObject() {
-      try {
-        return JSON.parse(this.editionContent);
-      } catch (e) {
-        this.setErrorAlert(
-          "The JSON syntax of the experiment definition is not valid"
-        );
-      }
-    },
-    writeEditionToEditorChanges() {
-      this.$watch(
-        "experimentEdited",
-        (newValue) => {
-          this.setEditorContent(JSON.stringify(newValue, null, "\t"));
-        },
-        { immediate: true }
-      );
-    },
-    writeSelectionToReferenceChanges() {
-      this.$watch(
-        "experimentSelected",
-        (newValue) => {
-          this.setReferenceContent(JSON.stringify(newValue, null, "\t"));
-        },
-        { immediate: true }
-      );
-    },
-    notEmplementedYet() {
-      this.setInformationAlert("TODO");
-      console.log("Not yet ready");
-    },
-  },
+			readFileContent(input.files[0])
+				.then((content) => {
+					this.$refs.codeEditor.setValue(content);
+					this.attemptExperimentCompilation(
+						this.convertEditorTextToObject(content)
+					);
+				})
+				.catch((error) => {
+					this.setErrorAlert(error.message);
+				})
+				.finally(() => {
+					this.$refs.upload.reset();
+				});
+		},
+		convertEditorTextToObject() {
+			try{
+				return JSON.parse(this.editionContent);
+			} catch(e) {
+				this.setErrorAlert(
+					'The JSON syntax of the experiment definition is not valid'
+				);
+			}
+		},
+		writeEditionToEditorChanges() {
+			this.$watch(
+				'experimentEdited',
+				(newValue) => {
+					this.setEditorContent(JSON.stringify(newValue, null, '\t'));
+				},
+				{ 'immediate': true }
+			);
+		},
+		writeSelectionToReferenceChanges() {
+			this.$watch(
+				'experimentSelected',
+				(newValue) => {
+					this.setReferenceContent(JSON.stringify(newValue, null, '\t'));
+				},
+				{ 'immediate': true }
+			);
+		},
+		notEmplementedYet() {
+			this.setInformationAlert('TODO');
+			console.log('Not yet ready');
+		}
+	}
 };
 </script>
 

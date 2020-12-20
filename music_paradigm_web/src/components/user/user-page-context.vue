@@ -15,24 +15,24 @@
 </template>
 
 <script>
-import "@/styles/widgetTemplate.css";
+import'@/styles/widgetTemplate.css';
 
-export default {
-  name: "AdminPageFrame",
-  props: {
-    title: {
-      type: String,
-      default() {
-        return "Title";
-      },
-    },
-    subTitle: {
-      type: String,
-      default() {
-        return "Administrator Management Board";
-      },
-    },
-  },
+export default{
+	'name': 'AdminPageFrame',
+	'props': {
+		'title': {
+			'type': String,
+			default() {
+				return'Title';
+			}
+		},
+		'subTitle': {
+			'type': String,
+			default() {
+				return'Administrator Management Board';
+			}
+		}
+	}
 };
 </script>
 

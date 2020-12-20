@@ -1,7 +1,7 @@
-export default {
-    status: {
-        isCreating: false
-    },
+export default{
+	'status': {
+		'isCreating': false
+	},
 
-    _id: null
-}
+	'_id': null
+};

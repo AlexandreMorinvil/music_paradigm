@@ -14,52 +14,52 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import NavigationBarDefault from "@/components/navigationBar/NavigationBarDefault";
-import NavigationBarExperiment from "@/components/navigationBar/NavigationBarExperiment";
-import Alert from "@/components/Alert";
+import{ mapActions, mapGetters } from'vuex';
+import NavigationBarDefault from'@/components/navigationBar/NavigationBarDefault';
+import NavigationBarExperiment from'@/components/navigationBar/NavigationBarExperiment';
+import Alert from'@/components/Alert';
 
-export default {
-  name: "app",
-  components: {
-    defaultNavigationBar: NavigationBarDefault,
-    experimentNavigationBar: NavigationBarExperiment,
-    alert: Alert,
-  },
-  data() {
-    return {
-      appInited: false,
-      appState: "default",
-    };
-  },
-  computed: {
-    ...mapGetters("alert", ["hasAlert"]),
-    navigationBarType() {
-      switch (this.appState) {
-        case "experiment":
-          return "experimentNavigationBar";
-        default:
-          return "defaultNavigationBar";
-      }
-    },
-  },
-  methods: {
-    ...mapActions("account", ["resumeLoginStatus"]),
-    ...mapActions("alert", ["clearAlert"]),
-  },
-  created() {
-    this.resumeLoginStatus();
-  },
-  watch: {
-    // On change of the route, we reevaluate the state of the application
-    $route(to) {
-      let state = "default";
-      if (to.matched.some((m) => m.name === "admin")) state = "admin";
-      else if (to.matched.some((m) => m.name === "experiment"))
-        state = "experiment";
-      this.appState = state;
-    },
-  },
+export default{
+	'name': 'app',
+	'components': {
+		'defaultNavigationBar': NavigationBarDefault,
+		'experimentNavigationBar': NavigationBarExperiment,
+		'alert': Alert
+	},
+	data() {
+		return{
+			'appInited': false,
+			'appState': 'default'
+		};
+	},
+	'computed': {
+		...mapGetters('alert', ['hasAlert']),
+		navigationBarType() {
+			switch(this.appState) {
+			case'experiment':
+				return'experimentNavigationBar';
+			default:
+				return'defaultNavigationBar';
+			}
+		}
+	},
+	'methods': {
+		...mapActions('account', ['resumeLoginStatus']),
+		...mapActions('alert', ['clearAlert'])
+	},
+	created() {
+		this.resumeLoginStatus();
+	},
+	'watch': {
+		// On change of the route, we reevaluate the state of the application
+		$route(to) {
+			let state = 'default';
+			if(to.matched.some((m) => m.name === 'admin')) state = 'admin';
+			else if(to.matched.some((m) => m.name === 'experiment'))
+				state = 'experiment';
+			this.appState = state;
+		}
+	}
 };
 </script>
 

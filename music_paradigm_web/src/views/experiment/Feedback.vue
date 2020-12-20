@@ -37,109 +37,107 @@
 </template>
 
 <script>
-import '@/styles/experimentStateTemplate.css';
-import { mapGetters } from 'vuex';
-import { ExperimentEventBus } from '@/_services/eventBus.service.js';
-import FeedbackGrade from '@/components/FeedbackGrade.vue';
-import SkipButton from '@/components/experiment/SkipButton.vue';
-import Footnote from '@/components/experiment/footnote/Footnote.vue';
+import'@/styles/experimentStateTemplate.css';
+import{ mapGetters } from'vuex';
+import{ ExperimentEventBus } from'@/_services/eventBus.service.js';
+import FeedbackGrade from'@/components/FeedbackGrade.vue';
+import SkipButton from'@/components/experiment/SkipButton.vue';
+import Footnote from'@/components/experiment/footnote/Footnote.vue';
 
-export default {
-  name: 'Feedback',
-  components: {
-    feedbackGrade: FeedbackGrade,
-    skipButton: SkipButton,
-    footnote: Footnote,
-  },
-  props: {
-    lastPressedKey: {
-      type: String,
-      default() {
-        return '';
-      },
-    },
-    isSpaceBarPressed: {
-      type: Boolean,
-      default() {
-        return false;
-      },
-    },
-  },
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapGetters(['urlExperimentRessource']),
-    ...mapGetters('piano', ['grades', 'pressedKeys']),
-    ...mapGetters('experiment', [
-      'hasText',
-      'hasFootnote',
-      'hasHelperImage',
-      'hasSkipOption',
-      'textContent',
-      'helperImageName',
-      'anyPianoKey',
-      'skipStepButton',
-      'successFeedbackMessage',
-      'failureFeedbackMessage',
-      'footnoteMessage',
-      'isSkipButtonInFootnote',
-    ]),
-    gridClass() {
-      if (this.hasFootnote) {
-        if (this.hasText) return 'grid-small-area-big-area-note';
-        else return 'grid-area-note';
-      } else {
-        if (this.hasText) return 'grid-small-area-big-area';
-        else return 'grid-single-area';
-      }
-    },
-    footnote() {
-      if (this.footnoteMessage) return this.footnoteMessage;
-      if (this.anyPianoKey) return 'Press any piano key or the space bar for going to the next step';
-      else return 'Press the space bar for going to the next step';
-    },
-    hasGrades() {
-      if (Array.isArray(this.grades) && this.grades.length > 0) return true;
-      else return false;
-    },
-    isSuccessful() {
-      if (this.grades.length <= 0) return false;
-      for (let grade of this.grades) {
-        if (grade.mark < grade.passMark) return false;
-      }
-      return true;
-    },
-    hasSuccessFeedbackMessage() {
-      return Boolean(this.successFeedbackMessage);
-    },
-    hasFailureFeedbackMessage() {
-      return Boolean(this.failureFeedbackMessage);
-    },
-  },
-  methods: {
-    emitStateEndedSignal() {
-      this.$emit('state-ended');
-    },
-  },
-  mounted() {
-    ExperimentEventBus.$on('advance-request', this.emitStateEndedSignal);
-  },
-  beforeDestroy() {
-    ExperimentEventBus.$off('advance-request', this.emitStateEndedSignal);
-  },
-  watch: {
-    isSpaceBarPressed(isPressed) {
-      if (isPressed) {
-        this.emitStateEndedSignal();
-      }
-    },
-    pressedKeys(keys) {
-      if (this.anyPianoKey && keys.length > 0) {
-        this.emitStateEndedSignal();
-      }
-    },
-  },
+export default{
+	'name': 'Feedback',
+	'components': {
+		'feedbackGrade': FeedbackGrade,
+		'skipButton': SkipButton,
+		'footnote': Footnote
+	},
+	'props': {
+		'lastPressedKey': {
+			'type': String,
+			default() {
+				return'';
+			}
+		},
+		'isSpaceBarPressed': {
+			'type': Boolean,
+			default() {
+				return false;
+			}
+		}
+	},
+	data() {
+		return{};
+	},
+	'computed': {
+		...mapGetters(['urlExperimentRessource']),
+		...mapGetters('piano', ['grades', 'pressedKeys']),
+		...mapGetters('experiment', [
+			'hasText',
+			'hasFootnote',
+			'hasHelperImage',
+			'hasSkipOption',
+			'textContent',
+			'helperImageName',
+			'anyPianoKey',
+			'skipStepButton',
+			'successFeedbackMessage',
+			'failureFeedbackMessage',
+			'footnoteMessage',
+			'isSkipButtonInFootnote'
+		]),
+		gridClass() {
+			if(this.hasFootnote) {
+				if(this.hasText) return'grid-small-area-big-area-note';
+				else return'grid-area-note';
+			} else if(this.hasText) return'grid-small-area-big-area';
+			else return'grid-single-area';
+		},
+		footnote() {
+			if(this.footnoteMessage) return this.footnoteMessage;
+			if(this.anyPianoKey) return'Press any piano key or the space bar for going to the next step';
+			else return'Press the space bar for going to the next step';
+		},
+		hasGrades() {
+			if(Array.isArray(this.grades) && this.grades.length > 0) return true;
+			else return false;
+		},
+		isSuccessful() {
+			if(this.grades.length <= 0) return false;
+			for(const grade of this.grades) {
+				if(grade.mark < grade.passMark) return false;
+			}
+			return true;
+		},
+		hasSuccessFeedbackMessage() {
+			return Boolean(this.successFeedbackMessage);
+		},
+		hasFailureFeedbackMessage() {
+			return Boolean(this.failureFeedbackMessage);
+		}
+	},
+	'methods': {
+		emitStateEndedSignal() {
+			this.$emit('state-ended');
+		}
+	},
+	mounted() {
+		ExperimentEventBus.$on('advance-request', this.emitStateEndedSignal);
+	},
+	beforeDestroy() {
+		ExperimentEventBus.$off('advance-request', this.emitStateEndedSignal);
+	},
+	'watch': {
+		isSpaceBarPressed(isPressed) {
+			if(isPressed) {
+				this.emitStateEndedSignal();
+			}
+		},
+		pressedKeys(keys) {
+			if(this.anyPianoKey && keys.length > 0) {
+				this.emitStateEndedSignal();
+			}
+		}
+	}
 };
 </script>
 

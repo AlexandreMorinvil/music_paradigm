@@ -51,49 +51,49 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import ApplicationFooter from "@/components/ApplicationFooter.vue";
-import LoaderCircular from "@/components/LoaderCircular.vue";
+import{ mapActions, mapGetters } from'vuex';
+import ApplicationFooter from'@/components/ApplicationFooter.vue';
+import LoaderCircular from'@/components/LoaderCircular.vue';
 
-export default {
-  name: "Home",
-  components: {
-    applicationFooter: ApplicationFooter,
-    loader: LoaderCircular,
-  },
-  data() {
-    return {
-      username: "",
-      password: "",
-      hasFocusedOnUsername: false,
-      hasAttemptedSubmit: false,
-    };
-  },
-  computed: {
-    ...mapGetters("account", ["isLoggingIn"]),
-    hasUsernameError() {
-      return (
-        (this.hasAttemptedSubmit || this.hasFocusedOnUsername) && !this.username
-      );
-    },
-    usernameValidityMessage() {
-      if (!this.username) return "Username is required";
-      else return "";
-    },
-  },
-  methods: {
-    ...mapActions("account", ["login"]),
-    setUsernameHadFocus() {
-      this.hasFocusedOnUsername = true;
-    },
-    handleSubmit() {
-      this.hasAttemptedSubmit = true;
-      const { username, password } = this;
-      if (username) {
-        this.login({ username, password });
-      }
-    },
-  },
+export default{
+	'name': 'Home',
+	'components': {
+		'applicationFooter': ApplicationFooter,
+		'loader': LoaderCircular
+	},
+	data() {
+		return{
+			'username': '',
+			'password': '',
+			'hasFocusedOnUsername': false,
+			'hasAttemptedSubmit': false
+		};
+	},
+	'computed': {
+		...mapGetters('account', ['isLoggingIn']),
+		hasUsernameError() {
+			return(
+				(this.hasAttemptedSubmit || this.hasFocusedOnUsername) && !this.username
+			);
+		},
+		usernameValidityMessage() {
+			if(!this.username) return'Username is required';
+			else return'';
+		}
+	},
+	'methods': {
+		...mapActions('account', ['login']),
+		setUsernameHadFocus() {
+			this.hasFocusedOnUsername = true;
+		},
+		handleSubmit() {
+			this.hasAttemptedSubmit = true;
+			const{ username, password } = this;
+			if(username) {
+				this.login({ username, password });
+			}
+		}
+	}
 };
 </script>
 
