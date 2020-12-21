@@ -22,19 +22,19 @@ import{ mapActions, mapGetters } from'vuex';
 import VisualPiano from'@/components/VisualPiano.vue';
 
 export default{
-	'name': 'PlayingRhythm',
-	'components': {
-		'visualPiano': VisualPiano
+	name: 'PlayingRhythm',
+	components: {
+		visualPiano: VisualPiano
 	},
 	data() {
 		return{
-			'maxInactivityALlowedInMilliSeconds': 3000,
-			'incativityUniqueIdentifier': 0,
-			'timeLimitUniqueIdentifier': 0,
-			'isFirstNotePressed': false
+			maxInactivityALlowedInMilliSeconds: 3000,
+			incativityUniqueIdentifier: 0,
+			timeLimitUniqueIdentifier: 0,
+			isFirstNotePressed: false
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('experiment', [
 			'hasVisualMedia',
@@ -55,7 +55,7 @@ export default{
 			return this.midiFileNotesDuration[this.midiFileNotesDuration.length - 1];
 		}
 	},
-	'methods': {
+	methods: {
 		...mapActions('piano', ['evaluateMelodyType']),
 		start() {},
 		setTimeLimit() {
@@ -85,10 +85,10 @@ export default{
 		window.clearTimeout(this.timeLimitUniqueIdentifier);
 		window.clearTimeout(this.incativityUniqueIdentifier);
 	},
-	'watch': {
-		'playedNotesMidi': {
-			'deep': true,
-			'handler': function() {
+	watch: {
+		playedNotesMidi: {
+			deep: true,
+			handler: function() {
 				window.clearTimeout(this.incativityUniqueIdentifier);
 				this.incativityUniqueIdentifier = setTimeout(() => {
 					this.$emit('finishedPlaying');

@@ -22,23 +22,23 @@ import{ mapActions, mapGetters } from'vuex';
 import VisualPiano from'@/components/VisualPiano.vue';
 
 export default{
-	'name': 'PlayingSpeed',
-	'components': {
-		'visualPiano': VisualPiano
+	name: 'PlayingSpeed',
+	components: {
+		visualPiano: VisualPiano
 	},
 	data() {
 		return{
-			'playingStarted': false,
-			'defaultTimeLimitInSeconds': 30,
-			'counterUniqueIdentifier': 0,
-			'referenceTime': 0,
-			'playProgress': 0,
-			'timeStepInMilliseconds': 100,
-			'timeLeftInMilliseconds': 0,
-			'minMelodyRepetitionDisplayed': 20
+			playingStarted: false,
+			defaultTimeLimitInSeconds: 30,
+			counterUniqueIdentifier: 0,
+			referenceTime: 0,
+			playProgress: 0,
+			timeStepInMilliseconds: 100,
+			timeLeftInMilliseconds: 0,
+			minMelodyRepetitionDisplayed: 20
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('experiment', [
 			'hasVisualMedia',
@@ -70,7 +70,7 @@ export default{
 			return display;
 		}
 	},
-	'methods': {
+	methods: {
 		...mapActions('piano', ['evaluateSpeedType']),
 		start() {
 			this.startCountdown();
@@ -103,7 +103,7 @@ export default{
 	beforeDestroy() {
 		window.clearInterval(this.counterUniqueIdentifier);
 	},
-	'watch': {
+	watch: {
 		playedNotesMidi() {
 			if(!this.playingStarted) {
 				this.start();

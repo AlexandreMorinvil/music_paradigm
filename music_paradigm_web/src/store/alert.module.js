@@ -1,20 +1,20 @@
 const state = {
-	'type': null,
-	'message': null,
-	'counter': 0 // Used to observe the apparition of new alerts
+	type: null,
+	message: null,
+	counter: 0 // Used to observe the apparition of new alerts
 };
 
 const getters = {
-	'hasAlert': (state) => {
+	hasAlert: (state) => {
 		return Boolean(state.type);
 	},
-	'alertCounter': (state) => {
+	alertCounter: (state) => {
 		return state.counter;
 	},
-	'alertType': (state) => {
+	alertType: (state) => {
 		return state.type || 'No type';
 	},
-	'alertMessage': (state) => {
+	alertMessage: (state) => {
 		return state.message || 'No message';
 	}
 };
@@ -66,7 +66,7 @@ const mutations = {
 };
 
 export const alert = {
-	'namespaced': true,
+	namespaced: true,
 	state,
 	getters,
 	actions,

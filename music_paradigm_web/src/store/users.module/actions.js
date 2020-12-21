@@ -9,7 +9,7 @@ export default{
 					commit('setHeadersList', usersHeadersList);
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { 'root': true });
+					dispatch('alert/setErrorAlert', error.message, { root: true });
 				}
 			)
 			.finally(() => {
@@ -23,7 +23,7 @@ export default{
 				commit('setSelectedUser', user);
 			},
 			(error) => {
-				dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { 'root': true });
+				dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
 			}
 		);
 	},
@@ -38,11 +38,11 @@ export default{
 			.then(
 				(createdUser) => {
 					commit('setSelectedUser', createdUser);
-					dispatch('alert/setSuccessAlert', 'User creation sucessful', { 'root': true });
+					dispatch('alert/setSuccessAlert', 'User creation sucessful', { root: true });
 					dispatch('fetchAllUsersHeaders');
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { 'root': true });
+					dispatch('alert/setErrorAlert', error.message, { root: true });
 				}
 			)
 			.finally(() => {
@@ -56,11 +56,11 @@ export default{
 			.then(
 				(updatedUser) => {
 					commit('setSelectedUser', updatedUser);
-					dispatch('alert/setSuccessAlert', 'User update sucessful', { 'root': true });
+					dispatch('alert/setSuccessAlert', 'User update sucessful', { root: true });
 					dispatch('fetchAllUsersHeaders');
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { 'root': true });
+					dispatch('alert/setErrorAlert', error.message, { root: true });
 				}
 			)
 			.finally(() => {
@@ -74,11 +74,11 @@ export default{
 			.then(
 				() => {
 					commit('unsetSelectedUser');
-					dispatch('alert/setSuccessAlert', 'User deletion sucessful', { 'root': true });
+					dispatch('alert/setSuccessAlert', 'User deletion sucessful', { root: true });
 					dispatch('fetchAllUsersHeaders');
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { 'root': true });
+					dispatch('alert/setErrorAlert', error.message, { root: true });
 				}
 			)
 			.finally(() => {

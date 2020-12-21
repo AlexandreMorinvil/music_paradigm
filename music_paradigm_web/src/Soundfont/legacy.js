@@ -32,7 +32,7 @@ Soundfont.prototype.instrument = function(name, options) {
 	const ctx = this.ctx;
 	name = name || 'default';
 	if(name in this.instruments) return this.instruments[name];
-	const inst = { 'name': name, 'play': oscillatorPlayer(ctx, options) };
+	const inst = { name: name, play: oscillatorPlayer(ctx, options) };
 	this.instruments[name] = inst;
 	if(name !== 'default') {
 		const promise = Soundfont.instrument(ctx, name, options).then(function(instrument) {

@@ -21,16 +21,16 @@ import UserPageContext from'@/components/user/user-page-context.vue';
 import OverviewTable from'@/components/user/home/overview-table.vue';
 
 export default{
-	'name': 'UserHome',
-	'components': {
-		'overviewTable': OverviewTable,
-		'UserPageContext': UserPageContext
+	name: 'UserHome',
+	components: {
+		overviewTable: OverviewTable,
+		UserPageContext: UserPageContext
 	},
 	data() {
 		return{};
 	},
-	'computed': {},
-	'methods': {
+	computed: {},
+	methods: {
 		...mapActions('account', ['fetchProgressionSummary'])
 	},
 	beforeMount() {

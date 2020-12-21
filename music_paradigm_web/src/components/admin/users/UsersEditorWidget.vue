@@ -147,24 +147,24 @@ import'@/styles/formTemplate.css';
 import{ mapActions, mapGetters } from'vuex';
 
 export default{
-	'name': 'ExperimentsWorkshopWidget',
+	name: 'ExperimentsWorkshopWidget',
 	data() {
 		return{
-			'hasFocusedOnUsername': false,
-			'hasAttemptedSubmit': false,
-			'id': '',
-			'username': '',
-			'password': '',
-			'email': '',
-			'firstName': '',
-			'middleName': '',
-			'lastName': '',
-			'tags': [],
-			'role': '',
-			'curriculum': null
+			hasFocusedOnUsername: false,
+			hasAttemptedSubmit: false,
+			id: '',
+			username: '',
+			password: '',
+			email: '',
+			firstName: '',
+			middleName: '',
+			lastName: '',
+			tags: [],
+			role: '',
+			curriculum: null
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('curriculums', ['curriculumsHeadersList']),
 		...mapGetters('users', [
 			'hasSelectedUser',
@@ -213,19 +213,19 @@ export default{
 			return this.hasSelectedUser ? this.getCurriculumTitleFromList(this.userSelectedCurriculum) || '---' : '';
 		}
 	},
-	'methods': {
+	methods: {
 		...mapActions('curriculums', ['fetchAllCurriculumHeaders']),
 		...mapActions('users', ['unsetSelectedUser', 'createUser', 'updateUser', 'deleteUser']),
 		bundleUserFromForm() {
 			return{
-				'username': this.username,
-				'password': this.password,
-				'email': this.email,
-				'firstName': this.firstName,
-				'middleName': this.middleName,
-				'lastName': this.lastName,
-				'tags': this.tags,
-				'curriculum': this.curriculum
+				username: this.username,
+				password: this.password,
+				email: this.email,
+				firstName: this.firstName,
+				middleName: this.middleName,
+				lastName: this.lastName,
+				tags: this.tags,
+				curriculum: this.curriculum
 			};
 		},
 		getCurriculumTitleFromList(id) {
@@ -306,8 +306,8 @@ export default{
 			if(answer) {
 				const userToCreate = this.bundleUserFromForm();
 				this.updateUser({
-					'id': this.userSelectedId,
-					'user': userToCreate
+					id: this.userSelectedId,
+					user: userToCreate
 				}).then(() => this.assignSelectedToForm());
 			}
 		},
@@ -328,10 +328,10 @@ export default{
 	beforeMount() {
 		this.fetchAllCurriculumHeaders();
 	},
-	'watch': {
-		'userSelectedId': {
-			'immediate': true,
-			'handler': function() {
+	watch: {
+		userSelectedId: {
+			immediate: true,
+			handler: function() {
 				this.assignSelectedToForm();
 			}
 		}

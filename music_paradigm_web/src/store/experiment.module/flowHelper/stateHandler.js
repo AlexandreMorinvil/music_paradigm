@@ -10,7 +10,7 @@ export default{
 function updateRoute(currentState, flow, cursor, isInitialized) {
 	currentState.type = blockHandler.getCurrentBlock(flow, cursor).type;
 	routerNavigation.moveToState(currentState.type);
-	Object.assign(isInitialized, { 'route': true });
+	Object.assign(isInitialized, { route: true });
 }
 
 function updateRecords(currentState, cursor, isInitialized) {
@@ -18,7 +18,7 @@ function updateRecords(currentState, cursor, isInitialized) {
 	if(cursor.flag.needsResetLoopParameters) {
 		currentState.record.successesInLoop = 0;
 	}
-	Object.assign(isInitialized, { 'record': true });
+	Object.assign(isInitialized, { record: true });
 }
 
 function updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings) {
@@ -47,28 +47,28 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
 	currentState.settings = {
-		'anyPianoKey': (typeof anyPianoKey === 'boolean') ? anyPianoKey : generalSettings.anyPianoKey,
-		'enableSoundFlag': (typeof enableSoundFlag === 'boolean') ? enableSoundFlag : generalSettings.enableSoundFlag,
-		'playingMode': (typeof playingMode === 'string') ? playingMode : generalSettings.playingMode,
-		'timeoutInSeconds': (typeof timeoutInSeconds === 'number') ? timeoutInSeconds : 0,
-		'footnote': (typeof footnote === 'boolean') ? footnote : generalSettings.footnote,
-		'footnoteType': (typeof footnoteType === 'string') ? footnoteType : generalSettings.footnoteType,
-		'logFlag': (typeof logFlag === 'boolean') ? logFlag : generalSettings.logFlag,
-		'hideFeedbackSmiley': (typeof hideFeedbackSmiley === 'boolean') ? hideFeedbackSmiley : generalSettings.hideFeedbackSmiley,
-		'skipStepButton': (typeof skipStepButton === 'string') ? skipStepButton : '',
-		'skipStepButtonMessage': (typeof skipStepButtonMessage === 'string') ? skipStepButtonMessage : '',
-		'successFeedbackMessage': (typeof successFeedbackMessage === 'string') ? successFeedbackMessage : '',
-		'failureFeedbackMessage': (typeof failureFeedbackMessage === 'string') ? failureFeedbackMessage : '',
-		'footnoteMessage': (typeof footnoteMessage === 'string') ? footnoteMessage : '',
-		'melodyRepetition': (typeof melodyRepetition === 'number') ? melodyRepetition : 1,
-		'successesForSkipLoop': (typeof successesForSkipLoop === 'number') ? successesForSkipLoop : generalSettings.successesForSkipLoop,
-		'isSkipStepButtonInFootnote': (typeof isSkipStepButtonInFootnote === 'boolean') ? isSkipStepButtonInFootnote : generalSettings.isSkipStepButtonInFootnote,
-		'startSignal': (typeof startSignal === 'number') ? startSignal : 0,
-		'feedbackNumerical': (typeof feedbackNumerical === 'boolean') ? feedbackNumerical : false
+		anyPianoKey: (typeof anyPianoKey === 'boolean') ? anyPianoKey : generalSettings.anyPianoKey,
+		enableSoundFlag: (typeof enableSoundFlag === 'boolean') ? enableSoundFlag : generalSettings.enableSoundFlag,
+		playingMode: (typeof playingMode === 'string') ? playingMode : generalSettings.playingMode,
+		timeoutInSeconds: (typeof timeoutInSeconds === 'number') ? timeoutInSeconds : 0,
+		footnote: (typeof footnote === 'boolean') ? footnote : generalSettings.footnote,
+		footnoteType: (typeof footnoteType === 'string') ? footnoteType : generalSettings.footnoteType,
+		logFlag: (typeof logFlag === 'boolean') ? logFlag : generalSettings.logFlag,
+		hideFeedbackSmiley: (typeof hideFeedbackSmiley === 'boolean') ? hideFeedbackSmiley : generalSettings.hideFeedbackSmiley,
+		skipStepButton: (typeof skipStepButton === 'string') ? skipStepButton : '',
+		skipStepButtonMessage: (typeof skipStepButtonMessage === 'string') ? skipStepButtonMessage : '',
+		successFeedbackMessage: (typeof successFeedbackMessage === 'string') ? successFeedbackMessage : '',
+		failureFeedbackMessage: (typeof failureFeedbackMessage === 'string') ? failureFeedbackMessage : '',
+		footnoteMessage: (typeof footnoteMessage === 'string') ? footnoteMessage : '',
+		melodyRepetition: (typeof melodyRepetition === 'number') ? melodyRepetition : 1,
+		successesForSkipLoop: (typeof successesForSkipLoop === 'number') ? successesForSkipLoop : generalSettings.successesForSkipLoop,
+		isSkipStepButtonInFootnote: (typeof isSkipStepButtonInFootnote === 'boolean') ? isSkipStepButtonInFootnote : generalSettings.isSkipStepButtonInFootnote,
+		startSignal: (typeof startSignal === 'number') ? startSignal : 0,
+		feedbackNumerical: (typeof feedbackNumerical === 'boolean') ? feedbackNumerical : false
 	};
 
 	// Indicate that the state (current block's settings) was already initialized
-	Object.assign(isInitialized, { 'state': true });
+	Object.assign(isInitialized, { state: true });
 }
 
 function updateStateMediaFiles(currentState, flow, cursor, isInitialized) {
@@ -94,7 +94,7 @@ function updateStateMediaFiles(currentState, flow, cursor, isInitialized) {
 	currentState.mediaFile.videoName = updatedVideoFileName || oldMediaFile.videoName;
 
 	// Indicate that the media files is initialized
-	Object.assign(isInitialized, { 'media': true });
+	Object.assign(isInitialized, { media: true });
 }
 
 function updateStateContent(currentState, flow, cursor, isInitialized) {
@@ -129,7 +129,7 @@ function updateStateContent(currentState, flow, cursor, isInitialized) {
 	currentState.content.interactivePiano = updatedInteractivePiano || false;
 
 	// Indicate that the media files is initialized
-	Object.assign(isInitialized, { 'content': false });
+	Object.assign(isInitialized, { content: false });
 }
 
 function forceEndState(currentState, isInitialized, message) {
@@ -142,7 +142,7 @@ function forceEndState(currentState, isInitialized, message) {
 	currentState.content.interactivePiano = false;
 
 	// We set the initialization status to true
-	Object.assign(isInitialized, { 'route': true, 'record': true, 'state': true, 'media': true, 'content': true });
+	Object.assign(isInitialized, { route: true, record: true, state: true, media: true, content: true });
 }
 
 function updateStateOnSkip(currentState, flow, cursor, isInitialized) {

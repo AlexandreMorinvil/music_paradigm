@@ -22,17 +22,17 @@ import{ mapActions, mapGetters } from'vuex';
 import VisualPiano from'@/components/VisualPiano.vue';
 
 export default{
-	'name': 'PlayingRhythm',
-	'components': {
-		'visualPiano': VisualPiano
+	name: 'PlayingRhythm',
+	components: {
+		visualPiano: VisualPiano
 	},
 	data() {
 		return{
-			'timeLimitUniqueIdentifier': 0,
-			'isFirstNotePressed': false
+			timeLimitUniqueIdentifier: 0,
+			isFirstNotePressed: false
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('experiment', [
 			'hasVisualMedia',
@@ -52,7 +52,7 @@ export default{
 			return this.midiFileNotesDuration[this.midiFileNotesDuration.length - 1];
 		}
 	},
-	'methods': {
+	methods: {
 		...mapActions('piano', ['evaluateRhythmType']),
 		start() {},
 		setTimeLimit() {
@@ -81,7 +81,7 @@ export default{
 	destroyed() {
 		window.clearTimeout(this.timeLimitUniqueIdentifier);
 	},
-	'watch': {
+	watch: {
 		playProgress(value) {
 			// When the last note was pressed, we wait the duration of the last note
 			// plus a second before indicating the end of the playing state

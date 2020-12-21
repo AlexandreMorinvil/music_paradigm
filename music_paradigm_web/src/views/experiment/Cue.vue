@@ -30,14 +30,14 @@ import VisualPiano from'@/components/VisualPiano.vue';
 import SkipButton from'@/components/experiment/SkipButton.vue';
 
 export default{
-	'name': 'Cue',
-	'components': {
-		'visualPiano': VisualPiano,
-		'skipButton': SkipButton
+	name: 'Cue',
+	components: {
+		visualPiano: VisualPiano,
+		skipButton: SkipButton
 	},
-	'props': {
-		'lastPressedKey': {
-			'type': String,
+	props: {
+		lastPressedKey: {
+			type: String,
 			default() {
 				return'';
 			}
@@ -45,11 +45,11 @@ export default{
 	},
 	data() {
 		return{
-			'errorAutomaticTransitionSeconds': 5,
-			'playbackDelayInSeconds': 1
+			errorAutomaticTransitionSeconds: 5,
+			playbackDelayInSeconds: 1
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['isMidiFileLoaded']),
 		...mapGetters('experiment', [
@@ -89,7 +89,7 @@ export default{
 			else return this.textContent;
 		}
 	},
-	'methods': {
+	methods: {
 		...mapActions('piano', ['playMidiFile', 'addPlayerEndOfFileAction', 'removePlayerEndOfFileAction']),
 		handleEndOfMidiFile() {
 			this.$emit('state-ended');
@@ -107,13 +107,13 @@ export default{
 	beforeDestroy() {
 		this.removePlayerEndOfFileAction(this.handleEndOfMidiFile);
 	},
-	'watch': {
+	watch: {
 		lastPressedKey(lastPressedKey) {
 			if(this.hasSkipOption && lastPressedKey === this.skipStepButton) this.emitSkipSignal();
 		},
-		'isMidiFileLoaded': {
-			'immediate': true,
-			'handler': function(isReady) {
+		isMidiFileLoaded: {
+			immediate: true,
+			handler: function(isReady) {
 				if(isReady) setTimeout(() => this.playMidiFile(), this.playbackDelayInSeconds * 1000);
 				else if(this.midiName === '')
 					setTimeout(() => this.manageHavingNoMidiFile(), this.errorAutomaticTransitionSeconds * 1000);

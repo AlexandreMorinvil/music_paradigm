@@ -37,16 +37,16 @@
 import{ mapGetters } from'vuex';
 
 export default{
-	'name': 'Playing',
-	'components': {},
+	name: 'Playing',
+	components: {},
 	data() {
 		return{
-			'highlightedDesignatedKeys': [],
-			'firstNote': 48,
-			'lastNote': 74
+			highlightedDesignatedKeys: [],
+			firstNote: 48,
+			lastNote: 74
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('experiment', ['interactivePiano']),
 		...mapGetters('piano', [
 			'pressedKeys',
@@ -54,7 +54,7 @@ export default{
 			'midiFileNotesMidi'
 		])
 	},
-	'methods': {
+	methods: {
 		designateKeys(keys) {
 			if(Array.isArray(keys)) this.highlightedDesignatedKeys = keys;
 			else if(typeof keys == 'number') this.highlightedDesignatedKeys = [keys];
@@ -75,7 +75,7 @@ export default{
 	beforeDestroy() {
 		this.clearDesignatedKeys();
 	},
-	'watch': {
+	watch: {
 		pressedKeys(list) {
 			for(let note = this.firstNote; note <= this.lastNote; note++) {
 				if(list.includes(note))
@@ -98,9 +98,9 @@ export default{
 				else this.$refs[note.toString()].classList.remove('designated');
 			}
 		},
-		'midiFileNotesMidi': {
-			'immediate': true,
-			'handler': function() {
+		midiFileNotesMidi: {
+			immediate: true,
+			handler: function() {
 				this.clearDesignatedKeys();
 				if(this.interactivePiano === 'first') this.hintFirstNote();
 				if(this.interactivePiano === 'midi') this.hintAllNotes();

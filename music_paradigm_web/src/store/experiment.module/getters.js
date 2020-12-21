@@ -3,48 +3,48 @@ import cursorHandler from'./flowHelper/cursorHandler';
 import blockHandler from'./flowHelper/blockHandler';
 
 export default{
-	'experimentId': (state) => {
+	experimentId: (state) => {
 		return state._id;
 	},
 
 	// Getters for the experiment flow's information
-	'stepsTotalCount': (state) => {
+	stepsTotalCount: (state) => {
 		return cursorHandler.countStepsLeft(state.flow);
 	},
 
-	'stepsLeftCount': (state) => {
+	stepsLeftCount: (state) => {
 		return cursorHandler.countStepsLeft(state.flow, state.cursor);
 	},
 
 	// Getters for the experiment settings
-	'experimentGroup': (state) => {
+	experimentGroup: (state) => {
 		return state.description.group || 'UNKNOWN_GROUP';
 	},
 
-	'experimentName': (state) => {
+	experimentName: (state) => {
 		return state.description.name || 'UNKNOWN_NAME';
 	},
 
-	'experimentVersion': (state) => {
+	experimentVersion: (state) => {
 		return state.description.version || 0;
 	},
 
-	'timbreFile': (state) => {
+	timbreFile: (state) => {
 		return state.settings.timbreFile || constants.DEFAULT_TIMBRE_FILE;
 	},
 
-	'timeLimitInSeconds': (state) => {
+	timeLimitInSeconds: (state) => {
 		return state.settings.timeLimitInSeconds || constants.DEFAULT_TIME_LIMIT;
 	},
 
 	// Getters for the state content
 	// Texts
-	'textContent': (state) => {
+	textContent: (state) => {
 		return state.state.content.text;
 	},
 
 	// Image files
-	'pictureName': (state) => {
+	pictureName: (state) => {
 		// Fetch the picture name
 		const pictureName = state.state.content.pictureName;
 		if(pictureName === '') return'';
@@ -62,7 +62,7 @@ export default{
 		return`${state.description.folder}/${pictureName}`;
 	},
 
-	'helperImageName': (state) => {
+	helperImageName: (state) => {
 		// Fetch the helper image name
 		const pictureName = state.state.content.helperImageName;
 		if(pictureName === '') return'';
@@ -70,13 +70,13 @@ export default{
 	},
 
 	// Interactive piano
-	'interactivePiano': (state) => {
+	interactivePiano: (state) => {
 		return state.state.content.interactivePiano || false;
 	},
 
 	// Getters for the state media
 	// Playable Media file names
-	'midiName': (state) => {
+	midiName: (state) => {
 		// Fetch the picture name
 		const midiName = state.state.mediaFile.midiName;
 		if(midiName === '') return'';
@@ -94,7 +94,7 @@ export default{
 		return`${state.description.folder}/${midiName}`;
 	},
 
-	'videoName': (state) => {
+	videoName: (state) => {
 		// Fetch the video name
 		const videoName = state.state.mediaFile.videoName;
 		if(videoName === '') return'';
@@ -113,7 +113,7 @@ export default{
 	},
 
 	// Geters for the state attributes
-	'currentStateType': (state) => {
+	currentStateType: (state) => {
 		// Return the type of the current state
 		if(state.cursor.current.isBeyondEnd) {
 			return'end';
@@ -121,7 +121,7 @@ export default{
 		return state.state.type || '';
 	},
 
-	'nextStateType': (state) => {
+	nextStateType: (state) => {
 		// Return the type of the next state
 		// If we are currently beyond the last block of the flow or if there is
 		// no current state type step, we return no next step
@@ -151,7 +151,7 @@ export default{
 		}
 	},
 
-	'anyPianoKey': (state) => {
+	anyPianoKey: (state) => {
 		// Return the "anyPianoKey" value specified by the block if it exists, otherwise, the default "anyPianoKey" of the
 		// experiment is returned. The "anyPianoKey" parameter indicates whether the user of the experiment can move to the
 		// next step by pressing any piano key (if the value is "true"), otherwise the experiment will move to the next
@@ -169,7 +169,7 @@ export default{
 		return anyPianoKey;
 	},
 
-	'playingMode': (state) => {
+	playingMode: (state) => {
 		// Return the playing mode specified by the block if it exists,
 		// otherwise, the default playing mode of the experiment is returned.
 		let playingMode;
@@ -185,7 +185,7 @@ export default{
 		return playingMode;
 	},
 
-	'enableSoundFlag': (state) => {
+	enableSoundFlag: (state) => {
 		// Return whether or not the piano output is enabled. The priority order is as follows :
 		// 1. In the playing state, it is necessarily on
 		// 2. The Block setting is the top priority
@@ -206,45 +206,45 @@ export default{
 		return enableSoundFlag;
 	},
 
-	'timeoutInSeconds': (state) => {
+	timeoutInSeconds: (state) => {
 		// Return the the timeout time specified by the block if it exists,
 		// otherwise, return a value of 0 to be interpreted as "There is no timeout"
 		return state.state.settings.timeoutInSeconds || 0;
 	},
 
-	'startSignal': (state) => {
+	startSignal: (state) => {
 		return state.state.settings.startSignal || 0;
 	},
 
-	'skipStepButton': (state) => {
+	skipStepButton: (state) => {
 		return state.state.settings.skipStepButton.toLowerCase() || '';
 	},
 
-	'skipStepButtonMessage': (state) => {
+	skipStepButtonMessage: (state) => {
 		return state.state.settings.skipStepButtonMessage || '';
 	},
 
-	'feedbackNumerical': (state) => {
+	feedbackNumerical: (state) => {
 		return state.state.settings.feedbackNumerical || false;
 	},
 
-	'successFeedbackMessage': (state) => {
+	successFeedbackMessage: (state) => {
 		return state.state.settings.successFeedbackMessage || '';
 	},
 
-	'failureFeedbackMessage': (state) => {
+	failureFeedbackMessage: (state) => {
 		return state.state.settings.failureFeedbackMessage || '';
 	},
 
-	'footnoteMessage': (state) => {
+	footnoteMessage: (state) => {
 		return state.state.settings.footnoteMessage || '';
 	},
 
-	'melodyRepetition': (state) => {
+	melodyRepetition: (state) => {
 		return state.state.settings.melodyRepetition || 1;
 	},
 
-	'hideFeedbackSmiley': (state) => {
+	hideFeedbackSmiley: (state) => {
 		let hideFeedbackSmiley;
 
 		if(typeof state.state.settings.hideFeedbackSmiley === 'boolean') {
@@ -258,7 +258,7 @@ export default{
 		return hideFeedbackSmiley;
 	},
 
-	'footnoteType': (state) => {
+	footnoteType: (state) => {
 		let footnoteType;
 
 		if(typeof state.state.settings.footnoteType === 'string') {
@@ -273,7 +273,7 @@ export default{
 	},
 
 	// Getters used for the content disposition on the screen
-	'hasFootnote': (state) => {
+	hasFootnote: (state) => {
 		let hasFootNote;
 
 		if(typeof state.state.settings.footnote === 'boolean') {
@@ -287,35 +287,35 @@ export default{
 		return hasFootNote;
 	},
 
-	'hasText': (state) => {
+	hasText: (state) => {
 		return Boolean(state.state.content.text);
 	},
 
-	'hasInteractivePiano': (state) => {
+	hasInteractivePiano: (state) => {
 		return Boolean(state.state.content.interactivePiano);
 	},
 
-	'hasPicture': (state) => {
+	hasPicture: (state) => {
 		return Boolean(state.state.content.pictureName);
 	},
 
-	'hasVisualMedia': (state) => {
+	hasVisualMedia: (state) => {
 		return Boolean(state.state.content.pictureName) || Boolean(state.state.content.interactivePiano);
 	},
 
-	'hasNoContent': (state) => {
+	hasNoContent: (state) => {
 		return!(state.state.content.text) && !(Boolean(state.state.content.pictureName) || Boolean(state.state.content.interactivePiano));
 	},
 
-	'hasHelperImage': (state) => {
+	hasHelperImage: (state) => {
 		return Boolean(state.state.content.helperImageName);
 	},
 
-	'hasSkipOption': (state) => {
+	hasSkipOption: (state) => {
 		return Boolean(state.state.settings.skipStepButton) || false;
 	},
 
-	'isSkipButtonInFootnote': (state) => {
+	isSkipButtonInFootnote: (state) => {
 		return(state.state.settings.footnote) && (state.state.settings.footnoteType === 'button') && (state.state.settings.isSkipStepButtonInFootnote);
 	}
 };

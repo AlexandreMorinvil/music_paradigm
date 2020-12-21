@@ -7,11 +7,11 @@ import{ mapGetters } from'vuex';
 import{ ExperimentEventBus } from'@/_services/eventBus.service.js';
 
 export default{
-	'name': 'Alert',
+	name: 'Alert',
 	data() {
 		return{};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('experiment', ['skipStepButton', 'skipStepButtonMessage']),
 		skipStepButtonValue() {
 			return this.skipStepButton.toUpperCase();
@@ -21,7 +21,7 @@ export default{
 			return this.skipStepButtonMessage;
 		}
 	},
-	'methods': {
+	methods: {
 		emitSkipSignal() {
 			ExperimentEventBus.$emit('skip-request');
 		},

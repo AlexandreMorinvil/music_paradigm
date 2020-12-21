@@ -19,10 +19,10 @@ import WidgetContext from'@/components/admin/WidgetContext.vue';
 import'@/styles/widgetTemplate.css';
 
 export default{
-	'name': 'AdminAccount',
-	'components': {
-		'AdminPageContext': AdminPageContext,
-		'WidgetContext': WidgetContext
+	name: 'AdminAccount',
+	components: {
+		AdminPageContext: AdminPageContext,
+		WidgetContext: WidgetContext
 	}
 };
 </script>

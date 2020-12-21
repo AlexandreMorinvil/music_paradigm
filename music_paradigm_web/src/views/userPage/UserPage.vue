@@ -11,22 +11,22 @@
 import ApplicationFooter from'@/components/ApplicationFooter.vue';
 
 export default{
-	'name': 'UserPage',
-	'components': {
-		'applicationFooter': ApplicationFooter
+	name: 'UserPage',
+	components: {
+		applicationFooter: ApplicationFooter
 	},
 	data() {
 		return{
-			'activePage': 'undefined'
+			activePage: 'undefined'
 		};
 	},
-	'computed': {},
-	'methods': {},
+	computed: {},
+	methods: {},
 	created() {},
-	'watch': {
+	watch: {
 		// On change of the route, we reevaluate the current page
-		'$route': {
-			'immediate': true,
+		$route: {
+			immediate: true,
 			handler(to) {
 				let currentPage = 'undefined';
 				const pageList = ['home', 'experiments', 'account'];

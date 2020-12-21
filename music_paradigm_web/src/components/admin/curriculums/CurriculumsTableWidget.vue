@@ -45,14 +45,14 @@ import{ mapActions, mapGetters } from'vuex';
 import LoaderCircular from'@/components/LoaderCircular.vue';
 
 export default{
-	'name': 'CurriculumsTableWidget',
-	'components': {
-		'loader': LoaderCircular
+	name: 'CurriculumsTableWidget',
+	components: {
+		loader: LoaderCircular
 	},
 	data() {
 		return{};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('curriculums', [
 			'isFetchingCurriculumsHeadersList',
 			'curriculumsHeadersList',
@@ -62,7 +62,7 @@ export default{
 			return this.isFetchingUserHeadersList;
 		}
 	},
-	'methods': {
+	methods: {
 		...mapActions('curriculums', ['fetchAllCurriculumHeaders', 'setSelectedCurriculum']),
 		handleRefresh() {
 			this.fetchAllCurriculumHeaders();

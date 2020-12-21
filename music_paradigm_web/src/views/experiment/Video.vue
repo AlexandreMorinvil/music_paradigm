@@ -50,15 +50,15 @@ import VisualPiano from'@/components/VisualPiano.vue';
 import SkipButton from'@/components/experiment/SkipButton.vue';
 
 export default{
-	'name': 'Video',
-	'components': {
-		'skipButton': SkipButton,
-		'visualPiano': VisualPiano,
-		'VideoPlayer': VideoPlayer
+	name: 'Video',
+	components: {
+		skipButton: SkipButton,
+		visualPiano: VisualPiano,
+		VideoPlayer: VideoPlayer
 	},
-	'props': {
-		'lastPressedKey': {
-			'type': String,
+	props: {
+		lastPressedKey: {
+			type: String,
 			default() {
 				return'';
 			}
@@ -66,27 +66,27 @@ export default{
 	},
 	data() {
 		return{
-			'counterUniqueIdentifier': 0,
-			'errorAutomaticTransitionSeconds': 5,
+			counterUniqueIdentifier: 0,
+			errorAutomaticTransitionSeconds: 5,
 			// Video dimensions variable
-			'defaultVideoHeight': 253,
-			'defaultVideoWidth': 480,
+			defaultVideoHeight: 253,
+			defaultVideoWidth: 480,
 			// Delay before playback variables
-			'referenceTime': 0,
-			'playbackDelayInSeconds': 3,
-			'delayLeftInMilliseconds': 5000,
-			'timeStepInMilliseconds': 200,
+			referenceTime: 0,
+			playbackDelayInSeconds: 3,
+			delayLeftInMilliseconds: 5000,
+			timeStepInMilliseconds: 200,
 			// Delay after playback variable
-			'endOfStatedelayInMilliseconds': 2000,
+			endOfStatedelayInMilliseconds: 2000,
 			// Playback variables
-			'isPlaying': false,
-			'playBack': {
-				'startTime': 0,
-				'endTime': 0
+			isPlaying: false,
+			playBack: {
+				startTime: 0,
+				endTime: 0
 			}
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('experiment', [
 			'hasInteractivePiano',
@@ -132,8 +132,8 @@ export default{
 				width *= 2;
 			}
 			return{
-				'height': height,
-				'width': width
+				height: height,
+				width: width
 			};
 		},
 		videoHeightCSSvariable() {
@@ -157,7 +157,7 @@ export default{
 			else return`The video will start in ${this.delayLeftDisplay}`;
 		}
 	},
-	'methods': {
+	methods: {
 		handdleEndOfVideo() {
 			setTimeout(() => {
 				this.$emit('state-ended');
@@ -194,7 +194,7 @@ export default{
 	beforeDestroy() {
 		window.clearInterval(this.counterUniqueIdentifier);
 	},
-	'watch': {
+	watch: {
 		delayLeftInMilliseconds(value) {
 			// When the delay is over, we start the video
 			if(value <= 0) {

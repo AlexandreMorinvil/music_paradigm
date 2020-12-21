@@ -46,7 +46,7 @@ const findSubarraySegment = function(subarr, arr, from_index) {
 		}
 	}
 
-	return{ 'startIndex': startIndex, 'endIndex': endIndex, 'length': maxLength };
+	return{ startIndex: startIndex, endIndex: endIndex, length: maxLength };
 };
 
 // Make sure arrays are defined and of same length
@@ -79,7 +79,7 @@ const getCorrectSequenceCount = function(refNoteArr, noteArr) {
 const getSequenceDurations = function(refNoteArr, noteArr, timeArr) {
 	const idxArr = findSubarray(refNoteArr, noteArr);
 	if(idxArr.length < 1) {
-		return{ 'durations': [], 'speedD': 0 };
+		return{ durations: [], speedD: 0 };
 	}
 	const noteLength = refNoteArr.length - 1;
 	let duration = 0;
@@ -89,7 +89,7 @@ const getSequenceDurations = function(refNoteArr, noteArr, timeArr) {
 		duration += temp;
 		durations.push(temp);
 	});
-	return{ 'durations': durations, 'durationsAverage': duration / idxArr.length };
+	return{ durations: durations, durationsAverage: duration / idxArr.length };
 };
 
 // Within-sequence measure assessed the time intervals between successive key presses within the sequence
@@ -97,7 +97,7 @@ const getSequenceDurations = function(refNoteArr, noteArr, timeArr) {
 const getTransitionSpeeds = function(refNoteArr, noteArr, timeArr) {
 	const idxArr = findSubarray(refNoteArr, noteArr);
 	const sequenceCount = idxArr.length;
-	if(sequenceCount <= 0) return{ 'transitionSpeeds': [], 'transitionSpeedsAverage': [] };
+	if(sequenceCount <= 0) return{ transitionSpeeds: [], transitionSpeedsAverage: [] };
 
 	const transitionSpeeds = [];
 	const noteLength = refNoteArr.length - 1;
@@ -118,7 +118,7 @@ const getTransitionSpeeds = function(refNoteArr, noteArr, timeArr) {
 	}
 
 	// Return [[a],[b],[c],[d]]
-	return{ 'transitionSpeeds': transitionSpeeds, 'transitionSpeedsAverage': transitionSpeedsAverage };
+	return{ transitionSpeeds: transitionSpeeds, transitionSpeedsAverage: transitionSpeedsAverage };
 };
 
 // The number of errors made relative to the number of correctly typed sequences per 30-sec trial
@@ -209,7 +209,7 @@ const getMissedNotes = function(refNoteArr, noteArr) {
 	if(length < refNoteArr.length) {
 		missedNotes = refNoteArr.slice(length, refNoteArr.length);
 	}
-	return{ 'missedNotes': missedNotes, 'missedNotesCount': missedNotes.length };
+	return{ missedNotes: missedNotes, missedNotesCount: missedNotes.length };
 };
 
 // Old name : getIOIs

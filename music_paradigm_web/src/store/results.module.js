@@ -1,7 +1,7 @@
 import{ resultService } from'../_services';
 
 const state = {
-	'result': {}
+	result: {}
 };
 
 const actions = {
@@ -23,7 +23,7 @@ const actions = {
 
 const mutations = {
 	createRequest(state) {
-		state.status = { 'creating': true };
+		state.status = { creating: true };
 	},
 	createSuccess(state) {
 		state.status = {};
@@ -34,7 +34,7 @@ const mutations = {
 };
 
 export const results = {
-	'namespaced': true,
+	namespaced: true,
 	state,
 	actions,
 	mutations

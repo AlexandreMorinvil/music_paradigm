@@ -20,19 +20,19 @@ import NavigationBarExperiment from'@/components/navigationBar/NavigationBarExpe
 import Alert from'@/components/Alert';
 
 export default{
-	'name': 'app',
-	'components': {
-		'defaultNavigationBar': NavigationBarDefault,
-		'experimentNavigationBar': NavigationBarExperiment,
-		'alert': Alert
+	name: 'app',
+	components: {
+		defaultNavigationBar: NavigationBarDefault,
+		experimentNavigationBar: NavigationBarExperiment,
+		alert: Alert
 	},
 	data() {
 		return{
-			'appInited': false,
-			'appState': 'default'
+			appInited: false,
+			appState: 'default'
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('alert', ['hasAlert']),
 		navigationBarType() {
 			switch(this.appState) {
@@ -43,14 +43,14 @@ export default{
 			}
 		}
 	},
-	'methods': {
+	methods: {
 		...mapActions('account', ['resumeLoginStatus']),
 		...mapActions('alert', ['clearAlert'])
 	},
 	created() {
 		this.resumeLoginStatus();
 	},
-	'watch': {
+	watch: {
 		// On change of the route, we reevaluate the state of the application
 		$route(to) {
 			let state = 'default';

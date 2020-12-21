@@ -1,50 +1,50 @@
 export default{
-	'userSelectedId': (state)=> {
+	userSelectedId: (state)=> {
 		return state.selection._id;
 	},
 
-	'userSelectedUsername': (state) => {
+	userSelectedUsername: (state) => {
 		return state.selection.username;
 	},
 
-	'userSelectedEmail': (state) => {
+	userSelectedEmail: (state) => {
 		return state.selection.email;
 	},
 
-	'userSelectedFirstName': (state) => {
+	userSelectedFirstName: (state) => {
 		return state.selection.firstName;
 	},
 
-	'userSelectedMiddleName': (state) => {
+	userSelectedMiddleName: (state) => {
 		return state.selection.middleName;
 	},
 
-	'userSelectedLastName': (state) => {
+	userSelectedLastName: (state) => {
 		return state.selection.lastName;
 	},
 
-	'userSelectedTags': (state) => {
+	userSelectedTags: (state) => {
 		return state.selection.tags;
 	},
 
-	'userSelectedRole': (state) => {
+	userSelectedRole: (state) => {
 		return state.selection.role;
 	},
 
-	'userSelectedCurriculum': (state) => {
+	userSelectedCurriculum: (state) => {
 		return state.selection.curriculum;
 	},
 
-	'usersHeadersList': (state) => {
+	usersHeadersList: (state) => {
 		return state.usersHeadersList;
 	},
 
 	// Status
-	'hasSelectedUser': (state) => {
+	hasSelectedUser: (state) => {
 		return Boolean(state.selection._id);
 	},
 
-	'isFetchingUserHeadersList': (state) => {
+	isFetchingUserHeadersList: (state) => {
 		return state.status.isFetchingUsersHeadersList;
 	}
 };

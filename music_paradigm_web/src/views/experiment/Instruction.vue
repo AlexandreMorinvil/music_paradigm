@@ -37,21 +37,21 @@ import SkipButton from'@/components/experiment/SkipButton.vue';
 import Footnote from'@/components/experiment/footnote/Footnote.vue';
 
 export default{
-	'name': 'Instruction',
-	'components': {
-		'visualPiano': VisualPiano,
-		'skipButton': SkipButton,
-		'footnote': Footnote
+	name: 'Instruction',
+	components: {
+		visualPiano: VisualPiano,
+		skipButton: SkipButton,
+		footnote: Footnote
 	},
-	'props': {
-		'lastPressedKey': {
-			'type': String,
+	props: {
+		lastPressedKey: {
+			type: String,
 			default() {
 				return'';
 			}
 		},
-		'isSpaceBarPressed': {
-			'type': Boolean,
+		isSpaceBarPressed: {
+			type: Boolean,
 			default() {
 				return false;
 			}
@@ -60,7 +60,7 @@ export default{
 	data() {
 		return{};
 	},
-	'computed': {
+	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['pressedKeys']),
 		...mapGetters('experiment', [
@@ -96,7 +96,7 @@ export default{
 			else return this.textContent;
 		}
 	},
-	'methods': {
+	methods: {
 		emitStateEndedSignal() {
 			this.$emit('state-ended');
 		}
@@ -107,7 +107,7 @@ export default{
 	beforeDestroy() {
 		ExperimentEventBus.$off('advance-request', this.emitStateEndedSignal);
 	},
-	'watch': {
+	watch: {
 		isSpaceBarPressed(isPressed) {
 			if(isPressed) this.emitStateEndedSignal();
 		},

@@ -9,7 +9,7 @@ export default{
 					commit('setHeadersList', experimentHeadersList);
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { 'root': true });
+					dispatch('alert/setErrorAlert', error.message, { root: true });
 				}
 			)
 			.finally(() => {
@@ -24,7 +24,7 @@ export default{
 				commit('setSelectedExperiment', description);
 			},
 			(error) => {
-				dispatch('alert/setErrorAlert', `Compilation failed : ${error.message}`, { 'root': true });
+				dispatch('alert/setErrorAlert', `Compilation failed : ${error.message}`, { root: true });
 			}
 		);
 	},
@@ -35,7 +35,7 @@ export default{
 				commit('setSelectedExperiment', description);
 			},
 			(error) => {
-				dispatch('alert/setErrorAlert', `Compilation failed : ${error.message}`, { 'root': true });
+				dispatch('alert/setErrorAlert', `Compilation failed : ${error.message}`, { root: true });
 			}
 		);
 	},
@@ -45,12 +45,12 @@ export default{
 			(description) => {
 				commit('setEditedExperiment', description);
 				commit('setSelectedExperiment', description);
-				dispatch('experiment/setExperiment', description, { 'root': true });
-				dispatch('experiment/setStartingPoint', null, { 'root': true });
-				dispatch('experiment/initExperiment', null, { 'root': true });
+				dispatch('experiment/setExperiment', description, { root: true });
+				dispatch('experiment/setStartingPoint', null, { root: true });
+				dispatch('experiment/initExperiment', null, { root: true });
 			},
 			(error) => {
-				dispatch('alert/setErrorAlert', `Failed to start the experiment: ${error.message}`, { 'root': true });
+				dispatch('alert/setErrorAlert', `Failed to start the experiment: ${error.message}`, { root: true });
 			}
 		);
 	},
@@ -67,10 +67,10 @@ export default{
 		experimentService.validateExperiment(experiment).then(
 			() => {
 				commit('setEditedExperiment', experiment);
-				dispatch('alert/setInformationAlert', 'The experiment was compiled', { 'root': true });
+				dispatch('alert/setInformationAlert', 'The experiment was compiled', { root: true });
 			},
 			(error) => {
-				dispatch('alert/setErrorAlert', `Compilation failed : ${error.message}`, { 'root': true });
+				dispatch('alert/setErrorAlert', `Compilation failed : ${error.message}`, { root: true });
 			}
 		);
 	},
@@ -80,10 +80,10 @@ export default{
 		experimentService.validateExperiment(experiment).then(
 			() => {
 				commit('setEditedExperiment', experiment);
-				dispatch('alert/setInformationAlert', 'The experiment is valid and was compiled', { 'root': true });
+				dispatch('alert/setInformationAlert', 'The experiment is valid and was compiled', { root: true });
 			},
 			(error) => {
-				dispatch('alert/setWarningAlert', `The experiment could not be compiled : ${error.message}`, { 'root': true });
+				dispatch('alert/setWarningAlert', `The experiment could not be compiled : ${error.message}`, { root: true });
 			}
 		);
 	},
@@ -99,11 +99,11 @@ export default{
 				(experiment) => {
 					commit('setEditedExperiment', experiment);
 					commit('setSelectedExperiment', experiment);
-					dispatch('alert/setSuccessAlert', 'Experiment creation sucessful', { 'root': true });
+					dispatch('alert/setSuccessAlert', 'Experiment creation sucessful', { root: true });
 					dispatch('fetchAllExperimentsHeaders');
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { 'root': true });
+					dispatch('alert/setErrorAlert', error.message, { root: true });
 				}
 			)
 			.finally(() => {
@@ -118,11 +118,11 @@ export default{
 				(experiment) => {
 					commit('setEditedExperiment', experiment);
 					commit('setSelectedExperiment', experiment);
-					dispatch('alert/setSuccessAlert', 'Experiment update sucessful', { 'root': true });
+					dispatch('alert/setSuccessAlert', 'Experiment update sucessful', { root: true });
 					dispatch('fetchAllExperimentsHeaders');
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { 'root': true });
+					dispatch('alert/setErrorAlert', error.message, { root: true });
 				}
 			)
 			.finally(() => {
@@ -136,11 +136,11 @@ export default{
 			.then(
 				() => {
 					commit('unsetSelectedExperiment');
-					dispatch('alert/setSuccessAlert', 'Experiment deletion sucessful', { 'root': true });
+					dispatch('alert/setSuccessAlert', 'Experiment deletion sucessful', { root: true });
 					dispatch('fetchAllExperimentsHeaders');
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { 'root': true });
+					dispatch('alert/setErrorAlert', error.message, { root: true });
 				}
 			)
 			.finally(() => {

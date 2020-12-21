@@ -10,42 +10,42 @@ const validateExperiment = function(experiment) {
 
 const getListAllHeaders = function() {
 	const requestOptions = {
-		'method': 'GET',
-		'headers': { ...authHeader(), 'Content-Type': 'application/json' }
+		method: 'GET',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' }
 	};
 	return fetch(url.experiments(''), requestOptions).then(handleResponse);
 };
 
 const getDefinition = function(id) {
 	const requestOptions = {
-		'method': 'GET',
-		'headers': { ...authHeader(), 'Content-Type': 'application/json' }
+		method: 'GET',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' }
 	};
 	return fetch(url.experiments(`/description/${id}`), requestOptions).then(handleResponse);
 };
 
 const create = function(experiment) {
 	const requestOptions = {
-		'method': 'POST',
-		'headers': { ...authHeader(), 'Content-Type': 'application/json' },
-		'body': JSON.stringify(experiment)
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(experiment)
 	};
 	return fetch(url.experiments(''), requestOptions).then(handleResponse);
 };
 
 const update = function(id, experiment) {
 	const requestOptions = {
-		'method': 'PUT',
-		'headers': { ...authHeader(), 'Content-Type': 'application/json' },
-		'body': JSON.stringify(experiment)
+		method: 'PUT',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(experiment)
 	};
 	return fetch(url.experiments(id), requestOptions).then(handleResponse);
 };
 
 const _delete = function(id) {
 	const requestOptions = {
-		'method': 'DELETE',
-		'headers': { ...authHeader(), 'Content-Type': 'application/json' }
+		method: 'DELETE',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' }
 	};
 	return fetch(url.experiments(id), requestOptions).then(handleResponse);
 };
@@ -60,5 +60,5 @@ export const experimentService = {
 	getDefinition,
 	create,
 	update,
-	'delete': _delete
+	delete: _delete
 };

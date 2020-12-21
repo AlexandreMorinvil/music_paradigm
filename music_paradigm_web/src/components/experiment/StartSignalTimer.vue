@@ -9,26 +9,26 @@ import{ mapGetters } from'vuex';
 import{ ExperimentEventBus } from'@/_services/eventBus.service.js';
 
 export default{
-	'name': 'StartSignalTimer',
+	name: 'StartSignalTimer',
 	data() {
 		return{
-			'soundCount': null,
-			'soundStart': null,
-			'counterUniqueIdentifier': 0,
-			'timeStepInMilliseconds': 1000,
-			'referenceTime': 0,
-			'totalTime': 0,
-			'cumulatedTime': 0,
-			'seconds': 0
+			soundCount: null,
+			soundStart: null,
+			counterUniqueIdentifier: 0,
+			timeStepInMilliseconds: 1000,
+			referenceTime: 0,
+			totalTime: 0,
+			cumulatedTime: 0,
+			seconds: 0
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('experiment', ['startSignal']),
 		timerDisplay() {
 			return this.seconds || 'Start';
 		}
 	},
-	'methods': {
+	methods: {
 		setTime(value) {
 			this.cumulatedTime = value * 1000;
 			this.totalTime = this.cumulatedTime;
@@ -58,7 +58,7 @@ export default{
 		window.clearInterval(this.counterUniqueIdentifier);
 	},
 	destroyed() {},
-	'watch': {
+	watch: {
 		totalTime(value) {
 			if(value <= 0) {
 				window.clearInterval(this.counterUniqueIdentifier);

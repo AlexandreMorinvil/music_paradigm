@@ -25,15 +25,15 @@ import{ mapActions, mapGetters } from'vuex';
 import'@/styles/navigationBarTemplate.css';
 
 export default{
-	'name': 'NavigationBarDefault',
-	'components': {},
+	name: 'NavigationBarDefault',
+	components: {},
 	data() {
 		return{};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('account', ['isLoggedIn', 'fullName'])
 	},
-	'methods': {
+	methods: {
 		...mapActions('account', ['logout']),
 		handleLogout() {
 			this.logout();
@@ -43,7 +43,7 @@ export default{
 	mounted() {},
 	beforeDestroy() {},
 	destroyed() {},
-	'watch': {}
+	watch: {}
 };
 </script>
 

@@ -222,27 +222,27 @@ import'@/styles/formTemplate.css';
 import{ mapActions, mapGetters } from'vuex';
 
 export default{
-	'name': 'CurriculumWorkshopWidget',
+	name: 'CurriculumWorkshopWidget',
 	data() {
 		return{
-			'experimentsCount': 1,
-			'id': '',
-			'title': '',
-			'isSequential': false,
-			'experiments': [
+			experimentsCount: 1,
+			id: '',
+			title: '',
+			isSequential: false,
+			experiments: [
 				{
-					'title': 'Introduction',
-					'delayInDays': 7,
-					'isUniqueIndDay': true,
-					'completionTarget': 1,
-					'completionLimit': 1,
-					'experimentReference': '5f32ab693a6197f5e56ab748',
-					'associativeId': 'a'
+					title: 'Introduction',
+					delayInDays: 7,
+					isUniqueIndDay: true,
+					completionTarget: 1,
+					completionLimit: 1,
+					experimentReference: '5f32ab693a6197f5e56ab748',
+					associativeId: 'a'
 				}
 			]
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('experiments', ['experimentsHeadersList']),
 		...mapGetters('curriculums', [
 			'hasSelectedCurriculum',
@@ -256,8 +256,8 @@ export default{
 			const fullReference = [];
 			this.experimentsHeadersList.forEach((element) => {
 				fullReference.push({
-					'id': element._id,
-					'fullName': this.formatExperimentUniqueName(element)
+					id: element._id,
+					fullName: this.formatExperimentUniqueName(element)
 				});
 			});
 			return fullReference;
@@ -273,7 +273,7 @@ export default{
 				: '';
 		}
 	},
-	'methods': {
+	methods: {
 		...mapActions('experiments', ['fetchAllExperimentsHeaders']),
 		...mapActions('curriculums', [
 			'unsetSelectedCurriculum',
@@ -283,10 +283,10 @@ export default{
 		]),
 		bundleCurrirulumFromForm() {
 			return{
-				'id': this.id,
-				'title': this.title,
-				'isSequential': this.isSequential,
-				'experiments': this.experiments
+				id: this.id,
+				title: this.title,
+				isSequential: this.isSequential,
+				experiments: this.experiments
 			};
 		},
 		getExperimentFullNameFromList(id) {
@@ -309,13 +309,13 @@ export default{
 		},
 		addExperiment() {
 			this.experiments.push({
-				'associativeId': 'id' + this.experiments.length,
-				'title': '',
-				'delayInDays': 0,
-				'isUniqueIndDay': true,
-				'completionTarget': 1,
-				'completionLimit': 1,
-				'experimentReference': ''
+				associativeId: 'id' + this.experiments.length,
+				title: '',
+				delayInDays: 0,
+				isUniqueIndDay: true,
+				completionTarget: 1,
+				completionLimit: 1,
+				experimentReference: ''
 			});
 		},
 		removeTag(index) {
@@ -361,8 +361,8 @@ export default{
 			if(answer) {
 				const curriculumUpdated = this.bundleCurrirulumFromForm();
 				this.updateCurriculum({
-					'id': this.curriculumSelectedId,
-					'curriculum': curriculumUpdated
+					id: this.curriculumSelectedId,
+					curriculum: curriculumUpdated
 				});
 			}
 		},
@@ -384,10 +384,10 @@ export default{
 	beforeMount() {
 		this.fetchAllExperimentsHeaders();
 	},
-	'watch': {
-		'curriculumSelectedId': {
-			'immediate': true,
-			'handler': function() {
+	watch: {
+		curriculumSelectedId: {
+			immediate: true,
+			handler: function() {
 				this.assignSelectedToForm();
 			}
 		}

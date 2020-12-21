@@ -8,9 +8,9 @@ export const resultService = {
 
 function create(result) {
 	const requestOptions = {
-		'method': 'POST',
-		'headers': { ...authHeader(), 'Content-Type': 'application/json' },
-		'body': JSON.stringify(result)
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(result)
 	};
 
 	return fetch(`${config.apiUrl}/results/create`, requestOptions).then(handleResponse);

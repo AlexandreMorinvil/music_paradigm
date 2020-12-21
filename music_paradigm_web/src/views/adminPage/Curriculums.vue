@@ -28,14 +28,14 @@ import CurriculumsEditor from'@/components/admin/curriculums/CurriculumsEditorWi
 import CurriculumsTable from'@/components/admin/curriculums/CurriculumsTableWidget.vue';
 
 export default{
-	'components': {
-		'AdminPageContext': AdminPageContext,
-		'WidgetContext': WidgetContext,
-		'CurriculumsViewer': CurriculumsViewer,
-		'CurriculumsEditor': CurriculumsEditor,
-		'CurriculumsTable': CurriculumsTable
+	components: {
+		AdminPageContext: AdminPageContext,
+		WidgetContext: WidgetContext,
+		CurriculumsViewer: CurriculumsViewer,
+		CurriculumsEditor: CurriculumsEditor,
+		CurriculumsTable: CurriculumsTable
 	},
-	'name': 'AdminCurriculums'
+	name: 'AdminCurriculums'
 };
 </script>
 

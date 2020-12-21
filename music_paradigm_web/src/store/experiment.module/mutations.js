@@ -33,43 +33,43 @@ export default{
 		state.isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
 	},
 
-	'initExperiment': () => {
+	initExperiment: () => {
 		routerNavigation.moveToExperimentPrelude();
 	},
 
-	'updateState': (state) => {
+	updateState: (state) => {
 		const{ flow, cursor, isInitialized, settings } = state;
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
-	'moveNextStep': (state) => {
+	moveNextStep: (state) => {
 		const{ flow, cursor, isInitialized, settings } = state;
 		cursorHandler.advance(state.state, flow, cursor, isInitialized);
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
-	'movePostSkip': (state) => {
+	movePostSkip: (state) => {
 		const{ flow, cursor, isInitialized, settings } = state;
 		cursorHandler.skip(state.state, flow, cursor, isInitialized);
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
-	'movePostSkipRepetions': (state) => {
+	movePostSkipRepetions: (state) => {
 		const{ flow, cursor, isInitialized, settings } = state;
 		cursorHandler.moveCursorPostSkipRepetions(state.state, flow, cursor, isInitialized);
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
-	'endExperimentByTimeout': (state) => {
+	endExperimentByTimeout: (state) => {
 		const message = 'The time limit was reached.\nThe experiment ends here.';
 		stateHandler.forceEndState(state.state, state.isInitialized, message);
 	},
 
-	'leaveExperiment': () => {
+	leaveExperiment: () => {
 		routerNavigation.goToRootPage();
 	},
 
-	'addSuccess': (state) => {
+	addSuccess: (state) => {
 		state.state.record.isSuccess = true;
 		state.state.record.sucesses += 1;
 		state.state.record.successesInLoop += 1;

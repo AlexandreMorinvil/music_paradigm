@@ -53,14 +53,14 @@ import{ mapActions, mapGetters } from'vuex';
 import LoaderCircular from'@/components/LoaderCircular.vue';
 
 export default{
-	'name': 'ExperimentsWorkshopWidget',
-	'components': {
-		'loader': LoaderCircular
+	name: 'ExperimentsWorkshopWidget',
+	components: {
+		loader: LoaderCircular
 	},
 	data() {
 		return{};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('experiments', [
 			'isFetchingExperimentHeadersList',
 			'experimentsHeadersList',
@@ -70,7 +70,7 @@ export default{
 			return this.isFetchingExperimentHeadersList;
 		}
 	},
-	'methods': {
+	methods: {
 		...mapActions('experiments', [
 			'fetchAllExperimentsHeaders',
 			'setEditorExperiment',

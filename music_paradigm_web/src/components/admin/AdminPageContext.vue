@@ -22,19 +22,19 @@
 import ApplicationFooter from'@/components/ApplicationFooter.vue';
 
 export default{
-	'name': 'AdminPageFrame',
-	'components': {
-		'ApplicationFooter': ApplicationFooter
+	name: 'AdminPageFrame',
+	components: {
+		ApplicationFooter: ApplicationFooter
 	},
-	'props': {
-		'title': {
-			'type': String,
+	props: {
+		title: {
+			type: String,
 			default() {
 				return'Title';
 			}
 		},
-		'subTitle': {
-			'type': String,
+		subTitle: {
+			type: String,
 			default() {
 				return'Administrator Management Board';
 			}

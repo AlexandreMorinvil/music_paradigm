@@ -11,13 +11,13 @@ import{ ExperimentEventBus } from'@/_services/eventBus.service.js';
 import SkipButton from'@/components/experiment/SkipButton.vue';
 
 export default{
-	'name': 'FootnoteButton',
-	'components': {
-		'skipButton': SkipButton
+	name: 'FootnoteButton',
+	components: {
+		skipButton: SkipButton
 	},
-	'props': {
-		'message': {
-			'type': String,
+	props: {
+		message: {
+			type: String,
 			default() {
 				return'';
 			}
@@ -26,10 +26,10 @@ export default{
 	data() {
 		return{};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('experiment', ['skipStepButton', 'skipStepButtonMessage'])
 	},
-	'methods': {
+	methods: {
 		emitAdvanceSignal() {
 			ExperimentEventBus.$emit('advance-request');
 		}

@@ -16,14 +16,14 @@ import FootnoteSimple from'@/components/experiment/footnote/FootnoteSimple.vue';
 import FootnoteButton from'@/components/experiment/footnote/FootnoteButton.vue';
 
 export default{
-	'name': 'Footnote',
-	'components': {
-		'footnoteSimple': FootnoteSimple,
-		'footnoteButton': FootnoteButton
+	name: 'Footnote',
+	components: {
+		footnoteSimple: FootnoteSimple,
+		footnoteButton: FootnoteButton
 	},
-	'props': {
-		'message': {
-			'type': String,
+	props: {
+		message: {
+			type: String,
 			default() {
 				return'';
 			}
@@ -32,14 +32,14 @@ export default{
 	data() {
 		return{};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('experiment', ['footnoteType']),
 		type() {
 			if(this.footnoteType === 'button') return'footnoteButton';
 			else return'footnoteSimple';
 		}
 	},
-	'methods': {
+	methods: {
 		emitAdvanceSignal() {
 			this.$emit('advanceButtonClicked');
 		},

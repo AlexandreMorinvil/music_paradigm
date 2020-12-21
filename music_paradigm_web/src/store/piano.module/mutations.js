@@ -5,31 +5,31 @@ import functions from'./functions';
 import constants from'./constants';
 
 export default{
-	'resetPianoState': (state) => {
+	resetPianoState: (state) => {
 		Object.assign(state, constants.DEFAULT_PIANO_STATE_VALUES());
 	},
 
 	// Mutation on isPianoInitialized
-	'setInitializationState': (state, isInitialized) => {
+	setInitializationState: (state, isInitialized) => {
 		state.isPianoInitialized = isInitialized || false;
 	},
 
 	// Mutations on player
-	'setPlayer': (state, player) => {
+	setPlayer: (state, player) => {
 		state.player = player;
 	},
-	'playMidiFile': (state) => {
+	playMidiFile: (state) => {
 		state.player.play();
 	},
-	'addPlayerEndOfFileAction': (state, functionToExecute) => {
+	addPlayerEndOfFileAction: (state, functionToExecute) => {
 		state.player.on('endOfFile', functionToExecute);
 	},
-	'removePlayerEndOfFileAction': (state, functionToRemove) => {
+	removePlayerEndOfFileAction: (state, functionToRemove) => {
 		state.player.off('endOfFile', functionToRemove);
 	},
 
 	// Mutations on key interations arrays
-	'addPressedKey': (state, key) => {
+	addPressedKey: (state, key) => {
 		// This approach is used to add the pressed keys  in an array to ensure that
 		// only one insance of a given key is recorded at a time and to ensure that
 		// the mutations on pressedKeys or midiFileTriggeredKeys can be reactive with
@@ -39,24 +39,24 @@ export default{
 		const selectedIndex = state.pressedKeys.indexOf(key);
 		if(selectedIndex === -1) state.pressedKeys.push(key);
 	},
-	'deletePressedKey': (state, key) => {
+	deletePressedKey: (state, key) => {
 		const selectedIndex = state.pressedKeys.indexOf(key);
 		if(selectedIndex !== -1) state.pressedKeys.splice(selectedIndex, 1);
 	},
-	'addMidiFileTriggeredKey': (state, key) => {
+	addMidiFileTriggeredKey: (state, key) => {
 		const selectedIndex = state.midiFileTriggeredKeys.indexOf(key);
 		if(selectedIndex === -1) state.midiFileTriggeredKeys.push(key);
 	},
-	'deleteMidiFileTriggeredKey': (state, key) => {
+	deleteMidiFileTriggeredKey: (state, key) => {
 		const selectedIndex = state.midiFileTriggeredKeys.indexOf(key);
 		if(selectedIndex !== -1) state.midiFileTriggeredKeys.splice(selectedIndex, 1);
 	},
-	'deleteAllMidiFileTriggeredKey': (state) => {
+	deleteAllMidiFileTriggeredKey: (state) => {
 		state.midiFileTriggeredKeys.splice(0, state.midiFileTriggeredKeys.length);
 	},
 
 	// Mutations on the data from the notes played
-	'addPressedNoteLog': (state, key) => {
+	addPressedNoteLog: (state, key) => {
 		const noteCount = state.played.notes.midi.length;
 		if(noteCount === 0) state.played.startTime = key.time;
 		state.played.notes.volume.push(key.volume);
@@ -68,13 +68,13 @@ export default{
 		state.played.notes.name.push(midiConversion.midiNumberToName(key.note));
 	},
 
-	'addReleasedNoteLog': (state, key) => {
+	addReleasedNoteLog: (state, key) => {
 		state.played.notes.duration.push(key.time
             - state.played.startTime
             - state.played.notes.time[state.played.notes.time.length - 1]);
 	},
 
-	'resetPlayedNotesLogs': (state) => {
+	resetPlayedNotesLogs: (state) => {
 		// Record start time
 		state.played.startTime = 0;
 
@@ -96,20 +96,20 @@ export default{
 	},
 
 	// Mutations on the midi files data
-	'eraseMidiFile': (state) => {
+	eraseMidiFile: (state) => {
 		state.midiFile.name = '';
 		state.player.deleteFile();
 		state.midiFile.isLoaded = false;
 		functions.clearMidiFileNotes(state);
 	},
-	'setMidiFileName': (state, midiFileName) => {
+	setMidiFileName: (state, midiFileName) => {
 		state.midiFile.name = midiFileName;
 	},
-	'loadMidiArrayStream': (state, midiFile) => {
+	loadMidiArrayStream: (state, midiFile) => {
 		state.player.loadArrayBuffer(midiFile);
 		state.midiFile.isLoaded = true;
 	},
-	'parseMidiNotes': (state, midiFile) => {
+	parseMidiNotes: (state, midiFile) => {
 		const jsonMidi = new Midi(midiFile);
 		const notes = jsonMidi.tracks[0].notes;
 		functions.clearMidiFileNotes(state);
@@ -125,7 +125,7 @@ export default{
 	},
 
 	// Mutations for note performance evaluation
-	'evaluateSpeedType': (state) => {
+	evaluateSpeedType: (state) => {
 		// Evaluate the performance according to get specific metrics
 		Object.assign(state.played.evaluation,
 			notePerformance.evaluateSpeedType(state.midiFile.notes, state.played.notes));
@@ -133,12 +133,12 @@ export default{
 		// Grade the performance according to obtained metrics to provide feedback
 		state.played.evaluation.grades = notePerformance.gradeSpeedType(
 			state.played.evaluation.results, {
-				'minSequencePlayed': config.minSequencePlayed || 1
+				minSequencePlayed: config.minSequencePlayed || 1
 			}
 		);
 	},
 
-	'evaluateRhythmType': (state) => {
+	evaluateRhythmType: (state) => {
 		// Evaluate the performance according to get specific metrics
 		Object.assign(state.played.evaluation,
 			notePerformance.evaluateRhythmType(state.midiFile.notes, state.played.notes));
@@ -146,13 +146,13 @@ export default{
 		// Grade the performance according to obtained metrics to provide feedback
 		state.played.evaluation.grades = notePerformance.gradeRhythmType(
 			state.played.evaluation.results, {
-				'minNoteAccuracy': config.minNoteAccuracy || 100,
-				'maxRhythmError': config.maxRhythmError || 15
+				minNoteAccuracy: config.minNoteAccuracy || 100,
+				maxRhythmError: config.maxRhythmError || 15
 			}
 		);
 	},
 
-	'evaluateMelodyType': (state, melodyRepetion) => {
+	evaluateMelodyType: (state, melodyRepetion) => {
 		const reference = functions.multiplyMidiFileNotes(state, melodyRepetion);
 
 		// Evaluate the performance according to get specific metrics
@@ -162,7 +162,7 @@ export default{
 		// Grade the performance according to obtained metrics to provide feedback
 		state.played.evaluation.grades = notePerformance.gradeMelodyType(
 			state.played.evaluation.results, {
-				'minNoteAccuracy': config.minNoteAccuracy || 100
+				minNoteAccuracy: config.minNoteAccuracy || 100
 			}
 		);
 	}

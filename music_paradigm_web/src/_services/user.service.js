@@ -3,17 +3,17 @@ import{ authHeader, url } from'@/_helpers';
 
 const register = function(user) {
 	const requestOptions = {
-		'method': 'POST',
-		'headers': { ...authHeader(), 'Content-Type': 'application/json' },
-		'body': JSON.stringify(user)
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(user)
 	};
 	return fetch(url.users('register'), requestOptions).then(handleResponse);
 };
 
 const getListAllHeaders = function() {
 	const requestOptions = {
-		'method': 'GET',
-		'headers': authHeader()
+		method: 'GET',
+		headers: authHeader()
 	};
 	return fetch(url.users(''), requestOptions).then(handleResponse);
 };
@@ -21,25 +21,25 @@ const getListAllHeaders = function() {
 
 const getById = function(id) {
 	const requestOptions = {
-		'method': 'GET',
-		'headers': authHeader()
+		method: 'GET',
+		headers: authHeader()
 	};
 	return fetch(url.users(id), requestOptions).then(handleResponse);
 };
 
 const update = function(id, user) {
 	const requestOptions = {
-		'method': 'PUT',
-		'headers': { ...authHeader(), 'Content-Type': 'application/json' },
-		'body': JSON.stringify(user)
+		method: 'PUT',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(user)
 	};
 	return fetch(url.users(id), requestOptions).then(handleResponse);
 };
 
 const _delete = function(id) {
 	const requestOptions = {
-		'method': 'DELETE',
-		'headers': authHeader()
+		method: 'DELETE',
+		headers: authHeader()
 	};
 	return fetch(url.users(id), requestOptions).then(handleResponse);
 };
@@ -53,5 +53,5 @@ export const userService = {
 	getListAllHeaders,
 	getById,
 	update,
-	'delete': _delete
+	delete: _delete
 };

@@ -15,13 +15,13 @@ import'@/styles/navigationBarTemplate.css';
 import{ routerNavigation } from'@/_helpers';
 
 export default{
-	'name': 'NavigationBarExperiment',
-	'components': {},
+	name: 'NavigationBarExperiment',
+	components: {},
 	data() {
 		return{};
 	},
-	'computed': {},
-	'methods': {
+	computed: {},
+	methods: {
 		gotToHomePage() {
 			routerNavigation.goToRootPage();
 		}
@@ -30,7 +30,7 @@ export default{
 	mounted() {},
 	beforeDestroy() {},
 	destroyed() {},
-	'watch': {}
+	watch: {}
 };
 </script>
 

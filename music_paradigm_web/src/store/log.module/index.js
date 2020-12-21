@@ -5,7 +5,7 @@ import getters from'./getters';
 
 
 export const log = {
-	'namespaced': true,
+	namespaced: true,
 	state,
 	getters,
 	actions,

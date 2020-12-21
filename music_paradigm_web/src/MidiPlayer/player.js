@@ -4,7 +4,7 @@ import{ Utils } from'./utils';
 // Polyfill Uint8Array.forEach: Doesn't exist on Safari <10
 if(!Uint8Array.prototype.forEach) {
 	Object.defineProperty(Uint8Array.prototype, 'forEach', {
-		'value': Array.prototype.forEach
+		value: Array.prototype.forEach
 	});
 }
 
@@ -224,7 +224,7 @@ class Player {
 				}
 			}, this);
 
-			if(!dryRun) this.triggerPlayerEvent('playing', { 'tick': this.tick });
+			if(!dryRun) this.triggerPlayerEvent('playing', { tick: this.tick });
 			this.inLoop = false;
 		}
 	}
@@ -381,8 +381,8 @@ class Player {
 	 */
 	getTotalEvents() {
 		return this.tracks.reduce((a, b) => {
-			return{ 'events': { 'length': a.events.length + b.events.length } };
-		}, { 'events': { 'length': 0 } }).events.length;
+			return{ events: { length: a.events.length + b.events.length } };
+		}, { events: { length: 0 } }).events.length;
 	}
 
 	/**
@@ -416,8 +416,8 @@ class Player {
 	bytesProcessed() {
 		// Currently assume header chunk is strictly 14 bytes
 		return 14 + this.tracks.length * 8 + this.tracks.reduce((a, b) => {
-			return{ 'pointer': a.pointer + b.pointer };
-		}, { 'pointer': 0 }).pointer;
+			return{ pointer: a.pointer + b.pointer };
+		}, { pointer: 0 }).pointer;
 	}
 
 	/**
@@ -426,8 +426,8 @@ class Player {
 	 */
 	eventsPlayed() {
 		return this.tracks.reduce((a, b) => {
-			return{ 'eventIndex': a.eventIndex + b.eventIndex };
-		}, { 'eventIndex': 0 }).eventIndex;
+			return{ eventIndex: a.eventIndex + b.eventIndex };
+		}, { eventIndex: 0 }).eventIndex;
 	}
 
 	/**

@@ -18,7 +18,7 @@ export default{
 				},
 				(error) => {
 					commit('loginFailure', error);
-					dispatch('alert/setErrorAlert', error.message, { 'root': true });
+					dispatch('alert/setErrorAlert', error.message, { root: true });
 				}
 			);
 	},
@@ -37,7 +37,7 @@ export default{
 					commit('setDueExperiment', progressionSummary.dueExperiment);
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { 'root': true });
+					dispatch('alert/setErrorAlert', error.message, { root: true });
 				}
 			)
 			.finally(() => {

@@ -9,13 +9,13 @@
 import'@/styles/widgetTemplate.css';
 
 export default{
-	'name': 'ExperimentsViewerWidget',
-	'components': {},
+	name: 'ExperimentsViewerWidget',
+	components: {},
 	data() {
 		return{};
 	},
-	'computed': {},
-	'methods': {},
+	computed: {},
+	methods: {},
 	mounted() {}
 };
 </script>

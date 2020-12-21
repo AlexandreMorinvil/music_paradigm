@@ -1,7 +1,8 @@
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "node": true
   },
   "extends": ["eslint:recommended", "plugin:vue/essential"],
   "parserOptions": {
@@ -61,7 +62,7 @@
     "func-style": ["error", "declaration", { "allowArrowFunctions": true }],
     "function-call-argument-newline": ["error", "consistent"],
     "function-paren-newline": ["error", "consistent"],
-    "id-length": ["error", { "max": 50 }],
+    "id-length": ["error", { "min": 1, "max": 50 }],
     "key-spacing": ["error", { "beforeColon": false }],
     "keyword-spacing": ["error", { "before": true, "after": false }],
     "max-depth": ["error", 4],
@@ -85,7 +86,7 @@
     "object-curly-spacing": ["error", "always"],
     "operator-assignment": ["error", "always"],
     "operator-linebreak": ["error", "before"],
-    "quote-props": ["error", "always"],
+    "quote-props": ["error", "as-needed"],
     "semi-spacing": ["error", { "before": false, "after": true }],
     "semi-style": ["error", "last"],
     "sort-keys": "error",

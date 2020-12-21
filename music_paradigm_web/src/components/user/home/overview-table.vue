@@ -18,11 +18,11 @@
 import{ mapGetters } from'vuex';
 
 export default{
-	'name': 'OverviewTable',
+	name: 'OverviewTable',
 	data() {
 		return{};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('account', ['progressionSummary']),
 		elementsPerRow() {
 			const elementsCount = this.progressionSummary.length;
@@ -36,10 +36,10 @@ export default{
 			else return 7;
 		}
 	},
-	'methods': {},
+	methods: {},
 	beforeMount() {},
 	mounted() {},
-	'watch': {}
+	watch: {}
 };
 </script>
 

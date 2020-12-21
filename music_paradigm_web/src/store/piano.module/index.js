@@ -5,7 +5,7 @@ import getters from'./getters';
 
 
 export const piano = {
-	'namespaced': true,
+	namespaced: true,
 	state,
 	getters,
 	actions,

@@ -73,7 +73,7 @@ function moveCursorNextStep(flow, cursor, isInitialized = {}) {
 	// Moving to the next inner step if there remains inner steps (only in instruction blocks)
 	if(cursor.current.innerStepIndex < cursor.navigation.totalInnerSteps) {
 		cursor.current.innerStepIndex += 1;
-		Object.assign(isInitialized, { 'content': false });
+		Object.assign(isInitialized, { content: false });
 	}
 
 	// Moving to a new block

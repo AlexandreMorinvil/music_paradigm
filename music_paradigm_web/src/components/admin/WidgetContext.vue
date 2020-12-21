@@ -19,16 +19,16 @@
 
 <script>
 export default{
-	'name': 'WidgetContext',
-	'props': {
-		'title': {
-			'type': String,
+	name: 'WidgetContext',
+	props: {
+		title: {
+			type: String,
 			default() {
 				return'Unspecified Title';
 			}
 		},
-		'isShownInitial': {
-			'type': Boolean,
+		isShownInitial: {
+			type: Boolean,
 			default() {
 				return true;
 			}
@@ -36,16 +36,16 @@ export default{
 	},
 	data() {
 		return{
-			'isShown': true
+			isShown: true
 		};
 	},
-	'computed': {
+	computed: {
 		widgetDisplay() {
 			if(this.isShown) return'initial';
 			else return'none';
 		}
 	},
-	'methods': {
+	methods: {
 		toggle() {
 			this.isShown = !this.isShown;
 		}
@@ -54,7 +54,7 @@ export default{
 		this.isShown = this.isShownInitial;
 	},
 	destroyed() {},
-	'watch': {}
+	watch: {}
 };
 </script>
 

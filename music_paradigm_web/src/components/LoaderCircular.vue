@@ -4,7 +4,7 @@
 
 <script>
 export default{
-	'name': 'LoaderCircular'
+	name: 'LoaderCircular'
 };
 </script>
 

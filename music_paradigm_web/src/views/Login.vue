@@ -56,20 +56,20 @@ import ApplicationFooter from'@/components/ApplicationFooter.vue';
 import LoaderCircular from'@/components/LoaderCircular.vue';
 
 export default{
-	'name': 'Home',
-	'components': {
-		'applicationFooter': ApplicationFooter,
-		'loader': LoaderCircular
+	name: 'Home',
+	components: {
+		applicationFooter: ApplicationFooter,
+		loader: LoaderCircular
 	},
 	data() {
 		return{
-			'username': '',
-			'password': '',
-			'hasFocusedOnUsername': false,
-			'hasAttemptedSubmit': false
+			username: '',
+			password: '',
+			hasFocusedOnUsername: false,
+			hasAttemptedSubmit: false
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('account', ['isLoggingIn']),
 		hasUsernameError() {
 			return(
@@ -81,7 +81,7 @@ export default{
 			else return'';
 		}
 	},
-	'methods': {
+	methods: {
 		...mapActions('account', ['login']),
 		setUsernameHadFocus() {
 			this.hasFocusedOnUsername = true;

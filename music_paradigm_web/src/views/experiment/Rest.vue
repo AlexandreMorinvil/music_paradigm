@@ -32,14 +32,14 @@ import VisualPiano from'@/components/VisualPiano.vue';
 import SkipButton from'@/components/experiment/SkipButton.vue';
 
 export default{
-	'name': 'Rest',
-	'components': {
-		'visualPiano': VisualPiano,
-		'skipButton': SkipButton
+	name: 'Rest',
+	components: {
+		visualPiano: VisualPiano,
+		skipButton: SkipButton
 	},
-	'props': {
-		'lastPressedKey': {
-			'type': String,
+	props: {
+		lastPressedKey: {
+			type: String,
 			default() {
 				return'';
 			}
@@ -47,13 +47,13 @@ export default{
 	},
 	data() {
 		return{
-			'defaultTimeLimitInSeconds': 15, // Default time limit if no time is specified in the experiment
-			'counterUniqueIdentifier': 0, // Unique Identifier of the countdown used for clean up
-			'timeLeftInMilliseconds': 0, // Time left to the countdown
-			'timeStepInMilliseconds': 500 // Timesteps of the countdown in miliseconds
+			defaultTimeLimitInSeconds: 15, // Default time limit if no time is specified in the experiment
+			counterUniqueIdentifier: 0, // Unique Identifier of the countdown used for clean up
+			timeLeftInMilliseconds: 0, // Time left to the countdown
+			timeStepInMilliseconds: 500 // Timesteps of the countdown in miliseconds
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('experiment', ['pictureName', 'timeoutInSeconds']),
 		...mapGetters('experiment', [
@@ -100,7 +100,7 @@ export default{
 			return display;
 		}
 	},
-	'methods': {
+	methods: {
 		startCountdown() {
 			// This.timeLeftInMilliseconds = this.timeLimitInSeconds * 1000;
 			this.referenceTime = Date.parse(new Date());
@@ -120,7 +120,7 @@ export default{
 	beforeDestroy() {
 		window.clearInterval(this.counterUniqueIdentifier);
 	},
-	'watch': {
+	watch: {
 		lastPressedKey(lastPressedKey) {
 			if(this.hasSkipOption && lastPressedKey === this.skipStepButton) this.emitSkipSignal();
 		},

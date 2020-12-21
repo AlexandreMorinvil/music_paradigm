@@ -54,19 +54,19 @@ import ExperimentPiano from'@/components/ExperimentPiano.vue';
 import ExperimentTimer from'@/components/ExperimentTimer.vue';
 
 export default{
-	'name': 'Experiment',
-	'components': {
-		'piano': ExperimentPiano,
-		'timer': ExperimentTimer
+	name: 'Experiment',
+	components: {
+		piano: ExperimentPiano,
+		timer: ExperimentTimer
 	},
 	data() {
 		return{
-			'isSpaceBarPressed': false,
-			'needsConfirmationToLeave': true,
-			'lastPressedKey': ''
+			isSpaceBarPressed: false,
+			needsConfirmationToLeave: true,
+			lastPressedKey: ''
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('experiment', [
 			'stepsTotalCount',
 			'stepsLeftCount',
@@ -85,7 +85,7 @@ export default{
 			return 100 * (1 - this.stepsLeftCount / this.stepsTotalCount);
 		}
 	},
-	'methods': {
+	methods: {
 		...mapActions('experiment', [
 			'updateState',
 			'goNextStep',
@@ -160,10 +160,10 @@ export default{
 		this.resetPianoState();
 		this.clearState();
 	},
-	'watch': {
-		'midiName': {
-			'immediate': true,
-			'handler': function(midiName) {
+	watch: {
+		midiName: {
+			immediate: true,
+			handler: function(midiName) {
 				if(midiName !== '') this.loadMidiFile(this.midiName);
 			}
 		}

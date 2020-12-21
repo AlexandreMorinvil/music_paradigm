@@ -6,10 +6,10 @@
 
 <script>
 export default{
-	'name': 'FootnoteSimple',
-	'props': {
-		'message': {
-			'type': String,
+	name: 'FootnoteSimple',
+	props: {
+		message: {
+			type: String,
 			default() {
 				return'';
 			}

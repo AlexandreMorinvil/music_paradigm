@@ -9,7 +9,7 @@ export default{
 					commit('setHeadersList', curriculumsHeadersList);
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { 'root': true });
+					dispatch('alert/setErrorAlert', error.message, { root: true });
 				}
 			)
 			.finally(() => {
@@ -23,7 +23,7 @@ export default{
 				commit('setSelectedCurriculum', user);
 			},
 			(error) => {
-				dispatch('alert/setErrorAlert', `Curriculum selection failed : ${error.message}`, { 'root': true });
+				dispatch('alert/setErrorAlert', `Curriculum selection failed : ${error.message}`, { root: true });
 			}
 		);
 	},
@@ -38,11 +38,11 @@ export default{
 			.then(
 				(createdCurriculum) => {
 					commit('setSelectedCurriculum', createdCurriculum);
-					dispatch('alert/setSuccessAlert', 'Curriculum creation sucessful', { 'root': true });
+					dispatch('alert/setSuccessAlert', 'Curriculum creation sucessful', { root: true });
 					dispatch('fetchAllCurriculumHeaders');
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { 'root': true });
+					dispatch('alert/setErrorAlert', error.message, { root: true });
 				}
 			)
 			.finally(() => {
@@ -56,11 +56,11 @@ export default{
 			.then(
 				(updatedCurriculum) => {
 					commit('setSelectedCurriculum', updatedCurriculum);
-					dispatch('alert/setSuccessAlert', 'Curriculum update sucessful', { 'root': true });
+					dispatch('alert/setSuccessAlert', 'Curriculum update sucessful', { root: true });
 					dispatch('fetchAllCurriculumHeaders');
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { 'root': true });
+					dispatch('alert/setErrorAlert', error.message, { root: true });
 				}
 			)
 			.finally(() => {
@@ -74,11 +74,11 @@ export default{
 			.then(
 				() => {
 					commit('unsetSelectedCurriculum');
-					dispatch('alert/setSuccessAlert', 'Currirulum deletion sucessful', { 'root': true });
+					dispatch('alert/setSuccessAlert', 'Currirulum deletion sucessful', { root: true });
 					dispatch('fetchAllCurriculumHeaders');
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { 'root': true });
+					dispatch('alert/setErrorAlert', error.message, { root: true });
 				}
 			)
 			.finally(() => {

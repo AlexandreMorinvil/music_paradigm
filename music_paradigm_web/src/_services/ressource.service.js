@@ -7,8 +7,8 @@ export const ressourceService = {
 
 function fetchMidiFile(midiFileName) {
 	const requestOptions = {
-		'method': 'GET',
-		'headers': { ...authHeader(), 'Content-Type': 'application/json' }
+		method: 'GET',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' }
 	};
 
 	return fetch(url.experimentRessource(midiFileName), requestOptions).then(function(response) {

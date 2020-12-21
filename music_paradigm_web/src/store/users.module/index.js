@@ -5,7 +5,7 @@ import getters from'./getters';
 
 
 export const users = {
-	'namespaced': true,
+	namespaced: true,
 	state,
 	getters,
 	actions,

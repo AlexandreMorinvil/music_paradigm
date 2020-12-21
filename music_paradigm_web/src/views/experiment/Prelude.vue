@@ -11,11 +11,11 @@ import'@/styles/experimentStateTemplate.css';
 import{ mapGetters } from'vuex';
 
 export default{
-	'name': 'Prelude',
-	'components': {},
-	'props': {
-		'isSpaceBarPressed': {
-			'type': Boolean,
+	name: 'Prelude',
+	components: {},
+	props: {
+		isSpaceBarPressed: {
+			type: Boolean,
 			default() {
 				return false;
 			}
@@ -24,7 +24,7 @@ export default{
 	data() {
 		return{};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('piano', ['isPianoInitialized']),
 		footnote() {
 			return'Please wait a moment';
@@ -34,10 +34,10 @@ export default{
 			else return'Ready';
 		}
 	},
-	'watch': {
-		'isPianoInitialized': {
-			'immediate': true,
-			'handler': function(isReady) {
+	watch: {
+		isPianoInitialized: {
+			immediate: true,
+			handler: function(isReady) {
 				if(isReady) this.$emit('experimentReady');
 			}
 		}

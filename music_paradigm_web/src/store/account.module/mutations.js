@@ -4,7 +4,7 @@ export default{
 	loginRequest(state) {
 		// Set the status to logined in
 		Object.assign(state.status, {
-			'loggingIn': true
+			loggingIn: true
 		});
 	},
 
@@ -14,8 +14,8 @@ export default{
 
 		// Set the status to logined in
 		Object.assign(state.status, {
-			'loggingIn': false,
-			'loggedIn': true
+			loggingIn: false,
+			loggedIn: true
 		});
 	},
 
@@ -25,8 +25,8 @@ export default{
 
 		// Set the status to not logged in and not logging in
 		Object.assign(state.status, {
-			'loggingIn': false,
-			'loggedIn': false
+			loggingIn: false,
+			loggedIn: false
 		});
 	},
 
@@ -36,7 +36,7 @@ export default{
 
 		// Set the status to not logged in
 		Object.assign(state.status, {
-			'loggedIn': false
+			loggedIn: false
 		});
 	},
 

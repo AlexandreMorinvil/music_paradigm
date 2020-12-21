@@ -50,14 +50,14 @@ import{ mapActions, mapGetters } from'vuex';
 import LoaderCircular from'@/components/LoaderCircular.vue';
 
 export default{
-	'name': 'UsersTableWidget',
-	'components': {
-		'loader': LoaderCircular
+	name: 'UsersTableWidget',
+	components: {
+		loader: LoaderCircular
 	},
 	data() {
 		return{};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('users', [
 			'isFetchingUserHeadersList',
 			'usersHeadersList',
@@ -67,7 +67,7 @@ export default{
 			return this.isFetchingUserHeadersList;
 		}
 	},
-	'methods': {
+	methods: {
 		...mapActions('users', ['fetchAllUsersHeaders', 'setSelectedUser']),
 		handleRefresh() {
 			this.fetchAllUsersHeaders();

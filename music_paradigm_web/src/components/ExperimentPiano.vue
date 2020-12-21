@@ -15,10 +15,10 @@ import MidiPlayer from'@/MidiPlayer';
 import map from'@/_helpers/keyboardMapping';
 
 export default{
-	'name': 'ThePiano',
-	'props': {
-		'display': {
-			'type': Boolean,
+	name: 'ThePiano',
+	props: {
+		display: {
+			type: Boolean,
 			default() {
 				return false;
 			}
@@ -26,17 +26,17 @@ export default{
 	},
 	data() {
 		return{
-			'player': null,
-			'audioConctext': null,
-			'piano': null,
-			'playingNotes': {},
-			'currentOctave': 4, // FIXME: This should be directly in the keyboard mapping
-			'keyboardTracker': {}, // Keeps track of keydown and keyup events for each key
-			'midiAccess': null,
-			'midiInputs': []
+			player: null,
+			audioConctext: null,
+			piano: null,
+			playingNotes: {},
+			currentOctave: 4, // FIXME: This should be directly in the keyboard mapping
+			keyboardTracker: {}, // Keeps track of keydown and keyup events for each key
+			midiAccess: null,
+			midiInputs: []
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('piano', ['isPianoInitialized', 'pressedKeys', 'midiFileNotesName']),
 		...mapGetters('experiment', ['timbreFile', 'enableSoundFlag']),
 		soundStatus() {
@@ -48,7 +48,7 @@ export default{
 			return this.enableSoundFlag ? 'active' : 'inactive';
 		}
 	},
-	'methods': {
+	methods: {
 		...mapActions('piano', [
 			'setInitializationState',
 			'setPlayer',
@@ -72,9 +72,9 @@ export default{
      */
 		manageMidiNote(midiNote) {
 			const midiMessage = {
-				'type': midiNote.data[0] === 144 ? 'Note On' : 'Note Off',
-				'note': midiNote.data[1] + 12,
-				'velocity': midiNote.data[2]
+				type: midiNote.data[0] === 144 ? 'Note On' : 'Note Off',
+				note: midiNote.data[1] + 12,
+				velocity: midiNote.data[2]
 			};
 
 			// Additional support for MIDI protocoles using a velocity === 0 as a Note Off signal
@@ -106,7 +106,7 @@ export default{
 		},
 		playNote(note) {
 			this.playingNotes[note] = this.piano.play(note, 0, {
-				'gain': (vel) => {
+				gain: (vel) => {
 					return vel / 127;
 				}
 			});
@@ -118,17 +118,17 @@ export default{
 		recordKeyPress(midiMessage) {
 			this.addPressedKey(midiMessage.note);
 			this.addPressedNoteLog({
-				'volume': this.enableSoundFlag,
-				'note': midiMessage.note,
-				'time': new Date().getTime(),
-				'velocity': midiMessage.velocity
+				volume: this.enableSoundFlag,
+				note: midiMessage.note,
+				time: new Date().getTime(),
+				velocity: midiMessage.velocity
 			});
 		},
 		recordKeyReleased(note) {
 			this.deletePressedKey(note);
 			this.addReleasedNoteLog({
-				'note': note,
-				'time': new Date().getTime()
+				note: note,
+				time: new Date().getTime()
 			});
 		},
 		toNote(e) {
@@ -137,15 +137,15 @@ export default{
 		playNoteFromMidiFile(noteName, velocity) {
 			const currentTime = this.audioConctext.currentTime;
 			this.piano.play(noteName, currentTime, {
-				'gain': velocity / 127,
-				'duration': 1
+				gain: velocity / 127,
+				duration: 1
 			});
 		},
 		stopNoteFromMidiFile(noteName) {
 			const currentTime = this.audioConctext.currentTime;
 			this.piano.play(noteName, currentTime, {
-				'gain': 0,
-				'duration': 1
+				gain: 0,
+				duration: 1
 			});
 		},
 		initPiano() {
@@ -183,7 +183,7 @@ export default{
 			// noteOn event without having most recently sent a noteOff, end here.
 			if(note === undefined || this.keyboardTracker[note]) return;
 			this.keyboardTracker[note] = true;
-			this.manageMidiNote({ 'data': [144, note, 127] });
+			this.manageMidiNote({ data: [144, note, 127] });
 		},
 		handleKeyRelease(key) {
 			switch(key.code) {
@@ -208,7 +208,7 @@ export default{
 				const note = this.toNote(key);
 				if(note !== undefined) {
 					this.keyboardTracker[note] = false;
-					this.manageMidiNote({ 'data': [128, note, 127] });
+					this.manageMidiNote({ data: [128, note, 127] });
 				}
 			}
 			}
@@ -269,7 +269,7 @@ export default{
 		this.midiAccess = null;
 		this.setInitializationState(false);
 	},
-	'watch': {}
+	watch: {}
 };
 </script>
 

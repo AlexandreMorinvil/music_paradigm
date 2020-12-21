@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint --type-check --format stylish --ext js,.vue"
+    "lint": "vue-cli-service lint --type-check --format stylish --ext js,.vue",
+    "lint:fix": "npm run lint -- --fix"
   },
   "dependencies": {
     "@tonejs/midi": "^2.0.23",

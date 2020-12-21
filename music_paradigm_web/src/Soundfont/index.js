@@ -48,7 +48,7 @@ function instrument(ac, name, options) {
 	const toUrl = opts.nameToUrl || nameToUrl;
 	const url = isUrl(name) ? name : toUrl(name, opts.soundfont, opts.format);
 
-	return load(ac, url, { 'only': opts.only || opts.notes }).then(function(buffers) {
+	return load(ac, url, { only: opts.only || opts.notes }).then(function(buffers) {
 		const p = player(ac, buffers, opts).connect(opts.destination ? opts.destination : ac.destination);
 		p.url = url;
 		p.name = name;

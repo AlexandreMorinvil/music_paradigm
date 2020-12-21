@@ -61,16 +61,16 @@ import{ validator } from'@/_helpers';
 import CodeEditor from'@/components/admin/TextEditor.vue';
 
 export default{
-	'name': 'ExperimentsWorkshopWidget',
-	'components': {
-		'codeEditor': CodeEditor
+	name: 'ExperimentsWorkshopWidget',
+	components: {
+		codeEditor: CodeEditor
 	},
 	data() {
 		return{
-			'isEditorModified': false
+			isEditorModified: false
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('experiments', [
 			'experimentEdited',
 			'experimentSelected',
@@ -90,7 +90,7 @@ export default{
 			return'Selection Status (TODO)';
 		}
 	},
-	'methods': {
+	methods: {
 		...mapActions('alert', ['setErrorAlert', 'setInformationAlert']),
 		...mapActions('experiments', [
 			'compileExperiment',
@@ -117,8 +117,8 @@ export default{
 			);
 			if(answer) {
 				this.updateExperiment({
-					'id': this.selectedId,
-					'experiment': this.experimentEdited
+					id: this.selectedId,
+					experiment: this.experimentEdited
 				});
 			}
 		},
@@ -198,7 +198,7 @@ export default{
 				(newValue) => {
 					this.setEditorContent(JSON.stringify(newValue, null, '\t'));
 				},
-				{ 'immediate': true }
+				{ immediate: true }
 			);
 		},
 		writeSelectionToReferenceChanges() {
@@ -207,7 +207,7 @@ export default{
 				(newValue) => {
 					this.setReferenceContent(JSON.stringify(newValue, null, '\t'));
 				},
-				{ 'immediate': true }
+				{ immediate: true }
 			);
 		},
 		notEmplementedYet() {

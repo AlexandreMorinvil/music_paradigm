@@ -28,22 +28,22 @@ import ExperimentsEditor from'@/components/admin/experiments/ExperimentsEditorWi
 import ExperimentsTable from'@/components/admin/experiments/ExperimentsTableWidget.vue';
 
 export default{
-	'name': 'AdminExperiments',
-	'components': {
-		'AdminPageContext': AdminPageContext,
-		'WidgetContext': WidgetContext,
-		'experimentsViewer': ExperimentsViewer,
-		'experimentsEditor': ExperimentsEditor,
-		'ExperimentsTable': ExperimentsTable
+	name: 'AdminExperiments',
+	components: {
+		AdminPageContext: AdminPageContext,
+		WidgetContext: WidgetContext,
+		experimentsViewer: ExperimentsViewer,
+		experimentsEditor: ExperimentsEditor,
+		ExperimentsTable: ExperimentsTable
 	},
 	data() {
 		return{};
 	},
-	'computed': {},
-	'methods': {},
+	computed: {},
+	methods: {},
 	mounted() {},
 	destroyed() {},
-	'watch': {}
+	watch: {}
 };
 </script>
 

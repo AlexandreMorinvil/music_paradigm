@@ -17,8 +17,8 @@
 import'@/styles/experimentStateTemplate.css';
 
 export default{
-	'name': 'Transition',
-	'components': {}
+	name: 'Transition',
+	components: {}
 };
 </script>
 

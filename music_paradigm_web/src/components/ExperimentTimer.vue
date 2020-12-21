@@ -14,37 +14,37 @@
 
 <script>
 export default{
-	'name': 'Playing',
-	'props': {
-		'mustCountDown': {
-			'type': Boolean,
+	name: 'Playing',
+	props: {
+		mustCountDown: {
+			type: Boolean,
 			default() {
 				return false;
 			}
 		},
-		'startTimeInSeconds': {
-			'type': Number,
+		startTimeInSeconds: {
+			type: Number,
 			default() {
 				return 0;
 			}
 		}
 	},
-	'components': {},
+	components: {},
 	data() {
 		return{
-			'turnedOn': false,
-			'counterUniqueIdentifier': 0,
-			'timeStepInMilliseconds': 1000,
-			'referenceTime': 0,
-			'totalTime': 0,
-			'cumulatedTime': 0,
-			'seconds': 0,
-			'minutes': 0,
-			'hours': 0,
-			'days': 0
+			turnedOn: false,
+			counterUniqueIdentifier: 0,
+			timeStepInMilliseconds: 1000,
+			referenceTime: 0,
+			totalTime: 0,
+			cumulatedTime: 0,
+			seconds: 0,
+			minutes: 0,
+			hours: 0,
+			days: 0
 		};
 	},
-	'computed': {
+	computed: {
 		color() {
 			return this.turnedOn ? 'active' : 'inactive';
 		},
@@ -60,7 +60,7 @@ export default{
 			);
 		}
 	},
-	'methods': {
+	methods: {
 		setTime(value) {
 			this.cumulatedTime = value * 1000;
 			this.totalTime = this.cumulatedTime;
@@ -105,7 +105,7 @@ export default{
 		window.clearInterval(this.counterUniqueIdentifier);
 	},
 	destroyed() {},
-	'watch': {
+	watch: {
 		totalTime(value) {
 			if(value < 0) {
 				this.setTime(0);

@@ -40,17 +40,17 @@ import SkipButton from'@/components/experiment/SkipButton.vue';
 import StartSignalTimer from'@/components/experiment/StartSignalTimer.vue';
 
 export default{
-	'name': 'Playing',
-	'components': {
-		'skipButton': SkipButton,
-		'speed': PlayingSpeedComponent,
-		'rhythm': PlayingRhythmComponent,
-		'melody': PlayingMelodyComponent,
-		'startSignalTimer': StartSignalTimer
+	name: 'Playing',
+	components: {
+		skipButton: SkipButton,
+		speed: PlayingSpeedComponent,
+		rhythm: PlayingRhythmComponent,
+		melody: PlayingMelodyComponent,
+		startSignalTimer: StartSignalTimer
 	},
-	'props': {
-		'lastPressedKey': {
-			'type': String,
+	props: {
+		lastPressedKey: {
+			type: String,
 			default() {
 				return'';
 			}
@@ -58,11 +58,11 @@ export default{
 	},
 	data() {
 		return{
-			'footnote': 'The experiment will go to the next step after your performance',
-			'hasReceivedStartSignal': false
+			footnote: 'The experiment will go to the next step after your performance',
+			hasReceivedStartSignal: false
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['hasSuccess']),
 		...mapGetters('experiment', [
@@ -88,7 +88,7 @@ export default{
 			return this.startSignal > 0 && !this.hasReceivedStartSignal;
 		}
 	},
-	'methods': {
+	methods: {
 		...mapActions('experiment', ['addSuccess']),
 		...mapActions('log', ['createSimpleLog']),
 		handleFootnote(footNote) {
@@ -118,7 +118,7 @@ export default{
 	beforeDestroy() {
 		ExperimentEventBus.$off('start-signal-ready', this.startPerformance);
 	},
-	'watch': {
+	watch: {
 		lastPressedKey(lastPressedKey) {
 			if(this.hasSkipOption && lastPressedKey === this.skipStepButton) this.emitSkipSignal();
 		}

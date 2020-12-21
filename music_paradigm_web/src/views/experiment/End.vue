@@ -17,11 +17,11 @@ import'@/styles/experimentStateTemplate.css';
 import{ mapGetters } from'vuex';
 
 export default{
-	'name': 'End',
-	'components': {},
-	'props': {
-		'isSpaceBarPressed': {
-			'type': Boolean,
+	name: 'End',
+	components: {},
+	props: {
+		isSpaceBarPressed: {
+			type: Boolean,
 			default() {
 				return false;
 			}
@@ -30,7 +30,7 @@ export default{
 	data() {
 		return{};
 	},
-	'computed': {
+	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['pressedKeys']),
 		...mapGetters('experiment', [
@@ -60,9 +60,9 @@ export default{
 			else return'Press the space bar for ending the experiment';
 		}
 	},
-	'methods': {},
+	methods: {},
 	mounted() {},
-	'watch': {
+	watch: {
 		isSpaceBarPressed(isPressed) {
 			if(isPressed) {
 				this.$emit('experimentEnded');

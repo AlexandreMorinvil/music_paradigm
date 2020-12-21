@@ -28,12 +28,12 @@ import UsersEditor from'@/components/admin/users/UsersEditorWidget.vue';
 import UsersTable from'@/components/admin/users/UsersTableWidget.vue';
 
 export default{
-	'components': {
-		'AdminPageContext': AdminPageContext,
-		'WidgetContext': WidgetContext,
-		'UsersViewer': UsersViewer,
-		'UsersEditor': UsersEditor,
-		'UsersTable': UsersTable
+	components: {
+		AdminPageContext: AdminPageContext,
+		WidgetContext: WidgetContext,
+		UsersViewer: UsersViewer,
+		UsersEditor: UsersEditor,
+		UsersTable: UsersTable
 	}
 };
 </script>

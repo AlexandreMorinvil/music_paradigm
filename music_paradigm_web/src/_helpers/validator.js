@@ -1,10 +1,10 @@
 const getMinimalValidExperimentStructure = function() {
 	return{
-		'name': '',
-		'folder': '',
-		'flow': [
+		name: '',
+		folder: '',
+		flow: [
 			{
-				'type': ''
+				type: ''
 			}
 		]
 	};

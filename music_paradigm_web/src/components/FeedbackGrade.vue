@@ -31,21 +31,21 @@
 import{ mapGetters } from'vuex';
 
 export default{
-	'name': 'feedbackGrade',
-	'props': {
-		'grade': {
-			'type': Object,
+	name: 'feedbackGrade',
+	props: {
+		grade: {
+			type: Object,
 			default() {
 				return{
-					'criteria': 'No criteria',
-					'mark': 0,
-					'passMark': 60,
-					'topMark': 100
+					criteria: 'No criteria',
+					mark: 0,
+					passMark: 60,
+					topMark: 100
 				};
 			}
 		}
 	},
-	'computed': {
+	computed: {
 		...mapGetters('experiment', ['hideFeedbackSmiley', 'feedbackNumerical']),
 		isSuccess() {
 			return this.grade.mark >= this.grade.passMark;

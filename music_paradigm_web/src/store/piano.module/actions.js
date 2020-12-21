@@ -1,64 +1,64 @@
 import{ ressourceService } from'../../_services';
 
 export default{
-	'resetPianoState': ({ commit }) => {
+	resetPianoState: ({ commit }) => {
 		commit('resetPianoState');
 	},
 
 	// Initialization actions
-	'setInitializationState': ({ commit }, isInitialized) => {
+	setInitializationState: ({ commit }, isInitialized) => {
 		commit('setInitializationState', isInitialized);
 	},
 
 	// Player actions
-	'setPlayer': ({ commit }, player) => {
+	setPlayer: ({ commit }, player) => {
 		commit('setPlayer', player);
 	},
-	'playMidiFile': ({ commit }) => {
+	playMidiFile: ({ commit }) => {
 		commit('playMidiFile');
 	},
-	'addPlayerEndOfFileAction': ({ commit }, functionToExecute) => {
+	addPlayerEndOfFileAction: ({ commit }, functionToExecute) => {
 		commit('addPlayerEndOfFileAction', functionToExecute);
 	},
-	'removePlayerEndOfFileAction': ({ commit }, functionToRemove) => {
+	removePlayerEndOfFileAction: ({ commit }, functionToRemove) => {
 		commit('removePlayerEndOfFileAction', functionToRemove);
 	},
 
 	// Key interaction actions
-	'addPressedKey': ({ commit }, key) => {
+	addPressedKey: ({ commit }, key) => {
 		commit('addPressedKey', key);
 	},
-	'deletePressedKey': ({ commit }, key) => {
+	deletePressedKey: ({ commit }, key) => {
 		commit('deletePressedKey', key);
 	},
-	'addMidiFileTriggeredKey': ({ commit }, key) => {
+	addMidiFileTriggeredKey: ({ commit }, key) => {
 		commit('addMidiFileTriggeredKey', key);
 	},
-	'deleteMidiFileTriggeredKey': ({ commit }, key) => {
+	deleteMidiFileTriggeredKey: ({ commit }, key) => {
 		commit('deleteMidiFileTriggeredKey', key);
 	},
-	'deleteAllMidiFileTriggeredKey': ({ commit }) => {
+	deleteAllMidiFileTriggeredKey: ({ commit }) => {
 		commit('deleteAllMidiFileTriggeredKey');
 	},
 
 	// Log of played notes
-	'addPressedNoteLog': ({ commit }, key) => {
+	addPressedNoteLog: ({ commit }, key) => {
 		commit('addPressedNoteLog', key);
 	},
 
-	'addReleasedNoteLog': ({ commit }, key) => {
+	addReleasedNoteLog: ({ commit }, key) => {
 		commit('addReleasedNoteLog', key);
 	},
 
-	'resetPlayedNotesLogs': ({ commit }) => {
+	resetPlayedNotesLogs: ({ commit }) => {
 		commit('resetPlayedNotesLogs');
 	},
 
 	// Midi file management
-	'eraseMidiFile': ({ commit }) => {
+	eraseMidiFile: ({ commit }) => {
 		commit('eraseMidiFile');
 	},
-	'loadMidiFile': ({ commit, dispatch }, midiFileName) => {
+	loadMidiFile: ({ commit, dispatch }, midiFileName) => {
 		dispatch('eraseMidiFile');
 		return ressourceService.fetchMidiFile(midiFileName)
 			.then(
@@ -74,13 +74,13 @@ export default{
 	},
 
 	// Performance evaluation
-	'evaluateRhythmType': ({ commit }) => {
+	evaluateRhythmType: ({ commit }) => {
 		commit('evaluateRhythmType');
 	},
-	'evaluateSpeedType': ({ commit }) => {
+	evaluateSpeedType: ({ commit }) => {
 		commit('evaluateSpeedType');
 	},
-	'evaluateMelodyType': ({ commit }, melodyRepetion) => {
+	evaluateMelodyType: ({ commit }, melodyRepetion) => {
 		commit('evaluateMelodyType', melodyRepetion);
 	}
 };

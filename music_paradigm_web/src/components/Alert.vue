@@ -13,14 +13,14 @@
 <script>
 import{ mapActions, mapGetters } from'vuex';
 export default{
-	'name': 'Alert',
+	name: 'Alert',
 	data() {
 		return{
-			'timeoutUniqueIdentifier': 0,
-			'timeoutInSeconds': 15
+			timeoutUniqueIdentifier: 0,
+			timeoutInSeconds: 15
 		};
 	},
-	'computed': {
+	computed: {
 		...mapGetters('alert', ['hasAlert', 'alertCounter', 'alertType', 'alertMessage']),
 		alertTypeClass() {
 			switch(this.alertType) {
@@ -44,16 +44,16 @@ export default{
 			return this.alertType.toUpperCase() + ':';
 		}
 	},
-	'methods': {
+	methods: {
 		...mapActions('alert', ['clearAlert'])
 	},
 	beforeDestroy() {
 		clearTimeout(this.timeoutUniqueIdentifier);
 	},
-	'watch': {
-		'alertCounter': {
-			'immediate': true,
-			'handler': function(value) {
+	watch: {
+		alertCounter: {
+			immediate: true,
+			handler: function(value) {
 				if(value) {
 					clearTimeout(this.timeoutUniqueIdentifier);
 					this.timeoutUniqueIdentifier = setTimeout(

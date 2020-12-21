@@ -3,19 +3,19 @@ import{ adminSessionService } from'@/_services';
 export default{
 	createSimpleLog({ commit, rootGetters }) {
 		const simpleLog = {
-			'userId': rootGetters['account/accountId'],
-			'experimentId': rootGetters['experiment/experimentId'],
+			userId: rootGetters['account/accountId'],
+			experimentId: rootGetters['experiment/experimentId'],
 
-			'username': rootGetters['account/username'],
-			'experimentGroup': rootGetters['experiment/experimentGroup'],
-			'experimentName': rootGetters['experiment/experimentName'],
-			'experimentVersion': rootGetters['experiment/experimentVersion'],
+			username: rootGetters['account/username'],
+			experimentGroup: rootGetters['experiment/experimentGroup'],
+			experimentName: rootGetters['experiment/experimentName'],
+			experimentVersion: rootGetters['experiment/experimentVersion'],
 
-			'startTimestamp': { 'type': Date, 'default': Date.now },
+			startTimestamp: { type: Date, default: Date.now },
 
-			'blockType': rootGetters['experiment/currentStateType'],
-			'blockSubType': rootGetters['experiment/playingMode'],
-			'timestamp': Date.now(),
+			blockType: rootGetters['experiment/currentStateType'],
+			blockSubType: rootGetters['experiment/playingMode'],
+			timestamp: Date.now(),
 
 			...rootGetters['piano/pianoSimpleLogSummary'],
 			...rootGetters['piano/pianoSimpleLogPreprocesed']
@@ -37,13 +37,13 @@ export default{
 
 	initializeLogSession({ commit, rootGetters }) {
 		const sessionLogHeader = {
-			'userId': rootGetters['account/accountId'],
-			'experimentId': rootGetters['experiment/experimentId'],
-			'username': rootGetters['account/username'],
-			'experimentGroup': rootGetters['experiment/experimentGroup'],
-			'experimentName': rootGetters['experiment/experimentName'],
-			'experimentVersion': rootGetters['experiment/experimentVersion'],
-			'startTimestamp': Date.now()
+			userId: rootGetters['account/accountId'],
+			experimentId: rootGetters['experiment/experimentId'],
+			username: rootGetters['account/username'],
+			experimentGroup: rootGetters['experiment/experimentGroup'],
+			experimentName: rootGetters['experiment/experimentName'],
+			experimentVersion: rootGetters['experiment/experimentVersion'],
+			startTimestamp: Date.now()
 		};
 		commit('indicateCreateRequest');
 		return adminSessionService.createAdminSession(sessionLogHeader)
@@ -63,9 +63,9 @@ export default{
 
 	addBlockToLogSession({ commit, getters, rootGetters }) {
 		const block = {
-			'blockType': rootGetters['experiment/currentStateType'],
-			'timestamp': Date.now(),
-			'notes': rootGetters['piano/pianoLogSummary']
+			blockType: rootGetters['experiment/currentStateType'],
+			timestamp: Date.now(),
+			notes: rootGetters['piano/pianoLogSummary']
 		};
 		commit('indicateAddBlockRequest');
 		return adminSessionService.addBlock(getters.logSessionId, block)

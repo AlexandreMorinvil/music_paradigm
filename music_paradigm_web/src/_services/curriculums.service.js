@@ -3,42 +3,42 @@ import{ authHeader, url } from'@/_helpers';
 
 const create = function(curriculum) {
 	const requestOptions = {
-		'method': 'POST',
-		'headers': { ...authHeader(), 'Content-Type': 'application/json' },
-		'body': JSON.stringify(curriculum)
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(curriculum)
 	};
 	return fetch(url.curriculums(''), requestOptions).then(handleResponse);
 };
 
 const getListAllHeaders = function() {
 	const requestOptions = {
-		'method': 'GET',
-		'headers': authHeader()
+		method: 'GET',
+		headers: authHeader()
 	};
 	return fetch(url.curriculums(''), requestOptions).then(handleResponse);
 };
 
 const getById = function(id) {
 	const requestOptions = {
-		'method': 'GET',
-		'headers': authHeader()
+		method: 'GET',
+		headers: authHeader()
 	};
 	return fetch(url.curriculums(id), requestOptions).then(handleResponse);
 };
 
 const update = function(id, curriculum) {
 	const requestOptions = {
-		'method': 'PUT',
-		'headers': { ...authHeader(), 'Content-Type': 'application/json' },
-		'body': JSON.stringify(curriculum)
+		method: 'PUT',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(curriculum)
 	};
 	return fetch(url.curriculums(id), requestOptions).then(handleResponse);
 };
 
 const _delete = function(id) {
 	const requestOptions = {
-		'method': 'DELETE',
-		'headers': authHeader()
+		method: 'DELETE',
+		headers: authHeader()
 	};
 	return fetch(url.curriculums(id), requestOptions).then(handleResponse);
 };
@@ -52,5 +52,5 @@ export const curriculumService = {
 	getListAllHeaders,
 	getById,
 	update,
-	'delete': _delete
+	delete: _delete
 };

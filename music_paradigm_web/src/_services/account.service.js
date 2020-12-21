@@ -19,9 +19,9 @@ function resumeLogin() {
 
 function login(username, password) {
 	const requestOptions = {
-		'method': 'POST',
-		'headers': { 'Content-Type': 'application/json' },
-		'body': JSON.stringify({ username, password })
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ username, password })
 	};
 
 	return fetch(url.account('authenticate'), requestOptions)
@@ -45,8 +45,8 @@ function logout() {
 
 function fetchProgressionSummary() {
 	const requestOptions = {
-		'method': 'GET',
-		'headers': authHeader()
+		method: 'GET',
+		headers: authHeader()
 	};
 	return fetch(url.account('progressionSummary'), requestOptions).then(handleResponse);
 }

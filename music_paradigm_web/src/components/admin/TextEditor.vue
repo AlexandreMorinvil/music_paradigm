@@ -49,18 +49,18 @@ import'codemirror/addon/lint/lint';
 import'codemirror/addon/lint/json-lint.js';
 
 export default{
-	'components': {
+	components: {
 		codemirror
 	},
-	'props': {
-		'startText': {
-			'type': String,
+	props: {
+		startText: {
+			type: String,
 			default() {
 				return'';
 			}
 		},
-		'readOnly': {
-			'type': Boolean,
+		readOnly: {
+			type: Boolean,
 			default() {
 				return false;
 			}
@@ -68,30 +68,30 @@ export default{
 	},
 	data() {
 		return{
-			'isFullScreen': false,
-			'code': '',
-			'cmOptions': {
-				'tabSize': 4,
-				'mode': 'application/json', // "text/javascript",
-				'theme': 'solarized',
-				'lineNumbers': true,
-				'line': true,
-				'indentUnit': 4,
-				'electricChars': true,
-				'lineWrapping': false,
-				'readOnly': this.readOnly,
-				'showCursorWhenSelecting': true,
-				'pasteLinesPerSelection': true,
-				'gutters': ['CodeMirror-lint-markers'],
-				'lint': true
+			isFullScreen: false,
+			code: '',
+			cmOptions: {
+				tabSize: 4,
+				mode: 'application/json', // "text/javascript",
+				theme: 'solarized',
+				lineNumbers: true,
+				line: true,
+				indentUnit: 4,
+				electricChars: true,
+				lineWrapping: false,
+				readOnly: this.readOnly,
+				showCursorWhenSelecting: true,
+				pasteLinesPerSelection: true,
+				gutters: ['CodeMirror-lint-markers'],
+				lint: true
 			},
-			'textSizeFactor': 1,
-			'minTextSizeFactor': 0.1,
-			'maxTextSizeFactor': 3,
-			'textSizeFactorVariationStep': 0.2
+			textSizeFactor: 1,
+			minTextSizeFactor: 0.1,
+			maxTextSizeFactor: 3,
+			textSizeFactorVariationStep: 0.2
 		};
 	},
-	'computed': {
+	computed: {
 		codemirror() {
 			return this.$refs.cmEditor.codemirror;
 		},
@@ -99,7 +99,7 @@ export default{
 			return'--textSizeFactor: ' + this.textSizeFactor + ';';
 		}
 	},
-	'methods': {
+	methods: {
 		onCmReady() {
 			this.$emit('ready');
 		},
@@ -145,7 +145,7 @@ export default{
 		// Deep copy the text of the start value props
 		if(this.startText) this.code = (' ' + this.startText).slice(1);
 	},
-	'watch': {
+	watch: {
 		isFullScreen(isTrue) {
 			if(isTrue) {
 				this.codemirror.setSize('100%', '100%');

@@ -1,34 +1,34 @@
 export default{
-	'clearState': ({ commit }) => {
+	clearState: ({ commit }) => {
 		commit('clearState');
 	},
-	'setExperiment': ({ commit }, experiment) => {
+	setExperiment: ({ commit }, experiment) => {
 		commit('setExperiment', experiment);
 	},
-	'setStartingPoint': ({ commit }, cursor = null) => {
+	setStartingPoint: ({ commit }, cursor = null) => {
 		commit('initCursor', cursor);
 	},
-	'initExperiment': ({ commit }) => {
+	initExperiment: ({ commit }) => {
 		commit('initExperiment');
 	},
-	'updateState': ({ commit }) => {
+	updateState: ({ commit }) => {
 		commit('updateState');
 	},
-	'goNextStep': ({ commit }) => {
+	goNextStep: ({ commit }) => {
 		commit('moveNextStep');
 	},
-	'goStepPostSkip': ({ commit }) => {
+	goStepPostSkip: ({ commit }) => {
 		commit('movePostSkip');
 	},
-	'endExperimentByTimeout': ({ commit }) => {
+	endExperimentByTimeout: ({ commit }) => {
 		commit('endExperimentByTimeout');
 	},
-	'concludeExperiment': ({ commit }) => {
+	concludeExperiment: ({ commit }) => {
 		commit('leaveExperiment');
 	},
 
 	// Record methods
-	'addSuccess': ({ commit }) => {
+	addSuccess: ({ commit }) => {
 		commit('addSuccess');
 	}
 };

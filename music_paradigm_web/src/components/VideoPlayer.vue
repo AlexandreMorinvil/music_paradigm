@@ -18,52 +18,52 @@ import videojs from'video.js/dist/video.min.js';
 import'video.js/dist/video-js.min.css';
 
 export default{
-	'name': 'VideoPlayer',
-	'props': {
-		'src': {
-			'type': String,
+	name: 'VideoPlayer',
+	props: {
+		src: {
+			type: String,
 			default() {
 				return'';
 			}
 		},
-		'dimension': {
-			'type': Object,
+		dimension: {
+			type: Object,
 			default() {
 				return{
-					'height': 100,
-					'width': 100
+					height: 100,
+					width: 100
 				};
 			}
 		},
-		'playBack': {
-			'type': Object,
+		playBack: {
+			type: Object,
 			default() {
 				return{
-					'startTime': 0.0,
-					'endTime': 0.0
+					startTime: 0.0,
+					endTime: 0.0
 				};
 			}
 		}
 	},
 	data() {
 		return{
-			'player': null,
-			'volume': 0,
-			'time': 0,
-			'duration': 0
+			player: null,
+			volume: 0,
+			time: 0,
+			duration: 0
 		};
 	},
-	'methods': {
+	methods: {
 		// Video initialization method
 		playerInitialize() {
 			const initialOptions = {
-				'controls': false,
-				'userActions': {},
-				'muted': false,
-				'height': this.dimension.height,
-				'width': this.dimension.width,
-				'preload': 'auto',
-				'autoplay': false // The autoplay is managed manually to handle delays
+				controls: false,
+				userActions: {},
+				muted: false,
+				height: this.dimension.height,
+				width: this.dimension.width,
+				preload: 'auto',
+				autoplay: false // The autoplay is managed manually to handle delays
 			};
 			this.player = videojs(this.$refs.videoPlayer, initialOptions);
 		},
@@ -76,7 +76,7 @@ export default{
 			this.player.pause();
 		},
 		playerSetSrc(src, type = 'video/mp4') {
-			this.player.src({ 'type': type, 'src': src });
+			this.player.src({ type: type, src: src });
 		},
 		playerSetVolume(float) {
 			this.player.volume(float);
@@ -138,7 +138,7 @@ export default{
 			this.player.dispose();
 		}
 	},
-	'watch': {}
+	watch: {}
 };
 </script>
 

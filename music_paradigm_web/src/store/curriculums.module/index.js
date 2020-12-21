@@ -5,7 +5,7 @@ import getters from'./getters';
 
 
 export const curriculums = {
-	'namespaced': true,
+	namespaced: true,
 	state,
 	getters,
 	actions,

@@ -1,28 +1,28 @@
 import{ validator } from'@/_helpers';
 
 export default{
-	'experimentEdited': (state) => {
+	experimentEdited: (state) => {
 		return state.edition;
 	},
 
-	'experimentSelected': (state) => {
+	experimentSelected: (state) => {
 		return state.selection.content;
 	},
 
-	'selectedId': (state)=> {
+	selectedId: (state)=> {
 		return state.selection._id;
 	},
 
-	'experimentsHeadersList': (state) => {
+	experimentsHeadersList: (state) => {
 		return state.experimentsHeadersList;
 	},
 
 	// Status
-	'hasCompiledEdition': (state) => {
+	hasCompiledEdition: (state) => {
 		return validator.isExperimentValid(state.edition);
 	},
 
-	'isFetchingExperimentHeadersList': (state) => {
+	isFetchingExperimentHeadersList: (state) => {
 		return state.status.isFetchingExperimentHeadersList;
 	}
 };

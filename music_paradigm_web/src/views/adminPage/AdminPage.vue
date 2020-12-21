@@ -40,19 +40,19 @@
 import'@/styles/loggedInPageTemplate.css';
 
 export default{
-	'name': 'AdminPage',
+	name: 'AdminPage',
 	data() {
 		return{
-			'activePage': 'undefined'
+			activePage: 'undefined'
 		};
 	},
-	'computed': {},
-	'methods': {},
+	computed: {},
+	methods: {},
 	created() {},
-	'watch': {
+	watch: {
 		// On change of the route, we reevaluate the current page
-		'$route': {
-			'immediate': true,
+		$route: {
+			immediate: true,
 			handler(to) {
 				let currentPage = 'undefined';
 				const pageList = [
