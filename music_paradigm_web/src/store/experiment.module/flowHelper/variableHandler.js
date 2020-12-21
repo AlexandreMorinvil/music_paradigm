@@ -1,5 +1,5 @@
-import experimentStoreState from '../state';
 import blockHandler from './blockHandler';
+import experimentStoreState from '../state';
 
 export default {
 	updateVariables,
@@ -8,23 +8,15 @@ export default {
 function updateVariables(flow, cursor) {
 	// Parsing the current block's state settings
 	const currentBlock = blockHandler.getCurrentBlock(flow, cursor);
-	const {
-		resetVariable,
-		incrementVariable,
-		decrementVariable,
-		incrementVariableOnSucess,
-		decrementVariableOnSucces,
-	} = currentBlock;
+	const { resetVariable, incrementVariable, decrementVariable, incrementVariableOnSucess, decrementVariableOnSucces } = currentBlock;
 
 	if (resetVariable) resetVariableValue(resetVariableValue);
 
 	if (incrementVariable) incrementVariableValue(incrementVariable);
-	else if (experimentStoreState.state.record.isSuccess && incrementVariableOnSucess)
-		incrementVariableValue(incrementVariableOnSucess);
+	else if (experimentStoreState.state.record.isSuccess && incrementVariableOnSucess) incrementVariableValue(incrementVariableOnSucess);
 
 	if (decrementVariable) decrementVariableValue(decrementVariable);
-	else if (experimentStoreState.state.record.isSuccess && decrementVariableOnSucces)
-		decrementVariableValue(decrementVariableOnSucces);
+	else if (experimentStoreState.state.record.isSuccess && decrementVariableOnSucces) decrementVariableValue(decrementVariableOnSucces);
 }
 
 function resetVariableValue(variableName) {

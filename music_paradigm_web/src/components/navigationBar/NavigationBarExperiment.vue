@@ -16,21 +16,11 @@ import { routerNavigation } from '@/_helpers';
 
 export default {
 	name: 'NavigationBarExperiment',
-	components: {},
-	data() {
-		return {};
-	},
-	computed: {},
 	methods: {
 		gotToHomePage() {
 			routerNavigation.goToRootPage();
 		},
 	},
-	beforeMount() {},
-	mounted() {},
-	beforeDestroy() {},
-	destroyed() {},
-	watch: {},
 };
 </script>
 

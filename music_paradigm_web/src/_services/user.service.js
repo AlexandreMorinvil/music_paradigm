@@ -1,51 +1,5 @@
-import defaultResponseHandler from './defaultResponseHandler';
 import { authHeader, url } from '@/_helpers';
-
-const register = function (user) {
-	const requestOptions = {
-		method: 'POST',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(user),
-	};
-	return fetch(url.users('register'), requestOptions).then(handleResponse);
-};
-
-const getListAllHeaders = function () {
-	const requestOptions = {
-		method: 'GET',
-		headers: authHeader(),
-	};
-	return fetch(url.users(''), requestOptions).then(handleResponse);
-};
-
-const getById = function (id) {
-	const requestOptions = {
-		method: 'GET',
-		headers: authHeader(),
-	};
-	return fetch(url.users(id), requestOptions).then(handleResponse);
-};
-
-const update = function (id, user) {
-	const requestOptions = {
-		method: 'PUT',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(user),
-	};
-	return fetch(url.users(id), requestOptions).then(handleResponse);
-};
-
-const _delete = function (id) {
-	const requestOptions = {
-		method: 'DELETE',
-		headers: authHeader(),
-	};
-	return fetch(url.users(id), requestOptions).then(handleResponse);
-};
-
-const handleResponse = function (reponse) {
-	return defaultResponseHandler(reponse);
-};
+import defaultResponseHandler from './defaultResponseHandler';
 
 export const userService = {
 	register,
@@ -54,3 +8,49 @@ export const userService = {
 	update,
 	delete: _delete,
 };
+
+function register(user) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(user),
+	};
+	return fetch(url.users('register'), requestOptions).then(handleResponse);
+}
+
+function getListAllHeaders() {
+	const requestOptions = {
+		method: 'GET',
+		headers: authHeader(),
+	};
+	return fetch(url.users(''), requestOptions).then(handleResponse);
+}
+
+function getById(id) {
+	const requestOptions = {
+		method: 'GET',
+		headers: authHeader(),
+	};
+	return fetch(url.users(id), requestOptions).then(handleResponse);
+}
+
+function update(id, user) {
+	const requestOptions = {
+		method: 'PUT',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(user),
+	};
+	return fetch(url.users(id), requestOptions).then(handleResponse);
+}
+
+function _delete(id) {
+	const requestOptions = {
+		method: 'DELETE',
+		headers: authHeader(),
+	};
+	return fetch(url.users(id), requestOptions).then(handleResponse);
+}
+
+function handleResponse(reponse) {
+	return defaultResponseHandler(reponse);
+}

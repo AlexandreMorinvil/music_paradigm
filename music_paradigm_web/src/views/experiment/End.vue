@@ -62,8 +62,6 @@ export default {
 			else return 'Press the space bar for ending the experiment';
 		},
 	},
-	methods: {},
-	mounted() {},
 	watch: {
 		isSpaceBarPressed(isPressed) {
 			if (isPressed) {

@@ -14,6 +14,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+
 import '@/styles/navigationBarTemplate.css';
 
 export default {
@@ -31,11 +32,6 @@ export default {
 			this.logout();
 		},
 	},
-	beforeMount() {},
-	mounted() {},
-	beforeDestroy() {},
-	destroyed() {},
-	watch: {},
 };
 </script>
 

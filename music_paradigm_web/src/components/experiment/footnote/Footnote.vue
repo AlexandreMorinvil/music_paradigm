@@ -1,19 +1,14 @@
 <template>
 	<div>
-		<component
-			class="fill"
-			:is="type"
-			:message="message"
-			v-on:advanceButtonClicked="emitAdvanceSignal"
-			v-on:skip-request="emitSkipSignal"
-		/>
+		<component class="fill" :is="type" :message="message" v-on:advanceButtonClicked="emitAdvanceSignal" v-on:skip-request="emitSkipSignal" />
 	</div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import FootnoteSimple from '@/components/experiment/footnote/FootnoteSimple.vue';
+
 import FootnoteButton from '@/components/experiment/footnote/FootnoteButton.vue';
+import FootnoteSimple from '@/components/experiment/footnote/FootnoteSimple.vue';
 
 export default {
 	name: 'Footnote',

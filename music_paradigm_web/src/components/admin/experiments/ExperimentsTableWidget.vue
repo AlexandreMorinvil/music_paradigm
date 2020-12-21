@@ -18,11 +18,7 @@
 				</thead>
 
 				<tbody>
-					<tr
-						v-for="(header, index) in experimentsHeadersList"
-						:key="header._id"
-						:class="header._id === selectedId && 'selected'"
-					>
+					<tr v-for="(header, index) in experimentsHeadersList" :key="header._id" :class="header._id === selectedId && 'selected'">
 						<td>{{ index }}</td>
 						<td>{{ header.group }}</td>
 						<td>{{ header.name }}</td>
@@ -60,12 +56,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('experiments', [
-			'fetchAllExperimentsHeaders',
-			'setEditorExperiment',
-			'setSelectionExperiment',
-			'startExperimentQuick',
-		]),
+		...mapActions('experiments', ['fetchAllExperimentsHeaders', 'setEditorExperiment', 'setSelectionExperiment', 'startExperimentQuick']),
 		handleRefresh() {
 			this.fetchAllExperimentsHeaders();
 		},

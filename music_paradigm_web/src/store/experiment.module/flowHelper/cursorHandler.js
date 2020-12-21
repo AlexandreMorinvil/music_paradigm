@@ -1,6 +1,7 @@
 import blockHandler from './blockHandler';
 import stateHandler from './stateHandler';
 import variableHandler from './variableHandler';
+
 import constants from '../constants';
 
 export default {
@@ -15,10 +16,7 @@ function countStepsLeft(flow, startPointCursor) {
 	const stepTracerCursor = assignCursor(flow, startPointCursor);
 
 	let stepsCounter = 0;
-	while (
-		!stepTracerCursor.current.isBeyondEnd
-		&& !(blockHandler.getCurrentBlockType(flow, stepTracerCursor) === 'end')
-	) {
+	while (!stepTracerCursor.current.isBeyondEnd && !(blockHandler.getCurrentBlockType(flow, stepTracerCursor) === 'end')) {
 		moveCursorNext(flow, stepTracerCursor);
 		stepsCounter += 1;
 	}
@@ -160,7 +158,7 @@ function setCursorInnerStepsTotal(cursor, textContent, pictureFileName) {
 //
 //              A                           B                           C                           D
 //  -------------------------   -------------------------   -------------------------   -------------------------
-//  | type: XXX             |   | type: XXX             |   | type: XXX             |   | type: XXX             |
+//  | type: XYZ             |   | type: XYZ             |   | type: XYZ             |   | type: XYZ             |
 //  |           ...         |   |           ...         |   |           ...         |   |           ...         |
 //  | numberRepetition: 3   |   |                       |   | numberRepetition: 3   |   |                       |
 //  | folloedBy: true       |   | folloedBy: true       |   |                       |   |                       |
@@ -173,11 +171,7 @@ function setCursorLoopStart(cursor, numberRepetition) {
 	// 1. A number of repetition greater than 1 is specified in the block's settings,
 	// 2. The cursor is not currently in a loop (thus the number of reptition left is <= 1)
 	// 3. The current index is not the start index of a previous loop (to avoid resetting a loop twice)
-	if (
-		numberRepetition > 1
-		&& cursor.navigation.numberRepetition <= 1
-		&& cursor.current.index !== cursor.navigation.indexLoopStart
-	) {
+	if (numberRepetition > 1 && cursor.navigation.numberRepetition <= 1 && cursor.current.index !== cursor.navigation.indexLoopStart) {
 		cursor.navigation.indexLoopStart = cursor.current.index;
 		cursor.navigation.numberRepetition = numberRepetition;
 	}
@@ -188,7 +182,7 @@ function setCursorLoopStart(cursor, numberRepetition) {
 //
 //              A                                   B                               C                               D
 //  ------------------------------  ------------------------------  ------------------------------  ------------------------------
-//  | type: XXX                  |  | type: XXX                  |  | type: XXX                  |  | type: XXX                  |
+//  | type: XYZ                  |  | type: XYZ                  |  | type: XYZ                  |  | type: XYZ                  |
 //  |           ...              |  |           ...              |  |           ...              |  |           ...              |
 //  | midiFileName: [0, 1]       |  | midiFileName: [0, 1]       |  | midiFileName: [0, 1, 2]    |  | midiFileName: [0, 1, 2]    |
 //  | videoFileName: [0, 1]      |  | videoFileName: [0, 1]      |  | videoFileName: [0, 1, 2, 3]|  | videoFileName: [0, 1, 2]   |
@@ -230,22 +224,20 @@ function setCursorNextStep(cursor, followedBy) {
 	}
 
 	// If the block is not followed by another block, it is necesserily the end of a group of blocks
+	// If there remains reptitions: We loop back to the start of the loop
+	else if (cursor.navigation.numberRepetition > 1) {
+		cursor.navigation.indexNext = cursor.navigation.indexLoopStart;
+	}
+
+	// If there remains content to depile, reset the loop start in order to be able to loop again with the new media content
+	else if (cursor.navigation.numberPiledMedia > 1) {
+		cursor.navigation.indexNext = cursor.navigation.indexPileStart;
+		cursor.navigation.indexLoopStart = constants.UNSET_INDEX;
+	}
+
+	// By default, the next block is the following block
 	else {
-		// If there remains reptitions: We loop back to the start of the loop
-		if (cursor.navigation.numberRepetition > 1) {
-			cursor.navigation.indexNext = cursor.navigation.indexLoopStart;
-		}
-
-		// If there remains content to depile, reset the loop start in order to be able to loop again with the new media content
-		else if (cursor.navigation.numberPiledMedia > 1) {
-			cursor.navigation.indexNext = cursor.navigation.indexPileStart;
-			cursor.navigation.indexLoopStart = constants.UNSET_INDEX;
-		}
-
-		// By default, the next block is the following block
-		else {
-			cursor.navigation.indexNext = cursor.current.index + 1;
-		}
+		cursor.navigation.indexNext = cursor.current.index + 1;
 	}
 }
 

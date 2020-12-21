@@ -1,12 +1,6 @@
 <template>
 	<div id="cue-state" class="experiment-state-container" :class="gridClass">
-		<img
-			v-if="hasHelperImage"
-			id="helper-img"
-			:src="urlExperimentRessource(helperImageName)"
-			alt="Helper"
-			class="helper"
-		/>
+		<img v-if="hasHelperImage" id="helper-img" :src="urlExperimentRessource(helperImageName)" alt="Helper" class="helper" />
 
 		<skip-button v-if="hasSkipOption" class="skip-button" v-on:skip-request="emitSkipSignal" />
 
@@ -28,8 +22,9 @@
 <script>
 import '@/styles/experimentStateTemplate.css';
 import { mapActions, mapGetters } from 'vuex';
-import VisualPiano from '@/components/VisualPiano.vue';
+
 import SkipButton from '@/components/experiment/SkipButton.vue';
+import VisualPiano from '@/components/VisualPiano.vue';
 
 export default {
 	name: 'Cue',
@@ -78,7 +73,7 @@ export default {
 		},
 		footnote() {
 			if (this.footnoteMessage) return this.footnoteMessage;
-			let noteMessage;
+			let noteMessage = '';
 			if (this.midiName === '')
 				noteMessage = `There is no melody to be played, the experiment will automatically  go to the next step in ${this.errorAutomaticTransitionSeconds} seconds`;
 			else noteMessage = 'The experiment will automatically go to the next step after the muscial cue';
@@ -115,8 +110,7 @@ export default {
 			immediate: true,
 			handler: function (isReady) {
 				if (isReady) setTimeout(() => this.playMidiFile(), this.playbackDelayInSeconds * 1000);
-				else if (this.midiName === '')
-					setTimeout(() => this.manageHavingNoMidiFile(), this.errorAutomaticTransitionSeconds * 1000);
+				else if (this.midiName === '') setTimeout(() => this.manageHavingNoMidiFile(), this.errorAutomaticTransitionSeconds * 1000);
 			},
 		},
 	},

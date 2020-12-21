@@ -1,8 +1,8 @@
-import config from '@/config';
-import { Midi } from '@tonejs/midi';
 import { midiConversion, notePerformance } from '@/_helpers';
-import functions from './functions';
+import { Midi } from '@tonejs/midi';
+import config from '@/config';
 import constants from './constants';
+import functions from './functions';
 
 export default {
 	resetPianoState: (state) => {
@@ -69,9 +69,7 @@ export default {
 	},
 
 	addReleasedNoteLog: (state, key) => {
-		state.played.notes.duration.push(
-			key.time - state.played.startTime - state.played.notes.time[state.played.notes.time.length - 1],
-		);
+		state.played.notes.duration.push(key.time - state.played.startTime - state.played.notes.time[state.played.notes.time.length - 1]);
 	},
 
 	resetPlayedNotesLogs: (state) => {
@@ -137,10 +135,7 @@ export default {
 
 	evaluateRhythmType: (state) => {
 		// Evaluate the performance according to get specific metrics
-		Object.assign(
-			state.played.evaluation,
-			notePerformance.evaluateRhythmType(state.midiFile.notes, state.played.notes),
-		);
+		Object.assign(state.played.evaluation, notePerformance.evaluateRhythmType(state.midiFile.notes, state.played.notes));
 
 		// Grade the performance according to obtained metrics to provide feedback
 		state.played.evaluation.grades = notePerformance.gradeRhythmType(state.played.evaluation.results, {

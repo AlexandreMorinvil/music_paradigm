@@ -2,9 +2,7 @@
 	<footer id="footer" class="area-footer">
 		<hr />
 		<div class="footer-content">
-			<p>
-				Music Paradigm is an open source platform developped for managing remote mutiusers musical training experiments.
-			</p>
+			<p>Music Paradigm is an open source platform developped for managing remote mutiusers musical training experiments.</p>
 		</div>
 	</footer>
 </template>

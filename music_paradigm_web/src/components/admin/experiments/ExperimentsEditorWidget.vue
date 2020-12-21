@@ -1,8 +1,6 @@
 <template>
 	<div id="experiments-workshop" class="widget widget-box widget-bg">
-		<div class="submit-position">
-			//TODO: Form to create an experiment throug buttons and predefined areas instead of editing from de code editor
-		</div>
+		<div class="submit-position">//TODO: Form to create an experiment throug buttons and predefined areas instead of editing from de code editor</div>
 
 		<div class="edition-buttons-position">
 			<button v-on:click="handleCompilation" class="widget-button blue">Compile</button>
@@ -47,8 +45,9 @@
 <script>
 import '@/styles/widgetTemplate.css';
 import { mapActions, mapGetters } from 'vuex';
-import { validator } from '@/_helpers';
+
 import CodeEditor from '@/components/admin/TextEditor.vue';
+import { validator } from '@/_helpers';
 
 export default {
 	name: 'ExperimentsWorkshopWidget',
@@ -134,14 +133,14 @@ export default {
 		handleUploadExperiment(event) {
 			const input = event.target;
 
-			const readFileContent = function (file) {
+			function readFileContent(file) {
 				const reader = new FileReader();
 				return new Promise((resolve, reject) => {
-					reader.onload = (event) => resolve(event.target.result);
+					reader.onload = (loadEvent) => resolve(loadEvent.target.result);
 					reader.onerror = (error) => reject(error);
 					reader.readAsText(file);
 				});
-			};
+			}
 
 			if (!('files' in input) || !(input.files.length === 1)) {
 				this.setErrorAlert('A file must be selected');

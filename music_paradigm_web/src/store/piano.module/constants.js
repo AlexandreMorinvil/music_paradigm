@@ -1,4 +1,8 @@
-const DEFAULT_PIANO_STATE_VALUES = function () {
+export default {
+	DEFAULT_PIANO_STATE_VALUES,
+};
+
+function DEFAULT_PIANO_STATE_VALUES() {
 	return {
 		// Indicator of whether or not the virtual piano is ready to be used
 		isPianoInitialized: false,
@@ -46,8 +50,4 @@ const DEFAULT_PIANO_STATE_VALUES = function () {
 			},
 		},
 	};
-};
-
-export default {
-	DEFAULT_PIANO_STATE_VALUES,
-};
+}

@@ -1,12 +1,6 @@
 <template>
 	<div id="playing-state" class="experiment-state-container" :class="gridClass">
-		<img
-			v-if="hasHelperImage"
-			id="helper-img"
-			:src="urlExperimentRessource(helperImageName)"
-			alt="Helper"
-			class="helper"
-		/>
+		<img v-if="hasHelperImage" id="helper-img" :src="urlExperimentRessource(helperImageName)" alt="Helper" class="helper" />
 
 		<skip-button v-if="hasSkipOption" class="skip-button" v-on:skip-request="emitSkipSignal" />
 
@@ -16,12 +10,7 @@
 		</div>
 
 		<div id="visual-media-area" class="experiment-state-division state-division-visual-media">
-			<component
-				:is="playingMode"
-				v-on:footnote="handleFootnote"
-				v-on:finishedPlaying="handdleEndOfPlaying"
-				ref="playingMode"
-			/>
+			<component :is="playingMode" v-on:footnote="handleFootnote" v-on:finishedPlaying="handdleEndOfPlaying" ref="playingMode" />
 		</div>
 
 		<div id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text">
@@ -35,9 +24,9 @@ import '@/styles/experimentStateTemplate.css';
 import { mapActions, mapGetters } from 'vuex';
 import { ExperimentEventBus } from '@/_services/eventBus.service.js';
 
-import PlayingSpeedComponent from './PlayingSpeed';
-import PlayingRhythmComponent from './PlayingRhythm';
 import PlayingMelodyComponent from './PlayingMelody';
+import PlayingRhythmComponent from './PlayingRhythm';
+import PlayingSpeedComponent from './PlayingSpeed';
 import SkipButton from '@/components/experiment/SkipButton.vue';
 import StartSignalTimer from '@/components/experiment/StartSignalTimer.vue';
 

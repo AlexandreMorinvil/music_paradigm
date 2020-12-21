@@ -13,13 +13,7 @@
 							Title :
 							<span class="selected-element-text-color">{{ curriculumSelectedTitleDisplay }}</span>
 						</label>
-						<input
-							type="text"
-							v-model="title"
-							name="title"
-							autocomplete="new-username"
-							placeholder="Insert new title"
-						/>
+						<input type="text" v-model="title" name="title" autocomplete="new-username" placeholder="Insert new title" />
 					</div>
 					<div>
 						<label for="isSequential">
@@ -49,11 +43,7 @@
 								}}</span>
 							</label>
 							<select name="experiment-reference" v-model="experiments[index].experimentReference">
-								<option
-									v-for="(reference, index) in experimentsReferences"
-									:key="index"
-									:value="experimentsReferences[index].id"
-								>
+								<option v-for="(reference, index) in experimentsReferences" :key="index" :value="experimentsReferences[index].id">
 									{{ experimentsReferences[index].fullName }}
 								</option>
 							</select>
@@ -76,24 +66,15 @@
 						<div class="area1-position">
 							<label for="is-unique-in-day" class="inline-label">
 								Unique in Day:
-								<span class="selected-element-text-color">{{
-									curriculumSelectedExperimentAtIndex(index).isUniqueIndDay
-								}}</span>
+								<span class="selected-element-text-color">{{ curriculumSelectedExperimentAtIndex(index).isUniqueIndDay }}</span>
 							</label>
-							<input
-								type="checkbox"
-								class="checkbox"
-								v-model="experiments[index].isUniqueIndDay"
-								name="is-unique-in-day"
-							/>
+							<input type="checkbox" class="checkbox" v-model="experiments[index].isUniqueIndDay" name="is-unique-in-day" />
 						</div>
 
 						<div>
 							<label for="experiment-id">
 								Associative ID:
-								<span class="selected-element-text-color">{{
-									curriculumSelectedExperimentAtIndex(index).associativeId
-								}}</span>
+								<span class="selected-element-text-color">{{ curriculumSelectedExperimentAtIndex(index).associativeId }}</span>
 							</label>
 							<input
 								type="text"
@@ -107,9 +88,7 @@
 						<div>
 							<label for="delay-in-days">
 								Delay (Days):
-								<span class="selected-element-text-color">{{
-									curriculumSelectedExperimentAtIndex(index).delayInDays
-								}}</span>
+								<span class="selected-element-text-color">{{ curriculumSelectedExperimentAtIndex(index).delayInDays }}</span>
 							</label>
 							<input
 								type="number"
@@ -124,9 +103,7 @@
 						<div>
 							<label for="completion-target">
 								Completion Target:
-								<span class="selected-element-text-color">{{
-									curriculumSelectedExperimentAtIndex(index).completionTarget
-								}}</span>
+								<span class="selected-element-text-color">{{ curriculumSelectedExperimentAtIndex(index).completionTarget }}</span>
 							</label>
 							<input
 								type="number"
@@ -141,9 +118,7 @@
 						<div>
 							<label for="completion-limit">
 								Completion Limit:
-								<span class="selected-element-text-color">{{
-									curriculumSelectedExperimentAtIndex(index).completionLimit
-								}}</span>
+								<span class="selected-element-text-color">{{ curriculumSelectedExperimentAtIndex(index).completionLimit }}</span>
 							</label>
 							<input
 								type="number"
@@ -226,12 +201,7 @@ export default {
 	},
 	methods: {
 		...mapActions('experiments', ['fetchAllExperimentsHeaders']),
-		...mapActions('curriculums', [
-			'unsetSelectedCurriculum',
-			'createCurriculum',
-			'updateCurriculum',
-			'deleteCurriculum',
-		]),
+		...mapActions('curriculums', ['unsetSelectedCurriculum', 'createCurriculum', 'updateCurriculum', 'deleteCurriculum']),
 		bundleCurrirulumFromForm() {
 			return {
 				id: this.id,

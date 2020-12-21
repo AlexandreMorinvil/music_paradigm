@@ -1,20 +1,19 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import state from './state';
-import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
+import mutations from './mutations';
+import state from './state';
 
-import { alert } from './alert.module';
 import { account } from './account.module';
+import { alert } from './alert.module';
+import { curriculums } from './curriculums.module';
 import { experiment } from './experiment.module';
 import { experiments } from './experiments.module';
-import { curriculums } from './curriculums.module';
 import { log } from './log.module';
-import { users } from './users.module';
 import { piano } from './piano.module';
-import { results } from './results.module';
+import { users } from './users.module';
 
 Vue.use(Vuex);
 
@@ -31,7 +30,6 @@ export default new Vuex.Store({
 		experiments,
 		log,
 		piano,
-		results,
 		users,
 	},
 });

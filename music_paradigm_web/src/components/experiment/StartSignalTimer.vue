@@ -6,6 +6,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+
 import { ExperimentEventBus } from '@/_services/eventBus.service.js';
 
 export default {
@@ -47,7 +48,6 @@ export default {
 			this.totalTime = this.cumulatedTime - (Date.parse(new Date()) - Date.parse(this.referenceTime));
 		},
 	},
-	beforeMount() {},
 	mounted() {
 		this.soundCount = new Audio('beep-count.wav');
 		this.soundStart = new Audio('beep-start.wav');
@@ -57,7 +57,6 @@ export default {
 	beforeDestroy() {
 		window.clearInterval(this.counterUniqueIdentifier);
 	},
-	destroyed() {},
 	watch: {
 		totalTime(value) {
 			if (value <= 0) {

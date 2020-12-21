@@ -1,19 +1,20 @@
 import noteAlgorithm from './noteAlgorithm';
 
-const evaluateSpeedType = function (midiFileNotes, playedNotes) {
+export default {
+	evaluateSpeedType,
+	evaluateRhythmType,
+	evaluateMelodyType,
+	gradeSpeedType,
+	gradeRhythmType,
+	gradeMelodyType,
+};
+
+function evaluateSpeedType(midiFileNotes, playedNotes) {
 	const sequenceCount = noteAlgorithm.getCorrectSequenceCount(midiFileNotes.midi, playedNotes.midi);
 
-	const { durations, durationsAverage } = noteAlgorithm.getSequenceDurations(
-		midiFileNotes.midi,
-		playedNotes.midi,
-		playedNotes.time,
-	);
+	const { durations, durationsAverage } = noteAlgorithm.getSequenceDurations(midiFileNotes.midi, playedNotes.midi, playedNotes.time);
 
-	const { transitionSpeeds, transitionSpeedsAverage } = noteAlgorithm.getTransitionSpeeds(
-		midiFileNotes.midi,
-		playedNotes.midi,
-		playedNotes.time,
-	);
+	const { transitionSpeeds, transitionSpeedsAverage } = noteAlgorithm.getTransitionSpeeds(midiFileNotes.midi, playedNotes.midi, playedNotes.time);
 
 	const sequenceErrorCount = noteAlgorithm.getSequenceErrorCount(midiFileNotes.midi, playedNotes.midi, 5);
 
@@ -28,9 +29,9 @@ const evaluateSpeedType = function (midiFileNotes, playedNotes) {
 			sequenceErrorCount: sequenceErrorCount, // Number of icorrect note sequences >= 5 notes
 		},
 	};
-};
+}
 
-const evaluateRhythmType = function (midiFileNotes, playedNotes) {
+function evaluateRhythmType(midiFileNotes, playedNotes) {
 	const pitchAccuracy = noteAlgorithm.getPitchAccuracy(midiFileNotes.midi, playedNotes.midi);
 
 	const durationsRelativeError = noteAlgorithm.getDurationsRelativeError(midiFileNotes.duration, playedNotes.duration);
@@ -41,10 +42,7 @@ const evaluateRhythmType = function (midiFileNotes, playedNotes) {
 
 	const interOnsetInterval = noteAlgorithm.getInterOnsetIntervals(playedNotes.time);
 
-	const interOnsetIntervalsRelativeError = noteAlgorithm.getInterOnsetIntervalsRelativeError(
-		midiFileNotes.time,
-		playedNotes.time,
-	);
+	const interOnsetIntervalsRelativeError = noteAlgorithm.getInterOnsetIntervalsRelativeError(midiFileNotes.time, playedNotes.time);
 
 	const sequenceDuration = noteAlgorithm.getSequenceDuration(playedNotes.time, playedNotes.duration);
 
@@ -61,19 +59,16 @@ const evaluateRhythmType = function (midiFileNotes, playedNotes) {
 			sequenceDuration: sequenceDuration, // Duration of the corresponding sequence of notes played (ms)
 		},
 	};
-};
+}
 
-const evaluateMelodyType = function (midiFileNotes, playedNotes) {
+function evaluateMelodyType(midiFileNotes, playedNotes) {
 	const pitchAccuracy = noteAlgorithm.getPitchAccuracy(midiFileNotes.midi, playedNotes.midi);
 
 	const durationsRelativeError = noteAlgorithm.getDurationsRelativeError(midiFileNotes.duration, playedNotes.duration);
 
 	const interOnsetInterval = noteAlgorithm.getInterOnsetIntervals(playedNotes.time);
 
-	const interOnsetIntervalsRelativeError = noteAlgorithm.getInterOnsetIntervalsRelativeError(
-		midiFileNotes.time,
-		playedNotes.time,
-	);
+	const interOnsetIntervalsRelativeError = noteAlgorithm.getInterOnsetIntervalsRelativeError(midiFileNotes.time, playedNotes.time);
 
 	const sequenceDuration = noteAlgorithm.getSequenceDuration(playedNotes.time, playedNotes.duration);
 
@@ -87,9 +82,9 @@ const evaluateMelodyType = function (midiFileNotes, playedNotes) {
 			sequenceDuration: sequenceDuration, // Duration of the corresponding sequence of notes played (ms)
 		},
 	};
-};
+}
 
-const gradeSpeedType = function (evaluationResults, { minSequencePlayed }) {
+function gradeSpeedType(evaluationResults, { minSequencePlayed }) {
 	const grades = [
 		{
 			criteria: 'Sequence Played',
@@ -99,9 +94,9 @@ const gradeSpeedType = function (evaluationResults, { minSequencePlayed }) {
 		},
 	];
 	return grades;
-};
+}
 
-const gradeRhythmType = function (evaluationResults, { minNoteAccuracy, maxRhythmError }) {
+function gradeRhythmType(evaluationResults, { minNoteAccuracy, maxRhythmError }) {
 	const grades = [
 		{
 			criteria: 'Melody Accuracy',
@@ -111,18 +106,15 @@ const gradeRhythmType = function (evaluationResults, { minNoteAccuracy, maxRhyth
 		},
 		{
 			criteria: 'Rhythm Accuracy',
-			mark:
-				evaluationResults.interOnsetIntervalsRelativeError >= 0
-					? Math.max(100 - evaluationResults.interOnsetIntervalsRelativeError, 0)
-					: 0,
+			mark: evaluationResults.interOnsetIntervalsRelativeError >= 0 ? Math.max(100 - evaluationResults.interOnsetIntervalsRelativeError, 0) : 0,
 			passMark: Math.min(Math.max(100 - maxRhythmError, 0), 100),
 			topMark: 100,
 		},
 	];
 	return grades;
-};
+}
 
-const gradeMelodyType = function (evaluationResults, { minNoteAccuracy }) {
+function gradeMelodyType(evaluationResults, { minNoteAccuracy }) {
 	const grades = [
 		{
 			criteria: 'Melody Accuracy',
@@ -132,13 +124,4 @@ const gradeMelodyType = function (evaluationResults, { minNoteAccuracy }) {
 		},
 	];
 	return grades;
-};
-
-export default {
-	evaluateSpeedType,
-	evaluateRhythmType,
-	evaluateMelodyType,
-	gradeSpeedType,
-	gradeRhythmType,
-	gradeMelodyType,
-};
+}

@@ -1,6 +1,7 @@
 import constants from './constants';
-import cursorHandler from './flowHelper/cursorHandler';
+
 import blockHandler from './flowHelper/blockHandler';
+import cursorHandler from './flowHelper/cursorHandler';
 
 export default {
 	experimentId: (state) => {
@@ -156,7 +157,7 @@ export default {
 		// experiment is returned. The "anyPianoKey" parameter indicates whether the user of the experiment can move to the
 		// next step by pressing any piano key (if the value is "true"), otherwise the experiment will move to the next
 		// step only by pressing the space bar key (if the value is false).
-		let anyPianoKey;
+		let anyPianoKey = false;
 
 		if (typeof state.state.settings.anyPianoKey === 'boolean') {
 			anyPianoKey = state.state.settings.anyPianoKey;
@@ -172,14 +173,12 @@ export default {
 	playingMode: (state) => {
 		// Return the playing mode specified by the block if it exists,
 		// otherwise, the default playing mode of the experiment is returned.
-		let playingMode;
+		let playingMode = constants.DEFAULT_PLAYING_MODE;
 
 		if (typeof state.state.settings.playingMode === 'string') {
 			playingMode = state.state.settings.playingMode;
 		} else if (typeof state.settings.playingMode === 'string') {
 			playingMode = state.settings.playingMode;
-		} else {
-			playingMode = constants.DEFAULT_PLAYING_MODE;
 		}
 
 		return playingMode;
@@ -191,7 +190,7 @@ export default {
 		// 2. The Block setting is the top priority
 		// 3. The experiment setting
 		// 4. Otherwise, it is turned off
-		let enableSoundFlag;
+		let enableSoundFlag = constants.DEFAULT_ENABLE_SOUND_FLAG;
 
 		if (state.state.type === 'playing') {
 			enableSoundFlag = true;
@@ -199,8 +198,6 @@ export default {
 			enableSoundFlag = state.state.settings.enableSoundFlag;
 		} else if (typeof state.settings.enableSoundFlag === 'boolean') {
 			enableSoundFlag = state.settings.enableSoundFlag;
-		} else {
-			enableSoundFlag = constants.DEFAULT_ENABLE_SOUND_FLAG;
 		}
 
 		return enableSoundFlag;
@@ -245,28 +242,24 @@ export default {
 	},
 
 	hideFeedbackSmiley: (state) => {
-		let hideFeedbackSmiley;
+		let hideFeedbackSmiley = constants.DEFAULT_HIDE_FEEDBACK_SMILEY;
 
 		if (typeof state.state.settings.hideFeedbackSmiley === 'boolean') {
 			hideFeedbackSmiley = state.state.settings.hideFeedbackSmiley;
 		} else if (typeof state.settings.hideFeedbackSmiley === 'boolean') {
 			hideFeedbackSmiley = state.settings.hideFeedbackSmiley;
-		} else {
-			hideFeedbackSmiley = constants.DEFAULT_HIDE_FEEDBACK_SMILEY;
 		}
 
 		return hideFeedbackSmiley;
 	},
 
 	footnoteType: (state) => {
-		let footnoteType;
+		let footnoteType = constants.DEFAULT_FOOTNOTE_TYPE;
 
 		if (typeof state.state.settings.footnoteType === 'string') {
 			footnoteType = state.state.settings.footnoteType;
 		} else if (typeof state.settings.footnoteType === 'string') {
 			footnoteType = state.settings.footnoteType;
-		} else {
-			footnoteType = constants.DEFAULT_FOOTNOTE_TYPE;
 		}
 
 		return footnoteType;
@@ -274,14 +267,12 @@ export default {
 
 	// Getters used for the content disposition on the screen
 	hasFootnote: (state) => {
-		let hasFootNote;
+		let hasFootNote = constants.DEFAULT_FOOTNOTE;
 
 		if (typeof state.state.settings.footnote === 'boolean') {
 			hasFootNote = state.state.settings.footnote;
 		} else if (typeof state.settings.footnote === 'boolean') {
 			hasFootNote = state.settings.footnote;
-		} else {
-			hasFootNote = constants.DEFAULT_FOOTNOTE;
 		}
 
 		return hasFootNote;
@@ -304,10 +295,7 @@ export default {
 	},
 
 	hasNoContent: (state) => {
-		return (
-			!state.state.content.text
-			&& !(Boolean(state.state.content.pictureName) || Boolean(state.state.content.interactivePiano))
-		);
+		return !state.state.content.text && !(Boolean(state.state.content.pictureName) || Boolean(state.state.content.interactivePiano));
 	},
 
 	hasHelperImage: (state) => {
@@ -319,10 +307,6 @@ export default {
 	},
 
 	isSkipButtonInFootnote: (state) => {
-		return (
-			state.state.settings.footnote
-			&& state.state.settings.footnoteType === 'button' &&
-			state.state.settings.isSkipStepButtonInFootnote
-		);
+		return state.state.settings.footnote && state.state.settings.footnoteType === 'button' && state.state.settings.isSkipStepButtonInFootnote;
 	},
 };

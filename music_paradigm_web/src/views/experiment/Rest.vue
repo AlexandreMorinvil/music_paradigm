@@ -1,12 +1,6 @@
 <template>
 	<div id="rest-state" class="experiment-state-container" :class="gridClass">
-		<img
-			v-if="hasHelperImage"
-			id="helper-img"
-			:src="urlExperimentRessource(helperImageName)"
-			alt="Helper"
-			class="helper"
-		/>
+		<img v-if="hasHelperImage" id="helper-img" :src="urlExperimentRessource(helperImageName)" alt="Helper" class="helper" />
 
 		<skip-button v-if="hasSkipOption" class="skip-button" v-on:skip-request="emitSkipSignal" />
 
@@ -28,10 +22,11 @@
 </template>
 
 <script>
-import '@/styles/experimentStateTemplate.css';
 import { mapGetters } from 'vuex';
-import VisualPiano from '@/components/VisualPiano.vue';
+
+import '@/styles/experimentStateTemplate.css';
 import SkipButton from '@/components/experiment/SkipButton.vue';
+import VisualPiano from '@/components/VisualPiano.vue';
 
 export default {
 	name: 'Rest',

@@ -1,6 +1,5 @@
+import { authHeader, routerNavigation, url } from '@/_helpers';
 import defaultResponseHandler from './defaultResponseHandler';
-import { routerNavigation } from '@/_helpers';
-import { authHeader, url } from '@/_helpers';
 
 export const accountService = {
 	resumeLogin,
@@ -51,7 +50,7 @@ function fetchProgressionSummary() {
 	return fetch(url.account('progressionSummary'), requestOptions).then(handleResponse);
 }
 
-const handleResponse = function (reponse) {
+function handleResponse(reponse) {
 	return defaultResponseHandler(reponse, (status) => {
 		switch (status) {
 			// Auto logout and reload page if 401 response returned from api
@@ -64,4 +63,4 @@ const handleResponse = function (reponse) {
 				break;
 		}
 	});
-};
+}

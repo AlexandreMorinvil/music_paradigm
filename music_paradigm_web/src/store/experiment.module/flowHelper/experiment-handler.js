@@ -47,16 +47,12 @@ function setExperimentGeneralSettings(state, experiment) {
 		timbreFile: typeof timbreFile === 'string' ? timbreFile : defaultSettings.timbreFile,
 		footnote: typeof footnote === 'boolean' ? footnote : defaultSettings.footnote,
 		footnoteType: typeof footnoteType === 'string' ? footnoteType : defaultSettings.footnoteType,
-		timeLimitInSeconds:
-			typeof timeLimitInSeconds === 'number' ? timeLimitInSeconds : defaultSettings.timeLimitInSeconds,
+		timeLimitInSeconds: typeof timeLimitInSeconds === 'number' ? timeLimitInSeconds : defaultSettings.timeLimitInSeconds,
 		logFlag: typeof logFlag === 'boolean' ? logFlag : defaultSettings.logFlag,
 		successesForSkip: typeof successesForSkip === 'number' ? successesForSkip : defaultSettings.successesForSkip,
-		hideFeedbackSmiley:
-			typeof hideFeedbackSmiley === 'boolean' ? hideFeedbackSmiley : defaultSettings.hideFeedbackSmiley,
+		hideFeedbackSmiley: typeof hideFeedbackSmiley === 'boolean' ? hideFeedbackSmiley : defaultSettings.hideFeedbackSmiley,
 		isSkipStepButtonInFootnote:
-			typeof isSkipStepButtonInFootnote === 'boolean'
-				? isSkipStepButtonInFootnote
-				: defaultSettings.isSkipStepButtonInFootnote,
+			typeof isSkipStepButtonInFootnote === 'boolean' ? isSkipStepButtonInFootnote : defaultSettings.isSkipStepButtonInFootnote,
 	};
 }
 

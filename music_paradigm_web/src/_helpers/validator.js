@@ -1,4 +1,11 @@
-const getMinimalValidExperimentStructure = function () {
+export default {
+	getMinimalValidExperimentStructure,
+	validateExperiment,
+	validateBlock,
+	isExperimentValid,
+};
+
+function getMinimalValidExperimentStructure() {
 	return {
 		name: '',
 		folder: '',
@@ -8,9 +15,9 @@ const getMinimalValidExperimentStructure = function () {
 			},
 		],
 	};
-};
+}
 
-const validateExperiment = function (experiment) {
+function validateExperiment(experiment) {
 	// Verification of the validity of the experiment object type
 	if (!(typeof experiment === 'object')) {
 		throw new Error('The experiment is not defined within a JSON object');
@@ -60,9 +67,9 @@ const validateExperiment = function (experiment) {
 	});
 
 	return true;
-};
+}
 
-const validateBlock = function (block, index = null) {
+function validateBlock(block, index = null) {
 	// Set the index message addon
 	let indexMessage = '';
 	if (typeof index === 'number') {
@@ -141,9 +148,9 @@ const validateBlock = function (block, index = null) {
 	});
 
 	return true;
-};
+}
 
-const validateAttributeType = function (key, value) {
+function validateAttributeType(key, value) {
 	switch (key) {
 		// String
 		case 'resetVariableValue':
@@ -215,9 +222,7 @@ const validateAttributeType = function (key, value) {
 				case 'helperImageFileName':
 					value.forEach((element, index) => {
 						if (!(typeof element === 'string')) {
-							throw new Error(
-								`The element number ${index + 1} in the array of the key '${key}' must be of type 'String'`,
-							);
+							throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String'`);
 						}
 					});
 					break;
@@ -226,18 +231,12 @@ const validateAttributeType = function (key, value) {
 				case 'interactivePiano':
 					value.forEach((element, index) => {
 						if (!(typeof element === 'string' || typeof element === 'boolean' || Array.isArray(element))) {
-							throw new Error(
-								`The element number ${
-									index + 1
-								} in the array of the key '${key}' must be of type 'String' or boolean or array`,
-							);
+							throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String' or boolean or array`);
 						}
 
 						const allowedEntries = ['midi', 'first'];
 						if (typeof element === 'string' && !allowedEntries.includes(element)) {
-							throw new Error(
-								`The element number ${index + 1} in the array of the key '${key}' cannot have the value ${element}`,
-							);
+							throw new Error(`The element number ${index + 1} in the array of the key '${key}' cannot have the value ${element}`);
 						}
 
 						if (Array.isArray(element)) {
@@ -269,9 +268,7 @@ const validateAttributeType = function (key, value) {
 				case 'videoFileName':
 					value.forEach((element, index) => {
 						if (!(typeof element === 'string' || Array.isArray(element))) {
-							throw new Error(
-								`The element number ${index + 1} in the array of the key '${key}' must be of type 'String' or boolean`,
-							);
+							throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String' or boolean`);
 						}
 
 						if (Array.isArray(element)) {
@@ -298,19 +295,13 @@ const validateAttributeType = function (key, value) {
 	}
 
 	return true;
-};
+}
 
-const isExperimentValid = function (experiment) {
+function isExperimentValid(experiment) {
 	try {
 		validateExperiment(experiment);
 		return true;
 	} catch (error) {
 		return false;
 	}
-};
-export default {
-	getMinimalValidExperimentStructure,
-	validateExperiment,
-	validateBlock,
-	isExperimentValid,
-};
+}

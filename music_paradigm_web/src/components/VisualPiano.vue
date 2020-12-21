@@ -60,8 +60,7 @@ export default {
 		},
 		hintAllNotes() {
 			const designatedKeys = [];
-			for (let index = 0; index < this.midiFileNotesMidi.length; index++)
-				designatedKeys.push(this.midiFileNotesMidi[index]);
+			for (let index = 0; index < this.midiFileNotesMidi.length; index++) designatedKeys.push(this.midiFileNotesMidi[index]);
 			this.designateKeys(designatedKeys);
 		},
 		hintFirstNote() {
@@ -165,14 +164,12 @@ ul .white:active,
 	z-index: 2;
 	border: 1px solid #000;
 	border-radius: 0 0 3px 3px;
-	box-shadow: -1px -1px 2px rgba(255, 255, 255, 0.2) inset, 0 -5px 2px 3px rgba(0, 0, 0, 0.6) inset,
-		0 2px 4px rgba(0, 0, 0, 0.5);
+	box-shadow: -1px -1px 2px rgba(255, 255, 255, 0.2) inset, 0 -5px 2px 3px rgba(0, 0, 0, 0.6) inset, 0 2px 4px rgba(0, 0, 0, 0.5);
 	background: linear-gradient(45deg, #222 0%, #555 100%);
 }
 
 .black:active {
-	box-shadow: -1px -1px 2px rgba(255, 255, 255, 0.2) inset, 0 -2px 2px 3px rgba(0, 0, 0, 0.6) inset,
-		0 1px 2px rgba(0, 0, 0, 0.5);
+	box-shadow: -1px -1px 2px rgba(255, 255, 255, 0.2) inset, 0 -2px 2px 3px rgba(0, 0, 0, 0.6) inset, 0 1px 2px rgba(0, 0, 0, 0.5);
 	background: linear-gradient(to right, #444 0%, #222 100%);
 }
 

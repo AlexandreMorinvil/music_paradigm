@@ -51,12 +51,7 @@ export default {
 		timerDisplay() {
 			let hours = '';
 			if (this.hours > 0) hours = (this.hours < 10 ? '0' + this.hours : this.hours) + ':';
-			return (
-				hours
-				+ (this.minutes < 10 ? '0' + this.minutes : this.minutes)
-				+ ':'
-				+ (this.seconds < 10 ? '0' + this.seconds : this.seconds)
-			);
+			return hours + (this.minutes < 10 ? '0' + this.minutes : this.minutes) + ':' + (this.seconds < 10 ? '0' + this.seconds : this.seconds);
 		},
 	},
 	methods: {
@@ -87,15 +82,12 @@ export default {
 			this.totalTime = this.cumulatedTime - (Date.parse(new Date()) - Date.parse(this.referenceTime));
 		},
 	},
-	beforeMount() {},
-
 	mounted() {
 		this.setTime(this.startTimeInSeconds);
 	},
 	beforeDestroy() {
 		window.clearInterval(this.counterUniqueIdentifier);
 	},
-	destroyed() {},
 	watch: {
 		totalTime(value) {
 			if (value < 0) {

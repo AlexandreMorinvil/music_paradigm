@@ -181,7 +181,7 @@ export default {
 			// PianokeyDown => 'Note On'
 			// If the key doesn't exist in the midi map, or we're trying to send a
 			// noteOn event without having most recently sent a noteOff, end here.
-			if (note === undefined || this.keyboardTracker[note]) return;
+			if (!note || this.keyboardTracker[note]) return;
 			this.keyboardTracker[note] = true;
 			this.manageMidiNote({ data: [144, note, 127] });
 		},
@@ -206,7 +206,7 @@ export default {
 				// Piano keyUp  => 'Note Off'
 				default: {
 					const note = this.toNote(key);
-					if (note !== undefined) {
+					if (note) {
 						this.keyboardTracker[note] = false;
 						this.manageMidiNote({ data: [128, note, 127] });
 					}

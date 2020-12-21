@@ -1,12 +1,6 @@
 <template>
 	<div id="video-state" class="experiment-state-container grid-area-area-note" :class="gridClass">
-		<img
-			v-if="hasHelperImage"
-			id="helper-img"
-			:src="urlExperimentRessource(helperImageName)"
-			alt="Helper"
-			class="helper"
-		/>
+		<img v-if="hasHelperImage" id="helper-img" :src="urlExperimentRessource(helperImageName)" alt="Helper" class="helper" />
 
 		<skip-button v-if="hasSkipOption" class="skip-button" v-on:skip-request="emitSkipSignal" />
 
@@ -17,11 +11,7 @@
 		<div id="visual-media-area" class="experiment-state-division state-division-visual-media">
 			<div class="visual-media-board">
 				<div class="video-box">
-					<div
-						v-show="!isPlaying"
-						class="video-hidding-thumbnail"
-						:style="videoWidthCSSvariable + ';' + videoHeightCSSvariable"
-					>
+					<div v-show="!isPlaying" class="video-hidding-thumbnail" :style="videoWidthCSSvariable + ';' + videoHeightCSSvariable">
 						{{ videoWaitingMessage }}
 					</div>
 					<video-player
@@ -113,7 +103,7 @@ export default {
 		},
 		footnote() {
 			if (this.footnoteMessage) return this.footnoteMessage;
-			let noteMessage;
+			let noteMessage = '';
 			if (!this.hasVideo)
 				noteMessage = `There is no video to be played, the experiment will automatically  go to the next step in ${this.errorAutomaticTransitionSeconds} seconds`;
 			else return 'The experiment will automatically go to the next step after the video playback';
@@ -171,10 +161,7 @@ export default {
 			this.counterUniqueIdentifier = window.setInterval(this.countdown, this.timeStepInMilliseconds);
 		},
 		countdown() {
-			this.delayLeftInMilliseconds = Math.max(
-				this.playbackDelayInSeconds * 1000 - (Date.now() - this.referenceTime),
-				0,
-			);
+			this.delayLeftInMilliseconds = Math.max(this.playbackDelayInSeconds * 1000 - (Date.now() - this.referenceTime), 0);
 		},
 		manageHavingNoVideo() {
 			setTimeout(() => {

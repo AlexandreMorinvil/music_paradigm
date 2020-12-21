@@ -12,13 +12,7 @@
 						Username :
 						<span class="selected-element-text-color">{{ userSelectedUsernameDisplay }}</span>
 					</label>
-					<input
-						type="text"
-						v-model="username"
-						name="username"
-						autocomplete="new-username"
-						placeholder="Insert new username"
-					/>
+					<input type="text" v-model="username" name="username" autocomplete="new-username" placeholder="Insert new username" />
 				</div>
 				<div>
 					<label for="email">
@@ -33,13 +27,7 @@
 						<span class="selected-element-text-color">{{ userSelectedPasswordDisplay }}</span>
 					</label>
 
-					<input
-						type="password"
-						v-model="password"
-						name="password"
-						autocomplete="new-password"
-						placeholder="Insert new password"
-					/>
+					<input type="password" v-model="password" name="password" autocomplete="new-password" placeholder="Insert new password" />
 				</div>
 				<div class="form-name-row">
 					<div>
@@ -47,39 +35,21 @@
 							First Name :
 							<span class="selected-element-text-color">{{ userSelectedFirstNameDisplay }}</span>
 						</label>
-						<input
-							type="text"
-							v-model="firstName"
-							name="firstName"
-							autocomplete="new-first-name"
-							placeholder="Insert new first name"
-						/>
+						<input type="text" v-model="firstName" name="firstName" autocomplete="new-first-name" placeholder="Insert new first name" />
 					</div>
 					<div>
 						<label for="middleName">
 							Middle Name :
 							<span class="selected-element-text-color">{{ userSelectedMiddleNameDisplay }}</span>
 						</label>
-						<input
-							type="text"
-							v-model="middleName"
-							name="middleName"
-							autocomplete="new-middle-name"
-							placeholder="Insert new middle name"
-						/>
+						<input type="text" v-model="middleName" name="middleName" autocomplete="new-middle-name" placeholder="Insert new middle name" />
 					</div>
 					<div>
 						<label for="lastName">
 							Last Name :
 							<span class="selected-element-text-color">{{ userSelectedLastNameDisplay }}</span>
 						</label>
-						<input
-							type="text"
-							v-model="lastName"
-							name="lastName"
-							autocomplete="new-last-name"
-							placeholder="Insert new last name"
-						/>
+						<input type="text" v-model="lastName" name="lastName" autocomplete="new-last-name" placeholder="Insert new last name" />
 					</div>
 				</div>
 
@@ -90,11 +60,7 @@
 					</label>
 					<select name="curriculum-reference" v-model="curriculum">
 						<option :value="null">-- No curriculum is assigned --</option>
-						<option
-							v-for="(reference, index) in curriculumsReferences"
-							:key="index"
-							:value="curriculumsReferences[index]._id"
-						>
+						<option v-for="(reference, index) in curriculumsReferences" :key="index" :value="curriculumsReferences[index]._id">
 							{{ curriculumsReferences[index].title }}
 						</option>
 					</select>
@@ -111,13 +77,7 @@
 						</div>
 						<div v-for="(tag, index) in tags" :key="index" class="form-group-input">
 							<button v-on:click="removeTag(index)" class="widget-button small red">Remove</button>
-							<input
-								type="text"
-								v-model="tags[index]"
-								name="tags"
-								autocomplete="new-tags"
-								placeholder="Insert new tag name"
-							/>
+							<input type="text" v-model="tags[index]" name="tags" autocomplete="new-tags" placeholder="Insert new tag name" />
 						</div>
 					</div>
 				</div>

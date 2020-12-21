@@ -1,5 +1,5 @@
-import { routerNavigation } from '@/_helpers';
 import blockHandler from './blockHandler';
+import { routerNavigation } from '@/_helpers';
 
 export default {
 	updateState,
@@ -54,20 +54,16 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
 		footnote: typeof footnote === 'boolean' ? footnote : generalSettings.footnote,
 		footnoteType: typeof footnoteType === 'string' ? footnoteType : generalSettings.footnoteType,
 		logFlag: typeof logFlag === 'boolean' ? logFlag : generalSettings.logFlag,
-		hideFeedbackSmiley:
-			typeof hideFeedbackSmiley === 'boolean' ? hideFeedbackSmiley : generalSettings.hideFeedbackSmiley,
+		hideFeedbackSmiley: typeof hideFeedbackSmiley === 'boolean' ? hideFeedbackSmiley : generalSettings.hideFeedbackSmiley,
 		skipStepButton: typeof skipStepButton === 'string' ? skipStepButton : '',
 		skipStepButtonMessage: typeof skipStepButtonMessage === 'string' ? skipStepButtonMessage : '',
 		successFeedbackMessage: typeof successFeedbackMessage === 'string' ? successFeedbackMessage : '',
 		failureFeedbackMessage: typeof failureFeedbackMessage === 'string' ? failureFeedbackMessage : '',
 		footnoteMessage: typeof footnoteMessage === 'string' ? footnoteMessage : '',
 		melodyRepetition: typeof melodyRepetition === 'number' ? melodyRepetition : 1,
-		successesForSkipLoop:
-			typeof successesForSkipLoop === 'number' ? successesForSkipLoop : generalSettings.successesForSkipLoop,
+		successesForSkipLoop: typeof successesForSkipLoop === 'number' ? successesForSkipLoop : generalSettings.successesForSkipLoop,
 		isSkipStepButtonInFootnote:
-			typeof isSkipStepButtonInFootnote === 'boolean'
-				? isSkipStepButtonInFootnote
-				: generalSettings.isSkipStepButtonInFootnote,
+			typeof isSkipStepButtonInFootnote === 'boolean' ? isSkipStepButtonInFootnote : generalSettings.isSkipStepButtonInFootnote,
 		startSignal: typeof startSignal === 'number' ? startSignal : 0,
 		feedbackNumerical: typeof feedbackNumerical === 'boolean' ? feedbackNumerical : false,
 	};
@@ -118,17 +114,14 @@ function updateStateContent(currentState, flow, cursor, isInitialized) {
 
 	let updatedTextContent = Array.isArray(textContent) ? textContent[piledContentIndex] || null : null;
 	let updatedPictureFileName = Array.isArray(pictureFileName) ? pictureFileName[piledContentIndex] || null : null;
-	let updatedHelperImageFileName = Array.isArray(helperImageFileName)
-		? helperImageFileName[piledContentIndex] || null
-		: null;
+	let updatedHelperImageFileName = Array.isArray(helperImageFileName) ? helperImageFileName[piledContentIndex] || null : null;
 	let updatedInteractivePiano = Array.isArray(interactivePiano) ? interactivePiano[piledContentIndex] || false : false;
 
 	const innerStepIndex = cursor.current.innerStepIndex;
 
 	if (Array.isArray(updatedTextContent)) updatedTextContent = updatedTextContent[innerStepIndex];
 	if (Array.isArray(updatedPictureFileName)) updatedPictureFileName = updatedPictureFileName[innerStepIndex];
-	if (Array.isArray(updatedHelperImageFileName))
-		updatedHelperImageFileName = updatedHelperImageFileName[innerStepIndex];
+	if (Array.isArray(updatedHelperImageFileName)) updatedHelperImageFileName = updatedHelperImageFileName[innerStepIndex];
 	if (Array.isArray(updatedInteractivePiano)) updatedInteractivePiano = updatedInteractivePiano[innerStepIndex];
 
 	currentState.content.text = updatedTextContent || '';

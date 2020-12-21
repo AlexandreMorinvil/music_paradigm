@@ -1,41 +1,53 @@
+export default {
+	getCorrectSequenceCount,
+	getSequenceDurations,
+	getTransitionSpeeds,
+	getSequenceErrorCount,
+	getPitchAccuracy,
+	getPitchErrorCount,
+	getDurationsRelativeError,
+	getRhythm,
+	getMissedNotes,
+	getInterOnsetIntervals,
+	getInterOnsetIntervalsRelativeError,
+	getSequenceDuration,
+};
+
 // TODO: This file is a mess...
 
 // search for sub array
-const findSubarray = function (subarr, arr, from_index) {
-	from_index = from_index || 0;
+function findSubarray(subarr, arr, fromIndex = 0) {
 	const found = [];
 
 	if (arr.length < subarr.length) return [];
-	const last_check_index = arr.length - subarr.length;
-	const subarr_length = subarr.length;
+	const lastCheckIndex = arr.length - subarr.length;
+	const subArrayLength = subarr.length;
 
-	position_loop: for (let i = from_index; i <= last_check_index; ++i) {
-		for (let j = 0; j < subarr_length; ++j) {
+	positionLoop: for (let i = fromIndex; i <= lastCheckIndex; ++i) {
+		for (let j = 0; j < subArrayLength; ++j) {
 			if (arr[i + j] !== subarr[j]) {
-				continue position_loop;
-			} else if (j === subarr_length - 1) {
+				continue positionLoop;
+			} else if (j === subArrayLength - 1) {
 				found.push(i);
 				i = i + j - 1; // Starts at the last index (the for loop will increment thus cancel the -1)
-				continue position_loop;
+				continue positionLoop;
 			}
 		}
 	}
 
 	return found; // Return list of indices
-};
+}
 
 // Search for sub array
-const findSubarraySegment = function (subarr, arr, from_index) {
-	from_index = from_index || 0;
-
+function findSubarraySegment(subarr, arr, fromIndex = 0) {
 	let maxLength = 0;
 	let startIndex = 0;
 	let endIndex = 0;
 
-	position_loop: for (let i = from_index; i <= arr.length - maxLength; i++) {
+	positionLoop: for (let i = fromIndex; i <= arr.length - maxLength; i++) {
 		for (let j = 0; j < subarr.length; j++) {
 			if (arr[i + j] !== subarr[j]) {
-				continue position_loop;
+				continue positionLoop;
 			} else if (j + 1 > maxLength) {
 				maxLength = j + 1;
 				startIndex = i;
@@ -45,10 +57,10 @@ const findSubarraySegment = function (subarr, arr, from_index) {
 	}
 
 	return { startIndex: startIndex, endIndex: endIndex, length: maxLength };
-};
+}
 
 // Make sure arrays are defined and of same length
-const arraysValid = function (arr1, arr2) {
+function arraysValid(arr1, arr2) {
 	if (arr1 == undefined || arr2 == undefined) {
 		// Console.error('undefined array');
 		return false;
@@ -58,7 +70,7 @@ const arraysValid = function (arr1, arr2) {
 		return false;
 	}
 	return true;
-};
+}
 
 // Const average = data => data.length > 0 ? data.reduce((sum, value) => sum + value) / data.length : 0;
 // const standardDeviation = values => Math.sqrt(average(values.map(value => (value - average(values)) ** 2)));
@@ -66,14 +78,14 @@ const arraysValid = function (arr1, arr2) {
 // speed mode (task 1) perfaaormance measures
 // Walker: number of correctly typed sequence per block
 // Old name : getSpeedW
-const getCorrectSequenceCount = function (refNoteArr, noteArr) {
+function getCorrectSequenceCount(refNoteArr, noteArr) {
 	const idxArr = findSubarray(refNoteArr, noteArr);
 	return idxArr.length;
-};
+}
 
 // Duke: mean sequence duration measured from the onset of the first note to the onset of the final tone in each sequence.
 // Old name : getSpeedD
-const getSequenceDurations = function (refNoteArr, noteArr, timeArr) {
+function getSequenceDurations(refNoteArr, noteArr, timeArr) {
 	const idxArr = findSubarray(refNoteArr, noteArr);
 	if (idxArr.length < 1) {
 		return { durations: [], speedD: 0 };
@@ -87,11 +99,11 @@ const getSequenceDurations = function (refNoteArr, noteArr, timeArr) {
 		durations.push(temp);
 	});
 	return { durations: durations, durationsAverage: duration / idxArr.length };
-};
+}
 
 // Within-sequence measure assessed the time intervals between successive key presses within the sequence
 // for correct sequences only
-const getTransitionSpeeds = function (refNoteArr, noteArr, timeArr) {
+function getTransitionSpeeds(refNoteArr, noteArr, timeArr) {
 	const idxArr = findSubarray(refNoteArr, noteArr);
 	const sequenceCount = idxArr.length;
 	if (sequenceCount <= 0) return { transitionSpeeds: [], transitionSpeedsAverage: [] };
@@ -119,13 +131,13 @@ const getTransitionSpeeds = function (refNoteArr, noteArr, timeArr) {
 		transitionSpeeds: transitionSpeeds,
 		transitionSpeedsAverage: transitionSpeedsAverage,
 	};
-};
+}
 
 // The number of errors made relative to the number of correctly typed sequences per 30-sec trial
 // incorrectly typed sequence. Count the number of icorrect note sequences >= sequenceLength notes
 // Old name : getAccuracyW
 // FIXME: This concept could be improved maybe
-const getSequenceErrorCount = function (refNoteArr, noteArr, sequenceLength) {
+function getSequenceErrorCount(refNoteArr, noteArr, sequenceLength) {
 	const idxArr = findSubarray(refNoteArr, noteArr);
 	if (idxArr.length < 1) {
 		return -1; // Exceptional case
@@ -147,33 +159,33 @@ const getSequenceErrorCount = function (refNoteArr, noteArr, sequenceLength) {
 	incorrect += tempIncorrect >= 1 ? Math.floor(tempIncorrect - 1) : Math.floor(tempIncorrect);
 
 	return incorrect;
-};
+}
 
 // Melody mode (task 2) performance measures
 // Brown and Penhune: percentage of pitches performed in the correct order
 // Old name : getAccuracyB_2
-const getPitchAccuracy = function (refNoteArr, noteArr) {
+function getPitchAccuracy(refNoteArr, noteArr) {
 	if (!arraysValid(noteArr, refNoteArr)) return -1;
 	const { length } = findSubarraySegment(refNoteArr, noteArr);
 	return (length / refNoteArr.length) * 100;
-};
+}
 
 // (Duke: mean) number of pitch errors per sequence
 // Old name : getAccuracyD_2
-const getPitchErrorCount = function (refNoteArr, noteArr) {
+function getPitchErrorCount(refNoteArr, noteArr) {
 	if (!arraysValid(noteArr, refNoteArr)) return -1;
 
 	const { startIndex, length } = findSubarraySegment(refNoteArr, noteArr);
 	const arrDiff = noteArr.length - length;
 	return arrDiff + startIndex;
-};
+}
 
 // (percentage of IOI durations performed in the correct order)
 // averaeg IOI duration difference over their reference IOI duration
 // (diff_a/a + diff_b/b+.......) / 2 - rhythm + tempo
 // Old name : getRhythmTempo
 // Average relative duration error
-const getDurationsRelativeError = function (refDurArr, durArr) {
+function getDurationsRelativeError(refDurArr, durArr) {
 	if (!arraysValid(durArr, refDurArr)) return -1;
 
 	let arrDiff = 0;
@@ -182,11 +194,11 @@ const getDurationsRelativeError = function (refDurArr, durArr) {
 	}
 
 	return (arrDiff / refDurArr.length) * 100;
-};
+}
 
 // FIXME: This is a function that Weiwei never finished implementing
 // get rhythm, excluding tempo (not working yet)
-const getRhythm = function (refDurArr, durArr) {
+function getRhythm(refDurArr, durArr) {
 	if (!arraysValid(durArr, refDurArr)) return -1;
 
 	let arrRatio = 0;
@@ -197,10 +209,10 @@ const getRhythm = function (refDurArr, durArr) {
 	}
 	// Console.log(`arrRatio:${arrRatio}, refArrRatio:${refArrRatio}`);
 	return Math.abs(arrRatio - refArrRatio) / (durArr.length - 1);
-};
+}
 
 // Get array of missedNotes
-const getMissedNotes = function (refNoteArr, noteArr) {
+function getMissedNotes(refNoteArr, noteArr) {
 	if (!arraysValid(noteArr, refNoteArr)) return -1;
 	let missedNotes = [];
 
@@ -210,11 +222,11 @@ const getMissedNotes = function (refNoteArr, noteArr) {
 		missedNotes = refNoteArr.slice(length, refNoteArr.length);
 	}
 	return { missedNotes: missedNotes, missedNotesCount: missedNotes.length };
-};
+}
 
 // Old name : getIOIs
 // InterOnsetInterval : The interonset interval, or IOI, is the interval between onsets of stimuli
-const getInterOnsetIntervals = function (timeArr) {
+function getInterOnsetIntervals(timeArr) {
 	const IOIs = [];
 	if (timeArr.length > 0) {
 		for (let i = 1; i < timeArr.length; i++) {
@@ -222,9 +234,9 @@ const getInterOnsetIntervals = function (timeArr) {
 		}
 	}
 	return IOIs; // Return [a,b,c,d]
-};
+}
 
-const getInterOnsetIntervalsRelativeError = function (refTimeArr, timeArr) {
+function getInterOnsetIntervalsRelativeError(refTimeArr, timeArr) {
 	if (!arraysValid(timeArr, refTimeArr)) return -1;
 	const referenceIoi = getInterOnsetIntervals(refTimeArr);
 	const experimentalIoi = getInterOnsetIntervals(timeArr);
@@ -235,25 +247,10 @@ const getInterOnsetIntervalsRelativeError = function (refTimeArr, timeArr) {
 	}
 
 	return (arrDiff / experimentalIoi.length) * 100;
-};
+}
 
 // Duration of the corresponding sequence of notes played (ms)
-const getSequenceDuration = function (timeArr, durationArr) {
+function getSequenceDuration(timeArr, durationArr) {
 	const noteCount = timeArr.length;
 	return timeArr[0] + durationArr[noteCount - 1] - timeArr[noteCount - 1];
-};
-
-export default {
-	getCorrectSequenceCount,
-	getSequenceDurations,
-	getTransitionSpeeds,
-	getSequenceErrorCount,
-	getPitchAccuracy,
-	getPitchErrorCount,
-	getDurationsRelativeError,
-	getRhythm,
-	getMissedNotes,
-	getInterOnsetIntervals,
-	getInterOnsetIntervalsRelativeError,
-	getSequenceDuration,
-};
+}

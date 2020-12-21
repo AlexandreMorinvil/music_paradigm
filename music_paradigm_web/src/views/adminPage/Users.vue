@@ -22,10 +22,10 @@
 
 <script>
 import AdminPageContext from '@/components/admin/AdminPageContext.vue';
-import WidgetContext from '@/components/admin/WidgetContext.vue';
-import UsersViewer from '@/components/admin/users/UsersViewerWidget.vue';
 import UsersEditor from '@/components/admin/users/UsersEditorWidget.vue';
 import UsersTable from '@/components/admin/users/UsersTableWidget.vue';
+import UsersViewer from '@/components/admin/users/UsersViewerWidget.vue';
+import WidgetContext from '@/components/admin/WidgetContext.vue';
 
 export default {
 	components: {

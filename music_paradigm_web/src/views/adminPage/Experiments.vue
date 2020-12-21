@@ -22,10 +22,10 @@
 
 <script>
 import AdminPageContext from '@/components/admin/AdminPageContext.vue';
-import WidgetContext from '@/components/admin/WidgetContext.vue';
-import ExperimentsViewer from '@/components/admin/experiments/ExperimentsViewerWidget.vue';
 import ExperimentsEditor from '@/components/admin/experiments/ExperimentsEditorWidget.vue';
 import ExperimentsTable from '@/components/admin/experiments/ExperimentsTableWidget.vue';
+import ExperimentsViewer from '@/components/admin/experiments/ExperimentsViewerWidget.vue';
+import WidgetContext from '@/components/admin/WidgetContext.vue';
 
 export default {
 	name: 'AdminExperiments',
@@ -36,14 +36,6 @@ export default {
 		experimentsEditor: ExperimentsEditor,
 		ExperimentsTable: ExperimentsTable,
 	},
-	data() {
-		return {};
-	},
-	computed: {},
-	methods: {},
-	mounted() {},
-	destroyed() {},
-	watch: {},
 };
 </script>
 

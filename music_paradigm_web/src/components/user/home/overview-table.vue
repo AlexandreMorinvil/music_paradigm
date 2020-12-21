@@ -32,10 +32,6 @@ export default {
 			else return 7;
 		},
 	},
-	methods: {},
-	beforeMount() {},
-	mounted() {},
-	watch: {},
 };
 </script>
 

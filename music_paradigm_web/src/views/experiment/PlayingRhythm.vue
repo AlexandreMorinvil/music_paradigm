@@ -2,12 +2,7 @@
 	<div id="playing-rythm-area" class="playing-area">
 		<div id="playing-visual-media" v-if="hasVisualMedia" class="playing-visual-media-area">
 			<visual-piano v-if="hasInteractivePiano" ref="piano" />
-			<img
-				id="playing-img"
-				v-if="!hasInteractivePiano && hasPicture"
-				:src="urlExperimentRessource(pictureName)"
-				alt="Playing"
-			/>
+			<img id="playing-img" v-if="!hasInteractivePiano && hasPicture" :src="urlExperimentRessource(pictureName)" alt="Playing" />
 		</div>
 
 		<div id="playing-progress-bar" class="playing-progress-bar-area">
@@ -34,13 +29,7 @@ export default {
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
-		...mapGetters('experiment', [
-			'hasVisualMedia',
-			'hasPicture',
-			'hasInteractivePiano',
-			'pictureName',
-			'timeoutInSeconds',
-		]),
+		...mapGetters('experiment', ['hasVisualMedia', 'hasPicture', 'hasInteractivePiano', 'pictureName', 'timeoutInSeconds']),
 		...mapGetters('piano', ['midiFileNotesMidi', 'midiFileNotesDuration', 'playedNotesMidi']),
 		playProgress() {
 			return this.playedNotesMidi.length;

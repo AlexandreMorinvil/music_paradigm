@@ -100,9 +100,9 @@ export default {
 		experimentService
 			.create(experiment)
 			.then(
-				(experiment) => {
-					commit('setEditedExperiment', experiment);
-					commit('setSelectedExperiment', experiment);
+				(experimentCreated) => {
+					commit('setEditedExperiment', experimentCreated);
+					commit('setSelectedExperiment', experimentCreated);
 					dispatch('alert/setSuccessAlert', 'Experiment creation sucessful', {
 						root: true,
 					});
@@ -122,9 +122,9 @@ export default {
 		experimentService
 			.update(id, experiment)
 			.then(
-				(experiment) => {
-					commit('setEditedExperiment', experiment);
-					commit('setSelectedExperiment', experiment);
+				(experimentUpdated) => {
+					commit('setEditedExperiment', experimentUpdated);
+					commit('setSelectedExperiment', experimentUpdated);
 					dispatch('alert/setSuccessAlert', 'Experiment update sucessful', {
 						root: true,
 					});

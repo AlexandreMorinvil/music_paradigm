@@ -1,12 +1,6 @@
 <template>
 	<div id="instruction-state" class="experiment-state-container" :class="gridClass">
-		<img
-			v-if="hasHelperImage"
-			id="helper-img"
-			:src="urlExperimentRessource(helperImageName)"
-			alt="Helper"
-			class="helper"
-		/>
+		<img v-if="hasHelperImage" id="helper-img" :src="urlExperimentRessource(helperImageName)" alt="Helper" class="helper" />
 
 		<skip-button v-if="hasSkipOption && !isSkipButtonInFootnote" class="skip-button" />
 
@@ -19,22 +13,17 @@
 			<img id="instruction-img" v-else :src="urlExperimentRessource(pictureName)" alt="Instruction" />
 		</div>
 
-		<footnote
-			id="note-area"
-			v-if="hasFootnote"
-			class="experiment-state-division state-division-text"
-			:message="footnote"
-		/>
+		<footnote id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text" :message="footnote" />
 	</div>
 </template>
 
 <script>
 import '@/styles/experimentStateTemplate.css';
-import { mapGetters } from 'vuex';
 import { ExperimentEventBus } from '@/_services/eventBus.service.js';
-import VisualPiano from '@/components/VisualPiano.vue';
-import SkipButton from '@/components/experiment/SkipButton.vue';
 import Footnote from '@/components/experiment/footnote/Footnote.vue';
+import SkipButton from '@/components/experiment/SkipButton.vue';
+import VisualPiano from '@/components/VisualPiano.vue';
+import { mapGetters } from 'vuex';
 
 export default {
 	name: 'Instruction',

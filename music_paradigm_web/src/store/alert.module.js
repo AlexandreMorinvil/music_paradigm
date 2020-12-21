@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 const state = {
 	type: null,
 	message: null,
