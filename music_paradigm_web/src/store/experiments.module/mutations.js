@@ -1,6 +1,6 @@
-import{ validator } from'@/_helpers';
+import { validator } from '@/_helpers';
 
-export default{
+export default {
 	// Status Updates
 	indicateFetchingExperimentList(state) {
 		state.status.isFetchingExperimentHeadersList = true;
@@ -45,7 +45,7 @@ export default{
 	// Setters
 	setSelectedExperiment(state, experiment) {
 		state.selection.content = {};
-		const{ _id, ...experimentWithoutID } = experiment;
+		const { _id, ...experimentWithoutID } = experiment;
 		state.selection._id = _id;
 		Object.assign(state.selection.content, experimentWithoutID);
 		delete state.selection.content._id;
@@ -68,6 +68,5 @@ export default{
 
 	setHeadersList(state, experimentsHeadersLst) {
 		state.experimentsHeadersList = experimentsHeadersLst;
-	}
-
+	},
 };

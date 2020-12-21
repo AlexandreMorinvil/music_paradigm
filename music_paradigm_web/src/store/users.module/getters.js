@@ -1,5 +1,5 @@
-export default{
-	userSelectedId: (state)=> {
+export default {
+	userSelectedId: (state) => {
 		return state.selection._id;
 	},
 
@@ -46,5 +46,5 @@ export default{
 
 	isFetchingUserHeadersList: (state) => {
 		return state.status.isFetchingUsersHeadersList;
-	}
+	},
 };

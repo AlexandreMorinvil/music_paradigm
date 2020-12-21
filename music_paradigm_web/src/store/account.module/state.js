@@ -1,8 +1,8 @@
-export default{
+export default {
 	status: {
 		loggingIn: false,
 		loggedIn: false,
-		isFetchingProgressionSummary: false
+		isFetchingProgressionSummary: false,
 	},
 
 	user: {
@@ -14,17 +14,19 @@ export default{
 		lastName: '',
 		role: '',
 		curriculum: null,
-		progressions: []
+		progressions: [],
 	},
 
 	dueExperiment: '',
-	progressionSummary: [{
-		associativeId: '',
-		title: '',
-		delayPreAvailability: null,
-		completionsRequiredLeft: null,
-		completionsLimitLeft: null,
-		isDelayedByPreviousSequential: true,
-		isDelayedByPreviousUniqueInDay: true
-	}]
+	progressionSummary: [
+		{
+			associativeId: '',
+			title: '',
+			delayPreAvailability: null,
+			completionsRequiredLeft: null,
+			completionsLimitLeft: null,
+			isDelayedByPreviousSequential: true,
+			isDelayedByPreviousUniqueInDay: true,
+		},
+	],
 };

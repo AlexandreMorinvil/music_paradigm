@@ -1,51 +1,51 @@
 <template>
-  <div id="app" class="app-grid">
-    <!-- The alert is not considered in the grid display of the application -->
-    <alert id="alert" v-if="hasAlert" />
+	<div id="app" class="app-grid">
+		<!-- The alert is not considered in the grid display of the application -->
+		<alert id="alert" v-if="hasAlert" />
 
-    <div v-if="true" id="app-header" class="app-header-position">
-      <component :is="navigationBarType" id="app-navigation-bar" ref="navigationBar" />
-    </div>
+		<div v-if="true" id="app-header" class="app-header-position">
+			<component :is="navigationBarType" id="app-navigation-bar" ref="navigationBar" />
+		</div>
 
-    <div id="app-main" class="app-main-position">
-      <router-view />
-    </div>
-  </div>
+		<div id="app-main" class="app-main-position">
+			<router-view />
+		</div>
+	</div>
 </template>
 
 <script>
-import{ mapActions, mapGetters } from'vuex';
-import NavigationBarDefault from'@/components/navigationBar/NavigationBarDefault';
-import NavigationBarExperiment from'@/components/navigationBar/NavigationBarExperiment';
-import Alert from'@/components/Alert';
+import { mapActions, mapGetters } from 'vuex';
+import Alert from '@/components/Alert';
+import NavigationBarDefault from '@/components/navigationBar/NavigationBarDefault';
+import NavigationBarExperiment from '@/components/navigationBar/NavigationBarExperiment';
 
-export default{
+export default {
 	name: 'app',
 	components: {
 		defaultNavigationBar: NavigationBarDefault,
 		experimentNavigationBar: NavigationBarExperiment,
-		alert: Alert
+		alert: Alert,
 	},
 	data() {
-		return{
+		return {
 			appInited: false,
-			appState: 'default'
+			appState: 'default',
 		};
 	},
 	computed: {
 		...mapGetters('alert', ['hasAlert']),
 		navigationBarType() {
-			switch(this.appState) {
-			case'experiment':
-				return'experimentNavigationBar';
-			default:
-				return'defaultNavigationBar';
+			switch (this.appState) {
+				case 'experiment':
+					return 'experimentNavigationBar';
+				default:
+					return 'defaultNavigationBar';
 			}
-		}
+		},
 	},
 	methods: {
 		...mapActions('account', ['resumeLoginStatus']),
-		...mapActions('alert', ['clearAlert'])
+		...mapActions('alert', ['clearAlert']),
 	},
 	created() {
 		this.resumeLoginStatus();
@@ -54,75 +54,73 @@ export default{
 		// On change of the route, we reevaluate the state of the application
 		$route(to) {
 			let state = 'default';
-			if(to.matched.some((m) => m.name === 'admin')) state = 'admin';
-			else if(to.matched.some((m) => m.name === 'experiment'))
-				state = 'experiment';
+			if (to.matched.some((m) => m.name === 'admin')) state = 'admin';
+			else if (to.matched.some((m) => m.name === 'experiment')) state = 'experiment';
 			this.appState = state;
-		}
-	}
+		},
+	},
 };
 </script>
-
 
 <style>
 /* To get the application on full screen */
 html,
 body,
 #app {
-  height: 100vh;
+	height: 100vh;
 }
 
 body {
-  font-size: 1.3rem;
-  font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.4;
-  background-color: rgb(0, 0, 0);
-  color: white;
+	font-size: 1.3rem;
+	font-family: Arial, Helvetica, sans-serif;
+	line-height: 1.4;
+	background-color: rgb(0, 0, 0);
+	color: white;
 }
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
 }
 
 .app-header-position {
-  grid-area: header;
-  position: fixed;
-  top: 0;
-  z-index: 1000;
+	grid-area: header;
+	position: fixed;
+	top: 0;
+	z-index: 1000;
 }
 
 .app-main-position {
-  grid-area: main;
+	grid-area: main;
 }
 
 .app-grid {
-  display: grid;
-  grid-template-rows: 56px;
-  grid-template-areas:
-    "header"
-    "main";
-  grid-gap: 0px;
+	display: grid;
+	grid-template-rows: 56px;
+	grid-template-areas:
+		'header'
+		'main';
+	grid-gap: 0px;
 }
 
 #app-header {
-  width: 100%;
-  height: 56px;
-  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0);
-  background-color: rgb(25, 25, 25);
-  border-bottom-color: rgb(35, 35, 35);
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
+	width: 100%;
+	height: 56px;
+	box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0);
+	background-color: rgb(25, 25, 25);
+	border-bottom-color: rgb(35, 35, 35);
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
 }
 
 /* Footer */
 footer {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  color: white;
-  font-size: 0.8rem;
-  height: 100%;
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	color: white;
+	font-size: 0.8rem;
+	height: 100%;
 }
 </style>

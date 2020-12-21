@@ -1,4 +1,4 @@
-export default{
+export default {
 	curriculumSelectedId: (state) => {
 		return state.selection._id;
 	},
@@ -16,8 +16,8 @@ export default{
 	},
 
 	curriculumSelectedExperimentAtIndex: (state) => (index) => {
-		if(Array.isArray(state.selection.experiments)) return state.selection.experiments[index] || {};
-		else return{};
+		if (Array.isArray(state.selection.experiments)) return state.selection.experiments[index] || {};
+		else return {};
 	},
 
 	curriculumsHeadersList: (state) => {
@@ -31,5 +31,5 @@ export default{
 
 	isFetchingCurriculumsHeadersList: (state) => {
 		return state.status.isFetchingCurriculumsHeadersList;
-	}
+	},
 };

@@ -12,7 +12,7 @@ const parser = require('note-parser');
 function Soundfont(ctx, nameToUrl) {
 	console.warn('new Soundfont() is deprected');
 	console.log('Please use Soundfont.instrument() instead of new Soundfont().instrument()');
-	if(!(this instanceof Soundfont)) return new Soundfont(ctx);
+	if (!(this instanceof Soundfont)) return new Soundfont(ctx);
 
 	this.nameToUrl = nameToUrl || Soundfont.nameToUrl;
 	this.ctx = ctx;
@@ -20,32 +20,34 @@ function Soundfont(ctx, nameToUrl) {
 	this.promises = [];
 }
 
-Soundfont.prototype.onready = function(callback) {
+Soundfont.prototype.onready = function (callback) {
 	console.warn('deprecated API');
-	console.log('Please use Promise.all(Soundfont.instrument(), Soundfont.instrument()).then() instead of new Soundfont().onready()');
+	console.log(
+		'Please use Promise.all(Soundfont.instrument(), Soundfont.instrument()).then() instead of new Soundfont().onready()',
+	);
 	Promise.all(this.promises).then(callback);
 };
 
-Soundfont.prototype.instrument = function(name, options) {
+Soundfont.prototype.instrument = function (name, options) {
 	console.warn('new Soundfont().instrument() is deprecated.');
 	console.log('Please use Soundfont.instrument() instead.');
 	const ctx = this.ctx;
 	name = name || 'default';
-	if(name in this.instruments) return this.instruments[name];
+	if (name in this.instruments) return this.instruments[name];
 	const inst = { name: name, play: oscillatorPlayer(ctx, options) };
 	this.instruments[name] = inst;
-	if(name !== 'default') {
-		const promise = Soundfont.instrument(ctx, name, options).then(function(instrument) {
+	if (name !== 'default') {
+		const promise = Soundfont.instrument(ctx, name, options).then(function (instrument) {
 			inst.play = instrument.play;
 			return inst;
 		});
 		this.promises.push(promise);
-		inst.onready = function(cb) {
+		inst.onready = function (cb) {
 			console.warn('onready is deprecated. Use Soundfont.instrument().then()');
 			promise.then(cb);
 		};
-	} else{
-		inst.onready = function(cb) {
+	} else {
+		inst.onready = function (cb) {
 			console.warn('onready is deprecated. Use Soundfont.instrument().then()');
 			cb();
 		};
@@ -78,7 +80,7 @@ Soundfont.prototype.instrument = function(name, options) {
 function loadBuffers(ac, name, options) {
 	console.warn('Soundfont.loadBuffers is deprecate.');
 	console.log('Use Soundfont.instrument(..) and get buffers properties from the result.');
-	return Soundfont.instrument(ac, name, options).then(function(inst) {
+	return Soundfont.instrument(ac, name, options).then(function (inst) {
 		return inst.buffers;
 	});
 }
@@ -91,16 +93,16 @@ Soundfont.loadBuffers = loadBuffers;
  * @param {Hash} defaultOptions - (Optional) a hash of options:
  * - vcoType: the oscillator type (default: 'sine')
  * - gain: the output gain value (default: 0.4)
-  * - destination: the player destination (default: ac.destination)
+ * - destination: the player destination (default: ac.destination)
  */
 function oscillatorPlayer(ctx, defaultOptions) {
 	defaultOptions = defaultOptions || {};
-	return function(note, time, duration, options) {
+	return function (note, time, duration, options) {
 		console.warn('The oscillator player is deprecated.');
 		console.log('Starting with version 0.9.0 you will have to wait until the soundfont is loaded to play sounds.');
 		const midi = note > 0 && note < 129 ? Number(note) : parser.midi(note);
 		const freq = midi ? parser.midiToFreq(midi, 440) : null;
-		if(!freq) return;
+		if (!freq) return;
 
 		duration = duration || 0.2;
 
@@ -122,7 +124,7 @@ function oscillatorPlayer(ctx, defaultOptions) {
 		vca.connect(destination);
 
 		vco.start(time);
-		if(duration > 0) vco.stop(time + duration);
+		if (duration > 0) vco.stop(time + duration);
 		return vco;
 	};
 }

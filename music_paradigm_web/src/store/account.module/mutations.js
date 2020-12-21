@@ -1,10 +1,10 @@
-import functions from'./functions';
+import functions from './functions';
 
-export default{
+export default {
 	loginRequest(state) {
 		// Set the status to logined in
 		Object.assign(state.status, {
-			loggingIn: true
+			loggingIn: true,
 		});
 	},
 
@@ -15,7 +15,7 @@ export default{
 		// Set the status to logined in
 		Object.assign(state.status, {
 			loggingIn: false,
-			loggedIn: true
+			loggedIn: true,
 		});
 	},
 
@@ -26,7 +26,7 @@ export default{
 		// Set the status to not logged in and not logging in
 		Object.assign(state.status, {
 			loggingIn: false,
-			loggedIn: false
+			loggedIn: false,
 		});
 	},
 
@@ -36,7 +36,7 @@ export default{
 
 		// Set the status to not logged in
 		Object.assign(state.status, {
-			loggedIn: false
+			loggedIn: false,
 		});
 	},
 
@@ -54,5 +54,5 @@ export default{
 
 	setProgressionSummary(state, progressionSummary) {
 		state.progressionSummary = progressionSummary;
-	}
+	},
 };

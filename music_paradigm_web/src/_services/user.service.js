@@ -1,50 +1,49 @@
-import defaultResponseHandler from'./defaultResponseHandler';
-import{ authHeader, url } from'@/_helpers';
+import defaultResponseHandler from './defaultResponseHandler';
+import { authHeader, url } from '@/_helpers';
 
-const register = function(user) {
+const register = function (user) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(user)
+		body: JSON.stringify(user),
 	};
 	return fetch(url.users('register'), requestOptions).then(handleResponse);
 };
 
-const getListAllHeaders = function() {
+const getListAllHeaders = function () {
 	const requestOptions = {
 		method: 'GET',
-		headers: authHeader()
+		headers: authHeader(),
 	};
 	return fetch(url.users(''), requestOptions).then(handleResponse);
 };
 
-
-const getById = function(id) {
+const getById = function (id) {
 	const requestOptions = {
 		method: 'GET',
-		headers: authHeader()
+		headers: authHeader(),
 	};
 	return fetch(url.users(id), requestOptions).then(handleResponse);
 };
 
-const update = function(id, user) {
+const update = function (id, user) {
 	const requestOptions = {
 		method: 'PUT',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(user)
+		body: JSON.stringify(user),
 	};
 	return fetch(url.users(id), requestOptions).then(handleResponse);
 };
 
-const _delete = function(id) {
+const _delete = function (id) {
 	const requestOptions = {
 		method: 'DELETE',
-		headers: authHeader()
+		headers: authHeader(),
 	};
 	return fetch(url.users(id), requestOptions).then(handleResponse);
 };
 
-const handleResponse = function(reponse) {
+const handleResponse = function (reponse) {
 	return defaultResponseHandler(reponse);
 };
 
@@ -53,5 +52,5 @@ export const userService = {
 	getListAllHeaders,
 	getById,
 	update,
-	delete: _delete
+	delete: _delete,
 };

@@ -1,9 +1,9 @@
-export default{
+export default {
 	status: {
 		isFetchingCurriculumsHeadersList: false,
 		isCreating: false,
 		isUpdating: false,
-		isDeleting: false
+		isDeleting: false,
 	},
 
 	selection: {
@@ -11,7 +11,7 @@ export default{
 		// The Rest of the parameters are also included
 		title: '',
 		isSequential: true,
-		experiments: []
+		experiments: [],
 	},
 
 	curriculumsHeadersList: [
@@ -19,7 +19,7 @@ export default{
 			_id: null,
 			title: '',
 			isSequential: true,
-			experimentsCount: 0
-		}
-	]
+			experimentsCount: 0,
+		},
+	],
 };

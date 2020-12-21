@@ -1,10 +1,10 @@
-import config from'@/config';
-import{ Midi } from'@tonejs/midi';
-import{ midiConversion, notePerformance } from'@/_helpers';
-import functions from'./functions';
-import constants from'./constants';
+import config from '@/config';
+import { Midi } from '@tonejs/midi';
+import { midiConversion, notePerformance } from '@/_helpers';
+import functions from './functions';
+import constants from './constants';
 
-export default{
+export default {
 	resetPianoState: (state) => {
 		Object.assign(state, constants.DEFAULT_PIANO_STATE_VALUES());
 	},
@@ -37,19 +37,19 @@ export default{
 		// is would be a direct assignation in an Array/Object and would not allow
 		// the watch properties of Vue to detect the change of state.
 		const selectedIndex = state.pressedKeys.indexOf(key);
-		if(selectedIndex === -1) state.pressedKeys.push(key);
+		if (selectedIndex === -1) state.pressedKeys.push(key);
 	},
 	deletePressedKey: (state, key) => {
 		const selectedIndex = state.pressedKeys.indexOf(key);
-		if(selectedIndex !== -1) state.pressedKeys.splice(selectedIndex, 1);
+		if (selectedIndex !== -1) state.pressedKeys.splice(selectedIndex, 1);
 	},
 	addMidiFileTriggeredKey: (state, key) => {
 		const selectedIndex = state.midiFileTriggeredKeys.indexOf(key);
-		if(selectedIndex === -1) state.midiFileTriggeredKeys.push(key);
+		if (selectedIndex === -1) state.midiFileTriggeredKeys.push(key);
 	},
 	deleteMidiFileTriggeredKey: (state, key) => {
 		const selectedIndex = state.midiFileTriggeredKeys.indexOf(key);
-		if(selectedIndex !== -1) state.midiFileTriggeredKeys.splice(selectedIndex, 1);
+		if (selectedIndex !== -1) state.midiFileTriggeredKeys.splice(selectedIndex, 1);
 	},
 	deleteAllMidiFileTriggeredKey: (state) => {
 		state.midiFileTriggeredKeys.splice(0, state.midiFileTriggeredKeys.length);
@@ -58,7 +58,7 @@ export default{
 	// Mutations on the data from the notes played
 	addPressedNoteLog: (state, key) => {
 		const noteCount = state.played.notes.midi.length;
-		if(noteCount === 0) state.played.startTime = key.time;
+		if (noteCount === 0) state.played.startTime = key.time;
 		state.played.notes.volume.push(key.volume);
 		state.played.notes.midi.push(key.note);
 		state.played.notes.velocity.push(key.velocity);
@@ -69,9 +69,9 @@ export default{
 	},
 
 	addReleasedNoteLog: (state, key) => {
-		state.played.notes.duration.push(key.time
-            - state.played.startTime
-            - state.played.notes.time[state.played.notes.time.length - 1]);
+		state.played.notes.duration.push(
+			key.time - state.played.startTime - state.played.notes.time[state.played.notes.time.length - 1],
+		);
 	},
 
 	resetPlayedNotesLogs: (state) => {
@@ -113,7 +113,7 @@ export default{
 		const jsonMidi = new Midi(midiFile);
 		const notes = jsonMidi.tracks[0].notes;
 		functions.clearMidiFileNotes(state);
-		for(const i in notes) {
+		for (const i in notes) {
 			state.midiFile.notes.midi.push(notes[i].midi);
 			state.midiFile.notes.time.push(notes[i].time * 1000);
 			state.midiFile.notes.name.push(notes[i].name);
@@ -127,43 +127,37 @@ export default{
 	// Mutations for note performance evaluation
 	evaluateSpeedType: (state) => {
 		// Evaluate the performance according to get specific metrics
-		Object.assign(state.played.evaluation,
-			notePerformance.evaluateSpeedType(state.midiFile.notes, state.played.notes));
+		Object.assign(state.played.evaluation, notePerformance.evaluateSpeedType(state.midiFile.notes, state.played.notes));
 
 		// Grade the performance according to obtained metrics to provide feedback
-		state.played.evaluation.grades = notePerformance.gradeSpeedType(
-			state.played.evaluation.results, {
-				minSequencePlayed: config.minSequencePlayed || 1
-			}
-		);
+		state.played.evaluation.grades = notePerformance.gradeSpeedType(state.played.evaluation.results, {
+			minSequencePlayed: config.minSequencePlayed || 1,
+		});
 	},
 
 	evaluateRhythmType: (state) => {
 		// Evaluate the performance according to get specific metrics
-		Object.assign(state.played.evaluation,
-			notePerformance.evaluateRhythmType(state.midiFile.notes, state.played.notes));
+		Object.assign(
+			state.played.evaluation,
+			notePerformance.evaluateRhythmType(state.midiFile.notes, state.played.notes),
+		);
 
 		// Grade the performance according to obtained metrics to provide feedback
-		state.played.evaluation.grades = notePerformance.gradeRhythmType(
-			state.played.evaluation.results, {
-				minNoteAccuracy: config.minNoteAccuracy || 100,
-				maxRhythmError: config.maxRhythmError || 15
-			}
-		);
+		state.played.evaluation.grades = notePerformance.gradeRhythmType(state.played.evaluation.results, {
+			minNoteAccuracy: config.minNoteAccuracy || 100,
+			maxRhythmError: config.maxRhythmError || 15,
+		});
 	},
 
 	evaluateMelodyType: (state, melodyRepetion) => {
 		const reference = functions.multiplyMidiFileNotes(state, melodyRepetion);
 
 		// Evaluate the performance according to get specific metrics
-		Object.assign(state.played.evaluation,
-			notePerformance.evaluateMelodyType(reference, state.played.notes));
+		Object.assign(state.played.evaluation, notePerformance.evaluateMelodyType(reference, state.played.notes));
 
 		// Grade the performance according to obtained metrics to provide feedback
-		state.played.evaluation.grades = notePerformance.gradeMelodyType(
-			state.played.evaluation.results, {
-				minNoteAccuracy: config.minNoteAccuracy || 100
-			}
-		);
-	}
+		state.played.evaluation.grades = notePerformance.gradeMelodyType(state.played.evaluation.results, {
+			minNoteAccuracy: config.minNoteAccuracy || 100,
+		});
+	},
 };

@@ -1,5 +1,5 @@
-const DEFAULT_PIANO_STATE_VALUES = function() {
-	return{
+const DEFAULT_PIANO_STATE_VALUES = function () {
+	return {
 		// Indicator of whether or not the virtual piano is ready to be used
 		isPianoInitialized: false,
 
@@ -21,8 +21,8 @@ const DEFAULT_PIANO_STATE_VALUES = function() {
 				pitch: [], // (Unused) The pitch class, e.g. "C",
 				octave: [], // (Unused) The octave, e.g. 4
 				velocity: [], // (Unused) Normalized 0-1 velocity
-				duration: [] // Duration in seconds between noteOn and noteOff
-			}
+				duration: [], // Duration in seconds between noteOn and noteOff
+			},
 		},
 
 		// Data from the notes played by the user
@@ -36,18 +36,18 @@ const DEFAULT_PIANO_STATE_VALUES = function() {
 				duration: [], // Duration in seconds between noteOn and noteOff
 				pitch: [], // (Unused) The pitch class, e.g. "C"
 				octave: [], // (Unused) The octave, e.g. 4
-				velocity: [] // (Unused) Normalized 0-1 velocity
+				velocity: [], // (Unused) Normalized 0-1 velocity
 			},
 
 			evaluation: {
 				type: '',
 				results: null, // { metric: Type, ... }
-				grades: null // [ { criteria: String, isPassing: Boolean, mark: Number, passMark: Number, topMark: Number} ]
-			}
-		}
+				grades: null, // [ { criteria: String, isPassing: Boolean, mark: Number, passMark: Number, topMark: Number} ]
+			},
+		},
 	};
 };
 
-export default{
-	DEFAULT_PIANO_STATE_VALUES
+export default {
+	DEFAULT_PIANO_STATE_VALUES,
 };

@@ -1,8 +1,8 @@
-import constants from'./constants';
-import cursorHandler from'./flowHelper/cursorHandler';
-import blockHandler from'./flowHelper/blockHandler';
+import constants from './constants';
+import cursorHandler from './flowHelper/cursorHandler';
+import blockHandler from './flowHelper/blockHandler';
 
-export default{
+export default {
 	experimentId: (state) => {
 		return state._id;
 	},
@@ -47,11 +47,11 @@ export default{
 	pictureName: (state) => {
 		// Fetch the picture name
 		const pictureName = state.state.content.pictureName;
-		if(pictureName === '') return'';
+		if (pictureName === '') return '';
 
 		// Verify that the file name describes a supported file format
 		const pictureNameExtension = pictureName.split('.').pop();
-		if(!['jpg', 'png', 'bmp'].includes(pictureNameExtension.toLowerCase())) {
+		if (!['jpg', 'png', 'bmp'].includes(pictureNameExtension.toLowerCase())) {
 			throw new Error(`
                 Incompatible image format for the "${pictureName}" image file.\n
                 The "${pictureNameExtension}" file format is not supported.
@@ -59,14 +59,14 @@ export default{
 		}
 
 		// Return the picture name
-		return`${state.description.folder}/${pictureName}`;
+		return `${state.description.folder}/${pictureName}`;
 	},
 
 	helperImageName: (state) => {
 		// Fetch the helper image name
 		const pictureName = state.state.content.helperImageName;
-		if(pictureName === '') return'';
-		else return`${state.description.folder}/${pictureName}`;
+		if (pictureName === '') return '';
+		else return `${state.description.folder}/${pictureName}`;
 	},
 
 	// Interactive piano
@@ -79,11 +79,11 @@ export default{
 	midiName: (state) => {
 		// Fetch the picture name
 		const midiName = state.state.mediaFile.midiName;
-		if(midiName === '') return'';
+		if (midiName === '') return '';
 
 		// Verify that the file name describes a supported file format
 		const midiNameExtension = midiName.split('.').pop();
-		if(!['mid'].includes(midiNameExtension.toLowerCase())) {
+		if (!['mid'].includes(midiNameExtension.toLowerCase())) {
 			throw new Error(`
                 Incompatible MIDI format for the "${midiName}" MIDI file.\n
                 The "${midiNameExtension}" file format is not supported.
@@ -91,17 +91,17 @@ export default{
 		}
 
 		// Return the picture name
-		return`${state.description.folder}/${midiName}`;
+		return `${state.description.folder}/${midiName}`;
 	},
 
 	videoName: (state) => {
 		// Fetch the video name
 		const videoName = state.state.mediaFile.videoName;
-		if(videoName === '') return'';
+		if (videoName === '') return '';
 
 		// Verify that the file name describes a supported file format
 		const videoNameExtension = videoName.split('.').pop();
-		if(!['mp4'].includes(videoNameExtension.toLowerCase())) {
+		if (!['mp4'].includes(videoNameExtension.toLowerCase())) {
 			throw new Error(`
                         Incompatible video format for the "${videoName}" MIDI file.\n
                         The "${videoNameExtension}" file format is not supported.
@@ -109,14 +109,14 @@ export default{
 		}
 
 		// Return the video name
-		return`${state.description.folder}/${videoName}`;
+		return `${state.description.folder}/${videoName}`;
 	},
 
 	// Geters for the state attributes
 	currentStateType: (state) => {
 		// Return the type of the current state
-		if(state.cursor.current.isBeyondEnd) {
-			return'end';
+		if (state.cursor.current.isBeyondEnd) {
+			return 'end';
 		}
 		return state.state.type || '';
 	},
@@ -125,28 +125,28 @@ export default{
 		// Return the type of the next state
 		// If we are currently beyond the last block of the flow or if there is
 		// no current state type step, we return no next step
-		if(state.cursor.current.isBeyondEnd || !state.state.type) {
-			return'';
+		if (state.cursor.current.isBeyondEnd || !state.state.type) {
+			return '';
 		}
 
 		// If the current block is an end block, regardless of whether or not there exists another
 		// block in the flow description flow, there is no next step to be indicated
-		else if(state.state.type === 'end') {
-			return'';
+		else if (state.state.type === 'end') {
+			return '';
 		}
 
 		// If the next step is beyond the last block of the flow, we return "end"
-		else if(state.cursor.navigation.indexNext > (state.flow.length - 1)) {
-			return'end';
+		else if (state.cursor.navigation.indexNext > state.flow.length - 1) {
+			return 'end';
 		}
 
 		// If There remains inner steps in the current block, the next step is of the same type as the current step
-		else if(state.cursor.current.innerStepIndex < state.cursor.navigation.totalInnerSteps) {
+		else if (state.cursor.current.innerStepIndex < state.cursor.navigation.totalInnerSteps) {
 			return state.state.type;
 		}
 
 		// Otherwise, if it is none of the edge casess, the type of the next step is the type of the following block
-		else{
+		else {
 			return blockHandler.getNextBlockType(state.flow, state.cursor);
 		}
 	},
@@ -158,11 +158,11 @@ export default{
 		// step only by pressing the space bar key (if the value is false).
 		let anyPianoKey;
 
-		if(typeof state.state.settings.anyPianoKey === 'boolean') {
+		if (typeof state.state.settings.anyPianoKey === 'boolean') {
 			anyPianoKey = state.state.settings.anyPianoKey;
-		} else if(typeof state.settings.anyPianoKey === 'boolean') {
+		} else if (typeof state.settings.anyPianoKey === 'boolean') {
 			anyPianoKey = state.settings.anyPianoKey;
-		} else{
+		} else {
 			anyPianoKey = constants.DEFAULT_ANY_PIANO_KEY;
 		}
 
@@ -174,11 +174,11 @@ export default{
 		// otherwise, the default playing mode of the experiment is returned.
 		let playingMode;
 
-		if(typeof state.state.settings.playingMode === 'string') {
+		if (typeof state.state.settings.playingMode === 'string') {
 			playingMode = state.state.settings.playingMode;
-		} else if(typeof state.settings.playingMode === 'string') {
+		} else if (typeof state.settings.playingMode === 'string') {
 			playingMode = state.settings.playingMode;
-		} else{
+		} else {
 			playingMode = constants.DEFAULT_PLAYING_MODE;
 		}
 
@@ -193,13 +193,13 @@ export default{
 		// 4. Otherwise, it is turned off
 		let enableSoundFlag;
 
-		if(state.state.type === 'playing') {
+		if (state.state.type === 'playing') {
 			enableSoundFlag = true;
-		} else if(typeof state.state.settings.enableSoundFlag === 'boolean') {
+		} else if (typeof state.state.settings.enableSoundFlag === 'boolean') {
 			enableSoundFlag = state.state.settings.enableSoundFlag;
-		} else if(typeof state.settings.enableSoundFlag === 'boolean') {
+		} else if (typeof state.settings.enableSoundFlag === 'boolean') {
 			enableSoundFlag = state.settings.enableSoundFlag;
-		} else{
+		} else {
 			enableSoundFlag = constants.DEFAULT_ENABLE_SOUND_FLAG;
 		}
 
@@ -247,11 +247,11 @@ export default{
 	hideFeedbackSmiley: (state) => {
 		let hideFeedbackSmiley;
 
-		if(typeof state.state.settings.hideFeedbackSmiley === 'boolean') {
+		if (typeof state.state.settings.hideFeedbackSmiley === 'boolean') {
 			hideFeedbackSmiley = state.state.settings.hideFeedbackSmiley;
-		} else if(typeof state.settings.hideFeedbackSmiley === 'boolean') {
+		} else if (typeof state.settings.hideFeedbackSmiley === 'boolean') {
 			hideFeedbackSmiley = state.settings.hideFeedbackSmiley;
-		} else{
+		} else {
 			hideFeedbackSmiley = constants.DEFAULT_HIDE_FEEDBACK_SMILEY;
 		}
 
@@ -261,11 +261,11 @@ export default{
 	footnoteType: (state) => {
 		let footnoteType;
 
-		if(typeof state.state.settings.footnoteType === 'string') {
+		if (typeof state.state.settings.footnoteType === 'string') {
 			footnoteType = state.state.settings.footnoteType;
-		} else if(typeof state.settings.footnoteType === 'string') {
+		} else if (typeof state.settings.footnoteType === 'string') {
 			footnoteType = state.settings.footnoteType;
-		} else{
+		} else {
 			footnoteType = constants.DEFAULT_FOOTNOTE_TYPE;
 		}
 
@@ -276,11 +276,11 @@ export default{
 	hasFootnote: (state) => {
 		let hasFootNote;
 
-		if(typeof state.state.settings.footnote === 'boolean') {
+		if (typeof state.state.settings.footnote === 'boolean') {
 			hasFootNote = state.state.settings.footnote;
-		} else if(typeof state.settings.footnote === 'boolean') {
+		} else if (typeof state.settings.footnote === 'boolean') {
 			hasFootNote = state.settings.footnote;
-		} else{
+		} else {
 			hasFootNote = constants.DEFAULT_FOOTNOTE;
 		}
 
@@ -304,7 +304,10 @@ export default{
 	},
 
 	hasNoContent: (state) => {
-		return!(state.state.content.text) && !(Boolean(state.state.content.pictureName) || Boolean(state.state.content.interactivePiano));
+		return (
+			!state.state.content.text
+			&& !(Boolean(state.state.content.pictureName) || Boolean(state.state.content.interactivePiano))
+		);
 	},
 
 	hasHelperImage: (state) => {
@@ -316,6 +319,10 @@ export default{
 	},
 
 	isSkipButtonInFootnote: (state) => {
-		return(state.state.settings.footnote) && (state.state.settings.footnoteType === 'button') && (state.state.settings.isSkipStepButtonInFootnote);
-	}
+		return (
+			state.state.settings.footnote
+			&& state.state.settings.footnoteType === 'button' &&
+			state.state.settings.isSkipStepButtonInFootnote
+		);
+	},
 };

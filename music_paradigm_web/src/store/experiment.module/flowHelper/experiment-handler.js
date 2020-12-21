@@ -1,11 +1,11 @@
-import constants from'../constants';
+import constants from '../constants';
 
-export default{
+export default {
 	setExperimentId,
 	setExperimentDescription,
 	setExperimentGeneralSettings,
 	setExperimentFlow,
-	setExperimentVariables
+	setExperimentVariables,
 };
 
 function setExperimentId(state, experiment) {
@@ -13,23 +13,18 @@ function setExperimentId(state, experiment) {
 }
 
 function setExperimentDescription(state, experiment) {
-	const{
-		name,
-		folder,
-		group,
-		version
-	} = experiment;
+	const { name, folder, group, version } = experiment;
 
 	state.description = {
 		name: name,
 		folder: folder,
 		group: group || '',
-		version: version || 0
+		version: version || 0,
 	};
 }
 
 function setExperimentGeneralSettings(state, experiment) {
-	const{
+	const {
 		anyPianoKey,
 		enableSoundFlag,
 		playingMode,
@@ -40,23 +35,28 @@ function setExperimentGeneralSettings(state, experiment) {
 		logFlag,
 		successesForSkip,
 		hideFeedbackSmiley,
-		isSkipStepButtonInFootnote
+		isSkipStepButtonInFootnote,
 	} = experiment;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
 	const defaultSettings = constants.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
 	state.settings = {
-		anyPianoKey: (typeof anyPianoKey === 'boolean') ? anyPianoKey : defaultSettings.anyPianoKey,
-		enableSoundFlag: (typeof enableSoundFlag === 'boolean') ? enableSoundFlag : defaultSettings.enableSoundFlag,
-		playingMode: (typeof playingMode === 'string') ? playingMode : defaultSettings.playingMode,
-		timbreFile: (typeof timbreFile === 'string') ? timbreFile : defaultSettings.timbreFile,
-		footnote: (typeof footnote === 'boolean') ? footnote : defaultSettings.footnote,
-		footnoteType: (typeof footnoteType === 'string') ? footnoteType : defaultSettings.footnoteType,
-		timeLimitInSeconds: (typeof timeLimitInSeconds === 'number') ? timeLimitInSeconds : defaultSettings.timeLimitInSeconds,
-		logFlag: (typeof logFlag === 'boolean') ? logFlag : defaultSettings.logFlag,
-		successesForSkip: (typeof successesForSkip === 'number') ? successesForSkip : defaultSettings.successesForSkip,
-		hideFeedbackSmiley: (typeof hideFeedbackSmiley === 'boolean') ? hideFeedbackSmiley : defaultSettings.hideFeedbackSmiley,
-		isSkipStepButtonInFootnote: (typeof isSkipStepButtonInFootnote === 'boolean') ? isSkipStepButtonInFootnote : defaultSettings.isSkipStepButtonInFootnote
+		anyPianoKey: typeof anyPianoKey === 'boolean' ? anyPianoKey : defaultSettings.anyPianoKey,
+		enableSoundFlag: typeof enableSoundFlag === 'boolean' ? enableSoundFlag : defaultSettings.enableSoundFlag,
+		playingMode: typeof playingMode === 'string' ? playingMode : defaultSettings.playingMode,
+		timbreFile: typeof timbreFile === 'string' ? timbreFile : defaultSettings.timbreFile,
+		footnote: typeof footnote === 'boolean' ? footnote : defaultSettings.footnote,
+		footnoteType: typeof footnoteType === 'string' ? footnoteType : defaultSettings.footnoteType,
+		timeLimitInSeconds:
+			typeof timeLimitInSeconds === 'number' ? timeLimitInSeconds : defaultSettings.timeLimitInSeconds,
+		logFlag: typeof logFlag === 'boolean' ? logFlag : defaultSettings.logFlag,
+		successesForSkip: typeof successesForSkip === 'number' ? successesForSkip : defaultSettings.successesForSkip,
+		hideFeedbackSmiley:
+			typeof hideFeedbackSmiley === 'boolean' ? hideFeedbackSmiley : defaultSettings.hideFeedbackSmiley,
+		isSkipStepButtonInFootnote:
+			typeof isSkipStepButtonInFootnote === 'boolean'
+				? isSkipStepButtonInFootnote
+				: defaultSettings.isSkipStepButtonInFootnote,
 	};
 }
 
@@ -65,10 +65,10 @@ function setExperimentFlow(state, experiment) {
 }
 
 function setExperimentVariables(state, experiment) {
-	const{ variables } = experiment;
-	if(!Array.isArray(variables)) return;
+	const { variables } = experiment;
+	if (!Array.isArray(variables)) return;
 
-	for(const variable of variables) {
+	for (const variable of variables) {
 		state.variables.value['$' + variable.name + '$'] = variable.assignedValue;
 		state.variables.initial = JSON.parse(JSON.stringify(state.variables.value));
 	}

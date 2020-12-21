@@ -1,11 +1,11 @@
-import router from'@/router';
+import router from '@/router';
 
-export default{
+export default {
 	// Experiment navigation
-	moveToExperimentPrelude: function() {
+	moveToExperimentPrelude: function () {
 		router.push({ name: 'experiment.' + 'prelude' });
 	},
-	moveToState: function(blockTyoe) {
+	moveToState: function (blockTyoe) {
 		// The instantaneous "transition" page is to force Vue to unmount a page and then remount it
 		// for each block (which would not happen if two consecutive blocks were of the same type).
 		// The unmounting and remounting of a page will force vue to redo the "mounted" component
@@ -18,13 +18,17 @@ export default{
 		}, 1);
 	},
 	// Redirect to home page
-	goToRootPage: function() {
+	goToRootPage: function () {
 		router.push({ path: '/' });
 	},
-	goToHomePage: function(role) {
-		switch(role) {
-		case'admin': router.push({ path: '/admin' }); break;
-		default: router.push({ path: '/user' }); break;
+	goToHomePage: function (role) {
+		switch (role) {
+			case 'admin':
+				router.push({ path: '/admin' });
+				break;
+			default:
+				router.push({ path: '/user' });
+				break;
 		}
-	}
+	},
 };

@@ -1,4 +1,4 @@
-export default{
+export default {
 	// Status Updates
 	indicateFetchingUserList(state) {
 		state.status.isFetchingUsersHeadersList = true;
@@ -44,5 +44,5 @@ export default{
 
 	setHeadersList(state, usersHeadersLst) {
 		state.usersHeadersList = usersHeadersLst;
-	}
+	},
 };

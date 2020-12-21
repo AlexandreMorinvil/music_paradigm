@@ -1,17 +1,17 @@
 <template>
-  <div id="signal">
-    {{ timerDisplay }}
-  </div>
+	<div id="signal">
+		{{ timerDisplay }}
+	</div>
 </template>
 
 <script>
-import{ mapGetters } from'vuex';
-import{ ExperimentEventBus } from'@/_services/eventBus.service.js';
+import { mapGetters } from 'vuex';
+import { ExperimentEventBus } from '@/_services/eventBus.service.js';
 
-export default{
+export default {
 	name: 'StartSignalTimer',
 	data() {
-		return{
+		return {
 			soundCount: null,
 			soundStart: null,
 			counterUniqueIdentifier: 0,
@@ -19,14 +19,14 @@ export default{
 			referenceTime: 0,
 			totalTime: 0,
 			cumulatedTime: 0,
-			seconds: 0
+			seconds: 0,
 		};
 	},
 	computed: {
 		...mapGetters('experiment', ['startSignal']),
 		timerDisplay() {
 			return this.seconds || 'Start';
-		}
+		},
 	},
 	methods: {
 		setTime(value) {
@@ -45,7 +45,7 @@ export default{
 		},
 		countDown() {
 			this.totalTime = this.cumulatedTime - (Date.parse(new Date()) - Date.parse(this.referenceTime));
-		}
+		},
 	},
 	beforeMount() {},
 	mounted() {
@@ -60,17 +60,17 @@ export default{
 	destroyed() {},
 	watch: {
 		totalTime(value) {
-			if(value <= 0) {
+			if (value <= 0) {
 				window.clearInterval(this.counterUniqueIdentifier);
 				this.soundStart.play();
 				ExperimentEventBus.$emit('start-signal-ready');
 				this.setTime(0);
-			} else{
+			} else {
 				this.seconds = Math.floor(value / 1000);
 				this.soundCount.play();
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 

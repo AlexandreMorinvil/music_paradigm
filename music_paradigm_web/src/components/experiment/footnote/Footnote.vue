@@ -1,43 +1,43 @@
 <template>
-  <div>
-    <component
-      class="fill"
-      :is="type"
-      :message="message"
-      v-on:advanceButtonClicked="emitAdvanceSignal"
-      v-on:skip-request="emitSkipSignal"
-    />
-  </div>
+	<div>
+		<component
+			class="fill"
+			:is="type"
+			:message="message"
+			v-on:advanceButtonClicked="emitAdvanceSignal"
+			v-on:skip-request="emitSkipSignal"
+		/>
+	</div>
 </template>
 
 <script>
-import{ mapGetters } from'vuex';
-import FootnoteSimple from'@/components/experiment/footnote/FootnoteSimple.vue';
-import FootnoteButton from'@/components/experiment/footnote/FootnoteButton.vue';
+import { mapGetters } from 'vuex';
+import FootnoteSimple from '@/components/experiment/footnote/FootnoteSimple.vue';
+import FootnoteButton from '@/components/experiment/footnote/FootnoteButton.vue';
 
-export default{
+export default {
 	name: 'Footnote',
 	components: {
 		footnoteSimple: FootnoteSimple,
-		footnoteButton: FootnoteButton
+		footnoteButton: FootnoteButton,
 	},
 	props: {
 		message: {
 			type: String,
 			default() {
-				return'';
-			}
-		}
+				return '';
+			},
+		},
 	},
 	data() {
-		return{};
+		return {};
 	},
 	computed: {
 		...mapGetters('experiment', ['footnoteType']),
 		type() {
-			if(this.footnoteType === 'button') return'footnoteButton';
-			else return'footnoteSimple';
-		}
+			if (this.footnoteType === 'button') return 'footnoteButton';
+			else return 'footnoteSimple';
+		},
 	},
 	methods: {
 		emitAdvanceSignal() {
@@ -45,14 +45,14 @@ export default{
 		},
 		emitSkipSignal() {
 			this.$emit('skip-request');
-		}
-	}
+		},
+	},
 };
 </script>
 
 <style scoped>
 .fill {
-  width: 100%;
-  height: 100%;
+	width: 100%;
+	height: 100%;
 }
 </style>

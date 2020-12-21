@@ -1,4 +1,4 @@
-export default{
+export default {
 	a: 48,
 	w: 49,
 	s: 50,
@@ -18,7 +18,7 @@ export default{
 	5: 55,
 	6: 57,
 	7: 59,
-	8: 60
+	8: 60,
 };
 
 // TODO : Put all the MIDI related functions here to move from one octave to the other

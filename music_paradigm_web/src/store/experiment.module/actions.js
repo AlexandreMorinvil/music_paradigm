@@ -1,4 +1,4 @@
-export default{
+export default {
 	clearState: ({ commit }) => {
 		commit('clearState');
 	},
@@ -30,5 +30,5 @@ export default{
 	// Record methods
 	addSuccess: ({ commit }) => {
 		commit('addSuccess');
-	}
+	},
 };

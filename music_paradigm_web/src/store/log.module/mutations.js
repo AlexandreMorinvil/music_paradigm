@@ -1,4 +1,4 @@
-export default{
+export default {
 	// Status Updates
 	indicateCreateRequest(state) {
 		state.status.isCreating = true;
@@ -18,5 +18,5 @@ export default{
 
 	setAdminLogSessionId(state, initializedLogSession) {
 		state._id = initializedLogSession._id;
-	}
+	},
 };

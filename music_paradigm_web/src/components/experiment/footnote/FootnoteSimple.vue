@@ -1,20 +1,20 @@
 <template>
-  <div>
-    {{ message }}
-  </div>
+	<div>
+		{{ message }}
+	</div>
 </template>
 
 <script>
-export default{
+export default {
 	name: 'FootnoteSimple',
 	props: {
 		message: {
 			type: String,
 			default() {
-				return'';
-			}
-		}
-	}
+				return '';
+			},
+		},
+	},
 };
 </script>
 

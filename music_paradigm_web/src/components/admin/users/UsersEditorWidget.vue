@@ -1,155 +1,150 @@
 <template>
-  <div id="users-editor" class="widget widget-box widget-bg">
-    <div class="edition-buttons-position">
-      <button v-on:click="handleRevert" class="widget-button blue">
-        Revert
-      </button>
-      <button v-on:click="handleUnselection" class="widget-button blue">
-        Unselect
-      </button>
-    </div>
+	<div id="users-editor" class="widget widget-box widget-bg">
+		<div class="edition-buttons-position">
+			<button v-on:click="handleRevert" class="widget-button blue">Revert</button>
+			<button v-on:click="handleUnselection" class="widget-button blue">Unselect</button>
+		</div>
 
-    <div class="editor-position">
-      <div class="editor-box-form">
-        <div>
-          <label for="username">
-            Username :
-            <span class="selected-element-text-color">{{ userSelectedUsernameDisplay }}</span>
-          </label>
-          <input
-            type="text"
-            v-model="username"
-            name="username"
-            autocomplete="new-username"
-            placeholder="Insert new username"
-          />
-        </div>
-        <div>
-          <label for="email">
-            Email :
-            <span class="selected-element-text-color">{{ userSelectedEmailDisplay }}</span>
-          </label>
-          <input type="email" v-model="email" name="email" autocomplete="new-email" placeholder="Insert new email" />
-        </div>
-        <div>
-          <label for="password">
-            Password :
-            <span class="selected-element-text-color">{{ userSelectedPasswordDisplay }}</span>
-          </label>
+		<div class="editor-position">
+			<div class="editor-box-form">
+				<div>
+					<label for="username">
+						Username :
+						<span class="selected-element-text-color">{{ userSelectedUsernameDisplay }}</span>
+					</label>
+					<input
+						type="text"
+						v-model="username"
+						name="username"
+						autocomplete="new-username"
+						placeholder="Insert new username"
+					/>
+				</div>
+				<div>
+					<label for="email">
+						Email :
+						<span class="selected-element-text-color">{{ userSelectedEmailDisplay }}</span>
+					</label>
+					<input type="email" v-model="email" name="email" autocomplete="new-email" placeholder="Insert new email" />
+				</div>
+				<div>
+					<label for="password">
+						Password :
+						<span class="selected-element-text-color">{{ userSelectedPasswordDisplay }}</span>
+					</label>
 
-          <input
-            type="password"
-            v-model="password"
-            name="password"
-            autocomplete="new-password"
-            placeholder="Insert new password"
-          />
-        </div>
-        <div class="form-name-row">
-          <div>
-            <label for="firstName">
-              First Name :
-              <span class="selected-element-text-color">{{ userSelectedFirstNameDisplay }}</span>
-            </label>
-            <input
-              type="text"
-              v-model="firstName"
-              name="firstName"
-              autocomplete="new-first-name"
-              placeholder="Insert new first name"
-            />
-          </div>
-          <div>
-            <label for="middleName">
-              Middle Name :
-              <span class="selected-element-text-color">{{ userSelectedMiddleNameDisplay }}</span>
-            </label>
-            <input
-              type="text"
-              v-model="middleName"
-              name="middleName"
-              autocomplete="new-middle-name"
-              placeholder="Insert new middle name"
-            />
-          </div>
-          <div>
-            <label for="lastName">
-              Last Name :
-              <span class="selected-element-text-color">{{ userSelectedLastNameDisplay }}</span>
-            </label>
-            <input
-              type="text"
-              v-model="lastName"
-              name="lastName"
-              autocomplete="new-last-name"
-              placeholder="Insert new last name"
-            />
-          </div>
-        </div>
+					<input
+						type="password"
+						v-model="password"
+						name="password"
+						autocomplete="new-password"
+						placeholder="Insert new password"
+					/>
+				</div>
+				<div class="form-name-row">
+					<div>
+						<label for="firstName">
+							First Name :
+							<span class="selected-element-text-color">{{ userSelectedFirstNameDisplay }}</span>
+						</label>
+						<input
+							type="text"
+							v-model="firstName"
+							name="firstName"
+							autocomplete="new-first-name"
+							placeholder="Insert new first name"
+						/>
+					</div>
+					<div>
+						<label for="middleName">
+							Middle Name :
+							<span class="selected-element-text-color">{{ userSelectedMiddleNameDisplay }}</span>
+						</label>
+						<input
+							type="text"
+							v-model="middleName"
+							name="middleName"
+							autocomplete="new-middle-name"
+							placeholder="Insert new middle name"
+						/>
+					</div>
+					<div>
+						<label for="lastName">
+							Last Name :
+							<span class="selected-element-text-color">{{ userSelectedLastNameDisplay }}</span>
+						</label>
+						<input
+							type="text"
+							v-model="lastName"
+							name="lastName"
+							autocomplete="new-last-name"
+							placeholder="Insert new last name"
+						/>
+					</div>
+				</div>
 
-        <div>
-          <label for="curriculum">
-            Curriculum :
-            <span class="selected-element-text-color">{{ userSelectedCurriculumDisplay }}</span>
-          </label>
-          <select name="curriculum-reference" v-model="curriculum">
-            <option :value="null"> -- No curriculum is assigned -- </option>
-            <option
-              v-for="(reference, index) in curriculumsReferences"
-              :key="index"
-              :value="curriculumsReferences[index]._id"
-            >
-              {{ curriculumsReferences[index].title }}
-            </option>
-          </select>
-        </div>
+				<div>
+					<label for="curriculum">
+						Curriculum :
+						<span class="selected-element-text-color">{{ userSelectedCurriculumDisplay }}</span>
+					</label>
+					<select name="curriculum-reference" v-model="curriculum">
+						<option :value="null">-- No curriculum is assigned --</option>
+						<option
+							v-for="(reference, index) in curriculumsReferences"
+							:key="index"
+							:value="curriculumsReferences[index]._id"
+						>
+							{{ curriculumsReferences[index].title }}
+						</option>
+					</select>
+				</div>
 
-        <div>
-          <div class="form-tags">
-            <div>
-              <label for="tags">
-                <button v-on:click="addTag()" class="widget-button blue"> Add </button>
-                Tag(s) : <span class="selected-element-text-color">{{ userSelectedTagsDisplay }}</span>
-              </label>
-            </div>
-            <div v-for="(tag, index) in tags" :key="index" class="form-group-input">
-              <button v-on:click="removeTag(index)" class="widget-button small red">
-                Remove
-              </button>
-              <input
-                type="text"
-                v-model="tags[index]"
-                name="tags"
-                autocomplete="new-tags"
-                placeholder="Insert new tag name"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+				<div>
+					<div class="form-tags">
+						<div>
+							<label for="tags">
+								<button v-on:click="addTag()" class="widget-button blue">Add</button>
+								Tag(s) :
+								<span class="selected-element-text-color">{{ userSelectedTagsDisplay }}</span>
+							</label>
+						</div>
+						<div v-for="(tag, index) in tags" :key="index" class="form-group-input">
+							<button v-on:click="removeTag(index)" class="widget-button small red">Remove</button>
+							<input
+								type="text"
+								v-model="tags[index]"
+								name="tags"
+								autocomplete="new-tags"
+								placeholder="Insert new tag name"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <div class="submission-buttons-position">
-      <form submit.prevent ref="upload" style="display: none">
-        <input type="file" id="myfile" name="myfile" v-on:change="handleUploadExperiment" ref="fileInput" />
-      </form>
-      <button v-on:click="$refs.fileInput.click()" class="widget-button blue">Upload</button>
-      <button v-on:click="submitUserToCreate" class="widget-button green">Create</button>
-      <button v-on:click="submitUserToUpdate" class="widget-button blue">Update</button>
-      <button v-on:click="submitUserToDelete" class="widget-button red">Delete</button>
-    </div>
-  </div>
+		<div class="submission-buttons-position">
+			<form submit.prevent ref="upload" style="display: none">
+				<input type="file" id="myfile" name="myfile" v-on:change="handleUploadExperiment" ref="fileInput" />
+			</form>
+			<button v-on:click="$refs.fileInput.click()" class="widget-button blue">Upload</button>
+			<button v-on:click="submitUserToCreate" class="widget-button green">Create</button>
+			<button v-on:click="submitUserToUpdate" class="widget-button blue">Update</button>
+			<button v-on:click="submitUserToDelete" class="widget-button red">Delete</button>
+		</div>
+	</div>
 </template>
 
 <script>
-import'@/styles/widgetTemplate.css';
-import'@/styles/formTemplate.css';
-import{ mapActions, mapGetters } from'vuex';
+import '@/styles/widgetTemplate.css';
+import '@/styles/formTemplate.css';
+import { mapActions, mapGetters } from 'vuex';
 
-export default{
+export default {
 	name: 'ExperimentsWorkshopWidget',
 	data() {
-		return{
+		return {
 			hasFocusedOnUsername: false,
 			hasAttemptedSubmit: false,
 			id: '',
@@ -161,7 +156,7 @@ export default{
 			lastName: '',
 			tags: [],
 			role: '',
-			curriculum: null
+			curriculum: null,
 		};
 	},
 	computed: {
@@ -175,7 +170,7 @@ export default{
 			'userSelectedMiddleName',
 			'userSelectedLastName',
 			'userSelectedTags',
-			'userSelectedCurriculum'
+			'userSelectedCurriculum',
 		]),
 		curriculumsReferences() {
 			return this.curriculumsHeadersList;
@@ -199,25 +194,25 @@ export default{
 			return this.hasSelectedUser ? this.userSelectedLastName || '---' : '';
 		},
 		userSelectedTagsDisplay() {
-			if(this.hasSelectedUser) {
-				if(this.userSelectedTags.length > 0) {
+			if (this.hasSelectedUser) {
+				if (this.userSelectedTags.length > 0) {
 					let display = '';
-					this.userSelectedTags.forEach(element => {
+					this.userSelectedTags.forEach((element) => {
 						display += element + ', ';
 					});
 					return display.slice(0, -2);
-				} else return'---';
-			} else return'';
+				} else return '---';
+			} else return '';
 		},
 		userSelectedCurriculumDisplay() {
 			return this.hasSelectedUser ? this.getCurriculumTitleFromList(this.userSelectedCurriculum) || '---' : '';
-		}
+		},
 	},
 	methods: {
 		...mapActions('curriculums', ['fetchAllCurriculumHeaders']),
 		...mapActions('users', ['unsetSelectedUser', 'createUser', 'updateUser', 'deleteUser']),
 		bundleUserFromForm() {
-			return{
+			return {
 				username: this.username,
 				password: this.password,
 				email: this.email,
@@ -225,15 +220,15 @@ export default{
 				middleName: this.middleName,
 				lastName: this.lastName,
 				tags: this.tags,
-				curriculum: this.curriculum
+				curriculum: this.curriculum,
 			};
 		},
 		getCurriculumTitleFromList(id) {
-			const curriculum = this.curriculumsHeadersList.filter(obj => {
+			const curriculum = this.curriculumsHeadersList.filter((obj) => {
 				return obj._id === id;
 			});
-			if(curriculum[0]) return curriculum[0].title;
-			else return'';
+			if (curriculum[0]) return curriculum[0].title;
+			else return '';
 		},
 		addTag() {
 			this.tags.push('');
@@ -303,17 +298,17 @@ export default{
 		},
 		submitUserToUpdate() {
 			const answer = window.confirm('Are your sure you want to edit the user(s)?');
-			if(answer) {
+			if (answer) {
 				const userToCreate = this.bundleUserFromForm();
 				this.updateUser({
 					id: this.userSelectedId,
-					user: userToCreate
+					user: userToCreate,
 				}).then(() => this.assignSelectedToForm());
 			}
 		},
 		submitUserToDelete() {
 			const answer = window.confirm('Are your sure you want to delete the user(s)?');
-			if(answer) {
+			if (answer) {
 				this.deleteUser(this.userSelectedId).then(this.clearForm());
 			}
 		},
@@ -323,7 +318,7 @@ export default{
 		},
 		handleUploadExperiment(event) {
 			console.log('Todo', event);
-		}
+		},
 	},
 	beforeMount() {
 		this.fetchAllCurriculumHeaders();
@@ -331,66 +326,66 @@ export default{
 	watch: {
 		userSelectedId: {
 			immediate: true,
-			handler: function() {
+			handler: function () {
 				this.assignSelectedToForm();
-			}
-		}
-	}
+			},
+		},
+	},
 };
 </script>
 
 <style scoped>
 .edition-buttons-position {
-  grid-area: edition-btn;
-  display: grid;
-  grid-gap: 15px;
-  grid-template-columns: 1fr 1fr;
+	grid-area: edition-btn;
+	display: grid;
+	grid-gap: 15px;
+	grid-template-columns: 1fr 1fr;
 }
 
 .editor-position {
-  grid-area: editor;
-  background-color: rgb(40, 40, 40);
-  padding: 5px 40px 25px;
-  display: grid;
+	grid-area: editor;
+	background-color: rgb(40, 40, 40);
+	padding: 5px 40px 25px;
+	display: grid;
 }
 
 .submission-buttons-position {
-  grid-area: submission-btn;
-  display: grid;
-  grid-gap: 15px;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-area: submission-btn;
+	display: grid;
+	grid-gap: 15px;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .widget {
-  grid-template-columns: 100%;
-  grid-template-areas:
-    'edition-btn'
-    'editor'
-    'submission-btn';
+	grid-template-columns: 100%;
+	grid-template-areas:
+		'edition-btn'
+		'editor'
+		'submission-btn';
 }
 
 /* Form  */
 
 .form-tags {
-  display: grid;
-  grid-gap: 10px;
-  margin-top: 15px;
+	display: grid;
+	grid-gap: 10px;
+	margin-top: 15px;
 }
 
 .form-group-input button {
-  min-width: auto;
-  width: 100px;
+	min-width: auto;
+	width: 100px;
 }
 
 .form-group-input {
-  display: grid;
-  grid-gap: 10px;
-  grid-template-columns: 100px auto;
+	display: grid;
+	grid-gap: 10px;
+	grid-template-columns: 100px auto;
 }
 
 .form-name-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 20px;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-gap: 20px;
 }
 </style>

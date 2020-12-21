@@ -1,6 +1,6 @@
-const assignUser = function(targetUser, sourceUser) {
+const assignUser = function (targetUser, sourceUser) {
 	// Destructure only the required data from the received user
-	const{
+	const {
 		_id,
 		username,
 		email,
@@ -9,7 +9,7 @@ const assignUser = function(targetUser, sourceUser) {
 		middleName,
 		lastName,
 		tasks: { curriculums } = {},
-		tasks: { progression } = {}
+		tasks: { progression } = {},
 	} = sourceUser;
 
 	// Assign only the required data to store user
@@ -23,11 +23,11 @@ const assignUser = function(targetUser, sourceUser) {
 		lastName: lastName || null,
 		tasks: {
 			curriculums: curriculums || [],
-			progression: progression || []
-		}
+			progression: progression || [],
+		},
 	});
 };
 
-export default{
-	assignUser
+export default {
+	assignUser,
 };

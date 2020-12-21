@@ -1,9 +1,9 @@
-export default{
+export default {
 	status: {
 		isFetchingUsersHeadersList: false,
 		isCreating: false,
 		isUpdating: false,
-		isDeleting: false
+		isDeleting: false,
 	},
 
 	selection: {
@@ -16,7 +16,7 @@ export default{
 		firstName: '',
 		middleName: '',
 		lastName: '',
-		curriculum: null
+		curriculum: null,
 	},
 
 	usersHeadersList: [
@@ -29,7 +29,7 @@ export default{
 			firstName: '',
 			middleName: '',
 			lastName: '',
-			curriculumTitle: ''
-		}
-	]
+			curriculumTitle: '',
+		},
+	],
 };

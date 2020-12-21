@@ -1,10 +1,9 @@
-﻿
-module.exports = {
+﻿module.exports = {
 	// Options...
 	configureWebpack: {
-		devtool: 'source-map'
+		devtool: 'source-map',
 	},
 	devServer: {
-		disableHostCheck: true
-	}
+		disableHostCheck: true,
+	},
 };

@@ -1,37 +1,37 @@
 <template>
-  <div id="timer">
-    <div id="timer-display" :class="color">
-      <svg v-if="mustCountDown" class="timer-icon">
-        <use xlink:href="sprites.svg#icon-hourglass" />
-      </svg>
-      <svg v-else class="timer-icon">
-        <use xlink:href="sprites.svg#icon-timer" />
-      </svg>
-      &nbsp;{{timerDisplay}}
-    </div>
-  </div>
+	<div id="timer">
+		<div id="timer-display" :class="color">
+			<svg v-if="mustCountDown" class="timer-icon">
+				<use xlink:href="sprites.svg#icon-hourglass" />
+			</svg>
+			<svg v-else class="timer-icon">
+				<use xlink:href="sprites.svg#icon-timer" />
+			</svg>
+			&nbsp;{{ timerDisplay }}
+		</div>
+	</div>
 </template>
 
 <script>
-export default{
+export default {
 	name: 'Playing',
 	props: {
 		mustCountDown: {
 			type: Boolean,
 			default() {
 				return false;
-			}
+			},
 		},
 		startTimeInSeconds: {
 			type: Number,
 			default() {
 				return 0;
-			}
-		}
+			},
+		},
 	},
 	components: {},
 	data() {
-		return{
+		return {
 			turnedOn: false,
 			counterUniqueIdentifier: 0,
 			timeStepInMilliseconds: 1000,
@@ -41,7 +41,7 @@ export default{
 			seconds: 0,
 			minutes: 0,
 			hours: 0,
-			days: 0
+			days: 0,
 		};
 	},
 	computed: {
@@ -50,15 +50,14 @@ export default{
 		},
 		timerDisplay() {
 			let hours = '';
-			if(this.hours > 0)
-				hours = (this.hours < 10 ? '0' + this.hours : this.hours) + ':';
-			return(
+			if (this.hours > 0) hours = (this.hours < 10 ? '0' + this.hours : this.hours) + ':';
+			return (
 				hours
-        + (this.minutes < 10 ? '0' + this.minutes : this.minutes)
-        + ':'
-        + (this.seconds < 10 ? '0' + this.seconds : this.seconds)
+				+ (this.minutes < 10 ? '0' + this.minutes : this.minutes)
+				+ ':'
+				+ (this.seconds < 10 ? '0' + this.seconds : this.seconds)
 			);
-		}
+		},
 	},
 	methods: {
 		setTime(value) {
@@ -68,10 +67,7 @@ export default{
 		},
 		startTimer() {
 			this.referenceTime = new Date();
-			this.counterUniqueIdentifier = window.setInterval(
-				this.updateTimer,
-				this.timeStepInMilliseconds
-			);
+			this.counterUniqueIdentifier = window.setInterval(this.updateTimer, this.timeStepInMilliseconds);
 			this.updateTimer();
 			this.turnedOn = true;
 		},
@@ -85,16 +81,11 @@ export default{
 			return this.totalTime;
 		},
 		countUp() {
-			this.totalTime
-        = this.cumulatedTime
-        + Date.parse(new Date())
-        - Date.parse(this.referenceTime);
+			this.totalTime = this.cumulatedTime + Date.parse(new Date()) - Date.parse(this.referenceTime);
 		},
 		countDown() {
-			this.totalTime
-        = this.cumulatedTime
-        - (Date.parse(new Date()) - Date.parse(this.referenceTime));
-		}
+			this.totalTime = this.cumulatedTime - (Date.parse(new Date()) - Date.parse(this.referenceTime));
+		},
 	},
 	beforeMount() {},
 
@@ -107,41 +98,41 @@ export default{
 	destroyed() {},
 	watch: {
 		totalTime(value) {
-			if(value < 0) {
+			if (value < 0) {
 				this.setTime(0);
 				this.stopTimer();
 				this.$emit('timesUp');
-			} else{
+			} else {
 				this.seconds = Math.floor((value / 1000) % 60);
 				this.minutes = Math.floor((value / 1000 / 60) % 60);
 				this.hours = Math.floor((value / (1000 * 60 * 60)) % 24);
 				this.days = Math.floor(value / (1000 * 60 * 60 * 24));
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 
 <style scoped>
 #timer-display {
-  display: flex;
-  align-items: center;
-  height: 100%;
+	display: flex;
+	align-items: center;
+	height: 100%;
 }
 .timer-icon {
-  display: inline-block;
-  stroke-width: 0;
-  width: 30px;
-  height: 30px;
+	display: inline-block;
+	stroke-width: 0;
+	width: 30px;
+	height: 30px;
 }
 .active {
-  stroke: rgb(220, 220, 220);
-  fill: rgb(220, 220, 220);
-  color: rgb(220, 220, 220);
+	stroke: rgb(220, 220, 220);
+	fill: rgb(220, 220, 220);
+	color: rgb(220, 220, 220);
 }
 .inactive {
-  stroke: rgb(100, 100, 100);
-  fill: rgb(100, 100, 100);
-  color: rgb(100, 100, 100);
+	stroke: rgb(100, 100, 100);
+	fill: rgb(100, 100, 100);
+	color: rgb(100, 100, 100);
 }
 </style>

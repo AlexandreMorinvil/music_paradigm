@@ -9,7 +9,7 @@ class Utils {
 	 */
 	static byteToHex(byte) {
 		// Ensure hex string always has two chars
-		return('0' + byte.toString(16)).slice(-2);
+		return ('0' + byte.toString(16)).slice(-2);
 	}
 
 	/**
@@ -58,7 +58,7 @@ class Utils {
 	 * @return {string}
 	 */
 	static decToBinary(dec) {
-		return(dec >>> 0).toString(2);
+		return (dec >>> 0).toString(2);
 	}
 
 	/**
@@ -70,10 +70,10 @@ class Utils {
 		let result = 0;
 		byteArray.forEach((number) => {
 			const b = number;
-			if(b & 0x80) {
-				result += (b & 0x7f);
+			if (b & 0x80) {
+				result += b & 0x7f;
 				result <<= 7;
-			} else{
+			} else {
 				/* B is the last byte */
 				result += b;
 			}
@@ -88,9 +88,9 @@ class Utils {
 	 * @return {string}
 	 */
 	static atob(string) {
-		if(typeof atob === 'function') return atob(string);
+		if (typeof atob === 'function') return atob(string);
 		return new Buffer(string, 'base64').toString('binary');
 	}
 }
 
-export{ Utils };
+export { Utils };

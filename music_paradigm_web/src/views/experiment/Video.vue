@@ -1,71 +1,75 @@
 <template>
-  <div id="video-state" class="experiment-state-container grid-area-area-note" :class="gridClass">
-    <img
-      v-if="hasHelperImage"
-      id="helper-img"
-      :src="urlExperimentRessource(helperImageName)"
-      alt="Helper"
-      class="helper"
-    />
+	<div id="video-state" class="experiment-state-container grid-area-area-note" :class="gridClass">
+		<img
+			v-if="hasHelperImage"
+			id="helper-img"
+			:src="urlExperimentRessource(helperImageName)"
+			alt="Helper"
+			class="helper"
+		/>
 
-    <skip-button v-if="hasSkipOption" class="skip-button" v-on:skip-request="emitSkipSignal" />
+		<skip-button v-if="hasSkipOption" class="skip-button" v-on:skip-request="emitSkipSignal" />
 
-    <div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">{{ textContent }}</div>
+		<div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">
+			{{ textContent }}
+		</div>
 
-    <div id="visual-media-area" class="experiment-state-division state-division-visual-media">
-      <div class="visual-media-board">
-        <div class="video-box">
-          <div
-            v-show="!isPlaying"
-            class="video-hidding-thumbnail"
-            :style="videoWidthCSSvariable + ';' + videoHeightCSSvariable"
-          >
-            {{ videoWaitingMessage }}
-          </div>
-          <video-player
-            v-if="hasVideo"
-            v-show="isPlaying"
-            :src="urlExperimentRessource(videoName)"
-            :dimension="videoDimensions"
-            :playBack="playBack"
-            v-on:finishedPlayback="handdleEndOfVideo"
-            ref="video"
-          />
-        </div>
-        <div class="piano-box" v-if="hasInteractivePiano" :style="videoWidthCSSvariable">
-          <visual-piano />
-        </div>
-      </div>
-    </div>
+		<div id="visual-media-area" class="experiment-state-division state-division-visual-media">
+			<div class="visual-media-board">
+				<div class="video-box">
+					<div
+						v-show="!isPlaying"
+						class="video-hidding-thumbnail"
+						:style="videoWidthCSSvariable + ';' + videoHeightCSSvariable"
+					>
+						{{ videoWaitingMessage }}
+					</div>
+					<video-player
+						v-if="hasVideo"
+						v-show="isPlaying"
+						:src="urlExperimentRessource(videoName)"
+						:dimension="videoDimensions"
+						:playBack="playBack"
+						v-on:finishedPlayback="handdleEndOfVideo"
+						ref="video"
+					/>
+				</div>
+				<div class="piano-box" v-if="hasInteractivePiano" :style="videoWidthCSSvariable">
+					<visual-piano />
+				</div>
+			</div>
+		</div>
 
-    <div id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text">{{ footnote }}</div>
-  </div>
+		<div id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text">
+			{{ footnote }}
+		</div>
+	</div>
 </template>
 
 <script>
-import'@/styles/experimentStateTemplate.css';
-import{ mapGetters } from'vuex';
-import VideoPlayer from'@/components/VideoPlayer.vue';
-import VisualPiano from'@/components/VisualPiano.vue';
-import SkipButton from'@/components/experiment/SkipButton.vue';
+import '@/styles/experimentStateTemplate.css';
+import SkipButton from '@/components/experiment/SkipButton.vue';
+import VideoPlayer from '@/components/VideoPlayer.vue';
+import VisualPiano from '@/components/VisualPiano.vue';
+import { mapGetters } from 'vuex';
 
-export default{
+export default {
 	name: 'Video',
 	components: {
 		skipButton: SkipButton,
 		visualPiano: VisualPiano,
-		VideoPlayer: VideoPlayer
+		VideoPlayer: VideoPlayer,
 	},
 	props: {
 		lastPressedKey: {
 			type: String,
 			default() {
-				return'';
-			}
-		}
+				return '';
+			},
+		},
 	},
 	data() {
-		return{
+		return {
 			counterUniqueIdentifier: 0,
 			errorAutomaticTransitionSeconds: 5,
 			// Video dimensions variable
@@ -82,8 +86,8 @@ export default{
 			isPlaying: false,
 			playBack: {
 				startTime: 0,
-				endTime: 0
-			}
+				endTime: 0,
+			},
 		};
 	},
 	computed: {
@@ -98,23 +102,21 @@ export default{
 			'videoName',
 			'helperImageName',
 			'skipStepButton',
-			'footnoteMessage'
+			'footnoteMessage',
 		]),
 		gridClass() {
-			if(this.hasFootnote) {
-				if(this.hasText) return'grid-small-area-big-area-note';
-				else return'grid-area-note';
-			} else if(this.hasText) return'grid-small-area-big-area';
-			else return'grid-single-area';
+			if (this.hasFootnote) {
+				if (this.hasText) return 'grid-small-area-big-area-note';
+				else return 'grid-area-note';
+			} else if (this.hasText) return 'grid-small-area-big-area';
+			else return 'grid-single-area';
 		},
 		footnote() {
-			if(this.footnoteMessage) return this.footnoteMessage;
+			if (this.footnoteMessage) return this.footnoteMessage;
 			let noteMessage;
-			if(!this.hasVideo)
-				noteMessage = `There is no video to be played, the experiment will automatically  go to the next step in ${
-					this.errorAutomaticTransitionSeconds
-				} seconds`;
-			else return'The experiment will automatically go to the next step after the video playback';
+			if (!this.hasVideo)
+				noteMessage = `There is no video to be played, the experiment will automatically  go to the next step in ${this.errorAutomaticTransitionSeconds} seconds`;
+			else return 'The experiment will automatically go to the next step after the video playback';
 
 			return noteMessage;
 		},
@@ -124,38 +126,38 @@ export default{
 		videoDimensions() {
 			let height = this.defaultVideoHeight;
 			let width = this.defaultVideoWidth;
-			if(this.hasInteractivePiano) {
+			if (this.hasInteractivePiano) {
 				height *= 1.5;
 				width *= 1.5;
-			} else{
+			} else {
 				height *= 2;
 				width *= 2;
 			}
-			return{
+			return {
 				height: height,
-				width: width
+				width: width,
 			};
 		},
 		videoHeightCSSvariable() {
-			return'--videoHeight: ' + this.videoDimensions.height + 'px;';
+			return '--videoHeight: ' + this.videoDimensions.height + 'px;';
 		},
 		videoWidthCSSvariable() {
-			return'--videoWidth: ' + this.videoDimensions.width + 'px;';
+			return '--videoWidth: ' + this.videoDimensions.width + 'px;';
 		},
 		delayLeftDisplay() {
 			let display = '';
 			const minutes = Math.floor((this.delayLeftInMilliseconds / 60000) % 60);
 			const seconds = Math.floor((this.delayLeftInMilliseconds / 1000) % 60);
-			if(minutes > 0) {
+			if (minutes > 0) {
 				display += `${minutes} minutes `;
 			}
 			display += `${seconds} seconds`;
 			return display;
 		},
 		videoWaitingMessage() {
-			if(this.videoName === '') return'There is no video to be played';
-			else return`The video will start in ${this.delayLeftDisplay}`;
-		}
+			if (this.videoName === '') return 'There is no video to be played';
+			else return `The video will start in ${this.delayLeftDisplay}`;
+		},
 	},
 	methods: {
 		handdleEndOfVideo() {
@@ -171,7 +173,7 @@ export default{
 		countdown() {
 			this.delayLeftInMilliseconds = Math.max(
 				this.playbackDelayInSeconds * 1000 - (Date.now() - this.referenceTime),
-				0
+				0,
 			);
 		},
 		manageHavingNoVideo() {
@@ -185,10 +187,10 @@ export default{
 		},
 		emitSkipSignal() {
 			this.$emit('skip-request');
-		}
+		},
 	},
 	mounted() {
-		if(this.videoName === '') this.manageHavingNoVideo();
+		if (this.videoName === '') this.manageHavingNoVideo();
 		else this.startDelayCountdown();
 	},
 	beforeDestroy() {
@@ -197,47 +199,47 @@ export default{
 	watch: {
 		delayLeftInMilliseconds(value) {
 			// When the delay is over, we start the video
-			if(value <= 0) {
+			if (value <= 0) {
 				window.clearInterval(this.counterUniqueIdentifier);
 				this.startVideo();
 			}
 		},
 		lastPressedKey(lastPressedKey) {
-			if(this.hasSkipOption && lastPressedKey === this.skipStepButton) this.emitSkipSignal();
-		}
-	}
+			if (this.hasSkipOption && lastPressedKey === this.skipStepButton) this.emitSkipSignal();
+		},
+	},
 };
 </script>
 
 <style scoped>
 .visual-media-board {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
 }
 .video-box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80%;
-  width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 80%;
+	width: 100%;
 }
 .piano-box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 20%;
-  width: calc(var(--videoWidth) * 1.1);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 20%;
+	width: calc(var(--videoWidth) * 1.1);
 }
 .video-hidding-thumbnail {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: radial-gradient(rgb(50, 50, 50), black);
-  height: var(--videoHeight);
-  width: var(--videoWidth);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-image: radial-gradient(rgb(50, 50, 50), black);
+	height: var(--videoHeight);
+	width: var(--videoWidth);
 }
 </style>

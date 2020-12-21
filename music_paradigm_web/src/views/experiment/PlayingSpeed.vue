@@ -1,33 +1,33 @@
 <template>
-  <div id="playing-speed-area" class="playing-area">
-    <div id="playing-visual-media" v-if="hasVisualMedia" class="playing-visual-media-area">
-      <visual-piano v-if="hasInteractivePiano" ref="piano" />
-      <img
-        id="playing-img"
-        v-if="!hasInteractivePiano && hasPicture"
-        :src="urlExperimentRessource(pictureName)"
-        alt="Playing"
-      />
-    </div>
+	<div id="playing-speed-area" class="playing-area">
+		<div id="playing-visual-media" v-if="hasVisualMedia" class="playing-visual-media-area">
+			<visual-piano v-if="hasInteractivePiano" ref="piano" />
+			<img
+				id="playing-img"
+				v-if="!hasInteractivePiano && hasPicture"
+				:src="urlExperimentRessource(pictureName)"
+				alt="Playing"
+			/>
+		</div>
 
-    <div id="playing-progress-bar" class="playing-progress-bar-area">
-      <progress id="progress-bar" :value="playProgress" :max="maxPlayProgress"></progress>
-    </div>
-  </div>
+		<div id="playing-progress-bar" class="playing-progress-bar-area">
+			<progress id="progress-bar" :value="playProgress" :max="maxPlayProgress"></progress>
+		</div>
+	</div>
 </template>
 
 <script>
-import'@/styles/playingTemplate.css';
-import{ mapActions, mapGetters } from'vuex';
-import VisualPiano from'@/components/VisualPiano.vue';
+import '@/styles/playingTemplate.css';
+import { mapActions, mapGetters } from 'vuex';
+import VisualPiano from '@/components/VisualPiano.vue';
 
-export default{
+export default {
 	name: 'PlayingSpeed',
 	components: {
-		visualPiano: VisualPiano
+		visualPiano: VisualPiano,
 	},
 	data() {
-		return{
+		return {
 			playingStarted: false,
 			defaultTimeLimitInSeconds: 30,
 			counterUniqueIdentifier: 0,
@@ -35,7 +35,7 @@ export default{
 			playProgress: 0,
 			timeStepInMilliseconds: 100,
 			timeLeftInMilliseconds: 0,
-			minMelodyRepetitionDisplayed: 20
+			minMelodyRepetitionDisplayed: 20,
 		};
 	},
 	computed: {
@@ -46,7 +46,7 @@ export default{
 			'hasInteractivePiano',
 			'pictureName',
 			'timeoutInSeconds',
-			'melodyRepetition'
+			'melodyRepetition',
 		]),
 		...mapGetters('piano', ['midiFileNotesMidi', 'playedNotesMidi']),
 		timeLimit() {
@@ -57,18 +57,18 @@ export default{
 			return this.midiFileNotesMidi.length * factor;
 		},
 		timeLimitInMiliseconds() {
-			return(this.timeoutInSeconds || this.defaultTimeLimitInSeconds) * 1000;
+			return (this.timeoutInSeconds || this.defaultTimeLimitInSeconds) * 1000;
 		},
 		timeLeftDisplay() {
 			let display = '';
 			const minutes = Math.floor((this.timeLeftInMilliseconds / 1000 / 60) % 60);
 			const seconds = Math.floor((this.timeLeftInMilliseconds / 1000) % 60);
-			if(minutes > 0) {
+			if (minutes > 0) {
 				display += `${minutes} minutes `;
 			}
 			display += `${seconds} seconds`;
 			return display;
-		}
+		},
 	},
 	methods: {
 		...mapActions('piano', ['evaluateSpeedType']),
@@ -85,16 +85,16 @@ export default{
 		},
 		updateFootnote(firstNotePressed) {
 			let noteMessage;
-			if(firstNotePressed) {
+			if (firstNotePressed) {
 				noteMessage = `The experiment will go to the next step in ${this.timeLeftDisplay}`;
-			} else{
+			} else {
 				noteMessage = 'The time limit will start after the first key press';
 			}
 			this.$emit('footnote', noteMessage);
 		},
 		evaluate() {
 			this.evaluateSpeedType();
-		}
+		},
 	},
 	beforeMount() {},
 	mounted() {
@@ -105,22 +105,22 @@ export default{
 	},
 	watch: {
 		playedNotesMidi() {
-			if(!this.playingStarted) {
+			if (!this.playingStarted) {
 				this.start();
 			}
-			if(this.midiFileNotesMidi.includes(this.playedNotesMidi[this.playedNotesMidi.length - 1])) {
+			if (this.midiFileNotesMidi.includes(this.playedNotesMidi[this.playedNotesMidi.length - 1])) {
 				this.playProgress += 1;
 			}
 		},
 		timeLeftInMilliseconds(value) {
 			// When the time is over we indicate the end of the playing state
-			if(value <= 0) {
+			if (value <= 0) {
 				this.$emit('finishedPlaying');
-			} else{
+			} else {
 				this.updateFootnote(true);
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 

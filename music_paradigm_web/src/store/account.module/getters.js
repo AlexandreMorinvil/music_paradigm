@@ -1,4 +1,4 @@
-export default{
+export default {
 	accountId: (state) => {
 		return state.user._id;
 	},
@@ -16,9 +16,9 @@ export default{
 	},
 
 	fullName: (state) => {
-		return state.user.firstName + ' '
-            + (state.user.middleName ? state.user.middleName + ' ' : '')
-            + state.user.lastName;
+		return (
+			state.user.firstName + ' ' + (state.user.middleName ? state.user.middleName + ' ' : '') + state.user.lastName
+		);
 	},
 
 	isFetchingProgressionSummary: (state) => {
@@ -27,5 +27,5 @@ export default{
 
 	progressionSummary: (state) => {
 		return state.progressionSummary;
-	}
+	},
 };

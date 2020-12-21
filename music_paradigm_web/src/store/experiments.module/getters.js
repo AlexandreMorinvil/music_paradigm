@@ -1,6 +1,6 @@
-import{ validator } from'@/_helpers';
+import { validator } from '@/_helpers';
 
-export default{
+export default {
 	experimentEdited: (state) => {
 		return state.edition;
 	},
@@ -9,7 +9,7 @@ export default{
 		return state.selection.content;
 	},
 
-	selectedId: (state)=> {
+	selectedId: (state) => {
 		return state.selection._id;
 	},
 
@@ -24,5 +24,5 @@ export default{
 
 	isFetchingExperimentHeadersList: (state) => {
 		return state.status.isFetchingExperimentHeadersList;
-	}
+	},
 };

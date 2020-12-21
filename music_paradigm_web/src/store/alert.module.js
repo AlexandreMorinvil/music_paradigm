@@ -1,7 +1,7 @@
 const state = {
 	type: null,
 	message: null,
-	counter: 0 // Used to observe the apparition of new alerts
+	counter: 0, // Used to observe the apparition of new alerts
 };
 
 const getters = {
@@ -16,7 +16,7 @@ const getters = {
 	},
 	alertMessage: (state) => {
 		return state.message || 'No message';
-	}
+	},
 };
 
 const actions = {
@@ -34,7 +34,7 @@ const actions = {
 	},
 	clearAlert({ commit }, message) {
 		commit('clearAlert', message);
-	}
+	},
 };
 
 const mutations = {
@@ -62,7 +62,7 @@ const mutations = {
 		state.type = null;
 		state.message = null;
 		state.counter += 1;
-	}
+	},
 };
 
 export const alert = {
@@ -70,5 +70,5 @@ export const alert = {
 	state,
 	getters,
 	actions,
-	mutations
+	mutations,
 };

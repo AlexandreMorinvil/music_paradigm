@@ -1,18 +1,18 @@
-import{ validator } from'@/_helpers';
+import { validator } from '@/_helpers';
 
-export default{
+export default {
 	status: {
 		isFetchingExperimentHeadersList: false,
 		isCreating: false,
 		isUpdating: false,
 		isDeleting: false,
-		hasCompiledEdition: false
+		hasCompiledEdition: false,
 	},
 
 	edition: validator.getMinimalValidExperimentStructure(),
 	selection: {
 		_id: null,
-		content: validator.getMinimalValidExperimentStructure()
+		content: validator.getMinimalValidExperimentStructure(),
 	},
 	experimentsHeadersList: [
 		{
@@ -20,7 +20,7 @@ export default{
 			group: '',
 			name: '',
 			version: 0,
-			folder: ''
-		}
-	]
+			folder: '',
+		},
+	],
 };

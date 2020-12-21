@@ -1,6 +1,4 @@
-import state from'./state';
-
-export default{
+export default {
 	// Getter for the piano initialization status
 	isPianoInitialized: (state) => {
 		return state.isPianoInitialized;
@@ -36,20 +34,20 @@ export default{
 	},
 
 	// Getters for the evaluations
-	grades: () => {
+	grades: (state) => {
 		return state.played.evaluation.grades;
 	},
 
 	hasSuccess: (state) => {
-		if(state.played.evaluation.grades.length <= 0) return false;
-		for(const grade of state.played.evaluation.grades) {
-			if(grade.mark < grade.passMark) return false;
+		if (state.played.evaluation.grades.length <= 0) return false;
+		for (const grade of state.played.evaluation.grades) {
+			if (grade.mark < grade.passMark) return false;
 		}
 		return true;
 	},
 
 	pianoSimpleLogSummary: (state) => {
-		return{
+		return {
 			referenceName: state.midiFile.name,
 			referenceMidi: state.midiFile.notes.midi,
 			referenceTime: state.midiFile.notes.time,
@@ -60,24 +58,24 @@ export default{
 			playedMidi: state.played.notes.midi,
 			playedTime: state.played.notes.time,
 			playedVelocity: state.played.notes.velocity,
-			playedDuration: state.played.notes.duration
+			playedDuration: state.played.notes.duration,
 		};
 	},
 
 	pianoSimpleLogPreprocesed: (state) => {
-		return{
-			...state.played.evaluation.results
+		return {
+			...state.played.evaluation.results,
 		};
 	},
 
 	pianoLogSummary: (state) => {
-		return{
+		return {
 			reference: {
 				name: state.midiFile.name,
 				midi: state.midiFile.notes.midi,
 				time: state.midiFile.notes.time,
 				duration: state.midiFile.notes.duration,
-				velocity: state.midiFile.notes.velocity
+				velocity: state.midiFile.notes.velocity,
 			},
 			played: {
 				startTime: state.played.startTime,
@@ -85,13 +83,13 @@ export default{
 				midi: state.played.notes.midi,
 				time: state.played.notes.time,
 				velocity: state.played.notes.velocity,
-				duration: state.played.notes.duration
+				duration: state.played.notes.duration,
 			},
 			evaluation: {
 				type: state.played.evaluation.type,
-				grades: state.played.evaluation.grades
+				grades: state.played.evaluation.grades,
 			},
-			preprocessedMetrics: state.played.evaluation.results
+			preprocessedMetrics: state.played.evaluation.results,
 		};
-	}
+	},
 };

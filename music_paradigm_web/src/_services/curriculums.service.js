@@ -1,49 +1,49 @@
-import defaultResponseHandler from'./defaultResponseHandler';
-import{ authHeader, url } from'@/_helpers';
+import defaultResponseHandler from './defaultResponseHandler';
+import { authHeader, url } from '@/_helpers';
 
-const create = function(curriculum) {
+const create = function (curriculum) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(curriculum)
+		body: JSON.stringify(curriculum),
 	};
 	return fetch(url.curriculums(''), requestOptions).then(handleResponse);
 };
 
-const getListAllHeaders = function() {
+const getListAllHeaders = function () {
 	const requestOptions = {
 		method: 'GET',
-		headers: authHeader()
+		headers: authHeader(),
 	};
 	return fetch(url.curriculums(''), requestOptions).then(handleResponse);
 };
 
-const getById = function(id) {
+const getById = function (id) {
 	const requestOptions = {
 		method: 'GET',
-		headers: authHeader()
+		headers: authHeader(),
 	};
 	return fetch(url.curriculums(id), requestOptions).then(handleResponse);
 };
 
-const update = function(id, curriculum) {
+const update = function (id, curriculum) {
 	const requestOptions = {
 		method: 'PUT',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(curriculum)
+		body: JSON.stringify(curriculum),
 	};
 	return fetch(url.curriculums(id), requestOptions).then(handleResponse);
 };
 
-const _delete = function(id) {
+const _delete = function (id) {
 	const requestOptions = {
 		method: 'DELETE',
-		headers: authHeader()
+		headers: authHeader(),
 	};
 	return fetch(url.curriculums(id), requestOptions).then(handleResponse);
 };
 
-const handleResponse = function(reponse) {
+const handleResponse = function (reponse) {
 	return defaultResponseHandler(reponse);
 };
 
@@ -52,5 +52,5 @@ export const curriculumService = {
 	getListAllHeaders,
 	getById,
 	update,
-	delete: _delete
+	delete: _delete,
 };

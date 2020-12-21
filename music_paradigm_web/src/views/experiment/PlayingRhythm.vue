@@ -1,35 +1,35 @@
 <template>
-  <div id="playing-rythm-area" class="playing-area">
-    <div id="playing-visual-media" v-if="hasVisualMedia" class="playing-visual-media-area">
-      <visual-piano v-if="hasInteractivePiano" ref="piano" />
-      <img
-        id="playing-img"
-        v-if="!hasInteractivePiano && hasPicture"
-        :src="urlExperimentRessource(pictureName)"
-        alt="Playing"
-      />
-    </div>
+	<div id="playing-rythm-area" class="playing-area">
+		<div id="playing-visual-media" v-if="hasVisualMedia" class="playing-visual-media-area">
+			<visual-piano v-if="hasInteractivePiano" ref="piano" />
+			<img
+				id="playing-img"
+				v-if="!hasInteractivePiano && hasPicture"
+				:src="urlExperimentRessource(pictureName)"
+				alt="Playing"
+			/>
+		</div>
 
-    <div id="playing-progress-bar" class="playing-progress-bar-area">
-      <progress id="progress-bar" :value="playProgress" :max="maxPlayProgress"></progress>
-    </div>
-  </div>
+		<div id="playing-progress-bar" class="playing-progress-bar-area">
+			<progress id="progress-bar" :value="playProgress" :max="maxPlayProgress"></progress>
+		</div>
+	</div>
 </template>
 
 <script>
-import'@/styles/playingTemplate.css';
-import{ mapActions, mapGetters } from'vuex';
-import VisualPiano from'@/components/VisualPiano.vue';
+import '@/styles/playingTemplate.css';
+import { mapActions, mapGetters } from 'vuex';
+import VisualPiano from '@/components/VisualPiano.vue';
 
-export default{
+export default {
 	name: 'PlayingRhythm',
 	components: {
-		visualPiano: VisualPiano
+		visualPiano: VisualPiano,
 	},
 	data() {
-		return{
+		return {
 			timeLimitUniqueIdentifier: 0,
-			isFirstNotePressed: false
+			isFirstNotePressed: false,
 		};
 	},
 	computed: {
@@ -39,7 +39,7 @@ export default{
 			'hasPicture',
 			'hasInteractivePiano',
 			'pictureName',
-			'timeoutInSeconds'
+			'timeoutInSeconds',
 		]),
 		...mapGetters('piano', ['midiFileNotesMidi', 'midiFileNotesDuration', 'playedNotesMidi']),
 		playProgress() {
@@ -50,29 +50,29 @@ export default{
 		},
 		lastNoteDuration() {
 			return this.midiFileNotesDuration[this.midiFileNotesDuration.length - 1];
-		}
+		},
 	},
 	methods: {
 		...mapActions('piano', ['evaluateRhythmType']),
 		start() {},
 		setTimeLimit() {
-			if(this.timeoutInSeconds !== 0) {
+			if (this.timeoutInSeconds !== 0) {
 				this.timeLimitUniqueIdentifier = window.setTimeout(() => {
 					this.$emit('finishedPlaying');
 				}, this.timeoutInSeconds * 1000);
 			}
 		},
 		stopHint() {
-			if(this.hasInteractivePiano) this.$refs.piano.clearDesignatedKeys();
+			if (this.hasInteractivePiano) this.$refs.piano.clearDesignatedKeys();
 		},
 		updateFootnote() {
 			let noteMessage = 'The experiment will go to the next step after your performance';
-			if(this.timeoutInSeconds !== 0) noteMessage += ` or after ${this.timeoutInSeconds} seconds`;
+			if (this.timeoutInSeconds !== 0) noteMessage += ` or after ${this.timeoutInSeconds} seconds`;
 			this.$emit('footnote', noteMessage);
 		},
 		evaluate() {
 			this.evaluateRhythmType();
-		}
+		},
 	},
 	mounted() {
 		this.updateFootnote();
@@ -85,19 +85,19 @@ export default{
 		playProgress(value) {
 			// When the last note was pressed, we wait the duration of the last note
 			// plus a second before indicating the end of the playing state
-			if(value >= this.maxPlayProgress) {
+			if (value >= this.maxPlayProgress) {
 				this.timerUniqueIdentifier = setTimeout(() => {
 					this.$emit('finishedPlaying');
 				}, this.lastNoteDuration + 500);
 			}
 		},
 		pressedKeys() {
-			if(!this.isFirstNotePressed) {
+			if (!this.isFirstNotePressed) {
 				// This.stopHint();
 				this.isFirstNotePressed = true;
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 

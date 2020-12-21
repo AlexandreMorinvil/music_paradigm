@@ -1,4 +1,4 @@
-export default{
+export default {
 	// // Status Updates
 	indicateFetchingCurriculumList(state) {
 		state.status.isFetchingCurriculumsHeadersList = true;
@@ -44,5 +44,5 @@ export default{
 
 	setHeadersList(state, usersHeadersLst) {
 		state.curriculumsHeadersList = usersHeadersLst;
-	}
+	},
 };

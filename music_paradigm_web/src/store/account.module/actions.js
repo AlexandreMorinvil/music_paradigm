@@ -1,26 +1,24 @@
-import{ accountService } from'@/_services';
+import { accountService } from '@/_services';
 
-export default{
+export default {
 	resumeLoginStatus({ commit }) {
-		accountService.resumeLogin()
-			.then((user) => {
-				if(user) commit('loginSuccess', user);
-				else commit('loginFailure');
-			});
+		accountService.resumeLogin().then((user) => {
+			if (user) commit('loginSuccess', user);
+			else commit('loginFailure');
+		});
 	},
 
 	login({ dispatch, commit }, { username, password }) {
 		commit('loginRequest', { username });
-		accountService.login(username, password)
-			.then(
-				(user) => {
-					commit('loginSuccess', user);
-				},
-				(error) => {
-					commit('loginFailure', error);
-					dispatch('alert/setErrorAlert', error.message, { root: true });
-				}
-			);
+		accountService.login(username, password).then(
+			(user) => {
+				commit('loginSuccess', user);
+			},
+			(error) => {
+				commit('loginFailure', error);
+				dispatch('alert/setErrorAlert', error.message, { root: true });
+			},
+		);
 	},
 
 	logout({ commit }) {
@@ -30,7 +28,8 @@ export default{
 
 	fetchProgressionSummary({ commit, dispatch }) {
 		commit('indicateFetchingProgressionSummary');
-		return accountService.fetchProgressionSummary()
+		return accountService
+			.fetchProgressionSummary()
 			.then(
 				(progressionSummary) => {
 					commit('setProgressionSummary', progressionSummary.history);
@@ -38,10 +37,10 @@ export default{
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
-				}
+				},
 			)
 			.finally(() => {
 				commit('indicateFetchingProgressionSummaryEnd');
 			});
-	}
+	},
 };

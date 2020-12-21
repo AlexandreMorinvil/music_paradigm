@@ -38,8 +38,8 @@ const player = require('sample-player');
  * })
  */
 function instrument(ac, name, options) {
-	if(arguments.length === 1) {
-		return function(n, o) {
+	if (arguments.length === 1) {
+		return function (n, o) {
 			return instrument(ac, n, o);
 		};
 	}
@@ -48,7 +48,7 @@ function instrument(ac, name, options) {
 	const toUrl = opts.nameToUrl || nameToUrl;
 	const url = isUrl(name) ? name : toUrl(name, opts.soundfont, opts.format);
 
-	return load(ac, url, { only: opts.only || opts.notes }).then(function(buffers) {
+	return load(ac, url, { only: opts.only || opts.notes }).then(function (buffers) {
 		const p = player(ac, buffers, opts).connect(opts.destination ? opts.destination : ac.destination);
 		p.url = url;
 		p.name = name;
@@ -57,7 +57,7 @@ function instrument(ac, name, options) {
 }
 
 function isSoundfontURL(name) {
-	return(/\.js(\?.*)?$/i).test(name);
+	return (/\.js(\?.*)?$/i).test(name);
 }
 
 /**
@@ -76,7 +76,7 @@ function isSoundfontURL(name) {
 function nameToUrl(name, sf, format) {
 	format = format === 'ogg' ? format : 'mp3';
 	sf = sf === 'FluidR3_GM' ? sf : 'MusyngKite';
-	return'https://gleitz.github.io/midi-js-soundfonts/' + sf + '/' + name + '-' + format + '.js';
+	return 'https://gleitz.github.io/midi-js-soundfonts/' + sf + '/' + name + '-' + format + '.js';
 }
 
 // In the 1.0.0 release it will be:
@@ -85,5 +85,5 @@ const Soundfont = require('./legacy');
 Soundfont.instrument = instrument;
 Soundfont.nameToUrl = nameToUrl;
 
-if(typeof module === 'object' && module.exports) module.exports = Soundfont;
-if(typeof window !== 'undefined') window.Soundfont = Soundfont;
+if (typeof module === 'object' && module.exports) module.exports = Soundfont;
+if (typeof window !== 'undefined') window.Soundfont = Soundfont;

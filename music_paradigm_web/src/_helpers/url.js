@@ -1,4 +1,4 @@
-import config from'@/config';
+import config from '@/config';
 
 const staticDirectory = '/static/';
 const experimentRessourceDirectory = '/experiment-ressources/';
@@ -9,29 +9,29 @@ const experiments = '/experiments/';
 const curriculums = '/curriculums/';
 const users = '/users/';
 
-export default{
+export default {
 	// File serving
-	static: function(directory) {
+	static: function (directory) {
 		return config.apiUrl + staticDirectory + directory;
 	},
-	experimentRessource: function(directory) {
+	experimentRessource: function (directory) {
 		return config.apiUrl + experimentRessourceDirectory + directory;
 	},
 
 	// API calls
-	adminSessions: function(parameters) {
+	adminSessions: function (parameters) {
 		return config.apiUrl + adminSessions + parameters;
 	},
-	account: function(parameters) {
+	account: function (parameters) {
 		return config.apiUrl + account + parameters;
 	},
-	experiments: function(parameters) {
+	experiments: function (parameters) {
 		return config.apiUrl + experiments + parameters;
 	},
-	curriculums: function(parameters) {
+	curriculums: function (parameters) {
 		return config.apiUrl + curriculums + parameters;
 	},
-	users: function(parameters) {
+	users: function (parameters) {
 		return config.apiUrl + users + parameters;
-	}
+	},
 };

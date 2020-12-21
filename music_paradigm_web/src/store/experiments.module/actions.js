@@ -1,16 +1,17 @@
-import{ experimentService } from'@/_services';
+import { experimentService } from '@/_services';
 
-export default{
+export default {
 	fetchAllExperimentsHeaders({ commit, dispatch }) {
 		commit('indicateFetchingExperimentList');
-		experimentService.getListAllHeaders()
+		experimentService
+			.getListAllHeaders()
 			.then(
 				(experimentHeadersList) => {
 					commit('setHeadersList', experimentHeadersList);
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
-				}
+				},
 			)
 			.finally(() => {
 				commit('indicateFetchingExperimentListEnd');
@@ -25,7 +26,7 @@ export default{
 			},
 			(error) => {
 				dispatch('alert/setErrorAlert', `Compilation failed : ${error.message}`, { root: true });
-			}
+			},
 		);
 	},
 
@@ -36,7 +37,7 @@ export default{
 			},
 			(error) => {
 				dispatch('alert/setErrorAlert', `Compilation failed : ${error.message}`, { root: true });
-			}
+			},
 		);
 	},
 
@@ -51,7 +52,7 @@ export default{
 			},
 			(error) => {
 				dispatch('alert/setErrorAlert', `Failed to start the experiment: ${error.message}`, { root: true });
-			}
+			},
 		);
 	},
 
@@ -67,11 +68,13 @@ export default{
 		experimentService.validateExperiment(experiment).then(
 			() => {
 				commit('setEditedExperiment', experiment);
-				dispatch('alert/setInformationAlert', 'The experiment was compiled', { root: true });
+				dispatch('alert/setInformationAlert', 'The experiment was compiled', {
+					root: true,
+				});
 			},
 			(error) => {
 				dispatch('alert/setErrorAlert', `Compilation failed : ${error.message}`, { root: true });
-			}
+			},
 		);
 	},
 
@@ -84,7 +87,7 @@ export default{
 			},
 			(error) => {
 				dispatch('alert/setWarningAlert', `The experiment could not be compiled : ${error.message}`, { root: true });
-			}
+			},
 		);
 	},
 
@@ -94,17 +97,20 @@ export default{
 
 	createExperiment({ commit, dispatch }, experiment) {
 		commit('indicateCreateRequest');
-		experimentService.create(experiment)
+		experimentService
+			.create(experiment)
 			.then(
 				(experiment) => {
 					commit('setEditedExperiment', experiment);
 					commit('setSelectedExperiment', experiment);
-					dispatch('alert/setSuccessAlert', 'Experiment creation sucessful', { root: true });
+					dispatch('alert/setSuccessAlert', 'Experiment creation sucessful', {
+						root: true,
+					});
 					dispatch('fetchAllExperimentsHeaders');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
-				}
+				},
 			)
 			.finally(() => {
 				commit('indicateCreateRequestEnd');
@@ -113,17 +119,20 @@ export default{
 
 	updateExperiment({ commit, dispatch }, { id, experiment }) {
 		commit('indicateUpdateRequest');
-		experimentService.update(id, experiment)
+		experimentService
+			.update(id, experiment)
 			.then(
 				(experiment) => {
 					commit('setEditedExperiment', experiment);
 					commit('setSelectedExperiment', experiment);
-					dispatch('alert/setSuccessAlert', 'Experiment update sucessful', { root: true });
+					dispatch('alert/setSuccessAlert', 'Experiment update sucessful', {
+						root: true,
+					});
 					dispatch('fetchAllExperimentsHeaders');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
-				}
+				},
 			)
 			.finally(() => {
 				commit('indicateUpdateRequestEnd');
@@ -132,19 +141,22 @@ export default{
 
 	deleteExperiment({ commit, dispatch }, id) {
 		commit('indicateDeleteRequest');
-		experimentService.delete(id)
+		experimentService
+			.delete(id)
 			.then(
 				() => {
 					commit('unsetSelectedExperiment');
-					dispatch('alert/setSuccessAlert', 'Experiment deletion sucessful', { root: true });
+					dispatch('alert/setSuccessAlert', 'Experiment deletion sucessful', {
+						root: true,
+					});
 					dispatch('fetchAllExperimentsHeaders');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
-				}
+				},
 			)
 			.finally(() => {
 				commit('indicateDeleteRequestEnd');
 			});
-	}
+	},
 };

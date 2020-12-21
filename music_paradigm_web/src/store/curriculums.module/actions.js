@@ -1,16 +1,17 @@
-import{ curriculumService } from'@/_services';
+import { curriculumService } from '@/_services';
 
-export default{
+export default {
 	fetchAllCurriculumHeaders({ commit, dispatch }) {
 		commit('indicateFetchingCurriculumList');
-		return curriculumService.getListAllHeaders()
+		return curriculumService
+			.getListAllHeaders()
 			.then(
 				(curriculumsHeadersList) => {
 					commit('setHeadersList', curriculumsHeadersList);
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
-				}
+				},
 			)
 			.finally(() => {
 				commit('indicateFetchingCurriculumListEnd');
@@ -24,7 +25,7 @@ export default{
 			},
 			(error) => {
 				dispatch('alert/setErrorAlert', `Curriculum selection failed : ${error.message}`, { root: true });
-			}
+			},
 		);
 	},
 
@@ -34,16 +35,19 @@ export default{
 
 	createCurriculum({ commit, dispatch }, curriculum) {
 		commit('indicateCreateRequest');
-		return curriculumService.create(curriculum)
+		return curriculumService
+			.create(curriculum)
 			.then(
 				(createdCurriculum) => {
 					commit('setSelectedCurriculum', createdCurriculum);
-					dispatch('alert/setSuccessAlert', 'Curriculum creation sucessful', { root: true });
+					dispatch('alert/setSuccessAlert', 'Curriculum creation sucessful', {
+						root: true,
+					});
 					dispatch('fetchAllCurriculumHeaders');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
-				}
+				},
 			)
 			.finally(() => {
 				commit('indicateCreateRequestEnd');
@@ -52,16 +56,19 @@ export default{
 
 	updateCurriculum({ commit, dispatch }, { id, curriculum }) {
 		commit('indicateUpdateRequest');
-		return curriculumService.update(id, curriculum)
+		return curriculumService
+			.update(id, curriculum)
 			.then(
 				(updatedCurriculum) => {
 					commit('setSelectedCurriculum', updatedCurriculum);
-					dispatch('alert/setSuccessAlert', 'Curriculum update sucessful', { root: true });
+					dispatch('alert/setSuccessAlert', 'Curriculum update sucessful', {
+						root: true,
+					});
 					dispatch('fetchAllCurriculumHeaders');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
-				}
+				},
 			)
 			.finally(() => {
 				commit('indicateUpdateRequestEnd');
@@ -70,19 +77,22 @@ export default{
 
 	deleteCurriculum({ commit, dispatch }, id) {
 		commit('indicateDeleteRequest');
-		return curriculumService.delete(id)
+		return curriculumService
+			.delete(id)
 			.then(
 				() => {
 					commit('unsetSelectedCurriculum');
-					dispatch('alert/setSuccessAlert', 'Currirulum deletion sucessful', { root: true });
+					dispatch('alert/setSuccessAlert', 'Currirulum deletion sucessful', {
+						root: true,
+					});
 					dispatch('fetchAllCurriculumHeaders');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
-				}
+				},
 			)
 			.finally(() => {
 				commit('indicateDeleteRequestEnd');
 			});
-	}
+	},
 };

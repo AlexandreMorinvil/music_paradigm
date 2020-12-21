@@ -1,7 +1,7 @@
 // This code is put in a function as it is used in more than one mutation
-export default{
+export default {
 	clearMidiFileNotes,
-	multiplyMidiFileNotes
+	multiplyMidiFileNotes,
 };
 
 function clearMidiFileNotes(state) {
@@ -18,7 +18,7 @@ function clearMidiFileNotes(state) {
 function multiplyMidiFileNotes(state, multiplier) {
 	const notes = JSON.parse(JSON.stringify(state.midiFile.notes));
 	const timeOffset = notes.time[notes.time.length - 1] + notes.duration[notes.duration.length - 1];
-	for(let i = 1; i < multiplier; i++) {
+	for (let i = 1; i < multiplier; i++) {
 		notes.midi = notes.midi.concat(state.midiFile.notes.midi);
 		notes.time = notes.time.concat(state.midiFile.notes.time + i * timeOffset);
 		notes.name = notes.name.concat(state.midiFile.notes.name);

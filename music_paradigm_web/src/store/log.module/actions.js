@@ -1,6 +1,6 @@
-import{ adminSessionService } from'@/_services';
+import { adminSessionService } from '@/_services';
 
-export default{
+export default {
 	createSimpleLog({ commit, rootGetters }) {
 		const simpleLog = {
 			userId: rootGetters['account/accountId'],
@@ -18,17 +18,18 @@ export default{
 			timestamp: Date.now(),
 
 			...rootGetters['piano/pianoSimpleLogSummary'],
-			...rootGetters['piano/pianoSimpleLogPreprocesed']
+			...rootGetters['piano/pianoSimpleLogPreprocesed'],
 		};
 		commit('indicateCreateRequest');
-		return adminSessionService.createSimpleLog(simpleLog)
+		return adminSessionService
+			.createSimpleLog(simpleLog)
 			.then(
 				(addedBlock) => {
 					console.log(addedBlock);
 				},
 				(error) => {
 					console.log(error);
-				}
+				},
 			)
 			.finally(() => {
 				commit('indicateCreateRequestEnd');
@@ -43,10 +44,11 @@ export default{
 			experimentGroup: rootGetters['experiment/experimentGroup'],
 			experimentName: rootGetters['experiment/experimentName'],
 			experimentVersion: rootGetters['experiment/experimentVersion'],
-			startTimestamp: Date.now()
+			startTimestamp: Date.now(),
 		};
 		commit('indicateCreateRequest');
-		return adminSessionService.createAdminSession(sessionLogHeader)
+		return adminSessionService
+			.createAdminSession(sessionLogHeader)
 			.then(
 				(initializedLogSession) => {
 					commit('setAdminLogSessionId', initializedLogSession);
@@ -54,7 +56,7 @@ export default{
 				(error) => {
 					console.log(error);
 					// Commit('setSelectedCurriculum', createdCurriculum);
-				}
+				},
 			)
 			.finally(() => {
 				commit('indicateCreateRequestEnd');
@@ -65,20 +67,21 @@ export default{
 		const block = {
 			blockType: rootGetters['experiment/currentStateType'],
 			timestamp: Date.now(),
-			notes: rootGetters['piano/pianoLogSummary']
+			notes: rootGetters['piano/pianoLogSummary'],
 		};
 		commit('indicateAddBlockRequest');
-		return adminSessionService.addBlock(getters.logSessionId, block)
+		return adminSessionService
+			.addBlock(getters.logSessionId, block)
 			.then(
 				(addedBlock) => {
 					console.log(addedBlock);
 				},
 				(error) => {
 					console.log(error);
-				}
+				},
 			)
 			.finally(() => {
 				commit('indicateAddBlockRequestEnd');
 			});
-	}
+	},
 };

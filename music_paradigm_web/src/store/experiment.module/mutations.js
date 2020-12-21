@@ -1,19 +1,19 @@
-import{ routerNavigation } from'@/_helpers';
-import constants from'./constants';
-import cursorHandler from'./flowHelper/cursorHandler';
-import experimentHandler from'./flowHelper/experiment-handler';
-import stateHandler from'./flowHelper/stateHandler';
+import { routerNavigation } from '@/_helpers';
+import constants from './constants';
+import cursorHandler from './flowHelper/cursorHandler';
+import experimentHandler from './flowHelper/experiment-handler';
+import stateHandler from './flowHelper/stateHandler';
 
-export default{
+export default {
 	clearState(state) {
 		Object.assign(state, constants.DEFAULT_EXPERIMENT_STATE_VALUES());
 	},
 
 	setExperiment(state, experiment) {
 		// Verify the minimal required properties
-		if(!experiment.hasOwnProperty('name')) throw new Error('No name was found in the experiment');
-		if(!experiment.hasOwnProperty('folder')) throw new Error('No folder was found in the experiment');
-		if(!experiment.hasOwnProperty('flow')) throw new Error('No flow was found in the experiment');
+		if (!experiment.hasOwnProperty('name')) throw new Error('No name was found in the experiment');
+		if (!experiment.hasOwnProperty('folder')) throw new Error('No folder was found in the experiment');
+		if (!experiment.hasOwnProperty('flow')) throw new Error('No flow was found in the experiment');
 
 		experimentHandler.setExperimentId(state, experiment);
 		experimentHandler.setExperimentDescription(state, experiment);
@@ -38,24 +38,24 @@ export default{
 	},
 
 	updateState: (state) => {
-		const{ flow, cursor, isInitialized, settings } = state;
+		const { flow, cursor, isInitialized, settings } = state;
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
 	moveNextStep: (state) => {
-		const{ flow, cursor, isInitialized, settings } = state;
+		const { flow, cursor, isInitialized, settings } = state;
 		cursorHandler.advance(state.state, flow, cursor, isInitialized);
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
 	movePostSkip: (state) => {
-		const{ flow, cursor, isInitialized, settings } = state;
+		const { flow, cursor, isInitialized, settings } = state;
 		cursorHandler.skip(state.state, flow, cursor, isInitialized);
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
 	movePostSkipRepetions: (state) => {
-		const{ flow, cursor, isInitialized, settings } = state;
+		const { flow, cursor, isInitialized, settings } = state;
 		cursorHandler.moveCursorPostSkipRepetions(state.state, flow, cursor, isInitialized);
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
@@ -73,5 +73,5 @@ export default{
 		state.state.record.isSuccess = true;
 		state.state.record.sucesses += 1;
 		state.state.record.successesInLoop += 1;
-	}
+	},
 };

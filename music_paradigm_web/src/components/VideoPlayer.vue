@@ -1,56 +1,52 @@
 <template>
-  <div>
-    <video ref="videoPlayer" class="video-js">
-      <p class="vjs-no-js">
-        To view this video please enable JavaScript, and consider upgrading to a
-        web browser that
-        <a
-          href="https://videojs.com/html5-video-support/"
-          target="_blank"
-        >supports HTML5 video</a>
-      </p>
-    </video>
-  </div>
+	<div>
+		<video ref="videoPlayer" class="video-js">
+			<p class="vjs-no-js">
+				To view this video please enable JavaScript, and consider upgrading to a web browser that
+				<a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+			</p>
+		</video>
+	</div>
 </template>
 
 <script>
-import videojs from'video.js/dist/video.min.js';
-import'video.js/dist/video-js.min.css';
+import videojs from 'video.js/dist/video.min.js';
+import 'video.js/dist/video-js.min.css';
 
-export default{
+export default {
 	name: 'VideoPlayer',
 	props: {
 		src: {
 			type: String,
 			default() {
-				return'';
-			}
+				return '';
+			},
 		},
 		dimension: {
 			type: Object,
 			default() {
-				return{
+				return {
 					height: 100,
-					width: 100
+					width: 100,
 				};
-			}
+			},
 		},
 		playBack: {
 			type: Object,
 			default() {
-				return{
+				return {
 					startTime: 0.0,
-					endTime: 0.0
+					endTime: 0.0,
 				};
-			}
-		}
+			},
+		},
 	},
 	data() {
-		return{
+		return {
 			player: null,
 			volume: 0,
 			time: 0,
-			duration: 0
+			duration: 0,
 		};
 	},
 	methods: {
@@ -63,7 +59,7 @@ export default{
 				height: this.dimension.height,
 				width: this.dimension.width,
 				preload: 'auto',
-				autoplay: false // The autoplay is managed manually to handle delays
+				autoplay: false, // The autoplay is managed manually to handle delays
 			};
 			this.player = videojs(this.$refs.videoPlayer, initialOptions);
 		},
@@ -88,7 +84,7 @@ export default{
 		// Event handling methods
 		playerCheckDelayedStop() {
 			this.time = this.player.currentTime();
-			if(this.time >= this.duration) {
+			if (this.time >= this.duration) {
 				this.playerPause();
 				this.$emit('preProgrammedEnd');
 			}
@@ -103,26 +99,26 @@ export default{
 		},
 		// Event listening methods
 		setEndTime(endTime) {
-			if(endTime !== 0.0) {
+			if (endTime !== 0.0) {
 				this.duration = endTime;
-				this.player.on('timeupdate', function() {
+				this.player.on('timeupdate', function () {
 					window.playerEvents.playerCheckDelayedStop();
 				});
-			} else{
+			} else {
 				this.duration = this.player.duration();
 			}
 		},
 		playerSetupEndEvents() {
-			this.$once('preProgrammedEnd', function() {
+			this.$once('preProgrammedEnd', function () {
 				window.playerEvents.playerEventEnded();
 			});
-			this.player.on('ended', function() {
+			this.player.on('ended', function () {
 				window.playerEvents.playerEventEnded();
 			});
-			this.player.on('error', function() {
+			this.player.on('error', function () {
 				window.playerEvents.playerEventError();
 			});
-		}
+		},
 	},
 	mounted() {
 		window.playerEvents = this;
@@ -134,18 +130,18 @@ export default{
 		this.setEndTime(this.playBack.endTime || 0.0);
 	},
 	beforeDestroy() {
-		if(this.player) {
+		if (this.player) {
 			this.player.dispose();
 		}
 	},
-	watch: {}
+	watch: {},
 };
 </script>
 
 <style scoped>
 video {
-  width: 3050px;
-  height: 160px;
-  background-color: lightblue;
+	width: 3050px;
+	height: 160px;
+	background-color: lightblue;
 }
 </style>
