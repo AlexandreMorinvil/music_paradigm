@@ -1,5 +1,5 @@
 <template>
-	<admin-page-context title="Curriculum">
+	<admin-page-content-frame title="Curriculum">
 		<widget-context title="Reviewing Tool">
 			<template>
 				<curriculums-viewer />
@@ -17,11 +17,11 @@
 				<curriculums-table />
 			</template>
 		</widget-context>
-	</admin-page-context>
+	</admin-page-content-frame>
 </template>
 
 <script>
-import AdminPageContext from '@/components/admin/AdminPageContext.vue';
+import AdminPageContentFrame from '@/components/content-frame/admin-page-content-frame.component.vue';
 import CurriculumsEditor from '@/components/admin/curriculums/CurriculumsEditorWidget.vue';
 import CurriculumsTable from '@/components/admin/curriculums/CurriculumsTableWidget.vue';
 import CurriculumsViewer from '@/components/admin/curriculums/CurriculumsViewerWidget.vue';
@@ -29,7 +29,7 @@ import WidgetContext from '@/components/admin/WidgetContext.vue';
 
 export default {
 	components: {
-		AdminPageContext: AdminPageContext,
+		AdminPageContentFrame: AdminPageContentFrame,
 		WidgetContext: WidgetContext,
 		CurriculumsViewer: CurriculumsViewer,
 		CurriculumsEditor: CurriculumsEditor,

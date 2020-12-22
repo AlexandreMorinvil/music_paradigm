@@ -46,7 +46,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import ApplicationFooter from '@/components/ApplicationFooter.vue';
-import LoaderCircular from '@/components/LoaderCircular.vue';
+import LoaderCircular from '@/components/visual-helpers/loader-circular.component.vue';
 
 export default {
 	components: {

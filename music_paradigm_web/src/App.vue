@@ -15,7 +15,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import Alert from '@/components/Alert';
+import Alert from '@/components/visual-helpers/alert.component';
 import NavigationBarDefault from '@/components/navigationBar/NavigationBarDefault';
 import NavigationBarExperiment from '@/components/navigationBar/NavigationBarExperiment';
 

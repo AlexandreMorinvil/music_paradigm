@@ -1,5 +1,5 @@
 <template>
-	<admin-page-context title="Experiments Ressources">
+	<admin-page-content-frame title="Experiments Ressources">
 		<widget-context title="Not Implemented Yet">
 			<div class="widget widget-box widget-bg">
 				Interface to upload files
@@ -11,18 +11,18 @@
 				<br />Ability to download files.
 			</div>
 		</widget-context>
-	</admin-page-context>
+	</admin-page-content-frame>
 </template>
 
 <script>
-import AdminPageContext from '@/components/admin/AdminPageContext.vue';
+import AdminPageContentFrame from '@/components/content-frame/admin-page-content-frame.component.vue';
 import WidgetContext from '@/components/admin/WidgetContext.vue';
 
 import '@/styles/widgetTemplate.css';
 
 export default {
 	components: {
-		AdminPageContext: AdminPageContext,
+		AdminPageContentFrame: AdminPageContentFrame,
 		WidgetContext: WidgetContext,
 	},
 };

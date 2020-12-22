@@ -19,7 +19,11 @@
 				</thead>
 
 				<tbody>
-					<tr v-for="(header, index) in usersHeadersList" :key="header._id" :class="header._id === userSelectedId && 'selected'">
+					<tr
+						v-for="(header, index) in usersHeadersList"
+						:key="header._id"
+						:class="header._id === userSelectedId && 'selected'"
+					>
 						<td>{{ index + 1 }}</td>
 						<td>{{ header.username }}</td>
 						<td>{{ makeEmailDisplay(header.email) }}</td>
@@ -44,7 +48,7 @@
 // TODO: Display the tasks summary
 import '@/styles/widgetTemplate.css';
 import { mapActions, mapGetters } from 'vuex';
-import LoaderCircular from '@/components/LoaderCircular.vue';
+import LoaderCircular from '@/components/visual-helpers/loader-circular.component.vue';
 
 export default {
 	components: {

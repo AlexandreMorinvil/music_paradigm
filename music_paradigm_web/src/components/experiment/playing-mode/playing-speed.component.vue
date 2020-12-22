@@ -2,7 +2,12 @@
 	<div id="playing-speed-area" class="playing-area">
 		<div id="playing-visual-media" v-if="hasVisualMedia" class="playing-visual-media-area">
 			<visual-piano v-if="hasInteractivePiano" ref="piano" />
-			<img id="playing-img" v-if="!hasInteractivePiano && hasPicture" :src="urlExperimentRessource(pictureName)" alt="Playing" />
+			<img
+				id="playing-img"
+				v-if="!hasInteractivePiano && hasPicture"
+				:src="urlExperimentRessource(pictureName)"
+				alt="Playing"
+			/>
 		</div>
 
 		<div id="playing-progress-bar" class="playing-progress-bar-area">
@@ -14,7 +19,7 @@
 <script>
 import '@/styles/playingTemplate.css';
 import { mapActions, mapGetters } from 'vuex';
-import VisualPiano from '@/components/VisualPiano.vue';
+import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
 
 export default {
 	components: {

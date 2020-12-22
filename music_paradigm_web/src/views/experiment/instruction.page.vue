@@ -22,7 +22,7 @@ import '@/styles/experimentStateTemplate.css';
 import { ExperimentEventBus } from '@/_services/eventBus.service.js';
 import Footnote from '@/components/experiment/footnote/Footnote.vue';
 import SkipButton from '@/components/experiment/SkipButton.vue';
-import VisualPiano from '@/components/VisualPiano.vue';
+import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
 import { mapGetters } from 'vuex';
 
 export default {

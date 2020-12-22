@@ -1,5 +1,5 @@
 <template>
-	<admin-page-context title="Users">
+	<admin-page-content-frame title="Users">
 		<widget-context title="Reviewing Tool">
 			<template>
 				<users-viewer />
@@ -17,11 +17,11 @@
 				<users-table />
 			</template>
 		</widget-context>
-	</admin-page-context>
+	</admin-page-content-frame>
 </template>
 
 <script>
-import AdminPageContext from '@/components/admin/AdminPageContext.vue';
+import AdminPageContentFrame from '@/components/content-frame/admin-page-content-frame.component.vue';
 import UsersEditor from '@/components/admin/users/UsersEditorWidget.vue';
 import UsersTable from '@/components/admin/users/UsersTableWidget.vue';
 import UsersViewer from '@/components/admin/users/UsersViewerWidget.vue';
@@ -29,7 +29,7 @@ import WidgetContext from '@/components/admin/WidgetContext.vue';
 
 export default {
 	components: {
-		AdminPageContext: AdminPageContext,
+		AdminPageContentFrame: AdminPageContentFrame,
 		WidgetContext: WidgetContext,
 		UsersViewer: UsersViewer,
 		UsersEditor: UsersEditor,

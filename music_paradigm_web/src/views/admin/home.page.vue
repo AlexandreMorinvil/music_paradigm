@@ -1,5 +1,5 @@
 <template>
-	<admin-page-context title="Home">
+	<admin-page-content-frame title="Home">
 		<widget-context title="Not Implemented Yet">
 			<div class="widget widget-box widget-bg">
 				Admin Home page
@@ -7,18 +7,18 @@
 				Recent activity on the server and important information from the users
 			</div>
 		</widget-context>
-	</admin-page-context>
+	</admin-page-content-frame>
 </template>
 
 <script>
-import AdminPageContext from '@/components/admin/AdminPageContext.vue';
+import AdminPageContentFrame from '@/components/content-frame/admin-page-content-frame.component.vue';
 import WidgetContext from '@/components/admin/WidgetContext.vue';
 
 import '@/styles/widgetTemplate.css';
 
 export default {
 	components: {
-		AdminPageContext: AdminPageContext,
+		AdminPageContentFrame: AdminPageContentFrame,
 		WidgetContext: WidgetContext,
 	},
 };

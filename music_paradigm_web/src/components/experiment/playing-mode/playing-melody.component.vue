@@ -14,7 +14,7 @@
 <script>
 import '@/styles/playingTemplate.css';
 import { mapActions, mapGetters } from 'vuex';
-import VisualPiano from '@/components/VisualPiano.vue';
+import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
 
 export default {
 	components: {
@@ -22,26 +22,28 @@ export default {
 	},
 	data() {
 		return {
+			maxInactivityALlowedInMilliSeconds: 3000,
+			incativityUniqueIdentifier: 0,
 			timeLimitUniqueIdentifier: 0,
 			isFirstNotePressed: false,
 		};
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
-		...mapGetters('experiment', ['hasVisualMedia', 'hasPicture', 'hasInteractivePiano', 'pictureName', 'timeoutInSeconds']),
-		...mapGetters('piano', ['midiFileNotesMidi', 'midiFileNotesDuration', 'playedNotesMidi']),
+		...mapGetters('experiment', ['hasVisualMedia', 'hasPicture', 'hasInteractivePiano', 'pictureName', 'timeoutInSeconds', 'melodyRepetition']),
+		...mapGetters('piano', ['midiFileNotesMidi', 'pressedKeys', 'midiFileNotesDuration', 'playedNotesMidi']),
 		playProgress() {
 			return this.playedNotesMidi.length;
 		},
 		maxPlayProgress() {
-			return this.midiFileNotesMidi.length;
+			return this.midiFileNotesMidi.length * this.melodyRepetition;
 		},
 		lastNoteDuration() {
 			return this.midiFileNotesDuration[this.midiFileNotesDuration.length - 1];
 		},
 	},
 	methods: {
-		...mapActions('piano', ['evaluateRhythmType']),
+		...mapActions('piano', ['evaluateMelodyType']),
 		start() {},
 		setTimeLimit() {
 			if (this.timeoutInSeconds !== 0) {
@@ -59,7 +61,7 @@ export default {
 			this.$emit('footnote', noteMessage);
 		},
 		evaluate() {
-			this.evaluateRhythmType();
+			this.evaluateMelodyType(this.melodyRepetition);
 		},
 	},
 	mounted() {
@@ -68,21 +70,30 @@ export default {
 	},
 	destroyed() {
 		window.clearTimeout(this.timeLimitUniqueIdentifier);
+		window.clearTimeout(this.incativityUniqueIdentifier);
 	},
 	watch: {
+		playedNotesMidi: {
+			deep: true,
+			handler: function () {
+				window.clearTimeout(this.incativityUniqueIdentifier);
+				this.incativityUniqueIdentifier = setTimeout(() => {
+					this.$emit('finishedPlaying');
+				}, this.maxInactivityALlowedInMilliSeconds);
+
+				const playedNoteIndex = this.playedNotesMidi.length - 1;
+				const referenceIndex = playedNoteIndex % this.midiFileNotesMidi.length;
+				const hasError = this.playedNotesMidi[playedNoteIndex] !== this.midiFileNotesMidi[referenceIndex];
+				if (hasError) this.$emit('finishedPlaying');
+			},
+		},
 		playProgress(value) {
 			// When the last note was pressed, we wait the duration of the last note
 			// plus a second before indicating the end of the playing state
 			if (value >= this.maxPlayProgress) {
 				this.timerUniqueIdentifier = setTimeout(() => {
 					this.$emit('finishedPlaying');
-				}, this.lastNoteDuration + 500);
-			}
-		},
-		pressedKeys() {
-			if (!this.isFirstNotePressed) {
-				// This.stopHint();
-				this.isFirstNotePressed = true;
+				}, this.lastNoteDuration + 1000);
 			}
 		},
 	},

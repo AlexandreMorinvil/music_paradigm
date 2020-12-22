@@ -2,7 +2,12 @@
 	<div id="experiment" class="experiment-context experimen-grid">
 		<div id="experiment-status">
 			<div id="timer-box" class="status-display-box">
-				<timer :startTimeInSeconds="timeLimitInSeconds" :mustCountDown="timeLimitInSeconds > 0" v-on:timesUp="handleTimesUp" ref="timer" />
+				<timer
+					:startTimeInSeconds="timeLimitInSeconds"
+					:mustCountDown="timeLimitInSeconds > 0"
+					v-on:timesUp="handleTimesUp"
+					ref="timer"
+				/>
 			</div>
 
 			<div id="center-wrapper">
@@ -45,8 +50,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import { ExperimentEventBus } from '@/_services/eventBus.service.js';
-import ExperimentPiano from '@/components/ExperimentPiano.vue';
-import ExperimentTimer from '@/components/ExperimentTimer.vue';
+import ExperimentPiano from '@/components/piano/piano-input-handler.component.vue';
+import ExperimentTimer from '@/components/experiment/timer/experiment-timer.component.vue';
 
 export default {
 	components: {
@@ -61,7 +66,14 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['stepsTotalCount', 'stepsLeftCount', 'currentStateType', 'nextStateType', 'midiName', 'timeLimitInSeconds']),
+		...mapGetters('experiment', [
+			'stepsTotalCount',
+			'stepsLeftCount',
+			'currentStateType',
+			'nextStateType',
+			'midiName',
+			'timeLimitInSeconds',
+		]),
 		currentStateIcon() {
 			return this.getIconReference(this.currentStateType);
 		},
@@ -73,7 +85,14 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('experiment', ['updateState', 'goNextStep', 'goStepPostSkip', 'clearState', 'endExperimentByTimeout', 'concludeExperiment']),
+		...mapActions('experiment', [
+			'updateState',
+			'goNextStep',
+			'goStepPostSkip',
+			'clearState',
+			'endExperimentByTimeout',
+			'concludeExperiment',
+		]),
 		...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
 		...mapActions('log', ['initializeLogSession']),
 		getIconReference(stateType) {

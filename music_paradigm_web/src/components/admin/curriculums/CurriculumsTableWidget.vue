@@ -17,7 +17,11 @@
 				</thead>
 
 				<tbody>
-					<tr v-for="(header, index) in curriculumsHeadersList" :key="header._id" :class="header._id === curriculumSelectedId && 'selected'">
+					<tr
+						v-for="(header, index) in curriculumsHeadersList"
+						:key="header._id"
+						:class="header._id === curriculumSelectedId && 'selected'"
+					>
 						<td>{{ index + 1 }}</td>
 						<td>{{ header.title }}</td>
 						<td>{{ header.isSequential }}</td>
@@ -35,7 +39,7 @@
 <script>
 import '@/styles/widgetTemplate.css';
 import { mapActions, mapGetters } from 'vuex';
-import LoaderCircular from '@/components/LoaderCircular.vue';
+import LoaderCircular from '@/components/visual-helpers/loader-circular.component.vue';
 
 export default {
 	components: {
@@ -45,7 +49,11 @@ export default {
 		return {};
 	},
 	computed: {
-		...mapGetters('curriculums', ['isFetchingCurriculumsHeadersList', 'curriculumsHeadersList', 'curriculumSelectedId']),
+		...mapGetters('curriculums', [
+			'isFetchingCurriculumsHeadersList',
+			'curriculumsHeadersList',
+			'curriculumSelectedId',
+		]),
 		isListLoading() {
 			return this.isFetchingUserHeadersList;
 		},

@@ -40,7 +40,7 @@
 import '@/styles/experimentStateTemplate.css';
 import SkipButton from '@/components/experiment/SkipButton.vue';
 import VideoPlayer from '@/components/VideoPlayer.vue';
-import VisualPiano from '@/components/VisualPiano.vue';
+import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
 import { mapGetters } from 'vuex';
 
 export default {

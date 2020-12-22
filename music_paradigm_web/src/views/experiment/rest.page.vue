@@ -26,7 +26,7 @@ import { mapGetters } from 'vuex';
 
 import '@/styles/experimentStateTemplate.css';
 import SkipButton from '@/components/experiment/SkipButton.vue';
-import VisualPiano from '@/components/VisualPiano.vue';
+import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
 
 export default {
 	components: {
