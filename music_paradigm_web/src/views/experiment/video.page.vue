@@ -1,6 +1,12 @@
 <template>
 	<div id="video-state" class="experiment-state-container grid-area-area-note" :class="gridClass">
-		<img v-if="hasHelperImage" id="helper-img" :src="urlExperimentRessource(helperImageName)" alt="Helper" class="helper" />
+		<img
+			v-if="hasHelperImage"
+			id="helper-img"
+			:src="urlExperimentRessource(helperImageName)"
+			alt="Helper"
+			class="helper"
+		/>
 
 		<skip-button v-if="hasSkipOption" class="skip-button" v-on:skip-request="emitSkipSignal" />
 
@@ -11,7 +17,11 @@
 		<div id="visual-media-area" class="experiment-state-division state-division-visual-media">
 			<div class="visual-media-board">
 				<div class="video-box">
-					<div v-show="!isPlaying" class="video-hidding-thumbnail" :style="videoWidthCSSvariable + ';' + videoHeightCSSvariable">
+					<div
+						v-show="!isPlaying"
+						class="video-hidding-thumbnail"
+						:style="videoWidthCSSvariable + ';' + videoHeightCSSvariable"
+					>
 						{{ videoWaitingMessage }}
 					</div>
 					<video-player
@@ -39,7 +49,7 @@
 <script>
 import '@/styles/experimentStateTemplate.css';
 import SkipButton from '@/components/experiment/SkipButton.vue';
-import VideoPlayer from '@/components/VideoPlayer.vue';
+import VideoPlayer from '@/components/experiment/video/video-player.component.vue';
 import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
 import { mapGetters } from 'vuex';
 
@@ -135,7 +145,7 @@ export default {
 		},
 		delayLeftDisplay() {
 			let display = '';
-			const minutes = Math.floor((this.delayLeftInMilliseconds / 60000) % 60);
+			const minutes = Math.floor((this.delayLeftInMilliseconds / (60 * 1000)) % 60);
 			const seconds = Math.floor((this.delayLeftInMilliseconds / 1000) % 60);
 			if (minutes > 0) {
 				display += `${minutes} minutes `;
@@ -160,7 +170,10 @@ export default {
 			this.counterUniqueIdentifier = window.setInterval(this.countdown, this.timeStepInMilliseconds);
 		},
 		countdown() {
-			this.delayLeftInMilliseconds = Math.max(this.playbackDelayInSeconds * 1000 - (Date.now() - this.referenceTime), 0);
+			this.delayLeftInMilliseconds = Math.max(
+				this.playbackDelayInSeconds * 1000 - (Date.now() - this.referenceTime),
+				0,
+			);
 		},
 		manageHavingNoVideo() {
 			setTimeout(() => {

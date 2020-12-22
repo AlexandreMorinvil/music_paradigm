@@ -1,6 +1,12 @@
 <template>
 	<div id="feedback-state" class="experiment-state-container" :class="gridClass">
-		<img v-if="hasHelperImage" id="helper-img" :src="urlExperimentRessource(helperImageName)" alt="Helper" class="helper" />
+		<img
+			v-if="hasHelperImage"
+			id="helper-img"
+			:src="urlExperimentRessource(helperImageName)"
+			alt="Helper"
+			class="helper"
+		/>
 
 		<skip-button v-if="hasSkipOption && !isSkipButtonInFootnote" class="skip-button" />
 
@@ -23,7 +29,12 @@
 			</div>
 		</div>
 
-		<footnote id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text" :message="footnote" />
+		<footnote
+			id="note-area"
+			v-if="hasFootnote"
+			class="experiment-state-division state-division-text"
+			:message="footnote"
+		/>
 	</div>
 </template>
 
@@ -33,7 +44,7 @@ import { mapGetters } from 'vuex';
 import '@/styles/experimentStateTemplate.css';
 
 import { ExperimentEventBus } from '@/_services/eventBus.service.js';
-import FeedbackGrade from '@/components/FeedbackGrade.vue';
+import FeedbackGrade from '@/components/experiment/feedback/feedback-grade.component.vue';
 import Footnote from '@/components/experiment/footnote/Footnote.vue';
 import SkipButton from '@/components/experiment/SkipButton.vue';
 

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import ApplicationFooter from '@/components/ApplicationFooter.vue';
+import ApplicationFooter from '@/components/application-component/footer.component.vue';
 
 export default {
 	components: {

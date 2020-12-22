@@ -1,22 +1,22 @@
 <template>
 	<admin-page-content-frame title="Curriculum">
-		<widget-context title="Reviewing Tool">
+		<widget-content-frame title="Reviewing Tool">
 			<template>
 				<curriculums-viewer />
 			</template>
-		</widget-context>
+		</widget-content-frame>
 
-		<widget-context title="Editor Tool">
+		<widget-content-frame title="Editor Tool">
 			<template>
 				<curriculums-editor />
 			</template>
-		</widget-context>
+		</widget-content-frame>
 
-		<widget-context title="Overview Table">
+		<widget-content-frame title="Overview Table">
 			<template>
 				<curriculums-table />
 			</template>
-		</widget-context>
+		</widget-content-frame>
 	</admin-page-content-frame>
 </template>
 
@@ -25,12 +25,12 @@ import AdminPageContentFrame from '@/components/content-frame/admin-page-content
 import CurriculumsEditor from '@/components/admin/curriculums/CurriculumsEditorWidget.vue';
 import CurriculumsTable from '@/components/admin/curriculums/CurriculumsTableWidget.vue';
 import CurriculumsViewer from '@/components/admin/curriculums/CurriculumsViewerWidget.vue';
-import WidgetContext from '@/components/admin/WidgetContext.vue';
+import WidgetContentFrame from '@/components/content-frame/widget-content-frame.component.vue';
 
 export default {
 	components: {
 		AdminPageContentFrame: AdminPageContentFrame,
-		WidgetContext: WidgetContext,
+		WidgetContentFrame: WidgetContentFrame,
 		CurriculumsViewer: CurriculumsViewer,
 		CurriculumsEditor: CurriculumsEditor,
 		CurriculumsTable: CurriculumsTable,

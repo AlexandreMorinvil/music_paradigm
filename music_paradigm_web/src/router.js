@@ -24,7 +24,7 @@ const router = new Router({
 		{
 			path: '/',
 			name: 'login',
-			component: () => import(/* webpackChunkName: "login" */ './views/Login.vue'),
+			component: () => import(/* webpackChunkName: "login" */ './views/login.page.vue'),
 			beforeEnter: loggedInGuard,
 		},
 		{
