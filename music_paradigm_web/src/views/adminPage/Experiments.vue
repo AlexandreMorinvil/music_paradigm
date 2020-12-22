@@ -28,7 +28,6 @@ import ExperimentsViewer from '@/components/admin/experiments/ExperimentsViewerW
 import WidgetContext from '@/components/admin/WidgetContext.vue';
 
 export default {
-	name: 'AdminExperiments',
 	components: {
 		AdminPageContext: AdminPageContext,
 		WidgetContext: WidgetContext,

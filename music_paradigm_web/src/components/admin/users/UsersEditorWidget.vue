@@ -102,7 +102,6 @@ import '@/styles/formTemplate.css';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
-	name: 'ExperimentsWorkshopWidget',
 	data() {
 		return {
 			hasFocusedOnUsername: false,

@@ -15,7 +15,6 @@ import '@/styles/navigationBarTemplate.css';
 import { routerNavigation } from '@/_helpers';
 
 export default {
-	name: 'NavigationBarExperiment',
 	methods: {
 		gotToHomePage() {
 			routerNavigation.goToRootPage();

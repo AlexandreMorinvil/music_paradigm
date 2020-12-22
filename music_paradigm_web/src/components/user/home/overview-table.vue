@@ -14,7 +14,6 @@
 import { mapGetters } from 'vuex';
 
 export default {
-	name: 'OverviewTable',
 	data() {
 		return {};
 	},

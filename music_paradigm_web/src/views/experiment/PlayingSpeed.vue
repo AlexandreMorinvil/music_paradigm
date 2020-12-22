@@ -17,7 +17,6 @@ import { mapActions, mapGetters } from 'vuex';
 import VisualPiano from '@/components/VisualPiano.vue';
 
 export default {
-	name: 'PlayingSpeed',
 	components: {
 		visualPiano: VisualPiano,
 	},

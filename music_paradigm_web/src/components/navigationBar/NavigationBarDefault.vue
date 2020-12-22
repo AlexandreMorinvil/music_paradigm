@@ -18,11 +18,6 @@ import { mapActions, mapGetters } from 'vuex';
 import '@/styles/navigationBarTemplate.css';
 
 export default {
-	name: 'NavigationBarDefault',
-	components: {},
-	data() {
-		return {};
-	},
 	computed: {
 		...mapGetters('account', ['isLoggedIn', 'fullName']),
 	},

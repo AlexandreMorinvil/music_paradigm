@@ -35,7 +35,6 @@ export default {
 		CurriculumsEditor: CurriculumsEditor,
 		CurriculumsTable: CurriculumsTable,
 	},
-	name: 'AdminCurriculums',
 };
 </script>
 

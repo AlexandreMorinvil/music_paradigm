@@ -16,7 +16,6 @@
 import '@/styles/widgetTemplate.css';
 
 export default {
-	name: 'AdminPageFrame',
 	props: {
 		title: {
 			type: String,

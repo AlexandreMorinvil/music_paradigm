@@ -21,7 +21,6 @@ import UserPageContext from '@/components/user/user-page-context.vue';
 import { mapActions } from 'vuex';
 
 export default {
-	name: 'UserHome',
 	components: {
 		overviewTable: OverviewTable,
 		UserPageContext: UserPageContext,

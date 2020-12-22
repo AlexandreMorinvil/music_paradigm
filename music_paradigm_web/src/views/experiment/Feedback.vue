@@ -38,7 +38,6 @@ import Footnote from '@/components/experiment/footnote/Footnote.vue';
 import SkipButton from '@/components/experiment/SkipButton.vue';
 
 export default {
-	name: 'Feedback',
 	components: {
 		feedbackGrade: FeedbackGrade,
 		skipButton: SkipButton,

@@ -13,7 +13,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 export default {
-	name: 'Alert',
 	data() {
 		return {
 			timeoutUniqueIdentifier: 0,

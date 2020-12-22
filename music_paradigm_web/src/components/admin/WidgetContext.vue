@@ -19,7 +19,6 @@
 
 <script>
 export default {
-	name: 'WidgetContext',
 	props: {
 		title: {
 			type: String,

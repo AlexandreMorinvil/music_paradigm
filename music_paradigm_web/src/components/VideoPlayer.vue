@@ -10,11 +10,10 @@
 </template>
 
 <script>
-import videojs from 'video.js/dist/video.min.js';
 import 'video.js/dist/video-js.min.css';
+import videojs from 'video.js/dist/video.min.js';
 
 export default {
-	name: 'VideoPlayer',
 	props: {
 		src: {
 			type: String,

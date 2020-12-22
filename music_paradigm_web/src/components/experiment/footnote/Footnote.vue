@@ -11,7 +11,6 @@ import FootnoteButton from '@/components/experiment/footnote/FootnoteButton.vue'
 import FootnoteSimple from '@/components/experiment/footnote/FootnoteSimple.vue';
 
 export default {
-	name: 'Footnote',
 	components: {
 		footnoteSimple: FootnoteSimple,
 		footnoteButton: FootnoteButton,

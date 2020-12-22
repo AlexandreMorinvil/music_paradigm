@@ -19,7 +19,6 @@
 import '@/styles/loggedInPageTemplate.css';
 
 export default {
-	name: 'AdminPage',
 	data() {
 		return {
 			activePage: 'undefined',

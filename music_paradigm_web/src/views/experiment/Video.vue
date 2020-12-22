@@ -44,7 +44,6 @@ import VisualPiano from '@/components/VisualPiano.vue';
 import { mapGetters } from 'vuex';
 
 export default {
-	name: 'Video',
 	components: {
 		skipButton: SkipButton,
 		visualPiano: VisualPiano,

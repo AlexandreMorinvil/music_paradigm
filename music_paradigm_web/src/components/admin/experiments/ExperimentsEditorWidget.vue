@@ -50,7 +50,6 @@ import CodeEditor from '@/components/admin/TextEditor.vue';
 import { validator } from '@/_helpers';
 
 export default {
-	name: 'ExperimentsWorkshopWidget',
 	components: {
 		codeEditor: CodeEditor,
 	},

@@ -2,12 +2,6 @@
 	<div id="loader-circular" class="loader"></div>
 </template>
 
-<script>
-export default {
-	name: 'LoaderCircular',
-};
-</script>
-
 <style scoped>
 .loader {
 	border: 16px solid rgb(150, 150, 150); /* Light grey */

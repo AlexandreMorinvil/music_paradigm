@@ -26,7 +26,6 @@ import VisualPiano from '@/components/VisualPiano.vue';
 import { mapGetters } from 'vuex';
 
 export default {
-	name: 'Instruction',
 	components: {
 		visualPiano: VisualPiano,
 		skipButton: SkipButton,

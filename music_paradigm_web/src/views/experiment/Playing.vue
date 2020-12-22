@@ -31,7 +31,6 @@ import SkipButton from '@/components/experiment/SkipButton.vue';
 import StartSignalTimer from '@/components/experiment/StartSignalTimer.vue';
 
 export default {
-	name: 'Playing',
 	components: {
 		skipButton: SkipButton,
 		speed: PlayingSpeedComponent,

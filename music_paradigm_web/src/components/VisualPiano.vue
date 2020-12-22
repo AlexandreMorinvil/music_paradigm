@@ -37,7 +37,6 @@
 import { mapGetters } from 'vuex';
 
 export default {
-	name: 'Playing',
 	components: {},
 	data() {
 		return {

@@ -49,7 +49,6 @@ import ExperimentPiano from '@/components/ExperimentPiano.vue';
 import ExperimentTimer from '@/components/ExperimentTimer.vue';
 
 export default {
-	name: 'Experiment',
 	components: {
 		piano: ExperimentPiano,
 		timer: ExperimentTimer,

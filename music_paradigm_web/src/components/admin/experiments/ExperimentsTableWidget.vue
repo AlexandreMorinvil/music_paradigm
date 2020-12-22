@@ -42,7 +42,6 @@ import { mapActions, mapGetters } from 'vuex';
 import LoaderCircular from '@/components/LoaderCircular.vue';
 
 export default {
-	name: 'ExperimentsWorkshopWidget',
 	components: {
 		loader: LoaderCircular,
 	},

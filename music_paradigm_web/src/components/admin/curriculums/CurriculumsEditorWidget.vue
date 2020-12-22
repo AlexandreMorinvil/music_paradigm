@@ -152,7 +152,6 @@ import '@/styles/formTemplate.css';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
-	name: 'CurriculumWorkshopWidget',
 	data() {
 		return {
 			experimentsCount: 1,

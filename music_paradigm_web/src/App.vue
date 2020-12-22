@@ -20,7 +20,6 @@ import NavigationBarDefault from '@/components/navigationBar/NavigationBarDefaul
 import NavigationBarExperiment from '@/components/navigationBar/NavigationBarExperiment';
 
 export default {
-	name: 'app',
 	components: {
 		defaultNavigationBar: NavigationBarDefault,
 		experimentNavigationBar: NavigationBarExperiment,

@@ -15,7 +15,6 @@ import '@/styles/experimentStateTemplate.css';
 import { mapGetters } from 'vuex';
 
 export default {
-	name: 'Prelude',
 	components: {},
 	props: {
 		isSpaceBarPressed: {

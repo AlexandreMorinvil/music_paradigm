@@ -12,7 +12,6 @@ import { ExperimentEventBus } from '@/_services/eventBus.service.js';
 import SkipButton from '@/components/experiment/SkipButton.vue';
 
 export default {
-	name: 'FootnoteButton',
 	components: {
 		skipButton: SkipButton,
 	},

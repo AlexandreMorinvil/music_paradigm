@@ -12,14 +12,7 @@
 
 <script>
 import '@/styles/widgetTemplate.css';
-
-export default {
-	name: 'ExperimentsViewerWidget',
-	components: {},
-	data() {
-		return {};
-	},
-};
+export default {};
 </script>
 
 <style scoped></style>

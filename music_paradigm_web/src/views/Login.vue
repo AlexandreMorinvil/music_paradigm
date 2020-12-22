@@ -49,7 +49,6 @@ import ApplicationFooter from '@/components/ApplicationFooter.vue';
 import LoaderCircular from '@/components/LoaderCircular.vue';
 
 export default {
-	name: 'Home',
 	components: {
 		applicationFooter: ApplicationFooter,
 		loader: LoaderCircular,

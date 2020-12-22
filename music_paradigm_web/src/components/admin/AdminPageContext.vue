@@ -20,7 +20,6 @@
 import ApplicationFooter from '@/components/ApplicationFooter.vue';
 
 export default {
-	name: 'AdminPageFrame',
 	components: {
 		ApplicationFooter: ApplicationFooter,
 	},

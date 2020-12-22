@@ -16,10 +16,7 @@
 <script>
 import '@/styles/experimentStateTemplate.css';
 
-export default {
-	name: 'Transition',
-	components: {},
-};
+export default {};
 </script>
 
 <style scoped></style>

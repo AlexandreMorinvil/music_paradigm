@@ -27,7 +27,6 @@ import SkipButton from '@/components/experiment/SkipButton.vue';
 import VisualPiano from '@/components/VisualPiano.vue';
 
 export default {
-	name: 'Cue',
 	components: {
 		visualPiano: VisualPiano,
 		skipButton: SkipButton,

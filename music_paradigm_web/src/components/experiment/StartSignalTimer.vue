@@ -10,7 +10,6 @@ import { mapGetters } from 'vuex';
 import { ExperimentEventBus } from '@/_services/eventBus.service.js';
 
 export default {
-	name: 'StartSignalTimer',
 	data() {
 		return {
 			soundCount: null,

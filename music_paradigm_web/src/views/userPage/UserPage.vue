@@ -11,7 +11,6 @@
 import ApplicationFooter from '@/components/ApplicationFooter.vue';
 
 export default {
-	name: 'UserPage',
 	components: {
 		applicationFooter: ApplicationFooter,
 	},

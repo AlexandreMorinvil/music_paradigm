@@ -8,7 +8,6 @@ import { mapGetters } from 'vuex';
 import { ExperimentEventBus } from '@/_services/eventBus.service.js';
 
 export default {
-	name: 'Alert',
 	data() {
 		return {};
 	},

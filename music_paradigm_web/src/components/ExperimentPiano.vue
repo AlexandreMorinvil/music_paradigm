@@ -15,7 +15,6 @@ import MidiPlayer from '@/MidiPlayer';
 import map from '@/_helpers/keyboardMapping';
 
 export default {
-	name: 'ThePiano',
 	props: {
 		display: {
 			type: Boolean,

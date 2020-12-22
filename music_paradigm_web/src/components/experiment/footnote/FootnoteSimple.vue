@@ -6,7 +6,6 @@
 
 <script>
 export default {
-	name: 'FootnoteSimple',
 	props: {
 		message: {
 			type: String,

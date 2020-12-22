@@ -8,7 +8,6 @@
 import UserPageContext from "@/components/user/user-page-context.vue";
 
 export default {
-  name: "UserExperiments",
   components: {
     UserPageContext: UserPageContext,
   },
