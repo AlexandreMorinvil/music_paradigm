@@ -1,5 +1,5 @@
 <template>
-	<div id="experiment-progress-bar">
+	<div id="experiment-progress-bar" class="dimensions">
 		<div id="experiment-progress" :style="`width: ${progressBarWith}%`"></div>
 	</div>
 </template>
@@ -17,14 +17,15 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #experiment-progress-bar {
 	background-color: rgb(20, 20, 20);
 	border-bottom-color: rgb(15, 15, 15);
 	border-bottom-width: 1px;
 	border-bottom-style: solid;
-	height: inherit;
+	height: 100%;
 }
+
 #experiment-progress {
 	background-color: rgb(0, 100, 255);
 	height: inherit;

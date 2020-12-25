@@ -13,14 +13,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
+import { ExperimentEventBus, events } from '@/_services/eventBus.service.js';
+
 export default {
 	props: {
-		mustCountDown: {
-			type: Boolean,
-			default() {
-				return false;
-			},
-		},
 		startTimeInSeconds: {
 			type: Number,
 			default() {
@@ -44,8 +42,12 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters('experiment', ['timeLimitInSeconds']),
 		color() {
 			return this.turnedOn ? 'active' : 'inactive';
+		},
+		mustCountDown() {
+			return this.startTimeInSeconds > 0;
 		},
 		timerDisplay() {
 			let hours = '';
@@ -92,7 +94,7 @@ export default {
 			if (value < 0) {
 				this.setTime(0);
 				this.stopTimer();
-				this.$emit('timesUp');
+				ExperimentEventBus.$emit(events.EVENT_TIMES_UP);
 			} else {
 				this.seconds = Math.floor((value / 1000) % 60);
 				this.minutes = Math.floor((value / 1000 / 60) % 60);

@@ -12,13 +12,13 @@
 
 		<router-view 
 			style="background-color: pink"
+			id="experiment-content"
 			:lastPressedKey="lastPressedKey"
 			:isSpaceBarPressed="isSpaceBarPressed"
 		/>
 
 		<footnote
 			style="background-color: green"
-			id="note-area"
 			v-if="hasFootnote"
 			class="experiment-state-division state-division-text"
 			v-on:footnote="handleFootnote"
@@ -75,4 +75,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#experiment-content {
+	height: 100%;
+}
+</style>
