@@ -9,7 +9,7 @@
 import { mapGetters } from 'vuex';
 
 import { ExperimentEventBus } from '@/_services/eventBus.service.js';
-import SkipButton from '@/components/experiment/SkipButton.vue';
+import SkipButton from '@/components/experiment/element/skip-button.vue';
 
 export default {
 	components: {

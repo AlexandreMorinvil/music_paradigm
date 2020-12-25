@@ -2,12 +2,7 @@
 	<div id="experiment" class="experiment-context experimen-grid">
 		<div id="experiment-status">
 			<div id="timer-box" class="status-display-box">
-				<timer
-					:startTimeInSeconds="timeLimitInSeconds"
-					:mustCountDown="timeLimitInSeconds > 0"
-					v-on:timesUp="handleTimesUp"
-					ref="timer"
-				/>
+				<timer :startTimeInSeconds="timeLimitInSeconds" :mustCountDown="timeLimitInSeconds > 0" v-on:timesUp="handleTimesUp" ref="timer" />
 			</div>
 
 			<div id="center-wrapper">
@@ -30,33 +25,29 @@
 			</div>
 		</div>
 
-		<div id="experiment-progress-bar">
-			<div id="experiment-progress" :style="`width: ${progressBarWith}%`"></div>
-		</div>
+		<progress-bar-experiment />
 
 		<div id="experiment-state">
-			<router-view
-				:lastPressedKey="lastPressedKey"
-				:isSpaceBarPressed="isSpaceBarPressed"
-				v-on:skip-request="navigateExperimentSkip"
-				v-on:experimentReady="displayFirstStep"
-				v-on:state-ended="navigateExperiment"
-				v-on:experimentEnded="endExperiment"
-			/>
+			<experiment-content :lastPressedKey="lastPressedKey" :isSpaceBarPressed="isSpaceBarPressed" />
 		</div>
 	</div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { ExperimentEventBus } from '@/_services/eventBus.service.js';
+
+import { ExperimentEventBus, events } from '@/_services/eventBus.service.js';
+import ExperimentContent from '@/components/content-frame/experiment-content-frame.component.vue';
 import ExperimentPiano from '@/components/piano/piano-input-handler.component.vue';
 import ExperimentTimer from '@/components/experiment/timer/experiment-timer.component.vue';
+import ProgressionBarExperiment from '@/components/experiment/progress-bar/progress-bar-experiment.component.vue';
 
 export default {
 	components: {
 		piano: ExperimentPiano,
 		timer: ExperimentTimer,
+		experimentContent: ExperimentContent,
+		progressBarExperiment: ProgressionBarExperiment,
 	},
 	data() {
 		return {
@@ -66,33 +57,16 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', [
-			'stepsTotalCount',
-			'stepsLeftCount',
-			'currentStateType',
-			'nextStateType',
-			'midiName',
-			'timeLimitInSeconds',
-		]),
+		...mapGetters('experiment', ['currentStateType', 'nextStateType', 'midiName', 'timeLimitInSeconds']),
 		currentStateIcon() {
 			return this.getIconReference(this.currentStateType);
 		},
 		nextStateIcon() {
 			return this.getIconReference(this.nextStateType);
 		},
-		progressBarWith() {
-			return 100 * (1 - this.stepsLeftCount / this.stepsTotalCount);
-		},
 	},
 	methods: {
-		...mapActions('experiment', [
-			'updateState',
-			'goNextStep',
-			'goStepPostSkip',
-			'clearState',
-			'endExperimentByTimeout',
-			'concludeExperiment',
-		]),
+		...mapActions('experiment', ['updateState', 'goNextStep', 'goStepPostSkip', 'clearState', 'endExperimentByTimeout', 'concludeExperiment']),
 		...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
 		...mapActions('log', ['initializeLogSession']),
 		getIconReference(stateType) {
@@ -150,12 +124,18 @@ export default {
 	mounted() {
 		window.addEventListener('keydown', this.handleButtonPress);
 		window.addEventListener('keyup', this.handleButtonRelease);
-		ExperimentEventBus.$on('skip-request', this.navigateExperimentSkip);
+		ExperimentEventBus.$on(events.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
+		ExperimentEventBus.$on(events.EVENT_EXPERIMENT_READY, this.displayFirstStep);
+		ExperimentEventBus.$on(events.EVENT_STATE_ENDED, this.navigateExperiment);
+		ExperimentEventBus.$on(events.EVENT_EXPERIMENT_ENDED, this.displayFirstStep);
 	},
 	beforeDestroy() {
 		window.removeEventListener('keydown', this.handleButtonPress);
 		window.removeEventListener('keyup', this.handleButtonRelease);
-		ExperimentEventBus.$off('skip-request', this.navigateExperimentSkip);
+		ExperimentEventBus.$off(events.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
+		ExperimentEventBus.$off(events.EVENT_EXPERIMENT_READY, this.displayFirstStep);
+		ExperimentEventBus.$off(events.EVENT_STATE_ENDED, this.navigateExperiment);
+		ExperimentEventBus.$off(events.EVENT_EXPERIMENT_ENDED, this.endExperiment);
 		this.resetPianoState();
 		this.clearState();
 	},
@@ -210,18 +190,6 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 	background-color: rgb(30, 30, 30);
-}
-#experiment-progress-bar {
-	background-color: rgb(20, 20, 20);
-	border-bottom-color: rgb(15, 15, 15);
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-	height: inherit;
-}
-#experiment-progress {
-	background-color: rgb(0, 100, 255);
-	height: inherit;
-	width: 50%;
 }
 #experiment-state {
 	box-shadow: 0 0 25px 0 rgb(0, 0, 0);

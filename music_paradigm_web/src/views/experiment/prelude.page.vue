@@ -12,6 +12,7 @@
 
 <script>
 import '@/styles/experimentStateTemplate.css';
+import { ExperimentEventBus, events } from '@/_services/eventBus.service.js';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -23,9 +24,6 @@ export default {
 				return false;
 			},
 		},
-	},
-	data() {
-		return {};
 	},
 	computed: {
 		...mapGetters('piano', ['isPianoInitialized']),
@@ -41,7 +39,7 @@ export default {
 		isPianoInitialized: {
 			immediate: true,
 			handler: function (isReady) {
-				if (isReady) this.$emit('experimentReady');
+				if (isReady) ExperimentEventBus.$emit(events.EVENT_EXPERIMENT_READY);
 			},
 		},
 	},

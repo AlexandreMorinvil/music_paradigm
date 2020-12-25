@@ -32,13 +32,13 @@
 
 <script>
 import '@/styles/experimentStateTemplate.css';
+import { ExperimentEventBus, events } from '@/_services/eventBus.service.js';
 import { mapActions, mapGetters } from 'vuex';
-import { ExperimentEventBus } from '@/_services/eventBus.service.js';
 
 import PlayingMelodyComponent from '@/components/experiment/playing-mode/playing-melody.component';
 import PlayingRhythmComponent from '@/components/experiment/playing-mode/playing-rhythm.component';
 import PlayingSpeedComponent from '@/components/experiment/playing-mode/playing-speed.component';
-import SkipButton from '@/components/experiment/SkipButton.vue';
+import SkipButton from '@/components/experiment/element/skip-button.vue';
 import StartSignalTimer from '@/components/experiment/timer/start-signal-timer.component.vue';
 
 export default {
@@ -99,7 +99,7 @@ export default {
 		handdleEndOfPlaying() {
 			this.evaluatePlayedNotes();
 			this.createSimpleLog();
-			this.$emit('state-ended');
+			ExperimentEventBus.$emit(events.EVENT_STATE_ENDED);
 		},
 		evaluatePlayedNotes() {
 			this.$refs.playingMode.evaluate();

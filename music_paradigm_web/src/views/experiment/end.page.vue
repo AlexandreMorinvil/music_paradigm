@@ -16,6 +16,7 @@
 
 <script>
 import '@/styles/experimentStateTemplate.css';
+import { ExperimentEventBus, events } from '@/_services/eventBus.service.js';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -64,12 +65,12 @@ export default {
 	watch: {
 		isSpaceBarPressed(isPressed) {
 			if (isPressed) {
-				this.$emit('experimentEnded');
+				ExperimentEventBus.$emit(events.EVENT_EXPERIMENT_ENDED);
 			}
 		},
 		pressedKeys(keys) {
 			if (this.anyPianoKey && keys.length > 0) {
-				this.$emit('experimentEnded');
+				ExperimentEventBus.$emit(events.EVENT_EXPERIMENT_ENDED);
 			}
 		},
 	},

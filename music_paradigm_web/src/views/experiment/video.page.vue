@@ -48,7 +48,8 @@
 
 <script>
 import '@/styles/experimentStateTemplate.css';
-import SkipButton from '@/components/experiment/SkipButton.vue';
+import { ExperimentEventBus, events } from '@/_services/eventBus.service.js';
+import SkipButton from '@/components/experiment/element/skip-button.vue';
 import VideoPlayer from '@/components/experiment/video/video-player.component.vue';
 import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
 import { mapGetters } from 'vuex';
@@ -161,7 +162,7 @@ export default {
 	methods: {
 		handdleEndOfVideo() {
 			setTimeout(() => {
-				this.$emit('state-ended');
+				ExperimentEventBus.$emit(events.EVENT_STATE_ENDED);
 			}, this.endOfStatedelayInMilliseconds);
 		},
 		startDelayCountdown() {
@@ -177,7 +178,7 @@ export default {
 		},
 		manageHavingNoVideo() {
 			setTimeout(() => {
-				this.$emit('state-ended');
+				ExperimentEventBus.$emit(events.EVENT_STATE_ENDED);
 			}, this.errorAutomaticTransitionSeconds * 1000);
 		},
 		startVideo() {

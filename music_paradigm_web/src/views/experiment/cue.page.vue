@@ -23,7 +23,8 @@
 import '@/styles/experimentStateTemplate.css';
 import { mapActions, mapGetters } from 'vuex';
 
-import SkipButton from '@/components/experiment/SkipButton.vue';
+import { ExperimentEventBus, events } from '@/_services/eventBus.service.js';
+import SkipButton from '@/components/experiment/element/skip-button.vue';
 import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
 
 export default {
@@ -86,10 +87,10 @@ export default {
 	methods: {
 		...mapActions('piano', ['playMidiFile', 'addPlayerEndOfFileAction', 'removePlayerEndOfFileAction']),
 		handleEndOfMidiFile() {
-			this.$emit('state-ended');
+			ExperimentEventBus.$emit(events.EVENT_STATE_ENDED);
 		},
 		manageHavingNoMidiFile() {
-			this.$emit('state-ended');
+			ExperimentEventBus.$emit(events.EVENT_STATE_ENDED);
 		},
 		emitSkipSignal() {
 			this.$emit('skip-request');

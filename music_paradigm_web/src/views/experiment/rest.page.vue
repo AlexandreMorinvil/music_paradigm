@@ -25,7 +25,8 @@
 import { mapGetters } from 'vuex';
 
 import '@/styles/experimentStateTemplate.css';
-import SkipButton from '@/components/experiment/SkipButton.vue';
+import { ExperimentEventBus, events } from '@/_services/eventBus.service.js';
+import SkipButton from '@/components/experiment/element/skip-button.vue';
 import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
 
 export default {
@@ -123,7 +124,7 @@ export default {
 		timeLeftInMilliseconds(value) {
 			// When the time is over we indicate the end of the playing state
 			if (value <= 0) {
-				this.$emit('state-ended');
+				ExperimentEventBus.$emit(events.EVENT_STATE_ENDED);
 			}
 		},
 	},

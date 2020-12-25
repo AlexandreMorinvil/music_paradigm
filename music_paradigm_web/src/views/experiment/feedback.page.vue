@@ -43,10 +43,10 @@ import { mapGetters } from 'vuex';
 
 import '@/styles/experimentStateTemplate.css';
 
-import { ExperimentEventBus } from '@/_services/eventBus.service.js';
+import { ExperimentEventBus, events } from '@/_services/eventBus.service.js';
 import FeedbackGrade from '@/components/experiment/feedback/feedback-grade.component.vue';
 import Footnote from '@/components/experiment/footnote/Footnote.vue';
-import SkipButton from '@/components/experiment/SkipButton.vue';
+import SkipButton from '@/components/experiment/element/skip-button.vue';
 
 export default {
 	components: {
@@ -120,7 +120,7 @@ export default {
 	},
 	methods: {
 		emitStateEndedSignal() {
-			this.$emit('state-ended');
+			ExperimentEventBus.$emit(events.EVENT_STATE_ENDED);
 		},
 	},
 	mounted() {

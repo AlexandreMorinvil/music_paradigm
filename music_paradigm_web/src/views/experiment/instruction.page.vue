@@ -1,35 +1,26 @@
 <template>
-	<div id="instruction-state" class="experiment-state-container" :class="gridClass">
-		<img v-if="hasHelperImage" id="helper-img" :src="urlExperimentRessource(helperImageName)" alt="Helper" class="helper" />
-
-		<skip-button v-if="hasSkipOption && !isSkipButtonInFootnote" class="skip-button" />
-
+	<div id="instruction-state" class="experiment-state-grid" :class="gridClass">
 		<div v-if="hasText || hasNoContent" id="text-area" class="experiment-state-division state-division-text">
 			{{ textToDisplay }}
 		</div>
 
-		<div v-if="hasVisualMedia" id="visual-media-area" class="experiment-state-division state-division-visual-media">
+		<visual-media-image-component />
+		<!-- <div v-if="hasVisualMedia" id="visual-media-area" class="experiment-state-division state-division-visual-media">
 			<visual-piano v-if="hasInteractivePiano" />
 			<img id="instruction-img" v-else :src="urlExperimentRessource(pictureName)" alt="Instruction" />
-		</div>
-
-		<footnote id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text" :message="footnote" />
+		</div> -->
 	</div>
 </template>
 
 <script>
-import '@/styles/experimentStateTemplate.css';
-import { ExperimentEventBus } from '@/_services/eventBus.service.js';
-import Footnote from '@/components/experiment/footnote/Footnote.vue';
-import SkipButton from '@/components/experiment/SkipButton.vue';
-import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
+import '@/styles/experiment-content-template.css';
+import { ExperimentEventBus, events } from '@/_services/eventBus.service.js';
+import VisualMediaImageComponent from '@/components/experiment/visual-content/visual-media-image.component.vue';
 import { mapGetters } from 'vuex';
 
 export default {
 	components: {
-		visualPiano: VisualPiano,
-		skipButton: SkipButton,
-		footnote: Footnote,
+		VisualMediaImageComponent,
 	},
 	props: {
 		lastPressedKey: {
@@ -56,23 +47,14 @@ export default {
 			'hasInteractivePiano',
 			'hasText',
 			'hasVisualMedia',
-			'hasFootnote',
-			'hasHelperImage',
-			'hasSkipOption',
 			'pictureName',
-			'helperImageName',
 			'textContent',
 			'anyPianoKey',
-			'skipStepButton',
 			'footnoteMessage',
-			'isSkipButtonInFootnote',
 		]),
 		gridClass() {
-			if (this.hasFootnote) {
-				if (this.hasText && this.hasVisualMedia) return 'grid-area-area-note';
-				else return 'grid-area-note';
-			} else if (this.hasText && this.hasVisualMedia) return 'grid-area-area';
-			else return 'grid-single-area';
+			if (this.hasVisualMedia) return 'grid-half-half';
+			else return 'grid-fill';
 		},
 		footnote() {
 			if (this.footnoteMessage) return this.footnoteMessage;
@@ -80,13 +62,16 @@ export default {
 			else return 'Press the space bar for going to the next step';
 		},
 		textToDisplay() {
-			if (this.hasNoContent) return 'Instruction';
-			else return this.textContent;
+			let footnoteMessage = '';
+			if (this.hasNoContent) footnoteMessage = 'Instruction';
+			else footnoteMessage = this.textContent;
+			this.$emit('footnote', footnoteMessage);
+			return footnoteMessage;
 		},
 	},
 	methods: {
 		emitStateEndedSignal() {
-			this.$emit('state-ended');
+			ExperimentEventBus.$emit(events.EVENT_STATE_ENDED);
 		},
 	},
 	mounted() {
