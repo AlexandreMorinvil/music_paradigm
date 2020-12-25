@@ -1,28 +1,14 @@
 <template>
 	<div id="status-bar" class="status-bar-grid">
 		<div id="status-bar-header" class="status-bar-header-position">
-			<div id="timer-box" class="status-bar-display-box">
-				<time-status-component ref="timer" />
-			</div>
+			<time-status-component class="status-bar-display-box" ref="timer" />
 
 			<div id="center-wrapper">
-				<div id="current-state-box" class="status-bar-display-box wrapped-display">
-					<svg id="icon-current-state" class="icon-state">
-						<use :xlink:href="currentStateIcon" />
-					</svg>
-					{{ currentStateType }}
-				</div>
-				<div id="next-state-box" class="status-bar-display-box wrapped-display">
-					<svg id="icon-current-state" class="icon-state">
-						<use :xlink:href="nextStateIcon" />
-					</svg>
-					{{ nextStateType }}
-				</div>
+				<state-status-component id="current-state-box" class="status-bar-display-box wrapped-display" :isCurrentStateRequested="true" />
+				<state-status-component id="next-state-box" class="status-bar-display-box wrapped-display" :isCurrentStateRequested="false" />
 			</div>
 
-			<div id="piano-box" class="status-bar-display-box">
-				<piano :display="true" />
-			</div>
+			<piano :display="true" class="status-bar-display-box" />
 		</div>
 
 		<progress-status-component class="status-bar-progress-position" />
@@ -30,53 +16,21 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 import ExperimentPiano from '@/components/piano/piano-input-handler.component.vue';
 import ProgressStatusComponent from './progress-status.component.vue';
+import StateStatusComponent from './state-status.component.vue';
 import TimeStatusComponent from './time-status.component.vue';
 
 export default {
 	components: {
 		piano: ExperimentPiano,
+		StateStatusComponent,
 		TimeStatusComponent,
 		ProgressStatusComponent,
-	},
-	computed: {
-		...mapGetters('experiment', ['currentStateType', 'nextStateType', 'midiName', 'timeLimitInSeconds']),
-		currentStateIcon() {
-			return this.getIconReference(this.currentStateType);
-		},
-		nextStateIcon() {
-			return this.getIconReference(this.nextStateType);
-		},
 	},
 	methods: {
 		start() {
 			this.$refs.timer.startTimer();
-		},
-		getIconReference(stateType) {
-			const iconFileName = 'sprites.svg#';
-			switch (stateType) {
-				case 'cue':
-					return iconFileName + 'icon-volume-high';
-				case 'end':
-					return iconFileName + 'icon-finish';
-				case 'feedback':
-					return iconFileName + 'icon-check-circle';
-				case 'introduction':
-					return iconFileName + 'icon-location';
-				case 'instruction':
-					return iconFileName + 'icon-info';
-				case 'playing':
-					return iconFileName + 'icon-piano';
-				case 'rest':
-					return iconFileName + 'icon-pause';
-				case 'video':
-					return iconFileName + 'icon-film';
-				default:
-					return iconFileName + 'icon-three-dots';
-			}
 		},
 	},
 };
