@@ -11,7 +11,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import { ExperimentEventBus, events } from '@/_services/eventBus.service.js';
+import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
+import { PianoEventBus, pianoEvents } from '@/_services/piano-event-bus.service.js';
 import ExperimentContent from '@/components/content-frame/experiment-content-frame.component.vue';
 import StatusBarComponent from '@/components/experiment/status-bar/status-bar.component.vue';
 
@@ -72,20 +73,24 @@ export default {
 	mounted() {
 		window.addEventListener('keydown', this.handleButtonPress);
 		window.addEventListener('keyup', this.handleButtonRelease);
-		ExperimentEventBus.$on(events.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
-		ExperimentEventBus.$on(events.EVENT_EXPERIMENT_READY, this.displayFirstStep);
-		ExperimentEventBus.$on(events.EVENT_STATE_ENDED, this.navigateExperiment);
-		ExperimentEventBus.$on(events.EVENT_EXPERIMENT_ENDED, this.displayFirstStep);
-		ExperimentEventBus.$on(events.EVENT_TIMES_UP, this.handleTimesUp);
+		ExperimentEventBus.$on(experimentEvents.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
+		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_READY, this.displayFirstStep);
+		ExperimentEventBus.$on(experimentEvents.EVENT_STATE_ENDED, this.navigateExperiment);
+		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_ENDED, this.displayFirstStep);
+		ExperimentEventBus.$on(experimentEvents.EVENT_TIMES_UP, this.handleTimesUp);
+
+		PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);
 	},
 	beforeDestroy() {
 		window.removeEventListener('keydown', this.handleButtonPress);
 		window.removeEventListener('keyup', this.handleButtonRelease);
-		ExperimentEventBus.$off(events.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
-		ExperimentEventBus.$off(events.EVENT_EXPERIMENT_READY, this.displayFirstStep);
-		ExperimentEventBus.$off(events.EVENT_STATE_ENDED, this.navigateExperiment);
-		ExperimentEventBus.$off(events.EVENT_EXPERIMENT_ENDED, this.endExperiment);
-		ExperimentEventBus.$off(events.EVENT_TIMES_UP, this.handleTimesUp);
+		ExperimentEventBus.$off(experimentEvents.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
+		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_READY, this.displayFirstStep);
+		ExperimentEventBus.$off(experimentEvents.EVENT_STATE_ENDED, this.navigateExperiment);
+		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_ENDED, this.endExperiment);
+		ExperimentEventBus.$off(experimentEvents.EVENT_TIMES_UP, this.handleTimesUp);
+
+		PianoEventBus.$emit(pianoEvents.EVENT_PIANO_TERMINATE_REQUEST);
 		this.resetPianoState();
 		this.clearState();
 	},

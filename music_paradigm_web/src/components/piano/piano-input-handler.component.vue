@@ -1,28 +1,15 @@
 <template>
-	<div id="the-piano" class="piano">
-		<div id="piano-display" v-if="display" :class="color">
-			<svg class="piano-icon">
-				<use xlink:href="sprites.svg#icon-piano" />
-			</svg>
-			&nbsp;{{ soundStatus }}
-		</div>
-	</div>
+	<div style="display: none"></div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+
+import { PianoEventBus, pianoEvents } from '@/_services/piano-event-bus.service.js';
 import MidiPlayer from '@/MidiPlayer';
 import map from '@/_helpers/keyboardMapping';
 
 export default {
-	props: {
-		display: {
-			type: Boolean,
-			default() {
-				return false;
-			},
-		},
-	},
 	data() {
 		return {
 			player: null,
@@ -36,20 +23,13 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('piano', ['isPianoInitialized', 'pressedKeys', 'midiFileNotesName']),
+		...mapGetters('piano', ['isPianoInitialized', 'isPianoInitializing', 'pressedKeys', 'midiFileNotesName']),
 		...mapGetters('experiment', ['timbreFile', 'enableSoundFlag']),
-		soundStatus() {
-			if (!this.isPianoInitialized) return 'LOAD...';
-			return this.enableSoundFlag ? 'ON' : 'OFF';
-		},
-		color() {
-			if (!this.isPianoInitialized) return 'not-ready';
-			return this.enableSoundFlag ? 'active' : 'inactive';
-		},
 	},
 	methods: {
 		...mapActions('piano', [
 			'setInitializationState',
+			'setInitializationInProgressState',
 			'setPlayer',
 			'addPlayerEndOfFileAction',
 			'removePlayerEndOfFileAction',
@@ -88,6 +68,7 @@ export default {
 							if (this.pressedKeys.includes(otherNote)) this.recordKeyReleased(otherNote);
 						}
 					}
+
 					// We activate the specified note
 					if (this.enableSoundFlag) this.playNote(midiMessage.note);
 					this.recordKeyPress(midiMessage);
@@ -148,6 +129,9 @@ export default {
 			});
 		},
 		initPiano() {
+			this.setInitializationInProgressState(true);
+			if (this.isPianoInitialized || this.isPianoInitializing) return;
+
 			// Initialize audio
 			this.audioConctext = new AudioContext();
 			this.player = new MidiPlayer.Player();
@@ -173,6 +157,7 @@ export default {
 				this.player.on('endOfFile', this.handleMidiFileEndOfFile);
 
 				this.setInitializationState(true);
+				this.setInitializationInProgressState(false);
 			});
 		},
 		handleKeyPress(key) {
@@ -249,54 +234,32 @@ export default {
 			const lastNoteName = this.midiFileNotesName[this.midiFileNotesName.length - 1];
 			this.stopNoteFromMidiFile(lastNoteName);
 		},
+		terminatePiano() {
+			window.removeEventListener('keydown', this.handleKeyPress);
+			window.removeEventListener('keyup', this.handleKeyRelease);
+			this.player.off('midiEvent', this.handleMidiMessage);
+			this.player.off('endOfFile', this.handleMidiFileEndOfFile);
+			while (this.midiInputs.length > 0) this.midiInputs.pop().onmidimessage = null;
+			this.midiAccess = null;
+			this.setInitializationState(false);
+		},
+		probeCompatibility() {
+			// Verifying MIDI support
+			if (navigator.requestMIDIAccess) console.log('This browser supports WebMIDI!');
+			else console.log('WebMIDI is not supported in this browser.');
+		},
 	},
 	mounted() {
-		// Verifying MIDI support
-		if (navigator.requestMIDIAccess) {
-			console.log('This browser supports WebMIDI!');
-			this.initPiano();
-		} else {
-			console.log('WebMIDI is not supported in this browser.');
-		}
+		this.probeCompatibility();
+		PianoEventBus.$on(pianoEvents.EVENT_PIANO_INIT_REQUEST, this.initPiano);
+		PianoEventBus.$on(pianoEvents.EVENT_PIANO_TERMINATE_REQUEST, this.terminatePiano);
 	},
 	beforeDestroy() {
-		window.removeEventListener('keydown', this.handleKeyPress);
-		window.removeEventListener('keyup', this.handleKeyRelease);
-		this.player.off('midiEvent', this.handleMidiMessage);
-		this.player.off('endOfFile', this.handleMidiFileEndOfFile);
-		while (this.midiInputs.length > 0) this.midiInputs.pop().onmidimessage = null;
-		this.midiAccess = null;
-		this.setInitializationState(false);
+		this.terminatePiano();
+		PianoEventBus.$off(pianoEvents.EVENT_PIANO_INIT_REQUEST, this.initPiano);
+		PianoEventBus.$off(pianoEvents.EVENT_PIANO_TERMINATE_REQUEST, this.terminatePiano);
 	},
-	watch: {},
 };
 </script>
 
-<style>
-#piano-display {
-	display: flex;
-	align-items: center;
-	height: 100%;
-}
-.piano-icon {
-	display: inline-block;
-	stroke-width: 1px;
-	width: 40px;
-	height: 40px;
-}
-.active {
-	stroke: rgb(0, 200, 0);
-	fill: rgb(0, 200, 0);
-	color: rgb(0, 200, 0);
-}
-.inactive {
-	stroke: rgb(200, 0, 0);
-	fill: rgb(200, 0, 0);
-	color: rgb(200, 0, 0);
-}
-.not-ready {
-	stroke: rgb(100, 100, 100);
-	fill: rgb(100, 100, 100);
-	color: rgb(100, 100, 100);
-}
-</style>
+<style></style>

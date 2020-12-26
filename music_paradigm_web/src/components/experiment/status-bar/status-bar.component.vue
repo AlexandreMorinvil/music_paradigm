@@ -8,7 +8,7 @@
 				<state-status-component id="next-state-box" class="status-bar-display-box wrapped-display" :isCurrentStateRequested="false" />
 			</div>
 
-			<piano :display="true" class="status-bar-display-box" />
+			<piano-status-component :display="true" class="status-bar-display-box" />
 		</div>
 
 		<progress-status-component class="status-bar-progress-position" />
@@ -16,14 +16,14 @@
 </template>
 
 <script>
-import ExperimentPiano from '@/components/piano/piano-input-handler.component.vue';
+import PianoStatusComponent from './piano-status.component.vue';
 import ProgressStatusComponent from './progress-status.component.vue';
 import StateStatusComponent from './state-status.component.vue';
 import TimeStatusComponent from './time-status.component.vue';
 
 export default {
 	components: {
-		piano: ExperimentPiano,
+		PianoStatusComponent,
 		StateStatusComponent,
 		TimeStatusComponent,
 		ProgressStatusComponent,

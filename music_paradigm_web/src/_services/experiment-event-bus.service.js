@@ -2,7 +2,7 @@ import Vue from 'vue';
 
 export const ExperimentEventBus = new Vue();
 
-export const events = {
+export const experimentEvents = {
 	EVENT_EXPERIMENT_READY: 'experiment-ready',
 	EVENT_EXPERIMENT_ENDED: 'experiment-ended',
 	EVENT_SKIP_REQUET: 'skip-request',

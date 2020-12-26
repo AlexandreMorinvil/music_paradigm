@@ -14,6 +14,10 @@ export default {
 		state.isPianoInitialized = isInitialized || false;
 	},
 
+	setInitializationInProgressState: (state, isInitializing) => {
+		state.isPianoInitializing = isInitializing || false;
+	},
+
 	// Mutations on player
 	setPlayer: (state, player) => {
 		state.player = player;

@@ -15,7 +15,7 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import { ExperimentEventBus, events } from '@/_services/eventBus.service.js';
+import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 
 export default {
 	props: {
@@ -94,7 +94,7 @@ export default {
 			if (value < 0) {
 				this.setTime(0);
 				this.stopTimer();
-				ExperimentEventBus.$emit(events.EVENT_TIMES_UP);
+				ExperimentEventBus.$emit(experimentEvents.EVENT_TIMES_UP);
 			} else {
 				this.seconds = Math.floor((value / 1000) % 60);
 				this.minutes = Math.floor((value / 1000 / 60) % 60);

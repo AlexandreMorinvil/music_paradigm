@@ -14,7 +14,7 @@
 
 <script>
 import '@/styles/experiment-content-template.css';
-import { ExperimentEventBus, events } from '@/_services/eventBus.service.js';
+import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 import VisualMediaImageComponent from '@/components/experiment/visual-content/visual-media-image.component.vue';
 import { mapGetters } from 'vuex';
 
@@ -71,7 +71,7 @@ export default {
 	},
 	methods: {
 		emitStateEndedSignal() {
-			ExperimentEventBus.$emit(events.EVENT_STATE_ENDED);
+			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 		},
 	},
 	mounted() {

@@ -1,29 +1,29 @@
 <template>
 	<div id="app" class="app-grid">
-		<!-- The alert is not considered in the grid display of the application -->
-		<alert id="alert" v-if="hasAlert" />
+		<piano-input-handler-component />
+		<alert-component id="alert" v-if="hasAlert" />
 
-		<div v-if="true" id="app-header" class="app-header-position">
-			<component :is="navigationBarType" id="app-navigation-bar" ref="navigationBar" />
+		<div id="app-header" class="app-header-position">
+			<component :is="navigationBarType" id="app-navigation-bar" />
 		</div>
 
-		<div id="app-main" class="app-main-position">
-			<router-view />
-		</div>
+		<router-view class="app-main-position" />
 	</div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import Alert from '@/components/visual-helpers/alert.component';
+import AlertComponent from '@/components/visual-helpers/alert.component.vue';
 import NavigationBarDefault from '@/components/navigation-bar/navigation-bar-default.component.vue';
 import NavigationBarExperiment from '@/components/navigation-bar/navigation-bar-experiment.component.vue';
+import PianoInputHandlerComponent from './components/piano/piano-input-handler.component.vue';
 
 export default {
 	components: {
 		defaultNavigationBar: NavigationBarDefault,
 		experimentNavigationBar: NavigationBarExperiment,
-		alert: Alert,
+		AlertComponent,
+		PianoInputHandlerComponent,
 	},
 	data() {
 		return {
@@ -111,15 +111,5 @@ body {
 	border-bottom-color: rgb(35, 35, 35);
 	border-bottom-width: 1px;
 	border-bottom-style: solid;
-}
-
-/* Footer */
-footer {
-	position: fixed;
-	right: 0;
-	bottom: 0;
-	color: white;
-	font-size: 0.8rem;
-	height: 100%;
 }
 </style>

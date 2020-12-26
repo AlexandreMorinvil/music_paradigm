@@ -6,6 +6,7 @@ function DEFAULT_PIANO_STATE_VALUES() {
 	return {
 		// Indicator of whether or not the virtual piano is ready to be used
 		isPianoInitialized: false,
+		isPianoInitializing: false,
 
 		// The player instance
 		player: null,

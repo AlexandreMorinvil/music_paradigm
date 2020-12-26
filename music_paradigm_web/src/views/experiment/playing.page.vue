@@ -32,7 +32,7 @@
 
 <script>
 import '@/styles/experimentStateTemplate.css';
-import { ExperimentEventBus, events } from '@/_services/eventBus.service.js';
+import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 import { mapActions, mapGetters } from 'vuex';
 
 import PlayingMelodyComponent from '@/components/experiment/playing-mode/playing-melody.component';
@@ -99,7 +99,7 @@ export default {
 		handdleEndOfPlaying() {
 			this.evaluatePlayedNotes();
 			this.createSimpleLog();
-			ExperimentEventBus.$emit(events.EVENT_STATE_ENDED);
+			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 		},
 		evaluatePlayedNotes() {
 			this.$refs.playingMode.evaluate();
