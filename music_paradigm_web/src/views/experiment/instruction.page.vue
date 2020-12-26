@@ -1,9 +1,6 @@
 <template>
-	<div id="instruction-state" class="experiment-state-grid" :class="gridClass">
-		<div v-if="hasText || hasNoContent" id="text-area" class="experiment-state-division state-division-text">
-			{{ textToDisplay }}
-		</div>
-
+	<div id="instruction-state" class="state-content-grid" :class="gridClass">
+		<text-area-component />
 		<image-area-component />
 		<!-- <div v-if="hasVisualMedia" id="visual-media-area" class="experiment-state-division state-division-visual-media">
 			<visual-piano v-if="hasInteractivePiano" />
@@ -16,11 +13,13 @@
 import '@/styles/experiment-content-template.css';
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
+import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 import { mapGetters } from 'vuex';
 
 export default {
 	components: {
 		ImageAreaComponent,
+		TextAreaComponent,
 	},
 	props: {
 		lastPressedKey: {

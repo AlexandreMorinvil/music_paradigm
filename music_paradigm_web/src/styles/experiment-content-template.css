@@ -11,18 +11,9 @@
     display: grid;
     justify-content: center;
     align-content: space-between;
-    grid-template-columns: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr);
     grid-row-gap: 2.5%;
-}
-
-/* Footnote layout */
-
-.grid-with-footnote {
-    grid-template-rows: 85% 12.5%;
-}
-
-.grid-without-footnote {
-    grid-template-rows: 1fr;
 }
 
 /* Content layout */
@@ -35,24 +26,13 @@
     max-height: 100%;
 }
 
-.experiment-state-grid {
+.state-content-grid {
     display: grid;
     justify-content: center;
     align-content: space-between;
     grid-template-columns: 100%;
+    grid-auto-rows: 1fr;
     grid-row-gap: 2.5%;
-}
-
-.grid-half-half {
-    grid-template-rows: 48.75% 48.75%;
-}
-
-.grid-main-visual {
-    grid-template-rows: 1fr 3fr;
-}
-
-.grid-fill {
-    grid-template-rows: 1fr;
 }
 
 /* State division properties*/
