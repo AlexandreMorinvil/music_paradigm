@@ -6,8 +6,12 @@ export default {
 	},
 
 	// Initialization actions
-	setInitializationState: ({ commit }, isInitialized) => {
-		commit('setInitializationState', isInitialized);
+	setInitializedState: ({ commit }, isInitialized) => {
+		commit('setInitializedState', isInitialized);
+	},
+
+	setInitializingState: ({ commit }, isInitializing) => {
+		commit('setInitializingState', isInitializing);
 	},
 
 	// Player actions

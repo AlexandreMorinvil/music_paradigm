@@ -10,11 +10,11 @@ export default {
 	},
 
 	// Mutation on isPianoInitialized
-	setInitializationState: (state, isInitialized) => {
+	setInitializedState: (state, isInitialized) => {
 		state.isPianoInitialized = isInitialized || false;
 	},
 
-	setInitializationInProgressState: (state, isInitializing) => {
+	setInitializingState: (state, isInitializing) => {
 		state.isPianoInitializing = isInitializing || false;
 	},
 

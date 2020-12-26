@@ -28,8 +28,8 @@ export default {
 	},
 	methods: {
 		...mapActions('piano', [
-			'setInitializationState',
-			'setInitializationInProgressState',
+			'setInitializedState',
+			'setInitializingState',
 			'setPlayer',
 			'addPlayerEndOfFileAction',
 			'removePlayerEndOfFileAction',
@@ -129,8 +129,8 @@ export default {
 			});
 		},
 		initPiano() {
-			this.setInitializationInProgressState(true);
 			if (this.isPianoInitialized || this.isPianoInitializing) return;
+			this.setInitializingState(true);
 
 			// Initialize audio
 			this.audioConctext = new AudioContext();
@@ -156,8 +156,8 @@ export default {
 				this.player.on('midiEvent', this.handleMidiMessage);
 				this.player.on('endOfFile', this.handleMidiFileEndOfFile);
 
-				this.setInitializationState(true);
-				this.setInitializationInProgressState(false);
+				this.setInitializedState(true);
+				this.setInitializingState(false);
 			});
 		},
 		handleKeyPress(key) {
@@ -237,11 +237,15 @@ export default {
 		terminatePiano() {
 			window.removeEventListener('keydown', this.handleKeyPress);
 			window.removeEventListener('keyup', this.handleKeyRelease);
-			this.player.off('midiEvent', this.handleMidiMessage);
-			this.player.off('endOfFile', this.handleMidiFileEndOfFile);
+			if (this.player) {
+				this.player.off('midiEvent', this.handleMidiMessage);
+				this.player.off('endOfFile', this.handleMidiFileEndOfFile);
+				this.player = null;
+			}
 			while (this.midiInputs.length > 0) this.midiInputs.pop().onmidimessage = null;
 			this.midiAccess = null;
-			this.setInitializationState(false);
+			this.setInitializedState(false);
+			this.setInitializingState(false);
 		},
 		probeCompatibility() {
 			// Verifying MIDI support

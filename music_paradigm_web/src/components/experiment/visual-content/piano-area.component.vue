@@ -1,11 +1,6 @@
 <template>
-	<div id="visual-media-area">
-		<div class="wrapper">
-			<img id="image" v-if="hasPicture" :src="urlExperimentRessource(pictureName)" class="visual-element" alt="visual-media" />
-		</div>
-		<div class="wrapper">
-			<visual-piano id="visual-piano" v-if="hasInteractivePiano" class="visual-element" />
-		</div>
+	<div id="image-area">
+		<visual-piano id="visual-piano" v-if="hasInteractivePiano" class="visual-element" />
 	</div>
 </template>
 
@@ -26,23 +21,28 @@ export default {
 </script>
 
 <style scoped>
-#visual-media-area {
+#image-area {
 	display: grid;
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
 }
 
-.wrapper {
+.background-image {
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+/* .wrapper {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-}
+} */
 
-.visual-element {
+/* .visual-element {
 	height: 100%;
 	width: auto;
 	margin: auto;
 	object-fit: contain;
-}
+} */
 </style>

@@ -4,7 +4,7 @@
 			{{ textToDisplay }}
 		</div>
 
-		<visual-media-image-component />
+		<image-area-component />
 		<!-- <div v-if="hasVisualMedia" id="visual-media-area" class="experiment-state-division state-division-visual-media">
 			<visual-piano v-if="hasInteractivePiano" />
 			<img id="instruction-img" v-else :src="urlExperimentRessource(pictureName)" alt="Instruction" />
@@ -15,12 +15,12 @@
 <script>
 import '@/styles/experiment-content-template.css';
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
-import VisualMediaImageComponent from '@/components/experiment/visual-content/visual-media-image.component.vue';
+import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
 import { mapGetters } from 'vuex';
 
 export default {
 	components: {
-		VisualMediaImageComponent,
+		ImageAreaComponent,
 	},
 	props: {
 		lastPressedKey: {

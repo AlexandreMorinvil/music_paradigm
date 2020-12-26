@@ -1,21 +1,12 @@
 <template>
 	<div id="content-frame" class="experiment-content-container experiment-content-grid" :class="footnoteGridClass">
-		<img
-			v-if="hasHelperImage"
-			id="helper-img"
-			:src="urlExperimentRessource(helperImageName)"
-			alt="Helper"
-			class="helper"
-		/>
+		<img v-if="hasHelperImage" id="helper-img" :src="urlExperimentRessource(helperImageName)" alt="Helper" class="helper" />
 
 		<skip-button v-if="hasSkipOption && !isSkipButtonInFootnote" class="skip-button" />
 
-		<router-view 
-			style="background-color: pink"
-			id="experiment-content"
-			:lastPressedKey="lastPressedKey"
-			:isSpaceBarPressed="isSpaceBarPressed"
-		/>
+		<div>
+			<router-view style="background-color: pink" id="experiment-content" :lastPressedKey="lastPressedKey" :isSpaceBarPressed="isSpaceBarPressed" />
+		</div>
 
 		<footnote
 			style="background-color: green"
@@ -78,5 +69,6 @@ export default {
 <style scoped>
 #experiment-content {
 	height: 100%;
+	max-height: 78vh;
 }
 </style>
