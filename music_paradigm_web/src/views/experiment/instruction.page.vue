@@ -7,12 +7,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 import '@/styles/experiment-content-template.css';
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
 import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
-import { mapGetters } from 'vuex';
 
 export default {
 	components: {
@@ -34,29 +35,24 @@ export default {
 			},
 		},
 	},
-	data() {
-		return {};
-	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['pressedKeys']),
-		...mapGetters('experiment', ['anyPianoKey', 'footnoteMessage']),
-		footnote() {
-			if (this.footnoteMessage) return this.footnoteMessage;
-			if (this.anyPianoKey) return 'Press any piano key or the space bar for going to the next step';
-			else return 'Press the space bar for going to the next step';
-		},
+		...mapGetters('experiment', ['anyPianoKey']),
 	},
 	methods: {
 		emitStateEndedSignal() {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 		},
+		updateFootnote() {
+			let footnoteMessage = '';
+			if (this.anyPianoKey) footnoteMessage = 'Press any piano key or the space bar for going to the next step';
+			else footnoteMessage = 'Press the space bar for going to the next step';
+			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
+		},
 	},
-	mounted() {
-		ExperimentEventBus.$on('advance-request', this.emitStateEndedSignal);
-	},
-	beforeDestroy() {
-		ExperimentEventBus.$off('advance-request', this.emitStateEndedSignal);
+	beforeMount() {
+		this.updateFootnote();
 	},
 	watch: {
 		isSpaceBarPressed(isPressed) {

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<component class="fill" :is="type" :message="message" v-on:advanceButtonClicked="emitAdvanceSignal" v-on:skip-request="emitSkipSignal" />
+		<component class="fill" :is="type" />
 	</div>
 </template>
 
@@ -23,22 +23,11 @@ export default {
 			},
 		},
 	},
-	data() {
-		return {};
-	},
 	computed: {
 		...mapGetters('experiment', ['footnoteType']),
 		type() {
 			if (this.footnoteType === 'button') return 'footnoteButton';
 			else return 'footnoteSimple';
-		},
-	},
-	methods: {
-		emitAdvanceSignal() {
-			this.$emit('advanceButtonClicked');
-		},
-		emitSkipSignal() {
-			this.$emit('skip-request');
 		},
 	},
 };

@@ -8,4 +8,7 @@ export const experimentEvents = {
 	EVENT_SKIP_REQUET: 'skip-request',
 	EVENT_STATE_ENDED: 'state-ended',
 	EVENT_TIMES_UP: 'times-up',
+
+	EVENT_SET_FOOTNOTE: 'set-footnote',
+	EVENT_OVERIDE_FOOTNOTE: 'overide-footnote',
 };
