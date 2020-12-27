@@ -1,5 +1,5 @@
 <template>
-	<div id="experiment" class="experiment-grid">
+	<div id="experiment" class="experiment-grid unselectable">
 		<status-bar-component class="status-bar-position" ref="status" />
 
 		<div id="state-content" class="state-content-position">
@@ -117,6 +117,15 @@ export default {
 </script>
 
 <style>
+.unselectable {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
 #experiment {
 	height: 100%;
 	background-color: rgb(15, 15, 15);

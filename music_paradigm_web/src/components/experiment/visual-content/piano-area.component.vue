@@ -1,48 +1,38 @@
 <template>
-	<div id="image-area">
-		<visual-piano id="visual-piano" v-if="hasInteractivePiano" class="visual-element" />
+	<div id="piano-area" v-if="hasInteractivePiano" class="centered-content">
+		<piano-visual-display-component class="visual-piano" v-if="hasInteractivePiano" />
 	</div>
 </template>
 
 <script>
 import '@/styles/experiment-content-template.css';
-import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
+import PianoVisualDisplayComponent from '@/components/piano/piano-visual-display.component.vue';
 import { mapGetters } from 'vuex';
 
 export default {
 	components: {
-		visualPiano: VisualPiano,
+		PianoVisualDisplayComponent,
 	},
 	computed: {
-		...mapGetters(['urlExperimentRessource']),
-		...mapGetters('experiment', ['hasInteractivePiano', 'hasPicture', 'pictureName']),
+		...mapGetters('experiment', ['hasInteractivePiano']),
 	},
 };
 </script>
 
 <style scoped>
-#image-area {
-	display: grid;
+#piano-area {
 	height: 100%;
 	width: 100%;
-	overflow: hidden;
+	min-height: auto;
 }
 
-.background-image {
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center;
+.visual-piano {
+	min-height: 100px;
 }
-/* .wrapper {
+
+.centered-content {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-} */
-
-/* .visual-element {
-	height: 100%;
-	width: auto;
-	margin: auto;
-	object-fit: contain;
-} */
+}
 </style>

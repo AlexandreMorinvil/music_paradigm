@@ -1,11 +1,8 @@
 <template>
-	<div id="instruction-state" class="state-content-grid" :class="gridClass">
+	<div id="instruction-state" class="state-content-grid">
 		<text-area-component />
 		<image-area-component />
-		<!-- <div v-if="hasVisualMedia" id="visual-media-area" class="experiment-state-division state-division-visual-media">
-			<visual-piano v-if="hasInteractivePiano" />
-			<img id="instruction-img" v-else :src="urlExperimentRessource(pictureName)" alt="Instruction" />
-		</div> -->
+		<piano-area-component />
 	</div>
 </template>
 
@@ -13,12 +10,14 @@
 import '@/styles/experiment-content-template.css';
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
+import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 import { mapGetters } from 'vuex';
 
 export default {
 	components: {
 		ImageAreaComponent,
+		PianoAreaComponent,
 		TextAreaComponent,
 	},
 	props: {
@@ -41,31 +40,11 @@ export default {
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['pressedKeys']),
-		...mapGetters('experiment', [
-			'hasNoContent',
-			'hasInteractivePiano',
-			'hasText',
-			'hasVisualMedia',
-			'pictureName',
-			'textContent',
-			'anyPianoKey',
-			'footnoteMessage',
-		]),
-		gridClass() {
-			if (this.hasVisualMedia) return 'grid-half-half';
-			else return 'grid-fill';
-		},
+		...mapGetters('experiment', ['anyPianoKey', 'footnoteMessage']),
 		footnote() {
 			if (this.footnoteMessage) return this.footnoteMessage;
 			if (this.anyPianoKey) return 'Press any piano key or the space bar for going to the next step';
 			else return 'Press the space bar for going to the next step';
-		},
-		textToDisplay() {
-			let footnoteMessage = '';
-			if (this.hasNoContent) footnoteMessage = 'Instruction';
-			else footnoteMessage = this.textContent;
-			this.$emit('footnote', footnoteMessage);
-			return footnoteMessage;
 		},
 	},
 	methods: {
@@ -90,4 +69,13 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.state-content-grid {
+	display: grid;
+	justify-content: center;
+	align-content: space-between;
+	grid-template-columns: 100%;
+	grid-auto-rows: minmax(0, 1fr);
+	grid-row-gap: 2.5%;
+}
+</style>

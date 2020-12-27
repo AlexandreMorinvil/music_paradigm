@@ -4,7 +4,12 @@
 
 		<skip-button v-if="hasSkipOption && !isSkipButtonInFootnote" class="skip-button" />
 
-		<router-view style="background-color: pink" id="experiment-content" :lastPressedKey="lastPressedKey" :isSpaceBarPressed="isSpaceBarPressed" />
+		<router-view
+			style="background-color: pink"
+			:class="hasFootnote ? 'content-size-limit-with-footnote' : 'content-size-limit-no-footnote'"
+			:lastPressedKey="lastPressedKey"
+			:isSpaceBarPressed="isSpaceBarPressed"
+		/>
 
 		<footnote
 			style="background-color: green"
@@ -65,7 +70,49 @@ export default {
 </script>
 
 <style scoped>
-#experiment-content {
+/* Hard limits determined manually to prevent the page from expending*/
+.content-size-limit-no-footnote {
+	max-height: 81vh;
+}
+
+.content-size-limit-with-footnote {
+	max-height: 70vh;
+}
+
+.experiment-content-container {
+	overflow: hidden;
+	width: 100%;
 	height: 100%;
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.experiment-content-grid {
+	display: grid;
+	justify-content: center;
+	align-content: space-between;
+	grid-template-columns: 1fr;
+	grid-template-rows: minmax(0, 1fr);
+	grid-row-gap: 2.5%;
+}
+
+.footnot-size {
+	max-height: 12.5%;
+	height: 12.5%;
+}
+
+.helper {
+	position: absolute;
+	right: 0;
+	width: 9%;
+}
+
+.skip-button {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 9%;
+	min-height: 10%;
+	max-height: 30%;
 }
 </style>

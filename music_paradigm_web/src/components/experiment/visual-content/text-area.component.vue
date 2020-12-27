@@ -1,6 +1,8 @@
 <template>
-	<div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">
-		{{ textContent }}
+	<div id="text-area" v-if="hasText" class="state-section state-division-text">
+		<p>
+			{{ textContent }}
+		</p>
 	</div>
 </template>
 
@@ -15,4 +17,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.state-section {
+	display: grid;
+	justify-content: center;
+	align-content: center;
+}
+</style>
