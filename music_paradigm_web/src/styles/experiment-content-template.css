@@ -3,7 +3,7 @@
     spacing for each element
  */
 
-.-standard-state-content-grid {
+.standard-state-content-grid {
     display: grid;
     justify-content: center;
     align-content: space-between;

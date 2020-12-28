@@ -11,8 +11,6 @@
 </template>
 
 <script>
-import '@/styles/experimentStateTemplate.css';
-
 export default {};
 </script>
 

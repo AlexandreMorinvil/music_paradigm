@@ -9,7 +9,7 @@
 			:isSpaceBarPressed="isSpaceBarPressed"
 		/>
 
-		<footnote-component style="background-color: green" v-if="hasFootnote" class="experiment-state-division state-division-text footnote-size" />
+		<footnote-component v-if="hasFootnote" class="experiment-state-division state-division-text footnote-size" />
 	</div>
 </template>
 

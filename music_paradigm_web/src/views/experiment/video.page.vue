@@ -83,8 +83,8 @@ export default {
 				height *= 1.5;
 				width *= 1.5;
 			} else {
-				height *= 2;
-				width *= 2;
+				height *= 1.9;
+				width *= 1.9;
 			}
 			return {
 				height: height,

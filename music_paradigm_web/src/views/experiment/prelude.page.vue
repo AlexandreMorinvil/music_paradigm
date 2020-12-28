@@ -1,5 +1,5 @@
 <template>
-	<div id="prelude-state" class="experiment-state-container grid-area-note">
+	<div id="prelude-state" class="standard-state-content-grid">
 		<div id="text-area" class="experiment-state-division state-division-text">
 			{{ textToDisplay }}
 		</div>
@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import '@/styles/experimentStateTemplate.css';
+import '@/styles/experiment-content-template.css';
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 import { mapGetters } from 'vuex';
 

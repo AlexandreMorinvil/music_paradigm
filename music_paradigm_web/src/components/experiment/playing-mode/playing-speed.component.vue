@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import '@/styles/playingTemplate.css';
+import '@/styles/playing-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';

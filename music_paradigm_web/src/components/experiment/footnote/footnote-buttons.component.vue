@@ -1,7 +1,7 @@
 <template>
 	<div class="button-grid">
-		<button v-on:click="emitAdvanceSignal"><footnote-message-component /></button>
-		<skip-button-component />
+		<button v-on:click="emitAdvanceSignal" class="footnote-button"><footnote-message-component /></button>
+		<skip-button-component class="footnote-button" />
 	</div>
 </template>
 
@@ -34,7 +34,7 @@ export default {
 	grid-template-columns: 1fr 1fr;
 }
 
-button {
+.footnote-button {
 	font-size: calc(0.85vh + 0.85vw);
 	background-color: rgb(200, 200, 200);
 	border: 3px solid rgb(150, 150, 150);
@@ -43,5 +43,6 @@ button {
 	margin: 10px;
 	width: initial;
 	height: initial;
+	min-height: 50px;
 }
 </style>

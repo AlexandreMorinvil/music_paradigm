@@ -14,12 +14,6 @@ import 'video.js/dist/video-js.min.css';
 import videojs from 'video.js/dist/video.min.js';
 
 export default {
-	data() {
-		return {
-			VOLUME_ADJUSTMENT: 0.15,
-		};
-	},
-
 	props: {
 		src: {
 			type: String,
@@ -48,6 +42,7 @@ export default {
 	},
 	data() {
 		return {
+			VOLUME_ADJUSTMENT: 0.15,
 			player: null,
 			volume: 0,
 			time: 0,

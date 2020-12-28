@@ -1,5 +1,5 @@
 <template>
-	<div id="playing-state" class="experiment-state-container" :class="gridClass">
+	<div id="playing-state" class="standard-state-content-grid" :class="gridClass">
 		<start-signal-timer v-if="isWaitingStartSignal" class="experiment-state-division state-division-text" />
 		<div v-if="!isWaitingStartSignal && hasText" id="text-area" class="experiment-state-division state-division-text">
 			{{ textContent }}
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import '@/styles/experimentStateTemplate.css';
+import '@/styles/experiment-content-template.css';
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 import { mapActions, mapGetters } from 'vuex';
 
