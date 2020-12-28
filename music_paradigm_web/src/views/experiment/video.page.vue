@@ -1,44 +1,43 @@
 <template>
-	<div id="video-state" class="experiment-state-container grid-area-area-note" :class="gridClass">
-		<div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">
-			{{ textContent }}
-		</div>
-
-		<div id="visual-media-area" class="experiment-state-division state-division-visual-media">
-			<div class="visual-media-board">
-				<div class="video-box">
-					<div v-show="!isPlaying" class="video-hidding-thumbnail" :style="videoWidthCSSvariable + ';' + videoHeightCSSvariable">
-						{{ videoWaitingMessage }}
-					</div>
-					<video-player
-						v-if="hasVideo"
-						v-show="isPlaying"
-						:src="urlExperimentRessource(videoName)"
-						:dimension="videoDimensions"
-						:playBack="playBack"
-						v-on:finishedPlayback="handdleEndOfVideo"
-						ref="video"
-					/>
+	<div class="state-content-grid video-state-container" :class="gridClass">
+		<text-area-component />
+		<div class="visual-media-board">
+			<div class="video-box">
+				<div v-show="!isPlaying" class="video-hidding-thumbnail" :style="videoWidthCSSvariable + ';' + videoHeightCSSvariable">
+					{{ videoWaitingMessage }}
 				</div>
-				<div class="piano-box" v-if="hasInteractivePiano" :style="videoWidthCSSvariable">
-					<visual-piano />
-				</div>
+				<video-player
+					v-if="hasVideo"
+					v-show="isPlaying"
+					:src="urlExperimentRessource(videoName)"
+					:dimension="videoDimensions"
+					:playBack="playBack"
+					v-on:finished-playback="handdleEndOfVideo"
+					ref="video"
+				/>
 			</div>
 		</div>
+		<piano-area-component />
 	</div>
 </template>
 
 <script>
-import '@/styles/experimentStateTemplate.css';
+import '@/styles/experiment-content-template.css';
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
+
+import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';
+import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 import VideoPlayer from '@/components/experiment/video/video-player.component.vue';
-import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
+
 import { mapGetters } from 'vuex';
 
 export default {
 	components: {
-		visualPiano: VisualPiano,
-		VideoPlayer: VideoPlayer,
+		PianoAreaComponent,
+		TextAreaComponent,
+		// VideoAreaComponent,
+		// visualPiano: VisualPiano,
+		VideoPlayer,
 	},
 	props: {
 		lastPressedKey: {
@@ -72,16 +71,10 @@ export default {
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
-		...mapGetters('experiment', ['hasInteractivePiano', 'hasText', 'textContent', 'videoName']),
+		...mapGetters('experiment', ['hasVideo', 'hasInteractivePiano', 'hasText', 'videoName']),
 		gridClass() {
-			if (this.hasFootnote) {
-				if (this.hasText) return 'grid-small-area-big-area-note';
-				else return 'grid-area-note';
-			} else if (this.hasText) return 'grid-small-area-big-area';
+			if (this.hasText) return 'grid-small-area-big-area';
 			else return 'grid-single-area';
-		},
-		hasVideo() {
-			return this.videoName !== '';
 		},
 		videoDimensions() {
 			let height = this.defaultVideoHeight;

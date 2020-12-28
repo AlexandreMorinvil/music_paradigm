@@ -282,6 +282,10 @@ export default {
 		return Boolean(state.state.content.text);
 	},
 
+	hasVideo: (state) => {
+		return Boolean(state.state.mediaFile.videoName);
+	},
+
 	hasInteractivePiano: (state) => {
 		return Boolean(state.state.content.interactivePiano);
 	},

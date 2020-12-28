@@ -38,10 +38,7 @@ export default {
 		...mapGetters('piano', ['hasSuccess']),
 		...mapGetters('experiment', ['hasText', 'hasFootnote', 'textContent', 'playingMode', 'startSignal']),
 		gridClass() {
-			if (this.hasFootnote) {
-				if (this.hasText) return 'grid-small-area-big-area-note';
-				else return 'grid-area-note';
-			} else if (this.hasText) return 'grid-small-area-big-area';
+			if (this.hasText) return 'grid-small-area-big-area';
 			else return 'grid-single-area';
 		},
 		isWaitingStartSignal() {

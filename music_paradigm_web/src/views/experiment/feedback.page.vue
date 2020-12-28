@@ -1,20 +1,17 @@
 <template>
 	<div id="feedback-state" class="experiment-state-container" :class="gridClass">
-		<div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">
-			{{ textContent }}
-		</div>
-
+		<text-area-component />
 		<div id="visual-media-area" class="experiment-state-division state-division-visual-media">
 			<div class="feedback-grade-board">
 				<p v-if="!hasGrades">No performance was graded</p>
 				<div v-else class="feedback-box" v-for="grade in grades" :key="grade.criteria">
-					<feedback-grade :grade="grade" />
+					<feedback-grade-component :grade="grade" />
 				</div>
 			</div>
-			<div v-if="hasSuccessFeedbackMessage && isSuccessful" class="success-feedback-message">
+			<div v-if="hasSuccessFeedbackMessage && isSuccessful" class="success-feedback-message feedback-message">
 				{{ successFeedbackMessage }}
 			</div>
-			<div v-if="hasFailureFeedbackMessage && !isSuccessful" class="success-feedback-message">
+			<div v-if="hasFailureFeedbackMessage && !isSuccessful" class="success-feedback-message feedback-message">
 				{{ failureFeedbackMessage }}
 			</div>
 		</div>
@@ -25,13 +22,15 @@
 import { mapGetters } from 'vuex';
 
 import '@/styles/experimentStateTemplate.css';
-
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
-import FeedbackGrade from '@/components/experiment/feedback/feedback-grade.component.vue';
+
+import FeedbackGradeComponent from '@/components/experiment/feedback/feedback-grade.component.vue';
+import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
-		feedbackGrade: FeedbackGrade,
+		TextAreaComponent,
+		FeedbackGradeComponent,
 	},
 	props: {
 		lastPressedKey: {
@@ -55,10 +54,7 @@ export default {
 		...mapGetters('piano', ['grades', 'pressedKeys']),
 		...mapGetters('experiment', ['hasText', 'hasFootnote', 'textContent', 'anyPianoKey', 'successFeedbackMessage', 'failureFeedbackMessage']),
 		gridClass() {
-			if (this.hasFootnote) {
-				if (this.hasText) return 'grid-small-area-big-area-note';
-				else return 'grid-area-note';
-			} else if (this.hasText) return 'grid-small-area-big-area';
+			if (this.hasText) return 'grid-small-area-big-area';
 			else return 'grid-single-area';
 		},
 		hasGrades() {
@@ -139,5 +135,9 @@ export default {
 .success-feedback-message {
 	text-align: center;
 	font-size: calc(1vh + 1vw);
+}
+
+.feedback-message {
+	margin-bottom: 50px;
 }
 </style>

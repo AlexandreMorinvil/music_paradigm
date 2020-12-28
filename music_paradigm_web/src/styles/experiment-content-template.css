@@ -1,7 +1,7 @@
 /* Reusable state Content layout :
     This layout will automatically distribute each element of a state on a grid with equal
     spacing for each element
-     */
+ */
 
 .-standard-state-content-grid {
     display: grid;
@@ -10,6 +10,38 @@
     grid-template-columns: 100%;
     grid-auto-rows: minmax(0, 1fr);
     grid-row-gap: 2.5%;
+}
+
+/* Two areas division grid */
+
+.grid-area-note {
+    grid-template-rows: 87.5% 10%;
+}
+
+.grid-area-area {
+    grid-template-rows: 48.75% 48.75%;
+}
+
+.grid-big-area-area {
+    grid-template-rows: 58.5% 39%;
+}
+
+.grid-area-big-area {
+    grid-template-rows: 39% 58.5%;
+}
+
+.grid-big-area-small-area {
+    grid-template-rows: 78% 19.5%;
+}
+
+.grid-small-area-big-area {
+    grid-template-rows: 19.5% 78%;
+}
+
+/* Sigle area division grid */
+
+.grid-single-area {
+    grid-template-rows: 100%;
 }
 
 /* State division properties*/

@@ -14,6 +14,12 @@ import 'video.js/dist/video-js.min.css';
 import videojs from 'video.js/dist/video.min.js';
 
 export default {
+	data() {
+		return {
+			VOLUME_ADJUSTMENT: 0.15,
+		};
+	},
+
 	props: {
 		src: {
 			type: String,
@@ -85,11 +91,11 @@ export default {
 			this.time = this.player.currentTime();
 			if (this.time >= this.duration) {
 				this.playerPause();
-				this.$emit('preProgrammedEnd');
+				this.$emit('pre-programmed-end');
 			}
 		},
 		playerEventEnded() {
-			this.$emit('finishedPlayback');
+			this.$emit('finished-playback');
 		},
 		playerEventError() {
 			const error = this.player.error().message;
@@ -108,7 +114,7 @@ export default {
 			}
 		},
 		playerSetupEndEvents() {
-			this.$once('preProgrammedEnd', function () {
+			this.$once('pre-programmed-end', function () {
 				window.playerEvents.playerEventEnded();
 			});
 			this.player.on('ended', function () {
@@ -123,7 +129,7 @@ export default {
 		window.playerEvents = this;
 		this.playerInitialize();
 		this.playerSetSrc(this.src);
-		this.playerSetVolume(0.2);
+		this.playerSetVolume(this.VOLUME_ADJUSTMENT);
 		this.playerSetTime(this.playBack.startTime || 0.0);
 		this.playerSetupEndEvents();
 		this.setEndTime(this.playBack.endTime || 0.0);
