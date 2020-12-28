@@ -6,11 +6,8 @@
     The unmounting and remounting of a page will force vue to redo the "mounted" component
     each time we reach a new block, regardless of whether or not we move to twice the same
     type of vue page.
--->
-	<div id="transition-state" class="experiment-state-container grid-area-note">
-		<div id="text-area" class="experiment-state-division state-division-text"></div>
-		<div id="note-area" class="experiment-state-division state-division-text"></div>
-	</div>
+    -->
+	<div id="transition-state"></div>
 </template>
 
 <script>

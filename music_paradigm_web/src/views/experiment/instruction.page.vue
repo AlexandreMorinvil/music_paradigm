@@ -7,9 +7,9 @@
 </template>
 
 <script>
+import '@/styles/experiment-content-template.css';
 import { mapGetters } from 'vuex';
 
-import '@/styles/experiment-content-template.css';
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
 import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';

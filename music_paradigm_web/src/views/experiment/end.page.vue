@@ -1,22 +1,26 @@
 <template>
-	<div id="end-state" class="experiment-state-container" :class="gridClass">
-		<div v-if="hasText || hasNoContent" id="text-area" class="experiment-state-division state-division-text">
-			{{ textToDisplay }}
-		</div>
-
-		<div v-if="hasVisualMedia" id="visual-media-area" class="experiment-state-division state-division-visual-media">
-			<img id="end-img" :src="urlExperimentRessource(pictureName)" alt="Instruction" />
-		</div>
+	<div id="end-state" class="state-content-grid">
+		<text-area-component />
+		<image-area-component />
+		<piano-area-component />
 	</div>
 </template>
 
 <script>
-import '@/styles/experimentStateTemplate.css';
-import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
+import '@/styles/experiment-content-template.css';
 import { mapGetters } from 'vuex';
 
+import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
+import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
+import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';
+import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
+
 export default {
-	components: {},
+	components: {
+		ImageAreaComponent,
+		PianoAreaComponent,
+		TextAreaComponent,
+	},
 	props: {
 		isSpaceBarPressed: {
 			type: Boolean,
@@ -25,24 +29,10 @@ export default {
 			},
 		},
 	},
-	data() {
-		return {};
-	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['pressedKeys']),
-		...mapGetters('experiment', ['hasNoContent', 'hasText', 'hasVisualMedia', 'hasFootnote', 'pictureName', 'textContent', 'anyPianoKey']),
-		gridClass() {
-			if (this.hasFootnote) {
-				if (this.hasText && this.hasVisualMedia) return 'grid-area-area-note';
-				else return 'grid-area-note';
-			} else if (this.hasText && this.hasVisualMedia) return 'grid-area-area';
-			else return 'grid-single-area';
-		},
-		textToDisplay() {
-			if (this.textContent === '') return 'End';
-			else return this.textContent;
-		},
+		...mapGetters('experiment', ['anyPianoKey']),
 	},
 	methods: {
 		updateFootnote() {

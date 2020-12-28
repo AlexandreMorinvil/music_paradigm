@@ -1,33 +1,25 @@
 <template>
-	<div id="rest-state" class="experiment-state-container" :class="gridClass">
-		<div v-if="hasText || hasNoContent" id="text-area" class="experiment-state-division state-division-text">
-			<p>{{ textToDisplay }}</p>
-			<!-- Default display if no content is provided -->
-			<p v-if="hasNoContent">Rest</p>
-		</div>
-
-		<div v-if="hasVisualMedia" id="visual-media-area" class="experiment-state-division state-division-visual-media">
-			<visual-piano v-if="hasInteractivePiano" />
-			<img id="cue-img" v-else :src="urlExperimentRessource(pictureName)" alt="Rest" />
-		</div>
-
-		<div id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text">
-			{{ footnote }}
-		</div>
+	<div id="rest-state" class="state-content-grid">
+		<text-area-component />
+		<image-area-component />
+		<piano-area-component />
 	</div>
 </template>
 
 <script>
+import '@/styles/experiment-content-template.css';
 import { mapGetters } from 'vuex';
 
-import '@/styles/experimentStateTemplate.css';
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
-
-import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
+import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
+import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';
+import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
-		visualPiano: VisualPiano,
+		ImageAreaComponent,
+		PianoAreaComponent,
+		TextAreaComponent,
 	},
 	props: {
 		lastPressedKey: {
@@ -47,32 +39,10 @@ export default {
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
-		...mapGetters('experiment', ['pictureName', 'timeoutInSeconds']),
-		...mapGetters('experiment', [
-			'hasNoContent',
-			'hasInteractivePiano',
-			'hasText',
-			'hasVisualMedia',
-			'hasFootnote',
-			'textContent',
-			'pictureName',
-			'timeoutInSeconds',
-			'footnoteMessage',
-		]),
-		gridClass() {
-			if (this.hasFootnote) {
-				if (this.hasText && this.hasVisualMedia) return 'grid-area-area-note';
-				else return 'grid-area-note';
-			} else if (this.hasText && this.hasVisualMedia) return 'grid-area-area';
-			else return 'grid-single-area';
-		},
+		...mapGetters('experiment', ['timeoutInSeconds']),
 		textToDisplay() {
 			if (this.hasNoContent) return '';
 			else return this.textContent;
-		},
-		footnote() {
-			if (this.footnoteMessage) return this.footnoteMessage;
-			return `The experiment will go to the next step in ${this.timeLeftDisplay}`;
 		},
 		timeLimitInMiliseconds() {
 			return (this.timeoutInSeconds || this.defaultTimeLimitInSeconds) * 1000;
@@ -89,6 +59,10 @@ export default {
 		},
 	},
 	methods: {
+		updateFootnote() {
+			const footnoteMessage = `The experiment will go to the next step in ${this.timeLeftDisplay}`;
+			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
+		},
 		startCountdown() {
 			// This.timeLeftInMilliseconds = this.timeLimitInSeconds * 1000;
 			this.referenceTime = Date.parse(new Date());
@@ -107,10 +81,8 @@ export default {
 	},
 	watch: {
 		timeLeftInMilliseconds(value) {
-			// When the time is over we indicate the end of the playing state
-			if (value <= 0) {
-				ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
-			}
+			this.updateFootnote();
+			if (value <= 0) ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 		},
 	},
 };
