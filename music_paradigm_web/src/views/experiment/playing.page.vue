@@ -1,7 +1,6 @@
 <template>
 	<div id="playing-state" class="standard-state-content-grid" :class="gridClass">
-		<start-signal-timer v-if="isWaitingStartSignal" class="experiment-state-division state-division-text" />
-		<div v-if="!isWaitingStartSignal && hasText" id="text-area" class="experiment-state-division state-division-text">
+		<div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">
 			{{ textContent }}
 		</div>
 
@@ -19,14 +18,12 @@ import { mapActions, mapGetters } from 'vuex';
 import PlayingMelodyComponent from '@/components/experiment/playing-mode/playing-melody.component';
 import PlayingRhythmComponent from '@/components/experiment/playing-mode/playing-rhythm.component';
 import PlayingSpeedComponent from '@/components/experiment/playing-mode/playing-speed.component';
-import StartSignalTimer from '@/components/experiment/timer/start-signal-timer.component.vue';
 
 export default {
 	components: {
 		speed: PlayingSpeedComponent,
 		rhythm: PlayingRhythmComponent,
 		melody: PlayingMelodyComponent,
-		startSignalTimer: StartSignalTimer,
 	},
 	data() {
 		return {
@@ -36,13 +33,10 @@ export default {
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['hasSuccess']),
-		...mapGetters('experiment', ['hasText', 'hasFootnote', 'textContent', 'playingMode', 'startSignal']),
+		...mapGetters('experiment', ['hasText', 'hasFootnote', 'textContent', 'playingMode']),
 		gridClass() {
 			if (this.hasText) return 'grid-small-area-big-area';
 			else return 'grid-single-area';
-		},
-		isWaitingStartSignal() {
-			return this.startSignal > 0 && !this.hasReceivedStartSignal;
 		},
 	},
 	methods: {
@@ -70,10 +64,10 @@ export default {
 		this.updateFootnote();
 	},
 	mounted() {
-		ExperimentEventBus.$on('start-signal-ready', this.startPerformance);
+		ExperimentEventBus.$on(experimentEvents.EVENT_START_SIGNAL_READY, this.startPerformance);
 	},
 	beforeDestroy() {
-		ExperimentEventBus.$off('start-signal-ready', this.startPerformance);
+		ExperimentEventBus.$off(experimentEvents.EVENT_START_SIGNAL_READY, this.startPerformance);
 	},
 };
 </script>

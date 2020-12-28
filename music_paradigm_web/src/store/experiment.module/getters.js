@@ -313,4 +313,8 @@ export default {
 	isSkipButtonInFootnote: (state) => {
 		return state.state.settings.footnote && state.state.settings.footnoteType === 'button' && state.state.settings.isSkipStepButtonInFootnote;
 	},
+
+	isWaitingStartSignal: (state) => {
+		return Boolean(state.state.settings.startSignal);
+	},
 };

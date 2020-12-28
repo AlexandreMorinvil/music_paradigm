@@ -1,17 +1,19 @@
 <template>
-	<div id="signal">
-		{{ timerDisplay }}
+	<div v-if="isSignalBeingWaited" id="signal">
+		START IN :
+		<br />{{ timerDisplay }}
 	</div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
-import { ExperimentEventBus } from '@/_services/experiment-event-bus.service.js';
+import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 
 export default {
 	data() {
 		return {
+			isSignalBeingWaited: true,
 			soundCount: null,
 			soundStart: null,
 			counterUniqueIdentifier: 0,
@@ -23,12 +25,13 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['startSignal']),
+		...mapGetters('experiment', ['isWaitingStartSignal', 'startSignal']),
 		timerDisplay() {
 			return this.seconds || 'Start';
 		},
 	},
 	methods: {
+		...mapActions('piano', ['pausePiano', 'unPausePiano']),
 		setTime(value) {
 			this.cumulatedTime = value * 1000;
 			this.totalTime = this.cumulatedTime;
@@ -50,8 +53,13 @@ export default {
 	mounted() {
 		this.soundCount = new Audio('beep-count.wav');
 		this.soundStart = new Audio('beep-start.wav');
+		this.soundCount.volume = 0.15;
+		this.soundStart.volume = 0.15;
 		this.setTime(this.startSignal);
-		this.startTimer();
+		if (this.isWaitingStartSignal) {
+			this.pausePiano();
+			this.startTimer();
+		}
 	},
 	beforeDestroy() {
 		window.clearInterval(this.counterUniqueIdentifier);
@@ -61,8 +69,10 @@ export default {
 			if (value <= 0) {
 				window.clearInterval(this.counterUniqueIdentifier);
 				this.soundStart.play();
-				ExperimentEventBus.$emit('start-signal-ready');
+				this.unPausePiano();
+				ExperimentEventBus.$emit(experimentEvents.EVENT_START_SIGNAL_READY);
 				this.setTime(0);
+				this.isSignalBeingWaited = false;
 			} else {
 				this.seconds = Math.floor(value / 1000);
 				this.soundCount.play();

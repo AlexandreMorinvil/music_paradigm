@@ -21,7 +21,7 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import '@/styles/experimentStateTemplate.css';
+import '@/styles/experiment-content-template.css';
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 
 import FeedbackGradeComponent from '@/components/experiment/feedback/feedback-grade.component.vue';
@@ -52,7 +52,7 @@ export default {
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['grades', 'pressedKeys']),
-		...mapGetters('experiment', ['hasText', 'hasFootnote', 'textContent', 'anyPianoKey', 'successFeedbackMessage', 'failureFeedbackMessage']),
+		...mapGetters('experiment', ['hasText', 'anyPianoKey', 'successFeedbackMessage', 'failureFeedbackMessage']),
 		gridClass() {
 			if (this.hasText) return 'grid-small-area-big-area';
 			else return 'grid-single-area';

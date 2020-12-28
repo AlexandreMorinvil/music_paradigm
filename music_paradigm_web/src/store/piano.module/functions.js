@@ -2,6 +2,7 @@
 export default {
 	clearMidiFileNotes,
 	multiplyMidiFileNotes,
+	selectConsideredNotes,
 };
 
 function clearMidiFileNotes(state) {
@@ -27,5 +28,19 @@ function multiplyMidiFileNotes(state, multiplier) {
 		notes.velocity = notes.velocity.concat(state.midiFile.notes.velocity);
 		notes.duration = notes.duration.concat(state.midiFile.notes.duration);
 	}
+	return notes;
+}
+
+function selectConsideredNotes(allNotes, startIndex) {
+	const notes = JSON.parse(JSON.stringify(allNotes));
+
+	notes.midi = notes.midi.splice(0, startIndex);
+	notes.time = notes.time.splice(0, startIndex);
+	notes.name = notes.name.splice(0, startIndex);
+	notes.pitch = notes.pitch.splice(0, startIndex);
+	notes.octave = notes.octave.splice(0, startIndex);
+	notes.velocity = notes.velocity.splice(0, startIndex);
+	notes.duration = notes.duration.splice(0, startIndex);
+
 	return notes;
 }

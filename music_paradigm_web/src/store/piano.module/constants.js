@@ -7,6 +7,7 @@ function DEFAULT_PIANO_STATE_VALUES() {
 		// Indicator of whether or not the virtual piano is ready to be used
 		isPianoInitialized: false,
 		isPianoInitializing: false,
+		isPianoPaused: false,
 
 		// The player instance
 		player: null,
@@ -46,6 +47,7 @@ function DEFAULT_PIANO_STATE_VALUES() {
 
 			evaluation: {
 				type: '',
+				consideredStart: 0, // First note considered (to ignore the notes played during a pause)
 				results: null, // { metric: Type, ... }
 				grades: null, // [ { criteria: String, isPassing: Boolean, mark: Number, passMark: Number, topMark: Number} ]
 			},

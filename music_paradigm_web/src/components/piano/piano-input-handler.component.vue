@@ -23,7 +23,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('piano', ['isPianoInitialized', 'isPianoInitializing', 'pressedKeys', 'midiFileNotesName']),
+		...mapGetters('piano', ['isPianoInitialized', 'isPianoInitializing', 'isPianoPaused', 'pressedKeys', 'midiFileNotesName']),
 		...mapGetters('experiment', ['timbreFile', 'enableSoundFlag']),
 	},
 	methods: {
@@ -52,7 +52,7 @@ export default {
 		manageMidiNote(midiNote) {
 			const midiMessage = {
 				type: midiNote.data[0] === 144 ? 'Note On' : 'Note Off',
-				note: midiNote.data[1] + 12,
+				note: midiNote.data[1],
 				velocity: midiNote.data[2],
 			};
 
@@ -70,7 +70,7 @@ export default {
 					}
 
 					// We activate the specified note
-					if (this.enableSoundFlag) this.playNote(midiMessage.note);
+					if (this.enableSoundFlag && !this.isPianoPaused) this.playNote(midiMessage.note);
 					this.recordKeyPress(midiMessage);
 					break;
 

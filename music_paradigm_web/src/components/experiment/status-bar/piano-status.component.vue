@@ -14,17 +14,19 @@ import { mapGetters } from 'vuex';
 
 export default {
 	computed: {
-		...mapGetters('piano', ['isPianoInitialized']),
+		...mapGetters('piano', ['isPianoInitialized', 'isPianoPaused']),
 		...mapGetters('experiment', ['enableSoundFlag']),
 		soundStatus() {
 			// If this value is not evaluted, the midi handling is not compatible
 			if (!navigator.requestMIDIAccess) return 'ERROR';
 			else if (!this.isPianoInitialized) return 'LOAD...';
+			else if (this.isPianoPaused) return 'WAIT';
 			else return this.enableSoundFlag ? 'ON' : 'OFF';
 		},
 		color() {
 			if (!navigator.requestMIDIAccess) return 'error';
 			if (!this.isPianoInitialized) return 'not-ready';
+			else if (this.isPianoPaused) return 'paused';
 			return this.enableSoundFlag ? 'active' : 'inactive';
 		},
 	},
@@ -49,6 +51,12 @@ export default {
 	stroke: rgb(0, 200, 0);
 	fill: rgb(0, 200, 0);
 	color: rgb(0, 200, 0);
+}
+
+.paused {
+	stroke: rgb(200, 100, 0);
+	fill: rgb(200, 100, 0);
+	color: rgb(200, 100, 0);
 }
 
 .inactive,

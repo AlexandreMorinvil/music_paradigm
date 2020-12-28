@@ -9,6 +9,16 @@ export default {
 		Object.assign(state, constants.DEFAULT_PIANO_STATE_VALUES());
 	},
 
+	// Pausing the piano
+	pausePiano: (state) => {
+		state.isPianoPaused = true;
+	},
+
+	unPausePiano: (state) => {
+		state.isPianoPaused = false;
+		state.played.evaluation.consideredStart = state.played.notes.midi.length;
+	},
+
 	// Mutation on isPianoInitialized
 	setInitializedState: (state, isInitialized) => {
 		state.isPianoInitialized = isInitialized || false;
@@ -95,6 +105,7 @@ export default {
 		// in a "Feedback" state at any point, until the next evaluation of performances
 		state.played.evaluation.type = '';
 		state.played.evaluation.results = null;
+		state.played.evaluation.consideredStart = 0;
 	},
 
 	// Mutations on the midi files data
@@ -128,8 +139,10 @@ export default {
 
 	// Mutations for note performance evaluation
 	evaluateSpeedType: (state) => {
+		const consideredPlayedNotes = functions.selectConsideredNotes(state.played.notes, state.played.evaluation.consideredStart);
+
 		// Evaluate the performance according to get specific metrics
-		Object.assign(state.played.evaluation, notePerformance.evaluateSpeedType(state.midiFile.notes, state.played.notes));
+		Object.assign(state.played.evaluation, notePerformance.evaluateSpeedType(state.midiFile.notes, consideredPlayedNotes));
 
 		// Grade the performance according to obtained metrics to provide feedback
 		state.played.evaluation.grades = notePerformance.gradeSpeedType(state.played.evaluation.results, {
@@ -138,8 +151,10 @@ export default {
 	},
 
 	evaluateRhythmType: (state) => {
+		const consideredPlayedNotes = functions.selectConsideredNotes(state.played.notes, state.played.evaluation.consideredStart);
+
 		// Evaluate the performance according to get specific metrics
-		Object.assign(state.played.evaluation, notePerformance.evaluateRhythmType(state.midiFile.notes, state.played.notes));
+		Object.assign(state.played.evaluation, notePerformance.evaluateRhythmType(state.midiFile.notes, consideredPlayedNotes));
 
 		// Grade the performance according to obtained metrics to provide feedback
 		state.played.evaluation.grades = notePerformance.gradeRhythmType(state.played.evaluation.results, {
@@ -149,10 +164,11 @@ export default {
 	},
 
 	evaluateMelodyType: (state, melodyRepetion) => {
+		const consideredPlayedNotes = functions.selectConsideredNotes(state.played.notes, state.played.evaluation.consideredStart);
 		const reference = functions.multiplyMidiFileNotes(state, melodyRepetion);
 
 		// Evaluate the performance according to get specific metrics
-		Object.assign(state.played.evaluation, notePerformance.evaluateMelodyType(reference, state.played.notes));
+		Object.assign(state.played.evaluation, notePerformance.evaluateMelodyType(reference, consideredPlayedNotes));
 
 		// Grade the performance according to obtained metrics to provide feedback
 		state.played.evaluation.grades = notePerformance.gradeMelodyType(state.played.evaluation.results, {

@@ -14,6 +14,16 @@ export default {
 		commit('setInitializingState', isInitializing);
 	},
 
+	// Pausing the piano
+	pausePiano: ({ commit }) => {
+		commit('pausePiano');
+	},
+
+	// Pausing the piano
+	unPausePiano: ({ commit }) => {
+		commit('unPausePiano');
+	},
+
 	// Player actions
 	setPlayer: ({ commit }, player) => {
 		commit('setPlayer', player);

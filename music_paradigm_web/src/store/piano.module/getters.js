@@ -8,6 +8,10 @@ export default {
 		return state.isPianoInitializing;
 	},
 
+	isPianoPaused: (state) => {
+		return state.isPianoPaused;
+	},
+
 	// Getteer for the Midi File loading status
 	isMidiFileLoaded: (state) => {
 		return state.midiFile.isLoaded;

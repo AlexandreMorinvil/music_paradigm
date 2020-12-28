@@ -36,7 +36,15 @@ export default {
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
-		...mapGetters('experiment', ['hasVisualMedia', 'hasPicture', 'hasInteractivePiano', 'pictureName', 'timeoutInSeconds', 'melodyRepetition']),
+		...mapGetters('experiment', [
+			'hasVisualMedia',
+			'hasPicture',
+			'hasInteractivePiano',
+			'pictureName',
+			'timeoutInSeconds',
+			'melodyRepetition',
+			'isWaitingStartSignal',
+		]),
 		...mapGetters('piano', ['midiFileNotesMidi', 'playedNotesMidi']),
 		timeLimit() {
 			return this.timeoutInSeconds || this.defaultTimeLimitInSeconds;
@@ -90,20 +98,14 @@ export default {
 	},
 	watch: {
 		playedNotesMidi() {
-			if (!this.playingStarted) {
-				this.start();
-			}
-			if (this.midiFileNotesMidi.includes(this.playedNotesMidi[this.playedNotesMidi.length - 1])) {
-				this.playProgress += 1;
-			}
+			if (this.isWaitingStartSignal) return;
+			else if (!this.playingStarted) this.start();
+			else if (this.midiFileNotesMidi.includes(this.playedNotesMidi[this.playedNotesMidi.length - 1])) this.playProgress += 1;
 		},
 		timeLeftInMilliseconds(value) {
 			// When the time is over we indicate the end of the playing state
-			if (value <= 0) {
-				this.$emit('finishedPlaying');
-			} else {
-				this.updateFootnote(true);
-			}
+			if (value <= 0) this.$emit('finishedPlaying');
+			else this.updateFootnote(true);
 		},
 	},
 };
