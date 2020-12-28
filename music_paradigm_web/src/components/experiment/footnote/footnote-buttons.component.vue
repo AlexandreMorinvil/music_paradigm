@@ -1,37 +1,28 @@
 <template>
 	<div class="button-grid">
-		<button v-on:click="emitAdvanceSignal">{{ message }}</button>
-		<skip-button />
+		<button v-on:click="emitAdvanceSignal"><footnote-message-component /></button>
+		<skip-button-component />
 	</div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 
-import { ExperimentEventBus } from '@/_services/experiment-event-bus.service.js';
-import SkipButton from '@/components/experiment/element/skip-button.vue';
+import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
+import FootnoteMessageComponent from '@/components/experiment/footnote/footnote-message.component.vue';
+import SkipButtonComponent from '@/components/experiment/element/skip-button.component.vue';
 
 export default {
 	components: {
-		skipButton: SkipButton,
-	},
-	props: {
-		message: {
-			type: String,
-			default() {
-				return '';
-			},
-		},
-	},
-	data() {
-		return {};
+		FootnoteMessageComponent,
+		SkipButtonComponent,
 	},
 	computed: {
 		...mapGetters('experiment', ['skipStepButton', 'skipStepButtonMessage']),
 	},
 	methods: {
 		emitAdvanceSignal() {
-			ExperimentEventBus.$emit('advance-request');
+			ExperimentEventBus.$emit(experimentEvents.EVENT_ADVANCE_REQUEST);
 		},
 	},
 };

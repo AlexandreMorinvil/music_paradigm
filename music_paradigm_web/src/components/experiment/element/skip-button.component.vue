@@ -5,7 +5,7 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import { ExperimentEventBus } from '@/_services/experiment-event-bus.service.js';
+import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 
 export default {
 	data() {
@@ -23,7 +23,7 @@ export default {
 	},
 	methods: {
 		emitSkipSignal() {
-			ExperimentEventBus.$emit('skip-request');
+			ExperimentEventBus.$emit(experimentEvents.EVENT_SKIP_REQUET);
 		},
 		verifySkipButton(event) {
 			if (event.key.toUpperCase() === this.skipStepButtonValue) this.emitSkipSignal();

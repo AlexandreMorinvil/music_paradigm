@@ -27,13 +27,19 @@ export default {
 	},
 	computed: {
 		...mapGetters('piano', ['isPianoInitialized']),
-		footnote() {
-			return 'Please wait a moment';
-		},
 		textToDisplay() {
 			if (!this.isPianoInitialized) return 'Loading...';
 			else return 'Ready';
 		},
+	},
+	methods: {
+		updateFootnote() {
+			const footnoteMessage = 'Please wait a moment';
+			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
+		},
+	},
+	beforeMount() {
+		this.updateFootnote();
 	},
 	watch: {
 		isPianoInitialized: {

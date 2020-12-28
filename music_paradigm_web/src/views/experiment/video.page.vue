@@ -1,15 +1,5 @@
 <template>
 	<div id="video-state" class="experiment-state-container grid-area-area-note" :class="gridClass">
-		<img
-			v-if="hasHelperImage"
-			id="helper-img"
-			:src="urlExperimentRessource(helperImageName)"
-			alt="Helper"
-			class="helper"
-		/>
-
-		<skip-button v-if="hasSkipOption" class="skip-button" v-on:skip-request="emitSkipSignal" />
-
 		<div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">
 			{{ textContent }}
 		</div>
@@ -17,11 +7,7 @@
 		<div id="visual-media-area" class="experiment-state-division state-division-visual-media">
 			<div class="visual-media-board">
 				<div class="video-box">
-					<div
-						v-show="!isPlaying"
-						class="video-hidding-thumbnail"
-						:style="videoWidthCSSvariable + ';' + videoHeightCSSvariable"
-					>
+					<div v-show="!isPlaying" class="video-hidding-thumbnail" :style="videoWidthCSSvariable + ';' + videoHeightCSSvariable">
 						{{ videoWaitingMessage }}
 					</div>
 					<video-player
@@ -49,14 +35,12 @@
 <script>
 import '@/styles/experimentStateTemplate.css';
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
-import SkipButton from '@/components/experiment/element/skip-button.vue';
 import VideoPlayer from '@/components/experiment/video/video-player.component.vue';
 import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
 import { mapGetters } from 'vuex';
 
 export default {
 	components: {
-		skipButton: SkipButton,
 		visualPiano: VisualPiano,
 		VideoPlayer: VideoPlayer,
 	},
@@ -92,18 +76,7 @@ export default {
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
-		...mapGetters('experiment', [
-			'hasInteractivePiano',
-			'hasText',
-			'hasFootnote',
-			'hasHelperImage',
-			'hasSkipOption',
-			'textContent',
-			'videoName',
-			'helperImageName',
-			'skipStepButton',
-			'footnoteMessage',
-		]),
+		...mapGetters('experiment', ['hasInteractivePiano', 'hasText', 'hasFootnote', 'textContent', 'videoName', 'footnoteMessage']),
 		gridClass() {
 			if (this.hasFootnote) {
 				if (this.hasText) return 'grid-small-area-big-area-note';
@@ -171,10 +144,7 @@ export default {
 			this.counterUniqueIdentifier = window.setInterval(this.countdown, this.timeStepInMilliseconds);
 		},
 		countdown() {
-			this.delayLeftInMilliseconds = Math.max(
-				this.playbackDelayInSeconds * 1000 - (Date.now() - this.referenceTime),
-				0,
-			);
+			this.delayLeftInMilliseconds = Math.max(this.playbackDelayInSeconds * 1000 - (Date.now() - this.referenceTime), 0);
 		},
 		manageHavingNoVideo() {
 			setTimeout(() => {
@@ -184,9 +154,6 @@ export default {
 		startVideo() {
 			this.isPlaying = true;
 			this.$refs.video.playerPlay();
-		},
-		emitSkipSignal() {
-			this.$emit('skip-request');
 		},
 	},
 	mounted() {
@@ -203,9 +170,6 @@ export default {
 				window.clearInterval(this.counterUniqueIdentifier);
 				this.startVideo();
 			}
-		},
-		lastPressedKey(lastPressedKey) {
-			if (this.hasSkipOption && lastPressedKey === this.skipStepButton) this.emitSkipSignal();
 		},
 	},
 };

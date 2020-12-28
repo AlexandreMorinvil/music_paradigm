@@ -41,18 +41,22 @@ export default {
 		...mapGetters('experiment', ['anyPianoKey']),
 	},
 	methods: {
-		emitStateEndedSignal() {
-			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
-		},
 		updateFootnote() {
 			let footnoteMessage = '';
 			if (this.anyPianoKey) footnoteMessage = 'Press any piano key or the space bar for going to the next step';
 			else footnoteMessage = 'Press the space bar for going to the next step';
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
+		emitStateEndedSignal() {
+			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
+		},
 	},
 	beforeMount() {
 		this.updateFootnote();
+		ExperimentEventBus.$on(experimentEvents.EVENT_ADVANCE_REQUEST, this.emitStateEndedSignal);
+	},
+	beforeDestroy() {
+		ExperimentEventBus.$off(experimentEvents.EVENT_ADVANCE_REQUEST, this.emitStateEndedSignal);
 	},
 	watch: {
 		isSpaceBarPressed(isPressed) {

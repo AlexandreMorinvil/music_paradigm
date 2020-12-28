@@ -7,10 +7,6 @@
 		<div v-if="hasVisualMedia" id="visual-media-area" class="experiment-state-division state-division-visual-media">
 			<img id="end-img" :src="urlExperimentRessource(pictureName)" alt="Instruction" />
 		</div>
-
-		<div id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text">
-			{{ footnote }}
-		</div>
 	</div>
 </template>
 
@@ -35,16 +31,7 @@ export default {
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['pressedKeys']),
-		...mapGetters('experiment', [
-			'hasNoContent',
-			'hasText',
-			'hasVisualMedia',
-			'hasFootnote',
-			'pictureName',
-			'textContent',
-			'anyPianoKey',
-			'footnoteMessage',
-		]),
+		...mapGetters('experiment', ['hasNoContent', 'hasText', 'hasVisualMedia', 'hasFootnote', 'pictureName', 'textContent', 'anyPianoKey']),
 		gridClass() {
 			if (this.hasFootnote) {
 				if (this.hasText && this.hasVisualMedia) return 'grid-area-area-note';
@@ -56,11 +43,17 @@ export default {
 			if (this.textContent === '') return 'End';
 			else return this.textContent;
 		},
-		footnote() {
-			if (this.footnoteMessage) return this.footnoteMessage;
-			if (this.anyPianoKey) return 'Press any piano key or the space bar for ending the experiment';
-			else return 'Press the space bar for ending the experiment';
+	},
+	methods: {
+		updateFootnote() {
+			let footnoteMessage = '';
+			if (this.anyPianoKey) footnoteMessage = 'Press any piano key or the space bar for ending the experiment';
+			else footnoteMessage = 'Press the space bar for ending the experiment';
+			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
+	},
+	beforeMount() {
+		this.updateFootnote();
 	},
 	watch: {
 		isSpaceBarPressed(isPressed) {

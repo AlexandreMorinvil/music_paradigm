@@ -1,15 +1,5 @@
 <template>
 	<div id="feedback-state" class="experiment-state-container" :class="gridClass">
-		<img
-			v-if="hasHelperImage"
-			id="helper-img"
-			:src="urlExperimentRessource(helperImageName)"
-			alt="Helper"
-			class="helper"
-		/>
-
-		<skip-button v-if="hasSkipOption && !isSkipButtonInFootnote" class="skip-button" />
-
 		<div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">
 			{{ textContent }}
 		</div>
@@ -28,13 +18,6 @@
 				{{ failureFeedbackMessage }}
 			</div>
 		</div>
-
-		<footnote
-			id="note-area"
-			v-if="hasFootnote"
-			class="experiment-state-division state-division-text"
-			:message="footnote"
-		/>
 	</div>
 </template>
 
@@ -45,14 +28,10 @@ import '@/styles/experimentStateTemplate.css';
 
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 import FeedbackGrade from '@/components/experiment/feedback/feedback-grade.component.vue';
-import Footnote from '@/components/experiment/footnote/Footnote.vue';
-import SkipButton from '@/components/experiment/element/skip-button.vue';
 
 export default {
 	components: {
 		feedbackGrade: FeedbackGrade,
-		skipButton: SkipButton,
-		footnote: Footnote,
 	},
 	props: {
 		lastPressedKey: {
@@ -74,31 +53,13 @@ export default {
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['grades', 'pressedKeys']),
-		...mapGetters('experiment', [
-			'hasText',
-			'hasFootnote',
-			'hasHelperImage',
-			'hasSkipOption',
-			'textContent',
-			'helperImageName',
-			'anyPianoKey',
-			'skipStepButton',
-			'successFeedbackMessage',
-			'failureFeedbackMessage',
-			'footnoteMessage',
-			'isSkipButtonInFootnote',
-		]),
+		...mapGetters('experiment', ['hasText', 'hasFootnote', 'textContent', 'anyPianoKey', 'successFeedbackMessage', 'failureFeedbackMessage']),
 		gridClass() {
 			if (this.hasFootnote) {
 				if (this.hasText) return 'grid-small-area-big-area-note';
 				else return 'grid-area-note';
 			} else if (this.hasText) return 'grid-small-area-big-area';
 			else return 'grid-single-area';
-		},
-		footnote() {
-			if (this.footnoteMessage) return this.footnoteMessage;
-			if (this.anyPianoKey) return 'Press any piano key or the space bar for going to the next step';
-			else return 'Press the space bar for going to the next step';
 		},
 		hasGrades() {
 			if (Array.isArray(this.grades) && this.grades.length > 0) return true;
@@ -119,15 +80,21 @@ export default {
 		},
 	},
 	methods: {
+		updateFootnote() {
+			let footnoteMessage = '';
+			if (this.anyPianoKey) footnoteMessage = 'Press any piano key or the space bar for going to the next step';
+			else footnoteMessage = 'Press the space bar for going to the next step';
+			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
+		},
 		emitStateEndedSignal() {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 		},
 	},
 	mounted() {
-		ExperimentEventBus.$on('advance-request', this.emitStateEndedSignal);
+		ExperimentEventBus.$on(experimentEvents.EVENT_ADVANCE_REQUEST, this.emitStateEndedSignal);
 	},
 	beforeDestroy() {
-		ExperimentEventBus.$off('advance-request', this.emitStateEndedSignal);
+		ExperimentEventBus.$off(experimentEvents.EVENT_ADVANCE_REQUEST, this.emitStateEndedSignal);
 	},
 	watch: {
 		isSpaceBarPressed(isPressed) {

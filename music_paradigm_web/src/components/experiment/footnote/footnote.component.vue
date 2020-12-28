@@ -7,21 +7,13 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import FootnoteButton from '@/components/experiment/footnote/FootnoteButton.vue';
-import FootnoteSimple from '@/components/experiment/footnote/FootnoteSimple.vue';
+import FootnoteButtonsComponent from '@/components/experiment/footnote/footnote-buttons.component.vue';
+import FootnoteMessageComponent from '@/components/experiment/footnote/footnote-message.component.vue';
 
 export default {
 	components: {
-		footnoteSimple: FootnoteSimple,
-		footnoteButton: FootnoteButton,
-	},
-	props: {
-		message: {
-			type: String,
-			default() {
-				return '';
-			},
-		},
+		footnoteSimple: FootnoteMessageComponent,
+		footnoteButton: FootnoteButtonsComponent,
 	},
 	computed: {
 		...mapGetters('experiment', ['footnoteType']),

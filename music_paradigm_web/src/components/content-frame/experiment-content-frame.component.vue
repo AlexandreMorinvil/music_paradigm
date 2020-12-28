@@ -1,20 +1,18 @@
 <template>
 	<div id="content-frame" class="experiment-content-container experiment-content-grid">
-		<img v-if="hasHelperImage" id="helper-img" :src="urlExperimentRessource(helperImageName)" alt="Helper" class="helper" />
-
-		<skip-button v-if="hasSkipOption && !isSkipButtonInFootnote" class="skip-button" />
+		<helper-image-component v-if="hasHelperImage" class="helper" />
+		<skip-button-component v-if="hasSkipOption && !isSkipButtonInFootnote" class="skip-button" />
 
 		<router-view
-			style="background-color: pink"
 			:class="hasFootnote ? 'content-size-limit-with-footnote' : 'content-size-limit-no-footnote'"
 			:lastPressedKey="lastPressedKey"
 			:isSpaceBarPressed="isSpaceBarPressed"
 		/>
 
-		<footnote
+		<footnote-component
 			style="background-color: green"
 			v-if="hasFootnote"
-			class="experiment-state-division state-division-text"
+			class="experiment-state-division state-division-text footnote-size"
 			v-on:footnote="handleFootnote"
 			:message="footnote"
 		/>
@@ -23,14 +21,16 @@
 
 <script>
 import '@/styles/experiment-content-template.css';
-import Footnote from '@/components/experiment/footnote/Footnote.vue';
-import SkipButton from '@/components/experiment/element/skip-button.vue';
+import FootnoteComponent from '@/components/experiment/footnote/footnote.component.vue';
+import HelperImageComponent from '@/components/experiment/element/helper-image.component.vue';
+import SkipButtonComponent from '@/components/experiment/element/skip-button.component.vue';
 import { mapGetters } from 'vuex';
 
 export default {
 	components: {
-		skipButton: SkipButton,
-		footnote: Footnote,
+		HelperImageComponent,
+		SkipButtonComponent,
+		FootnoteComponent,
 	},
 	props: {
 		lastPressedKey: {
@@ -46,19 +46,10 @@ export default {
 			},
 		},
 	},
-	data() {
-		return {
-			footnote: 'abc',
-		};
-	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['pressedKeys']),
-		...mapGetters('experiment', ['hasFootnote', 'hasHelperImage', 'hasSkipOption', 'helperImageName', 'isSkipButtonInFootnote']),
-		footnoteGridClass() {
-			if (this.hasFootnote) return 'grid-with-footnote';
-			else return 'grid-without-footnote';
-		},
+		...mapGetters('experiment', ['hasFootnote', 'hasHelperImage', 'hasSkipOption', 'helperImageName', 'isSkipButtonInFootnote', 'skipStepButton']),
 	},
 	methods: {
 		handleFootnote(footNote) {
@@ -94,11 +85,6 @@ export default {
 	grid-template-columns: 1fr;
 	grid-template-rows: minmax(0, 1fr);
 	grid-row-gap: 2.5%;
-}
-
-.footnot-size {
-	max-height: 12.5%;
-	height: 12.5%;
 }
 
 .helper {

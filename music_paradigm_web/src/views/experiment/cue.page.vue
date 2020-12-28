@@ -1,9 +1,5 @@
 <template>
 	<div id="cue-state" class="experiment-state-container" :class="gridClass">
-		<img v-if="hasHelperImage" id="helper-img" :src="urlExperimentRessource(helperImageName)" alt="Helper" class="helper" />
-
-		<skip-button v-if="hasSkipOption" class="skip-button" v-on:skip-request="emitSkipSignal" />
-
 		<div v-if="hasText || hasNoContent" id="text-area" class="experiment-state-division state-division-text">
 			{{ textToDisplay }}
 		</div>
@@ -11,10 +7,6 @@
 		<div v-if="hasVisualMedia" id="visual-media-area" class="experiment-state-division state-division-visual-media">
 			<visual-piano v-if="hasInteractivePiano" />
 			<img id="cue-img" v-else :src="urlExperimentRessource(pictureName)" alt="Cue" />
-		</div>
-
-		<div id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text">
-			{{ footnote }}
 		</div>
 	</div>
 </template>
@@ -24,13 +16,11 @@ import '@/styles/experimentStateTemplate.css';
 import { mapActions, mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
-import SkipButton from '@/components/experiment/element/skip-button.vue';
 import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
 
 export default {
 	components: {
 		visualPiano: VisualPiano,
-		skipButton: SkipButton,
 	},
 	props: {
 		lastPressedKey: {
@@ -55,14 +45,9 @@ export default {
 			'hasInteractivePiano',
 			'hasText',
 			'hasVisualMedia',
-			'hasFootnote',
-			'hasHelperImage',
-			'hasSkipOption',
 			'pictureName',
 			'textContent',
-			'helperImageName',
-			'skipStepButton',
-			'footnoteMessage',
+			'hasFootnote',
 		]),
 		gridClass() {
 			if (this.hasFootnote) {
@@ -71,14 +56,6 @@ export default {
 			} else if (this.hasText && this.hasVisualMedia) return 'grid-area-big-area';
 			else return 'grid-single-area';
 		},
-		footnote() {
-			if (this.footnoteMessage) return this.footnoteMessage;
-			let noteMessage = '';
-			if (this.midiName === '')
-				noteMessage = `There is no melody to be played, the experiment will automatically  go to the next step in ${this.errorAutomaticTransitionSeconds} seconds`;
-			else noteMessage = 'The experiment will automatically go to the next step after the muscial cue';
-			return noteMessage;
-		},
 		textToDisplay() {
 			if (this.hasNoContent) return 'Cue';
 			else return this.textContent;
@@ -86,15 +63,22 @@ export default {
 	},
 	methods: {
 		...mapActions('piano', ['playMidiFile', 'addPlayerEndOfFileAction', 'removePlayerEndOfFileAction']),
+		updateFootnote() {
+			let footnoteMessage = '';
+			if (!this.midiName)
+				footnoteMessage = `There is no melody to be played, the experiment will automatically  go to the next step in ${this.errorAutomaticTransitionSeconds} seconds`;
+			else footnoteMessage = 'The experiment will automatically go to the next step after the muscial cue';
+			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
+		},
 		handleEndOfMidiFile() {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 		},
 		manageHavingNoMidiFile() {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 		},
-		emitSkipSignal() {
-			this.$emit('skip-request');
-		},
+	},
+	beforeMount() {
+		this.updateFootnote();
 	},
 	mounted() {
 		this.addPlayerEndOfFileAction(this.handleEndOfMidiFile);
@@ -103,9 +87,6 @@ export default {
 		this.removePlayerEndOfFileAction(this.handleEndOfMidiFile);
 	},
 	watch: {
-		lastPressedKey(lastPressedKey) {
-			if (this.hasSkipOption && lastPressedKey === this.skipStepButton) this.emitSkipSignal();
-		},
 		isMidiFileLoaded: {
 			immediate: true,
 			handler: function (isReady) {

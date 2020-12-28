@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 export default {
 	getMinimalValidExperimentStructure,
 	validateExperiment,
@@ -243,16 +244,14 @@ function validateAttributeType(key, value) {
 							element.forEach((subElement, subIndex) => {
 								if (!(typeof subElement === 'string' || typeof subElement === 'boolean')) {
 									throw new Error(
-										`The subelement number ${subIndex + 1} in the subarray of the element number ${
-											index + 1
+										`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1
 										} of the key '${key}' must be of type 'String' or boolean`,
 									);
 								}
 
 								if (typeof subElement === 'string' && !allowedEntries.includes(subElement)) {
 									throw new Error(
-										`The subelement number ${subIndex + 1} in the subarray of the element number ${
-											index + 1
+										`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1
 										} of the key '${key}' cannot have the value ${subElement}`,
 									);
 								}
@@ -275,8 +274,7 @@ function validateAttributeType(key, value) {
 							element.forEach((subElement, subIndex) => {
 								if (!(typeof subElement === 'string')) {
 									throw new Error(
-										`The subelement number ${subIndex + 1} in the subarray of the element number ${
-											index + 1
+										`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1
 										} of the key '${key}' must be of type 'String'`,
 									);
 								}
