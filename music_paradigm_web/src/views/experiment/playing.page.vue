@@ -6,11 +6,7 @@
 		</div>
 
 		<div id="visual-media-area" class="experiment-state-division state-division-visual-media">
-			<component :is="playingMode" v-on:footnote="handleFootnote" v-on:finishedPlaying="handdleEndOfPlaying" ref="playingMode" />
-		</div>
-
-		<div id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text">
-			{{ footnote }}
+			<component :is="playingMode" v-on:finishedPlaying="handdleEndOfPlaying" ref="playingMode" />
 		</div>
 	</div>
 </template>
@@ -32,24 +28,15 @@ export default {
 		melody: PlayingMelodyComponent,
 		startSignalTimer: StartSignalTimer,
 	},
-	props: {
-		lastPressedKey: {
-			type: String,
-			default() {
-				return '';
-			},
-		},
-	},
 	data() {
 		return {
-			footnote: 'The experiment will go to the next step after your performance',
 			hasReceivedStartSignal: false,
 		};
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['hasSuccess']),
-		...mapGetters('experiment', ['hasText', 'hasFootnote', 'textContent', 'playingMode', 'footnoteMessage', 'startSignal']),
+		...mapGetters('experiment', ['hasText', 'hasFootnote', 'textContent', 'playingMode', 'startSignal']),
 		gridClass() {
 			if (this.hasFootnote) {
 				if (this.hasText) return 'grid-small-area-big-area-note';
@@ -64,9 +51,9 @@ export default {
 	methods: {
 		...mapActions('experiment', ['addSuccess']),
 		...mapActions('log', ['createSimpleLog']),
-		handleFootnote(footNote) {
-			if (this.footnoteMessage) this.footnote = this.footnoteMessage;
-			else this.footnote = footNote;
+		updateFootnote() {
+			const footnoteMessage = 'The experiment will go to the next step after your performance';
+			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		handdleEndOfPlaying() {
 			this.evaluatePlayedNotes();
@@ -81,6 +68,9 @@ export default {
 			this.hasReceivedStartSignal = true;
 			this.$refs.playingMode.start();
 		},
+	},
+	beforeMount() {
+		this.updateFootnote();
 	},
 	mounted() {
 		ExperimentEventBus.$on('start-signal-ready', this.startPerformance);

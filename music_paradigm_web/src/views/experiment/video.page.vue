@@ -25,10 +25,6 @@
 				</div>
 			</div>
 		</div>
-
-		<div id="note-area" v-if="hasFootnote" class="experiment-state-division state-division-text">
-			{{ footnote }}
-		</div>
 	</div>
 </template>
 
@@ -76,22 +72,13 @@ export default {
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
-		...mapGetters('experiment', ['hasInteractivePiano', 'hasText', 'hasFootnote', 'textContent', 'videoName', 'footnoteMessage']),
+		...mapGetters('experiment', ['hasInteractivePiano', 'hasText', 'textContent', 'videoName']),
 		gridClass() {
 			if (this.hasFootnote) {
 				if (this.hasText) return 'grid-small-area-big-area-note';
 				else return 'grid-area-note';
 			} else if (this.hasText) return 'grid-small-area-big-area';
 			else return 'grid-single-area';
-		},
-		footnote() {
-			if (this.footnoteMessage) return this.footnoteMessage;
-			let noteMessage = '';
-			if (!this.hasVideo)
-				noteMessage = `There is no video to be played, the experiment will automatically  go to the next step in ${this.errorAutomaticTransitionSeconds} seconds`;
-			else return 'The experiment will automatically go to the next step after the video playback';
-
-			return noteMessage;
 		},
 		hasVideo() {
 			return this.videoName !== '';
@@ -133,6 +120,13 @@ export default {
 		},
 	},
 	methods: {
+		updateFootnote() {
+			let footnoteMessage = '';
+			if (!this.hasVideo)
+				footnoteMessage = `There is no video to be played, the experiment will automatically  go to the next step in ${this.errorAutomaticTransitionSeconds} seconds`;
+			else footnoteMessage = 'The experiment will automatically go to the next step after the video playback';
+			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
+		},
 		handdleEndOfVideo() {
 			setTimeout(() => {
 				ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
@@ -155,6 +149,9 @@ export default {
 			this.isPlaying = true;
 			this.$refs.video.playerPlay();
 		},
+	},
+	beforeMount() {
+		this.updateFootnote();
 	},
 	mounted() {
 		if (this.videoName === '') this.manageHavingNoVideo();

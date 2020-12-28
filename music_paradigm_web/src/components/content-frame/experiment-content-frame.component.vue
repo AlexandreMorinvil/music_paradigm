@@ -9,13 +9,7 @@
 			:isSpaceBarPressed="isSpaceBarPressed"
 		/>
 
-		<footnote-component
-			style="background-color: green"
-			v-if="hasFootnote"
-			class="experiment-state-division state-division-text footnote-size"
-			v-on:footnote="handleFootnote"
-			:message="footnote"
-		/>
+		<footnote-component style="background-color: green" v-if="hasFootnote" class="experiment-state-division state-division-text footnote-size" />
 	</div>
 </template>
 
@@ -50,12 +44,6 @@ export default {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['pressedKeys']),
 		...mapGetters('experiment', ['hasFootnote', 'hasHelperImage', 'hasSkipOption', 'helperImageName', 'isSkipButtonInFootnote', 'skipStepButton']),
-	},
-	methods: {
-		handleFootnote(footNote) {
-			if (this.footnoteMessage) this.footnote = this.footnoteMessage;
-			else this.footnote = footNote;
-		},
 	},
 };
 </script>

@@ -2,12 +2,7 @@
 	<div id="playing-speed-area" class="playing-area">
 		<div id="playing-visual-media" v-if="hasVisualMedia" class="playing-visual-media-area">
 			<visual-piano v-if="hasInteractivePiano" ref="piano" />
-			<img
-				id="playing-img"
-				v-if="!hasInteractivePiano && hasPicture"
-				:src="urlExperimentRessource(pictureName)"
-				alt="Playing"
-			/>
+			<img id="playing-img" v-if="!hasInteractivePiano && hasPicture" :src="urlExperimentRessource(pictureName)" alt="Playing" />
 		</div>
 
 		<div id="playing-progress-bar" class="playing-progress-bar-area">
@@ -19,6 +14,8 @@
 <script>
 import '@/styles/playingTemplate.css';
 import { mapActions, mapGetters } from 'vuex';
+
+import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
 
 export default {
@@ -76,13 +73,10 @@ export default {
 			this.timeLeftInMilliseconds = Math.max(this.timeLimitInMiliseconds - (Date.now() - this.referenceTime), 0);
 		},
 		updateFootnote(firstNotePressed) {
-			let noteMessage = '';
-			if (firstNotePressed) {
-				noteMessage = `The experiment will go to the next step in ${this.timeLeftDisplay}`;
-			} else {
-				noteMessage = 'The time limit will start after the first key press';
-			}
-			this.$emit('footnote', noteMessage);
+			let footnoteMessage = '';
+			if (firstNotePressed) footnoteMessage = `The experiment will go to the next step in ${this.timeLeftDisplay}`;
+			else footnoteMessage = 'The time limit will start after the first key press';
+			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		evaluate() {
 			this.evaluateSpeedType();

@@ -3,10 +3,6 @@
 		<div id="text-area" class="experiment-state-division state-division-text">
 			{{ textToDisplay }}
 		</div>
-
-		<div id="note-area" class="experiment-state-division state-division-text">
-			{{ footnote }}
-		</div>
 	</div>
 </template>
 
@@ -16,30 +12,12 @@ import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-eve
 import { mapGetters } from 'vuex';
 
 export default {
-	components: {},
-	props: {
-		isSpaceBarPressed: {
-			type: Boolean,
-			default() {
-				return false;
-			},
-		},
-	},
 	computed: {
 		...mapGetters('piano', ['isPianoInitialized']),
 		textToDisplay() {
 			if (!this.isPianoInitialized) return 'Loading...';
 			else return 'Ready';
 		},
-	},
-	methods: {
-		updateFootnote() {
-			const footnoteMessage = 'Please wait a moment';
-			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
-		},
-	},
-	beforeMount() {
-		this.updateFootnote();
 	},
 	watch: {
 		isPianoInitialized: {

@@ -14,6 +14,8 @@
 <script>
 import '@/styles/playingTemplate.css';
 import { mapActions, mapGetters } from 'vuex';
+
+import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
 
 export default {
@@ -56,9 +58,9 @@ export default {
 			if (this.hasInteractivePiano) this.$refs.piano.clearDesignatedKeys();
 		},
 		updateFootnote() {
-			let noteMessage = 'The experiment will go to the next step after your performance';
-			if (this.timeoutInSeconds !== 0) noteMessage += ` or after ${this.timeoutInSeconds} seconds`;
-			this.$emit('footnote', noteMessage);
+			let footnoteMessage = 'The experiment will go to the next step after your performance';
+			if (this.timeoutInSeconds !== 0) footnoteMessage += ` or after ${this.timeoutInSeconds} seconds`;
+			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		evaluate() {
 			this.evaluateMelodyType(this.melodyRepetition);
