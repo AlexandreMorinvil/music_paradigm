@@ -35,7 +35,7 @@ export default {
 }
 
 .footnote-button {
-	font-size: calc(0.85vh + 0.85vw);
+	font-size: calc(1vh + 1vw);
 	background-color: rgb(200, 200, 200);
 	border: 3px solid rgb(150, 150, 150);
 	border-radius: 10px;
@@ -43,6 +43,6 @@ export default {
 	margin: 10px;
 	width: initial;
 	height: initial;
-	min-height: 50px;
+	padding: 15px;
 }
 </style>

@@ -1,8 +1,6 @@
 <template>
 	<div id="playing-state" class="standard-state-content-grid" :class="gridClass">
-		<div v-if="hasText" id="text-area" class="experiment-state-division state-division-text">
-			{{ textContent }}
-		</div>
+		<text-area-component />
 
 		<div id="visual-media-area" class="experiment-state-division state-division-visual-media">
 			<component :is="playingMode" v-on:finishedPlaying="handdleEndOfPlaying" ref="playingMode" />
@@ -18,12 +16,14 @@ import { mapActions, mapGetters } from 'vuex';
 import PlayingMelodyComponent from '@/components/experiment/playing-mode/playing-melody.component';
 import PlayingRhythmComponent from '@/components/experiment/playing-mode/playing-rhythm.component';
 import PlayingSpeedComponent from '@/components/experiment/playing-mode/playing-speed.component';
+import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
 		speed: PlayingSpeedComponent,
 		rhythm: PlayingRhythmComponent,
 		melody: PlayingMelodyComponent,
+		TextAreaComponent,
 	},
 	data() {
 		return {

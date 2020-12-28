@@ -138,6 +138,6 @@ export default {
 }
 
 .feedback-message {
-	margin-bottom: 50px;
+	margin-bottom: 100px;
 }
 </style>

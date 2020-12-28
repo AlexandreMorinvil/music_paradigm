@@ -34,13 +34,13 @@ function multiplyMidiFileNotes(state, multiplier) {
 function selectConsideredNotes(allNotes, startIndex) {
 	const notes = JSON.parse(JSON.stringify(allNotes));
 
-	notes.midi = notes.midi.splice(0, startIndex);
-	notes.time = notes.time.splice(0, startIndex);
-	notes.name = notes.name.splice(0, startIndex);
-	notes.pitch = notes.pitch.splice(0, startIndex);
-	notes.octave = notes.octave.splice(0, startIndex);
-	notes.velocity = notes.velocity.splice(0, startIndex);
-	notes.duration = notes.duration.splice(0, startIndex);
+	notes.midi.splice(0, startIndex);
+	notes.time.splice(0, startIndex);
+	notes.name.splice(0, startIndex);
+	notes.pitch.splice(0, startIndex);
+	notes.octave.splice(0, startIndex);
+	notes.velocity.splice(0, startIndex);
+	notes.duration.splice(0, startIndex);
 
 	return notes;
 }

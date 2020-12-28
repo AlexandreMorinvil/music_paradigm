@@ -1,6 +1,6 @@
 <template>
 	<div id="text-area" v-if="hasText" class="state-section state-division-text">
-		<p>
+		<p class="centering">
 			{{ textContent }}
 		</p>
 	</div>
@@ -19,8 +19,13 @@ export default {
 
 <style scoped>
 .state-section {
-	display: grid;
+	display: flex;
 	justify-content: center;
+	align-items: center;
 	align-content: center;
+}
+
+.centering {
+	width: 70%;
 }
 </style>
