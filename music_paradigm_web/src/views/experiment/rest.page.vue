@@ -40,10 +40,6 @@ export default {
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('experiment', ['timeoutInSeconds']),
-		textToDisplay() {
-			if (this.hasNoContent) return '';
-			else return this.textContent;
-		},
 		timeLimitInMiliseconds() {
 			return (this.timeoutInSeconds || this.defaultTimeLimitInSeconds) * 1000;
 		},

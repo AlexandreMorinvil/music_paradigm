@@ -48,7 +48,7 @@ export default {
 	pictureName: (state) => {
 		// Fetch the picture name
 		const pictureName = state.state.content.pictureName;
-		if (pictureName === '') return '';
+		if (!pictureName) return '';
 
 		// Verify that the file name describes a supported file format
 		const pictureNameExtension = pictureName.split('.').pop();
@@ -66,7 +66,7 @@ export default {
 	helperImageName: (state) => {
 		// Fetch the helper image name
 		const pictureName = state.state.content.helperImageName;
-		if (pictureName === '') return '';
+		if (!pictureName) return '';
 		else return `${state.description.folder}/${pictureName}`;
 	},
 
@@ -80,7 +80,7 @@ export default {
 	midiName: (state) => {
 		// Fetch the picture name
 		const midiName = state.state.mediaFile.midiName;
-		if (midiName === '') return '';
+		if (!midiName) return '';
 
 		// Verify that the file name describes a supported file format
 		const midiNameExtension = midiName.split('.').pop();
@@ -98,7 +98,7 @@ export default {
 	videoName: (state) => {
 		// Fetch the video name
 		const videoName = state.state.mediaFile.videoName;
-		if (videoName === '') return '';
+		if (!videoName) return '';
 
 		// Verify that the file name describes a supported file format
 		const videoNameExtension = videoName.split('.').pop();
@@ -159,13 +159,9 @@ export default {
 		// step only by pressing the space bar key (if the value is false).
 		let anyPianoKey = false;
 
-		if (typeof state.state.settings.anyPianoKey === 'boolean') {
-			anyPianoKey = state.state.settings.anyPianoKey;
-		} else if (typeof state.settings.anyPianoKey === 'boolean') {
-			anyPianoKey = state.settings.anyPianoKey;
-		} else {
-			anyPianoKey = constants.DEFAULT_ANY_PIANO_KEY;
-		}
+		if (typeof state.state.settings.anyPianoKey === 'boolean') anyPianoKey = state.state.settings.anyPianoKey;
+		else if (typeof state.settings.anyPianoKey === 'boolean') anyPianoKey = state.settings.anyPianoKey;
+		else anyPianoKey = constants.DEFAULT_ANY_PIANO_KEY;
 
 		return anyPianoKey;
 	},
@@ -175,11 +171,8 @@ export default {
 		// otherwise, the default playing mode of the experiment is returned.
 		let playingMode = constants.DEFAULT_PLAYING_MODE;
 
-		if (typeof state.state.settings.playingMode === 'string') {
-			playingMode = state.state.settings.playingMode;
-		} else if (typeof state.settings.playingMode === 'string') {
-			playingMode = state.settings.playingMode;
-		}
+		if (typeof state.state.settings.playingMode === 'string') playingMode = state.state.settings.playingMode;
+		else if (typeof state.settings.playingMode === 'string') playingMode = state.settings.playingMode;
 
 		return playingMode;
 	},
@@ -192,13 +185,9 @@ export default {
 		// 4. Otherwise, it is turned off
 		let enableSoundFlag = constants.DEFAULT_ENABLE_SOUND_FLAG;
 
-		if (state.state.type === 'playing') {
-			enableSoundFlag = true;
-		} else if (typeof state.state.settings.enableSoundFlag === 'boolean') {
-			enableSoundFlag = state.state.settings.enableSoundFlag;
-		} else if (typeof state.settings.enableSoundFlag === 'boolean') {
-			enableSoundFlag = state.settings.enableSoundFlag;
-		}
+		if (state.state.type === 'playing') enableSoundFlag = true;
+		else if (typeof state.state.settings.enableSoundFlag === 'boolean') enableSoundFlag = state.state.settings.enableSoundFlag;
+		else if (typeof state.settings.enableSoundFlag === 'boolean') enableSoundFlag = state.settings.enableSoundFlag;
 
 		return enableSoundFlag;
 	},
@@ -244,11 +233,8 @@ export default {
 	hideFeedbackSmiley: (state) => {
 		let hideFeedbackSmiley = constants.DEFAULT_HIDE_FEEDBACK_SMILEY;
 
-		if (typeof state.state.settings.hideFeedbackSmiley === 'boolean') {
-			hideFeedbackSmiley = state.state.settings.hideFeedbackSmiley;
-		} else if (typeof state.settings.hideFeedbackSmiley === 'boolean') {
-			hideFeedbackSmiley = state.settings.hideFeedbackSmiley;
-		}
+		if (typeof state.state.settings.hideFeedbackSmiley === 'boolean') hideFeedbackSmiley = state.state.settings.hideFeedbackSmiley;
+		else if (typeof state.settings.hideFeedbackSmiley === 'boolean') hideFeedbackSmiley = state.settings.hideFeedbackSmiley;
 
 		return hideFeedbackSmiley;
 	},
@@ -256,11 +242,8 @@ export default {
 	footnoteType: (state) => {
 		let footnoteType = constants.DEFAULT_FOOTNOTE_TYPE;
 
-		if (typeof state.state.settings.footnoteType === 'string') {
-			footnoteType = state.state.settings.footnoteType;
-		} else if (typeof state.settings.footnoteType === 'string') {
-			footnoteType = state.settings.footnoteType;
-		}
+		if (typeof state.state.settings.footnoteType === 'string') footnoteType = state.state.settings.footnoteType;
+		else if (typeof state.settings.footnoteType === 'string') footnoteType = state.settings.footnoteType;
 
 		return footnoteType;
 	},
@@ -269,11 +252,8 @@ export default {
 	hasFootnote: (state) => {
 		let hasFootNote = constants.DEFAULT_FOOTNOTE;
 
-		if (typeof state.state.settings.footnote === 'boolean') {
-			hasFootNote = state.state.settings.footnote;
-		} else if (typeof state.settings.footnote === 'boolean') {
-			hasFootNote = state.settings.footnote;
-		}
+		if (typeof state.state.settings.footnote === 'boolean') hasFootNote = state.state.settings.footnote;
+		else if (typeof state.settings.footnote === 'boolean') hasFootNote = state.settings.footnote;
 
 		return hasFootNote;
 	},

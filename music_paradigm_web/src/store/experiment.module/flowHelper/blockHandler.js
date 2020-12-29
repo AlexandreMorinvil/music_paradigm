@@ -1,4 +1,4 @@
-import experimentStoreState from '../state';
+import variableHandler from './variableHandler';
 
 export default {
 	getCurrentBlock,
@@ -22,16 +22,5 @@ function getCurrentBlock(flow, cursor) {
 		currentBlock = lastRepetitionVersion;
 	}
 
-	return populateVariables(currentBlock);
-}
-
-function populateVariables(block) {
-	const variables = experimentStoreState.variables;
-	const blockToUse = JSON.parse(JSON.stringify(block));
-	for (const section in blockToUse) {
-		if (typeof blockToUse[section] === 'string')
-			for (const variable in variables.value) blockToUse[section] = blockToUse[section].replace(variable, variables.value[variable]);
-		else if (Array.isArray(blockToUse[section])) blockToUse[section] = populateVariables(block[section]);
-	}
-	return blockToUse;
+	return variableHandler.populateVariables(currentBlock);
 }

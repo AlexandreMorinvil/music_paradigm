@@ -86,6 +86,9 @@ export default {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 		},
 	},
+	beforeMount() {
+		this.updateFootnote();
+	},
 	mounted() {
 		ExperimentEventBus.$on(experimentEvents.EVENT_ADVANCE_REQUEST, this.emitStateEndedSignal);
 	},

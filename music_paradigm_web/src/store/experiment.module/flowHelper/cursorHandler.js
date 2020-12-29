@@ -7,24 +7,23 @@ import constants from '../constants';
 export default {
 	countStepsLeft,
 	assignCursor,
-	skip,
 	advance,
+	skip,
 };
 
 function countStepsLeft(flow, startPointCursor) {
 	// Deep copy the cursor (or initialize the cursor at the start by default)
 	const stepTracerCursor = assignCursor(flow, startPointCursor);
-
 	let stepsCounter = 0;
+
 	while (!stepTracerCursor.current.isBeyondEnd && !(blockHandler.getCurrentBlockType(flow, stepTracerCursor) === 'end')) {
 		moveCursorNext(flow, stepTracerCursor);
 		stepsCounter += 1;
 	}
-
 	return Math.max(0, stepsCounter);
 }
 
-function assignCursor(flow, cursorToCopy) {
+function assignCursor(flow, cursorToCopy = null) {
 	if (cursorToCopy) {
 		return JSON.parse(JSON.stringify(cursorToCopy));
 	} else {
@@ -32,6 +31,13 @@ function assignCursor(flow, cursorToCopy) {
 		updateCursorNavigation(flow, defaultCursor);
 		return defaultCursor;
 	}
+}
+
+function advance(state, flow, cursor, isInitialized) {
+	determineGroupEnd(flow, cursor);
+	if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop)
+		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
+	else moveCursorNext(flow, cursor, isInitialized);
 }
 
 function skip(state, flow, cursor, isInitialized) {
@@ -45,18 +51,11 @@ function skip(state, flow, cursor, isInitialized) {
 	}
 }
 
-function advance(state, flow, cursor, isInitialized) {
-	determineGroupEnd(flow, cursor);
-	if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop) {
-		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
-	} else {
-		moveCursorNext(flow, cursor, isInitialized);
-	}
-}
+// Inner cursor move manipulations
 
 function moveCursorNext(flow, cursor, isInitialized) {
 	variableHandler.updateVariables(flow, cursor);
-	moveCursorNextStep(flow, cursor, isInitialized);
+	performCursorDisplacementForward(flow, cursor, isInitialized);
 	updateCursorNavigation(flow, cursor);
 }
 
@@ -67,7 +66,7 @@ function moveCursorSkipRepetions(state, flow, cursor, isInitialized) {
 	} while (!cursor.flag.needsResetLoopParameters);
 }
 
-function moveCursorNextStep(flow, cursor, isInitialized = {}) {
+function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 	let needsResetLoopParameters = false;
 
 	// Moving to the next inner step if there remains inner steps (only in instruction blocks)
@@ -103,11 +102,9 @@ function moveCursorNextStep(flow, cursor, isInitialized = {}) {
 	}
 
 	// Moving beyond the last block of the flow
-	else {
-		cursor.current.isBeyondEnd = true;
-	}
+	else cursor.current.isBeyondEnd = true;
 
-	// Proceeding to adjusting the flags
+	// Adjust the flags
 	cursor.flag.needsResetLoopParameters = needsResetLoopParameters;
 }
 

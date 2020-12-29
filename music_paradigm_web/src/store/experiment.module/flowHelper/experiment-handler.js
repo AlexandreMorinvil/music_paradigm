@@ -1,4 +1,5 @@
 import constants from '../constants';
+import variableHandler from './variableHandler';
 
 export default {
 	setExperimentId,
@@ -65,7 +66,7 @@ function setExperimentVariables(state, experiment) {
 	if (!Array.isArray(variables)) return;
 
 	for (const variable of variables) {
-		state.variables.value['$' + variable.name + '$'] = variable.assignedValue;
-		state.variables.initial = JSON.parse(JSON.stringify(state.variables.value));
+		state.variables.initial[variableHandler.wrapVariableName(variable.name)] = variable.assignedValue;
+		state.variables.value = JSON.parse(JSON.stringify(state.variables.initial));
 	}
 }
