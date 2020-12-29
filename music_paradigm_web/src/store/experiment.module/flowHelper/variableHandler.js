@@ -7,13 +7,13 @@ export default {
 	wrapVariableName,
 };
 
-function populateVariables(block) {
-	const variables = getAllVariables();
+function populateVariables(block, variablesToUse = null) {
+	const variables = variablesToUse || getAllVariables();
 	const blockToPopulate = JSON.parse(JSON.stringify(block));
 	for (const section in blockToPopulate) {
 		if (typeof blockToPopulate[section] === 'string')
 			for (const variable in variables) blockToPopulate[section] = blockToPopulate[section].replace(variable, variables[variable]);
-		else if (Array.isArray(blockToPopulate[section])) blockToPopulate[section] = populateVariables(block[section]);
+		else if (Array.isArray(blockToPopulate[section])) blockToPopulate[section] = populateVariables(block[section], variablesToUse);
 	}
 	return blockToPopulate;
 }
