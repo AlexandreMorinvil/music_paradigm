@@ -17,6 +17,8 @@ const schema = new Schema(
         successesForSkip: { type: Number, default: 0 },
         hideFeedbackSmiley: { type: Boolean, default: false },
         isSkipStepButtonInFootnote: { type: Boolean, default: undefined },
+        programmedOctaveOffset: { type: Number, default: 0 },
+        interactivePianoFirstOctave: { type: Number, default: 4 },
         variables: [
             {
                 name: { type: String, required: true },
@@ -25,10 +27,10 @@ const schema = new Schema(
                     enum: ['counter', 'variable', 'parameter'],
                     default: "variable",
                 },
-                assignedValue: { 
-                    type: Schema.Types.Mixed, 
-                    default : undefined, 
-                    required: true 
+                assignedValue: {
+                    type: Schema.Types.Mixed,
+                    default: undefined,
+                    required: true
                 },
                 optionValues: { type: [], default: undefined },
             }

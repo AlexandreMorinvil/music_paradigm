@@ -43,6 +43,7 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
 		isSkipStepButtonInFootnote,
 		startSignal,
 		feedbackNumerical,
+		interactivePianoFirstOctave,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -66,6 +67,8 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
 			typeof isSkipStepButtonInFootnote === 'boolean' ? isSkipStepButtonInFootnote : generalSettings.isSkipStepButtonInFootnote,
 		startSignal: typeof startSignal === 'number' ? startSignal : 0,
 		feedbackNumerical: typeof feedbackNumerical === 'boolean' ? feedbackNumerical : false,
+		interactivePianoFirstOctave:
+			typeof interactivePianoFirstOctave === 'number' ? interactivePianoFirstOctave : generalSettings.interactivePianoFirstOctave,
 	};
 
 	// Indicate that the state (current block's settings) was already initialized

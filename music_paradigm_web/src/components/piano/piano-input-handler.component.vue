@@ -24,7 +24,7 @@ export default {
 	},
 	computed: {
 		...mapGetters('piano', ['isPianoInitialized', 'isPianoInitializing', 'isPianoPaused', 'pressedKeys', 'midiFileNotesName']),
-		...mapGetters('experiment', ['timbreFile', 'enableSoundFlag']),
+		...mapGetters('experiment', ['timbreFile', 'enableSoundFlag', 'midiOffset']),
 	},
 	methods: {
 		...mapActions('piano', [
@@ -52,7 +52,7 @@ export default {
 		manageMidiNote(midiNote) {
 			const midiMessage = {
 				type: midiNote.data[0] === 144 ? 'Note On' : 'Note Off',
-				note: midiNote.data[1],
+				note: midiNote.data[1] + this.midiOffset,
 				velocity: midiNote.data[2],
 			};
 

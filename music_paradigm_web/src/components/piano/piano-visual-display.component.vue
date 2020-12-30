@@ -2,33 +2,31 @@
 	<!-- The HTML definition of this piano adapted from the open source project : https://codepen.io/zastrow/pen/oDBki -->
 	<div id="visual-piano">
 		<ul class="set">
-			<li id="note-48" ref="48" class="white c"></li>
-			<li id="note-49" ref="49" class="black cs"></li>
-			<li id="note-50" ref="50" class="white d"></li>
-			<li id="note-51" ref="51" class="black ds"></li>
-			<li id="note-52" ref="52" class="white e"></li>
-			<li id="note-53" ref="53" class="white f"></li>
-			<li id="note-54" ref="54" class="black fs"></li>
-			<li id="note-55" ref="55" class="white g"></li>
-			<li id="note-56" ref="56" class="black gs"></li>
-			<li id="note-57" ref="57" class="white a"></li>
-			<li id="note-58" ref="58" class="black as"></li>
-			<li id="note-59" ref="59" class="white b"></li>
-			<li id="note-60" ref="60" class="white c"></li>
-			<li id="note-61" ref="61" class="black cs"></li>
-			<li id="note-62" ref="62" class="white d"></li>
-			<li id="note-63" ref="63" class="black ds"></li>
-			<li id="note-64" ref="64" class="white e"></li>
-			<li id="note-65" ref="65" class="white f"></li>
-			<li id="note-66" ref="66" class="black fs"></li>
-			<li id="note-67" ref="67" class="white g"></li>
-			<li id="note-68" ref="68" class="black gs"></li>
-			<li id="note-69" ref="69" class="white a"></li>
-			<li id="note-70" ref="70" class="black as"></li>
-			<li id="note-71" ref="71" class="white b"></li>
-			<li id="note-72" ref="72" class="white c"></li>
-			<li id="note-73" ref="73" class="black cs"></li>
-			<li id="note-74" ref="74" class="white d"></li>
+			<li id="note-48" :ref="'' + (0 + midiOffset)" class="white c"></li>
+			<li id="note-49" :ref="'' + (1 + midiOffset)" class="black cs"></li>
+			<li id="note-50" :ref="'' + (2 + midiOffset)" class="white d"></li>
+			<li id="note-51" :ref="'' + (3 + midiOffset)" class="black ds"></li>
+			<li id="note-52" :ref="'' + (4 + midiOffset)" class="white e"></li>
+			<li id="note-53" :ref="'' + (5 + midiOffset)" class="white f"></li>
+			<li id="note-54" :ref="'' + (6 + midiOffset)" class="black fs"></li>
+			<li id="note-55" :ref="'' + (7 + midiOffset)" class="white g"></li>
+			<li id="note-56" :ref="'' + (8 + midiOffset)" class="black gs"></li>
+			<li id="note-57" :ref="'' + (9 + midiOffset)" class="white a"></li>
+			<li id="note-58" :ref="'' + (10 + midiOffset)" class="black as"></li>
+			<li id="note-59" :ref="'' + (11 + midiOffset)" class="white b"></li>
+			<li id="note-60" :ref="'' + (12 + midiOffset)" class="white c"></li>
+			<li id="note-61" :ref="'' + (13 + midiOffset)" class="black cs"></li>
+			<li id="note-62" :ref="'' + (14 + midiOffset)" class="white d"></li>
+			<li id="note-63" :ref="'' + (15 + midiOffset)" class="black ds"></li>
+			<li id="note-64" :ref="'' + (16 + midiOffset)" class="white e"></li>
+			<li id="note-65" :ref="'' + (17 + midiOffset)" class="white f"></li>
+			<li id="note-66" :ref="'' + (18 + midiOffset)" class="black fs"></li>
+			<li id="note-67" :ref="'' + (19 + midiOffset)" class="white g"></li>
+			<li id="note-68" :ref="'' + (20 + midiOffset)" class="black gs"></li>
+			<li id="note-69" :ref="'' + (21 + midiOffset)" class="white a"></li>
+			<li id="note-70" :ref="'' + (22 + midiOffset)" class="black as"></li>
+			<li id="note-71" :ref="'' + (23 + midiOffset)" class="white b"></li>
+			<li id="note-72" :ref="'' + (24 + midiOffset)" class="white c"></li>
 		</ul>
 	</div>
 </template>
@@ -41,13 +39,22 @@ export default {
 	data() {
 		return {
 			highlightedDesignatedKeys: [],
-			firstNote: 48,
-			lastNote: 74,
+			NOTE_COUNT: 24,
+			OFFSET_STEP: 12,
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['interactivePiano']),
+		...mapGetters('experiment', ['interactivePiano', 'interactivePianoFirstOctave']),
 		...mapGetters('piano', ['pressedKeys', 'midiFileTriggeredKeys', 'midiFileNotesMidi']),
+		midiOffset() {
+			return this.interactivePianoFirstOctave * this.OFFSET_STEP;
+		},
+		firstNote() {
+			return this.midiOffset;
+		},
+		lastNote() {
+			return this.midiOffset + this.NOTE_COUNT;
+		},
 	},
 	methods: {
 		designateKeys(keys) {
@@ -137,7 +144,7 @@ li {
 
 ul .white {
 	height: 103%;
-	width: 6%;
+	width: 6.25%;
 	z-index: 1;
 	border-left: 1px solid #bbb;
 	border-bottom: 1px solid #bbb;

@@ -192,6 +192,16 @@ export default {
 		return enableSoundFlag;
 	},
 
+	interactivePianoFirstOctave: (state) => {
+		let interactivePianoFirstOctave = constants.DEFAULT_ENABLE_SOUND_FLAG;
+
+		if (typeof state.state.settings.interactivePianoFirstOctave === 'number')
+			interactivePianoFirstOctave = state.state.settings.interactivePianoFirstOctave;
+		else if (typeof state.settings.interactivePianoFirstOctave === 'number') interactivePianoFirstOctave = state.settings.interactivePianoFirstOctave;
+
+		return interactivePianoFirstOctave;
+	},
+
 	timeoutInSeconds: (state) => {
 		// Return the the timeout time specified by the block if it exists,
 		// otherwise, return a value of 0 to be interpreted as "There is no timeout"
@@ -246,6 +256,11 @@ export default {
 		else if (typeof state.settings.footnoteType === 'string') footnoteType = state.settings.footnoteType;
 
 		return footnoteType;
+	},
+
+	midiOffset: (state) => {
+		const NOTES_PER_OCTAVE = 12;
+		return state.settings.programmedOctaveOffset * NOTES_PER_OCTAVE;
 	},
 
 	// Getters used for the content disposition on the screen

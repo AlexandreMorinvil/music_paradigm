@@ -31,6 +31,8 @@ const DEFAULT_LOG_FLAG = true;
 const DEFAULT_SUCCESSES_FOR_SKIP = 0;
 const DEFAULT_HIDE_FEEDBACK_SMILEY = false;
 const DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE = false;
+const DEFAULT_PROGRAMMED_OCTAVE_OFFSET = 0;
+const DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE = 4;
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
 	return {
@@ -79,6 +81,8 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		successesForSkip: DEFAULT_SUCCESSES_FOR_SKIP, // Indicate the number of successful 'Playing' states before being able to leave a group of blocks
 		hideFeedbackSmiley: DEFAULT_HIDE_FEEDBACK_SMILEY, // Indicate whether the feedback state contains a smiley by default
 		isSkipStepButtonInFootnote: DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE, // Indicates wether the skip buttons are displayed by default in the footnote when there is a button footnote
+		programmedOctaveOffset: DEFAULT_PROGRAMMED_OCTAVE_OFFSET, // Indicates a preset octave shift for the midi piano (knowing that most midi piano are on octave 3 by default)
+		interactivePianoFirstOctave: DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE, // Indicate the first octave from which the notes must be displayed on the interactive piano (which has 2 octaves)
 	};
 }
 
@@ -140,6 +144,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			successesForSkip: DEFAULT_SUCCESSES_FOR_SKIP, // Block specific "successesForSkip" superseding the general setting
 			startSignal: 0, // Signal countdown (if is 0, there is no signal countdown)
 			feedbackNumerical: false, // Indicator of whether the feedback must be given in its numerical form instead of with range bars
+			interactivePianoFirstOctave: DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE, // Block specific "interactivePianoFirstOctave" superseding the general setting
 		},
 		// Session specific informations
 		record: {

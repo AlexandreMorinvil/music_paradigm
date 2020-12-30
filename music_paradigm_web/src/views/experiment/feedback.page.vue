@@ -122,7 +122,7 @@ export default {
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
-	height: 100%;
+	height: 70%;
 	width: 100%;
 }
 

@@ -37,6 +37,8 @@ function setExperimentGeneralSettings(state, experiment) {
 		successesForSkip,
 		hideFeedbackSmiley,
 		isSkipStepButtonInFootnote,
+		programmedOctaveOffset,
+		interactivePianoFirstOctave,
 	} = experiment;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -54,6 +56,9 @@ function setExperimentGeneralSettings(state, experiment) {
 		hideFeedbackSmiley: typeof hideFeedbackSmiley === 'boolean' ? hideFeedbackSmiley : defaultSettings.hideFeedbackSmiley,
 		isSkipStepButtonInFootnote:
 			typeof isSkipStepButtonInFootnote === 'boolean' ? isSkipStepButtonInFootnote : defaultSettings.isSkipStepButtonInFootnote,
+		programmedOctaveOffset: typeof programmedOctaveOffset === 'number' ? programmedOctaveOffset : defaultSettings.programmedOctaveOffset,
+		interactivePianoFirstOctave:
+			typeof interactivePianoFirstOctave === 'number' ? interactivePianoFirstOctave : defaultSettings.interactivePianoFirstOctave,
 	};
 }
 

@@ -18,6 +18,15 @@ function getMinimalValidExperimentStructure() {
 	};
 }
 
+function isExperimentValid(experiment) {
+	try {
+		validateExperiment(experiment);
+		return true;
+	} catch (error) {
+		return false;
+	}
+}
+
 function validateExperiment(experiment) {
 	// Verification of the validity of the experiment object type
 	if (!(typeof experiment === 'object')) {
@@ -128,6 +137,7 @@ function validateBlock(block, index = null) {
 		'succeeededForSkipLoopVersion',
 		'startSignal',
 		'feedbackNumerical',
+		'interactivePianoFirstOctave',
 
 		'resetVariableValue',
 		'incrementVariable',
@@ -179,6 +189,7 @@ function validateAttributeType(key, value) {
 		case 'successesForSkipLoop':
 		case 'melodyRepetition':
 		case 'startSignal':
+		case 'interactivePianoFirstOctave':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
@@ -293,13 +304,4 @@ function validateAttributeType(key, value) {
 	}
 
 	return true;
-}
-
-function isExperimentValid(experiment) {
-	try {
-		validateExperiment(experiment);
-		return true;
-	} catch (error) {
-		return false;
-	}
 }
