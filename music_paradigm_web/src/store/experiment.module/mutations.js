@@ -12,9 +12,9 @@ export default {
 
 	setExperiment(state, experiment) {
 		// Verify the minimal required properties
-		if (!experiment.hasOwnProperty('name')) throw new Error('No name was found in the experiment');
-		if (!experiment.hasOwnProperty('folder')) throw new Error('No folder was found in the experiment');
-		if (!experiment.hasOwnProperty('flow')) throw new Error('No flow was found in the experiment');
+		if (!Object.prototype.hasOwnProperty.call(experiment, 'name')) throw new Error('No name was found in the experiment');
+		if (!Object.prototype.hasOwnProperty.call(experiment, 'folder')) throw new Error('No folder was found in the experiment');
+		if (!Object.prototype.hasOwnProperty.call(experiment, 'flow')) throw new Error('No flow was found in the experiment');
 
 		experimentHandler.setExperimentId(state, experiment);
 		experimentHandler.setExperimentDescription(state, experiment);

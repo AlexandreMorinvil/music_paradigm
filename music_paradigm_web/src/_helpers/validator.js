@@ -25,7 +25,7 @@ function validateExperiment(experiment) {
 	}
 
 	// Verification of the name
-	if (!experiment.hasOwnProperty('name')) {
+	if (!Object.prototype.hasOwnProperty.call(experiment, 'name')) {
 		throw new Error('The experiment does not have a name');
 	}
 
@@ -38,7 +38,7 @@ function validateExperiment(experiment) {
 	}
 
 	// Verification of the folder
-	if (!experiment.hasOwnProperty('folder')) {
+	if (!Object.prototype.hasOwnProperty.call(experiment, 'folder')) {
 		throw new Error('The experiment does not have a folder');
 	}
 
@@ -51,7 +51,7 @@ function validateExperiment(experiment) {
 	}
 
 	// Verification of the flow
-	if (!experiment.hasOwnProperty('flow')) {
+	if (!Object.prototype.hasOwnProperty.call(experiment, 'flow')) {
 		throw new Error('The experiment does not have a flow');
 	}
 
@@ -83,7 +83,7 @@ function validateBlock(block, index = null) {
 	}
 
 	// Verification of the type
-	if (!block.hasOwnProperty('type')) {
+	if (!Object.prototype.hasOwnProperty.call(block, 'type')) {
 		throw new Error(`The block${indexMessage} does not have a type`);
 	}
 
