@@ -31,6 +31,7 @@ export default {
 		},
 	},
 	methods: {
+		...mapActions('experiment', ['stopWaitingStartSignalReady']),
 		...mapActions('piano', ['pausePiano', 'unPausePiano']),
 		setTime(value) {
 			this.cumulatedTime = value * 1000;
@@ -48,6 +49,15 @@ export default {
 		},
 		countDown() {
 			this.totalTime = this.cumulatedTime - (Date.parse(new Date()) - Date.parse(this.referenceTime));
+		},
+		sendStartSignal() {
+			window.clearInterval(this.counterUniqueIdentifier);
+			this.soundStart.play();
+			this.unPausePiano();
+			ExperimentEventBus.$emit(experimentEvents.EVENT_START_SIGNAL_READY);
+			this.stopWaitingStartSignalReady();
+			this.setTime(0);
+			this.isSignalBeingWaited = false;
 		},
 	},
 	mounted() {
@@ -67,12 +77,7 @@ export default {
 	watch: {
 		totalTime(value) {
 			if (value <= 0) {
-				window.clearInterval(this.counterUniqueIdentifier);
-				this.soundStart.play();
-				this.unPausePiano();
-				ExperimentEventBus.$emit(experimentEvents.EVENT_START_SIGNAL_READY);
-				this.setTime(0);
-				this.isSignalBeingWaited = false;
+				this.sendStartSignal();
 			} else {
 				this.seconds = Math.floor(value / 1000);
 				this.soundCount.play();

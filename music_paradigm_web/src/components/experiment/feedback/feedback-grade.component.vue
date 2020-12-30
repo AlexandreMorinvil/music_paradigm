@@ -81,6 +81,7 @@ export default {
 	font-size: calc(1vh + 1vw);
 	height: 15%;
 	width: 100%;
+	margin-bottom: 10px;
 }
 
 .numerical-feedback {
@@ -132,9 +133,10 @@ export default {
 	position: relative;
 	border-radius: 100px;
 	background-color: inherit;
-	height: 25px;
+	height: 60px;
 	width: 5px;
 	left: var(--checkpointPosition);
+	bottom: 15px;
 	z-index: inherit;
 }
 .progress-content {

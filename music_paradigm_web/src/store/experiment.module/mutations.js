@@ -75,4 +75,8 @@ export default {
 		state.state.record.sucesses += 1;
 		state.state.record.successesInLoop += 1;
 	},
+
+	stopWaitingStartSignalReady: (state) => {
+		state.state.record.isWaitingReadyStartSignal = false;
+	},
 };

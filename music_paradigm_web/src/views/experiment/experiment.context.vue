@@ -76,7 +76,7 @@ export default {
 		ExperimentEventBus.$on(experimentEvents.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
 		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_READY, this.displayFirstStep);
 		ExperimentEventBus.$on(experimentEvents.EVENT_STATE_ENDED, this.navigateExperiment);
-		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_ENDED, this.displayFirstStep);
+		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_ENDED, this.endExperiment);
 		ExperimentEventBus.$on(experimentEvents.EVENT_TIMES_UP, this.handleTimesUp);
 
 		PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);

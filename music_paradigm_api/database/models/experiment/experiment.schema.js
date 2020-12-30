@@ -24,7 +24,7 @@ const schema = new Schema(
                 name: { type: String, required: true },
                 type: {
                     type: String,
-                    enum: ['counter', 'variable', 'parameter'],
+                    enum: ['variable', 'parameter'],
                     default: "variable",
                 },
                 assignedValue: {

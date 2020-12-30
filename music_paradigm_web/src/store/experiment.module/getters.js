@@ -124,14 +124,12 @@ export default {
 
 	nextStateType: (state) => {
 		// Return the type of the next state
-		// If we are currently beyond the last block of the flow or if there is
-		// no current state type step, we return no next step
+		// If we are currently beyond the last block of the flow or if there is no current state type step, we return no next step
 		if (state.cursor.current.isBeyondEnd || !state.state.type) {
 			return '';
 		}
 
-		// If the current block is an end block, regardless of whether or not there exists another
-		// block in the flow description flow, there is no next step to be indicated
+		// If the current block is an end block, regardless of whether or not there exists another block in the flow description flow, there is no next step to be indicated
 		else if (state.state.type === 'end') {
 			return '';
 		}
@@ -153,10 +151,8 @@ export default {
 	},
 
 	anyPianoKey: (state) => {
-		// Return the "anyPianoKey" value specified by the block if it exists, otherwise, the default "anyPianoKey" of the
-		// experiment is returned. The "anyPianoKey" parameter indicates whether the user of the experiment can move to the
-		// next step by pressing any piano key (if the value is "true"), otherwise the experiment will move to the next
-		// step only by pressing the space bar key (if the value is false).
+		// The "anyPianoKey" parameter indicates whether the user of the experiment can move to the next step by pressing any piano key
+		// (if the value is "true"), otherwise the experiment will move to the next step only by pressing the space bar key (if the value is false).
 		let anyPianoKey = false;
 
 		if (typeof state.state.settings.anyPianoKey === 'boolean') anyPianoKey = state.state.settings.anyPianoKey;
@@ -167,8 +163,7 @@ export default {
 	},
 
 	playingMode: (state) => {
-		// Return the playing mode specified by the block if it exists,
-		// otherwise, the default playing mode of the experiment is returned.
+		// Return the playing mode specified by the block if it exists, otherwise, the default playing mode of the experiment is returned.
 		let playingMode = constants.DEFAULT_PLAYING_MODE;
 
 		if (typeof state.state.settings.playingMode === 'string') playingMode = state.state.settings.playingMode;
@@ -178,11 +173,7 @@ export default {
 	},
 
 	enableSoundFlag: (state) => {
-		// Return whether or not the piano output is enabled. The priority order is as follows :
-		// 1. In the playing state, it is necessarily on
-		// 2. The Block setting is the top priority
-		// 3. The experiment setting
-		// 4. Otherwise, it is turned off
+		// Return whether or not the piano output is enabled.
 		let enableSoundFlag = constants.DEFAULT_ENABLE_SOUND_FLAG;
 
 		if (state.state.type === 'playing') enableSoundFlag = true;
@@ -203,8 +194,7 @@ export default {
 	},
 
 	timeoutInSeconds: (state) => {
-		// Return the the timeout time specified by the block if it exists,
-		// otherwise, return a value of 0 to be interpreted as "There is no timeout"
+		// Return the the timeout time specified by the block if it exists, otherwise, return a value of 0 to be interpreted as "There is no timeout"
 		return state.state.settings.timeoutInSeconds || 0;
 	},
 
@@ -310,6 +300,6 @@ export default {
 	},
 
 	isWaitingStartSignal: (state) => {
-		return Boolean(state.state.settings.startSignal);
+		return state.state.record.isWaitingReadyStartSignal;
 	},
 };

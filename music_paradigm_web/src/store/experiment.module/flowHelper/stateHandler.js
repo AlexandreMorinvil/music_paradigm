@@ -13,11 +13,14 @@ function updateRoute(currentState, flow, cursor, isInitialized) {
 	Object.assign(isInitialized, { route: true });
 }
 
-function updateRecords(currentState, cursor, isInitialized) {
+function updateRecords(currentState, flow, cursor, isInitialized) {
+	const currentBlock = blockHandler.getCurrentBlock(flow, cursor);
+
+	const { startSignal } = currentBlock;
+	currentState.record.isWaitingReadyStartSignal = typeof startSignal === 'number' ? startSignal > 0 : false;
+	if (cursor.flag.needsResetLoopParameters) currentState.record.successesInLoop = 0;
 	currentState.record.isSuccess = false;
-	if (cursor.flag.needsResetLoopParameters) {
-		currentState.record.successesInLoop = 0;
-	}
+
 	Object.assign(isInitialized, { record: true });
 }
 
@@ -167,7 +170,7 @@ function updateState(currentState, flow, cursor, isInitialized, generalSettings)
 	if (cursor.current.isBeyondEnd) forceEndState(currentState, isInitialized);
 	else {
 		if (!isInitialized.route) updateRoute(currentState, flow, cursor, isInitialized);
-		if (!isInitialized.record) updateRecords(currentState, cursor, isInitialized);
+		if (!isInitialized.record) updateRecords(currentState, flow, cursor, isInitialized);
 		if (!isInitialized.state) updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings);
 		if (!isInitialized.media) updateStateMediaFiles(currentState, flow, cursor, isInitialized);
 		if (!isInitialized.content) updateStateContent(currentState, flow, cursor, isInitialized);

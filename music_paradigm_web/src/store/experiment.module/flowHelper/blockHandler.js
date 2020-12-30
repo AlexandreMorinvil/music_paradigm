@@ -21,8 +21,10 @@ function getCurrentBlock(flow, cursor) {
 
 	if (lastRepetitionVersion && cursor.navigation.numberRepetition <= 1) {
 		currentBlock = lastRepetitionVersion;
-	} else if (experimentStoreState.state.record.successesInLoop >= currentBlock.successesForSkipLoop) {
+	} else if (succeeededForSkipLoopVersion && experimentStoreState.state.record.successesInLoop >= currentBlock.successesForSkipLoop) {
+		const { successesForSkipLoop } = currentBlock;
 		currentBlock = succeeededForSkipLoopVersion;
+		Object.assign(currentBlock, successesForSkipLoop);
 	}
 
 	return variableHandler.populateVariables(currentBlock);

@@ -151,6 +151,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			sucesses: 0, // Number of successes recorded
 			successesInLoop: 0, // Number of successes recorded in the loop
 			isSuccess: false, // Indicate whether the current step was a success
+			isWaitingReadyStartSignal: false, // Indicate whether a 'Ready Start' signal is being awaited
 		},
 	};
 }
