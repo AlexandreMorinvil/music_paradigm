@@ -72,6 +72,7 @@ const schema = new Schema(
                     feedbackNumerical: { type: Boolean, default: undefined },
 
                     lastRepetitionVersion: { type: Object, default: undefined },
+                    succeeededForSkipLoopVersion: { type: Object, default: undefined },
 
                     resetVariable: { type: String, default: undefined },
                     incrementVariable: { type: String, default: undefined },

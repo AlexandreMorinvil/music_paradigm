@@ -125,6 +125,7 @@ function validateBlock(block, index = null) {
 		'melodyRepetition',
 		'successesForSkipLoop',
 		'lastRepetitionVersion',
+		'succeeededForSkipLoopVersion',
 		'startSignal',
 		'feedbackNumerical',
 
@@ -134,11 +135,9 @@ function validateBlock(block, index = null) {
 		'incrementVariableOnSucess',
 		'decrementVariableOnSucces',
 	];
-	const innerBlockAttributes = ['lastRepetitionVersion'];
+	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
-		if (!allowedAttributes.includes(key)) {
-			throw new Error(`The key '${key}' of the block${indexMessage} is not allowed`);
-		}
+		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the block${indexMessage} is not allowed`);
 
 		try {
 			validateAttributeType(key, block[key]);
@@ -201,6 +200,7 @@ function validateAttributeType(key, value) {
 
 		// Object
 		case 'lastRepetitionVersion':
+		case 'succeeededForSkipLoopVersion':
 			if (!(typeof value === 'object')) {
 				throw new Error(`The key '${key}' must be of type 'Object'`);
 			}
@@ -244,15 +244,15 @@ function validateAttributeType(key, value) {
 							element.forEach((subElement, subIndex) => {
 								if (!(typeof subElement === 'string' || typeof subElement === 'boolean')) {
 									throw new Error(
-										`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1
-										} of the key '${key}' must be of type 'String' or boolean`,
+										// eslint-disable-next-line prettier/prettier
+										`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String' or boolean`,
 									);
 								}
 
 								if (typeof subElement === 'string' && !allowedEntries.includes(subElement)) {
 									throw new Error(
-										`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1
-										} of the key '${key}' cannot have the value ${subElement}`,
+										// eslint-disable-next-line prettier/prettier
+										`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' cannot have the value ${subElement}`,
 									);
 								}
 							});
@@ -274,8 +274,8 @@ function validateAttributeType(key, value) {
 							element.forEach((subElement, subIndex) => {
 								if (!(typeof subElement === 'string')) {
 									throw new Error(
-										`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1
-										} of the key '${key}' must be of type 'String'`,
+										// eslint-disable-next-line prettier/prettier
+										`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String'`,
 									);
 								}
 							});
