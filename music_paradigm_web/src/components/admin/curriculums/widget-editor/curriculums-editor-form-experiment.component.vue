@@ -118,7 +118,7 @@ export default {
 	},
 	computed: {
 		...mapGetters('experiments', ['experimentsHeadersList']),
-		...mapGetters('curriculums', ['getBlankCurriculumExperiment', 'curriculumSelectedExperiments', 'curriculumSelectedExperimentAtIndex']),
+		...mapGetters('curriculums', ['getBlankCurriculumExperiment', 'curriculumSelectedExperimentAtIndex']),
 		experimentsReferences() {
 			const fullReference = [];
 			this.experimentsHeadersList.forEach((element) => {
