@@ -32,7 +32,7 @@ const schema = new Schema(
                     default: undefined,
                     required: true
                 },
-                optionValues: { type: [], default: undefined },
+                optionValues: { type: [], default: [] },
             }
         ],
         flow: {

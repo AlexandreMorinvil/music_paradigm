@@ -41,6 +41,14 @@ export default {
 		);
 	},
 
+	startSelectedExperiment({ dispatch, getters }) {
+		if (getters.hasExperimentSelection) {
+			dispatch('experiment/setExperiment', getters.experimentSelected, { root: true });
+			dispatch('experiment/setStartingPoint', null, { root: true });
+			dispatch('experiment/initExperiment', null, { root: true });
+		}
+	},
+
 	startExperimentQuick({ commit, dispatch }, id) {
 		experimentService.getDefinition(id).then(
 			(description) => {

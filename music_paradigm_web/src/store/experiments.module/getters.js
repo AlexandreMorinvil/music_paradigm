@@ -1,4 +1,4 @@
-import { validator } from '@/_helpers';
+import { experimentParser, validator } from '@/_helpers';
 
 export default {
 	experimentEdited: (state) => {
@@ -17,7 +17,15 @@ export default {
 		return state.experimentsHeadersList;
 	},
 
+	experimentSelectedParameters: (state) => {
+		return experimentParser.getParameterVariables(state.selection.content);
+	},
+
 	// Status
+	hasExperimentSelection: (state) => {
+		return validator.isExperimentValid(state.selection.content);
+	},
+
 	hasCompiledEdition: (state) => {
 		return validator.isExperimentValid(state.edition);
 	},

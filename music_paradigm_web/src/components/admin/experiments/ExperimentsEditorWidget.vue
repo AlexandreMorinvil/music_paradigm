@@ -1,7 +1,5 @@
 <template>
 	<div id="experiments-workshop" class="widget widget-box widget-bg">
-		<div class="submit-position">//TODO: Form to create an experiment throug buttons and predefined areas instead of editing from de code editor</div>
-
 		<div class="edition-buttons-position">
 			<button v-on:click="handleCompilation" class="widget-button blue">Compile</button>
 			<button v-on:click="handleReversion" class="widget-button blue">Revert</button>
@@ -192,11 +190,6 @@ export default {
 </script>
 
 <style scoped>
-.submit-position {
-	grid-area: submit;
-	background-color: darkred;
-}
-
 .edition-buttons-position {
 	grid-area: edition-btn;
 	display: grid;
@@ -245,7 +238,6 @@ export default {
 	grid-template-columns: 1fr 1fr;
 	/* grid-template-rows: 64pxx; */
 	grid-template-areas:
-		'submit submit'
 		'edition-btn selection-btn'
 		'editor reference'
 		'create update';

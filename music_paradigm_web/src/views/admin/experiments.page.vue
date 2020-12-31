@@ -1,21 +1,19 @@
 <template>
 	<admin-page-content-frame title="Experiments">
 		<widget-content-frame title="Reviewing Tool">
-			<template>
-				<experiments-viewer />
-			</template>
+			<experiments-viewer />
 		</widget-content-frame>
 
 		<widget-content-frame title="Editor Tool">
-			<template>
-				<experiments-editor />
-			</template>
+			<experiments-editor />
+		</widget-content-frame>
+
+		<widget-content-frame title="Launcher Tool">
+			<experiments-launcher-widget />
 		</widget-content-frame>
 
 		<widget-content-frame title="Overview Table">
-			<template>
-				<experiments-table />
-			</template>
+			<experiments-table />
 		</widget-content-frame>
 	</admin-page-content-frame>
 </template>
@@ -23,6 +21,7 @@
 <script>
 import AdminPageContentFrame from '@/components/content-frame/admin-page-content-frame.component.vue';
 import ExperimentsEditor from '@/components/admin/experiments/ExperimentsEditorWidget.vue';
+import ExperimentsLauncherWidget from '@/components/admin/experiments/widget-launcher/experiments-launcher.widget.vue';
 import ExperimentsTable from '@/components/admin/experiments/ExperimentsTableWidget.vue';
 import ExperimentsViewer from '@/components/admin/experiments/ExperimentsViewerWidget.vue';
 import WidgetContentFrame from '@/components/content-frame/widget-content-frame.component.vue';
@@ -30,6 +29,7 @@ import WidgetContentFrame from '@/components/content-frame/widget-content-frame.
 export default {
 	components: {
 		AdminPageContentFrame: AdminPageContentFrame,
+		ExperimentsLauncherWidget,
 		WidgetContentFrame: WidgetContentFrame,
 		experimentsViewer: ExperimentsViewer,
 		experimentsEditor: ExperimentsEditor,
