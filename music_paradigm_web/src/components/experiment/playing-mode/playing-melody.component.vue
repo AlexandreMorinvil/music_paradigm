@@ -28,29 +28,29 @@ export default {
 			incativityUniqueIdentifier: 0,
 			timeLimitUniqueIdentifier: 0,
 			isFirstNotePressed: false,
+			lasPressedMidiNotes: [],
 		};
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('experiment', ['hasVisualMedia', 'hasPicture', 'hasInteractivePiano', 'pictureName', 'timeoutInSeconds', 'melodyRepetition']),
-		...mapGetters('piano', ['midiFileNotesMidi', 'pressedKeys', 'midiFileNotesDuration', 'playedNotesMidi']),
+		...mapGetters('piano', ['midiFileNotesMidi', 'pressedKeys', 'playedNotesMidi']),
 		playProgress() {
 			return this.playedNotesMidi.length;
 		},
 		maxPlayProgress() {
 			return this.midiFileNotesMidi.length * this.melodyRepetition;
 		},
-		lastNoteDuration() {
-			return this.midiFileNotesDuration[this.midiFileNotesDuration.length - 1];
-		},
 	},
 	methods: {
 		...mapActions('piano', ['evaluateMelodyType']),
-		start() {},
+		start() {
+			return;
+		},
 		setTimeLimit() {
 			if (this.timeoutInSeconds !== 0) {
 				this.timeLimitUniqueIdentifier = window.setTimeout(() => {
-					this.$emit('finishedPlaying');
+					this.$emit('finished-playing');
 				}, this.timeoutInSeconds * 1000);
 			}
 		},
@@ -80,23 +80,35 @@ export default {
 			handler: function () {
 				window.clearTimeout(this.incativityUniqueIdentifier);
 				this.incativityUniqueIdentifier = setTimeout(() => {
-					this.$emit('finishedPlaying');
+					this.$emit('finished-playing');
 				}, this.maxInactivityALlowedInMilliSeconds);
 
 				const playedNoteIndex = this.playedNotesMidi.length - 1;
 				const referenceIndex = playedNoteIndex % this.midiFileNotesMidi.length;
 				const hasError = this.playedNotesMidi[playedNoteIndex] !== this.midiFileNotesMidi[referenceIndex];
-				if (hasError) this.$emit('finishedPlaying');
+				if (hasError) this.$emit('finished-playing');
 			},
 		},
 		playProgress(value) {
-			// When the last note was pressed, we wait the duration of the last note
-			// plus a second before indicating the end of the playing state
 			if (value >= this.maxPlayProgress) {
-				this.timerUniqueIdentifier = setTimeout(() => {
-					this.$emit('finishedPlaying');
-				}, this.lastNoteDuration + 1000);
+				this.hasPlayedAllNotes = true;
+				this.lasPressedMidiNotes = JSON.parse(JSON.stringify(this.playedNotesMidi));
 			}
+		},
+		pressedKeys: {
+			deep: true,
+			handler: function (pressedKeys) {
+				if (this.hasPlayedAllNotes) {
+					const hasNewPress = (currentKeys, lastKeys) => !currentKeys.every((v) => lastKeys.includes(v));
+					const wasLastPressReleased = (currentKeys, lastKeys) => !currentKeys.includes(lastKeys[lastKeys.length - 1]);
+
+					if (wasLastPressReleased(pressedKeys, this.lasPressedMidiNotes) || hasNewPress(pressedKeys, this.lasPressedMidiNotes)) {
+						this.$emit('finished-playing');
+					} else {
+						this.lasPressedMidiNotes = JSON.parse(JSON.stringify(pressedKeys));
+					}
+				}
+			},
 		},
 	},
 };

@@ -104,7 +104,7 @@ export default {
 		},
 		timeLeftInMilliseconds(value) {
 			// When the time is over we indicate the end of the playing state
-			if (value <= 0) this.$emit('finishedPlaying');
+			if (value <= 0) this.$emit('finished-playing');
 			else this.updateFootnote(true);
 		},
 	},

@@ -3,7 +3,7 @@
 		<text-area-component />
 
 		<div id="visual-media-area" class="experiment-state-division state-division-visual-media">
-			<component :is="playingMode" v-on:finishedPlaying="handdleEndOfPlaying" ref="playingMode" />
+			<component :is="playingMode" v-on:finished-playing="handdleEndOfPlaying" ref="playingMode" />
 		</div>
 	</div>
 </template>

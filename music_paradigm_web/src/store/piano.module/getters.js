@@ -32,9 +32,6 @@ export default {
 	midiFileNotesName: (state) => {
 		return state.midiFile.notes.name;
 	},
-	midiFileNotesDuration: (state) => {
-		return state.midiFile.notes.duration;
-	},
 
 	// Getters for the played notes
 	playedNotesMidi: (state) => {

@@ -31,7 +31,6 @@ export default {
 	addSuccess: ({ commit }) => {
 		commit('addSuccess');
 	},
-
 	stopWaitingStartSignalReady: ({ commit }) => {
 		commit('stopWaitingStartSignalReady');
 	},

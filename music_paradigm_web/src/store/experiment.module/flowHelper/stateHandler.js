@@ -18,8 +18,9 @@ function updateRecords(currentState, flow, cursor, isInitialized) {
 
 	const { startSignal } = currentBlock;
 	currentState.record.isWaitingReadyStartSignal = typeof startSignal === 'number' ? startSignal > 0 : false;
-	if (cursor.flag.needsResetLoopParameters) currentState.record.successesInLoop = 0;
+
 	currentState.record.isSuccess = false;
+	if (cursor.flag.needsResetLoopParameters) currentState.record.successesInLoop = 0;
 
 	Object.assign(isInitialized, { record: true });
 }
@@ -161,7 +162,7 @@ function forceEndState(currentState, isInitialized, message) {
 function updateStateOnSkip(currentState, flow, cursor, isInitialized) {
 	if (cursor.current.isBeyondEnd) forceEndState(currentState, isInitialized);
 	else if (!isInitialized.media) {
-		updateRecords(currentState, cursor, isInitialized);
+		updateRecords(currentState, flow, cursor, isInitialized);
 		updateStateMediaFiles(currentState, flow, cursor, isInitialized);
 	}
 }
