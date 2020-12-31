@@ -26,4 +26,11 @@
 
 .selected-element-text-color {
     color: var(--selected-element-text-color);
-  }
+}
+
+/* Template elements */
+
+.checkbox {
+    width: 30px;
+    height: 30px;
+}

@@ -147,8 +147,8 @@
 </template>
 
 <script>
-import '@/styles/widgetTemplate.css';
-import '@/styles/formTemplate.css';
+import '@/styles/widget-template.css';
+import '@/styles/form-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {

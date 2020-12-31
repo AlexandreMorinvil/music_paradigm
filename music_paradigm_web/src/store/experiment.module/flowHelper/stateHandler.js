@@ -7,6 +7,44 @@ export default {
 	forceEndState,
 };
 
+function updateStateOnSkip(currentState, flow, cursor, isInitialized) {
+	if (cursor.current.isBeyondEnd) forceEndState(currentState, isInitialized);
+	else if (!isInitialized.media) {
+		updateRecords(currentState, flow, cursor, isInitialized);
+		updateStateMediaFiles(currentState, flow, cursor, isInitialized);
+	}
+}
+
+function updateState(currentState, flow, cursor, isInitialized, generalSettings) {
+	if (cursor.current.isBeyondEnd) forceEndState(currentState, isInitialized);
+	else {
+		if (!isInitialized.route) updateRoute(currentState, flow, cursor, isInitialized);
+		if (!isInitialized.record) updateRecords(currentState, flow, cursor, isInitialized);
+		if (!isInitialized.state) updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings);
+		if (!isInitialized.media) updateStateMediaFiles(currentState, flow, cursor, isInitialized);
+		if (!isInitialized.content) updateStateContent(currentState, flow, cursor, isInitialized);
+	}
+}
+
+function forceEndState(currentState, isInitialized, message) {
+	// We update the route
+	routerNavigation.moveToState('end');
+
+	// We render the state display as empty
+	currentState.content.text = message || '';
+	currentState.content.pictureName = '';
+	currentState.content.interactivePiano = false;
+
+	// We set the initialization status to true
+	Object.assign(isInitialized, {
+		route: true,
+		record: true,
+		state: true,
+		media: true,
+		content: true,
+	});
+}
+
 function updateRoute(currentState, flow, cursor, isInitialized) {
 	currentState.type = blockHandler.getCurrentBlock(flow, cursor).type;
 	routerNavigation.moveToState(currentState.type);
@@ -138,42 +176,4 @@ function updateStateContent(currentState, flow, cursor, isInitialized) {
 
 	// Indicate that the media files is initialized
 	Object.assign(isInitialized, { content: false });
-}
-
-function forceEndState(currentState, isInitialized, message) {
-	// We update the route
-	routerNavigation.moveToState('end');
-
-	// We render the state display as empty
-	currentState.content.text = message || '';
-	currentState.content.pictureName = '';
-	currentState.content.interactivePiano = false;
-
-	// We set the initialization status to true
-	Object.assign(isInitialized, {
-		route: true,
-		record: true,
-		state: true,
-		media: true,
-		content: true,
-	});
-}
-
-function updateStateOnSkip(currentState, flow, cursor, isInitialized) {
-	if (cursor.current.isBeyondEnd) forceEndState(currentState, isInitialized);
-	else if (!isInitialized.media) {
-		updateRecords(currentState, flow, cursor, isInitialized);
-		updateStateMediaFiles(currentState, flow, cursor, isInitialized);
-	}
-}
-
-function updateState(currentState, flow, cursor, isInitialized, generalSettings) {
-	if (cursor.current.isBeyondEnd) forceEndState(currentState, isInitialized);
-	else {
-		if (!isInitialized.route) updateRoute(currentState, flow, cursor, isInitialized);
-		if (!isInitialized.record) updateRecords(currentState, flow, cursor, isInitialized);
-		if (!isInitialized.state) updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings);
-		if (!isInitialized.media) updateStateMediaFiles(currentState, flow, cursor, isInitialized);
-		if (!isInitialized.content) updateStateContent(currentState, flow, cursor, isInitialized);
-	}
 }

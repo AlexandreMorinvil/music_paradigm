@@ -10,7 +10,7 @@
 import AdminPageContentFrame from '@/components/content-frame/admin-page-content-frame.component.vue';
 import WidgetContentFrame from '@/components/content-frame/widget-content-frame.component.vue';
 
-import '@/styles/widgetTemplate.css';
+import '@/styles/widget-template.css';
 
 export default {
 	components: {

@@ -8,7 +8,7 @@
 
 		<widget-content-frame title="Editor Tool">
 			<template>
-				<curriculums-editor />
+				<curriculums-editor-widget />
 			</template>
 		</widget-content-frame>
 
@@ -22,7 +22,7 @@
 
 <script>
 import AdminPageContentFrame from '@/components/content-frame/admin-page-content-frame.component.vue';
-import CurriculumsEditor from '@/components/admin/curriculums/CurriculumsEditorWidget.vue';
+import CurriculumsEditorWidget from '@/components/admin/curriculums/widget-editor/curriculums-editor.widget.vue';
 import CurriculumsTable from '@/components/admin/curriculums/CurriculumsTableWidget.vue';
 import CurriculumsViewer from '@/components/admin/curriculums/CurriculumsViewerWidget.vue';
 import WidgetContentFrame from '@/components/content-frame/widget-content-frame.component.vue';
@@ -32,7 +32,7 @@ export default {
 		AdminPageContentFrame: AdminPageContentFrame,
 		WidgetContentFrame: WidgetContentFrame,
 		CurriculumsViewer: CurriculumsViewer,
-		CurriculumsEditor: CurriculumsEditor,
+		CurriculumsEditorWidget,
 		CurriculumsTable: CurriculumsTable,
 	},
 };

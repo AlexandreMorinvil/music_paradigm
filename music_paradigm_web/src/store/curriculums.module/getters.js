@@ -24,6 +24,19 @@ export default {
 		return state.curriculumsHeadersList;
 	},
 
+	// Template
+	getBlankCurriculumExperiment: () => (index) => {
+		return {
+			experimentReference: '',
+			title: '',
+			delayInDays: 0,
+			isUniqueIndDay: true,
+			completionTarget: 1,
+			completionLimit: 1,
+			associativeId: 'id' + index,
+		}
+	},
+
 	// Status
 	hasSelectedCurriculum: (state) => {
 		return Boolean(state.selection._id);

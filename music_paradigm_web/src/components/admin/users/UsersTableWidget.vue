@@ -46,7 +46,7 @@
 
 <script>
 // TODO: Display the tasks summary
-import '@/styles/widgetTemplate.css';
+import '@/styles/widget-template.css';
 import { mapActions, mapGetters } from 'vuex';
 import LoaderCircular from '@/components/visual-helpers/loader-circular.component.vue';
 

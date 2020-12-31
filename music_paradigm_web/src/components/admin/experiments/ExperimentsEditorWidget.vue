@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import '@/styles/widgetTemplate.css';
+import '@/styles/widget-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
 import CodeEditor from '@/components/admin/TextEditor.vue';

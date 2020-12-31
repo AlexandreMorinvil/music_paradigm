@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import '@/styles/widgetTemplate.css';
+import '@/styles/widget-template.css';
 export default {};
 </script>
 
