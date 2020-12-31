@@ -24,7 +24,7 @@ function getCurrentBlock(flow, cursor) {
 	} else if (succeeededForSkipLoopVersion && experimentStoreState.state.record.successesInLoop >= currentBlock.successesForSkipLoop) {
 		const { successesForSkipLoop } = currentBlock;
 		currentBlock = succeeededForSkipLoopVersion;
-		Object.assign(currentBlock, successesForSkipLoop);
+		currentBlock.successesForSkipLoop = successesForSkipLoop;
 	}
 
 	return variableHandler.populateVariables(currentBlock);
