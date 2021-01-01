@@ -86,7 +86,7 @@ const schema = new Schema(
         }
     },
     {
-        strict: false,
+        strict: true,
         timestamps: {
             createdAt: 'createdAt',
             updatedAt: 'updatedAt'
