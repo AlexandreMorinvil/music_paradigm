@@ -72,6 +72,36 @@ function validateExperiment(experiment) {
 		throw new Error('The experiment flow must have at least one block');
 	}
 
+	// Verification of the attributes
+	const allowedAttributes = [
+		'flow',
+		'variables',
+		'group',
+		'name',
+		'version',
+		'folder',
+		'mode',
+		'anyPianoKey',
+		'enableSoundFlag',
+		'footnote',
+		'footnoteType',
+		'timeLimitInSeconds',
+		'logFlag',
+		'successesForSkip',
+		'hideFeedbackSmiley',
+		'isSkipStepButtonInFootnote',
+		'programmedOctaveOffset',
+		'interactivePianoFirstOctave',
+	];
+	Object.keys(experiment).forEach((key) => {
+		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the general parameters is not allowed`);
+		try {
+			validateAttributeType(key, experiment[key]);
+		} catch (e) {
+			throw new Error(`${e.message} for the general parameters`);
+		}
+	});
+
 	experiment.flow.forEach((element, index) => {
 		validateBlock(element, index);
 	});
@@ -163,6 +193,7 @@ function validateBlock(block, index = null) {
 function validateAttributeType(key, value) {
 	switch (key) {
 		// String
+		case 'mode':
 		case 'resetVariableValue':
 		case 'incrementVariable':
 		case 'decrementVariable':
