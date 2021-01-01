@@ -19,7 +19,7 @@
 
 				<tbody>
 					<tr v-for="(header, index) in experimentsHeadersList" :key="header._id" :class="header._id === selectedId && 'selected'">
-						<td>{{ index }}</td>
+						<td>{{ index + 1 }}</td>
 						<td>{{ header.group }}</td>
 						<td>{{ header.name }}</td>
 						<td>{{ header.version }}</td>
