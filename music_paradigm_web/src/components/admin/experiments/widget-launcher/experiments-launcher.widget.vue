@@ -1,6 +1,6 @@
 <template>
-	<div id="users-editor" class="widget widget-box widget-bg">
-		<experiments-parameter-form-component class="editor-position inner-widget inner-widget-bg" ref="curriculumEdition" />
+	<div id="experiment-launcher" class="widget widget-bg">
+		<experiments-parameter-form-component v-show="needsParameterForm" class="editor-position inner-widget inner-widget-bg" ref="curriculumEdition" />
 
 		<div class="action-buttons-position">
 			<button v-on:click="handleExperimentStart" class="widget-button green run-button" :class="isRunSelectionButtonActive || 'inactive'">
@@ -22,7 +22,10 @@ export default {
 		ExperimentsParameterFormComponent,
 	},
 	computed: {
-		...mapGetters('experiments', ['hasExperimentSelection']),
+		...mapGetters('experiments', ['hasExperimentSelection', 'hasParameterInSelectedExperiment']),
+		needsParameterForm() {
+			return this.hasParameterInSelectedExperiment;
+		},
 		isRunSelectionButtonActive() {
 			return this.hasExperimentSelection;
 		},
@@ -37,16 +40,9 @@ export default {
 </script>
 
 <style scoped>
-.edition-buttons-position {
-	grid-area: edition-btn;
+.widget {
 	display: flex;
-	justify-content: center;
-	grid-gap: 15px;
-	grid-auto-columns: 1fr;
-}
-
-.editor-position {
-	grid-area: editor;
+	flex-direction: column;
 }
 
 .action-buttons-position {
@@ -56,15 +52,8 @@ export default {
 	grid-auto-columns: 1fr;
 }
 
-.widget {
-	grid-template-columns: 100%;
-	grid-template-areas:
-		'editor'
-		'action-btn';
-}
-
 .run-button {
-	width: 50%;
+	max-width: 50%;
 	margin: auto;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
 	<admin-page-content-frame title="Home">
 		<widget-content-frame title="Not Implemented Yet">
-			<div class="widget widget-box widget-bg">
+			<div class="widget widget-bg">
 				Admin Home page
 				<br /><br />
 				Recent activity on the server and important information from the users

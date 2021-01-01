@@ -1,5 +1,5 @@
 <template>
-	<div id="experiments-workshop" class="widget widget-box widget-bg">
+	<div id="experiments-workshop" class="widget widget-bg">
 		TODO: Ability to get a view the most important information of a curriculum
 		<br />
 	</div>

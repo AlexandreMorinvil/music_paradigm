@@ -5,13 +5,12 @@
 		</div>
 		<div v-for="(variable, index) in parameters" :key="index" class="inner-inner-widget parameter-grid">
 			<label for="completion-limit"> {{ variable.name }} : </label>
-			<select name="parameter-value" v-model="variable.assignedValue">
+			<select name="parameter-value" v-model="variable.assignedValue" v-on:change="updateImposedParameters">
 				<option v-for="(option, index) in variable.optionValues || []" :key="index" :value="option">
 					{{ option }}
 				</option>
 			</select>
 		</div>
-		{{ parameters }}
 	</form>
 </template>
 
@@ -22,11 +21,6 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
 	components: {},
-	data() {
-		return {
-			editableParameters: [],
-		};
-	},
 	computed: {
 		...mapGetters('experiments', ['experimentSelectedParameters']),
 		parameters() {
@@ -34,11 +28,18 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('experiments', ['fetchAllExperimentsHeaders']),
+		...mapActions('experiments', ['fetchAllExperimentsHeaders', 'setImposedParameterValues']),
+		updateImposedParameters() {
+			this.setImposedParameterValues(this.parameters);
+		},
 	},
 	watch: {
-		parameters(parameters) {
-			this.editableParameters = JSON.parse(JSON.stringify(parameters));
+		experimentSelectedParameters: {
+			deep: true,
+			immediate: true,
+			handler: function () {
+				this.setImposedParameterValues(this.parameters);
+			},
 		},
 	},
 };

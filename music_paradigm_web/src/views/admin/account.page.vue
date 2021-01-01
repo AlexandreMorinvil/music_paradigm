@@ -1,7 +1,7 @@
 <template>
 	<admin-page-content-frame title="Account">
 		<widget-content-frame title="Not Implemented Yet">
-			<div class="widget widget-box widget-bg">
+			<div class="widget widget-bg">
 				Admin Account page
 				<br />
 				<br />

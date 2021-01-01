@@ -1,7 +1,7 @@
 <template>
 	<admin-page-content-frame title="Experiments Ressources">
 		<widget-content-frame title="Not Implemented Yet">
-			<div class="widget widget-box widget-bg">
+			<div class="widget widget-bg">
 				Interface to upload files
 				<br />
 				<br />Interface to visualize the files on the server, delete, move files from the server

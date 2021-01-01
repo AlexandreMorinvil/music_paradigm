@@ -21,6 +21,14 @@ export default {
 		return experimentParser.getParameterVariables(state.selection.content);
 	},
 
+	imposedParameterValues: (state) => {
+		return state.imposedParameterValues;
+	},
+
+	hasParameterInSelectedExperiment: (state) => {
+		return experimentParser.getParameterVariables(state.selection.content).length > 0;
+	},
+
 	// Status
 	hasExperimentSelection: (state) => {
 		return validator.isExperimentValid(state.selection.content);

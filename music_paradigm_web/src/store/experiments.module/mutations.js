@@ -69,4 +69,8 @@ export default {
 	setHeadersList(state, experimentsHeadersLst) {
 		state.experimentsHeadersList = experimentsHeadersLst;
 	},
+
+	setImposedParameterValues(state, parameters) {
+		state.imposedParameterValues = JSON.parse(JSON.stringify(parameters));
+	},
 };

@@ -1,5 +1,5 @@
 <template>
-	<div id="users-editor" class="widget widget-box widget-bg">
+	<div id="users-editor" class="widget widget-bg">
 		<div class="edition-buttons-position">
 			<button v-on:click="handleRevert" class="widget-button blue">Revert</button>
 			<button v-on:click="handleUnselection" class="widget-button blue">Unselect</button>

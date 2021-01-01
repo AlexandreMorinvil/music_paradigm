@@ -1,7 +1,7 @@
 <template>
 	<admin-page-content-frame title="Data">
 		<widget-content-frame title="Not Implemented Yet">
-			<div class="widget widget-box widget-bg">Interface to visualize the data and log files from the experiments</div>
+			<div class="widget widget-bg">Interface to visualize the data and log files from the experiments</div>
 		</widget-content-frame>
 	</admin-page-content-frame>
 </template>

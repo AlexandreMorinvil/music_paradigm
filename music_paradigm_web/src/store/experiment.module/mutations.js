@@ -25,6 +25,10 @@ export default {
 		state.hasExperiment = true;
 	},
 
+	setParameterValues(state, variableValues) {
+		experimentHandler.setParameterImposedValues(state, variableValues);
+	},
+
 	initCursor(state, presetCursor = null) {
 		// If a cursor is provided, the experiment is resumed with the state of the cursor.
 		// If no cursor is provided, the default values of the cursor is the start ofthe experiment.

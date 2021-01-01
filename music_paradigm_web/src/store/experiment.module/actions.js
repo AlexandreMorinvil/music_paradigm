@@ -5,6 +5,9 @@ export default {
 	setExperiment: ({ commit }, experiment) => {
 		commit('setExperiment', experiment);
 	},
+	setParameterValues: ({ commit }, variableValues) => {
+		commit('setParameterValues', variableValues);
+	},
 	setStartingPoint: ({ commit }, cursor = null) => {
 		commit('initCursor', cursor);
 	},

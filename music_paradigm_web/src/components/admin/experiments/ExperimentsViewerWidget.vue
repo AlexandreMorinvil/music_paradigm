@@ -1,5 +1,5 @@
 <template>
-	<div id="experiments-workshop" class="widget widget-box widget-bg">
+	<div id="experiments-workshop" class="widget widget-bg">
 		TODO: Ability to get a preview of the experiments
 		<br />
 		<br />

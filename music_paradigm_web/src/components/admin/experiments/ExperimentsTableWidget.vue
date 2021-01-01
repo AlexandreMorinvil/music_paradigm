@@ -1,5 +1,5 @@
 <template>
-	<div id="experiments-workshop" class="widget widget-box widget-bg">
+	<div id="experiments-workshop" class="widget widget-bg">
 		<div class="options-position">
 			<button v-on:click="handleRefresh" class="widget-button blue">Refresh</button>
 		</div>

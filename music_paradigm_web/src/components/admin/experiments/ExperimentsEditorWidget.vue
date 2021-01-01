@@ -1,5 +1,5 @@
 <template>
-	<div id="experiments-workshop" class="widget widget-box widget-bg">
+	<div id="experiments-workshop" class="widget widget-bg">
 		<div class="edition-buttons-position">
 			<button v-on:click="handleCompilation" class="widget-button blue">Compile</button>
 			<button v-on:click="handleReversion" class="widget-button blue">Revert</button>
