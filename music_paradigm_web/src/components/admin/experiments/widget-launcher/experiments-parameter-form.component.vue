@@ -1,9 +1,9 @@
 <template>
-	<form class="experiment-position">
+	<form class="parameter-form form-area">
 		<div>
 			<h3>Parameter : Value</h3>
 		</div>
-		<div v-for="(variable, index) in parameters" :key="index" class="inner-inner-widget">
+		<div v-for="(variable, index) in parameters" :key="index" class="inner-inner-widget parameter-grid">
 			<label for="completion-limit"> {{ variable.name }} : </label>
 			<select name="parameter-value" v-model="variable.assignedValue">
 				<option v-for="(option, index) in variable.optionValues || []" :key="index" :value="option">
@@ -45,30 +45,12 @@ export default {
 </script>
 
 <style scoped>
-/* .widget form {
+.parameter-grid {
 	display: grid;
-	grid-template-columns: 100%;
-	grid-gap: 15px;
+	grid-template-columns: 1fr 3fr;
 }
 
-.general-parameters-section {
-	display: grid;
-	grid-template-columns: 2fr auto;
-	grid-gap: 15px;
+label {
+	text-align: center;
 }
-
-.general-parameters-section div {
-	display: grid;
-	grid-template-columns: auto 1fr;
-	grid-gap: 15px;
-}
-
-.general-parameters-section label {
-	display: inline-block;
-}
-
-.general-parameters-section input {
-	display: inline;
-	margin: auto;
-}  */
 </style>

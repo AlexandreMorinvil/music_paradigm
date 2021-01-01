@@ -6,7 +6,7 @@
 		</div>
 
 		<div class="editor-position">
-			<div class="editor-box-form">
+			<div class="form-area">
 				<div>
 					<label for="username">
 						Username :

@@ -1,5 +1,5 @@
 <template>
-	<div class="editor-box-form">
+	<div class="form-area">
 		<div class="general-parameters-section">
 			<div>
 				<label for="title">
