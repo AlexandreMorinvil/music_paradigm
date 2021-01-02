@@ -1,6 +1,6 @@
 <template>
 	<admin-page-content-frame title="Experiments Ressources">
-		<widget-content-frame title="Not Implemented Yet">
+		<widget-content-frame title="File Browser">
 			<!-- <div class="widget widget-bg">
 				Interface to upload files
 				<br />

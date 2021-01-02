@@ -9,6 +9,9 @@ const errorHandler = require('_helpers/error-handler');
 const path = require("path");
 const sdk = require("vuetify-file-browser-server/sdk");
 
+// get AWS configuration from process.env
+const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET, FILEBROWSER_AWS_ROOT_PATH } = process.env;
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -20,8 +23,6 @@ app.use('/experiment-ressources', express.static(path.resolve(__dirname, "../exp
 // use JWT auth to secure the api
 app.use(jwt());
 
-// get AWS configuration from process.env
-const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET, FILEBROWSER_AWS_ROOT_PATH } = process.env;
 
 // api routes
 app.use('/admin-sessions', require('admin-sessions/admin-sessions.controller'));
