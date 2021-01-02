@@ -15,7 +15,7 @@
 	position: static;
 	padding: 20px 50px;
 	text-align: center;
-	max-height: 80px;
+	font-size: 15px;
 }
 
 hr {
