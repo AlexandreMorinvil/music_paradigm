@@ -284,7 +284,14 @@ export default {
 	},
 
 	hasSkipOption: (state) => {
-		return Boolean(state.state.settings.skipStepButton) || false;
+		return Boolean(state.state.settings.skipStepButton);
+	},
+
+	hasSuccessFeedbackMessage(state) {
+		return Boolean(state.state.settings.successFeedbackMessage);
+	},
+	hasFailureFeedbackMessage(state) {
+		return Boolean(state.state.settings.failureFeedbackMessage);
 	},
 
 	isSkipButtonInFootnote: (state) => {

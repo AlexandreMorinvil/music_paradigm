@@ -39,6 +39,10 @@ export default {
 	},
 
 	// Getters for the evaluations
+	hasGrades: (state) => {
+		return Boolean(state.played.evaluation.grades);
+	},
+
 	grades: (state) => {
 		return state.played.evaluation.grades;
 	},

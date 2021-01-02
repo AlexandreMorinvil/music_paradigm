@@ -1,20 +1,8 @@
 <template>
-	<div id="feedback-state" class="experiment-state-container" :class="gridClass">
-		<text-area-component />
-		<div id="visual-media-area" class="experiment-state-division state-division-visual-media">
-			<div class="feedback-grade-board">
-				<p v-if="!hasGrades">No performance was graded</p>
-				<div v-else class="feedback-box" v-for="grade in grades" :key="grade.criteria">
-					<feedback-grade-component :grade="grade" />
-				</div>
-			</div>
-			<div v-if="hasSuccessFeedbackMessage && isSuccessful" class="success-feedback-message feedback-message">
-				{{ successFeedbackMessage }}
-			</div>
-			<div v-if="hasFailureFeedbackMessage && !isSuccessful" class="success-feedback-message feedback-message">
-				{{ failureFeedbackMessage }}
-			</div>
-		</div>
+	<div id="feedback-state" class="state-content-flex">
+		<text-area-component class="text-area state-section" />
+		<feedback-area-component class="feedback-area state-section" />
+		<feedback-message-area-component class="feedback-message-area state-section" />
 	</div>
 </template>
 
@@ -24,13 +12,15 @@ import { mapGetters } from 'vuex';
 import '@/styles/experiment-content-template.css';
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 
-import FeedbackGradeComponent from '@/components/experiment/feedback/feedback-grade.component.vue';
+import FeedbackAreaComponent from '@/components/experiment/visual-content/feedback-area.component.vue';
+import FeedbackMessageAreaComponent from '@/components/experiment/visual-content/feedback-message-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
 		TextAreaComponent,
-		FeedbackGradeComponent,
+		FeedbackAreaComponent,
+		FeedbackMessageAreaComponent,
 	},
 	props: {
 		lastPressedKey: {
@@ -51,29 +41,8 @@ export default {
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
-		...mapGetters('piano', ['grades', 'pressedKeys']),
-		...mapGetters('experiment', ['hasText', 'anyPianoKey', 'successFeedbackMessage', 'failureFeedbackMessage']),
-		gridClass() {
-			if (this.hasText) return 'grid-small-area-big-area';
-			else return 'grid-single-area';
-		},
-		hasGrades() {
-			if (Array.isArray(this.grades) && this.grades.length > 0) return true;
-			else return false;
-		},
-		isSuccessful() {
-			if (this.grades.length <= 0) return false;
-			for (const grade of this.grades) {
-				if (grade.mark < grade.passMark) return false;
-			}
-			return true;
-		},
-		hasSuccessFeedbackMessage() {
-			return Boolean(this.successFeedbackMessage);
-		},
-		hasFailureFeedbackMessage() {
-			return Boolean(this.failureFeedbackMessage);
-		},
+		...mapGetters('piano', ['pressedKeys']),
+		...mapGetters('experiment', ['anyPianoKey']),
 	},
 	methods: {
 		updateFootnote() {
@@ -111,36 +80,18 @@ export default {
 </script>
 
 <style scoped>
-#visual-media-area {
-	display: grid;
-	grid-template-rows: 1fr auto;
-	grid-template-columns: 1fr;
+.text-area {
+	flex-grow: 1;
+	height: 20%;
 }
 
-.feedback-grade-board {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	height: 70%;
-	width: 100%;
+.feedback-area {
+	flex-grow: 2;
+	height: 60%;
 }
 
-.feedback-box {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin: 0 2% 0;
-	width: auto;
-	height: 100%;
-}
-
-.success-feedback-message {
-	text-align: center;
-	font-size: calc(1vh + 1vw);
-}
-
-.feedback-message {
-	margin-bottom: 100px;
+.feedback-message-area {
+	flex-grow: 1;
+	height: 20%;
 }
 </style>

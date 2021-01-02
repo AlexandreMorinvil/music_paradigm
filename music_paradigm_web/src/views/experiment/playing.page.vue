@@ -22,12 +22,12 @@ import PlayingSpeedComponent from '@/components/experiment/playing-mode/playing-
 
 export default {
 	components: {
-		speed: PlayingSpeedComponent,
-		rhythm: PlayingRhythmComponent,
-		melody: PlayingMelodyComponent,
 		TextAreaComponent,
 		ImageAreaComponent,
 		PianoAreaComponent,
+		speed: PlayingSpeedComponent,
+		rhythm: PlayingRhythmComponent,
+		melody: PlayingMelodyComponent,
 	},
 	data() {
 		return {
@@ -38,10 +38,6 @@ export default {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['hasSuccess']),
 		...mapGetters('experiment', ['hasText', 'hasFootnote', 'textContent', 'playingMode']),
-		gridClass() {
-			if (this.hasText) return 'grid-small-area-big-area';
-			else return 'grid-single-area';
-		},
 	},
 	methods: {
 		...mapActions('experiment', ['addSuccess']),
