@@ -1,8 +1,8 @@
 <template>
-	<div id="instruction-state" class="state-content-grid">
-		<text-area-component />
-		<image-area-component />
-		<piano-area-component />
+	<div id="instruction-state" class="state-content-flex">
+		<text-area-component class="text-area" />
+		<image-area-component class="image-area" />
+		<piano-area-component class="piano-area" />
 	</div>
 </template>
 
@@ -70,12 +70,15 @@ export default {
 </script>
 
 <style scoped>
-.state-content-grid {
-	display: grid;
-	justify-content: center;
-	align-content: space-between;
-	grid-template-columns: 100%;
-	grid-auto-rows: minmax(0, 1fr);
-	grid-row-gap: 2.5%;
+.text-area {
+	flex-grow: 1;
+}
+
+.image-area {
+	flex-grow: 1;
+}
+
+.piano-area {
+	flex-grow: 1;
 }
 </style>

@@ -3,6 +3,14 @@
     spacing for each element
  */
 
+.state-content-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    /* flex-flow: row wrap; */
+    align-items: stretch;
+}
+
 .standard-state-content-grid {
     display: grid;
     justify-content: center;

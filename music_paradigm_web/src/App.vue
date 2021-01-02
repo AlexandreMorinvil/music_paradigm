@@ -12,8 +12,6 @@
 </template>
 
 <script>
-import '@/styles/default.css';
-
 import { mapActions, mapGetters } from 'vuex';
 import AlertComponent from '@/components/visual-helpers/alert.component.vue';
 import NavigationBarDefault from '@/components/navigation-bar/navigation-bar-default.component.vue';

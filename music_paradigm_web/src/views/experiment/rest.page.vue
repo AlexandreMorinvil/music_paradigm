@@ -1,8 +1,8 @@
 <template>
-	<div id="rest-state" class="state-content-grid">
-		<text-area-component />
-		<image-area-component />
-		<piano-area-component />
+	<div id="rest-state" class="state-content-flex">
+		<text-area-component class="text-area" />
+		<image-area-component class="image-area" />
+		<piano-area-component class="piano-area" />
 	</div>
 </template>
 
@@ -84,4 +84,16 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.text-area {
+	flex-grow: 1;
+}
+
+.image-area {
+	flex-grow: 1;
+}
+
+.piano-area {
+	flex-grow: 1;
+}
+</style>
