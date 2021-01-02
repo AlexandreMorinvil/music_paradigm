@@ -1,10 +1,5 @@
 <template>
 	<div id="playing-speed-area" class="playing-area">
-		<div id="playing-visual-media" v-if="hasVisualMedia" class="playing-visual-media-area">
-			<visual-piano v-if="hasInteractivePiano" ref="piano" />
-			<img id="playing-img" v-if="!hasInteractivePiano && hasPicture" :src="urlExperimentRessource(pictureName)" alt="Playing" />
-		</div>
-
 		<div id="playing-progress-bar" class="playing-progress-bar-area">
 			<progress id="progress-bar" :value="playProgress" :max="maxPlayProgress"></progress>
 		</div>
@@ -16,12 +11,8 @@ import '@/styles/playing-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
-import VisualPiano from '@/components/piano/piano-visual-display.component.vue';
 
 export default {
-	components: {
-		visualPiano: VisualPiano,
-	},
 	data() {
 		return {
 			playingStarted: false,
@@ -36,15 +27,7 @@ export default {
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
-		...mapGetters('experiment', [
-			'hasVisualMedia',
-			'hasPicture',
-			'hasInteractivePiano',
-			'pictureName',
-			'timeoutInSeconds',
-			'melodyRepetition',
-			'isWaitingStartSignal',
-		]),
+		...mapGetters('experiment', ['timeoutInSeconds', 'melodyRepetition', 'isWaitingStartSignal']),
 		...mapGetters('piano', ['midiFileNotesMidi', 'playedNotesMidi']),
 		timeLimit() {
 			return this.timeoutInSeconds || this.defaultTimeLimitInSeconds;

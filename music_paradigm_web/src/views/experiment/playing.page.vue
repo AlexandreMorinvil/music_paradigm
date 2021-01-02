@@ -1,10 +1,9 @@
 <template>
-	<div id="playing-state" class="standard-state-content-grid" :class="gridClass">
-		<text-area-component />
-
-		<div id="visual-media-area" class="experiment-state-division state-division-visual-media">
-			<component :is="playingMode" v-on:finished-playing="handdleEndOfPlaying" ref="playingMode" />
-		</div>
+	<div id="playing-state" class="state-content-flex">
+		<text-area-component class="text-area state-section" />
+		<image-area-component class="image-area state-section" />
+		<piano-area-component class="piano-area state-section" />
+		<component :is="playingMode" class="play-area state-section" v-on:finished-playing="handdleEndOfPlaying" ref="playingMode" />
 	</div>
 </template>
 
@@ -13,10 +12,13 @@ import '@/styles/experiment-content-template.css';
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 import { mapActions, mapGetters } from 'vuex';
 
+import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
+import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';
+import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
+
 import PlayingMelodyComponent from '@/components/experiment/playing-mode/playing-melody.component';
 import PlayingRhythmComponent from '@/components/experiment/playing-mode/playing-rhythm.component';
 import PlayingSpeedComponent from '@/components/experiment/playing-mode/playing-speed.component';
-import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
@@ -24,6 +26,8 @@ export default {
 		rhythm: PlayingRhythmComponent,
 		melody: PlayingMelodyComponent,
 		TextAreaComponent,
+		ImageAreaComponent,
+		PianoAreaComponent,
 	},
 	data() {
 		return {
@@ -72,4 +76,24 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.text-area {
+	flex-grow: 1;
+	height: 30%;
+}
+
+.image-area {
+	flex-grow: 1;
+	height: 50%;
+}
+
+.piano-area {
+	flex-grow: 1;
+	height: 50%;
+}
+
+.play-area {
+	flex-grow: 1;
+	height: 20%;
+}
+</style>
