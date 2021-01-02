@@ -20,16 +20,15 @@ export default {
 			return {
 				baseURL: url.baseUrl(),
 				timeout: 10000,
-				auth: authHeader(),
+				headers: authHeader(),
 			};
 		},
 	},
 };
 </script>
 
-
 <style scoped>
 .file-browser-container {
-	font-size: 2em;
+	font-size: 0.75em;
 }
 </style>

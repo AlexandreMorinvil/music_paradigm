@@ -18,7 +18,7 @@ app.use('/static', express.static('static'));
 app.use('/experiment-ressources', express.static(path.resolve(__dirname, "../experiment_ressources")));
 
 // use JWT auth to secure the api
-// app.use(jwt());
+app.use(jwt());
 
 // get AWS configuration from process.env
 const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET, FILEBROWSER_AWS_ROOT_PATH } = process.env;
