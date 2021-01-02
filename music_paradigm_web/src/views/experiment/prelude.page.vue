@@ -1,5 +1,5 @@
 <template>
-	<div id="prelude-state" class="standard-state-content-grid">
+	<div id="prelude-state">
 		<div id="text-area" class="experiment-state-division state-division-text">
 			{{ textToDisplay }}
 		</div>

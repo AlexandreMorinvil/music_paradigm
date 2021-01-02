@@ -22,6 +22,7 @@
 </template>
 
 <script>
+// TODO: This needs refactoring
 import '@/styles/experiment-content-template.css';
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 

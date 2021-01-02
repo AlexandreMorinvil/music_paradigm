@@ -40,5 +40,6 @@ export default {
 	margin: 0 2% 0;
 	width: auto;
 	height: 100%;
+	max-height: 400px;
 }
 </style>

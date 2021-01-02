@@ -14,35 +14,6 @@
     height: 100%;
 }
 
-.standard-state-content-grid {
-    display: grid;
-    justify-content: center;
-    align-content: space-between;
-    grid-template-columns: 100%;
-    grid-auto-rows: minmax(0, 1fr);
-    grid-row-gap: 2.5%;
-}
-
-/* Two areas division grid */
-
-.grid-area-big-area {
-    grid-template-rows: 39% 58.5%;
-}
-
-.grid-big-area-small-area {
-    grid-template-rows: 78% 19.5%;
-}
-
-.grid-small-area-big-area {
-    grid-template-rows: 19.5% 78%;
-}
-
-/* Sigle area division grid */
-
-.grid-single-area {
-    grid-template-rows: 100%;
-}
-
 /* State division properties*/
 
 .experiment-state-division {
