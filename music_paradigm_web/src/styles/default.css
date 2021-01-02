@@ -1,0 +1,14 @@
+/* This became necessary after integrating the vuetify-loader which changed those default settings */
+input,
+select {
+    background-color: white;
+    border: 2px solid rgb(210, 210, 210);
+    color: black;
+}
+
+/* This became necessary after integrating the vuetify-loader which changed those default settings */
+button {
+    background-color: rgb(210, 210, 210);
+    border: 2px solid rgb(190, 190, 190);
+    color: black;
+}

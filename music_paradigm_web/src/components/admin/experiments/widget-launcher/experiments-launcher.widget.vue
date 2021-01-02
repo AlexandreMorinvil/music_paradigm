@@ -53,7 +53,7 @@ export default {
 }
 
 .run-button {
-	max-width: 50%;
+	width: 50%;
 	margin: auto;
 }
 </style>

@@ -36,10 +36,10 @@ export default {
 
 .footnote-button {
 	font-size: calc(1vh + 1vw);
+	color: black;
 	background-color: rgb(200, 200, 200);
 	border: 3px solid rgb(150, 150, 150);
 	border-radius: 10px;
-	/* padding-top: auto; */
 	margin: 10px;
 	width: initial;
 	height: initial;

@@ -9,7 +9,14 @@ const experiments = '/experiments/';
 const curriculums = '/curriculums/';
 const users = '/users/';
 
+const storage = '/storage/';
+
 export default {
+	// Base URL
+	baseUrl: function () {
+		return config.apiUrl;
+	},
+
 	// File serving
 	static: function (directory) {
 		return config.apiUrl + staticDirectory + directory;
@@ -33,5 +40,8 @@ export default {
 	},
 	users: function (parameters) {
 		return config.apiUrl + users + parameters;
+	},
+	storage: function (parameters) {
+		return config.apiUrl + storage + parameters;
 	},
 };

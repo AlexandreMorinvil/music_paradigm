@@ -16,7 +16,8 @@
         "jsonwebtoken": "^8.2.2",
         "mongodb": "^3.0.10",
         "mongoose": "^5.1.4",
-        "rootpath": "^0.1.2"
+        "rootpath": "^0.1.2",
+        "vuetify-file-browser-server": "^1.0.2"
     },
     "devDependencies": {
         "nodemon": "^1.19.4"

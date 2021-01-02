@@ -1,7 +1,7 @@
 <template>
 	<div class="widget-tab">
 		<div class="widget-header">
-			<div class="container" v-on:click="toggle()" :class="isShown && 'change'">
+			<div class="widget-icone-container" v-on:click="toggle()" :class="isShown && 'change'">
 				<div class="bar1"></div>
 				<div class="bar2"></div>
 				<div class="bar3"></div>
@@ -74,7 +74,7 @@ export default {
 }
 
 /* Icon */
-.container {
+.widget-icone-container {
 	display: inline-block;
 	cursor: pointer;
 	margin: 0 20px 0 5px;
