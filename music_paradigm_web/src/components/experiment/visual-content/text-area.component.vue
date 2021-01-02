@@ -1,8 +1,6 @@
 <template>
 	<div id="text-area" v-if="hasText" class="state-section state-division-text">
-		<p class="centering">
-			{{ textContent }}
-		</p>
+		<p class="centering">{{ textContent }}</p>
 	</div>
 </template>
 

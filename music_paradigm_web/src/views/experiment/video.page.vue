@@ -1,7 +1,7 @@
 <template>
-	<div class="state-content-grid video-state-container" :class="gridClass">
-		<text-area-component />
-		<div class="visual-media-board">
+	<div class="state-content-flex">
+		<text-area-component class="text-area state-section" />
+		<div class="visual-media-board video-area state-section">
 			<div class="video-box">
 				<div v-show="!isPlaying" class="video-hidding-thumbnail" :style="videoWidthCSSvariable + ';' + videoHeightCSSvariable">
 					{{ videoWaitingMessage }}
@@ -17,7 +17,7 @@
 				/>
 			</div>
 		</div>
-		<piano-area-component />
+		<piano-area-component class="piano-area state-section" />
 	</div>
 </template>
 
@@ -36,7 +36,6 @@ export default {
 		PianoAreaComponent,
 		TextAreaComponent,
 		// VideoAreaComponent,
-		// visualPiano: VisualPiano,
 		VideoPlayer,
 	},
 	props: {
@@ -72,10 +71,6 @@ export default {
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('experiment', ['hasVideo', 'hasInteractivePiano', 'hasText', 'videoName']),
-		gridClass() {
-			if (this.hasText) return 'grid-small-area-big-area';
-			else return 'grid-single-area';
-		},
 		videoDimensions() {
 			let height = this.defaultVideoHeight;
 			let width = this.defaultVideoWidth;
@@ -181,13 +176,6 @@ export default {
 	height: 80%;
 	width: 100%;
 }
-.piano-box {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 20%;
-	width: calc(var(--videoWidth) * 1.1);
-}
 .video-hidding-thumbnail {
 	display: flex;
 	justify-content: center;
@@ -195,5 +183,17 @@ export default {
 	background-image: radial-gradient(rgb(50, 50, 50), black);
 	height: var(--videoHeight);
 	width: var(--videoWidth);
+}
+
+.text-area {
+	flex-grow: 1;
+}
+
+.video-area {
+	flex-grow: 5;
+}
+
+.piano-area {
+	flex-grow: 1;
 }
 </style>

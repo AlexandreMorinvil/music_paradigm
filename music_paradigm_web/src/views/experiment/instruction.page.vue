@@ -1,8 +1,8 @@
 <template>
 	<div id="instruction-state" class="state-content-flex">
-		<text-area-component class="text-area" />
-		<image-area-component class="image-area" />
-		<piano-area-component class="piano-area" />
+		<text-area-component class="text-area state-section" />
+		<image-area-component class="image-area state-section" />
+		<piano-area-component class="piano-area state-section" />
 	</div>
 </template>
 
