@@ -26,6 +26,7 @@
 				:experiment="experiment"
 				:index="index"
 				v-on:remove-experiment="removeExperiment"
+				v-on:change-experiment="updateExperiment"
 			/>
 		</div>
 	</div>
@@ -64,12 +65,12 @@ export default {
 			return this.hasSelectedCurriculum ? this.curriculumSelectedTitle || '---' : '';
 		},
 		curriculumSelectedIsSequentialDisplay() {
-			return this.hasSelectedCurriculum ? this.curriculumSelectedIsSequential || '---' : '';
+			return this.hasSelectedCurriculum ? this.curriculumSelectedIsSequential : '';
 		},
 	},
 	methods: {
 		...mapActions('experiments', ['fetchAllExperimentsHeaders']),
-		bundleCurrirulumFromForm() {
+		bundleCurrirulumForm() {
 			return {
 				id: this.id,
 				title: this.title,
@@ -79,6 +80,9 @@ export default {
 		},
 		addExperiment() {
 			this.experiments.push(this.getBlankCurriculumExperiment(this.experiments.length));
+		},
+		updateExperiment(mutation) {
+			this.experiments[mutation.index] = mutation.experiment;
 		},
 		assignFormId(id) {
 			this.id = id;

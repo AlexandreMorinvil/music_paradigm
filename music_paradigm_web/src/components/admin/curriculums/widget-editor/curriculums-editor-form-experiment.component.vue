@@ -11,6 +11,7 @@
 			</label>
 			<input
 				type="text"
+				v-on:change="updateExperiment"
 				v-model="experimentData.associativeId"
 				name="experiment-id"
 				autocomplete="new-experiment-id"
@@ -23,7 +24,7 @@
 				Experiment:
 				<span class="selected-element-text">{{ getExperimentFullNameFromList(curriculumSelectedExperimentAtIndex(index).experimentReference) }}</span>
 			</label>
-			<select name="experiment-reference" v-model="experimentData.experimentReference">
+			<select name="experiment-reference" v-on:change="updateExperiment" v-model="experimentData.experimentReference">
 				<option v-for="(reference, index) in experimentsReferences" :key="index" :value="experimentsReferences[index].id">
 					{{ experimentsReferences[index].fullName }}
 				</option>
@@ -37,6 +38,7 @@
 			</label>
 			<input
 				type="text"
+				v-on:change="updateExperiment"
 				v-model="experimentData.title"
 				name="experiment-title"
 				autocomplete="new-experiment-title"
@@ -51,6 +53,7 @@
 			</label>
 			<input
 				type="number"
+				v-on:change="updateExperiment"
 				min="0"
 				v-model="experimentData.delayInDays"
 				name="delay-in-days"
@@ -62,21 +65,21 @@
 		<div class="time-area input">
 			<label for="time-availability">
 				Release Time:
-				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).timeRelease }}</span>
+				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).releaseTime }}</span>
 			</label>
-			<input type="time" v-model="experimentData.timeRelease" name="time-available" value="00:00" />
+			<input type="time" v-on:change="updateExperiment" v-model="experimentData.releaseTime" name="time-available" value="00:00" />
 		</div>
 
 		<div class="limit-area centered-input">
-			<input type="checkbox" class="checkbox" v-model="experimentData.completionLimit" name="completion-limit" />
+			<input type="checkbox" v-on:change="updateExperiment" class="checkbox" v-model="experimentData.isCompletionLimited" name="completion-limit" />
 			<label for="completion-limit">
 				Completion Limited
-				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).completionLimit }}</span>
+				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).isCompletionLimited }}</span>
 			</label>
 		</div>
 
 		<div class="unique-area centered-input">
-			<input type="checkbox" class="checkbox" v-model="experimentData.isUniqueIndDay" name="is-unique-in-day" />
+			<input type="checkbox" v-on:change="updateExperiment" class="checkbox" v-model="experimentData.isUniqueIndDay" name="is-unique-in-day" />
 			<label for="is-unique-in-day" class="inline-label">
 				Unique in Day
 				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).isUniqueIndDay }}</span>
@@ -88,7 +91,7 @@
 				Text:
 				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).text }}</span>
 			</label>
-			<textarea v-model="experimentData.text" name="text" row="1" placeholder="Insert a text to display to the user" />
+			<textarea v-model="experimentData.text" v-on:change="updateExperiment" name="text" row="1" placeholder="Insert a text to display to the user" />
 		</div>
 	</div>
 </template>
@@ -137,8 +140,14 @@ export default {
 		removeExperiment(index) {
 			this.$emit('remove-experiment', index);
 		},
+		updateExperiment() {
+			this.$emit('change-experiment', { index: this.index, experiment: this.experimentData });
+		},
 	},
 	beforeMount() {
+		this.experimentData = this.experiment;
+	},
+	updated() {
 		this.experimentData = this.experiment;
 	},
 };

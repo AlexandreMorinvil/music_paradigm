@@ -27,13 +27,14 @@ export default {
 	// Template
 	getBlankCurriculumExperiment: () => (index) => {
 		return {
+			associativeId: 'id' + index,
 			experimentReference: '',
 			title: '',
 			delayInDays: 0,
+			releaseTime: '00:00',
 			isUniqueIndDay: true,
-			completionTarget: 1,
-			completionLimit: 1,
-			associativeId: 'id' + index,
+			isCompletionLimited: true,
+			text: '',
 		}
 	},
 

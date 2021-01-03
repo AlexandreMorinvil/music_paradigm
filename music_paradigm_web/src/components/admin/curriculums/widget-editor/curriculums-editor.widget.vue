@@ -37,29 +37,29 @@ export default {
 	methods: {
 		...mapActions('experiments', ['fetchAllExperimentsHeaders']),
 		...mapActions('curriculums', ['unsetSelectedCurriculum', 'createCurriculum', 'updateCurriculum', 'deleteCurriculum']),
-		bundleUserFromForm() {
-			return this.$refs.editorForm.bundleUserFromForm();
+		bundleCurrirulumForm() {
+			return this.$refs.editorForm.bundleCurrirulumForm();
 		},
 		assignSelectedToForm() {
 			this.$refs.editorForm.assignSelectedToForm();
 		},
 		submitCurriculumToCreate() {
-			const curriculumToCreate = this.bundleCurrirulumFromForm();
-			this.createCurriculum(curriculumToCreate);
+			const curriculumToCreate = this.bundleCurrirulumForm();
+			this.createCurriculum(curriculumToCreate).then(() => this.assignSelectedToForm());
 		},
 		submitCurriculumToUpdate() {
 			const answer = window.confirm('Are your sure you want to edit the curriculum?');
 			if (answer) {
-				const curriculumUpdated = this.bundleCurrirulumFromForm();
+				const curriculumUpdated = this.bundleCurrirulumForm();
 				this.updateCurriculum({
 					id: this.curriculumSelectedId,
 					curriculum: curriculumUpdated,
-				});
+				}).then(() => this.assignSelectedToForm());
 			}
 		},
 		submitUserToDelete() {
 			const answer = window.confirm('Are your sure you want to delete the curriculum?');
-			if (answer) this.deleteCurriculum(this.curriculumSelectedId);
+			if (answer) this.deleteCurriculum(this.curriculumSelectedId).then(() => this.assignSelectedToForm());
 		},
 		handleRevert() {
 			this.assignSelectedToForm();
