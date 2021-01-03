@@ -1,28 +1,26 @@
 <template>
-	<div class="form-area">
-		<div class="general-parameters-section">
-			<div>
-				<label for="title">
-					Title :
-					<span class="selected-element-text">{{ curriculumSelectedTitleDisplay }}</span>
-				</label>
-				<input type="text" v-model="title" name="title" autocomplete="new-username" placeholder="Insert new title" />
-			</div>
-			<div>
-				<label for="isSequential">
-					Sequential:
-					<span class="selected-element-text">{{ curriculumSelectedIsSequentialDisplay }}</span>
-				</label>
-				<input class="checkbox" v-model="isSequential" name="isSequential" type="checkbox" />
-			</div>
+	<div class="form-grid">
+		<div class="title-area input">
+			<label for="title">
+				Title : <span class="selected-element-text">{{ curriculumSelectedTitleDisplay }}</span>
+			</label>
+			<input type="text" v-model="title" name="title" autocomplete="new-username" placeholder="Insert new title" />
 		</div>
 
-		<div class="experiments-parameters-section">
+		<div class="sequential-area">
+			<input class="checkbox" v-model="isSequential" name="isSequential" type="checkbox" />
+			<label for="isSequential">
+				Sequential <span class="selected-element-text">{{ curriculumSelectedIsSequentialDisplay }}</span>
+			</label>
+		</div>
+
+		<div class="experiments-area">
 			<div>
-				<button v-on:click="addExperiment()" class="widget-button blue">Add</button>
-				<label class="inline-label"> Experiment(s): </label>
+				<button v-on:click="addExperiment()" class="widget-button small blue">Add</button>
+				<label style="display: inline"> Experiment(s): </label>
 			</div>
 			<curriculums-editor-form-experiment-component
+				class="inner-inner-widget"
 				v-for="(experiment, index) in experiments"
 				:key="index"
 				:experiment="experiment"
@@ -128,40 +126,40 @@ export default {
 </script>
 
 <style scoped>
-.widget form {
+.form-grid {
 	display: grid;
-	grid-template-columns: 100%;
-	grid-gap: 15px;
+	grid-gap: 10px;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-areas:
+		'title title title .'
+		'title title title sequential'
+		'experiments experiments experiments experiments';
 }
 
-.general-parameters-section {
+.title-area {
+	grid-area: title;
+}
+
+.sequential-area {
+	grid-area: sequential;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.experiments-area {
+	grid-area: experiments;
 	display: grid;
-	grid-template-columns: 2fr auto;
-	grid-gap: 15px;
+	grid-gap: 10px;
+	grid-template-columns: 1fr;
 }
 
-.general-parameters-section div {
+.input {
 	display: grid;
-	grid-template-columns: auto 1fr;
-	grid-gap: 15px;
+	grid-template-rows: 1fr 1fr;
 }
 
-.general-parameters-section label {
-	display: inline-block;
-}
-
-.general-parameters-section input {
-	display: inline;
-	margin: auto;
-}
-
-.experiments-parameters-section {
-	display: grid;
-	grid-template-columns: 100%;
-	grid-gap: 15px;
-}
-
-.inline-label {
-	display: inline;
+.input > * {
+	width: 100%;
 }
 </style>

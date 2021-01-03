@@ -84,9 +84,8 @@ export default {
 
 .editor-position {
 	grid-area: editor;
-	background-color: rgb(40, 40, 40);
-	padding: 20px 40px;
-	display: grid;
+	max-height: 600px;
+	overflow: auto;
 }
 
 .submission-buttons-position {

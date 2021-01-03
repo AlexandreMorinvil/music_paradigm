@@ -1,15 +1,27 @@
 <template>
 	<div class="experiment-input">
-		<div class="delete-position">
+		<div class="delete-area centered-input">
 			<button v-on:click="removeExperiment(index)" class="widget-button red">Remove #{{ index + 1 }}</button>
 		</div>
 
-		<div class="experiment-position">
+		<div class="id-area">
+			<label for="experiment-id">
+				ID:
+				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).associativeId }}</span>
+			</label>
+			<input
+				type="text"
+				v-model="experimentData.associativeId"
+				name="experiment-id"
+				autocomplete="new-experiment-id"
+				placeholder="Insert associative id"
+			/>
+		</div>
+
+		<div class="experiment-area input">
 			<label for="completion-limit">
 				Experiment:
-				<span class="selected-element-text">{{
-					getExperimentFullNameFromList(curriculumSelectedExperimentAtIndex(index).experimentReference)
-				}}</span>
+				<span class="selected-element-text">{{ getExperimentFullNameFromList(curriculumSelectedExperimentAtIndex(index).experimentReference) }}</span>
 			</label>
 			<select name="experiment-reference" v-model="experimentData.experimentReference">
 				<option v-for="(reference, index) in experimentsReferences" :key="index" :value="experimentsReferences[index].id">
@@ -18,7 +30,7 @@
 			</select>
 		</div>
 
-		<div class="title-position">
+		<div class="title-area input">
 			<label for="experiment-title">
 				Experiment Title :
 				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).title }}</span>
@@ -32,29 +44,7 @@
 			/>
 		</div>
 
-		<div class="area1-position">
-			<label for="is-unique-in-day" class="inline-label">
-				Unique in Day:
-				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).isUniqueIndDay }}</span>
-			</label>
-			<input type="checkbox" class="checkbox" v-model="experimentData.isUniqueIndDay" name="is-unique-in-day" />
-		</div>
-
-		<div>
-			<label for="experiment-id">
-				Associative ID:
-				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).associativeId }}</span>
-			</label>
-			<input
-				type="text"
-				v-model="experimentData.associativeId"
-				name="experiment-id"
-				autocomplete="new-experiment-id"
-				placeholder="Insert associative id"
-			/>
-		</div>
-
-		<div>
+		<div class="delay-area input">
 			<label for="delay-in-days">
 				Delay (Days):
 				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).delayInDays }}</span>
@@ -63,40 +53,42 @@
 				type="number"
 				min="0"
 				v-model="experimentData.delayInDays"
-				name="delay"
+				name="delay-in-days"
 				autocomplete="new-delay"
 				placeholder="Insert new delay in days"
 			/>
 		</div>
 
-		<div>
-			<label for="completion-target">
-				Completion Target:
-				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).completionTarget }}</span>
+		<div class="time-area input">
+			<label for="time-availability">
+				Release Time:
+				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).timeRelease }}</span>
 			</label>
-			<input
-				type="number"
-				min="0"
-				v-model="experimentData.completionTarget"
-				name="target"
-				autocomplete="new-target"
-				placeholder="Insert new completion target"
-			/>
+			<input type="time" v-model="experimentData.timeRelease" name="time-available" value="00:00" />
 		</div>
 
-		<div>
+		<div class="limit-area centered-input">
+			<input type="checkbox" class="checkbox" v-model="experimentData.completionLimit" name="completion-limit" />
 			<label for="completion-limit">
-				Completion Limit:
+				Completion Limited
 				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).completionLimit }}</span>
 			</label>
-			<input
-				type="number"
-				min="0"
-				v-model="experimentData.completionLimit"
-				name="limit"
-				autocomplete="new-limit"
-				placeholder="Insert new completion limit"
-			/>
+		</div>
+
+		<div class="unique-area centered-input">
+			<input type="checkbox" class="checkbox" v-model="experimentData.isUniqueIndDay" name="is-unique-in-day" />
+			<label for="is-unique-in-day" class="inline-label">
+				Unique in Day
+				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).isUniqueIndDay }}</span>
+			</label>
+		</div>
+
+		<div class="text-area">
+			<label for="text">
+				Text:
+				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).text }}</span>
+			</label>
+			<textarea v-model="experimentData.text" name="text" row="1" placeholder="Insert a text to display to the user" />
 		</div>
 	</div>
 </template>
@@ -153,56 +145,78 @@ export default {
 </script>
 
 <style scoped>
-/* Form  */
-
-.widget form {
+.experiment-input {
 	display: grid;
-	grid-template-columns: 100%;
+	grid-template-columns: auto 1fr 1fr;
+	grid-template-areas:
+		'delete experiment title'
+		'delete delay time'
+		'id unique limit'
+		'id text text';
 	grid-gap: 15px;
 }
 
-/* Experiment list */
-
-.experiments-parameters-section {
-	display: grid;
-	grid-template-columns: 100%;
-	grid-gap: 15px;
-}
-
-.delete-position {
+.delete-area {
 	grid-area: delete;
-	display: flex;
-	justify-content: center;
-	align-items: center;
 }
 
-.delete-position button {
-	margin-top: auto;
-}
-
-.experiment-position {
+.experiment-area {
 	grid-area: experiment;
 }
 
-.title-position {
+.title-area {
 	grid-area: title;
 }
 
-.area1-position {
-	grid-area: area1;
+.id-area {
+	grid-area: id;
+}
+
+.delay-area {
+	grid-area: delay;
+}
+
+.time-area {
+	grid-area: time;
+}
+
+.unique-area {
+	grid-area: unique;
+}
+
+.limit-area {
+	grid-area: limit;
+}
+
+.text-area {
+	grid-area: text;
+}
+
+.input {
+	display: grid;
+	grid-template-rows: 1fr 1fr;
+}
+
+.centered-input {
 	display: flex;
-	justify-content: center;
+	justify-items: center;
 	align-items: center;
 }
 
-.experiment-input {
-	display: grid;
-	grid-template-areas:
-		'experiment experiment title title delete'
-		'. . . . area1';
-	grid-gap: 15px;
+.input > * {
+	width: 100%;
+}
 
-	background-color: var(--inner-form-background-color);
-	padding: 5px 20px 20px;
+.id-area > input {
+	width: 150px;
+}
+
+.id-area > label {
+	display: block;
+}
+
+.text-area > textarea {
+	display: block;
+	width: 100%;
 }
 </style>
