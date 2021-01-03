@@ -19,20 +19,12 @@
 				</thead>
 
 				<tbody>
-					<tr
-						v-for="(header, index) in usersHeadersList"
-						:key="header._id"
-						:class="header._id === userSelectedId && 'selected'"
-					>
+					<tr v-for="(header, index) in usersHeadersList" :key="header._id" :class="header._id === userSelectedId && 'selected'">
 						<td>{{ index + 1 }}</td>
 						<td>{{ header.username }}</td>
 						<td>{{ makeEmailDisplay(header.email) }}</td>
-						<td>
-							{{ makeFullNameDisplay(header.firstName, header.middleName, header.lastName) }}
-						</td>
-						<td style="white-space: pre-line">
-							{{ makeTagsDisplay(header.tags) }}
-						</td>
+						<td>{{ makeFullNameDisplay(header.firstName, header.middleName, header.lastName) }}</td>
+						<td style="white-space: pre-line">{{ makeTagsDisplay(header.tags) }}</td>
 						<td>{{ makeCurriculumTitleDisplay(header.curriculumTitle) }}</td>
 						<td class="widget-table-actions-buttons">
 							<button v-on:click="handleSelectUser(header._id)" class="widget-button small blue">Select</button>
@@ -76,6 +68,7 @@ export default {
 			else return email;
 		},
 		makeFullNameDisplay(firstName, middleName, lastName) {
+			if (!(firstName || middleName || lastName)) return '---';
 			return firstName + ' ' + middleName + ' ' + lastName;
 		},
 		makeTagsDisplay(tagList) {

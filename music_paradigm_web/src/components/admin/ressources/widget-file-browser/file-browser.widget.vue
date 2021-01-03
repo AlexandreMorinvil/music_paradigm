@@ -31,4 +31,13 @@ export default {
 .file-browser-container {
 	font-size: 0.75em;
 }
+
+input,
+select,
+button,
+textarea {
+	background-color: initial;
+	border: initial;
+	color: initial;
+}
 </style>

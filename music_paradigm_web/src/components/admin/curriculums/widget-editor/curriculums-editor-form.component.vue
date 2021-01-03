@@ -4,14 +4,14 @@
 			<div>
 				<label for="title">
 					Title :
-					<span class="selected-element-text-color">{{ curriculumSelectedTitleDisplay }}</span>
+					<span class="selected-element-text">{{ curriculumSelectedTitleDisplay }}</span>
 				</label>
 				<input type="text" v-model="title" name="title" autocomplete="new-username" placeholder="Insert new title" />
 			</div>
 			<div>
 				<label for="isSequential">
 					Sequential:
-					<span class="selected-element-text-color">{{ curriculumSelectedIsSequentialDisplay }}</span>
+					<span class="selected-element-text">{{ curriculumSelectedIsSequentialDisplay }}</span>
 				</label>
 				<input class="checkbox" v-model="isSequential" name="isSequential" type="checkbox" />
 			</div>

@@ -7,7 +7,7 @@
 		<div class="experiment-position">
 			<label for="completion-limit">
 				Experiment:
-				<span class="selected-element-text-color">{{
+				<span class="selected-element-text">{{
 					getExperimentFullNameFromList(curriculumSelectedExperimentAtIndex(index).experimentReference)
 				}}</span>
 			</label>
@@ -21,7 +21,7 @@
 		<div class="title-position">
 			<label for="experiment-title">
 				Experiment Title :
-				<span class="selected-element-text-color">{{ curriculumSelectedExperimentAtIndex(index).title }}</span>
+				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).title }}</span>
 			</label>
 			<input
 				type="text"
@@ -35,7 +35,7 @@
 		<div class="area1-position">
 			<label for="is-unique-in-day" class="inline-label">
 				Unique in Day:
-				<span class="selected-element-text-color">{{ curriculumSelectedExperimentAtIndex(index).isUniqueIndDay }}</span>
+				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).isUniqueIndDay }}</span>
 			</label>
 			<input type="checkbox" class="checkbox" v-model="experimentData.isUniqueIndDay" name="is-unique-in-day" />
 		</div>
@@ -43,7 +43,7 @@
 		<div>
 			<label for="experiment-id">
 				Associative ID:
-				<span class="selected-element-text-color">{{ curriculumSelectedExperimentAtIndex(index).associativeId }}</span>
+				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).associativeId }}</span>
 			</label>
 			<input
 				type="text"
@@ -57,7 +57,7 @@
 		<div>
 			<label for="delay-in-days">
 				Delay (Days):
-				<span class="selected-element-text-color">{{ curriculumSelectedExperimentAtIndex(index).delayInDays }}</span>
+				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).delayInDays }}</span>
 			</label>
 			<input
 				type="number"
@@ -72,7 +72,7 @@
 		<div>
 			<label for="completion-target">
 				Completion Target:
-				<span class="selected-element-text-color">{{ curriculumSelectedExperimentAtIndex(index).completionTarget }}</span>
+				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).completionTarget }}</span>
 			</label>
 			<input
 				type="number"
@@ -87,7 +87,7 @@
 		<div>
 			<label for="completion-limit">
 				Completion Limit:
-				<span class="selected-element-text-color">{{ curriculumSelectedExperimentAtIndex(index).completionLimit }}</span>
+				<span class="selected-element-text">{{ curriculumSelectedExperimentAtIndex(index).completionLimit }}</span>
 			</label>
 			<input
 				type="number"

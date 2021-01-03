@@ -5,15 +5,15 @@
 			<button v-on:click="handleUnselection" class="widget-button blue">Unselect</button>
 		</div>
 
-		<curriculums-editor-form-component class="editor-position inner-widget" ref="editorForm" />
+		<users-editor-form-component class="editor-position inner-widget" ref="editorForm" />
 
 		<div class="submission-buttons-position">
 			<form submit.prevent ref="upload" style="display: none">
-				<input type="file" id="myfile" name="myfile" v-on:change="handleUploadCurriculum" ref="fileInput" />
+				<input type="file" id="myfile" name="myfile" v-on:change="handleUploadUsers" ref="fileInput" />
 			</form>
 			<button v-on:click="$refs.fileInput.click()" class="widget-button blue">Upload</button>
-			<button v-on:click="submitCurriculumToCreate" class="widget-button green">Create</button>
-			<button v-on:click="submitCurriculumToUpdate" class="widget-button blue">Update</button>
+			<button v-on:click="submitUserToCreate" class="widget-button green">Create</button>
+			<button v-on:click="submitUserToUpdate" class="widget-button blue">Update</button>
 			<button v-on:click="submitUserToDelete" class="widget-button red">Delete</button>
 		</div>
 	</div>
@@ -24,50 +24,50 @@ import '@/styles/widget-template.css';
 import '@/styles/form-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
-import CurriculumsEditorFormComponent from './curriculums-editor-form.component.vue';
+import UsersEditorFormComponent from './users-editor-form.component.vue';
 
 export default {
 	components: {
-		CurriculumsEditorFormComponent,
+		UsersEditorFormComponent,
 	},
 	computed: {
-		...mapGetters('experiments', ['experimentsHeadersList']),
-		...mapGetters('curriculums', ['hasSelectedCurriculum', 'curriculumSelectedId']),
+		...mapGetters('curriculums', ['curriculumsHeadersList']),
+		...mapGetters('users', ['hasSelectedUser', 'userSelectedId']),
 	},
 	methods: {
-		...mapActions('experiments', ['fetchAllExperimentsHeaders']),
-		...mapActions('curriculums', ['unsetSelectedCurriculum', 'createCurriculum', 'updateCurriculum', 'deleteCurriculum']),
+		...mapActions('curriculums', ['fetchAllCurriculumHeaders']),
+		...mapActions('users', ['unsetSelectedUser', 'createUser', 'updateUser', 'deleteUser']),
 		bundleUserFromForm() {
 			return this.$refs.editorForm.bundleUserFromForm();
 		},
 		assignSelectedToForm() {
 			this.$refs.editorForm.assignSelectedToForm();
 		},
-		submitCurriculumToCreate() {
-			const curriculumToCreate = this.bundleCurrirulumFromForm();
-			this.createCurriculum(curriculumToCreate);
+		submitUserToCreate() {
+			const userToCreate = this.bundleUserFromForm();
+			this.createUser(userToCreate);
 		},
-		submitCurriculumToUpdate() {
-			const answer = window.confirm('Are your sure you want to edit the curriculum?');
+		submitUserToUpdate() {
+			const answer = window.confirm('Are your sure you want to edit the user(s)?');
 			if (answer) {
-				const curriculumUpdated = this.bundleCurrirulumFromForm();
-				this.updateCurriculum({
-					id: this.curriculumSelectedId,
-					curriculum: curriculumUpdated,
+				const userToCreate = this.bundleUserFromForm();
+				this.updateUser({
+					id: this.userSelectedId,
+					user: userToCreate,
 				});
 			}
 		},
 		submitUserToDelete() {
-			const answer = window.confirm('Are your sure you want to delete the curriculum?');
-			if (answer) this.deleteCurriculum(this.curriculumSelectedId);
+			const answer = window.confirm('Are your sure you want to delete the user(s)?');
+			if (answer) this.deleteUser(this.userSelectedId);
 		},
 		handleRevert() {
 			this.assignSelectedToForm();
 		},
 		handleUnselection() {
-			this.unsetSelectedCurriculum();
+			this.unsetSelectedUser();
 		},
-		handleUploadCurriculum() {
+		handleUploadUsers() {
 			console.log('To implement');
 		},
 	},
@@ -84,9 +84,6 @@ export default {
 
 .editor-position {
 	grid-area: editor;
-	background-color: rgb(40, 40, 40);
-	padding: 20px 40px;
-	display: grid;
 }
 
 .submission-buttons-position {

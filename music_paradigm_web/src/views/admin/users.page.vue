@@ -1,28 +1,22 @@
 <template>
 	<admin-page-content-frame title="Users">
-		<widget-content-frame title="Reviewing Tool">
-			<template>
-				<users-viewer />
-			</template>
+		<widget-content-frame title="Reviewer">
+			<users-viewer />
 		</widget-content-frame>
 
-		<widget-content-frame title="Editior Tool">
-			<template>
-				<users-editor />
-			</template>
+		<widget-content-frame title="Editior">
+			<users-editor-widget />
 		</widget-content-frame>
 
 		<widget-content-frame title="Overview Table">
-			<template>
-				<users-table />
-			</template>
+			<users-table />
 		</widget-content-frame>
 	</admin-page-content-frame>
 </template>
 
 <script>
 import AdminPageContentFrame from '@/components/content-frame/admin-page-content-frame.component.vue';
-import UsersEditor from '@/components/admin/users/UsersEditorWidget.vue';
+import UsersEditorWidget from '@/components/admin/users/widget-editor/users-editor.widget.vue';
 import UsersTable from '@/components/admin/users/UsersTableWidget.vue';
 import UsersViewer from '@/components/admin/users/UsersViewerWidget.vue';
 import WidgetContentFrame from '@/components/content-frame/widget-content-frame.component.vue';
@@ -32,7 +26,7 @@ export default {
 		AdminPageContentFrame: AdminPageContentFrame,
 		WidgetContentFrame: WidgetContentFrame,
 		UsersViewer: UsersViewer,
-		UsersEditor: UsersEditor,
+		UsersEditorWidget,
 		UsersTable: UsersTable,
 	},
 };
