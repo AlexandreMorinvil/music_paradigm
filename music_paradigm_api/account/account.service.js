@@ -44,7 +44,21 @@ async function getProgressionSummary(userId) {
 async function getTodayExperiment(userId) {
     try {
         const progressionSummary = await progressionService.generateProgressionSummary(userId);
-        return progressionSummary
+        const dueExperimentAssociativeId = progressionSummary.dueExperimentAssociativeId;
+        if (!dueExperimentAssociativeId) throw new Error('There is no due experiment');
+        const curriculum = await User.getCurriculum(userId);
+        
+        
+        const experiment = await curriculum.getExperimentAssociated(dueExperimentAssociativeId);
+        const experimentDescription = await experiment.getDefinition();
+        console.log(experimentDescription);
+        return experimentDescription;
+
+
+        // const curriculumAndProgression = await this.findById(userId, { curriculum: 1, progressions: { $slice: -1 } }).populate({ path: 'curriculum progressions' });
+        // const { curriculum, progressions } = curriculumAndProgression.toObject();
+        // return { curriculum: curriculum || null, progression: (progressions) ? progressions[0] : null }
+        
     } catch (err) {
         throw err;
     }
@@ -100,7 +114,7 @@ async function getTodayExperiment(userId) {
 //     try {
 //         const curriculum = await Curriculum.findById(id);
 //         if (!curriculum) throw new Error('Curriculum to delete not found');
-        
+
 //         return await curriculum.remove();
 //     } catch (err) {
 //         throw err;

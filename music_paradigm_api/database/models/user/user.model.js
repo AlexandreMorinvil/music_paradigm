@@ -42,6 +42,9 @@ schema.statics.getProgressionData = async function (userId) {
     return { curriculum: curriculum || null, progression: (progressions) ? progressions[0] : null }
 };
 
+schema.statics.getCurriculum = async function (userId) {
+    return (await this.findById(userId, { curriculum: 1 }).populate({ path: 'curriculum' })).curriculum;
+};
 
 // Instance methods
 schema.methods.create = async function () {

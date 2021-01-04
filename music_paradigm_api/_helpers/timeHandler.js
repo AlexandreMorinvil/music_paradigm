@@ -9,7 +9,7 @@ module.exports = {
 
 function getHoursMinuteLeft(releaseTimeInHours) {
     const numbers = releaseTimeInHours.split(":");
-    const hours = Number(numbers[0]) 
+    const hours = Number(numbers[0])
     const minutes = Number(numbers[1]);
 
     const currentTime = new Date();
@@ -20,9 +20,9 @@ function getHoursMinuteLeft(releaseTimeInHours) {
     if (hoursLeft < 0) return '00:00';
     let minutesLeft = minutes - curentMinutes;
 
-    if (hoursLeft   < 10) {hoursLeft   = "0"+hoursLeft;}
-    if (minutesLeft < 10) {minutesLeft = "0"+minutesLeft;}
-    return hoursLeft+':'+minutesLeft;
+    if (hoursLeft < 10) { hoursLeft = "0" + hoursLeft; }
+    if (minutesLeft < 10) { minutesLeft = "0" + minutesLeft; }
+    return hoursLeft + ':' + minutesLeft;
 }
 
 function timeAsMinutes(time) {
@@ -35,7 +35,7 @@ function calculateDaysElapsed(referenceDate) {
 }
 
 function isToday(referenceDate) {
-    if(!referenceDate) return false;
+    if (!referenceDate) return false;
     const today = new Date()
     return referenceDate.getDate() == today.getDate() &&
         referenceDate.getMonth() == today.getMonth() &&

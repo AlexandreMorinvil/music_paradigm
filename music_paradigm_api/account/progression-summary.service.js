@@ -44,7 +44,7 @@ async function generateProgressionSummary(userId) {
     }
 
     // Generate the progression summary
-    let dueExperiment = null;
+    let dueExperimentAssociativeId = null;
     const wasTodayCompleted = timeHandler.isToday(progression.lastProgressionDate);
     const timeElapsedInDays = (progression.isSequential) ? timeHandler.calculateDaysElapsed(progression.lastProgressionDate) : timeHandler.calculateDaysElapsed(progression.startTime);
     let hasBlockingIncompleteInSequence = false;
@@ -78,7 +78,7 @@ async function generateProgressionSummary(userId) {
         progressionSummary.push(elements);
 
         // Update the experiment due today
-        if (!wasTodayCompleted && elements.isAvailable && !dueExperiment) dueExperiment = curriculumExperiment.associativeId;
+        if (elements.isAvailable && !Boolean(elements.completionCount) && !Boolean(dueExperimentAssociativeId)) dueExperimentAssociativeId = curriculumExperiment.associativeId;
 
         // Update the blocking elements that propagate in the later elements
         hasBlockingIncompleteInSequence = updateHasBlockingIncompleteInSequence(
@@ -87,15 +87,15 @@ async function generateProgressionSummary(userId) {
             elements.wouldBeFree,
             progressionExperiment.completionCount
         );
-        
+
         hasBlockingUniqueInDayDoneToday = updateHasBlockingUniqueInDayDoneToday(
             hasBlockingUniqueInDayDoneToday,
             curriculumExperiment.isUniqueIndDay,
             elements.wouldBeFree,
-            curriculum.lastProgressionDate
+            progressionExperiment.lastProgressionDate
         );
     }
-    return { history: progressionSummary, dueExperiment: dueExperiment };
+    return { history: progressionSummary, dueExperimentAssociativeId: dueExperimentAssociativeId };
 }
 
 async function generateProgression(userId) {

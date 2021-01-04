@@ -7,7 +7,7 @@ const accountService = require('./account.service');
 // routes
 router.post('/authenticate', authenticate);
 router.get('/progressionSummary', getProressionSummary);
-router.get('/todayExperiment', getTodayExperiment);
+router.get('/due-experiment', getTodayExperiment);
 // router.post('/',                jwtAuthorize(role.admin),  create);
 // router.get('/',                 jwtAuthorize(role.admin),  getListAllHeaders);
 // router.get('/:id',              jwtAuthorize(role.admin),  getById);
