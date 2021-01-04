@@ -16,6 +16,7 @@ export default {
 			isSignalBeingWaited: true,
 			soundCount: null,
 			soundStart: null,
+			VOLUME_LEVEL: 0.1,
 			counterUniqueIdentifier: 0,
 			timeStepInMilliseconds: 1000,
 			referenceTime: 0,
@@ -63,8 +64,8 @@ export default {
 	mounted() {
 		this.soundCount = new Audio('beep-count.wav');
 		this.soundStart = new Audio('beep-start.wav');
-		this.soundCount.volume = 0.15;
-		this.soundStart.volume = 0.15;
+		this.soundCount.volume = this.VOLUME_LEVEL;
+		this.soundStart.volume = this.VOLUME_LEVEL;
 		this.setTime(this.startSignal);
 		if (this.isWaitingStartSignal) {
 			this.pausePiano();
