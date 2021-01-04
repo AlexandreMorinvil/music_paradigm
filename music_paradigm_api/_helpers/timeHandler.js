@@ -8,7 +8,7 @@ module.exports = {
 };
 
 function getHoursMinuteLeft(releaseTimeInHours) {
-    const releaseTimeInHours = time.split(":");
+    const numbers = releaseTimeInHours.split(":");
     const hours = Number(numbers[0]) 
     const minutes = Number(numbers[1]);
 
@@ -35,6 +35,7 @@ function calculateDaysElapsed(referenceDate) {
 }
 
 function isToday(referenceDate) {
+    if(!referenceDate) return false;
     const today = new Date()
     return referenceDate.getDate() == today.getDate() &&
         referenceDate.getMonth() == today.getMonth() &&

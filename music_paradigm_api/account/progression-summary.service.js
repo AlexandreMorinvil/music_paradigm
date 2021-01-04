@@ -45,7 +45,7 @@ async function generateProgressionSummary(userId) {
 
     // Generate the progression summary
     let dueExperiment = null;
-    const wasTodayCompleted = timeHandler.isToday(curriculum.lastProgressionDate);
+    const wasTodayCompleted = timeHandler.isToday(progression.lastProgressionDate);
     const timeElapsedInDays = (progression.isSequential) ? timeHandler.calculateDaysElapsed(progression.lastProgressionDate) : timeHandler.calculateDaysElapsed(progression.startTime);
     let hasBlockingIncompleteInSequence = false;
     let hasBlockingUniqueInDayDoneToday = false;
@@ -73,7 +73,7 @@ async function generateProgressionSummary(userId) {
         progressionSummary.push(elements);
 
         // Update the experiment due today
-        if (!wasTodayCompleted && isAvailable) dueExperiment = curriculumExperiment.associativeId;
+        if (!wasTodayCompleted && elements.isAvailable && !dueExperiment) dueExperiment = curriculumExperiment.associativeId;
 
         // Update the blocking elements that propagate in the later elements
         hasBlockingIncompleteInSequence = updateHasBlockingIncompleteInSequence(
@@ -110,7 +110,7 @@ function getDelayInDaysLeft(delayInDaysBeforeAvailability, timeElapsedInDays) {
 
 function getDelayInHoursLeft(delayPreAvailabilityInDays, releaseTimeInHours) {
     if (delayPreAvailabilityInDays === 0) return timeHandler.getHoursMinuteLeft(releaseTimeInHours);
-    return releaseTime;
+    return releaseTimeInHours;
 }
 
 function getIsLockedByCompletionLimit(isCompletionLimited, completionsDone = 0) {
@@ -129,16 +129,16 @@ function getIsAvailableStatus(wouldBeFree, hasBlockingIncompleteInSequence, hasB
     return wouldBeFree && !hasBlockingIncompleteInSequence && !hasBlockingUniqueInDayDoneToday;
 }
 
-function updateHasBlockingIncompleteInSequence(hasBlockingInSequence, isCurriculumSequential, isCurrentFree, completionCount) {
+function updateHasBlockingIncompleteInSequence(hasBlockingInSequence, isCurriculumSequential, isCurrentFree, completionCount = 0) {
     if (hasBlockingInSequence) return true;
     else if (isCurriculumSequential && !isCurrentFree) return true;
     else if (isCurriculumSequential && completionCount < 1) return true;
     else return false;
 }
 
-function updateHasBlockingUniqueInDayDoneToday(hasBlockingUniqueInDay, isExperimentUniqueInDay, isCurrentFree, lastProgressionDate) {
+function updateHasBlockingUniqueInDayDoneToday(hasBlockingUniqueInDay, isExperimentUniqueInDay, isCurrentFree, wasTodayCompleted) {
     if (hasBlockingUniqueInDay) return true;
     else if (isExperimentUniqueInDay && !isCurrentFree) return true;
-    else if (isExperimentUniqueInDay && timeHandler.isToday(lastProgressionDate)) return true;
+    else if (isExperimentUniqueInDay && wasTodayCompleted) return true;
     else return false;
 }

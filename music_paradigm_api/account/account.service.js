@@ -36,7 +36,6 @@ async function authenticate({ username, password }) {
 async function getProgressionSummary(userId) {
     try {
         return await progressionService.generateProgressionSummary(userId);
-
     } catch (err) {
         throw err;
     }
