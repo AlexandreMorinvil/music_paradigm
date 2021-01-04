@@ -58,6 +58,13 @@ const schema = new Schema(
                         set: setterAssociativeId
                     },
 
+                    // Number of times the experiment was completed
+                    completionCount: {
+                        type: Number,
+                        default: 0,
+                        min: 0
+                    },
+
                     // Title of the experiment within the curriculum
                     experimentReference: {
                         type: Schema.Types.ObjectId,
@@ -69,13 +76,6 @@ const schema = new Schema(
                     logReference: {
                         type: [Schema.Types.ObjectId],
                         ref: 'Completion'
-                    },
-
-                    // Number of times the experiment was completed
-                    completionCount: {
-                        type: Number,
-                        default: 0,
-                        min: 0
                     },
 
                     cursor: {

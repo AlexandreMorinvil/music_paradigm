@@ -1,10 +1,6 @@
-const jwt = require('jwt/jwt');
 const timeHandler = require('_helpers/timeHandler')
 const db = require('database/db');
-const { MaxKey } = require('mongodb');
 const Progression = db.Progression;
-const Experiment = db.Experiment;
-const Curriculum = db.Curriculum;
 const User = db.User;
 
 module.exports = {
@@ -50,37 +46,51 @@ async function generateProgressionSummary(userId) {
     // Generate the progression summary
     let dueExperiment = null;
     const wasTodayCompleted = timeHandler.isToday(curriculum.lastProgressionDate);
-    const timeElapsed = timeHandler.calculateDaysElapsed(progression.startTime);
+    const timeElapsedInDays = (progression.isSequential) ? timeHandler.calculateDaysElapsed(progression.lastProgressionDate) : timeHandler.calculateDaysElapsed(progression.startTime);
     let hasBlockingIncompleteInSequence = false;
     let hasBlockingUniqueInDayDoneToday = false;
     const progressionSummary = [];
 
     for (i in curriculum.experiments) {
-        curriculumExperiment = (association.length > i) ? association[i].curriculumExperiment : curriculum.experiments[i];
-        progressionExperiment = (association.length > i) ? association[i].progressionExperiment : {};
+        // We retrieve the history of the experients completed
+        const curriculumExperiment = (association.length > i) ? association[i].curriculumExperiment : curriculum.experiments[i];
+        const progressionExperiment = (association.length > i) ? association[i].progressionExperiment : {};
 
-        const element = {};
-        element.associativeId = curriculumExperiment.associativeId;
-        element.title = curriculumExperiment.title;
-        element.delayPreAvailability = getDelayInDaysLeft(curriculumExperiment.delayInDays, timeElapsed);
-        element.completionsRequiredLeft = getCompletionsRequiredLeft(curriculumExperiment.completionTarget, progressionExperiment.completionCount);
-        element.completionsLimitLeft = getCompletionsLimitLeft(curriculumExperiment.completionLimit, progressionExperiment.completionCount);
+        // Attributes that are relative to the current experiment
+        const elements = {};
+        elements.associativeId = curriculumExperiment.associativeId;
+        elements.title = curriculumExperiment.title;
 
-        const wouldBeFree = getWouldBeFreeStatus(element.delayPreAvailability, element.completionsLimitLeft);
+        elements.delayPreAvailabilityInDays = getDelayInDaysLeft(curriculumExperiment.delayInDays, timeElapsedInDays);
+        elements.delayPreAvailabilityInHours = getDelayInHoursLeft(elements.delayPreAvailabilityInDays, curriculumExperiment.releaseTime);
+        elements.isLockedByCompletionLimit = getIsLockedByCompletionLimit(curriculumExperiment.isCompletionLimited, progressionExperiment.completionCount);
+        elements.wouldBeFree = getWouldBeFreeStatus(elements.delayPreAvailabilityInDays, elements.delayPreAvailabilityInHours, elements.isLockedByCompletionLimit);
 
-        element.isDelayedByPreviousSequential = hasBlockingIncompleteInSequence;
-        element.isDelayedByPreviousUniqueInDay = hasBlockingUniqueInDayDoneToday;
-        progressionSummary.push(element);
+        // Attributes that are relative to the previous experiments of the chain
+        elements.isDelayedByPreviousSequential = hasBlockingIncompleteInSequence;
+        elements.isDelayedByPreviousUniqueInDay = hasBlockingUniqueInDayDoneToday;
+        elements.isAvailable = getIsAvailableStatus(elements.wouldBeFree, hasBlockingIncompleteInSequence, hasBlockingUniqueInDayDoneToday);
+        progressionSummary.push(elements);
 
-        const isAvailable = (wouldBeFree && !hasBlockingIncompleteInSequence && !hasBlockingUniqueInDayDoneToday);
-        if(!wasTodayCompleted && isAvailable) dueExperiment = curriculumExperiment.associativeId;
+        // Update the experiment due today
+        if (!wasTodayCompleted && isAvailable) dueExperiment = curriculumExperiment.associativeId;
+
+        // Update the blocking elements that propagate in the later elements
+        hasBlockingIncompleteInSequence = updateHasBlockingIncompleteInSequence(
+            hasBlockingIncompleteInSequence,
+            curriculum.isSequential,
+            elements.wouldBeFree,
+            progressionExperiment.completionCount
+        );
         
-        hasBlockingIncompleteInSequence = updateHasBlockingIncompleteInSequence(wouldBeFree, hasBlockingIncompleteInSequence,
-            curriculum.isSequential, element.completionsRequiredLeft);
-        hasBlockingUniqueInDayDoneToday = updateHasBlockingUniqueInDayDoneToday(wouldBeFree, hasBlockingUniqueInDayDoneToday,
-            curriculumExperiment.isUniqueIndDay, curriculum.lastProgressionDate);
+        hasBlockingUniqueInDayDoneToday = updateHasBlockingUniqueInDayDoneToday(
+            hasBlockingUniqueInDayDoneToday,
+            curriculumExperiment.isUniqueIndDay,
+            elements.wouldBeFree,
+            curriculum.lastProgressionDate
+        );
     }
-    return { history : progressionSummary, dueExperiment: dueExperiment};
+    return { history: progressionSummary, dueExperiment: dueExperiment };
 }
 
 async function generateProgression(userId) {
@@ -94,34 +104,39 @@ async function generateProgression(userId) {
     user.save();
 }
 
-
-function getDelayInDaysLeft(delayBeforeAvailability, timeElapsed) {
-    return Math.max(0, delayBeforeAvailability - timeElapsed);
+function getDelayInDaysLeft(delayInDaysBeforeAvailability, timeElapsedInDays) {
+    return Math.max(0, delayInDaysBeforeAvailability - timeElapsedInDays);
 }
 
-function getCompletionsRequiredLeft(completionsRequired, completionsDone = 0) {
-    return Math.max(0, completionsRequired - completionsDone);
+function getDelayInHoursLeft(delayPreAvailabilityInDays, releaseTimeInHours) {
+    if (delayPreAvailabilityInDays === 0) return timeHandler.getHoursMinuteLeft(releaseTimeInHours);
+    return releaseTime;
 }
 
-function getCompletionsLimitLeft(completionLimit, completionsDone = 0) {
-    if (completionLimit === 0) return -1;
-    else return Math.max(0, completionLimit - completionsDone);
-}
-
-function getWouldBeFreeStatus(delay, completionLimitLeft) {
-    if (delay > 0) return false;
-    else if (completionLimitLeft === 0 && completionsLimitLeft !== -1) return false;
-    else return true
-}
-
-function updateHasBlockingIncompleteInSequence(isCurrentFree, hasBlockingInSequence, isCurriculumSequential, completionsRequiredLeft) {
-    if (hasBlockingInSequence) return true;
-    else if (completionsRequiredLeft > 0) return true;
-    else if (isCurriculumSequential && !isCurrentFree) return true;
+function getIsLockedByCompletionLimit(isCompletionLimited, completionsDone = 0) {
+    if (isCompletionLimited) return completionsDone > 0;
     else return false;
 }
 
-function updateHasBlockingUniqueInDayDoneToday(isCurrentFree, hasBlockingUniqueInDay, isExperimentUniqueInDay, lastProgressionDate) {
+function getWouldBeFreeStatus(delayInDays, delayInHours, isLockedByCompletionLimit) {
+    if (delayInDays > 0) return false;
+    else if (timeHandler.timeAsMinutes(delayInHours) > 0) return false;
+    else if (isLockedByCompletionLimit) return false;
+    else return true
+}
+
+function getIsAvailableStatus(wouldBeFree, hasBlockingIncompleteInSequence, hasBlockingUniqueInDayDoneToday) {
+    return wouldBeFree && !hasBlockingIncompleteInSequence && !hasBlockingUniqueInDayDoneToday;
+}
+
+function updateHasBlockingIncompleteInSequence(hasBlockingInSequence, isCurriculumSequential, isCurrentFree, completionCount) {
+    if (hasBlockingInSequence) return true;
+    else if (isCurriculumSequential && !isCurrentFree) return true;
+    else if (isCurriculumSequential && completionCount < 1) return true;
+    else return false;
+}
+
+function updateHasBlockingUniqueInDayDoneToday(hasBlockingUniqueInDay, isExperimentUniqueInDay, isCurrentFree, lastProgressionDate) {
     if (hasBlockingUniqueInDay) return true;
     else if (isExperimentUniqueInDay && !isCurrentFree) return true;
     else if (isExperimentUniqueInDay && timeHandler.isToday(lastProgressionDate)) return true;
