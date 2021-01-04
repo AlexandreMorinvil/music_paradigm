@@ -60,6 +60,11 @@ async function generateProgressionSummary(userId) {
         const elements = {};
         elements.associativeId = curriculumExperiment.associativeId;
         elements.title = curriculumExperiment.title;
+        elements.releaseTime = curriculumExperiment.releaseTime;
+        elements.isUniqueIndDay = curriculumExperiment.isUniqueIndDay;
+        elements.isCompletionLimited = curriculumExperiment.isCompletionLimited;
+
+        elements.completionCount = progressionExperiment.completionCount;
 
         elements.delayPreAvailabilityInDays = getDelayInDaysLeft(curriculumExperiment.delayInDays, timeElapsedInDays);
         elements.delayPreAvailabilityInHours = getDelayInHoursLeft(elements.delayPreAvailabilityInDays, curriculumExperiment.releaseTime);

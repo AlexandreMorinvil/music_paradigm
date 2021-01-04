@@ -43,7 +43,8 @@ async function getProgressionSummary(userId) {
 
 async function getTodayExperiment(userId) {
     try {
-        return await Curriculum.getListAllHeaders();
+        const progressionSummary = await progressionService.generateProgressionSummary(userId);
+        return progressionSummary
     } catch (err) {
         throw err;
     }
