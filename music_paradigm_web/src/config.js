@@ -3,4 +3,9 @@
 export default {
 	apiUrl: apiUrl,
 	maxRhythmError: 20,
+	supportedLocals: {
+		en: "english",
+		fr: "français",
+		sv: "svenska",
+	},
 };

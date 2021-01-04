@@ -22,11 +22,13 @@ export default {
 		{
 			associativeId: '',
 			title: '',
-			delayPreAvailability: null,
-			completionsRequiredLeft: null,
-			completionsLimitLeft: null,
-			isDelayedByPreviousSequential: true,
-			isDelayedByPreviousUniqueInDay: true,
+			delayPreAvailabilityInDays: 0,
+			delayPreAvailabilityInHours: 0,
+			isLockedByCompletionLimit: true,
+			wouldBeFree: false,
+			isDelayedByPreviousSequential: false,
+			isDelayedByPreviousUniqueInDay: false,
+			isAvailable: false,
 		},
 	],
 };

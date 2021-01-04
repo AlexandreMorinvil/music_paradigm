@@ -6,7 +6,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --type-check --format stylish --ext js,.vue",
-    "lint:fix": "npm run lint -- --fix"
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
+    "lint:fix": "npm run lint -- --fix",
+    "translate": "node_modules/.bin/vue-translation-manager translate"
   },
   "dependencies": {
     "@tonejs/midi": "^2.0.23",
@@ -18,7 +20,9 @@
     "video.js": "^7.8.2",
     "vue": "^2.6.10",
     "vue-codemirror": "^4.0.6",
+    "vue-i18n": "^8.17.3",
     "vue-router": "^3.0.6",
+    "vue-translation-manager": "^1.2.0",
     "vuetify": "^2.4.0",
     "vuetify-file-browser": "^1.0.2",
     "vuetify-loader": "^1.6.0",
@@ -36,6 +40,7 @@
     "eslint-plugin-vue": "^7.3.0",
     "prettier": "^2.2.1",
     "sass-loader": "^7.1.0",
+    "vue-cli-plugin-i18n": "~1.0.1",
     "vue-cli-plugin-vuetify": "^2.0.9",
     "vue-template-compiler": "^2.6.10"
   },
