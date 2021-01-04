@@ -6,12 +6,14 @@ const titleRequiredMessage = "The title of the curriculum is required";
 const titleMinLengthMessage = "The title of the curriculum must contain at least one character";
 const titleMaxLengthMessage = "The title of the curriculum must contain a maximum of 100 characters";
 
+const experimentReleaseTimeMinMessage = "The time entered was evaluated to a negative value which could not be processed";
+const experimentReleaseTimeMaxMessage = "The time entered was evaluated to a value higher than 24h00 (1440 minutes) which could not be processed";
+
+const textMaxLengthMessage = "The text of the experiments must contain a maximum of 500 characters";
+
 const experimentsValidatorMessage = "At least one experiment must be specified in a curriculum and all experiments must have a unique associative ID";
 const experimentAssociativeIdRequiredMessage = "An associative ID must be specified for each experiment";
 const experimentsDelauInDaysMinMessage = "The delay in days of the expriment(s) must be greater or equal to 0";
-const experimentCompletionTargetMinMessage = "The completion target of the expriment(s) must be greater or equal to 0";
-const experimentsCompletionLimitMinMessage = "The completion limit of the expriment(s) must be greater or equal to 0";
-const experimentsCompletionLimitValidatorMessage = "The completion limmit of the experiments cannot be lower than the completion target";
 const experimentsExperimentReferenceValidatorMessage = "The experiment reference must be specified";
 
 /**
@@ -65,12 +67,19 @@ const schema = new Schema(
                         set: setterTitle
                     },
 
-                    //  === Paths to schedule when the experiment will be available ===
                     // Number of days after the start date at which the experiment is to be made available
                     delayInDays: {
                         type: Number,
                         default: 0,
                         min: [0, experimentsDelauInDaysMinMessage]
+                    },
+
+                    // Time of the day at which the experiment is made available (in minutes from midnight)
+                    releaseTime: {
+                        type: String,
+                        default: '00:00',
+                        set: setterTime,
+                        validate: validatorTime
                     },
 
                     // Specify whether this experiment can be completed the same day as another experiment
@@ -79,23 +88,19 @@ const schema = new Schema(
                         default: true
                     },
 
-                    // === Paths to limit the amount of repetitions of an experiment ===
-                    // Number of times the experiment is meant to be completed minimally
-                    completionTarget: {
-                        type: Number,
-                        default: 1,
-                        min: [0, experimentCompletionTargetMinMessage]
+                    // Number of times the experiment was completed
+                    isCompletionLimited: {
+                        type: Boolean,
+                        default: true
                     },
 
-                    // Number of times the experiment was completed
-                    completionLimit: {
-                        type: Number,
-                        default: defaultCompletionLimit,
-                        min: [0, experimentsCompletionLimitMinMessage],
-                        validate: {
-                            validator: validatorCompletionLimit,
-                            message: experimentsCompletionLimitValidatorMessage
-                        },
+                    // Text to show to the user with the experiment
+                    text: {
+                        type: String,
+                        default: "",
+                        sparse: true,
+                        trim: true,
+                        maxlength: [500, textMaxLengthMessage],
                     },
 
                     // Reference to the experiment
@@ -119,18 +124,30 @@ const schema = new Schema(
     }
 );
 
-// Computed default values
-function defaultCompletionLimit() {
-    return this.completionTarget;
-}
-
 // Setter functions
 function setterTitle(title) {
     if (title) return title.toLowerCase();
     else return undefined;
 }
 
+function setterTime(time) {
+    if (typeof time === "number") return '' + ((value / 60) | 0) + ':' + (value % 60);
+    else return time;
+}
+
 // Validators
+function validatorTime(time) {
+    let number = 0;
+    if (typeof time === 'number') number = time;
+    else {
+        const numbers = time.split(":");
+        number = 60 * Number(numbers[0]) + Number(numbers[1]);
+    }
+    if (number < 0) throw new Error(experimentReleaseTimeMinMessage);
+    if (number > 1440) throw new Error(experimentReleaseTimeMaxMessage);
+    return true;
+}
+
 function validatorExperiments(array) {
     // Verify the the curriculum contains at least one experiment
     if (array.length <= 0) return false
@@ -141,10 +158,6 @@ function validatorExperiments(array) {
     if (((new Set(idArray)).size !== array.length)) return false
 
     else return true;
-}
-
-function validatorCompletionLimit(value) {
-    return value >= this.completionTarget || value === 0;
 }
 
 schema.set('toJSON', { virtuals: true });

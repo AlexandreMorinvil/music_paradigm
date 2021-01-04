@@ -39,6 +39,12 @@ const schema = new Schema(
             default: null
         },
 
+        // Indicate the values for the experiments with parameters
+        curriculumParameters: {
+            type: [Object],
+            default: null
+        },
+
         // List of the experiments composing the curriculum
         experiments: {
             type: [
@@ -52,6 +58,13 @@ const schema = new Schema(
                         set: setterAssociativeId
                     },
 
+                    // Number of times the experiment was completed
+                    completionCount: {
+                        type: Number,
+                        default: 0,
+                        min: 0
+                    },
+
                     // Title of the experiment within the curriculum
                     experimentReference: {
                         type: Schema.Types.ObjectId,
@@ -63,13 +76,6 @@ const schema = new Schema(
                     logReference: {
                         type: [Schema.Types.ObjectId],
                         ref: 'Completion'
-                    },
-
-                    // Number of times the experiment was completed
-                    completionCount: {
-                        type: Number,
-                        default: 0,
-                        min: 0
                     },
 
                     cursor: {

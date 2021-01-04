@@ -1,24 +1,13 @@
 <template>
-  <div id="experiments-workshop" class="widget widget-box widget-bg">
-    TODO: Ability to get a view the most important information of a user or group of users
-    <br />
-  </div>
+	<div id="experiments-workshop" class="widget widget-bg">
+		TODO: Ability to get a view the most important information of a user or group of users
+		<br />
+	</div>
 </template>
 
 <script>
-import "@/styles/widgetTemplate.css";
-
-export default {
-  name: "ExperimentsViewerWidget",
-  components: {},
-  data() {
-    return {};
-  },
-  computed: {},
-  methods: {},
-  mounted() {},
-};
+import '@/styles/widget-template.css';
+export default {};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

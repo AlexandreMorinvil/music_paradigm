@@ -21,3 +21,11 @@ $ sudo systemctl start mongod
 
 $ ./music_paradigm_api/npm run start
 $ ./music_paradigm_web/npm run serve
+
+## Formatting
+
+* Prettier
+* Eslint
+
+Need to install prettier-Eslint 
+(The following tutorial give a well detailed explaination of the proceedure for setting it up : https://www.robinwieruch.de/prettier-eslint)

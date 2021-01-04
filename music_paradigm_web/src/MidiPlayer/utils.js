@@ -2,7 +2,6 @@
  * Contains misc static utility methods.
  */
 class Utils {
-
 	/**
 	 * Converts a single byte to a hex string.
 	 * @param {number} byte
@@ -19,8 +18,8 @@ class Utils {
 	 * @return {string}
 	 */
 	static bytesToHex(byteArray) {
-		var hex = [];
-		byteArray.forEach(byte => hex.push(Utils.byteToHex(byte)));
+		const hex = [];
+		byteArray.forEach((byte) => hex.push(Utils.byteToHex(byte)));
 		return hex.join('');
 	}
 
@@ -48,8 +47,8 @@ class Utils {
 	 * @return {string}
 	 */
 	static bytesToLetters(byteArray) {
-		var letters = [];
-		byteArray.forEach(byte => letters.push(String.fromCharCode(byte)));
+		const letters = [];
+		byteArray.forEach((byte) => letters.push(String.fromCharCode(byte)));
 		return letters.join('');
 	}
 
@@ -68,14 +67,14 @@ class Utils {
 	 * @return {number}
 	 */
 	static readVarInt(byteArray) {
-		var result = 0;
-		byteArray.forEach(number => {
-			var b = number;
+		let result = 0;
+		byteArray.forEach((number) => {
+			const b = number;
 			if (b & 0x80) {
-				result += (b & 0x7f);
+				result += b & 0x7f;
 				result <<= 7;
 			} else {
-				/* b is the last byte */
+				/* B is the last byte */
 				result += b;
 			}
 		});
@@ -94,4 +93,4 @@ class Utils {
 	}
 }
 
-export {Utils};
+export { Utils };

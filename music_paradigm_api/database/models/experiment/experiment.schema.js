@@ -17,15 +17,22 @@ const schema = new Schema(
         successesForSkip: { type: Number, default: 0 },
         hideFeedbackSmiley: { type: Boolean, default: false },
         isSkipStepButtonInFootnote: { type: Boolean, default: undefined },
-        variable: [
+        programmedOctaveOffset: { type: Number, default: 0 },
+        interactivePianoFirstOctave: { type: Number, default: 4 },
+        variables: [
             {
-                name: String,
-                type: { 
-                    type: String, 
-                    enum: ['counter', 'variable', 'parameter'], 
+                name: { type: String, required: true },
+                type: {
+                    type: String,
+                    enum: ['variable', 'parameter'],
                     default: "variable",
                 },
-                values: []
+                assignedValue: {
+                    type: Schema.Types.Mixed,
+                    default: undefined,
+                    required: true
+                },
+                optionValues: { type: [], default: [] },
             }
         ],
         flow: {
@@ -66,13 +73,20 @@ const schema = new Schema(
                     startSignal: { type: Number, default: undefined },
                     feedbackNumerical: { type: Boolean, default: undefined },
 
-                    lastRepetitionVersion: { type: Object, default: undefined }
+                    lastRepetitionVersion: { type: Object, default: undefined },
+                    succeeededForSkipLoopVersion: { type: Object, default: undefined },
+
+                    resetVariable: { type: String, default: undefined },
+                    incrementVariable: { type: String, default: undefined },
+                    decrementVariable: { type: String, default: undefined },
+                    incrementVariableOnSucess: { type: String, default: undefined },
+                    decrementVariableOnSucces: { type: String, default: undefined },
                 }
             ]
         }
     },
     {
-        strict: false,
+        strict: true,
         timestamps: {
             createdAt: 'createdAt',
             updatedAt: 'updatedAt'

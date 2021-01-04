@@ -1,0 +1,8 @@
+{
+  "message": "hello i18n !!",
+  "application-component": {
+    "footer": {
+      "musicParadigmIs": "Music Paradigm is an open source platform developped for managing remote mutiusers musical training experiments."
+    }
+  }
+}

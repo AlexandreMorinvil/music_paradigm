@@ -36,7 +36,6 @@ async function authenticate({ username, password }) {
 async function getProgressionSummary(userId) {
     try {
         return await progressionService.generateProgressionSummary(userId);
-
     } catch (err) {
         throw err;
     }
@@ -44,7 +43,8 @@ async function getProgressionSummary(userId) {
 
 async function getTodayExperiment(userId) {
     try {
-        return await Curriculum.getListAllHeaders();
+        const progressionSummary = await progressionService.generateProgressionSummary(userId);
+        return progressionSummary
     } catch (err) {
         throw err;
     }

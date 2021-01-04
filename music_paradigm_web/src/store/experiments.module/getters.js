@@ -1,28 +1,44 @@
-import { validator } from "@/_helpers";
+import { experimentParser, validator } from '@/_helpers';
 
 export default {
-    experimentEdited: (state) => {
-        return state.edition;
-    },
+	experimentEdited: (state) => {
+		return state.edition;
+	},
 
-    experimentSelected: (state) => {
-        return state.selection.content;
-    },
+	experimentSelected: (state) => {
+		return state.selection.content;
+	},
 
-    selectedId: (state)=> {
-        return state.selection._id;
-    },
+	selectedId: (state) => {
+		return state.selection._id;
+	},
 
-    experimentsHeadersList: (state) => {
-        return state.experimentsHeadersList;
-    },
+	experimentsHeadersList: (state) => {
+		return state.experimentsHeadersList;
+	},
 
-    // Status
-    hasCompiledEdition: (state) => {
-        return validator.isExperimentValid(state.edition);
-    },
+	experimentSelectedParameters: (state) => {
+		return experimentParser.getParameterVariables(state.selection.content);
+	},
 
-    isFetchingExperimentHeadersList: (state) => {
-        return state.status.isFetchingExperimentHeadersList;
-    }
-}
+	imposedParameterValues: (state) => {
+		return state.imposedParameterValues;
+	},
+
+	hasParameterInSelectedExperiment: (state) => {
+		return experimentParser.getParameterVariables(state.selection.content).length > 0;
+	},
+
+	// Status
+	hasExperimentSelection: (state) => {
+		return validator.isExperimentValid(state.selection.content);
+	},
+
+	hasCompiledEdition: (state) => {
+		return validator.isExperimentValid(state.edition);
+	},
+
+	isFetchingExperimentHeadersList: (state) => {
+		return state.status.isFetchingExperimentHeadersList;
+	},
+};

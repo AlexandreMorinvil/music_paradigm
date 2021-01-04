@@ -1,23 +1,29 @@
 export default {
-    isLoggedIn: (state) => {
-        return state.status.loggedIn;
-    },
+	accountId: (state) => {
+		return state.user._id;
+	},
 
-    isLoggingIn: (state) => {
-        return state.status.loggingIn;
-    },
+	username: (state) => {
+		return state.user.username;
+	},
 
-    fullName: (state) => {
-        return state.user.firstName + " " +
-            (state.user.middleName ? state.user.middleName + " " : "") +
-            state.user.lastName;
-    },
+	isLoggedIn: (state) => {
+		return state.status.loggedIn;
+	},
 
-    isFetchingProgressionSummary: (state) => {
-        return state.status.isFetchingProgressionSummary;
-    },
+	isLoggingIn: (state) => {
+		return state.status.loggingIn;
+	},
 
-    progressionSummary: (state) => {
-        return state.progressionSummary;
-    }
-}
+	fullName: (state) => {
+		return state.user.firstName + ' ' + (state.user.middleName ? state.user.middleName + ' ' : '') + state.user.lastName;
+	},
+
+	isFetchingProgressionSummary: (state) => {
+		return state.status.isFetchingProgressionSummary;
+	},
+
+	progressionSummary: (state) => {
+		return state.progressionSummary;
+	},
+};

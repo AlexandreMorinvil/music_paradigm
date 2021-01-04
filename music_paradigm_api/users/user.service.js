@@ -1,5 +1,4 @@
-﻿const bcrypt = require('bcryptjs');
-const db = require('database/db');
+﻿const db = require('database/db');
 const User = db.User;
 
 // Exports
