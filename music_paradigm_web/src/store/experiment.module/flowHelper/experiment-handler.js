@@ -40,6 +40,7 @@ function setExperimentGeneralSettings(state, experiment) {
 		isSkipStepButtonInFootnote,
 		programmedOctaveOffset,
 		interactivePianoFirstOctave,
+		controlType,
 	} = experiment;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -60,6 +61,7 @@ function setExperimentGeneralSettings(state, experiment) {
 		programmedOctaveOffset: typeof programmedOctaveOffset === 'number' ? programmedOctaveOffset : defaultSettings.programmedOctaveOffset,
 		interactivePianoFirstOctave:
 			typeof interactivePianoFirstOctave === 'number' ? interactivePianoFirstOctave : defaultSettings.interactivePianoFirstOctave,
+		controlType: typeof controlType === 'string' ? controlType : defaultSettings.controlType,
 	};
 }
 
@@ -75,6 +77,7 @@ function setExperimentVariables(state, experiment) {
 	state.variables.value = JSON.parse(JSON.stringify(state.variables.initial));
 }
 
+// TODO : Verify that the parameter imposed are part of the possibilities
 function setParameterImposedValues(state, parameters) {
 	for (const parameter of parameters) state.variables.initial[variableHandler.wrapVariableName(parameter.name)] = parameter.assignedValue;
 	state.variables.value = JSON.parse(JSON.stringify(state.variables.initial));

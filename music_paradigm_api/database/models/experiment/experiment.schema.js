@@ -19,6 +19,7 @@ const schema = new Schema(
         isSkipStepButtonInFootnote: { type: Boolean, default: undefined },
         programmedOctaveOffset: { type: Number, default: 0 },
         interactivePianoFirstOctave: { type: Number, default: 4 },
+        controlType: { type: String, default: 'piano' },
         variables: [
             {
                 name: { type: String, required: true },
@@ -81,6 +82,8 @@ const schema = new Schema(
                     decrementVariable: { type: String, default: undefined },
                     incrementVariableOnSucess: { type: String, default: undefined },
                     decrementVariableOnSucces: { type: String, default: undefined },
+
+                    controlType: { type: String, default: undefined },
                 }
             ]
         }
