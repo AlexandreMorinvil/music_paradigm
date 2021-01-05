@@ -13,6 +13,7 @@ import { experiment } from './experiment.module';
 import { experiments } from './experiments.module';
 import { log } from './log.module';
 import { piano } from './piano.module';
+import { session } from './session.module';
 import { users } from './users.module';
 
 Vue.use(Vuex);
@@ -30,6 +31,7 @@ export default new Vuex.Store({
 		experiments,
 		log,
 		piano,
+		session,
 		users,
 	},
 });

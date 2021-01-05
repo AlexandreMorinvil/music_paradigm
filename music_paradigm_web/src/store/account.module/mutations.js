@@ -28,27 +28,11 @@ export default {
 		state.status.isFetchingProgressionSummary = false;
 	},
 
-	isFetchingSession(state) {
-		state.status.isFetchingSession = true;
-	},
-
-	isFetchingSessionEnd(state) {
-		state.status.isFetchingSession = false;
-	},
-
 	setDueExperiment(state, dueExperiment) {
 		state.dueExperiment = dueExperiment;
 	},
 
 	setProgressionSummary(state, progressionSummary) {
 		state.progressionSummary = progressionSummary;
-	},
-
-	setFetchedSession(state, sessionInformation) {
-		state.sessionInformation = sessionInformation;
-	},
-
-	clearSessionInformation(state) {
-		state.sessionInformation = constants.EMPTY_SESSION_INFORMATION();
 	},
 };

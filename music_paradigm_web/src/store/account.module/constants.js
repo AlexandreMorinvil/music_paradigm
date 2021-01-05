@@ -1,7 +1,6 @@
 export default {
 	EMPTY_USER,
 	EMPTY_PROGRESSION_SUMMARY,
-	EMPTY_SESSION_INFORMATION,
 };
 
 function EMPTY_USER() {
@@ -15,17 +14,6 @@ function EMPTY_USER() {
 		role: '',
 		curriculum: null,
 		progressions: [],
-	};
-}
-
-function EMPTY_SESSION_INFORMATION() {
-	return {
-		assosiativeId: '',
-		title: '',
-		text: '',
-		experiment: null,
-		previousState: null,
-		previousCursor: null,
 	};
 }
 
