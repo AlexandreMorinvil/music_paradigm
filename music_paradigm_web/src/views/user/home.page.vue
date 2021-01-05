@@ -43,7 +43,7 @@ export default {
 	display: grid;
 	grid-gap: 20px;
 	grid-template-columns: 1fr;
-	grid-template-rows: auto 60%;
+	grid-template-rows: 4fr 6fr;
 	grid-template-areas:
 		'button'
 		'overview';

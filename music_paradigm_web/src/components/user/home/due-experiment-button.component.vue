@@ -1,5 +1,5 @@
 <template>
-	<button v-on:click="startDueSession" class="main-button">Run Today’s Session</button>
+	<button v-on:click="startDueSession" class="main-button" :class="isActive ? 'active' : 'innactive'">{{ message }}</button>
 </template>
 
 <script>
@@ -12,13 +12,39 @@ export default {
 	methods: {
 		...mapActions('session', ['fetchDueExperimentSession']),
 		startDueSession() {
-			this.fetchDueExperimentSession();
+			if (this.isActive) this.fetchDueExperimentSession();
 		},
 	},
 	computed: {
-		...mapGetters('account', ['']),
+		...mapGetters('account', ['hasDueExperiment']),
+		message() {
+			if (this.isActive) return 'Run Today’s Session';
+			return 'No new session available';
+		},
+		isActive() {
+			return this.hasDueExperiment;
+		},
 	},
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.main-button {
+	min-height: auto;
+	max-height: 150px;
+	background-color: rgb(0, 200, 255);
+	box-shadow: 5px 10px 8px black;
+}
+
+.active {
+	background-color: rgb(0, 200, 50);
+	border: 1px solid rgb(10, 180, 40);
+}
+
+.innactive {
+	background-color: rgb(150, 150, 150);
+	border: 1px solid rgb(130, 130, 130);
+	cursor: default;
+	outline: none;
+}
+</style>

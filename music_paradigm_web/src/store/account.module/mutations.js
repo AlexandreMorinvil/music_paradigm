@@ -28,8 +28,8 @@ export default {
 		state.status.isFetchingProgressionSummary = false;
 	},
 
-	setDueExperiment(state, dueExperiment) {
-		state.dueExperiment = dueExperiment;
+	setDueExperiment(state, dueExperimentAssociativeId) {
+		state.dueExperimentAssociativeId = dueExperimentAssociativeId;
 	},
 
 	setProgressionSummary(state, progressionSummary) {

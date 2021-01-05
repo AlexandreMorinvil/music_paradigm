@@ -8,6 +8,6 @@ export default {
 	},
 	user: constants.EMPTY_USER(),
 
-	dueExperiment: '',
+	dueExperimentAssociativeId: '',
 	progressionSummary: constants.EMPTY_PROGRESSION_SUMMARY(),
 };

@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 <template>
 	<user-page-context title="Before Starting">
-		<div>
+		<div style="background-color: grey">
 			When pressing this button pts come to a page with an image of the MIDI-keyboard attached to a computer, and a
 
 			<br />
