@@ -3,7 +3,6 @@
 		<header class="area-title">
 			<h1>{{ title }}</h1>
 		</header>
-
 		<div class="area-separation"></div>
 
 		<main class="area-user-main widget widget-bg">

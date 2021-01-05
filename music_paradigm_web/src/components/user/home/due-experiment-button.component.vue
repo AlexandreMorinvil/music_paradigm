@@ -30,8 +30,11 @@ export default {
 
 <style scoped>
 .main-button {
-	min-height: auto;
+	font-size: 2em;
+	min-height: 130px;
 	max-height: 150px;
+	min-width: 500px;
+	max-width: 1000px;
 	background-color: rgb(0, 200, 255);
 	box-shadow: 5px 10px 8px black;
 }

@@ -1,14 +1,14 @@
 <template>
 	<admin-page-content-frame title="Experiments">
-		<widget-content-frame title="Reviewing Tool">
+		<widget-content-frame title="Reviewier">
 			<experiments-viewer />
 		</widget-content-frame>
 
-		<widget-content-frame title="Editor Tool">
+		<widget-content-frame title="Editor">
 			<experiments-editor />
 		</widget-content-frame>
 
-		<widget-content-frame title="Launcher Tool">
+		<widget-content-frame title="Launcher">
 			<experiments-launcher-widget />
 		</widget-content-frame>
 

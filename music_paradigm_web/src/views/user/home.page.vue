@@ -1,28 +1,27 @@
 <template>
-	<user-page-context title="Home">
+	<user-page-content-frame-component title="Home">
 		<div class="home-page-grid">
 			<div class="area-button">
-				<due-experiment-button-component />
+				<due-experiment-button-component class="button" />
 			</div>
-
 			<div class="area-overview">
-				<h2>Progression</h2>
 				<overview-table />
 			</div>
 		</div>
-	</user-page-context>
+	</user-page-content-frame-component>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 import DueExperimentButtonComponent from '@/components/user/home/due-experiment-button.component.vue';
 import OverviewTable from '@/components/user/home/overview-table.vue';
-import UserPageContext from '@/components/user/user-page-context.vue';
-import { mapActions } from 'vuex';
+import UserPageContentFrameComponent from '@/components/content-frame/user-page-content-frame.component.vue';
 
 export default {
 	components: {
+		UserPageContentFrameComponent,
 		overviewTable: OverviewTable,
-		UserPageContext: UserPageContext,
 		DueExperimentButtonComponent,
 	},
 	data() {
@@ -65,11 +64,7 @@ export default {
 	align-items: center;
 }
 
-.main-button {
+.button {
 	width: 75%;
-	min-width: 500px;
-	max-width: 1000px;
-	padding: 40px;
-	font-size: 2em;
 }
 </style>

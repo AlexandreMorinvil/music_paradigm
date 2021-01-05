@@ -4,9 +4,6 @@
 		<br />
 		<br />
 		TODO: Schema of the structure of the experiment
-		<br />
-		<br />
-		TODO: Button to start the selected experiment or the editor experiment
 	</div>
 </template>
 

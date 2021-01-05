@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 <template>
-	<user-page-context title="Before Starting">
+	<user-page-content-frame-component title="Before Starting">
 		<div style="background-color: grey">
 			When pressing this button pts come to a page with an image of the MIDI-keyboard attached to a computer, and a
 
@@ -30,15 +30,15 @@
 			<br />
 			<br />“Continue to today’s training”. This takes you to the training.
 		</div>
-	</user-page-context>
+	</user-page-content-frame-component>
 </template>
 
 <script>
-import UserPageContext from '@/components/user/user-page-context.vue';
+import UserPageContentFrameComponent from '@/components/content-frame/user-page-content-frame.component.vue';
 
 export default {
 	components: {
-		UserPageContext: UserPageContext,
+		UserPageContentFrameComponent,
 	},
 };
 </script>
