@@ -36,14 +36,15 @@ schema.statics.getListAllHeaders = async function () {
     return usersHeaderList;
 };
 
-schema.statics.getProgressionData = async function (userId) {
+schema.statics.getCurriculumAndProgressionData = async function (userId) {
     const curriculumAndProgression = await this.findById(userId, { curriculum: 1, progressions: { $slice: -1 } }).populate({ path: 'curriculum progressions' });
     const { curriculum, progressions } = curriculumAndProgression.toObject();
     return { curriculum: curriculum || null, progression: (progressions) ? progressions[0] : null }
 };
 
-schema.statics.getCurriculum = async function (userId) {
-    return (await this.findById(userId, { curriculum: 1 }).populate({ path: 'curriculum' })).curriculum;
+schema.statics.getLastProgression = async function (userId) {
+    const user = await this.findById(userId, { progressions: { $slice: -1 } }).populate({ path: 'progressions' });
+    return user.progressions[0];
 };
 
 // Instance methods

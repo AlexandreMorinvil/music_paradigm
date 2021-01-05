@@ -1,8 +1,7 @@
 ﻿const db = require('database/db');
 const jwt = require('jwt/jwt');
 const progressionService = require('account/progression-summary.service');
-const Experiment = db.Experiment;
-const Curriculum = db.Curriculum;
+const Progression = db.Progression;
 const User = db.User;
 
 module.exports = {
@@ -46,19 +45,10 @@ async function getTodayExperiment(userId) {
         const progressionSummary = await progressionService.generateProgressionSummary(userId);
         const dueExperimentAssociativeId = progressionSummary.dueExperimentAssociativeId;
         if (!dueExperimentAssociativeId) throw new Error('There is no due experiment');
-        const curriculum = await User.getCurriculum(userId);
-        
-        
-        const experiment = await curriculum.getExperimentAssociated(dueExperimentAssociativeId);
-        const experimentDescription = await experiment.getDefinition();
-        console.log(experimentDescription);
-        return experimentDescription;
+        const progression = await User.getLastProgression(userId);
+        const sessionInformation = await progression.getSessionInformation(dueExperimentAssociativeId);
 
-
-        // const curriculumAndProgression = await this.findById(userId, { curriculum: 1, progressions: { $slice: -1 } }).populate({ path: 'curriculum progressions' });
-        // const { curriculum, progressions } = curriculumAndProgression.toObject();
-        // return { curriculum: curriculum || null, progression: (progressions) ? progressions[0] : null }
-        
+        return sessionInformation
     } catch (err) {
         throw err;
     }

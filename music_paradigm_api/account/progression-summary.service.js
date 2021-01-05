@@ -9,7 +9,7 @@ module.exports = {
 };
 
 async function updateProgression(userId) {
-    const { curriculum, progression } = await User.getProgressionData(userId);
+    const { curriculum, progression } = await User.getCurriculumAndProgressionData(userId);
 
     // Do not generate a progression if no curriculum is associated to the user
     if (!curriculum) return;
@@ -24,7 +24,7 @@ async function updateProgression(userId) {
 }
 
 async function generateProgressionSummary(userId) {
-    const { curriculum, progression } = await User.getProgressionData(userId);
+    const { curriculum, progression } = await User.getCurriculumAndProgressionData(userId);
 
     // Generate progression to curriculum association
     // This conversion table is particularily useful to handle the situations where the curriculum would be modified 

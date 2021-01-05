@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-schema = require('./curriculum.schema');
+const schema = require('./curriculum.schema');
 
 schema.set('toJSON', { virtuals: true });
 
@@ -19,20 +19,9 @@ schema.statics.getListAllHeaders = async function () {
 
 // Instance methods
 schema.methods.getExperimentAssociated = async function (associativeId) {
-    const experimentArray = this.experiments.filter(experiment => { return experiment.associativeId === associativeId; });
-    let experiment = experimentArray[0];
-    console.log(experiment)
-
-    console.log(this);
-
-    const abc = this.populate('experiments');
-    console.log(abc);
-
-    // experiment.populate({ path: 'experimentReference' }); doc.arr[0].populate(\"path\")
-    // Mongoose does not support calling populate() on nested docs. Instead of `doc.arr[0].populate(\"path\")`, use `doc.populate(\"arr.0.path\")`
-    // console.log(experiment)
-
-    return experiment;
+    const experimentArrayCurriculum = this.experiments.filter(experiment => { return experiment.associativeId === associativeId; });
+    const experimentInCurriculum = experimentArrayCurriculum[0];
+    return experimentInCurriculum;
 };
 
 schema.methods.update = async function (updatedCurriculum) {
