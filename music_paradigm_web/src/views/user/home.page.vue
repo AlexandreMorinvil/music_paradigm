@@ -2,9 +2,7 @@
 	<user-page-context title="Home">
 		<div class="home-page-grid">
 			<div class="area-button">
-				<button class="main-button">
-					<router-link :to="{ name: 'user.experiment' }">Run Today’s Session</router-link>
-				</button>
+				<due-experiment-button-component />
 			</div>
 
 			<div class="area-overview">
@@ -16,6 +14,7 @@
 </template>
 
 <script>
+import DueExperimentButtonComponent from '@/components/user/home/due-experiment-button.component.vue';
 import OverviewTable from '@/components/user/home/overview-table.vue';
 import UserPageContext from '@/components/user/user-page-context.vue';
 import { mapActions } from 'vuex';
@@ -24,6 +23,7 @@ export default {
 	components: {
 		overviewTable: OverviewTable,
 		UserPageContext: UserPageContext,
+		DueExperimentButtonComponent,
 	},
 	data() {
 		return {};

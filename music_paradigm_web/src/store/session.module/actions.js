@@ -3,11 +3,13 @@ import { accountService } from '@/_services';
 export default {
 	fetchDueExperimentSession({ commit, dispatch }) {
 		commit('isFetchingSession');
+		console.log('This was printed');
 		return accountService
 			.fetchDueExperimentSession()
 			.then(
 				(sessionInformation) => {
 					commit('setFetchedSession', sessionInformation);
+					commit('goToPreSession');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
@@ -25,6 +27,7 @@ export default {
 			.then(
 				(sessionInformation) => {
 					commit('setFetchedSession', sessionInformation);
+					commit('goToPreSession');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });

@@ -1,4 +1,5 @@
 import constants from './constants';
+import { routerNavigation } from '@/_helpers';
 
 export default {
 	isFetchingSession(state) {
@@ -7,6 +8,10 @@ export default {
 
 	isFetchingSessionEnd(state) {
 		state.status.isFetchingSession = false;
+	},
+
+	goToPreSession() {
+		routerNavigation.moveToPreSession();
 	},
 
 	setFetchedSession(state, sessionInformation) {
