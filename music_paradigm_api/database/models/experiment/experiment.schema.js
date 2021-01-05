@@ -19,7 +19,7 @@ const schema = new Schema(
         isSkipStepButtonInFootnote: { type: Boolean, default: undefined },
         programmedOctaveOffset: { type: Number, default: 0 },
         interactivePianoFirstOctave: { type: Number, default: 4 },
-        controlType: { type: String, default: 'piano' },
+        controlType: { type: String, default: 'piano', enum: ['piano', 'keyboard', 'none'] },
         variables: [
             {
                 name: { type: String, required: true },
