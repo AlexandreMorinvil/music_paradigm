@@ -1,13 +1,14 @@
 ﻿const express = require('express');
 const router = express.Router();
-const jwtAuthorize = require('jwt/jwt.authorization');
-const role = require('_helpers/role');
+// const jwtAuthorize = require('jwt/jwt.authorization');
+// const role = require('_helpers/role');
 const accountService = require('./account.service');
 
 // routes
 router.post('/authenticate', authenticate);
-router.get('/progressionSummary', getProressionSummary);
+router.get('/progression-summary', getProressionSummary);
 router.get('/due-experiment', getTodayExperiment);
+router.get('/specific-experiment/:associativeId', getSpecificExperiment);
 // router.post('/',                jwtAuthorize(role.admin),  create);
 // router.get('/',                 jwtAuthorize(role.admin),  getListAllHeaders);
 // router.get('/:id',              jwtAuthorize(role.admin),  getById);
@@ -37,6 +38,12 @@ function getTodayExperiment(req, res, next) {
         .finally(() => next());
 }
 
+function getSpecificExperiment(req, res, next) {
+    accountService.getSpecificExperiment(req.user.sub, req.params.associativeId)
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
 // function create(req, res, next) {
 //     curriculumService.create(req.body)
 //         .then(result => res.status(200).json(result))

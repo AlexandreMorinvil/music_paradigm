@@ -20,6 +20,7 @@ schema.methods.getSessionInformation = async function (associativeId) {
     const progressionNestedExperiment = await this.getExperimentAssociated(associativeId) || {};
 
     const sessionInformation = {
+        assosiativeId: associativeId,
         title: curriculumNestedExperiment.title,
         text: curriculumNestedExperiment.text,
         experiment: await experiment.getDefinition(),

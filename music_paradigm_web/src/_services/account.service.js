@@ -47,7 +47,7 @@ function fetchProgressionSummary() {
 		method: 'GET',
 		headers: authHeader(),
 	};
-	return fetch(url.account('progressionSummary'), requestOptions).then(handleResponse);
+	return fetch(url.account('progression-summary'), requestOptions).then(handleResponse);
 }
 
 function handleResponse(reponse) {
