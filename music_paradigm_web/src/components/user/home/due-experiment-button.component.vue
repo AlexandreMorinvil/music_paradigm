@@ -37,16 +37,20 @@ export default {
 	max-width: 1000px;
 	background-color: rgb(0, 200, 255);
 	box-shadow: 5px 10px 8px black;
+	border-style: solid;
+	border-width: 5px;
 }
 
 .active {
+	color: rgb(230, 230, 230);
 	background-color: rgb(0, 200, 50);
-	border: 1px solid rgb(10, 180, 40);
+	border-color: rgb(10, 180, 40);
 }
 
 .innactive {
+	color: black;
 	background-color: rgb(150, 150, 150);
-	border: 1px solid rgb(130, 130, 130);
+	border-color: rgb(130, 130, 130);
 	cursor: default;
 	outline: none;
 }

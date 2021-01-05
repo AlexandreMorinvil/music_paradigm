@@ -1,46 +1,75 @@
 /* eslint-disable max-len */
 <template>
 	<user-page-content-frame-component title="Before Starting">
-		<div style="background-color: grey">
-			When pressing this button pts come to a page with an image of the MIDI-keyboard attached to a computer, and a
-
-			<br />
-			<br />text: “Please attach the MIDI-keyboard to your computer using the USB-chord and place it so you can play it comfortably. When done, press
-			the button below”.
-			<br />
-			<br />
-			button below reads “Test keyboard”.
-			<br />
-			<br />When this button is pressed a page opens with the keyboard displayed, and the relevant keys highlighted (in yellow).
-			<br />
-			<br />There is a text above the keyboard • “Please press all highlighted keys and adjust the volume to an appropriate level. You will need to
-			test all highlighted keys before you can move on to today’s training.”
-			<br />
-			<br />Below the keyboard there is an informational text reading:
-			<br />
-			<br />“If key presses do not register andthere is no audio: o Leave the test (button below); make sure the MIDI-keyboard is attached to the
-			computer and run the test again.”
-			<br />
-			<br />“If key presses register (keys turn blue), but there is no audio:
-			<br />
-			<br />Check computer audio using the volume slider/control panel on your computer.
-			<br />
-			<br />If computer audio is functional and there is still no audio when using the keyboard, try leaving the test, reattaching the keyboard, and
-			running the test again.”  Below the informational text there are two buttons that reads • “Leave test”. This takes you back to the intro page.
-			<br />
-			<br />“Continue to today’s training”. This takes you to the training.
+		<div class="home-page-grid">
+			<component :is="stageComponent" :isLastStage="isLastStage" />
 		</div>
 	</user-page-content-frame-component>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
+import PreSessionAdviceComponent from '@/components/user/pre-session/pre-session-advice.component.vue';
+import PreSessionMessageComponent from '@/components/user/pre-session/pre-session-message.component.vue';
+import PreSessionPianoSettingComponent from '@/components/user/pre-session/pre-session-piano-setting.component.vue';
 import UserPageContentFrameComponent from '@/components/content-frame/user-page-content-frame.component.vue';
 
 export default {
 	components: {
 		UserPageContentFrameComponent,
+		message: PreSessionMessageComponent,
+		advice: PreSessionAdviceComponent,
+		piano: PreSessionPianoSettingComponent,
+	},
+	data() {
+		return {
+			currentStageIndex: 0,
+		};
+	},
+	computed: {
+		...mapGetters('session', ['needsMessagePreSession', 'needsPianoSettingPreExperiment']),
+		stages() {
+			const stages = [];
+			if (this.needsMessagePreSession) stages.push('message');
+			stages.push('advice');
+			if (this.needsPianoSettingPreExperiment) stages.push('piano');
+			return stages;
+		},
+		stageComponent() {
+			return this.stages[this.currentStageIndex];
+		},
+		isLastStage() {
+			return this.currentStageIndex + 1 >= this.stages.length;
+		},
 	},
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.pre-session-page-grid {
+	display: grid;
+	grid-gap: 20px;
+	grid-template-columns: 1fr;
+	grid-template-rows: 4fr 6fr;
+	grid-template-areas:
+		'button'
+		'overview';
+	height: 100%;
+	width: 100%;
+}
+
+.area-overview {
+	grid-area: overview;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: auto 1fr;
+}
+
+.area-button {
+	grid-area: button;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+</style>
