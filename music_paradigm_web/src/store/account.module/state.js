@@ -1,34 +1,16 @@
+import constants from './constants';
+
 export default {
 	status: {
 		loggingIn: false,
 		loggedIn: false,
 		isFetchingProgressionSummary: false,
+		isFetchingSession: false,
 	},
 
-	user: {
-		_id: null,
-		username: '',
-		email: '',
-		firstName: '',
-		middleName: '',
-		lastName: '',
-		role: '',
-		curriculum: null,
-		progressions: [],
-	},
+	user: constants.EMPTY_USER(),
 
 	dueExperiment: '',
-	progressionSummary: [
-		{
-			associativeId: '',
-			title: '',
-			delayPreAvailabilityInDays: 0,
-			delayPreAvailabilityInHours: 0,
-			isLockedByCompletionLimit: true,
-			wouldBeFree: false,
-			isDelayedByPreviousSequential: false,
-			isDelayedByPreviousUniqueInDay: false,
-			isAvailable: false,
-		},
-	],
+	progressionSummary: constants.EMPTY_PROGRESSION_SUMMARY(),
+	sessionInformation: constants.EMPTY_SESSION_INFORMATION(),
 };

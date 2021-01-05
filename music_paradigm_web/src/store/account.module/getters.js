@@ -26,4 +26,12 @@ export default {
 	progressionSummary: (state) => {
 		return state.progressionSummary;
 	},
+
+	sessionExperiment: (state) => {
+		return state.sessionInformation.experiment || null;
+	},
+
+	sessionCursor: (state) => {
+		return state.sessionInformation.cursor || null;
+	},
 };
