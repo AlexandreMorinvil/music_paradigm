@@ -47,7 +47,7 @@ export default {
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
-	z-index: 1;
+	z-index: 100;
 }
 
 .dimmensions {
@@ -58,7 +58,7 @@ export default {
 
 .formatting {
 	box-shadow: 0 0 10px black;
-	background-color: rgb(255, 190, 80);
+	background-color: rgb(240, 160, 40);
 	color: white;
 	font-size: 1em;
 }
@@ -74,8 +74,8 @@ export default {
 .title-area {
 	grid-area: title;
 	border-radius: 10px 10px 0 0;
-	background-color: orange;
-	padding: 20px;
+	background-color: rgb(255, 120, 20);
+	padding: 20px 30px;
 }
 
 .content-area {
@@ -121,14 +121,15 @@ export default {
 .index-square {
 	width: auto;
 	height: 2em;
-	background-color: rgb(255, 125, 70);
-	border: 3px solid rgb(250, 120, 50);
+	background-color: rgb(255, 0, 70);
+	border: 3px solid rgb(250, 0, 50);
 	padding: 0.2em;
 	margin: 10px;
 }
 
 .solution-text-space {
 	text-align: justify;
+	padding: 0 25px;
 	margin: auto 0 auto;
 }
 </style>

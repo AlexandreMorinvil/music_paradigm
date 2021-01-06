@@ -1,14 +1,15 @@
 <template>
 	<div class="pre-session-grid">
-		<problem-piano-setting-component v-if="hasProblem" v-on:ok="abort" />
+		<problem-piano-correspondance-component v-if="hasCorrespondanceProblem" v-on:ok="clearCorrespondanceProblem" />
+		<problem-piano-input-component v-if="hasInputProblem" v-on:ok="clearInputProblem" />
 		<piano-visual-display-component class="visual-piano" />
 		<p class="centered-text">{{ message }}</p>
 		<div class="button-layout">
 			<div />
 			<button v-on:click="advance" class="button" :class="buttonStyle">{{ buttonText }}</button>
 			<div>
-				<button class="button button-small button-error">Nothing happens when I press any key</button>
-				<button class="button button-small button-error">The keys displayed do not correspond</button>
+				<button v-on:click="indicateInputProblem" class="button button-small button-error">Nothing happens when I press any key</button>
+				<button v-on:click="indicateCorrespondanceProblem" class="button button-small button-error">The keys displayed do not correspond</button>
 			</div>
 		</div>
 	</div>
@@ -19,12 +20,14 @@ import '@/styles/pre-session-template.css';
 import { mapGetters } from 'vuex';
 
 import PianoVisualDisplayComponent from '@/components/piano/piano-visual-display.component.vue';
-import ProblemPianoSettingComponent from '@/components/user/problem-prompt/problem-piano-setting.component.vue';
+import ProblemPianoCorrespondanceComponent from '@/components/user/problem-prompt/problem-piano-correspondance.component.vue';
+import ProblemPianoInputComponent from '@/components/user/problem-prompt/problem-piano-input.component.vue';
 
 export default {
 	components: {
-		ProblemPianoSettingComponent,
+		ProblemPianoInputComponent,
 		PianoVisualDisplayComponent,
+		ProblemPianoCorrespondanceComponent,
 	},
 	props: {
 		isLastStage: {
@@ -37,7 +40,8 @@ export default {
 			SECONDS_TO_RECEIVE_SIGNAL: 10,
 			timeoutUniqueID: 0,
 			hasReceivedSignal: false,
-			hasProblem: false,
+			hasInputProblem: false,
+			hasCorrespondanceProblem: false,
 		};
 	},
 	computed: {
@@ -46,7 +50,7 @@ export default {
 			return 'The piano is now muted: you will not hear any sound.\nVerify that the keys indicated on dislay mirror the keys you press.';
 		},
 		buttonText() {
-			if (!this.hasReceivedSignal) return 'Press a key on the MIDI Keyboard';
+			if (!this.hasReceivedSignal) return 'Press any key on the MIDI Keyboard';
 			else if (this.isLastStage) return 'Start Session';
 			else return 'Continue';
 		},
@@ -65,6 +69,19 @@ export default {
 		},
 		moveBack() {
 			this.$emit('back-stage');
+		},
+		indicateInputProblem() {
+			this.hasInputProblem = true;
+		},
+		indicateCorrespondanceProblem() {
+			this.hasCorrespondanceProblem = true;
+		},
+		clearInputProblem() {
+			this.$emit('back-stage');
+			this.hasInputProblem = false;
+		},
+		clearCorrespondanceProblem() {
+			this.hasCorrespondanceProblem = false;
 		},
 	},
 	beforeDestroy() {
