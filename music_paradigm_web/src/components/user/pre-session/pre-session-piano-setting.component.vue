@@ -3,8 +3,9 @@
 		<img src="plug-usb.gif" style="margin: auto" alt="plug usb cable" />
 		<p class="centered-text">{{ message }}</p>
 		<div>
-			<button v-on:click="advance" class="button" :class="(isLastStage ? 'button-start' : 'button-next')">{{ buttonText }}</button>
+			<button v-on:click="advance" class="button" :class="isLastStage ? 'button-start' : 'button-next'">{{ buttonText }}</button>
 		</div>
+		<problem-prompt-component />
 	</div>
 </template>
 
@@ -13,8 +14,12 @@ import '@/styles/pre-session-template.css';
 import { mapGetters } from 'vuex';
 
 import { PianoEventBus, pianoEvents } from '@/_services/piano-event-bus.service.js';
+import ProblemPromptComponent from '@/components/user/problem-prompt/problem-prompt.component.vue';
 
 export default {
+	components: {
+		ProblemPromptComponent,
+	},
 	props: {
 		isLastStage: {
 			type: Boolean,
@@ -23,9 +28,9 @@ export default {
 	},
 	data() {
 		return {
-			step: 0,
-
+			SECONDS_TO_INITIALIZE_PIANO: 10,
 			timeoutUniqueID: 0,
+			hasProblem: false,
 		};
 	},
 	computed: {
@@ -45,10 +50,17 @@ export default {
 	methods: {
 		advance() {
 			if (this.isPianoInitialized) this.$emit('end-stage');
-			PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);
+			else {
+				PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);
+				this.this.timeoutUniqueID = setTimeout(this.indicateProblem, this.SECONDS_TO_INITIALIZE_PIANO * 1000);
+			}
+		},
+		indicateProblem() {
+			this.hasProblem = true;
 		},
 	},
 	beforeMount() {
+		// Deactivate any previous instance of a piano to prevent any unexpected behavior
 		PianoEventBus.$emit(pianoEvents.EVENT_PIANO_TERMINATE_REQUEST);
 	},
 	beforeDestroy() {
