@@ -25,7 +25,7 @@ export default {
 		},
 		buttonText() {
 			if (this.isLastStage) return 'Start Session';
-			else return 'Next';
+			else return 'Continue';
 		},
 	},
 	methods: {

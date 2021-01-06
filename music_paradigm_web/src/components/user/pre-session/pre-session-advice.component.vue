@@ -20,7 +20,7 @@ export default {
 	computed: {
 		buttonText() {
 			if (this.isLastStage) return 'Start Session';
-			else return 'Next';
+			else return 'Continue';
 		},
 	},
 	methods: {

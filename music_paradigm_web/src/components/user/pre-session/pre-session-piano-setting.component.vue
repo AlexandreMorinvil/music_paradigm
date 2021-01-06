@@ -1,5 +1,5 @@
 <template>
-	<div class="pre-session-grid">
+	<div class="pre-session-flex">
 		<problem-piano-setting-component v-if="hasProblem" v-on:ok="abort" />
 		<img src="plug-usb.gif" style="margin: auto" alt="plug usb cable" />
 		<p class="centered-text">{{ message }}</p>
@@ -28,7 +28,7 @@ export default {
 	},
 	data() {
 		return {
-			SECONDS_TO_INITIALIZE_PIANO: 8,
+			SECONDS_TO_INITIALIZE_PIANO: 6,
 			timeoutUniqueID: 0,
 			hasProblem: false,
 		};
@@ -52,7 +52,7 @@ export default {
 			if (this.isPianoInitialized) this.$emit('end-stage');
 			else {
 				PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);
-				this.this.timeoutUniqueID = setTimeout(this.indicateProblem, this.SECONDS_TO_INITIALIZE_PIANO * 1000);
+				this.timeoutUniqueID = setTimeout(this.indicateProblem, this.SECONDS_TO_INITIALIZE_PIANO * 1000);
 			}
 		},
 		indicateProblem() {
