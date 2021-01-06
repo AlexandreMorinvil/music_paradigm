@@ -7,6 +7,10 @@ export default {
 		return state.sessionInformation.cursor || null;
 	},
 
+	preSessionMessage: (state) => {
+		return state.sessionInformation.text;
+	},
+
 	needsMessagePreSession: (state) => {
 		return Boolean(state.sessionInformation.text);
 	},

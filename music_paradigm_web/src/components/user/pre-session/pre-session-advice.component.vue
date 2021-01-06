@@ -1,9 +1,28 @@
 <template>
-	<div>Please close all other applications and webpages before running this application.</div>
+	<div class="pre-session-grid">
+		<p class="centered-text">Please close all other applications and webpages before continuing.</p>
+		<div>
+			<button v-on:click="end" class="button" :class="isLastStage ? 'button-start' : 'button-next'">{{ buttonText }}</button>
+		</div>
+	</div>
 </template>
 
 <script>
-export default {};
+import '@/styles/pre-session-template.css';
+
+export default {
+	computed: {
+		buttonText() {
+			if (this.isLastStage) return 'Start Session';
+			else return 'Next';
+		},
+	},
+	methods: {
+		end() {
+			this.$emit('end-stage');
+		},
+	},
+};
 </script>
 
 <style scoped></style>
