@@ -19,16 +19,8 @@ export default {
 		routerNavigation.moveToPreSession();
 	},
 
-	endPresessionMessage(state) {
-		state.presSessionState.hasHadMessage = true;
-	},
-
-	endPresessionAdvice(state) {
-		state.presSessionState.hasHadAdvice = true;
-	},
-
-	endPresessionPiano(state) {
-		state.presSessionState.hasHadPiano = true;
+	leavePreSession() {
+		routerNavigation.goToRootPage();
 	},
 
 	clearSessionInformation(state) {

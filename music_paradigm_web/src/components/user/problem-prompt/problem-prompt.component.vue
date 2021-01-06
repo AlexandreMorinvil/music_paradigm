@@ -4,7 +4,7 @@
 		<div class="content-area">
 			<p class="solution-message-area">Please try the following solution(s) :</p>
 			<p v-for="(solution, index) in solutions" :key="index" class="solution">
-				<span class="index-square">#{{ index + 1 }}</span>
+				<span class="index-square"># {{ index + 1 }}</span>
 				<span class="solution-text-space">{{ solution }}</span>
 			</p>
 			<p class="conclusion">{{ conclusion }}</p>
@@ -35,7 +35,7 @@ export default {
 	},
 	methods: {
 		preceed() {
-			this.$emit('problem-prompt-ok');
+			this.$emit('ok');
 		},
 	},
 };
@@ -119,7 +119,7 @@ export default {
 }
 
 .index-square {
-	width: 2em;
+	width: auto;
 	height: 2em;
 	background-color: rgb(255, 125, 70);
 	border: 3px solid rgb(250, 120, 50);

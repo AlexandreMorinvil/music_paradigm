@@ -1,11 +1,11 @@
 <template>
 	<div class="pre-session-grid">
+		<problem-piano-setting-component v-if="hasProblem" v-on:ok="abort" />
 		<img src="plug-usb.gif" style="margin: auto" alt="plug usb cable" />
 		<p class="centered-text">{{ message }}</p>
 		<div>
 			<button v-on:click="advance" class="button" :class="isLastStage ? 'button-start' : 'button-next'">{{ buttonText }}</button>
 		</div>
-		<problem-prompt-component />
 	</div>
 </template>
 
@@ -14,11 +14,11 @@ import '@/styles/pre-session-template.css';
 import { mapGetters } from 'vuex';
 
 import { PianoEventBus, pianoEvents } from '@/_services/piano-event-bus.service.js';
-import ProblemPromptComponent from '@/components/user/problem-prompt/problem-prompt.component.vue';
+import ProblemPianoSettingComponent from '@/components/user/problem-prompt/problem-piano-setting.component.vue';
 
 export default {
 	components: {
-		ProblemPromptComponent,
+		ProblemPianoSettingComponent,
 	},
 	props: {
 		isLastStage: {
@@ -28,7 +28,7 @@ export default {
 	},
 	data() {
 		return {
-			SECONDS_TO_INITIALIZE_PIANO: 10,
+			SECONDS_TO_INITIALIZE_PIANO: 8,
 			timeoutUniqueID: 0,
 			hasProblem: false,
 		};
@@ -57,6 +57,9 @@ export default {
 		},
 		indicateProblem() {
 			this.hasProblem = true;
+		},
+		abort() {
+			this.$emit('abort');
 		},
 	},
 	beforeMount() {

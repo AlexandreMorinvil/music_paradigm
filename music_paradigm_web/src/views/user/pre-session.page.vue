@@ -2,7 +2,7 @@
 <template>
 	<user-page-content-frame-component title="Before Starting">
 		<div class="pre-session-page-content pre-session-text">
-			<component :is="stageComponent" v-on:end-stage="moveNextStage" :isLastStage="isLastStage" class="fill" />
+			<component :is="stageComponent" v-on:end-stage="moveNextStage" v-on:abort="abort" :isLastStage="isLastStage" class="fill" />
 		</div>
 	</user-page-content-frame-component>
 </template>
@@ -44,7 +44,10 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('session', ['startSession']),
+		...mapActions('session', ['startSession', 'abortPresession']),
+		abort() {
+			this.abortPresession();
+		},
 		moveNextStage() {
 			if (this.isLastStage) this.startSession();
 			else this.currentStageIndex += 1;

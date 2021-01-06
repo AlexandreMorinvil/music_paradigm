@@ -37,18 +37,6 @@ export default {
 			});
 	},
 
-	endPresessionMessage({ commit }) {
-		commit('endPresessionMessage');
-	},
-
-	endPresessionAdvice({ commit }) {
-		commit('endPresessionAdvice');
-	},
-
-	endPresessionPiano({ commit }) {
-		commit('endPresessionPiano');
-	},
-
 	startSession({ dispatch, getters }) {
 		if (!getters.hasSessionLoaded) return;
 		dispatch('experiment/setExperiment', getters.sessionExperiment, { root: true });
@@ -56,6 +44,11 @@ export default {
 		// dispatch('experiment/setParameterValues', getters.imposedParameterValues, { root: true });
 		dispatch('experiment/setStartingPoint', getters.sessionCursor, { root: true });
 		dispatch('experiment/initExperiment', null, { root: true });
+	},
+
+	abortPresession({ commit, dispatch }) {
+		dispatch('clearSessionInformation', null, { root: true });
+		commit('leavePreSession');
 	},
 
 	clearSessionInformation({ commit }) {
