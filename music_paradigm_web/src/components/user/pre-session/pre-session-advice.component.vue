@@ -11,6 +11,12 @@
 import '@/styles/pre-session-template.css';
 
 export default {
+	props: {
+		isLastStage: {
+			type: Boolean,
+			default: true,
+		},
+	},
 	computed: {
 		buttonText() {
 			if (this.isLastStage) return 'Start Session';

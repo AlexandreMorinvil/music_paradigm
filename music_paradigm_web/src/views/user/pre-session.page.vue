@@ -20,7 +20,7 @@ export default {
 		UserPageContentFrameComponent,
 		message: PreSessionMessageComponent,
 		advice: PreSessionAdviceComponent,
-		piano: PreSessionPianoSettingComponent,
+		'piano-plug': PreSessionPianoSettingComponent,
 	},
 	data() {
 		return {
@@ -33,7 +33,7 @@ export default {
 			const stages = [];
 			if (this.needsMessagePreSession) stages.push('message');
 			stages.push('advice');
-			if (this.needsPianoSettingPreExperiment) stages.push('piano');
+			if (this.needsPianoSettingPreExperiment) stages.push('piano-plug');
 			return stages;
 		},
 		stageComponent() {

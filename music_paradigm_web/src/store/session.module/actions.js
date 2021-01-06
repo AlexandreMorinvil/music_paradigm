@@ -3,7 +3,6 @@ import { accountService } from '@/_services';
 export default {
 	fetchDueExperimentSession({ commit, dispatch }) {
 		commit('isFetchingSession');
-		console.log('This was printed');
 		return accountService
 			.fetchDueExperimentSession()
 			.then(
@@ -56,7 +55,7 @@ export default {
 		// TODO: Integrate the imposed parameter to the user's progression
 		// dispatch('experiment/setParameterValues', getters.imposedParameterValues, { root: true });
 		dispatch('experiment/setStartingPoint', getters.sessionCursor, { root: true });
-		dispatch('experiment/initExperiment', { root: true });
+		dispatch('experiment/initExperiment', null, { root: true });
 	},
 
 	clearSessionInformation({ commit }) {
