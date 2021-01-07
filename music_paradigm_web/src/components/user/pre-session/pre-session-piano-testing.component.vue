@@ -36,8 +36,8 @@ export default {
 	},
 	data() {
 		return {
-			PROBLEM_SIGNAL: 'Nothing happens when I press any key',
-			PROBLEM_CORRESPONDANCE: 'The keys displayed do not correspond',
+			PROBLEM_SIGNAL: 'Nothing happens when I press any key?',
+			PROBLEM_CORRESPONDANCE: 'The keys highlighted do not correspond to the key I press?',
 			SECONDS_TO_RECEIVE_SIGNAL: 10,
 			timeoutUniqueID: 0,
 			hasReceivedSignal: false,
