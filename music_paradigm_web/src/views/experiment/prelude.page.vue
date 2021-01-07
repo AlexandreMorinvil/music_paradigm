@@ -21,12 +21,15 @@ export default {
 	},
 	computed: {
 		...mapGetters('piano', ['isPianoInitialized']),
+		...mapGetters('keyboard', ['isKeyboardInitialized']),
 		textToDisplay() {
 			if (!this.isPianoInitialized) return 'Loading...';
 			else return 'Ready';
 		},
 		isReadyToStart() {
-			return this.isPianoInitialized;
+			if (this.controlType === 'keyboard') return this.isKeyboardInitialized;
+			if (this.controlType === 'piano') return this.isPianoInitialized;
+			else return false;
 		},
 	},
 	methods: {

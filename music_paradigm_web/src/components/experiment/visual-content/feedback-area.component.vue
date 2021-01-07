@@ -18,7 +18,7 @@ export default {
 		FeedbackGradeComponent,
 	},
 	computed: {
-		...mapGetters('piano', ['hasGrades', 'grades']),
+		...mapGetters('evaluation', ['hasGrades', 'grades']),
 	},
 };
 </script>

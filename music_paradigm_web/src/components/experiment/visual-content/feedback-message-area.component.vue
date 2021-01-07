@@ -11,7 +11,7 @@ import { mapGetters } from 'vuex';
 
 export default {
 	computed: {
-		...mapGetters('piano', ['hasGrades', 'grades']),
+		...mapGetters('evaluation', ['hasGrades', 'grades']),
 		...mapGetters('experiment', ['hasSuccessFeedbackMessage', 'successFeedbackMessage', 'hasFailureFeedbackMessage', 'failureFeedbackMessage']),
 		isSuccessful() {
 			if (this.grades.length <= 0) return false;

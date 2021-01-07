@@ -12,6 +12,7 @@
 import { mapActions, mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
+import { KeyboardEventBus, keyboardEvents } from '@/_services/keyboard-event-bus.service.js';
 import { PianoEventBus, pianoEvents } from '@/_services/piano-event-bus.service.js';
 import ExperimentContent from '@/components/content-frame/experiment-content-frame.component.vue';
 import StatusBarComponent from '@/components/experiment/status-bar/status-bar.component.vue';
@@ -38,9 +39,25 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('experiment', ['updateState', 'goNextStep', 'goStepPostSkip', 'clearState', 'endExperimentByTimeout', 'concludeExperiment']),
+		...mapActions('experiment', [
+			'controlType',
+			'updateState',
+			'goNextStep',
+			'goStepPostSkip',
+			'clearState',
+			'endExperimentByTimeout',
+			'concludeExperiment',
+		]),
 		...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
 		...mapActions('log', ['initializeLogSession']),
+		initializeControl() {
+			if (this.controlType === 'piano') PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);
+			if (this.controlType === 'keyboard') KeyboardEventBus.$emit(keyboardEvents.EVENT_TRACKER_INIT_REQUEST);
+		},
+		terminateControl() {
+			PianoEventBus.$emit(pianoEvents.EVENT_PIANO_TERMINATE_REQUEST);
+			KeyboardEventBus.$emit(keyboardEvents.EVENT_TRACKER_TERMINATE_REQUEST);
+		},
 		handleTimesUp() {
 			this.endExperimentByTimeout();
 		},
@@ -79,7 +96,7 @@ export default {
 		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_ENDED, this.endExperiment);
 		ExperimentEventBus.$on(experimentEvents.EVENT_TIMES_UP, this.handleTimesUp);
 
-		PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);
+		this.initializeControl();
 	},
 	beforeDestroy() {
 		window.removeEventListener('keydown', this.handleButtonPress);
@@ -90,7 +107,6 @@ export default {
 		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_ENDED, this.endExperiment);
 		ExperimentEventBus.$off(experimentEvents.EVENT_TIMES_UP, this.handleTimesUp);
 
-		PianoEventBus.$emit(pianoEvents.EVENT_PIANO_TERMINATE_REQUEST);
 		this.resetPianoState();
 		this.clearState();
 	},

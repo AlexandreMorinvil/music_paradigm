@@ -11,6 +11,7 @@ import { alert } from './alert.module';
 import { curriculums } from './curriculums.module';
 import { experiment } from './experiment.module';
 import { experiments } from './experiments.module';
+import { keyboard } from './keyboard.module';
 import { log } from './log.module';
 import { piano } from './piano.module';
 import { session } from './session.module';
@@ -29,6 +30,7 @@ export default new Vuex.Store({
 		curriculums,
 		experiment,
 		experiments,
+		keyboard,
 		log,
 		piano,
 		session,
