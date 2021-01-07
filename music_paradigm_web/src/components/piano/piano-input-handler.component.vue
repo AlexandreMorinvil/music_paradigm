@@ -31,6 +31,9 @@ export default {
 			'setInitializedState',
 			'setInitializingState',
 			'setPlayer',
+			'setPiano',
+			'clearPlayer',
+			'clearPiano',
 			'addPlayerEndOfFileAction',
 			'removePlayerEndOfFileAction',
 			'addPressedKey',
@@ -139,6 +142,7 @@ export default {
 			const soundfont = require('soundfont-player');
 			soundfont.instrument(this.audioConctext, this.timbreFile).then((piano) => {
 				this.piano = piano;
+				this.setPiano(piano);
 
 				// MIDI input (piano) events
 				window.navigator.requestMIDIAccess().then((midiAccess) => {
@@ -241,7 +245,9 @@ export default {
 				this.player.off('midiEvent', this.handleMidiMessage);
 				this.player.off('endOfFile', this.handleMidiFileEndOfFile);
 				this.player = null;
+				this.clearPlayer();
 			}
+			this.clearPiano();
 			while (this.midiInputs.length > 0) this.midiInputs.pop().onmidimessage = null;
 			this.midiAccess = null;
 			this.setInitializedState(false);

@@ -5,11 +5,10 @@
 		<piano-visual-display-component class="visual-piano" />
 		<p class="centered-text">{{ message }}</p>
 		<div class="button-layout">
-			<div />
-			<button v-on:click="advance" class="button" :class="buttonStyle">{{ buttonText }}</button>
-			<div>
-				<button v-on:click="indicateInputProblem" class="button button-small button-error">Nothing happens when I press any key</button>
-				<button v-on:click="indicateCorrespondanceProblem" class="button button-small button-error">The keys displayed do not correspond</button>
+			<button v-on:click="advance" class="button center-area" :class="buttonStyle">{{ buttonText }}</button>
+			<div class="center-content right-area">
+				<button v-on:click="indicateInputProblem" v-if="!hasReceivedSignal" class="button button-small button-error">{{ PROBLEM_SIGNAL }}</button>
+				<button v-on:click="indicateCorrespondanceProblem" v-else class="button button-small button-error">{{ PROBLEM_CORRESPONDANCE }}</button>
 			</div>
 		</div>
 	</div>
@@ -37,6 +36,8 @@ export default {
 	},
 	data() {
 		return {
+			PROBLEM_SIGNAL: 'Nothing happens when I press any key',
+			PROBLEM_CORRESPONDANCE: 'The keys displayed do not correspond',
 			SECONDS_TO_RECEIVE_SIGNAL: 10,
 			timeoutUniqueID: 0,
 			hasReceivedSignal: false,
@@ -114,11 +115,24 @@ export default {
 .button-layout {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-areas: 'left center right';
+}
+
+.center-area {
+	grid-area: center;
+}
+
+.right-area {
+	grid-area: right;
+}
+
+.center-content {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .button-error {
-	margin-left: 30px;
-	margin-right: 30px;
 	width: 60%;
 }
 

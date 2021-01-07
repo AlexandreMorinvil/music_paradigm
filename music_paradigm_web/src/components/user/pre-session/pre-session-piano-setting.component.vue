@@ -28,7 +28,7 @@ export default {
 	},
 	data() {
 		return {
-			SECONDS_TO_INITIALIZE_PIANO: 6,
+			SECONDS_TO_INITIALIZE_PIANO: 10,
 			timeoutUniqueID: 0,
 			hasProblem: false,
 		};

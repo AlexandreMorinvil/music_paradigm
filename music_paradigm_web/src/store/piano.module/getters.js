@@ -1,4 +1,9 @@
 export default {
+	// Piano
+	piano: (state) => {
+		return state.piano;
+	},
+
 	// Getter for the piano initialization status
 	isPianoInitialized: (state) => {
 		return state.isPianoInitialized;

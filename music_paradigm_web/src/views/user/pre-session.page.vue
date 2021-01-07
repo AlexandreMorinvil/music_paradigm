@@ -21,6 +21,7 @@ import { PianoEventBus, pianoEvents } from '@/_services/piano-event-bus.service.
 import PreSessionAdviceComponent from '@/components/user/pre-session/pre-session-advice.component.vue';
 import PreSessionMessageComponent from '@/components/user/pre-session/pre-session-message.component.vue';
 import PreSessionPianoSettingComponent from '@/components/user/pre-session/pre-session-piano-setting.component.vue';
+import PreSessionPianoSoundComponent from '@/components/user/pre-session/pre-session-sound.component.vue';
 import PreSessionPianoTestingComponent from '@/components/user/pre-session/pre-session-piano-testing.component.vue';
 import UserPageContentFrameComponent from '@/components/content-frame/user-page-content-frame.component.vue';
 
@@ -31,6 +32,7 @@ export default {
 		advice: PreSessionAdviceComponent,
 		'piano-plug': PreSessionPianoSettingComponent,
 		'piano-test': PreSessionPianoTestingComponent,
+		sound: PreSessionPianoSoundComponent,
 	},
 	data() {
 		return {
@@ -46,6 +48,7 @@ export default {
 			if (this.needsPianoSettingPreExperiment) {
 				stages.push('piano-plug');
 				stages.push('piano-test');
+				stages.push('sound');
 			}
 			return stages;
 		},
