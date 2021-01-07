@@ -24,8 +24,8 @@ import ProblemPianoInputComponent from '@/components/user/problem-prompt/problem
 
 export default {
 	components: {
-		ProblemPianoInputComponent,
 		PianoVisualDisplayComponent,
+		ProblemPianoInputComponent,
 		ProblemPianoCorrespondanceComponent,
 	},
 	props: {

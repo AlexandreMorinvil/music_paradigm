@@ -42,9 +42,13 @@ export default {
 				}, this.BEEP_PERIOD_MILLISECONDS);
 			this.isRepeaterTurnedOn = true;
 		},
+		stopNoteLoop() {
+			clearInterval(this.repeaterUniqueID);
+		},
 	},
 	beforeDestroy() {
-		clearInterval(this.repeaterUniqueID);
+		this.stopNoteLoop();
+		this.stopSound();
 	},
 };
 </script>
