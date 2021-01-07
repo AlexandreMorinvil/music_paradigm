@@ -35,8 +35,7 @@ export default {
 	},
 	methods: {
 		sendStartSignal() {
-			// This strategy of repeating the signal periodically is used in case the signal is
-			// sent too early and is not caught but the parent component at the first emition
+			// This strategy of repeating the signal periodically is used in case the signal is sent too early and is not caught but the parent component at the first emition
 			if (this.isIntervalStarted) return;
 			this.repeaterUniqieID = setInterval(function () {
 				ExperimentEventBus.$emit(experimentEvents.EVENT_EXPERIMENT_READY);

@@ -1,5 +1,4 @@
 export default {
-	// Getters for the evaluations
 	hasGrades: (state) => {
 		return Boolean(state.grades);
 	},

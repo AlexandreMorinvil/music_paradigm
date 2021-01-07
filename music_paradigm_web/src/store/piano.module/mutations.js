@@ -109,8 +109,7 @@ export default {
 		state.played.notes.velocity = [];
 
 		// Resetting the evaluation
-		// We do note reset the grades, in order to have them available to be displayed
-		// in a "Feedback" state at any point, until the next evaluation of performances
+		// We do note reset the grades, in order to have them available to be displayed in a "Feedback" state at any point, until the next evaluation of performances
 		state.played.evaluation.type = '';
 		state.played.evaluation.results = null;
 		state.played.evaluation.consideredStart = 0;

@@ -1,16 +1,14 @@
 /* eslint-disable max-len */
 <template>
 	<user-page-content-frame-component title="Before Starting">
-		<div class="pre-session-page-content pre-session-text">
-			<component
-				:is="stageComponent"
-				v-on:end-stage="moveNextStage"
-				v-on:back-stage="moveBackStage"
-				v-on:abort="abort"
-				:isLastStage="isLastStage"
-				class="fill"
-			/>
-		</div>
+		<component
+			:is="stageComponent"
+			v-on:end-stage="moveNextStage"
+			v-on:back-stage="moveBackStage"
+			v-on:abort="abort"
+			:isLastStage="isLastStage"
+			class="fill pre-session-text"
+		/>
 	</user-page-content-frame-component>
 </template>
 
@@ -81,15 +79,6 @@ export default {
 </script>
 
 <style scoped>
-.pre-session-page-content {
-	background-color: rgb(50, 50, 50);
-	border: 2px solid rgb(40, 40, 40);
-	box-shadow: 5px 10px 8px black;
-	padding: 20px;
-	height: 100%;
-	width: 100%;
-}
-
 .pre-session-text {
 	font-size: 1.2em;
 	text-align: center;

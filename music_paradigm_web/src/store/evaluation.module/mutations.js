@@ -2,7 +2,6 @@ import { keyboardPerformance, notePerformance } from '@/_helpers';
 import config from '@/config';
 
 export default {
-	// Mutations for note performance evaluation
 	evaluateSpeedType: (state, results) => {
 		state.grades = notePerformance.gradeSpeedType(results, {
 			minSequencePlayed: config.minSequencePlayed || 1,
@@ -22,7 +21,6 @@ export default {
 		});
 	},
 
-	// Mutations for note performance evaluation
 	evaluateKeyboardSpeedType: (state, results) => {
 		state.grades = keyboardPerformance.gradeSpeedType(results, {
 			minSequencePlayed: config.minSequencePlayed || 1,

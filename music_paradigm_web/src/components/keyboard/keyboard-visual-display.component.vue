@@ -64,74 +64,74 @@
 import { mapGetters } from 'vuex';
 
 export default {
-	components: {},
-	data() {
-		return {
-			highlightedDesignatedKeys: [],
-			NOTE_COUNT: 24,
-			OFFSET_STEP: 12,
-		};
-	},
-	computed: {
-		...mapGetters('experiment', ['interactivePiano', 'interactivePianoFirstOctave']),
-		...mapGetters('piano', ['pressedKeys', 'midiFileTriggeredKeys', 'midiFileNotesMidi']),
-		midiOffset() {
-			return this.interactivePianoFirstOctave * this.OFFSET_STEP;
-		},
-		firstNote() {
-			return this.midiOffset;
-		},
-		lastNote() {
-			return this.midiOffset + this.NOTE_COUNT;
-		},
-	},
-	methods: {
-		designateKeys(keys) {
-			if (Array.isArray(keys)) this.highlightedDesignatedKeys = keys;
-			else if (typeof keys == 'number') this.highlightedDesignatedKeys = [keys];
-		},
-		clearDesignatedKeys() {
-			this.highlightedDesignatedKeys = [];
-		},
-		hintAllNotes() {
-			const designatedKeys = [];
-			for (let index = 0; index < this.midiFileNotesMidi.length; index++) designatedKeys.push(this.midiFileNotesMidi[index]);
-			this.designateKeys(designatedKeys);
-		},
-		hintFirstNote() {
-			this.designateKeys(this.midiFileNotesMidi[0]);
-		},
-	},
-	beforeDestroy() {
-		this.clearDesignatedKeys();
-	},
-	watch: {
-		pressedKeys(list) {
-			for (let note = this.firstNote; note <= this.lastNote; note++) {
-				if (list.includes(note)) this.$refs[note.toString()].classList.add('user-triggered');
-				else this.$refs[note.toString()].classList.remove('user-triggered');
-			}
-		},
-		midiFileTriggeredKeys(list) {
-			for (let note = this.firstNote; note <= this.lastNote; note++) {
-				if (list.includes(note)) this.$refs[note.toString()].classList.add('midi-file-triggered');
-				else this.$refs[note.toString()].classList.remove('midi-file-triggered');
-			}
-		},
-		highlightedDesignatedKeys(list) {
-			for (let note = this.firstNote; note <= this.lastNote; note++) {
-				if (list.includes(note)) this.$refs[note.toString()].classList.add('designated');
-				else this.$refs[note.toString()].classList.remove('designated');
-			}
-		},
-		midiFileNotesMidi: {
-			immediate: true,
-			handler: function () {
-				this.clearDesignatedKeys();
-				if (this.interactivePiano === 'first') this.hintFirstNote();
-				if (this.interactivePiano === 'all') this.hintAllNotes();
-			},
-		},
+	// components: {},
+	// data() {
+	// 	return {
+	// 		highlightedDesignatedKeys: [],
+	// 		NOTE_COUNT: 24,
+	// 		OFFSET_STEP: 12,
+	// 	};
+	// },
+	// computed: {
+	// 	...mapGetters('experiment', ['interactivePiano', 'interactivePianoFirstOctave']),
+	// 	...mapGetters('piano', ['pressedKeys', 'midiFileTriggeredKeys', 'midiFileNotesMidi']),
+	// 	midiOffset() {
+	// 		return this.interactivePianoFirstOctave * this.OFFSET_STEP;
+	// 	},
+	// 	firstNote() {
+	// 		return this.midiOffset;
+	// 	},
+	// 	lastNote() {
+	// 		return this.midiOffset + this.NOTE_COUNT;
+	// 	},
+	// },
+	// methods: {
+	// 	designateKeys(keys) {
+	// 		if (Array.isArray(keys)) this.highlightedDesignatedKeys = keys;
+	// 		else if (typeof keys == 'number') this.highlightedDesignatedKeys = [keys];
+	// 	},
+	// 	clearDesignatedKeys() {
+	// 		this.highlightedDesignatedKeys = [];
+	// 	},
+	// 	hintAllNotes() {
+	// 		const designatedKeys = [];
+	// 		for (let index = 0; index < this.midiFileNotesMidi.length; index++) designatedKeys.push(this.midiFileNotesMidi[index]);
+	// 		this.designateKeys(designatedKeys);
+	// 	},
+	// 	hintFirstNote() {
+	// 		this.designateKeys(this.midiFileNotesMidi[0]);
+	// 	},
+	// },
+	// beforeDestroy() {
+	// 	this.clearDesignatedKeys();
+	// },
+	// watch: {
+	// 	pressedKeys(list) {
+	// 		for (let note = this.firstNote; note <= this.lastNote; note++) {
+	// 			if (list.includes(note)) this.$refs[note.toString()].classList.add('user-triggered');
+	// 			else this.$refs[note.toString()].classList.remove('user-triggered');
+	// 		}
+	// 	},
+	// 	midiFileTriggeredKeys(list) {
+	// 		for (let note = this.firstNote; note <= this.lastNote; note++) {
+	// 			if (list.includes(note)) this.$refs[note.toString()].classList.add('midi-file-triggered');
+	// 			else this.$refs[note.toString()].classList.remove('midi-file-triggered');
+	// 		}
+	// 	},
+	// 	highlightedDesignatedKeys(list) {
+	// 		for (let note = this.firstNote; note <= this.lastNote; note++) {
+	// 			if (list.includes(note)) this.$refs[note.toString()].classList.add('designated');
+	// 			else this.$refs[note.toString()].classList.remove('designated');
+	// 		}
+	// 	},
+	// 	midiFileNotesMidi: {
+	// 		immediate: true,
+	// 		handler: function () {
+	// 			this.clearDesignatedKeys();
+	// 			if (this.interactivePiano === 'first') this.hintFirstNote();
+	// 			if (this.interactivePiano === 'all') this.hintAllNotes();
+	// 		},
+	// 	},
 	},
 };
 </script>
