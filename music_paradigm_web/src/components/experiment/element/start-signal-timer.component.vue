@@ -16,7 +16,7 @@ export default {
 			isSignalBeingWaited: true,
 			soundCount: null,
 			soundStart: null,
-			VOLUME_LEVEL: 0.1,
+			VOLUME_LEVEL: 0.05,
 			counterUniqueIdentifier: 0,
 			timeStepInMilliseconds: 1000,
 			referenceTime: 0,
