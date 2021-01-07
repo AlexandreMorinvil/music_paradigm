@@ -36,7 +36,7 @@ export default {
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
-		...mapGetters('piano', ['hasSuccess']),
+		...mapGetters('evaluation', ['hasSuccess']),
 		...mapGetters('experiment', ['hasText', 'hasFootnote', 'textContent', 'playingMode']),
 	},
 	methods: {

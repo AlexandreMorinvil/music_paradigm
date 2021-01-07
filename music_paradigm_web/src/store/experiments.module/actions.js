@@ -61,7 +61,7 @@ export default {
 				commit('setSelectedExperiment', description);
 				dispatch('experiment/setExperiment', description, { root: true });
 				dispatch('experiment/setStartingPoint', null, { root: true });
-				dispatch('experiment/initExperiment', { root: true });
+				dispatch('experiment/initExperiment', null, { root: true });
 			},
 			(error) => {
 				dispatch('alert/setErrorAlert', `Failed to start the experiment: ${error.message}`, { root: true });

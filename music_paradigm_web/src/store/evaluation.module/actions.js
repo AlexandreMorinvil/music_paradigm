@@ -1,23 +1,15 @@
 export default {
 	// Performance evaluation
-	evaluateRhythmType: ({ commit, rootGetters }) => {
-		commit('evaluateRhythmType', {
-			results: rootGetters['piano/results'],
-		});
+	evaluateRhythmType: ({ commit }, results) => {
+		commit('evaluateRhythmType', results);
 	},
-	evaluateSpeedType: ({ commit, rootGetters }) => {
-		commit('evaluateSpeedType', {
-			results: rootGetters['piano/results'],
-		});
+	evaluateSpeedType: ({ commit }, results) => {
+		commit('evaluateSpeedType', results);
 	},
-	evaluateMelodyType: ({ commit, rootGetters }) => {
-		commit('evaluateMelodyType', {
-			results: rootGetters['piano/results'],
-		});
+	evaluateMelodyType: ({ commit }, results) => {
+		commit('evaluateMelodyType', results);
 	},
-	evaluateKeyboardSpeedType: ({ commit, rootGetters }) => {
-		commit('evaluateKeyboardSpeedType', {
-			results: rootGetters['keyboard/results'],
-		});
+	evaluateKeyboardSpeedType: ({ commit }, results) => {
+		commit('evaluateKeyboardSpeedType', results);
 	},
 };

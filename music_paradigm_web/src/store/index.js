@@ -9,6 +9,7 @@ import state from './state';
 import { account } from './account.module';
 import { alert } from './alert.module';
 import { curriculums } from './curriculums.module';
+import { evaluation } from './evaluation.module';
 import { experiment } from './experiment.module';
 import { experiments } from './experiments.module';
 import { keyboard } from './keyboard.module';
@@ -28,6 +29,7 @@ export default new Vuex.Store({
 		alert,
 		account,
 		curriculums,
+		evaluation,
 		experiment,
 		experiments,
 		keyboard,

@@ -20,6 +20,7 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters('experiment', ['controlType']),
 		...mapGetters('piano', ['isPianoInitialized']),
 		...mapGetters('keyboard', ['isKeyboardInitialized']),
 		textToDisplay() {
@@ -29,7 +30,7 @@ export default {
 		isReadyToStart() {
 			if (this.controlType === 'keyboard') return this.isKeyboardInitialized;
 			if (this.controlType === 'piano') return this.isPianoInitialized;
-			else return false;
+			else return true;
 		},
 	},
 	methods: {

@@ -30,7 +30,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['midiName']),
+		...mapGetters('experiment', ['midiName', 'controlType']),
 		currentStateIcon() {
 			return this.getIconReference(this.currentStateType);
 		},
@@ -39,15 +39,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('experiment', [
-			'controlType',
-			'updateState',
-			'goNextStep',
-			'goStepPostSkip',
-			'clearState',
-			'endExperimentByTimeout',
-			'concludeExperiment',
-		]),
+		...mapActions('experiment', ['updateState', 'goNextStep', 'goStepPostSkip', 'clearState', 'endExperimentByTimeout', 'concludeExperiment']),
 		...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
 		...mapActions('log', ['initializeLogSession']),
 		initializeControl() {
