@@ -17,10 +17,10 @@ export default {
 	computed: {
 		solutions() {
 			return [
-				'Verify that the volume (if too low, it might not be audible).',
+				'Verify the volume (it might be too low).',
 				'Verify that the volume of your device is not on mute.',
-				'Close this window and restry on a now page.',
-				'Turn off the computer and retry.',
+				'Close this window and retry on a now page.',
+				'Restart the device and try again.',
 			];
 		},
 		conclusion() {

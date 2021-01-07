@@ -1,7 +1,7 @@
 <template>
 	<div class="pre-session-grid">
 		<piano-sound-maker-component style="display: none" ref="piano" />
-		<problem-sound-component v-if="hasProblem"  v-on:ok="clearProblem" />
+		<problem-sound-component v-if="hasProblem" v-on:ok="clearProblem" />
 		<p class="centered-text">{{ message }}</p>
 		<div class="button-layout">
 			<button v-on:click="end" class="button center-area" :class="isLastStage ? 'button-start' : 'button-next'">{{ buttonText }}</button>
