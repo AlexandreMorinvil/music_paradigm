@@ -12,8 +12,7 @@ import { mapGetters } from 'vuex';
 
 export default {
 	props: {
-		// If true, will indicate the current state,
-		// otherwise, will indicate the next state
+		// If true, will indicate the current state, otherwise, will indicate the next state
 		isCurrentStateRequested: {
 			type: Boolean,
 			default() {

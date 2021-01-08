@@ -42,7 +42,7 @@ export default {
 }
 
 .active {
-	color: rgb(230, 230, 230);
+	color: white;
 	background-color: rgb(0, 200, 50);
 	border-color: rgb(10, 190, 40);
 }
