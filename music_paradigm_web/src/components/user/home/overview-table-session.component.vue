@@ -48,11 +48,9 @@ export default {
 		},
 		delay() {
 			if (this.session.delayPreAvailabilityInDays > 0) return `In ${this.session.delayPreAvailabilityInDays} day(s)`;
-			else if (this.session.delayPreAvailabilityInHours !== '00:00') {
-				if (this.session.isDelayedByPreviousUniqueInDay) return 'Tomorrow';
-				else return `In ${this.session.delayPreAvailabilityInHours} hours`;
-			}
-			return 'Soon'; // THis shsould never happen
+			else if (this.session.delayPreAvailabilityInHours !== '00:00') return `In ${this.session.delayPreAvailabilityInHours} hours`;
+			else if (this.session.isDelayedByPreviousUniqueInDay) return 'Tomorrow';
+			else return 'Soon'; // THis shsould never happen
 		},
 		hasCaption() {
 			return Boolean(this.caption);
