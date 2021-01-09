@@ -12,16 +12,16 @@
 			<slot> Page to be implemented </slot>
 		</main>
 
-		<application-footer> </application-footer>
+		<application-footer-component />
 	</div>
 </template>
 
 <script>
-import ApplicationFooter from '@/components/application-component/footer.component.vue';
+import ApplicationFooterComponent from '@/components/application-component/application-footer.component.vue';
 
 export default {
 	components: {
-		ApplicationFooter: ApplicationFooter,
+		ApplicationFooterComponent,
 	},
 	props: {
 		title: {
