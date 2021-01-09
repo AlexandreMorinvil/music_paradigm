@@ -48,7 +48,7 @@ export default {
 }
 
 .innactive {
-	color: black;
+	color: rgb(85, 85, 85);
 	background-color: rgb(150, 150, 150);
 	border-color: rgb(145, 145, 145);
 	cursor: default;
