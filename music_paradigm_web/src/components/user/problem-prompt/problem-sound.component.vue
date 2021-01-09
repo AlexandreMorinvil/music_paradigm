@@ -17,8 +17,8 @@ export default {
 	computed: {
 		solutions() {
 			return [
-				'Verify the volume (it might be too low).',
-				'Verify that the volume of your device is not on mute.',
+				'Verify the volume (it might be too low or muted).',
+				'Refresh the page and try again.',
 				'Close this window and retry on a now page.',
 				'Restart the device and try again.',
 			];

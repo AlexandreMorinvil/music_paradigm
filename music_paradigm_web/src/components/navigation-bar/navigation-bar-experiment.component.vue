@@ -1,11 +1,9 @@
 <template>
 	<div id="navigation-bar">
-		<div id="wrapper-left" class="navigation-bar-wrapper"></div>
+		<div class="navigation-bar-wrapper navigation-bar-center">Session in progress</div>
 
-		<div id="wrapper-center" class="navigation-bar-wrapper">Experiment in progress</div>
-
-		<div id="wrapper-right" class="navigation-bar-wrapper">
-			<div id="button-leave" class="app-navigation-bar-button" v-on:click="gotToHomePage">Leave</div>
+		<div class="navigation-bar-wrapper navigation-bar-right">
+			<button id="button-leave" class="app-navigation-bar-button" v-on:click="gotToHomePage">Leave</button>
 		</div>
 	</div>
 </template>

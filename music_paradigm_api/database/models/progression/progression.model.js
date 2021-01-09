@@ -31,6 +31,30 @@ schema.methods.getSessionInformation = async function (associativeId) {
     return sessionInformation;
 };
 
+schema.methods.concludeExperiment = async function (associativeId) {
+    const curriculum = await Curriculum.findById(this.curriculumReference);
+    const curriculumNestedExperiment = await curriculum.getExperimentAssociated(associativeId);
+
+    const nestedExperimentArray = this.experiments.filter(experiment => { return experiment.associativeId === associativeId; });
+    let experimentInProgression = nestedExperimentArray[0];
+    if (!experimentInProgression) {
+        experimentInProgression = {
+            associativeId: associativeId,
+            completionCount: 1,
+            experimentReference: curriculumNestedExperiment.experimentReference
+        }
+        this.experiments.push(experimentInProgression);
+    }
+    else {
+        experimentInProgression.completionCount += 1;
+        if (experimentInProgression.cursor) delete experimentInProgression.cursor;
+        if (experimentInProgression.state) delete experimentInProgression.state;
+    }
+    this.lastProgressionDate = Date.now();
+    this.save();
+    return;
+};
+
 // Creating the model
 const model = mongoose.model('Progression', schema);
 

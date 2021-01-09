@@ -84,8 +84,6 @@ async function generateProgressionSummary(userId) {
         // Update the blocking elements that propagate in the later elements
         hasBlockingIncompleteInSequence = updateHasBlockingIncompleteInSequence(
             hasBlockingIncompleteInSequence,
-            curriculum.isSequential,
-            elements.wouldBeFree,
             progressionExperiment.completionCount
         );
 
@@ -93,7 +91,7 @@ async function generateProgressionSummary(userId) {
             hasBlockingUniqueInDayDoneToday,
             curriculumExperiment.isUniqueIndDay,
             elements.wouldBeFree,
-            progressionExperiment.lastProgressionDate
+            wasTodayCompleted
         );
     }
     return { history: progressionSummary, dueExperimentAssociativeId: dueExperimentAssociativeId };
@@ -135,10 +133,9 @@ function getIsAvailableStatus(wouldBeFree, hasBlockingIncompleteInSequence, hasB
     return wouldBeFree && !hasBlockingIncompleteInSequence && !hasBlockingUniqueInDayDoneToday;
 }
 
-function updateHasBlockingIncompleteInSequence(hasBlockingInSequence, isCurriculumSequential, isCurrentFree, completionCount = 0) {
+function updateHasBlockingIncompleteInSequence(hasBlockingInSequence, completionCount = 0) {
     if (hasBlockingInSequence) return true;
-    else if (isCurriculumSequential && !isCurrentFree) return true;
-    else if (isCurriculumSequential && completionCount < 1) return true;
+    else if (completionCount < 1) return true;
     else return false;
 }
 

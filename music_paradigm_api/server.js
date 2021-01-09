@@ -25,6 +25,7 @@ app.use(jwt());
 
 
 // api routes
+app.use('/sessions', require('sessions/sessions.controller'));
 app.use('/admin-sessions', require('admin-sessions/admin-sessions.controller'));
 app.use('/account', require('account/account.controller'));
 app.use('/experiments', require('experiments/experiments.controller'));
