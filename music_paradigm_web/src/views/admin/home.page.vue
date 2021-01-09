@@ -1,6 +1,6 @@
 <template>
 	<admin-page-content-frame title="Home">
-		<widget-content-frame title="Not Implemented Yet">
+		<widget-content-frame title="Main information">
 			<div class="widget widget-bg">
 				Admin Home page
 				<br /><br />
