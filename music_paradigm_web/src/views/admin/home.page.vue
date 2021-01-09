@@ -1,7 +1,11 @@
 <template>
 	<admin-page-content-frame title="Home">
-		<widget-content-frame title="Not Implemented Yet">
-			<div class="widget widget-bg">*Update 04-01-2021*</div>
+		<widget-content-frame title="Main information">
+			<div class="widget widget-bg">
+				Admin Home page
+				<br /><br />
+				*Update 09-01-2021*
+			</div>
 		</widget-content-frame>
 	</admin-page-content-frame>
 </template>
