@@ -26,4 +26,8 @@ export default {
 	progressionSummary: (state) => {
 		return state.progressionSummary;
 	},
+
+	hasDueExperiment: (state) => {
+		return Boolean(state.dueExperimentAssociativeId);
+	},
 };

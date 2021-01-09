@@ -1,4 +1,9 @@
 export default {
+	// Piano
+	piano: (state) => {
+		return state.piano;
+	},
+
 	// Getter for the piano initialization status
 	isPianoInitialized: (state) => {
 		return state.isPianoInitialized;
@@ -38,21 +43,8 @@ export default {
 		return state.played.notes.midi;
 	},
 
-	// Getters for the evaluations
-	hasGrades: (state) => {
-		return Boolean(state.played.evaluation.grades);
-	},
-
-	grades: (state) => {
-		return state.played.evaluation.grades;
-	},
-
-	hasSuccess: (state) => {
-		if (state.played.evaluation.grades.length <= 0) return false;
-		for (const grade of state.played.evaluation.grades) {
-			if (grade.mark < grade.passMark) return false;
-		}
-		return true;
+	results: (state) => {
+		return state.played.evaluation.results;
 	},
 
 	pianoSimpleLogSummary: (state) => {

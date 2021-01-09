@@ -92,14 +92,9 @@ const router = new Router({
 					component: () => import(/* webpackChunkName: "user" */ './views/user/home.page.vue'),
 				},
 				{
-					path: 'experiments',
-					name: 'user.experiment',
-					component: () => import(/* WebpackChunkName: "user" */ './views/user/experiments.page.vue'),
-				},
-				{
-					path: 'account',
-					name: 'user.account',
-					component: () => import(/* WebpackChunkName: "user" */ './views/user/account.page.vue'),
+					path: 'pre-session',
+					name: 'user.pre-session',
+					component: () => import(/* WebpackChunkName: "user" */ './views/user/pre-session.page.vue'),
 				},
 				{
 					path: '',

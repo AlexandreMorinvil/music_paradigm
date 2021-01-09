@@ -28,6 +28,10 @@ export default {
 	setPlayer: ({ commit }, player) => {
 		commit('setPlayer', player);
 	},
+	clearPlayer: ({ commit }) => {
+		commit('clearPlayer');
+	},
+
 	playMidiFile: ({ commit }) => {
 		commit('playMidiFile');
 	},
@@ -36,6 +40,14 @@ export default {
 	},
 	removePlayerEndOfFileAction: ({ commit }, functionToRemove) => {
 		commit('removePlayerEndOfFileAction', functionToRemove);
+	},
+
+	// Piano instance
+	setPiano: ({ commit }, piano) => {
+		commit('setPiano', piano);
+	},
+	clearPiano: ({ commit }) => {
+		commit('clearPiano');
 	},
 
 	// Key interaction actions
@@ -87,13 +99,16 @@ export default {
 	},
 
 	// Performance evaluation
-	evaluateRhythmType: ({ commit }) => {
+	evaluateRhythmType: ({ commit, dispatch, getters }) => {
 		commit('evaluateRhythmType');
+		dispatch('evaluation/evaluateRhythmType', getters.results, { root: true });
 	},
-	evaluateSpeedType: ({ commit }) => {
+	evaluateSpeedType: ({ commit, dispatch, getters }) => {
 		commit('evaluateSpeedType');
+		dispatch('evaluation/evaluateSpeedType', getters.results, { root: true });
 	},
-	evaluateMelodyType: ({ commit }, melodyRepetion) => {
+	evaluateMelodyType: ({ commit, dispatch, getters }, melodyRepetion) => {
 		commit('evaluateMelodyType', melodyRepetion);
+		dispatch('evaluation/evaluateMelodyType', getters.results, { root: true });
 	},
 };

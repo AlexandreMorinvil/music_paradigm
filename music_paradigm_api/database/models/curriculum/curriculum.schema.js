@@ -9,7 +9,7 @@ const titleMaxLengthMessage = "The title of the curriculum must contain a maximu
 const experimentReleaseTimeMinMessage = "The time entered was evaluated to a negative value which could not be processed";
 const experimentReleaseTimeMaxMessage = "The time entered was evaluated to a value higher than 24h00 (1440 minutes) which could not be processed";
 
-const textMaxLengthMessage = "The text of the experiments must contain a maximum of 500 characters";
+const textMaxLengthMessage = "The text of the experiments must contain a maximum of 2000 characters";
 
 const experimentsValidatorMessage = "At least one experiment must be specified in a curriculum and all experiments must have a unique associative ID";
 const experimentAssociativeIdRequiredMessage = "An associative ID must be specified for each experiment";
@@ -100,7 +100,7 @@ const schema = new Schema(
                         default: "",
                         sparse: true,
                         trim: true,
-                        maxlength: [500, textMaxLengthMessage],
+                        maxlength: [2000, textMaxLengthMessage],
                     },
 
                     // Reference to the experiment

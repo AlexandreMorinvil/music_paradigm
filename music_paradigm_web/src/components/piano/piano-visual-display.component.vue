@@ -1,6 +1,6 @@
 <template>
 	<!-- The HTML definition of this piano adapted from the open source project : https://codepen.io/zastrow/pen/oDBki -->
-	<div id="visual-piano">
+	<div id="visual-piano" class="visual-piano">
 		<ul class="set">
 			<li id="note-48" :ref="'' + (0 + midiOffset)" class="white c"></li>
 			<li id="note-49" :ref="'' + (1 + midiOffset)" class="black cs"></li>
@@ -110,7 +110,7 @@ export default {
 <style scoped>
 /* The CSS definition of this piano adapted from the open
 source project : https://codepen.io/zastrow/pen/oDBki */
-#visual-piano {
+.visual-piano {
 	display: flex;
 	justify-content: center;
 	align-items: flex-start;

@@ -33,7 +33,7 @@ export default {
 			.then(
 				(progressionSummary) => {
 					commit('setProgressionSummary', progressionSummary.history);
-					commit('setDueExperiment', progressionSummary.dueExperiment);
+					commit('setDueExperiment', progressionSummary.dueExperimentAssociativeId);
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });

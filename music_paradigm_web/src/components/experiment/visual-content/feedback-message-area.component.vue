@@ -11,14 +11,10 @@ import { mapGetters } from 'vuex';
 
 export default {
 	computed: {
-		...mapGetters('piano', ['hasGrades', 'grades']),
+		...mapGetters('evaluation', ['hasGrades', 'hasSuccess']),
 		...mapGetters('experiment', ['hasSuccessFeedbackMessage', 'successFeedbackMessage', 'hasFailureFeedbackMessage', 'failureFeedbackMessage']),
 		isSuccessful() {
-			if (this.grades.length <= 0) return false;
-			for (const grade of this.grades) {
-				if (grade.mark < grade.passMark) return false;
-			}
-			return true;
+			return this.hasSuccess;
 		},
 		canDisplaySuccessFeedbackMessage() {
 			return this.hasGrades && this.hasSuccessFeedbackMessage && this.isSuccessful;

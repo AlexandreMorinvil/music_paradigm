@@ -1,9 +1,10 @@
 /* Template specifications for the different types of navigation bars */
 
 #app-navigation-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 56px;
+  grid-template-areas: 'left-navigation-bar center-navigation-bar right-navigation-bar';
   height: 100%;
   width: 100%;
   font-size: 20px;
@@ -16,19 +17,21 @@
   align-items: center;
   text-align: center;
   height: 100%;
-  width: 33%;
   font-size: inherit;
 }
 
-#wrapper-left {
+.navigation-bar-left {
+  grid-area: left-navigation-bar;
   justify-content: flex-start;
 }
 
-#wrapper-center {
+.navigation-bar-center {
+  grid-area: center-navigation-bar;
   justify-content: center;
 }
 
-#wrapper-right {
+.navigation-bar-right {
+  grid-area: right-navigation-bar;
   justify-content: flex-end;
 }
 
@@ -47,6 +50,7 @@
   font-size: inherit;
   cursor: pointer;
   overflow: hidden;
+  outline: none;
 }
 
 .app-navigation-bar-button:hover {

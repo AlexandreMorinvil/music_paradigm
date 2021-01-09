@@ -26,10 +26,6 @@
 						<div>
 							<label for="password">Password</label>
 							<input type="password" v-model="password" name="password" placeholder="Enter Password" />
-							<p class="form-note-text">
-								Forgot
-								<a class="form-note-text" href="#">password? (not implemented yet)</a>
-							</p>
 						</div>
 						<div>
 							<button class="login-button">Login</button>
@@ -197,5 +193,10 @@ export default {
 
 h1 {
 	font-size: 1.5em;
+}
+
+input {
+	background-color: white;
+	border: 1px grey solid;
 }
 </style>

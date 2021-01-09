@@ -1,14 +1,14 @@
 ﻿const db = require('database/db');
 const jwt = require('jwt/jwt');
 const progressionService = require('account/progression-summary.service');
-const Experiment = db.Experiment;
-const Curriculum = db.Curriculum;
+const Progression = db.Progression;
 const User = db.User;
 
 module.exports = {
     authenticate,
     getProgressionSummary,
     getTodayExperiment,
+    getSpecificExperiment,
     // getListAllHeaders,
     // getById,
     // update,
@@ -44,11 +44,36 @@ async function getProgressionSummary(userId) {
 async function getTodayExperiment(userId) {
     try {
         const progressionSummary = await progressionService.generateProgressionSummary(userId);
-        return progressionSummary
+        const dueExperimentAssociativeId = progressionSummary.dueExperimentAssociativeId;
+
+        if (!dueExperimentAssociativeId) throw new Error('There is no due experiment');
+        const progression = await User.getLastProgression(userId);
+        const sessionInformation = await progression.getSessionInformation(dueExperimentAssociativeId);
+
+        return sessionInformation
     } catch (err) {
         throw err;
     }
 }
+
+async function getSpecificExperiment(userId, associativeId) {
+    try {
+        const progressionSummary = await progressionService.generateProgressionSummary(userId);
+        const history = progressionSummary.history;
+        const isExperimentAvailable = history.some(value => {
+            return (value.associativeId === associativeId) && (value.isAvailable)
+        });
+        
+        if(!isExperimentAvailable) throw new Error('There experiment requested is not available');
+        const progression = await User.getLastProgression(userId);
+        const sessionInformation = await progression.getSessionInformation(associativeId);
+
+        return sessionInformation
+    } catch (err) {
+        throw err;
+    }
+}
+
 
 // async function getListAllHeaders() {
 //     try {
@@ -100,7 +125,7 @@ async function getTodayExperiment(userId) {
 //     try {
 //         const curriculum = await Curriculum.findById(id);
 //         if (!curriculum) throw new Error('Curriculum to delete not found');
-        
+
 //         return await curriculum.remove();
 //     } catch (err) {
 //         throw err;

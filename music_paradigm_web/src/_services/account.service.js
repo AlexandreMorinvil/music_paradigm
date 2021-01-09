@@ -6,6 +6,8 @@ export const accountService = {
 	login,
 	logout,
 	fetchProgressionSummary,
+	fetchDueExperimentSession,
+	fetchSpecificExperimentSession,
 };
 
 function resumeLogin() {
@@ -47,7 +49,23 @@ function fetchProgressionSummary() {
 		method: 'GET',
 		headers: authHeader(),
 	};
-	return fetch(url.account('progressionSummary'), requestOptions).then(handleResponse);
+	return fetch(url.account('progression-summary'), requestOptions).then(handleResponse);
+}
+
+function fetchDueExperimentSession() {
+	const requestOptions = {
+		method: 'GET',
+		headers: authHeader(),
+	};
+	return fetch(url.account('due-experiment'), requestOptions).then(handleResponse);
+}
+
+function fetchSpecificExperimentSession(associativeId) {
+	const requestOptions = {
+		method: 'GET',
+		headers: authHeader(),
+	};
+	return fetch(url.account('specific-experiment' + '/' + associativeId), requestOptions).then(handleResponse);
 }
 
 function handleResponse(reponse) {

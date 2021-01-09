@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-schema = require('./curriculum.schema');
+const schema = require('./curriculum.schema');
 
 schema.set('toJSON', { virtuals: true });
 
@@ -18,6 +18,12 @@ schema.statics.getListAllHeaders = async function () {
 };
 
 // Instance methods
+schema.methods.getExperimentAssociated = async function (associativeId) {
+    const experimentArrayCurriculum = this.experiments.filter(experiment => { return experiment.associativeId === associativeId; });
+    const experimentInCurriculum = experimentArrayCurriculum[0];
+    return experimentInCurriculum;
+};
+
 schema.methods.update = async function (updatedCurriculum) {
     if (updatedCurriculum.hasOwnProperty('title')) this.title = updatedCurriculum.title;
     if (updatedCurriculum.hasOwnProperty('isSequential')) this.isSequential = updatedCurriculum.isSequential;

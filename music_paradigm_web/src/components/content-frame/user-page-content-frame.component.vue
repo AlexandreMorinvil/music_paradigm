@@ -3,11 +3,12 @@
 		<header class="area-title">
 			<h1>{{ title }}</h1>
 		</header>
-
 		<div class="area-separation"></div>
 
 		<main class="area-user-main widget widget-bg">
-			<slot> Page to be implemented </slot>
+			<div class="page-content">
+				<slot> Page to be implemented </slot>
+			</div>
 		</main>
 	</div>
 </template>
@@ -66,5 +67,14 @@ export default {
 .area-user-main {
 	grid-area: main;
 	display: block;
+}
+
+.page-content {
+	background-color: rgb(50, 50, 50);
+	border: 2px solid rgb(40, 40, 40);
+	box-shadow: 5px 10px 8px black;
+	padding: 20px;
+	height: 100%;
+	width: 100%;
 }
 </style>

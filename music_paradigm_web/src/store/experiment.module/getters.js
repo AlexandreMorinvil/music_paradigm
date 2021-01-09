@@ -184,12 +184,10 @@ export default {
 	},
 
 	interactivePianoFirstOctave: (state) => {
-		let interactivePianoFirstOctave = constants.DEFAULT_ENABLE_SOUND_FLAG;
-
+		let interactivePianoFirstOctave = constants.DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE;
 		if (typeof state.state.settings.interactivePianoFirstOctave === 'number')
 			interactivePianoFirstOctave = state.state.settings.interactivePianoFirstOctave;
 		else if (typeof state.settings.interactivePianoFirstOctave === 'number') interactivePianoFirstOctave = state.settings.interactivePianoFirstOctave;
-
 		return interactivePianoFirstOctave;
 	},
 
@@ -232,19 +230,15 @@ export default {
 
 	hideFeedbackSmiley: (state) => {
 		let hideFeedbackSmiley = constants.DEFAULT_HIDE_FEEDBACK_SMILEY;
-
 		if (typeof state.state.settings.hideFeedbackSmiley === 'boolean') hideFeedbackSmiley = state.state.settings.hideFeedbackSmiley;
 		else if (typeof state.settings.hideFeedbackSmiley === 'boolean') hideFeedbackSmiley = state.settings.hideFeedbackSmiley;
-
 		return hideFeedbackSmiley;
 	},
 
 	footnoteType: (state) => {
 		let footnoteType = constants.DEFAULT_FOOTNOTE_TYPE;
-
 		if (typeof state.state.settings.footnoteType === 'string') footnoteType = state.state.settings.footnoteType;
 		else if (typeof state.settings.footnoteType === 'string') footnoteType = state.settings.footnoteType;
-
 		return footnoteType;
 	},
 
@@ -253,13 +247,15 @@ export default {
 		return state.settings.programmedOctaveOffset * NOTES_PER_OCTAVE;
 	},
 
+	controlType: (state) => {
+		return state.settings.controlType || constants.DEFAULT_CONTROL_TYPE;
+	},
+
 	// Getters used for the content disposition on the screen
 	hasFootnote: (state) => {
 		let hasFootNote = constants.DEFAULT_FOOTNOTE;
-
 		if (typeof state.state.settings.footnote === 'boolean') hasFootNote = state.state.settings.footnote;
 		else if (typeof state.settings.footnote === 'boolean') hasFootNote = state.settings.footnote;
-
 		return hasFootNote;
 	},
 

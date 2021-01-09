@@ -1,6 +1,5 @@
 import { midiConversion, notePerformance } from '@/_helpers';
 import { Midi } from '@tonejs/midi';
-import config from '@/config';
 import constants from './constants';
 import functions from './functions';
 
@@ -32,6 +31,10 @@ export default {
 	setPlayer: (state, player) => {
 		state.player = player;
 	},
+	clearPlayer: (state) => {
+		state.player = null;
+	},
+
 	playMidiFile: (state) => {
 		state.player.play();
 	},
@@ -42,14 +45,19 @@ export default {
 		state.player.off('endOfFile', functionToRemove);
 	},
 
+	// Mutations on piano
+	setPiano: (state, piano) => {
+		state.piano = piano;
+	},
+	clearPiano: (state) => {
+		state.piano = null;
+	},
+
 	// Mutations on key interations arrays
 	addPressedKey: (state, key) => {
-		// This approach is used to add the pressed keys  in an array to ensure that
-		// only one insance of a given key is recorded at a time and to ensure that
-		// the mutations on pressedKeys or midiFileTriggeredKeys can be reactive with
-		// the vue instances. Doing a direct assignation as pressedKey[key] = true
-		// is would be a direct assignation in an Array/Object and would not allow
-		// the watch properties of Vue to detect the change of state.
+		// This approach is used to add the pressed keys  in an array to ensure that only one insance of a given key is recorded at a time and to ensure that
+		// the mutations on pressedKeys or midiFileTriggeredKeys can be reactive with the vue instances. Doing a direct assignation as pressedKey[key] = true
+		// is would be a direct assignation in an Array/Object and would not allow the watch properties of Vue to detect the change of state.
 		const selectedIndex = state.pressedKeys.indexOf(key);
 		if (selectedIndex === -1) state.pressedKeys.push(key);
 	},
@@ -101,8 +109,7 @@ export default {
 		state.played.notes.velocity = [];
 
 		// Resetting the evaluation
-		// We do note reset the grades, in order to have them available to be displayed
-		// in a "Feedback" state at any point, until the next evaluation of performances
+		// We do note reset the grades, in order to have them available to be displayed in a "Feedback" state at any point, until the next evaluation of performances
 		state.played.evaluation.type = '';
 		state.played.evaluation.results = null;
 		state.played.evaluation.consideredStart = 0;
@@ -140,39 +147,17 @@ export default {
 	// Mutations for note performance evaluation
 	evaluateSpeedType: (state) => {
 		const consideredPlayedNotes = functions.selectConsideredNotes(state.played.notes, state.played.evaluation.consideredStart);
-
-		// Evaluate the performance according to get specific metrics
 		Object.assign(state.played.evaluation, notePerformance.evaluateSpeedType(state.midiFile.notes, consideredPlayedNotes));
-
-		// Grade the performance according to obtained metrics to provide feedback
-		state.played.evaluation.grades = notePerformance.gradeSpeedType(state.played.evaluation.results, {
-			minSequencePlayed: config.minSequencePlayed || 1,
-		});
 	},
 
 	evaluateRhythmType: (state) => {
 		const consideredPlayedNotes = functions.selectConsideredNotes(state.played.notes, state.played.evaluation.consideredStart);
-
-		// Evaluate the performance according to get specific metrics
 		Object.assign(state.played.evaluation, notePerformance.evaluateRhythmType(state.midiFile.notes, consideredPlayedNotes));
-
-		// Grade the performance according to obtained metrics to provide feedback
-		state.played.evaluation.grades = notePerformance.gradeRhythmType(state.played.evaluation.results, {
-			minNoteAccuracy: config.minNoteAccuracy || 100,
-			maxRhythmError: config.maxRhythmError || 15,
-		});
 	},
 
 	evaluateMelodyType: (state, melodyRepetion) => {
 		const consideredPlayedNotes = functions.selectConsideredNotes(state.played.notes, state.played.evaluation.consideredStart);
 		const reference = functions.multiplyMidiFileNotes(state, melodyRepetion);
-
-		// Evaluate the performance according to get specific metrics
 		Object.assign(state.played.evaluation, notePerformance.evaluateMelodyType(reference, consideredPlayedNotes));
-
-		// Grade the performance according to obtained metrics to provide feedback
-		state.played.evaluation.grades = notePerformance.gradeMelodyType(state.played.evaluation.results, {
-			minNoteAccuracy: config.minNoteAccuracy || 100,
-		});
 	},
 };

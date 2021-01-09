@@ -9,7 +9,7 @@ module.exports = {
 };
 
 async function updateProgression(userId) {
-    const { curriculum, progression } = await User.getProgressionData(userId);
+    const { curriculum, progression } = await User.getCurriculumAndProgressionData(userId);
 
     // Do not generate a progression if no curriculum is associated to the user
     if (!curriculum) return;
@@ -24,7 +24,7 @@ async function updateProgression(userId) {
 }
 
 async function generateProgressionSummary(userId) {
-    const { curriculum, progression } = await User.getProgressionData(userId);
+    const { curriculum, progression } = await User.getCurriculumAndProgressionData(userId);
 
     // Generate progression to curriculum association
     // This conversion table is particularily useful to handle the situations where the curriculum would be modified 
@@ -44,7 +44,7 @@ async function generateProgressionSummary(userId) {
     }
 
     // Generate the progression summary
-    let dueExperiment = null;
+    let dueExperimentAssociativeId = null;
     const wasTodayCompleted = timeHandler.isToday(progression.lastProgressionDate);
     const timeElapsedInDays = (progression.isSequential) ? timeHandler.calculateDaysElapsed(progression.lastProgressionDate) : timeHandler.calculateDaysElapsed(progression.startTime);
     let hasBlockingIncompleteInSequence = false;
@@ -60,11 +60,12 @@ async function generateProgressionSummary(userId) {
         const elements = {};
         elements.associativeId = curriculumExperiment.associativeId;
         elements.title = curriculumExperiment.title;
+        elements.text = curriculumExperiment.text;
         elements.releaseTime = curriculumExperiment.releaseTime;
         elements.isUniqueIndDay = curriculumExperiment.isUniqueIndDay;
         elements.isCompletionLimited = curriculumExperiment.isCompletionLimited;
 
-        elements.completionCount = progressionExperiment.completionCount;
+        elements.completionCount = progressionExperiment.completionCount || 0;
 
         elements.delayPreAvailabilityInDays = getDelayInDaysLeft(curriculumExperiment.delayInDays, timeElapsedInDays);
         elements.delayPreAvailabilityInHours = getDelayInHoursLeft(elements.delayPreAvailabilityInDays, curriculumExperiment.releaseTime);
@@ -78,24 +79,22 @@ async function generateProgressionSummary(userId) {
         progressionSummary.push(elements);
 
         // Update the experiment due today
-        if (!wasTodayCompleted && elements.isAvailable && !dueExperiment) dueExperiment = curriculumExperiment.associativeId;
+        if (elements.isAvailable && !Boolean(elements.completionCount) && !Boolean(dueExperimentAssociativeId)) dueExperimentAssociativeId = curriculumExperiment.associativeId;
 
         // Update the blocking elements that propagate in the later elements
         hasBlockingIncompleteInSequence = updateHasBlockingIncompleteInSequence(
             hasBlockingIncompleteInSequence,
-            curriculum.isSequential,
-            elements.wouldBeFree,
             progressionExperiment.completionCount
         );
-        
+
         hasBlockingUniqueInDayDoneToday = updateHasBlockingUniqueInDayDoneToday(
             hasBlockingUniqueInDayDoneToday,
             curriculumExperiment.isUniqueIndDay,
             elements.wouldBeFree,
-            curriculum.lastProgressionDate
+            wasTodayCompleted
         );
     }
-    return { history: progressionSummary, dueExperiment: dueExperiment };
+    return { history: progressionSummary, dueExperimentAssociativeId: dueExperimentAssociativeId };
 }
 
 async function generateProgression(userId) {
@@ -134,10 +133,9 @@ function getIsAvailableStatus(wouldBeFree, hasBlockingIncompleteInSequence, hasB
     return wouldBeFree && !hasBlockingIncompleteInSequence && !hasBlockingUniqueInDayDoneToday;
 }
 
-function updateHasBlockingIncompleteInSequence(hasBlockingInSequence, isCurriculumSequential, isCurrentFree, completionCount = 0) {
+function updateHasBlockingIncompleteInSequence(hasBlockingInSequence, completionCount = 0) {
     if (hasBlockingInSequence) return true;
-    else if (isCurriculumSequential && !isCurrentFree) return true;
-    else if (isCurriculumSequential && completionCount < 1) return true;
+    else if (completionCount < 1) return true;
     else return false;
 }
 

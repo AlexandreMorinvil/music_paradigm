@@ -1,6 +1,11 @@
 import router from '@/router';
 
 export default {
+	// User routes
+	moveToPreSession: function () {
+		router.replace({ name: 'user.pre-session' });
+	},
+
 	// Experiment navigation
 	moveToExperimentPrelude: function () {
 		router.push({ name: 'experiment.' + 'prelude' });

@@ -1,17 +1,15 @@
 <template>
 	<div id="navigation-bar">
-		<div id="wrapper-left" class="navigation-bar-wrapper"></div>
+		<div class="navigation-bar-wrapper navigation-bar-center">Session in progress</div>
 
-		<div id="wrapper-center" class="navigation-bar-wrapper">Experiment in progress</div>
-
-		<div id="wrapper-right" class="navigation-bar-wrapper">
+		<div class="navigation-bar-wrapper navigation-bar-right">
 			<div id="button-leave" class="app-navigation-bar-button" v-on:click="gotToHomePage">Leave</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import '@/styles/navigationBarTemplate.css';
+import '@/styles/navigation-bar-template.css';
 import { routerNavigation } from '@/_helpers';
 
 export default {

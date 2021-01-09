@@ -9,6 +9,8 @@ export default {
 	DEFAULT_LOG_FLAG,
 	DEFAULT_SUCCESSES_FOR_SKIP,
 	DEFAULT_HIDE_FEEDBACK_SMILEY,
+	DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE,
+	DEFAULT_CONTROL_TYPE,
 	DEFAULT_EXPERIMENT_STATE_VALUES,
 	DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES,
 	DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES,
@@ -33,6 +35,7 @@ const DEFAULT_HIDE_FEEDBACK_SMILEY = false;
 const DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE = false;
 const DEFAULT_PROGRAMMED_OCTAVE_OFFSET = 0;
 const DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE = 4;
+const DEFAULT_CONTROL_TYPE = 'piano';
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
 	return {
@@ -83,6 +86,7 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		isSkipStepButtonInFootnote: DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE, // Indicates wether the skip buttons are displayed by default in the footnote when there is a button footnote
 		programmedOctaveOffset: DEFAULT_PROGRAMMED_OCTAVE_OFFSET, // Indicates a preset octave shift for the midi piano (knowing that most midi piano are on octave 3 by default)
 		interactivePianoFirstOctave: DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE, // Indicate the first octave from which the notes must be displayed on the interactive piano (which has 2 octaves)
+		controlType: DEFAULT_CONTROL_TYPE, // Indicate which type of controle is used by the application ('piano', 'keyboard' or 'none'). Will also affect the pre-session preparation of the user
 	};
 }
 
