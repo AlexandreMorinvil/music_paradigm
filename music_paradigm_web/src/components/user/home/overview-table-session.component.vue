@@ -23,13 +23,12 @@ export default {
 	},
 	computed: {
 		state() {
-			// if (true) return 'unavailable';
-			// else if (true) return 'almost-available';
-			// else if (true) return 'new-available';
-			// else if (true) return 'completed-available';
-			// else if (true) return 'completed';
-			// else return 'unavailable';
-			return 'unavailable';
+			if (this.detrmineIsUnavailable()) return 'unavailable';
+			else if (this.detrmineIsAlmostAvailable()) return 'almost-available';
+			else if (this.detrmineIsNewAvailable()) return 'new-available';
+			else if (this.detrmineIsCompletedvailable()) return 'completed-available';
+			else if (this.detrmineIsCompleted()) return 'completed';
+			else return 'unavailable';
 		},
 		title() {
 			return this.session.title;
@@ -40,15 +39,40 @@ export default {
 		caption() {
 			switch (this.captionType) {
 				case 'timer-left':
-					return 'In X days at Y hours';
+					return this.delay;
 				case 'available':
 					return 'available';
 				default:
 					return '';
 			}
 		},
+		delay() {
+			if (this.session.delayPreAvailabilityInDays > 0) return `In ${this.session.delayPreAvailabilityInDays} day(s)`;
+			else if (this.session.delayPreAvailabilityInHours !== '00:00') {
+				if (this.session.isDelayedByPreviousUniqueInDay) return 'Tomorrow';
+				else return `In ${this.session.delayPreAvailabilityInHours} hours`;
+			}
+			return 'Soon'; // THis shsould never happen
+		},
 		hasCaption() {
 			return Boolean(this.caption);
+		},
+	},
+	methods: {
+		detrmineIsUnavailable() {
+			return !this.session.isAvailable && this.session.isDelayedByPreviousSequential;
+		},
+		detrmineIsAlmostAvailable() {
+			return !this.session.isAvailable && this.session.completionCount === 0;
+		},
+		detrmineIsNewAvailable() {
+			return this.session.isAvailable && this.session.completionCount <= 0;
+		},
+		detrmineIsCompletedvailable() {
+			return this.session.isAvailable && this.session.completionCount > 0;
+		},
+		detrmineIsCompleted() {
+			return !this.session.isAvailable && this.session.completionCount > 0;
 		},
 	},
 	watch: {
@@ -71,7 +95,7 @@ export default {
 						this.captionType = 'available';
 						this.icon = 'opened-lock';
 						break;
-					case 'always-available':
+					case 'completed-available':
 						this.isAvailable = true;
 						this.captionType = 'available';
 						this.icon = 'check-circle';
@@ -101,7 +125,7 @@ export default {
 	border-radius: 10px;
 	border-width: 4px;
 	text-align: center;
-	padding: 5px;
+	padding: 10px;
 }
 
 .container-flex {
@@ -111,37 +135,64 @@ export default {
 }
 
 .title-area {
-	grid-area: title;
-	flex-basis: 25%;
+	height: 4em;
+	font-size: 1em;
+	text-align: center;
+	width: 100%;
 }
 
 .icon-area {
 	grid-area: icon;
-	flex-basis: 50%;
 }
 
 .caption-area {
 	grid-area: caption;
-	flex-basis: 25%;
+	font-size: 0.9em;
+	height: auto;
+	width: 100%;
 }
 
-.unavailable,
-.almost-available {
+.unavailable {
 	background-color: rgb(40, 40, 40);
 	border-color: rgb(35, 35, 35);
 	color: rgb(80, 80, 80);
+	stroke: rgb(20, 20, 20);
+	fill: rgb(20, 20, 20);
+	cursor: default;
+	outline: none;
+}
 
+.almost-available {
+	background-color: rgb(60, 60, 60);
+	border-color: rgb(55, 55, 55);
+	color: rgb(100, 100, 100);
+	fill: rgb(40, 40, 40);
 	cursor: default;
 	outline: none;
 }
 
 .new-available {
+	background-color: rgb(200, 180, 0);
+	border-color: rgb(195, 175, 0);
+	color: rgb(250, 250, 250);
+	stroke: rgb(100, 100, 60);
+	fill: rgb(100, 100, 60);
 }
 
 .completed-available {
+	background-color: rgb(0, 100, 200);
+	border-color: rgb(0, 95, 195);
+	color: rgb(160, 180, 250);
+	fill: rgb(0, 60, 130);
 }
 
 .completed {
+	background-color: rgb(0, 190, 50);
+	border-color: rgb(0, 185, 45);
+	color: rgb(0, 130, 0);
+	fill: rgb(0, 130, 0);
+	cursor: default;
+	outline: none;
 }
 
 .label {
@@ -151,7 +202,6 @@ export default {
 }
 
 .icon {
-	background-color: turquoise;
 	display: block;
 	margin: auto;
 	height: 100%;

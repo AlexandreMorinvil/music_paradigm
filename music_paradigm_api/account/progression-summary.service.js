@@ -65,7 +65,7 @@ async function generateProgressionSummary(userId) {
         elements.isUniqueIndDay = curriculumExperiment.isUniqueIndDay;
         elements.isCompletionLimited = curriculumExperiment.isCompletionLimited;
 
-        elements.completionCount = progressionExperiment.completionCount;
+        elements.completionCount = progressionExperiment.completionCount || 0;
 
         elements.delayPreAvailabilityInDays = getDelayInDaysLeft(curriculumExperiment.delayInDays, timeElapsedInDays);
         elements.delayPreAvailabilityInHours = getDelayInHoursLeft(elements.delayPreAvailabilityInDays, curriculumExperiment.releaseTime);

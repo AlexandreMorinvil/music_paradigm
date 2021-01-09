@@ -64,7 +64,7 @@ export default {
 
 .table-inside-context {
 	border: 5px rgb(145, 145, 145) solid;
-	background-color: rgb(70, 70, 70);
+	background-color: rgb(120, 120, 120);
 	box-shadow: 0 0 25px rgb(35, 35, 35) inset;
 }
 
