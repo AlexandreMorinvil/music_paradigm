@@ -1,4 +1,9 @@
 export default {
+	associativeId: (state) => {
+		// FIXME: Associative is not written properly
+		return state.sessionInformation.assosiativeId || null;
+	},
+
 	sessionExperiment: (state) => {
 		return state.sessionInformation.experiment || null;
 	},

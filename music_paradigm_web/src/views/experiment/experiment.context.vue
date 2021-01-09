@@ -39,6 +39,7 @@ export default {
 		},
 	},
 	methods: {
+		...mapActions('session', ['concludeSession']),
 		...mapActions('experiment', ['updateState', 'goNextStep', 'goStepPostSkip', 'clearState', 'endExperimentByTimeout', 'concludeExperiment']),
 		...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
 		...mapActions('log', ['initializeLogSession']),
@@ -68,6 +69,7 @@ export default {
 		},
 		endExperiment() {
 			this.needsConfirmationToLeave = false;
+			this.concludeSession();
 			this.concludeExperiment();
 		},
 		handleButtonPress(pressedKey) {

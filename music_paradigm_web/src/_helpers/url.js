@@ -4,6 +4,7 @@ const staticDirectory = '/static/';
 const experimentRessourceDirectory = '/experiment-ressources/';
 
 const adminSessions = '/admin-sessions/';
+const sessions = '/sessions/';
 const account = '/account/';
 const experiments = '/experiments/';
 const curriculums = '/curriculums/';
@@ -28,6 +29,9 @@ export default {
 	// API calls
 	adminSessions: function (parameters) {
 		return config.apiUrl + adminSessions + parameters;
+	},
+	sessions: function (parameters) {
+		return config.apiUrl + sessions + parameters;
 	},
 	account: function (parameters) {
 		return config.apiUrl + account + parameters;

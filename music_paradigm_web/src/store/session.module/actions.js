@@ -1,4 +1,4 @@
-import { accountService } from '@/_services';
+import { accountService, sessionService } from '@/_services';
 
 export default {
 	fetchDueExperimentSession({ commit, dispatch }) {
@@ -44,6 +44,23 @@ export default {
 		// dispatch('experiment/setParameterValues', getters.imposedParameterValues, { root: true });
 		dispatch('experiment/setStartingPoint', getters.sessionCursor, { root: true });
 		dispatch('experiment/initExperiment', null, { root: true });
+	},
+
+	concludeSession({ commit, dispatch, getters }) {
+		commit('setIsConcludingSession');
+		return sessionService
+			.concludeSession(getters.associativeId)
+			.then(
+				() => { },
+				(error) => {
+					// TODO: REMOVE THAT IN THE OFFICIAL VERSION
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				dispatch('clearSessionInformation', null, { root: true });
+				commit('setIsConcludingSessionEnd');
+			});
 	},
 
 	abortPresession({ commit, dispatch }) {

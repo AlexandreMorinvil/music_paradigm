@@ -21,7 +21,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import { routerNavigation } from '@/_helpers';
 
-import '@/styles/navigationBarTemplate.css';
+import '@/styles/navigation-bar-template.css';
 
 export default {
 	computed: {

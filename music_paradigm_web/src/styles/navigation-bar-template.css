@@ -50,6 +50,7 @@
   font-size: inherit;
   cursor: pointer;
   overflow: hidden;
+  outline: none;
 }
 
 .app-navigation-bar-button:hover {

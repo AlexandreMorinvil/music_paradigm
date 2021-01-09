@@ -3,13 +3,13 @@
 		<div class="navigation-bar-wrapper navigation-bar-center">Session in progress</div>
 
 		<div class="navigation-bar-wrapper navigation-bar-right">
-			<button id="button-leave" class="app-navigation-bar-button" v-on:click="gotToHomePage">Leave</button>
+			<div id="button-leave" class="app-navigation-bar-button" v-on:click="gotToHomePage">Leave</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import '@/styles/navigationBarTemplate.css';
+import '@/styles/navigation-bar-template.css';
 import { routerNavigation } from '@/_helpers';
 
 export default {
