@@ -10,6 +10,7 @@
 					:key="index"
 					:session="session"
 					:index="index"
+					v-on:start-session="startSession"
 					class="session-button"
 				/>
 			</div>
@@ -18,7 +19,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 import OverviewTableSession from '@/components/user/home/overview-table-session.component.vue';
 
@@ -26,11 +27,14 @@ export default {
 	components: {
 		OverviewTableSession,
 	},
-	data() {
-		return {};
-	},
 	computed: {
 		...mapGetters('account', ['progressionSummary']),
+	},
+	methods: {
+		...mapActions('session', ['fetchSpecificExperimentSession']),
+		startSession(associativeId) {
+			this.fetchSpecificExperimentSession(associativeId);
+		},
 	},
 };
 </script>

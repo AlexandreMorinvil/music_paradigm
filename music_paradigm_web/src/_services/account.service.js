@@ -65,7 +65,7 @@ function fetchSpecificExperimentSession(associativeId) {
 		method: 'GET',
 		headers: authHeader(),
 	};
-	return fetch(url.account('specific-experiment', associativeId), requestOptions).then(handleResponse);
+	return fetch(url.account('specific-experiment' + '/' + associativeId), requestOptions).then(handleResponse);
 }
 
 function handleResponse(reponse) {

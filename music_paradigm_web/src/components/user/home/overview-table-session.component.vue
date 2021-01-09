@@ -1,5 +1,5 @@
 <template>
-	<button v-if="session.associativeId" class="session-container container-flex" :class="state">
+	<button v-if="session.associativeId" v-on:click="startSession" class="session-container container-flex" :class="state">
 		<h3 class="title-area">{{ title }}</h3>
 		<svg id="icon" class="icon icon-area">
 			<use :xlink:href="iconReference" />
@@ -59,11 +59,14 @@ export default {
 		},
 	},
 	methods: {
+		startSession() {
+			if (this.session.isAvailable) this.$emit('start-session', this.session.associativeId);
+		},
 		detrmineIsUnavailable() {
 			return !this.session.isAvailable && this.session.isDelayedByPreviousSequential;
 		},
 		detrmineIsAlmostAvailable() {
-			return !this.session.isAvailable && this.session.completionCount === 0;
+			return !this.session.isAvailable && this.session.completionCount <= 0;
 		},
 		detrmineIsNewAvailable() {
 			return this.session.isAvailable && this.session.completionCount <= 0;
