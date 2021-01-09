@@ -52,10 +52,7 @@ export default {
 			.concludeSession(getters.associativeId)
 			.then(
 				() => { },
-				(error) => {
-					// TODO: REMOVE THAT IN THE OFFICIAL VERSION
-					dispatch('alert/setErrorAlert', error.message, { root: true });
-				},
+				(error) => { console.log(error) },
 			)
 			.finally(() => {
 				dispatch('clearSessionInformation', null, { root: true });
