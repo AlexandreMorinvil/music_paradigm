@@ -123,7 +123,7 @@ export default {
 	height: 180px;
 	margin: 10px;
 	background-color: gray;
-	box-shadow: 5px 5px 5px rgb(35, 35, 35);
+	box-shadow: 5px 5px 5px rgb(15, 15, 15);
 	border-style: solid;
 	border-radius: 10px;
 	border-width: 4px;

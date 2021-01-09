@@ -8,6 +8,7 @@
   width: 100%;
   font-size: 20px;
   color: rgb(200, 200, 200);
+  fill: rgb(200, 200, 200);
   line-height: 0.8;
 }
 
@@ -17,6 +18,7 @@
   text-align: center;
   height: 100%;
   width: 33%;
+  min-width: auto;
   font-size: inherit;
 }
 

@@ -51,25 +51,25 @@ export default {
 	padding: 10px;
 	margin: auto;
 	box-shadow: 5px 5px 8px black;
-	background-color: rgb(0, 40, 150);
-	border: 5px rgb(0, 35, 145) solid;
+	background-color: rgb(0, 40, 120);
+	border: 5px rgb(0, 35, 115) solid;
 	border-bottom-style: none;
 	border-radius: 10px 10px 0 0;
 }
 
 .table-context {
 	padding: 20px;
-	background-color: rgb(150, 150, 150);
-	border: 5px rgb(145, 145, 145) solid;
+	background-color: rgb(80, 80, 80);
+	border: 5px rgb(75, 75, 75) solid;
 	box-shadow: 5px 5px 8px black;
 	margin-bottom: 35px;
 	z-index: 1;
 }
 
 .table-inside-context {
-	border: 5px rgb(145, 145, 145) solid;
-	background-color: rgb(120, 120, 120);
-	box-shadow: 0 0 25px rgb(35, 35, 35) inset;
+	border: 5px rgb(75, 75, 75) solid;
+	background-color: rgb(35, 35, 35);
+	box-shadow: 0 0 25px rgb(15, 15, 15) inset;
 }
 
 .content-flex {
