@@ -20,7 +20,8 @@ export default {
 		experimentHandler.setExperimentDescription(state, experiment);
 		experimentHandler.setExperimentFlow(state, experiment);
 		experimentHandler.setExperimentGeneralSettings(state, experiment);
-		experimentHandler.setExperimentVariables(state, experiment);
+		experimentHandler.populateExperimentConstantVariables(state, experiment);
+		experimentHandler.setExperimentDynamicVariables(state, experiment);
 
 		state.hasExperiment = true;
 	},

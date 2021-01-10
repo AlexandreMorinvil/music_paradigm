@@ -28,6 +28,11 @@ const schema = new Schema(
                     enum: ['variable', 'parameter'],
                     default: "variable",
                 },
+                assignation: {
+                    type: String,
+                    enum: ['constant', 'dynamic'],
+                    default: "constant",
+                },
                 assignedValue: {
                     type: Schema.Types.Mixed,
                     default: undefined,

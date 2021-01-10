@@ -42,8 +42,7 @@ export default {
 button {
 	font-size: calc(0.6vh + 0.6vw);
 	background-color: rgb(200, 200, 200);
-	border: 3px solid rgb(150, 150, 150);
-	border-radius: 10px;
+	border: 3px solid rgb(185, 185, 185);
 	padding-top: auto;
 	margin: 10px;
 }
