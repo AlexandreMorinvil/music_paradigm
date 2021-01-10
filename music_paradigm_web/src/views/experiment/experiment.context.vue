@@ -93,6 +93,8 @@ export default {
 		this.initializeControl();
 	},
 	beforeDestroy() {
+		this.terminateControl();
+
 		window.removeEventListener('keydown', this.handleButtonPress);
 		window.removeEventListener('keyup', this.handleButtonRelease);
 		ExperimentEventBus.$off(experimentEvents.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
