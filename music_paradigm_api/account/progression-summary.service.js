@@ -90,7 +90,6 @@ async function generateProgressionSummary(userId) {
         hasBlockingUniqueInDayDoneToday = updateHasBlockingUniqueInDayDoneToday(
             hasBlockingUniqueInDayDoneToday,
             curriculumExperiment.isUniqueIndDay,
-            elements.wouldBeFree,
             wasTodayCompleted
         );
     }
@@ -139,9 +138,8 @@ function updateHasBlockingIncompleteInSequence(hasBlockingInSequence, completion
     else return false;
 }
 
-function updateHasBlockingUniqueInDayDoneToday(hasBlockingUniqueInDay, isExperimentUniqueInDay, isCurrentFree, wasTodayCompleted) {
+function updateHasBlockingUniqueInDayDoneToday(hasBlockingUniqueInDay, isExperimentUniqueInDay, wasTodayCompleted) {
     if (hasBlockingUniqueInDay) return true;
-    else if (isExperimentUniqueInDay && !isCurrentFree) return true;
     else if (isExperimentUniqueInDay && wasTodayCompleted) return true;
     else return false;
 }
