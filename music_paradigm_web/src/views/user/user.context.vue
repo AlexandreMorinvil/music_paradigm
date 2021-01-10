@@ -3,16 +3,16 @@
 		<div id="user-main" class="fill">
 			<router-view />
 		</div>
-		<application-footer> </application-footer>
+		<application-footer-component />
 	</div>
 </template>
 
 <script>
-import ApplicationFooter from '@/components/application-component/footer.component.vue';
+import ApplicationFooterComponent from '@/components/application-component/application-footer.component.vue';
 
 export default {
 	components: {
-		applicationFooter: ApplicationFooter,
+		ApplicationFooterComponent,
 	},
 	data() {
 		return {

@@ -14,6 +14,7 @@ function populateVariables(block, variablesToUse = null) {
 		if (typeof blockToPopulate[section] === 'string')
 			for (const variable in variables) blockToPopulate[section] = blockToPopulate[section].replace(variable, variables[variable]);
 		else if (Array.isArray(blockToPopulate[section])) blockToPopulate[section] = populateVariables(block[section], variablesToUse);
+		else if (typeof blockToPopulate[section] === 'object') blockToPopulate[section] = populateVariables(block[section], variablesToUse);
 	}
 	return blockToPopulate;
 }

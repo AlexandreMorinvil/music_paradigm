@@ -3,10 +3,11 @@ import variableHandler from './variableHandler';
 
 export default {
 	setExperimentId,
+	populateExperimentConstantVariables,
+	setExperimentDynamicVariables,
 	setExperimentDescription,
 	setExperimentGeneralSettings,
 	setExperimentFlow,
-	setExperimentVariables,
 	setParameterImposedValues,
 };
 
@@ -69,11 +70,27 @@ function setExperimentFlow(state, experiment) {
 	state.flow = experiment.flow;
 }
 
-function setExperimentVariables(state, experiment) {
+function populateExperimentConstantVariables(state, experiment) {
+	const { variables, flow } = experiment;
+	if (!Array.isArray(variables)) return;
+
+	// Get the constant variables
+	const constantVariables = {};
+	for (const variable of variables)
+		if (variable.assignation === 'constant' || !variable.assignation)
+			constantVariables[variableHandler.wrapVariableName(variable.name)] = variable.assignedValue;
+
+	// Populate the constant variables
+	for (const index in flow) state.flow[index] = variableHandler.populateVariables(flow[index], constantVariables);
+}
+
+function setExperimentDynamicVariables(state, experiment) {
 	const { variables } = experiment;
 	if (!Array.isArray(variables)) return;
 
-	for (const variable of variables) state.variables.initial[variableHandler.wrapVariableName(variable.name)] = variable.assignedValue;
+	// Get the dynamic variables
+	for (const variable of variables)
+		if (variable.assignation === 'dynamic') state.variables.initial[variableHandler.wrapVariableName(variable.name)] = variable.assignedValue;
 	state.variables.value = JSON.parse(JSON.stringify(state.variables.initial));
 }
 
