@@ -10,6 +10,10 @@ export default {
 		Object.assign(state, constants.DEFAULT_EXPERIMENT_STATE_VALUES());
 	},
 
+	setParameterValues(state, variableValues) {
+		experimentHandler.setParameterImposedValues(state, variableValues);
+	},
+
 	setExperiment(state, experiment) {
 		// Verify the minimal required properties
 		if (!Object.prototype.hasOwnProperty.call(experiment, 'name')) throw new Error('No name was found in the experiment');
@@ -24,10 +28,6 @@ export default {
 		experimentHandler.setExperimentDynamicVariables(state, experiment);
 
 		state.hasExperiment = true;
-	},
-
-	setParameterValues(state, variableValues) {
-		experimentHandler.setParameterImposedValues(state, variableValues);
 	},
 
 	initCursor(state, presetCursor = null) {

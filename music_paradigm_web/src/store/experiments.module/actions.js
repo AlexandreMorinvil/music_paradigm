@@ -47,8 +47,8 @@ export default {
 
 	startSelectedExperiment({ dispatch, getters }) {
 		if (getters.hasExperimentSelection) {
-			dispatch('experiment/setExperiment', getters.experimentSelected, { root: true });
 			dispatch('experiment/setParameterValues', getters.imposedParameterValues, { root: true });
+			dispatch('experiment/setExperiment', getters.experimentSelected, { root: true });
 			dispatch('experiment/setStartingPoint', null, { root: true });
 			dispatch('experiment/initExperiment', null, { root: true });
 		}
