@@ -162,8 +162,9 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 
 function DEFAULT_EXPERIMENT_VARIABLE_VALUES() {
 	return {
-		value: {}, // Value of the variable
-		initial: {}, // Initial value assigned to the variable
+		value: {}, // Value of the variable (dynamic)
+		initial: {}, // Initial value assigned to the variable (dynamic)
+		constant: {}, // Value of constant variables
 	};
 }
 

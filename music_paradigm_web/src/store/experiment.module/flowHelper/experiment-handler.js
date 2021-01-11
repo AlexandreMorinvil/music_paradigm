@@ -67,7 +67,7 @@ function setExperimentGeneralSettings(state, experiment) {
 }
 
 function setExperimentFlow(state, experiment) {
-	state.flow = experiment.flow;
+	state.flow = JSON.parse(JSON.stringify(experiment.flow));
 }
 
 function populateExperimentConstantVariables(state, experiment) {
@@ -76,9 +76,13 @@ function populateExperimentConstantVariables(state, experiment) {
 
 	// Get the constant variables
 	const constantVariables = {};
-	for (const variable of variables)
-		if (variable.assignation === 'constant' || !variable.assignation)
+	for (const variable of variables) {
+		const isConstant = variable.assignation === 'constant';
+		const wasAlreadyAssigned = Object.keys(state.variables.initial).includes(variable.name);
+		if (isConstant && !wasAlreadyAssigned) {
 			constantVariables[variableHandler.wrapVariableName(variable.name)] = variable.assignedValue;
+		}
+	}
 
 	// Populate the constant variables
 	for (const index in flow) state.flow[index] = variableHandler.populateVariables(flow[index], constantVariables);
@@ -89,13 +93,21 @@ function setExperimentDynamicVariables(state, experiment) {
 	if (!Array.isArray(variables)) return;
 
 	// Get the dynamic variables
-	for (const variable of variables)
-		if (variable.assignation === 'dynamic') state.variables.initial[variableHandler.wrapVariableName(variable.name)] = variable.assignedValue;
+	for (const variable of variables) {
+		const isDynamic = variable.assignation === 'dynamic';
+		const wasAlreadyAssigned = Object.keys(state.variables.initial).includes(variable.name);
+		if (isDynamic && !wasAlreadyAssigned) {
+			state.variables.initial[variableHandler.wrapVariableName(variable.name)] = variable.assignedValue;
+		}
+	}
 	state.variables.value = JSON.parse(JSON.stringify(state.variables.initial));
 }
 
 // TODO : Verify that the parameter imposed are part of the possibilities
 function setParameterImposedValues(state, parameters) {
-	for (const parameter of parameters) state.variables.initial[variableHandler.wrapVariableName(parameter.name)] = parameter.assignedValue;
+	for (const parameter of parameters) {
+		// const { optionValues } = parameter;
+		state.variables.initial[variableHandler.wrapVariableName(parameter.name)] = parameter.assignedValue;
+	}
 	state.variables.value = JSON.parse(JSON.stringify(state.variables.initial));
 }

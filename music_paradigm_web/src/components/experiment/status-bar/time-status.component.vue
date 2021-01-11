@@ -18,14 +18,6 @@ import { mapGetters } from 'vuex';
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 
 export default {
-	props: {
-		startTimeInSeconds: {
-			type: Number,
-			default() {
-				return 0;
-			},
-		},
-	},
 	components: {},
 	data() {
 		return {
@@ -47,7 +39,7 @@ export default {
 			return this.turnedOn ? 'active' : 'inactive';
 		},
 		mustCountDown() {
-			return this.startTimeInSeconds > 0;
+			return this.timeLimitInSeconds > 0;
 		},
 		timerDisplay() {
 			let hours = '';
@@ -84,7 +76,7 @@ export default {
 		},
 	},
 	mounted() {
-		this.setTime(this.startTimeInSeconds);
+		this.setTime(this.timeLimitInSeconds);
 	},
 	beforeDestroy() {
 		window.clearInterval(this.counterUniqueIdentifier);
