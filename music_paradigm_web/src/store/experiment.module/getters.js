@@ -35,7 +35,7 @@ export default {
 	},
 
 	timeLimitInSeconds: (state) => {
-		return state.settings.timeLimitInSeconds || constants.DEFAULT_TIME_LIMIT;
+		return state.settings.timeLimitInSeconds || 0;
 	},
 
 	// Getters for the state content
@@ -49,15 +49,6 @@ export default {
 		// Fetch the picture name
 		const pictureName = state.state.content.pictureName;
 		if (!pictureName) return '';
-
-		// Verify that the file name describes a supported file format
-		const pictureNameExtension = pictureName.split('.').pop();
-		if (!['jpg', 'png', 'bmp'].includes(pictureNameExtension.toLowerCase())) {
-			throw new Error(`
-                Incompatible image format for the "${pictureName}" image file.\n
-                The "${pictureNameExtension}" file format is not supported.
-            `);
-		}
 
 		// Return the picture name
 		return `${state.description.folder}/${pictureName}`;
@@ -82,15 +73,6 @@ export default {
 		const midiName = state.state.mediaFile.midiName;
 		if (!midiName) return '';
 
-		// Verify that the file name describes a supported file format
-		const midiNameExtension = midiName.split('.').pop();
-		if (!['mid'].includes(midiNameExtension.toLowerCase())) {
-			throw new Error(`
-                Incompatible MIDI format for the "${midiName}" MIDI file.\n
-                The "${midiNameExtension}" file format is not supported.
-            `);
-		}
-
 		// Return the picture name
 		return `${state.description.folder}/${midiName}`;
 	},
@@ -99,15 +81,6 @@ export default {
 		// Fetch the video name
 		const videoName = state.state.mediaFile.videoName;
 		if (!videoName) return '';
-
-		// Verify that the file name describes a supported file format
-		const videoNameExtension = videoName.split('.').pop();
-		if (!['mp4'].includes(videoNameExtension.toLowerCase())) {
-			throw new Error(`
-                        Incompatible video format for the "${videoName}" MIDI file.\n
-                        The "${videoNameExtension}" file format is not supported.
-                    `);
-		}
 
 		// Return the video name
 		return `${state.description.folder}/${videoName}`;
