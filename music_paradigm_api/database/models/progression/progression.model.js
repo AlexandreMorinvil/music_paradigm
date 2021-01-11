@@ -38,6 +38,7 @@ schema.methods.concludeExperiment = async function (associativeId) {
     const nestedExperimentArray = this.experiments.filter(experiment => { return experiment.associativeId === associativeId; });
     let experimentInProgression = nestedExperimentArray[0];
     if (!experimentInProgression) {
+        // Create a nexted associated experiment to put in the progression
         experimentInProgression = {
             associativeId: associativeId,
             completionCount: 1,
@@ -46,6 +47,7 @@ schema.methods.concludeExperiment = async function (associativeId) {
         this.experiments.push(experimentInProgression);
     }
     else {
+        // Increase previous session's information and increase completion count
         experimentInProgression.completionCount += 1;
         if (experimentInProgression.cursor) delete experimentInProgression.cursor;
         if (experimentInProgression.state) delete experimentInProgression.state;

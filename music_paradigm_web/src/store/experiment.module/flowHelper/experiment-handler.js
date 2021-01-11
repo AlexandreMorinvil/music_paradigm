@@ -67,7 +67,7 @@ function setExperimentGeneralSettings(state, experiment) {
 }
 
 function setExperimentFlow(state, experiment) {
-	state.flow = experiment.flow;
+	state.flow = JSON.parse(JSON.stringify(experiment.flow));
 }
 
 function populateExperimentConstantVariables(state, experiment) {
@@ -96,6 +96,9 @@ function setExperimentDynamicVariables(state, experiment) {
 
 // TODO : Verify that the parameter imposed are part of the possibilities
 function setParameterImposedValues(state, parameters) {
-	for (const parameter of parameters) state.variables.initial[variableHandler.wrapVariableName(parameter.name)] = parameter.assignedValue;
+	for (const parameter of parameters) {
+		// const { optionValues } = parameter;
+		state.variables.initial[variableHandler.wrapVariableName(parameter.name)] = parameter.assignedValue;
+	}
 	state.variables.value = JSON.parse(JSON.stringify(state.variables.initial));
 }
