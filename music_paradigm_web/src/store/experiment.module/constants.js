@@ -165,6 +165,8 @@ function DEFAULT_EXPERIMENT_VARIABLE_VALUES() {
 		value: {}, // Value of the variable (dynamic)
 		initial: {}, // Initial value assigned to the variable (dynamic)
 		constant: {}, // Value of constant variables
+
+		imposed: {}, // Imposed parameters
 	};
 }
 

@@ -71,6 +71,7 @@ export default {
 	},
 
 	setImposedParameterValues(state, parameters) {
-		state.imposedParameterValues = JSON.parse(JSON.stringify(parameters));
+		state.imposedParameterValues = {};
+		for (const parameter of parameters) state.imposedParameterValues[parameter.name] = parameter.assignedValue;
 	},
 };
