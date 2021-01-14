@@ -39,18 +39,6 @@
 			<input type="text" v-model="lastName" name="lastName" autocomplete="new-last-name" placeholder="Insert new last name" />
 		</div>
 
-		<div class="curriculum-area input">
-			<label for="curriculum">
-				Curriculum : <span class="selected-element-text">{{ userSelectedCurriculumDisplay }}</span>
-			</label>
-			<select name="curriculum-reference" v-model="curriculum">
-				<option :value="null">-- No curriculum is assigned --</option>
-				<option v-for="(reference, index) in curriculumsReferences" :key="index" :value="curriculumsReferences[index]._id">
-					{{ curriculumsReferences[index].title }}
-				</option>
-			</select>
-		</div>
-
 		<div class="tags-area">
 			<div class="tags-label-area">
 				<button v-on:click="addTag()" class="widget-button small blue">Add</button>
@@ -69,7 +57,7 @@
 <script>
 import '@/styles/widget-template.css';
 import '@/styles/form-template.css';
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
 	data() {
@@ -82,11 +70,9 @@ export default {
 			middleName: '',
 			lastName: '',
 			tags: [],
-			curriculum: null,
 		};
 	},
 	computed: {
-		...mapGetters('curriculums', ['curriculumsHeadersList']),
 		...mapGetters('users', [
 			'hasSelectedUser',
 			'userSelectedId',
@@ -96,11 +82,7 @@ export default {
 			'userSelectedMiddleName',
 			'userSelectedLastName',
 			'userSelectedTags',
-			'userSelectedCurriculum',
 		]),
-		curriculumsReferences() {
-			return this.curriculumsHeadersList;
-		},
 		userSelectedUsernameDisplay() {
 			return this.hasSelectedUser ? this.userSelectedUsername || '---' : '';
 		},
@@ -130,12 +112,8 @@ export default {
 				} else return '---';
 			} else return '';
 		},
-		userSelectedCurriculumDisplay() {
-			return this.hasSelectedUser ? this.getCurriculumTitleFromList(this.userSelectedCurriculum) || '---' : '';
-		},
 	},
 	methods: {
-		...mapActions('curriculums', ['fetchAllCurriculumHeaders']),
 		bundleUserFromForm() {
 			return {
 				username: this.username,
@@ -145,15 +123,7 @@ export default {
 				middleName: this.middleName,
 				lastName: this.lastName,
 				tags: this.tags,
-				curriculum: this.curriculum,
 			};
-		},
-		getCurriculumTitleFromList(id) {
-			const curriculum = this.curriculumsHeadersList.filter((obj) => {
-				return obj._id === id;
-			});
-			if (curriculum[0]) return curriculum[0].title;
-			else return '';
 		},
 		addTag() {
 			this.tags.push('');
@@ -185,9 +155,6 @@ export default {
 		assignFormTags(tags) {
 			this.tags = Array.isArray(tags) ? JSON.parse(JSON.stringify(tags)) : [];
 		},
-		assignFormCurriculum(curriculum) {
-			this.curriculum = curriculum;
-		},
 		assignSelectedToForm() {
 			this.assignFormId(this.userSelectedId);
 			this.assignFormUsername(this.userSelectedUsername);
@@ -196,7 +163,6 @@ export default {
 			this.assignFormMiddleName(this.userSelectedMiddleName);
 			this.assignFormLastName(this.userSelectedLastName);
 			this.assignFormTags(this.userSelectedTags);
-			this.assignFormCurriculum(this.userSelectedCurriculum);
 		},
 		clearForm() {
 			this.assignFormId('');
@@ -207,11 +173,7 @@ export default {
 			this.assignFormMiddleName('');
 			this.assignFormLastName('');
 			this.assignFormTags([]);
-			this.assignFormCurriculum(null);
 		},
-	},
-	beforeMount() {
-		this.fetchAllCurriculumHeaders();
 	},
 	watch: {
 		userSelectedId: {
@@ -233,7 +195,6 @@ export default {
 		'username username username email email email'
 		'password password password password password password'
 		'firstname firstname middlename middlename lastname lastname'
-		'curriculum curriculum curriculum curriculum curriculum curriculum'
 		'tags tags tags tags tags tags';
 }
 
@@ -259,10 +220,6 @@ export default {
 
 .lastname-area {
 	grid-area: lastname;
-}
-
-.curriculum-area {
-	grid-area: curriculum;
 }
 
 .input {

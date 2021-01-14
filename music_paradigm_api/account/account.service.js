@@ -1,7 +1,6 @@
 ﻿const db = require('database/db');
 const jwt = require('jwt/jwt');
 const progressionService = require('account/progression-summary.service');
-const Progression = db.Progression;
 const User = db.User;
 
 module.exports = {

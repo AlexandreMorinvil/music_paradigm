@@ -1,4 +1,5 @@
 ﻿const db = require('database/db');
+const Progression = db.Progression;
 const User = db.User;
 
 // Exports
@@ -6,6 +7,9 @@ module.exports = {
     getAll,
     getById,
     create,
+    assignCurriculum,
+    updateProgression,
+    resetProgression,
     update,
     delete: _delete
 };
@@ -28,8 +32,8 @@ async function getById(id) {
 
 async function create(userParam) {
     try {
-        const user = new User(userParam);
-        return await user.create();
+        const user = await new User(userParam);
+        await user.save();
     } catch (err) {
         switch (err.code) {
             case 11000:
@@ -65,3 +69,31 @@ async function _delete(id) {
     }
 
 }
+
+async function assignCurriculum(userId, curriculumId) {
+    try {
+        const user = await User.findById(userId);
+        return await user.initializeCurriculum(curriculumId);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function updateProgression(userId, parameters) {
+    try {
+        const user = await User.findById(userId);
+        return await user.updateCurriculum(parameters);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function resetProgression(userId, curriculumId) {
+    try {
+        const user = await User.findById(userId);
+        return await user.resetProgression();
+    } catch (err) {
+        throw err;
+    }
+}
+
