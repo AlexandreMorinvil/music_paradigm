@@ -30,10 +30,12 @@ async function getById(id) {
     }
 }
 
-async function create(userParam) {
+async function create(userParameters) {
     try {
-        const user = await new User(userParam);
-        await user.save();
+        const { user, curriculum } = userParameters;
+        const userCreated = await User.create(user);
+        await userCreated.initializeCurriculum(curriculum);
+        return userCreated;
     } catch (err) {
         switch (err.code) {
             case 11000:
@@ -62,7 +64,7 @@ async function _delete(id) {
     try {
         const user = await User.findById(id);
         if (!user) throw new Error('User to delete not found');
-        
+
         return await user.remove();
     } catch (err) {
         throw err;

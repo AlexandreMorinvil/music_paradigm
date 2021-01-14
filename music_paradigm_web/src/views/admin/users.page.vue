@@ -4,12 +4,12 @@
 			<users-viewer />
 		</widget-content-frame-component>
 
-		<widget-content-frame-component title="Editior">
-			<users-editor-widget />
+		<widget-content-frame-component title="User Editor">
+			<users-editor-widget ref="editor" v-on:create-user="submitUserToCreate" />
 		</widget-content-frame-component>
 
-		<widget-content-frame-component title="Curriculum">
-			<users-curriculum-widget />
+		<widget-content-frame-component title="Curriculum handler" ref="curriculum">
+			<users-curriculum-widget ref="userCurriculum"/>
 		</widget-content-frame-component>
 
 		<widget-content-frame-component title="Overview Table">
@@ -26,6 +26,8 @@ import UsersTable from '@/components/admin/users/UsersTableWidget.vue';
 import UsersViewer from '@/components/admin/users/UsersViewerWidget.vue';
 import WidgetContentFrameComponent from '@/components/content-frame/widget-content-frame.component.vue';
 
+import { mapActions } from 'vuex';
+
 export default {
 	components: {
 		AdminPageContentFrame: AdminPageContentFrame,
@@ -34,6 +36,19 @@ export default {
 		UsersCurriculumWidget,
 		UsersEditorWidget,
 		UsersTable: UsersTable,
+	},
+	methods: {
+		...mapActions('users', ['createUser']),
+		bundleUserInformation() {
+			return {
+				user: this.$refs.editor.bundleUserFromForm(),
+				curriculum: this.$refs.userCurriculum.bundleUserCurriculumInformation(),
+			};
+		},
+		submitUserToCreate() {
+			const userToCreate = this.bundleUserInformation();
+			this.createUser(userToCreate);
+		},
 	},
 };
 </script>

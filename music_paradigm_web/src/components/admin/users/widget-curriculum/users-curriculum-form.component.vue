@@ -22,13 +22,15 @@ import { mapGetters } from 'vuex';
 export default {
 	data() {
 		return {
-			id: '',
 			curriculum: null,
 		};
 	},
 	computed: {
 		...mapGetters('curriculums', ['curriculumsHeadersList']),
 		...mapGetters('users', ['hasSelectedUser', 'userSelectedId', 'userSelectedCurriculum']),
+		wasModified() {
+			return this.curriculum !== this.userSelectedCurriculum;
+		},
 		curriculumsReferences() {
 			return this.curriculumsHeadersList;
 		},
@@ -38,10 +40,7 @@ export default {
 	},
 	methods: {
 		bundleCurriculumForm() {
-			return {
-				id: this.id,
-				curriculum: this.curriculum,
-			};
+			return { curriculum: this.curriculum };
 		},
 		getCurriculumTitleFromList(id) {
 			const curriculum = this.curriculumsHeadersList.filter((obj) => {
@@ -49,9 +48,6 @@ export default {
 			});
 			if (curriculum[0]) return curriculum[0].title;
 			else return '';
-		},
-		assignUserId(id) {
-			this.id = id;
 		},
 		assignFormCurriculum(curriculum) {
 			this.curriculum = curriculum;

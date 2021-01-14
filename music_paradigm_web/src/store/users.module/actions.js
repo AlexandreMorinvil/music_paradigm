@@ -40,9 +40,7 @@ export default {
 			.then(
 				(createdUser) => {
 					commit('setSelectedUser', createdUser);
-					dispatch('alert/setSuccessAlert', 'User creation sucessful', {
-						root: true,
-					});
+					dispatch('alert/setSuccessAlert', 'User creation sucessful', { root: true });
 					dispatch('fetchAllUsersHeaders');
 				},
 				(error) => {

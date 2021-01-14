@@ -36,7 +36,7 @@ export default {
 	},
 	methods: {
 		...mapActions('curriculums', ['fetchAllCurriculumHeaders']),
-		...mapActions('users', ['unsetSelectedUser', 'createUser', 'updateUser', 'deleteUser']),
+		...mapActions('users', ['unsetSelectedUser', 'updateUser', 'deleteUser']),
 		bundleUserFromForm() {
 			return this.$refs.editorForm.bundleUserFromForm();
 		},
@@ -44,8 +44,7 @@ export default {
 			this.$refs.editorForm.assignSelectedToForm();
 		},
 		submitUserToCreate() {
-			const userToCreate = this.bundleUserFromForm();
-			this.createUser(userToCreate);
+			this.$emit('create-user');
 		},
 		submitUserToUpdate() {
 			const answer = window.confirm('Are your sure you want to edit the user(s)?');

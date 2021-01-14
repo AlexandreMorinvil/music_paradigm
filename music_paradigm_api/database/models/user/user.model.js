@@ -18,6 +18,12 @@ schema.statics.authenticate = async function (username, password) {
     return userWithoutPassword;
 };
 
+schema.statics.create = async function (userParameters) {
+    const user = await new model(userParameters);
+    return user.save();
+};
+
+
 schema.statics.getListAllHeaders = async function () {
     const usersList = await this.find({ role: roles.user }).populate({ path: 'curriculum', select: 'title' }).sort({ role: 1, username: 1 });
     const usersHeaderList = [];
@@ -61,11 +67,12 @@ schema.methods.updateIdentity = async function (updatedUser) {
     return this.save();
 };
 
-schema.methods.initializeCurriculum = async function (curriculumId, parameters) {
+schema.methods.initializeCurriculum = async function (curriculumInformation) {
     const Progression = require('database/models/progression/progression.model');
 
     // Assign curriculum
-    if (curriculumId) this.curriculum = curriculumId;
+    if (!curriculumInformation.curriculum) return;
+    this.curriculum = curriculumInformation.curriculum;
 
     // Get last progression
     const user = await model.findById(this._id, { progressions: { $slice: -1 } }).populate({ path: 'progressions' });
@@ -76,7 +83,7 @@ schema.methods.initializeCurriculum = async function (curriculumId, parameters) 
     const newProgression = new Progression({
         userReference: this._id,
         curriculumReference: this.curriculum,
-        curriculumParameters: parameters.curriculumParameters
+        curriculumParameters: curriculumInformation.curriculumParameters
     });
 
     // If a progression was initialized
@@ -120,7 +127,7 @@ schema.methods.resetProgression = async function () {
     const newProgression = new Progression({
         userReference: this._id,
         curriculumReference: this.curriculum,
-        curriculumParameters: parameters.curriculumParameters
+        curriculumParameters: parameters.curriculumParameters // TODO: Put back the same parameters
     });
 
     // If a progression was initialized and the last progression was not started, we descard it
