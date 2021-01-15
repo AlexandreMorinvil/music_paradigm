@@ -6,12 +6,12 @@ const User = db.User;
 module.exports = {
     getAll,
     getById,
-    create,
+    createUser,
+    updateUser,
+    deleteUser,
     assignCurriculum,
     updateProgression,
     resetProgression,
-    update,
-    delete: _delete
 };
 
 async function getAll() {
@@ -30,7 +30,7 @@ async function getById(id) {
     }
 }
 
-async function create(userParameters) {
+async function createUser(userParameters) {
     try {
         const { user, curriculum } = userParameters;
         const userCreated = await User.create(user);
@@ -46,10 +46,10 @@ async function create(userParameters) {
     }
 }
 
-async function update(id, userIdentity) {
+async function updateUser(id, userParameters) {
     try {
         const user = await User.findById(id);
-        return await user.updateIdentity(userIdentity);
+        return await user.updateUser(userParameters);
     } catch (err) {
         switch (err.code) {
             case 11000:
@@ -60,12 +60,9 @@ async function update(id, userIdentity) {
     }
 }
 
-async function _delete(id) {
+async function deleteUser(userId) {
     try {
-        const user = await User.findById(id);
-        if (!user) throw new Error('User to delete not found');
-
-        return await user.remove();
+        return await User.delete(userId);
     } catch (err) {
         throw err;
     }
@@ -75,7 +72,8 @@ async function _delete(id) {
 async function assignCurriculum(userId, curriculumId) {
     try {
         const user = await User.findById(userId);
-        return await user.initializeCurriculum(curriculumId);
+        await user.initializeCurriculum(curriculumId);
+        return user;
     } catch (err) {
         throw err;
     }

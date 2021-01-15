@@ -32,6 +32,14 @@ export default {
 		state.status.isDeleting = false;
 	},
 
+	indicateAssignCurriculumRequest(state) {
+		state.status.isAssigningCurriculum = true;
+	},
+
+	indicateAssignCurriculumRequestEnd(state) {
+		state.status.isAssigningCurriculum = false;
+	},
+
 	// Setters
 	setSelectedUser(state, user) {
 		state.selection = {};

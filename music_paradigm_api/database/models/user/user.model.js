@@ -23,6 +23,12 @@ schema.statics.create = async function (userParameters) {
     return user.save();
 };
 
+schema.statics.delete = async function (userId) {
+    const user = await this.findById(userId);
+    user.progressions.pull();
+    await removeAllProgressions(this._id);
+    return await user.remove();
+};
 
 schema.statics.getListAllHeaders = async function () {
     const usersList = await this.find({ role: roles.user }).populate({ path: 'curriculum', select: 'title' }).sort({ role: 1, username: 1 });
@@ -49,12 +55,11 @@ schema.statics.getCurriculumAndProgressionData = async function (userId) {
 };
 
 schema.statics.getLastProgression = async function (userId) {
-    const user = await this.findById(userId, { progressions: { $slice: -1 } }).populate({ path: 'progressions' });
-    return user.progressions[0];
+    return getLastProgression({ _id: userId }, this) || {};
 };
 
 // Instance methods
-schema.methods.updateIdentity = async function (updatedUser) {
+schema.methods.updateUser = async function (updatedUser) {
     if (updatedUser.hasOwnProperty('username')) this.username = updatedUser.username;
     if (updatedUser.hasOwnProperty('email')) this.email = updatedUser.email;
     if (updatedUser.hasOwnProperty('password')) this.password = updatedUser.password;
@@ -62,84 +67,78 @@ schema.methods.updateIdentity = async function (updatedUser) {
     if (updatedUser.hasOwnProperty('firstName')) this.firstName = updatedUser.firstName;
     if (updatedUser.hasOwnProperty('middleName')) this.middleName = updatedUser.middleName;
     if (updatedUser.hasOwnProperty('lastName')) this.lastName = updatedUser.lastName;
-    if (updatedUser.hasOwnProperty('curriculum')) this.curriculum = updatedUser.curriculum || undefined;
 
     return this.save();
 };
 
 schema.methods.initializeCurriculum = async function (curriculumInformation) {
-    const Progression = require('database/models/progression/progression.model');
-
     // Assign curriculum
     if (!curriculumInformation.curriculum) return;
     this.curriculum = curriculumInformation.curriculum;
 
-    // Get last progression
-    const user = await model.findById(this._id, { progressions: { $slice: -1 } }).populate({ path: 'progressions' });
-    const progressions = user.progressions;
-    const lastProgression = progressions[0];
-
-    // Initialize progression
-    const newProgression = new Progression({
-        userReference: this._id,
-        curriculumReference: this.curriculum,
-        curriculumParameters: curriculumInformation.curriculumParameters
-    });
-
-    // If a progression was initialized
+    // Initialize Progression
+    const lastProgression = await getLastProgression(this, model);
     if (lastProgression) {
-        // If the last progression was not started, we descard it
-        if (!lastProgression.wasStarted()) {
-            this.progressions.pull({ _id: lastProgression._id });
-            lastProgression.remove();
+        if (lastProgression.wasStarted() && lastProgression.isForCurriculum(this.curriculum)) { }
+        else {
+            await removeProgression(this, lastProgression);
+            addNewProgression(this, curriculumInformation);
         }
-        // If the last progression does not correspond to the assigned curriculum, we add a progression
-        else if (!lastProgression.isForCurriculum(this.curriculum))
-            this.progressions.push(newProgression)
-    }
-    // Else if no progression was initialized, we add a progression
-    else this.progressions.push(newProgression);
+    } else addNewProgression(this, curriculumInformation);
 
     return await this.save();
 }
 
 schema.methods.updateCurriculum = async function (parameters) {
-    // Get last progression
-    const user = await model.findById(this._id, { progressions: { $slice: -1 } }).populate({ path: 'progressions' });
-    const progressions = user.progressions;
-    const lastProgression = progressions[0];
-
-    // Update parameters 
+    const lastProgression = await getLastProgression(this, model);
     if (parameters.hasOwnProperty('curriculumParameters')) lastProgression.curriculumParameters = parameters.curriculumParameters;
 
     return await this.save();
 }
 
 schema.methods.resetProgression = async function () {
-    const Progression = require('database/models/progression/progression.model');
-
-    // Get last progression
-    const user = await model.findById(this._id, { progressions: { $slice: -1 } }).populate({ path: 'progressions' });
-    const progressions = user.progressions;
-    const lastProgression = progressions[0];
-
-    // Initialize progression
-    const newProgression = new Progression({
-        userReference: this._id,
-        curriculumReference: this.curriculum,
-        curriculumParameters: parameters.curriculumParameters // TODO: Put back the same parameters
-    });
-
-    // If a progression was initialized and the last progression was not started, we descard it
-    if (lastProgression && !lastProgression.wasStarted()) {
-        this.progressions.pull({ _id: lastProgression });
-        lastProgression.remove();
-    }
-
-    // We add a new progression
-    this.progressions.push(newProgression);
+    const lastProgression = await getLastProgression(this, model);
+    addNewProgression(this, curriculumInformation);
+    if (lastProgression && !lastProgression.wasStarted()) await removeProgression(this, lastProgression);
 
     return await this.save();
+}
+
+schema.methods.getCurriculumSummary = async function () {
+    const lastProgression = await getLastProgression(this, model);
+    if (!lastProgression) return null;
+    else return {
+        curriculum: lastProgression.curriculumReference,
+        curriculumParameters: lastProgression.curriculumParameters,
+    };
+}
+
+// Helper functions
+async function getLastProgression(instance, model) {
+    const user = await model.findById(instance._id, { progressions: { $slice: -1 } }).populate({ path: 'progressions' });
+    const progressions = user.progressions;
+    const lastProgression = progressions[0];
+    return lastProgression;
+}
+
+function addNewProgression(instance, parameters) {
+    const Progression = require('database/models/progression/progression.model');
+    const newProgression = new Progression({
+        userReference: instance._id,
+        curriculumReference: instance.curriculum,
+        curriculumParameters: parameters.curriculumParameters || null
+    });
+    instance.progressions.push(newProgression);
+}
+
+async function removeProgression(instance, progression) {
+    instance.progressions.pull({ _id: progression._id });
+    progression.remove();
+}
+
+async function removeAllProgressions(userId) {
+    const Progression = require('database/models/progression/progression.model');
+    Progression.remove({ userReference: userId });
 }
 
 // Creating the model

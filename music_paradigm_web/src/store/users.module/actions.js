@@ -93,4 +93,23 @@ export default {
 				commit('indicateDeleteRequestEnd');
 			});
 	},
+
+	assignCurriculum({ commit, dispatch }, user) {
+		commit('indicateAssignCurriculumRequest');
+		return userService
+			.register(user)
+			.then(
+				(createdUser) => {
+					commit('setSelectedUser', createdUser);
+					dispatch('alert/setSuccessAlert', 'Curriculum assignation sucessful', { root: true });
+					dispatch('fetchAllUsersHeaders');
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateAssignCurriculumRequestEnd');
+			});
+	},
 };

@@ -4,6 +4,7 @@ export default {
 		isCreating: false,
 		isUpdating: false,
 		isDeleting: false,
+		isAssigningCurriculum: false,
 	},
 
 	selection: {

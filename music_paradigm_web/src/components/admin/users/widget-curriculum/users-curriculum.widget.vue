@@ -3,8 +3,8 @@
 		<users-curriculum-form-component class="editor-position inner-widget" ref="curriculumForm" />
 
 		<div class="submission-buttons-position">
-			<button v-on:click="assignSelectedToForm" class="widget-button blue" :class="{ isInitialButtonActive: 'innactive' }">Initial</button>
-			<button v-on:click="submitCurriculumToAssign" class="widget-button green">Assign</button>
+			<button v-on:click="assignSelectedToForm" class="widget-button blue" :class="{ isRevertButtonActive: 'inactive' }">Revert</button>
+			<button v-on:click="submitCurriculumToAssign" class="widget-button green" :class="{ isRevertButtonActive: 'inactive' }">Assign</button>
 			<button v-on:click="submitParametersToUpdate" class="widget-button blue">Update Program</button>
 			<button v-on:click="submitProgressionToReset" class="widget-button red">Reset Progression</button>
 		</div>
@@ -24,9 +24,11 @@ export default {
 	},
 	computed: {
 		...mapGetters('users', ['hasSelectedUser', 'userSelectedId']),
-		isInitialButtonActive() {
-			// TODO: I AM HEREEEEERRE NOOOWWWWWW
-			return this.$refs.curriculumForm.wasModified;
+		isRevertButtonActive() {
+			return this.$refs.curriculumForm.wasCurriculumModified;
+		},
+		isAssignButtonActive() {
+			return this.$refs.curriculumForm.wasCurriculumModified;
 		},
 	},
 	methods: {
@@ -36,12 +38,14 @@ export default {
 			return this.$refs.curriculumForm.bundleCurriculumForm();
 		},
 		assignSelectedToForm() {
+			if (!this.isRevertButtonActive) return;
 			this.$refs.editorForm.assignSelectedToForm();
 		},
-		// submitUserToCreate() {
-		// 	const userToCreate = this.bundleUserCurriculumInformation();
-		// 	this.createUser(userToCreate);
-		// },
+		submitCurriculumToAssign() {
+			if (!this.isAssignButtonActive) return;
+			const curriculumParameters = this.bundleUserCurriculumInformation();
+			this.assignCurriculum(curriculumParameters);
+		},
 		// submitUserToUpdate() {
 		// 	const answer = window.confirm('Are your sure you want to edit the user(s)?');
 		// 	if (answer) {

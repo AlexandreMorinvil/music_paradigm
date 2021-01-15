@@ -156,6 +156,7 @@
 .widget-button.inactive:active {
   background-color: rgb(160, 160, 160);
   border-color: rgb(180, 180, 180);
+  color: grey;
   cursor: default;
   outline: none;
 }

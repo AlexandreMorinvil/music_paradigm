@@ -17,34 +17,6 @@ router.delete('/:id',               jwtAuthorize(role.admin),  _delete);
 
 module.exports = router;
 
-function register(req, res, next) {
-    userService.create(req.body)
-        .then(result => res.status(200).json(result))
-        .catch(error => res.status(400).json({ message: error.message }))
-        .finally(() => next());
-}
-
-function assignCurriculum(req, res, next) {
-    userService.assignCurriculum(req.params.id, req.body.curriculum)
-        .then(result => res.status(200).json(result))
-        .catch(error => res.status(400).json({ message: error.message }))
-        .finally(() => next());
-}
-
-function updateProgression(req, res, next) {
-    userService.updateProgression(req.params.id, req.body)
-        .then(result => res.status(200).json(result))
-        .catch(error => res.status(400).json({ message: error.message }))
-        .finally(() => next());
-}
-
-function resetProgression(req, res, next) {
-    userService.getById(req.params.id, req.body)
-        .then(result => res.status(200).json(result))
-        .catch(error => res.status(400).json({ message: error.message }))
-        .finally(() => next());
-}
-
 function getAll(req, res, next) {
     userService.getAll()
         .then(result => res.status(200).json(result))
@@ -66,15 +38,43 @@ function getById(req, res, next) {
         .finally(() => next());
 }
 
+function register(req, res, next) {
+    userService.createUser(req.body)
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
 function update(req, res, next) {
-    userService.update(req.params.id, req.body)
+    userService.updateUser(req.params.id, req.body)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
 }
 
 function _delete(req, res, next) {
-    userService.delete(req.params.id)
+    userService.deleteUser(req.params.id)
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
+function assignCurriculum(req, res, next) {
+    userService.assignCurriculum(req.params.id, req.body.curriculum)
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
+function updateProgression(req, res, next) {
+    userService.updateProgression(req.params.id, req.body)
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
+function resetProgression(req, res, next) {
+    userService.getById(req.params.id, req.body)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());

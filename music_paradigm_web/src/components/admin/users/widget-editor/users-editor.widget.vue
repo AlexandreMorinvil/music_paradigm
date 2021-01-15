@@ -11,7 +11,7 @@
 			<form submit.prevent ref="upload" style="display: none">
 				<input type="file" id="myfile" name="myfile" v-on:change="handleUploadUsers" ref="fileInput" />
 			</form>
-			<button v-on:click="$refs.fileInput.click()" class="widget-button blue">Upload</button>
+			<button class="widget-button inactive">Upload</button>
 			<button v-on:click="submitUserToCreate" class="widget-button green">Create</button>
 			<button v-on:click="submitUserToUpdate" class="widget-button blue">Update</button>
 			<button v-on:click="submitUserToDelete" class="widget-button red">Delete</button>
