@@ -248,6 +248,10 @@ export default {
 		return Boolean(state.state.content.interactivePiano);
 	},
 
+	hasInteractiveKeyboard: (state) => {
+		return Boolean(state.state.content.interactiveKeyboard);
+	},
+
 	hasPicture: (state) => {
 		return Boolean(state.state.content.pictureName);
 	},

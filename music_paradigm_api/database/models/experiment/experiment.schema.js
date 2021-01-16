@@ -54,6 +54,7 @@ const schema = new Schema(
                     textContent: { type: [], default: undefined },
                     pictureFileName: { type: [], default: undefined },
                     interactivePiano: { type: [], default: undefined },
+                    interactiveKeyboard: { type: [], default: undefined },
                     midiFileName: { type: [String], default: undefined },
                     videoFileName: { type: [String], default: undefined },
                     referenceKeyboardKeys: { type: [[String]], default: undefined },

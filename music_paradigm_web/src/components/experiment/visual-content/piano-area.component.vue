@@ -1,6 +1,6 @@
 <template>
 	<div id="piano-area" v-if="hasInteractivePiano" class="centered-content">
-		<piano-visual-display-component class="visual-piano" v-if="hasInteractivePiano" />
+		<piano-visual-display-component class="visual-piano" />
 	</div>
 </template>
 

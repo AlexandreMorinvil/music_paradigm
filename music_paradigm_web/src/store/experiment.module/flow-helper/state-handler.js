@@ -155,6 +155,7 @@ function updateStateContent(currentState, flow, cursor, isInitialized) {
 		pictureFileName,
 		helperImageFileName,
 		interactivePiano,
+		interactiveKeyboard,
 	} = currentBlock;
 
 	// Parsing the cursor
@@ -164,6 +165,7 @@ function updateStateContent(currentState, flow, cursor, isInitialized) {
 	let updatedPictureFileName = Array.isArray(pictureFileName) ? pictureFileName[piledContentIndex] || null : null;
 	let updatedHelperImageFileName = Array.isArray(helperImageFileName) ? helperImageFileName[piledContentIndex] || null : null;
 	let updatedInteractivePiano = Array.isArray(interactivePiano) ? interactivePiano[piledContentIndex] || false : false;
+	let updatedInteractiveKeyboard = Array.isArray(interactiveKeyboard) ? interactiveKeyboard[piledContentIndex] || false : false;
 
 	const innerStepIndex = cursor.current.innerStepIndex;
 
@@ -171,11 +173,13 @@ function updateStateContent(currentState, flow, cursor, isInitialized) {
 	if (Array.isArray(updatedPictureFileName)) updatedPictureFileName = updatedPictureFileName[innerStepIndex];
 	if (Array.isArray(updatedHelperImageFileName)) updatedHelperImageFileName = updatedHelperImageFileName[innerStepIndex];
 	if (Array.isArray(updatedInteractivePiano)) updatedInteractivePiano = updatedInteractivePiano[innerStepIndex];
+	if (Array.isArray(updatedInteractiveKeyboard)) updatedInteractiveKeyboard = updatedInteractiveKeyboard[innerStepIndex];
 
 	currentState.content.text = updatedTextContent || '';
 	currentState.content.pictureName = updatedPictureFileName || '';
 	currentState.content.helperImageName = updatedHelperImageFileName || '';
 	currentState.content.interactivePiano = updatedInteractivePiano || false;
+	currentState.content.interactiveKeyboard = updatedInteractiveKeyboard || false;
 
 	// Indicate that the media files is initialized
 	Object.assign(isInitialized, { content: false });

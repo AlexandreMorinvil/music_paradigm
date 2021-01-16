@@ -1,6 +1,6 @@
 <template>
 	<!-- The HTML definition of this piano adapted from the open source project : https://codepen.io/zastrow/pen/oDBki -->
-	<div id="container">
+	<div id="keyboard-container">
 		<ul id="keyboard">
 			<li class="symbol"><span class="off">`</span><span class="on">~</span></li>
 			<li class="symbol"><span class="off">1</span><span class="on">!</span></li>
@@ -132,36 +132,18 @@ export default {
 	// 			if (this.interactivePiano === 'all') this.hintAllNotes();
 	// 		},
 	// 	},
-	},
+	// },
 };
 </script>
 
 <style scoped>
-/* The CSS definition of this piano adapted from the open
-source project : https://codepen.io/zastrow/pen/oDBki */
-* {
-	margin: 0;
-	padding: 0;
-}
-body {
-	font: 71%/1.5 Verdana, Sans-Serif;
-	background: #eee;
-}
-#container {
+#keyboard-container {
 	margin: 100px auto;
 	width: 688px;
-}
-#write {
-	margin: 0 0 5px;
-	padding: 5px;
-	width: 671px;
-	height: 200px;
-	font: 1em/1.5 Verdana, Sans-Serif;
-	background: #fff;
-	border: 1px solid #f9f9f9;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+	color: black;
+	background-color: grey;
+	padding: 12px;
+	border-radius: 10px;
 }
 #keyboard {
 	margin: 0;

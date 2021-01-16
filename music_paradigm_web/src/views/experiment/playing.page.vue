@@ -2,6 +2,7 @@
 	<div id="playing-state" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
 		<image-area-component class="image-area state-section" />
+		<keyboard-area-component class="piano-area state-section" />
 		<piano-area-component class="piano-area state-section" />
 		<component :is="playingMode" class="play-area state-section" v-on:finished-playing="handdleEndOfPlaying" ref="playingMode" />
 	</div>
@@ -13,6 +14,7 @@ import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-eve
 import { mapActions, mapGetters } from 'vuex';
 
 import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
+import KeyboardAreaComponent from '@/components/experiment/visual-content/keyboard-area.component.vue';
 import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
@@ -26,6 +28,7 @@ export default {
 	components: {
 		TextAreaComponent,
 		ImageAreaComponent,
+		KeyboardAreaComponent,
 		PianoAreaComponent,
 		speed: PlayingSpeedComponent,
 		rhythm: PlayingRhythmComponent,

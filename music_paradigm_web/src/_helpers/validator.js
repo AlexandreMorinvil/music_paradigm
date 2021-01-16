@@ -141,6 +141,7 @@ function validateBlock(block, index = null) {
 		'type',
 		'textContent',
 		'interactivePiano',
+		'interactiveKeyboard',
 		'pictureFileName',
 		'helperImageFileName',
 		'midiFileName',
@@ -257,6 +258,7 @@ function validateAttributeType(key, value) {
 		case 'helperImageFileName':
 		case 'videoFileName':
 		case 'interactivePiano':
+		case 'interactiveKeyboard':
 		case 'midiFileName':
 		case 'referenceKeyboardKeys':
 			if (!Array.isArray(value)) {
@@ -276,12 +278,13 @@ function validateAttributeType(key, value) {
 
 				// Array of String or boolean OR array of array of string or boolean
 				case 'interactivePiano':
+				case 'interactiveKeyboard':
 					value.forEach((element, index) => {
 						if (!(typeof element === 'string' || typeof element === 'boolean' || Array.isArray(element))) {
 							throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String' or boolean or array`);
 						}
 
-						const allowedEntries = ['midi', 'first'];
+						const allowedEntries = ['all', 'midi', 'first'];
 						if (typeof element === 'string' && !allowedEntries.includes(element)) {
 							throw new Error(`The element number ${index + 1} in the array of the key '${key}' cannot have the value ${element}`);
 						}

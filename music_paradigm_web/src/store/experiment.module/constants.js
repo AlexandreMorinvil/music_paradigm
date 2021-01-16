@@ -123,6 +123,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			pictureName: '', // Name of the current picture to display
 			helperImageName: '', // Name of the helper image to display
 			interactivePiano: false, // <Boolean|String> Directive to display the interactive piano
+			interactiveKeyboard: false, // <Boolean|String> Directive to display the interactive keyboard
 		},
 		// Multimedia elements
 		mediaFile: {
