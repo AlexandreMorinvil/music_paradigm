@@ -1,5 +1,5 @@
 import constants from '../constants';
-import variableHandler from './variableHandler';
+import variableHandler from './variable-handler';
 
 export default {
 	setExperimentId,

@@ -1,4 +1,4 @@
-import blockHandler from './blockHandler';
+import blockHandler from './block-handler';
 import { routerNavigation } from '@/_helpers';
 
 export default {

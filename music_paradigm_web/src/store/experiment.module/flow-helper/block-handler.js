@@ -1,5 +1,5 @@
 import experimentStoreState from '../state';
-import variableHandler from './variableHandler';
+import variableHandler from './variable-handler';
 
 export default {
 	getCurrentBlock,

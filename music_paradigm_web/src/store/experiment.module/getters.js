@@ -1,7 +1,7 @@
 import constants from './constants';
 
-import blockHandler from './flowHelper/blockHandler';
-import cursorHandler from './flowHelper/cursorHandler';
+import blockHandler from './flow-helper/block-handler';
+import cursorHandler from './flow-helper/cursor-handler';
 
 export default {
 	experimentId: (state) => {

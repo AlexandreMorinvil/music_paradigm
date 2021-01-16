@@ -31,11 +31,10 @@ schema.statics.delete = async function (userId) {
 
 schema.statics.getListAllHeaders = async function () {
     const usersList = await this.find({ role: roles.user }).populate({ path: 'curriculum', select: 'title' }).sort({ role: 1, username: 1 });
+    
     const usersHeaderList = [];
-
     usersList.forEach(element => {
         const userHeader = element.toObject();
-
         // Adding the name of the current curriculum
         if (userHeader.curriculum) userHeader.curriculumTitle = userHeader.curriculum.title;
         else userHeader.curriculumTitle = "";
@@ -108,11 +107,13 @@ schema.methods.resetProgression = async function () {
     return await getLastProgression(this, model);
 }
 
-schema.methods.getLastProgression = async function () {
-    return await getLastProgression(this, model);
+// Helper functions
+async function getCurriculumAndProgressionData(instance, model) {
+    const curriculumAndProgression = await model.findById(instance._id, { curriculum: 1, progressions: { $slice: -1 } }).populate({ path: 'curriculum progressions' });
+    const { curriculum, progressions } = curriculumAndProgression.toObject();
+    return { curriculum: curriculum || null, progression: (progressions) ? progressions[0] : null }
 }
 
-// Helper functions
 async function getLastProgression(instance, model) {
     const user = await model.findById(instance._id, { progressions: { $slice: -1 } }).populate({ path: 'progressions' });
     const progressions = user.progressions;

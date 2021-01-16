@@ -1,6 +1,6 @@
-import blockHandler from './blockHandler';
-import stateHandler from './stateHandler';
-import variableHandler from './variableHandler';
+import blockHandler from './block-handler';
+import stateHandler from './state-handler';
+import variableHandler from './variable-handler';
 
 import constants from '../constants';
 

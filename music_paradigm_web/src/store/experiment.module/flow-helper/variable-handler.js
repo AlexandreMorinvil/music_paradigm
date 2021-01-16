@@ -1,4 +1,4 @@
-import blockHandler from './blockHandler';
+import blockHandler from './block-handler';
 import experimentStoreState from '../state';
 
 export default {
