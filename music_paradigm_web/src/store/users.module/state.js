@@ -7,9 +7,9 @@ export default {
 		isAssigningCurriculum: false,
 	},
 
-	selection: {
+	selectedUser: {
 		_id: null,
-		// The Rest of the parameters are also included
+
 		username: '',
 		email: '',
 		role: '',
@@ -18,6 +18,14 @@ export default {
 		middleName: '',
 		lastName: '',
 		curriculum: null,
+	},
+
+	selectedUserProgression: {
+		userReference: '',
+		curriculumReference: '',
+		startTime: null,
+		lastProgressionDate: null,
+		curriculumParameters: [],
 	},
 
 	usersHeadersList: [

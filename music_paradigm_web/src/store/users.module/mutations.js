@@ -42,12 +42,18 @@ export default {
 
 	// Setters
 	setSelectedUser(state, user) {
-		state.selection = {};
-		Object.assign(state.selection, user);
+		state.selectedUser = {};
+		Object.assign(state.selectedUser, user);
+	},
+
+	setSelectedProgression(state, userProgression) {
+		state.selectedUserProgression = {};
+		Object.assign(state.selectedUserProgression, userProgression);
 	},
 
 	unsetSelectedUser(state) {
-		state.selection = {};
+		state.selectedUser = {};
+		state.selectedUserProgression = {};
 	},
 
 	setHeadersList(state, usersHeadersLst) {

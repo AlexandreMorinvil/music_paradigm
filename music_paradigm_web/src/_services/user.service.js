@@ -58,7 +58,7 @@ function assignCurriculum(userId, curriculumParameters) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(curriculumParameters),
 	};
-	return fetch(url.users(userId), requestOptions).then(handleResponse);
+	return fetch(url.users('assign-curriculum/' + userId), requestOptions).then(handleResponse);
 }
 
 function handleResponse(reponse) {

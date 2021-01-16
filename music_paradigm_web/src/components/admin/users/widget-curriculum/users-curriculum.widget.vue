@@ -1,12 +1,14 @@
 <template>
 	<div id="users-editor" class="widget widget-bg">
-		<users-curriculum-form-component class="editor-position inner-widget" ref="curriculumForm" />
+		<users-curriculum-form-component class="editor-position inner-widget" ref="userCurriculumForm" />
 
 		<div class="submission-buttons-position">
-			<button v-on:click="assignSelectedToForm" class="widget-button blue" :class="{ isRevertButtonActive: 'inactive' }">Revert</button>
-			<button v-on:click="submitCurriculumToAssign" class="widget-button green" :class="{ isRevertButtonActive: 'inactive' }">Assign</button>
-			<button v-on:click="submitParametersToUpdate" class="widget-button blue">Update Program</button>
-			<button v-on:click="submitProgressionToReset" class="widget-button red">Reset Progression</button>
+			<button v-on:click="assignSelectedToForm" class="widget-button blue" :class="{ inactive: !isRevertButtonActive }">Revert</button>
+			<button v-on:click="submitCurriculumToAssign" class="widget-button green" :class="{ inactive: !isAssignButtonActive }">
+				Assign Curriculum
+			</button>
+			<button v-on:click="submitParametersToUpdate" class="widget-button blue" :class="{ inactive: !isUpdateButtonActive }">Update Parameters</button>
+			<button v-on:click="submitProgressionToReset" class="widget-button red" :class="{ inactive: !isResetButtonActive }">Reset Progression</button>
 		</div>
 	</div>
 </template>
@@ -22,29 +24,40 @@ export default {
 	components: {
 		UsersCurriculumFormComponent,
 	},
+	data() {
+		return {
+			isRevertButtonActive: false,
+			isAssignButtonActive: false,
+			isUpdateButtonActive: false,
+		};
+	},
 	computed: {
-		...mapGetters('users', ['hasSelectedUser', 'userSelectedId']),
-		isRevertButtonActive() {
-			return this.$refs.curriculumForm.wasCurriculumModified;
-		},
-		isAssignButtonActive() {
-			return this.$refs.curriculumForm.wasCurriculumModified;
+		...mapGetters('users', ['hasSelectedUser', 'userSelectedId', 'hasCurriculumToSelectedUser']),
+		isResetButtonActive() {
+			return this.hasSelectedUser && this.hasCurriculumToSelectedUser;
 		},
 	},
 	methods: {
 		...mapActions('curriculums', ['fetchAllCurriculumHeaders']),
 		...mapActions('users', ['assignCurriculum', 'updateProgression', 'resetProgression']),
 		bundleUserCurriculumInformation() {
-			return this.$refs.curriculumForm.bundleCurriculumForm();
+			return this.$refs.userCurriculumForm.bundleCurriculumForm();
 		},
 		assignSelectedToForm() {
 			if (!this.isRevertButtonActive) return;
-			this.$refs.editorForm.assignSelectedToForm();
+			this.$refs.userCurriculumForm.assignSelectedToForm();
 		},
 		submitCurriculumToAssign() {
 			if (!this.isAssignButtonActive) return;
 			const curriculumParameters = this.bundleUserCurriculumInformation();
-			this.assignCurriculum(curriculumParameters);
+			this.assignCurriculum({ userId: this.userSelectedId, curriculumParameters: curriculumParameters });
+		},
+		submitParametersToUpdate() {
+			if (!this.isUpdateButtonActive) return;
+			console.log('update');
+		},
+		submitProgressionToReset() {
+			console.log('reset');
 		},
 		// submitUserToUpdate() {
 		// 	const answer = window.confirm('Are your sure you want to edit the user(s)?');
@@ -66,9 +79,19 @@ export default {
 		// handleUnselection() {
 		// 	this.unsetSelectedUser();
 		// },
+		evaluateIsRevertButtonActive(wasFormModified) {
+			this.isRevertButtonActive = this.hasSelectedUser && wasFormModified;
+		},
+		evaluateIsAssignButtonActive(wasCurriculumModified) {
+			this.isAssignButtonActive = this.hasSelectedUser && wasCurriculumModified;
+		},
 	},
 	beforeMount() {
 		this.fetchAllCurriculumHeaders();
+	},
+	mounted() {
+		this.$watch(() => this.$refs.userCurriculumForm.wasFormModified, this.evaluateIsRevertButtonActive, { immediate: true });
+		this.$watch(() => this.$refs.userCurriculumForm.wasCurriculumModified, this.evaluateIsAssignButtonActive, { immediate: true });
 	},
 };
 </script>

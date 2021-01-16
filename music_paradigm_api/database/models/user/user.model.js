@@ -24,9 +24,8 @@ schema.statics.create = async function (userParameters) {
 };
 
 schema.statics.delete = async function (userId) {
-    const user = await this.findById(userId);
-    user.progressions.pull();
-    await removeAllProgressions(this._id);
+    const user = await model.findById(userId);
+    await removeAllProgressions(user, userId);
     return await user.remove();
 };
 
@@ -55,7 +54,7 @@ schema.statics.getCurriculumAndProgressionData = async function (userId) {
 };
 
 schema.statics.getLastProgression = async function (userId) {
-    return getLastProgression({ _id: userId }, this) || {};
+    return getLastProgression({ _id: userId }, this) || null;
 };
 
 // Instance methods
@@ -73,7 +72,7 @@ schema.methods.updateUser = async function (updatedUser) {
 
 schema.methods.initializeCurriculum = async function (curriculumInformation) {
     // Assign curriculum
-    if (!curriculumInformation.curriculum) return;
+    if (!curriculumInformation.curriculum) return null;
     this.curriculum = curriculumInformation.curriculum;
 
     // Initialize Progression
@@ -86,14 +85,18 @@ schema.methods.initializeCurriculum = async function (curriculumInformation) {
         }
     } else addNewProgression(this, curriculumInformation);
 
-    return await this.save();
+    // Assign parameters
+    assignProgressionParameters(this, model, curriculumInformation);
+
+    await this.save();
+    return await getLastProgression(this, model);
 }
 
 schema.methods.updateCurriculum = async function (parameters) {
-    const lastProgression = await getLastProgression(this, model);
-    if (parameters.hasOwnProperty('curriculumParameters')) lastProgression.curriculumParameters = parameters.curriculumParameters;
+    assignProgressionParameters(this, model, parameters);
 
-    return await this.save();
+    await this.save();
+    return await getLastProgression(this, model);
 }
 
 schema.methods.resetProgression = async function () {
@@ -101,16 +104,12 @@ schema.methods.resetProgression = async function () {
     addNewProgression(this, curriculumInformation);
     if (lastProgression && !lastProgression.wasStarted()) await removeProgression(this, lastProgression);
 
-    return await this.save();
+    await this.save();
+    return await getLastProgression(this, model);
 }
 
-schema.methods.getCurriculumSummary = async function () {
-    const lastProgression = await getLastProgression(this, model);
-    if (!lastProgression) return null;
-    else return {
-        curriculum: lastProgression.curriculumReference,
-        curriculumParameters: lastProgression.curriculumParameters,
-    };
+schema.methods.getLastProgression = async function () {
+    return await getLastProgression(this, model);
 }
 
 // Helper functions
@@ -128,6 +127,7 @@ function addNewProgression(instance, parameters) {
         curriculumReference: instance.curriculum,
         curriculumParameters: parameters.curriculumParameters || null
     });
+    newProgression.save();
     instance.progressions.push(newProgression);
 }
 
@@ -136,9 +136,16 @@ async function removeProgression(instance, progression) {
     progression.remove();
 }
 
-async function removeAllProgressions(userId) {
+async function removeAllProgressions(instance) {
     const Progression = require('database/models/progression/progression.model');
-    Progression.remove({ userReference: userId });
+    instance.progressions.pull();
+    Progression.remove({ userReference: instance._id });
+}
+
+async function assignProgressionParameters(instance, model, parameters) {
+    const lastProgression = await getLastProgression(instance, model);
+    if (parameters.hasOwnProperty('curriculumParameters')) lastProgression.curriculumParameters = parameters.curriculumParameters;
+    return lastProgression;
 }
 
 // Creating the model

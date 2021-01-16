@@ -39,7 +39,8 @@ export default {
 			.register(user)
 			.then(
 				(createdUser) => {
-					commit('setSelectedUser', createdUser);
+					commit('setSelectedUser', createdUser.user);
+					commit('setSelectedProgression', createdUser.progression);
 					dispatch('alert/setSuccessAlert', 'User creation sucessful', { root: true });
 					dispatch('fetchAllUsersHeaders');
 				},
@@ -94,13 +95,14 @@ export default {
 			});
 	},
 
-	assignCurriculum({ commit, dispatch }, user) {
+	assignCurriculum({ commit, dispatch }, { userId, curriculumParameters }) {
 		commit('indicateAssignCurriculumRequest');
 		return userService
-			.register(user)
+			.assignCurriculum(userId, curriculumParameters)
 			.then(
-				(createdUser) => {
-					commit('setSelectedUser', createdUser);
+				(updatedUser) => {
+					commit('setSelectedUser', updatedUser.user);
+					commit('setSelectedProgression', updatedUser.progression);
 					dispatch('alert/setSuccessAlert', 'Curriculum assignation sucessful', { root: true });
 					dispatch('fetchAllUsersHeaders');
 				},

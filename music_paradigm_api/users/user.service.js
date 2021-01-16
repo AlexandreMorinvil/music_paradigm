@@ -34,8 +34,8 @@ async function createUser(userParameters) {
     try {
         const { user, curriculum } = userParameters;
         const userCreated = await User.create(user);
-        await userCreated.initializeCurriculum(curriculum);
-        return userCreated;
+        const progressionInitilized = await userCreated.initializeCurriculum(curriculum);
+        return { user: userCreated, progression: progressionInitilized };
     } catch (err) {
         switch (err.code) {
             case 11000:
@@ -72,8 +72,8 @@ async function deleteUser(userId) {
 async function assignCurriculum(userId, curriculumId) {
     try {
         const user = await User.findById(userId);
-        await user.initializeCurriculum(curriculumId);
-        return user;
+        const lastProgression = await user.initializeCurriculum(curriculumId);
+        return { user: user, progression: lastProgression };
     } catch (err) {
         throw err;
     }

@@ -31,6 +31,9 @@ export default {
 		wasCurriculumModified() {
 			return this.curriculum !== this.userSelectedCurriculum;
 		},
+		wasFormModified() {
+			return this.wasCurriculumModified;
+		},
 		curriculumsReferences() {
 			return this.curriculumsHeadersList;
 		},
@@ -50,14 +53,12 @@ export default {
 			else return '';
 		},
 		assignFormCurriculum(curriculum) {
-			this.curriculum = curriculum;
+			this.curriculum = curriculum || null;
 		},
 		assignSelectedToForm() {
-			this.assignUserId(this.userSelectedId);
 			this.assignFormCurriculum(this.userSelectedCurriculum);
 		},
 		clearForm() {
-			this.assignUserId('');
 			this.assignFormCurriculum(null);
 		},
 	},

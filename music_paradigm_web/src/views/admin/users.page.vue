@@ -8,8 +8,8 @@
 			<users-editor-widget ref="editor" v-on:create-user="submitUserToCreate" />
 		</widget-content-frame-component>
 
-		<widget-content-frame-component title="Curriculum handler" ref="curriculum">
-			<users-curriculum-widget ref="userCurriculum"/>
+		<widget-content-frame-component title="Curriculum Handler" ref="curriculum">
+			<users-curriculum-widget ref="userCurriculum" />
 		</widget-content-frame-component>
 
 		<widget-content-frame-component title="Overview Table">
