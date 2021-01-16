@@ -18,14 +18,7 @@ export default {
 		...mapGetters('keyboard', ['isKeyBoardInitialized', 'isKeyboardPaused', 'pressedKeyboardKeys', 'referenceKeys']),
 	},
 	methods: {
-		...mapActions('keyboard', [
-			'setInitializedState',
-			'addPressedKeyLog',
-			'addReleasedKeyLog',
-			'addMidiFileTriggeredKey',
-			'deleteReferenceTriggeredKey',
-			'deleteAllReferenceTriggeredKey',
-		]),
+		...mapActions('keyboard', ['setInitializedKeyboardTracking', 'addPressedKeyLog', 'addReleasedKeyLog']),
 		/**
 		 * Handle the midi messages
 		 * @param {Object} midiNote
@@ -58,37 +51,36 @@ export default {
 		},
 		initKeyboardTracker() {
 			if (this.isKeyBoardInitialized) return;
-			this.setInitializingState(true);
 
 			// Keyboard events listeners
 			window.addEventListener('keydown', this.handleKeyPress);
 			window.addEventListener('keyup', this.handleKeyRelease);
 
-			this.setInitializedState(true);
+			this.setInitializedKeyboardTracking(true);
 		},
 		handleKeyPress(keyEvent) {
 			// If the key was already pressed, we ignore this signal (should never happen)
 			if (this.keyboardTracker[keyEvent.key]) return;
 			this.keyboardTracker[keyEvent.key] = true;
-			this.manageMidiNote({ isPressed: true, key: keyEvent.key });
+			this.manageKeyPress({ isPressed: true, key: keyEvent.key });
 		},
 		handleKeyRelease(keyEvent) {
 			this.keyboardTracker[keyEvent.key] = false;
-			this.manageMidiNote({ isPressed: false, key: keyEvent.key });
+			this.manageKeyPress({ isPressed: false, key: keyEvent.key });
 		},
 		terminateKeyboardTracker() {
-			this.setInitializedState(false);
+			this.setInitializedKeyboardTracking(false);
 			window.removeEventListener('keydown', this.handleKeyPress);
 			window.removeEventListener('keyup', this.handleKeyRelease);
 		},
 	},
 	mounted() {
-		KeyboardEventBus.$on(keyboardEvents.EVENT_TRACKER_INIT_REQUEST, this.initPiano);
+		KeyboardEventBus.$on(keyboardEvents.EVENT_TRACKER_INIT_REQUEST, this.initKeyboardTracker);
 		KeyboardEventBus.$on(keyboardEvents.EVENT_TRACKER_TERMINATE_REQUEST, this.terminateKeyboardTracker);
 	},
 	beforeDestroy() {
 		this.terminateKeyboardTracker();
-		KeyboardEventBus.$off(keyboardEvents.EVENT_TRACKER_INIT_REQUEST, this.initPiano);
+		KeyboardEventBus.$off(keyboardEvents.EVENT_TRACKER_INIT_REQUEST, this.initKeyboardTracker);
 		KeyboardEventBus.$off(keyboardEvents.EVENT_TRACKER_TERMINATE_REQUEST, this.terminateKeyboardTracker);
 	},
 };

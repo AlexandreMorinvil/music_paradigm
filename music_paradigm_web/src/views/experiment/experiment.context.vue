@@ -45,7 +45,7 @@ export default {
 		...mapActions('log', ['initializeLogSession']),
 		initializeControl() {
 			if (this.controlType === 'piano') PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);
-			if (this.controlType === 'keyboard') KeyboardEventBus.$emit(keyboardEvents.EVENT_TRACKER_INIT_REQUEST);
+			KeyboardEventBus.$emit(keyboardEvents.EVENT_TRACKER_INIT_REQUEST);
 		},
 		terminateControl() {
 			PianoEventBus.$emit(pianoEvents.EVENT_PIANO_TERMINATE_REQUEST);
