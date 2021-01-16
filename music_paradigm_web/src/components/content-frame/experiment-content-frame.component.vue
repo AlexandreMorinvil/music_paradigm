@@ -72,6 +72,7 @@ export default {
 
 .experiment-content-grid {
 	display: grid;
+	position: relative;
 	justify-content: center;
 	align-content: space-between;
 	grid-template-columns: 1fr;

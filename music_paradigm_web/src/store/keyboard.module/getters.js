@@ -13,9 +13,13 @@ export default {
 		return state.pressedKeys;
 	},
 
-	// Getters for the played notes
 	pressedKeyboardKeys: (state) => {
 		return state.played.presses.keys;
+	},
+
+	// Getter for the reference keys
+	referenceKeyboardKeys: (state) => {
+		return state.referenceKeys;
 	},
 
 	results: (state) => {

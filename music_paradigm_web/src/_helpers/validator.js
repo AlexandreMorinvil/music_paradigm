@@ -145,6 +145,7 @@ function validateBlock(block, index = null) {
 		'helperImageFileName',
 		'midiFileName',
 		'videoFileName',
+		'referenceKeyboardKeys',
 		'numberRepetition',
 		'followedBy',
 		'anyPianoKey',
@@ -257,6 +258,7 @@ function validateAttributeType(key, value) {
 		case 'videoFileName':
 		case 'interactivePiano':
 		case 'midiFileName':
+		case 'referenceKeyboardKeys':
 			if (!Array.isArray(value)) {
 				throw new Error(`The key '${key}' must be of type 'Array'`);
 			}
@@ -324,6 +326,20 @@ function validateAttributeType(key, value) {
 								}
 							});
 						}
+					});
+					break;
+
+				case 'referenceKeyboardKeys':
+					value.forEach((element, index) => {
+						if (!Array.isArray(element)) throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'Array`);
+						element.forEach((subElement, subIndex) => {
+							if (!(typeof subElement === 'string')) {
+								throw new Error(
+									// eslint-disable-next-line prettier/prettier
+									`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String'`,
+								);
+							}
+						});
 					});
 					break;
 

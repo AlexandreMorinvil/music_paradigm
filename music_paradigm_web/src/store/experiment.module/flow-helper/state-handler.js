@@ -124,6 +124,7 @@ function updateStateMediaFiles(currentState, flow, cursor, isInitialized) {
 		// Media files
 		midiFileName,
 		videoFileName,
+		referenceKeyboardKeys,
 	} = currentBlock;
 
 	// Parsing the cursor
@@ -134,10 +135,12 @@ function updateStateMediaFiles(currentState, flow, cursor, isInitialized) {
 
 	const updatedMidiFileName = Array.isArray(midiFileName) ? midiFileName[mediaIndex] || null : null;
 	const updatedVideoFileName = Array.isArray(videoFileName) ? videoFileName[mediaIndex] || null : null;
+	const updatedReferenceKeyboardKeys = Array.isArray(referenceKeyboardKeys) ? referenceKeyboardKeys[mediaIndex] || null : null;
 
 	const oldMediaFile = currentState.mediaFile;
 	currentState.mediaFile.midiName = updatedMidiFileName || oldMediaFile.midiName;
 	currentState.mediaFile.videoName = updatedVideoFileName || oldMediaFile.videoName;
+	currentState.mediaFile.referenceKeyboardKeys = updatedReferenceKeyboardKeys || oldMediaFile.referenceKeyboardKeys;
 
 	// Indicate that the media files is initialized
 	Object.assign(isInitialized, { media: true });

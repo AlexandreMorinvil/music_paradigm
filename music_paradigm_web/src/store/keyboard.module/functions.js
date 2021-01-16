@@ -1,9 +1,9 @@
 // This code is put in a function as it is used in more than one mutation
 export default {
-	selectConsideredNotes,
+	selectConsideredKeys,
 };
 
-function selectConsideredNotes(allKeys, startIndex) {
+function selectConsideredKeys(allKeys, startIndex) {
 	const keys = JSON.parse(JSON.stringify(allKeys));
 
 	keys.keys.splice(0, startIndex);

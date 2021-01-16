@@ -86,6 +86,10 @@ export default {
 		return `${state.description.folder}/${videoName}`;
 	},
 
+	referenceKeyboardKeys: (state) => {
+		return state.state.mediaFile.referenceKeyboardKeys;
+	},
+
 	// Geters for the state attributes
 	currentStateType: (state) => {
 		// Return the type of the current state

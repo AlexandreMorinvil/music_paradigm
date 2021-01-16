@@ -30,7 +30,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['midiName', 'controlType']),
+		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType']),
 		currentStateIcon() {
 			return this.getIconReference(this.currentStateType);
 		},
@@ -41,6 +41,7 @@ export default {
 	methods: {
 		...mapActions('session', ['concludeSession']),
 		...mapActions('experiment', ['updateState', 'goNextStep', 'goStepPostSkip', 'clearState', 'endExperimentByTimeout', 'concludeExperiment']),
+		...mapActions('keyboard', ['loadReferenceKeyboardKeys', 'resetPressedKeyboardKeysLogs', 'resetKeyboardTracking']),
 		...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
 		...mapActions('log', ['initializeLogSession']),
 		initializeControl() {
@@ -60,10 +61,12 @@ export default {
 			this.$refs.status.start();
 		},
 		navigateExperiment() {
+			this.resetPressedKeyboardKeysLogs();
 			this.resetPlayedNotesLogs();
 			this.goNextStep();
 		},
 		navigateExperimentSkip() {
+			this.resetPressedKeyboardKeysLogs();
 			this.resetPlayedNotesLogs();
 			this.goStepPostSkip();
 		},
@@ -103,6 +106,7 @@ export default {
 		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_ENDED, this.endExperiment);
 		ExperimentEventBus.$off(experimentEvents.EVENT_TIMES_UP, this.handleTimesUp);
 
+		this.resetKeyboardTracking();
 		this.resetPianoState();
 		this.clearState();
 	},
@@ -111,6 +115,14 @@ export default {
 			immediate: true,
 			handler: function (midiName) {
 				if (midiName !== '') this.loadMidiFile(this.midiName);
+			},
+		},
+
+		referenceKeyboardKeys: {
+			deept: true,
+			immediate: true,
+			handler: function (sequence) {
+				if (sequence) this.loadReferenceKeyboardKeys();
 			},
 		},
 	},

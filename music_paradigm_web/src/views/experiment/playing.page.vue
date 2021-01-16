@@ -16,6 +16,8 @@ import ImageAreaComponent from '@/components/experiment/visual-content/image-are
 import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
+import KeyboardPressingSpeedComponent from '@/components/experiment/playing-mode/keyboard-pressing-speed.component';
+
 import PlayingMelodyComponent from '@/components/experiment/playing-mode/playing-melody.component';
 import PlayingRhythmComponent from '@/components/experiment/playing-mode/playing-rhythm.component';
 import PlayingSpeedComponent from '@/components/experiment/playing-mode/playing-speed.component';
@@ -28,6 +30,7 @@ export default {
 		speed: PlayingSpeedComponent,
 		rhythm: PlayingRhythmComponent,
 		melody: PlayingMelodyComponent,
+		'keyboard-speed': KeyboardPressingSpeedComponent,
 	},
 	data() {
 		return {

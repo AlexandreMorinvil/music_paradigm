@@ -19,24 +19,33 @@ export default {
 	},
 
 	// Key interaction actions
-	addPressedKey: ({ commit }, key) => {
-		commit('addPressedKey', key);
+	addPressedKeyboardKey: ({ commit }, key) => {
+		commit('addPressedKeyboardKey', key);
 	},
-	deletePressedKey: ({ commit }, key) => {
-		commit('deletePressedKey', key);
+	deletePressedKeyboardKey: ({ commit }, key) => {
+		commit('deletePressedKeyboardKey', key);
 	},
 
 	// Log of played notes
-	addReleasedKeyLog: ({ commit }, key) => {
-		commit('addReleasedKeyLog', key);
+	addPressedKeyboardKeyLog: ({ commit }, key) => {
+		commit('addPressedKeyboardKeyLog', key);
 	},
 
-	addReleasedNoteLog: ({ commit }, key) => {
-		commit('addReleasedNoteLog', key);
+	addReleasedKeyboardKeyLog: ({ commit }, key) => {
+		commit('addReleasedKeyboardKeyLog', key);
 	},
 
-	resetPressedKeysLogs: ({ commit }) => {
-		commit('resetPressedKeysLogs');
+	resetPressedKeyboardKeysLogs: ({ commit }) => {
+		commit('resetPressedKeyboardKeysLogs');
+	},
+
+	// Midi file management
+	eraseReferenceKeyboardKeys: ({ commit }) => {
+		commit('eraseReferenceKeyboardKeys');
+	},
+	loadReferenceKeyboardKeys: ({ commit, dispatch, rootGetters }) => {
+		dispatch('eraseReferenceKeyboardKeys');
+		commit('loadReferenceKeyboardKeys', rootGetters['experiment/referenceKeyboardKeys']);
 	},
 
 	evaluateSpeedType: ({ commit, dispatch, getters }) => {

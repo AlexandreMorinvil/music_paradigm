@@ -32,6 +32,8 @@ schema.methods.update = async function (updatedCurriculum) {
     return this;
 };
 
+schema.methods.getParameters = async function () {}
+
 
 // Creating the model
 const model = mongoose.model('Curriculum', schema);

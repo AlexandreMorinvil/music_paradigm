@@ -128,6 +128,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 		mediaFile: {
 			midiName: '', // Name of the current midi file loaded in the player to play
 			videoName: '', // Name of the current video file to playback
+			referenceKeyboardKeys: [], // List of the reference keyboard keys meant to be pressed
 		},
 		// Block specific settings
 		settings: {

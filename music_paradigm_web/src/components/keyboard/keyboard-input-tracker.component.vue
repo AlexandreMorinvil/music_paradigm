@@ -15,10 +15,16 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('keyboard', ['isKeyBoardInitialized', 'isKeyboardPaused', 'pressedKeyboardKeys', 'referenceKeys']),
+		...mapGetters('keyboard', ['isKeyboardInitialized', 'isKeyboardPaused', 'pressedKeyboardKeys']),
 	},
 	methods: {
-		...mapActions('keyboard', ['setInitializedKeyboardTracking', 'addPressedKeyLog', 'addReleasedKeyLog']),
+		...mapActions('keyboard', [
+			'setInitializedKeyboardTracking',
+			'addPressedKeyboardKey',
+			'deletePressedKeyboardKey',
+			'addPressedKeyboardKeyLog',
+			'addReleasedKeyboardKeyLog',
+		]),
 		/**
 		 * Handle the midi messages
 		 * @param {Object} midiNote
@@ -33,18 +39,20 @@ export default {
 				this.recordKeyPress(keyEvent);
 			}
 			// If the note was still active, we deactivate it
-			else if (this.pressedKeyboardKeys.includes(keyEvent.note)) {
-				this.recordKeyReleased(keyEvent.note);
+			else if (this.pressedKeyboardKeys.includes(keyEvent.key)) {
+				this.recordKeyReleased(keyEvent.key);
 			}
 		},
 		recordKeyPress(keyEvent) {
-			this.addPressedKeyLog({
+			this.addPressedKeyboardKey(keyEvent.key);
+			this.addPressedKeyboardKeyLog({
 				key: keyEvent.key,
 				time: new Date().getTime(),
 			});
 		},
 		recordKeyReleased(key) {
-			this.addReleasedNoteLog({
+			this.deletePressedKeyboardKey(key);
+			this.addReleasedKeyboardKeyLog({
 				note: key,
 				time: new Date().getTime(),
 			});
@@ -59,19 +67,26 @@ export default {
 			this.setInitializedKeyboardTracking(true);
 		},
 		handleKeyPress(keyEvent) {
+			const lowercaseKey = keyEvent.key.toLowerCase();
+			if (!this.isLetterOrNumber(lowercaseKey)) return;
 			// If the key was already pressed, we ignore this signal (should never happen)
-			if (this.keyboardTracker[keyEvent.key]) return;
-			this.keyboardTracker[keyEvent.key] = true;
-			this.manageKeyPress({ isPressed: true, key: keyEvent.key });
+			if (this.keyboardTracker[lowercaseKey]) return;
+			this.keyboardTracker[lowercaseKey] = true;
+			this.manageKeyPress({ isPressed: true, key: lowercaseKey });
 		},
 		handleKeyRelease(keyEvent) {
-			this.keyboardTracker[keyEvent.key] = false;
-			this.manageKeyPress({ isPressed: false, key: keyEvent.key });
+			const lowercaseKey = keyEvent.key.toLowerCase();
+			if (!this.isLetterOrNumber(lowercaseKey)) return;
+			this.keyboardTracker[lowercaseKey] = false;
+			this.manageKeyPress({ isPressed: false, key: lowercaseKey });
 		},
 		terminateKeyboardTracker() {
 			this.setInitializedKeyboardTracking(false);
 			window.removeEventListener('keydown', this.handleKeyPress);
 			window.removeEventListener('keyup', this.handleKeyRelease);
+		},
+		isLetterOrNumber(str) {
+			return str.length === 1 && str.match(/^[a-z0-9]+$/i);
 		},
 	},
 	mounted() {

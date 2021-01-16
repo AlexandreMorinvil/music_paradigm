@@ -117,6 +117,7 @@ function updateCursorNavigation(flow, cursor) {
 		pictureFileName,
 		midiFileName,
 		videoFileName,
+		referenceKeyboardKeys,
 
 		// Cursor parameters
 		numberRepetition,
@@ -130,7 +131,7 @@ function updateCursorNavigation(flow, cursor) {
 	// Set all the navigation parameters
 	setCursorInnerStepsTotal(cursor, textContent, pictureFileName);
 	setCursorLoopStart(cursor, numberRepetition);
-	setCursorMediaDepilingStart(cursor, midiFileName, videoFileName, textContent, pictureFileName);
+	setCursorMediaDepilingStart(cursor, midiFileName, videoFileName, textContent, pictureFileName, referenceKeyboardKeys);
 	setCursorNextStep(cursor, followedBy);
 }
 
@@ -188,14 +189,15 @@ function setCursorLoopStart(cursor, numberRepetition) {
 //
 //  The execution order would be :
 //  A[0] - B[0] - C[0] - A[1] - B[1] - C[1] - D[0] - D[1] - D[2]
-function setCursorMediaDepilingStart(cursor, midiFileName, videoFileName, textContent, pictureFileName) {
+function setCursorMediaDepilingStart(cursor, midiFileName, videoFileName, textContent, pictureFileName, referenceKeyboardKeys) {
 	// Count the number of piled media elements of each type and detemine the maximum number of piled content.
 	const numberMidiFiles = Array.isArray(midiFileName) ? midiFileName.length : 0;
 	const numberVideoFiles = Array.isArray(videoFileName) ? videoFileName.length : 0;
 	const numberTextContent = Array.isArray(textContent) ? textContent.length : 0;
 	const numberPictureFile = Array.isArray(pictureFileName) ? pictureFileName.length : 0;
+	const numberReferenceKeyboardKeys = Array.isArray(referenceKeyboardKeys) ? referenceKeyboardKeys.length : 0;
 
-	const maxNumberContentElement = Math.max(numberMidiFiles, numberVideoFiles, numberTextContent, numberPictureFile);
+	const maxNumberContentElement = Math.max(numberMidiFiles, numberVideoFiles, numberTextContent, numberPictureFile, numberReferenceKeyboardKeys);
 
 	// Initialize the number of piled media content (playable media pile index & number of medias) if :
 	// 1. There is more than one media content element (midi/video) (so the total index > 1),

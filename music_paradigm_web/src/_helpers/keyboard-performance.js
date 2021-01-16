@@ -6,10 +6,10 @@ export default {
 };
 
 function evaluateSpeedType(referenceKeys, pressedKeys) {
-	const sequenceCount = noteAlgorithm.getCorrectSequenceCount(referenceKeys.keys, pressedKeys.keys);
-	const { durations, durationsAverage } = noteAlgorithm.getSequenceDurations(referenceKeys.keys, pressedKeys.keys, pressedKeys.time);
-	const { transitionSpeeds, transitionSpeedsAverage } = noteAlgorithm.getTransitionSpeeds(referenceKeys.keys, pressedKeys.keys, pressedKeys.time);
-	const sequenceErrorCount = noteAlgorithm.getSequenceErrorCount(referenceKeys.keys, pressedKeys.keys, 5);
+	const sequenceCount = noteAlgorithm.getCorrectSequenceCount(referenceKeys, pressedKeys.keys);
+	const { durations, durationsAverage } = noteAlgorithm.getSequenceDurations(referenceKeys, pressedKeys.keys, pressedKeys.time);
+	const { transitionSpeeds, transitionSpeedsAverage } = noteAlgorithm.getTransitionSpeeds(referenceKeys, pressedKeys.keys, pressedKeys.time);
+	const sequenceErrorCount = noteAlgorithm.getSequenceErrorCount(referenceKeys, pressedKeys.keys, 5);
 
 	return {
 		type: 'speed-keyboard',
