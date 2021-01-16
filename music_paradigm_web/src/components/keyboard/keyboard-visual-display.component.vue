@@ -2,60 +2,80 @@
 	<!-- The HTML definition of this piano adapted from the open source project : https://codepen.io/zastrow/pen/oDBki -->
 	<div id="keyboard-container">
 		<ul id="keyboard">
-			<li class="symbol"><span class="off">`</span><span class="on">~</span></li>
-			<li class="symbol"><span class="off">1</span><span class="on">!</span></li>
-			<li class="symbol"><span class="off">2</span><span class="on">@</span></li>
-			<li class="symbol"><span class="off">3</span><span class="on">#</span></li>
-			<li class="symbol"><span class="off">4</span><span class="on">$</span></li>
-			<li class="symbol"><span class="off">5</span><span class="on">%</span></li>
-			<li class="symbol"><span class="off">6</span><span class="on">^</span></li>
-			<li class="symbol"><span class="off">7</span><span class="on">&amp;</span></li>
-			<li class="symbol"><span class="off">8</span><span class="on">*</span></li>
-			<li class="symbol"><span class="off">9</span><span class="on">(</span></li>
-			<li class="symbol"><span class="off">0</span><span class="on">)</span></li>
-			<li class="symbol"><span class="off">-</span><span class="on">_</span></li>
-			<li class="symbol"><span class="off">=</span><span class="on">+</span></li>
-			<li class="delete lastitem">delete</li>
-			<li class="tab">tab</li>
-			<li class="letter">q</li>
-			<li class="letter">w</li>
-			<li class="letter">e</li>
-			<li class="letter">r</li>
-			<li class="letter">t</li>
-			<li class="letter">y</li>
-			<li class="letter">u</li>
-			<li class="letter">i</li>
-			<li class="letter">o</li>
-			<li class="letter">p</li>
-			<li class="symbol"><span class="off">[</span><span class="on">{</span></li>
-			<li class="symbol"><span class="off">]</span><span class="on">}</span></li>
-			<li class="symbol lastitem"><span class="off">\</span><span class="on">|</span></li>
-			<li class="capslock">caps lock</li>
-			<li class="letter">a</li>
-			<li class="letter">s</li>
-			<li class="letter">d</li>
-			<li class="letter">f</li>
-			<li class="letter">g</li>
-			<li class="letter">h</li>
-			<li class="letter">j</li>
-			<li class="letter">k</li>
-			<li class="letter">l</li>
-			<li class="symbol"><span class="off">;</span><span class="on">:</span></li>
-			<li class="symbol"><span class="off">'</span><span class="on">&quot;</span></li>
-			<li class="return lastitem">return</li>
-			<li class="left-shift">shift</li>
-			<li class="letter">z</li>
-			<li class="letter">x</li>
-			<li class="letter">c</li>
-			<li class="letter">v</li>
-			<li class="letter">b</li>
-			<li class="letter">n</li>
-			<li class="letter">m</li>
-			<li class="symbol"><span class="off">,</span><span class="on">&lt;</span></li>
-			<li class="symbol"><span class="off">.</span><span class="on">&gt;</span></li>
-			<li class="symbol"><span class="off">/</span><span class="on">?</span></li>
-			<li class="right-shift lastitem">shift</li>
-			<li class="space lastitem">&nbsp;</li>
+			<li>
+				<ul class="keyboard-row">
+					<li class="key symbol"><span class="off">`</span><span class="on">~</span></li>
+					<li class="key symbol"><span class="off">1</span><span class="on">!</span></li>
+					<li class="key symbol"><span class="off">2</span><span class="on">@</span></li>
+					<li class="key symbol"><span class="off">3</span><span class="on">#</span></li>
+					<li class="key symbol"><span class="off">4</span><span class="on">$</span></li>
+					<li class="key symbol"><span class="off">5</span><span class="on">%</span></li>
+					<li class="key symbol"><span class="off">6</span><span class="on">^</span></li>
+					<li class="key symbol"><span class="off">7</span><span class="on">&amp;</span></li>
+					<li class="key symbol"><span class="off">8</span><span class="on">*</span></li>
+					<li class="key symbol"><span class="off">9</span><span class="on">(</span></li>
+					<li class="key symbol"><span class="off">0</span><span class="on">)</span></li>
+					<li class="key symbol"><span class="off">-</span><span class="on">_</span></li>
+					<li class="key symbol"><span class="off">=</span><span class="on">+</span></li>
+					<li class="key delete lastitem">delete</li>
+				</ul>
+			</li>
+			<li>
+				<ul class="keyboard-row">
+					<li class="key tab">tab</li>
+					<li class="key letter">q</li>
+					<li class="key letter">w</li>
+					<li class="key letter">e</li>
+					<li class="key letter">r</li>
+					<li class="key letter">t</li>
+					<li class="key letter">y</li>
+					<li class="key letter">u</li>
+					<li class="key letter">i</li>
+					<li class="key letter">o</li>
+					<li class="key letter">p</li>
+					<li class="key symbol"><span class="off">[</span><span class="on">{</span></li>
+					<li class="key symbol"><span class="off">]</span><span class="on">}</span></li>
+					<li class="key symbol lastitem"><span class="off">\</span><span class="on">|</span></li>
+				</ul>
+			</li>
+			<li>
+				<ul class="keyboard-row">
+					<li class="key capslock">caps</li>
+					<li class="key letter">a</li>
+					<li class="key letter">s</li>
+					<li class="key letter">d</li>
+					<li class="key letter">f</li>
+					<li class="key letter">g</li>
+					<li class="key letter">h</li>
+					<li class="key letter">j</li>
+					<li class="key letter">k</li>
+					<li class="key letter">l</li>
+					<li class="key symbol"><span class="off">;</span><span class="on">:</span></li>
+					<li class="key symbol"><span class="off">'</span><span class="on">&quot;</span></li>
+					<li class="key return lastitem">return</li>
+				</ul>
+			</li>
+			<li>
+				<ul class="keyboard-row">
+					<li class="key left-shift">shift</li>
+					<li class="key letter">z</li>
+					<li class="key letter">x</li>
+					<li class="key letter">c</li>
+					<li class="key letter">v</li>
+					<li class="key letter">b</li>
+					<li class="key letter">n</li>
+					<li class="key letter">m</li>
+					<li class="key symbol"><span class="off">,</span><span class="on">&lt;</span></li>
+					<li class="key symbol"><span class="off">.</span><span class="on">&gt;</span></li>
+					<li class="key symbol"><span class="off">/</span><span class="on">?</span></li>
+					<li class="key right-shift lastitem">shift</li>
+				</ul>
+			</li>
+			<li>
+				<ul class="keyboard-row">
+					<li class="key space lastitem">&nbsp;</li>
+				</ul>
+			</li>
 		</ul>
 	</div>
 </template>
@@ -137,32 +157,68 @@ export default {
 </script>
 
 <style scoped>
+li {
+	list-style: none;
+}
+
 #keyboard-container {
-	margin: 100px auto;
-	width: 688px;
+	margin: auto;
+	width: 850px;
+	height: 300px;
 	color: black;
-	background-color: grey;
+	border: 1px solid #160801;
+	border-radius: 0.5em;
+	background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)), rgb(51, 55, 80);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) inset, 0 1px rgba(125, 157, 212, 0.2) inset, 0 5px 15px rgba(0, 0, 0, 0.5);
 	padding: 12px;
 	border-radius: 10px;
 }
+
 #keyboard {
-	margin: 0;
-	padding: 0;
-	list-style: none;
+	height: 100%;
+	min-height: 100px;
+	display: grid;
+	grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
 }
-#keyboard li {
+
+.keyboard-row {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: 100%;
+}
+
+.key {
 	float: left;
-	margin: 0 5px 5px 0;
-	width: 40px;
-	height: 40px;
+	margin: auto 2.5px;
+	width: 5.813%;
+	height: 95%;
 	line-height: 40px;
 	text-align: center;
 	background: #fff;
-	border: 1px solid #f9f9f9;
+
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
+	flex-grow: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
+
+.key {
+	color: rgb(209, 210, 212);
+	background-color: rgb(50, 50, 50);
+	border: 1px solid rgb(20, 20, 20);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.15) inset, 0 1px rgba(17, 17, 17, 0.2) inset, 0 5px 5px rgba(0, 0, 0, 0.35);
+}
+
+#keyboard > li {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
 .capslock,
 .tab,
 .left-shift {
@@ -170,19 +226,19 @@ export default {
 }
 #keyboard .tab,
 #keyboard .delete {
-	width: 70px;
+	width: 10.174%;
 }
 #keyboard .capslock {
-	width: 80px;
+	width: 11.627%;
 }
 #keyboard .return {
-	width: 77px;
+	width: 11.191%;
 }
 #keyboard .left-shift {
 	width: 95px;
 }
 #keyboard .right-shift {
-	width: 109px;
+	width: 13.808%;
 }
 .lastitem {
 	margin-right: 0;
@@ -192,16 +248,15 @@ export default {
 }
 #keyboard .space {
 	clear: left;
-	width: 681px;
+	width: 100%;
 }
 .on {
 	display: none;
 }
-#keyboard li:hover {
+.key:hover {
 	position: relative;
 	top: 1px;
 	left: 1px;
-	border-color: #e5e5e5;
 	cursor: pointer;
 }
 </style>
