@@ -45,6 +45,12 @@ schema.methods.updateDescription = async function (description) {
     return this;
 };
 
+
+schema.methods.getParameters = async function () {
+    // TODO: ADJUST THAT TO GET THE PARAMETER VARIABLES
+    this.variables.toObject();
+}
+
 // Create the model
 const model = mongoose.model('Experiment', schema);
 
