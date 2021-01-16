@@ -1,3 +1,5 @@
+import constants from './constants';
+
 export default {
 	status: {
 		isFetchingUsersHeadersList: false,
@@ -7,18 +9,7 @@ export default {
 		isAssigningCurriculum: false,
 	},
 
-	selectedUser: {
-		_id: null,
-
-		username: '',
-		email: '',
-		role: '',
-		tags: [],
-		firstName: '',
-		middleName: '',
-		lastName: '',
-		curriculum: null,
-	},
+	selectedUser: constants.EMPTY_USER(),
 
 	selectedUserProgression: {
 		userReference: '',

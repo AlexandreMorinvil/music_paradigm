@@ -83,6 +83,33 @@ export default {
 			'userSelectedLastName',
 			'userSelectedTags',
 		]),
+		wasFormModified() {
+			return (
+				this.username !== this.userSelectedUsername ||
+				this.password !== '' ||
+				this.email !== this.userSelectedEmail ||
+				this.firstName !== this.userSelectedFirstName ||
+				this.middleName !== this.userSelectedMiddleName ||
+				this.lastName !== this.userSelectedLastName ||
+				!this.areTagArraysEqual
+			);
+		},
+		areTagArraysEqual() {
+			if (!Array.isArray(this.tags) || !Array.isArray(this.userSelectedTags) || this.tags.length !== this.userSelectedTags.length) {
+				return false;
+			}
+
+			const arr1 = this.tags.concat().sort();
+			const arr2 = this.userSelectedTags.concat().sort();
+
+			for (let i = 0; i < arr1.length; i++) {
+				if (arr1[i] !== arr2[i]) {
+					return false;
+				}
+			}
+
+			return true;
+		},
 		userSelectedUsernameDisplay() {
 			return this.hasSelectedUser ? this.userSelectedUsername || '---' : '';
 		},
@@ -132,25 +159,25 @@ export default {
 			this.tags.splice(index, 1);
 		},
 		assignFormId(id) {
-			this.id = id;
+			this.id = id || null;
 		},
 		assignFormUsername(username) {
-			this.username = username;
+			this.username = username || '';
 		},
 		assignFormEmail(email) {
-			this.email = email;
+			this.email = email || '';
 		},
 		assignFormPassword(password) {
-			this.password = password;
+			this.password = password || '';
 		},
 		assignFormFirstName(firstName) {
-			this.firstName = firstName;
+			this.firstName = firstName || '';
 		},
 		assignFormMiddleName(middleName) {
-			this.middleName = middleName;
+			this.middleName = middleName || '';
 		},
 		assignFormLastName(lastName) {
-			this.lastName = lastName;
+			this.lastName = lastName || '';
 		},
 		assignFormTags(tags) {
 			this.tags = Array.isArray(tags) ? JSON.parse(JSON.stringify(tags)) : [];
@@ -159,6 +186,7 @@ export default {
 			this.assignFormId(this.userSelectedId);
 			this.assignFormUsername(this.userSelectedUsername);
 			this.assignFormEmail(this.userSelectedEmail);
+			this.assignFormPassword('');
 			this.assignFormFirstName(this.userSelectedFirstName);
 			this.assignFormMiddleName(this.userSelectedMiddleName);
 			this.assignFormLastName(this.userSelectedLastName);

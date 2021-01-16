@@ -1,3 +1,5 @@
+import constants from './constants';
+
 export default {
 	// Status Updates
 	indicateFetchingUserList(state) {
@@ -42,7 +44,7 @@ export default {
 
 	// Setters
 	setSelectedUser(state, user) {
-		state.selectedUser = {};
+		state.selectedUser = constants.EMPTY_USER();
 		Object.assign(state.selectedUser, user);
 	},
 
@@ -52,7 +54,7 @@ export default {
 	},
 
 	unsetSelectedUser(state) {
-		state.selectedUser = {};
+		state.selectedUser = constants.EMPTY_USER();
 		state.selectedUserProgression = {};
 	},
 
