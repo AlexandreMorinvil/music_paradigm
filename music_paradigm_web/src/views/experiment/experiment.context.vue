@@ -31,12 +31,6 @@ export default {
 	},
 	computed: {
 		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType']),
-		currentStateIcon() {
-			return this.getIconReference(this.currentStateType);
-		},
-		nextStateIcon() {
-			return this.getIconReference(this.nextStateType);
-		},
 	},
 	methods: {
 		...mapActions('session', ['concludeSession']),

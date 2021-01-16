@@ -1,14 +1,12 @@
 <template>
-	<div id="timer">
-		<div id="timer-display" :class="color">
-			<svg v-if="mustCountDown" class="timer-icon">
-				<use xlink:href="sprites.svg#icon-hourglass" />
-			</svg>
-			<svg v-else class="timer-icon">
-				<use xlink:href="sprites.svg#icon-timer" />
-			</svg>
-			&nbsp;{{ timerDisplay }}
-		</div>
+	<div id="timer-display" :class="color">
+		<svg v-if="mustCountDown" class="timer-icon">
+			<use xlink:href="sprites.svg#icon-hourglass" />
+		</svg>
+		<svg v-else class="timer-icon">
+			<use xlink:href="sprites.svg#icon-timer" />
+		</svg>
+		&nbsp;{{ timerDisplay }}
 	</div>
 </template>
 
@@ -102,11 +100,13 @@ export default {
 #timer-display {
 	display: flex;
 	align-items: center;
-	height: 100%;
+	width: 200px;
+	height: 85%;
 }
 .timer-icon {
 	display: inline-block;
 	stroke-width: 0;
+	min-width: 30px;
 	width: 30px;
 	height: 30px;
 }

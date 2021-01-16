@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="state-status-display">
 		<svg id="icon-current-state" class="icon-state">
 			<use :xlink:href="icon" />
 		</svg>
@@ -61,7 +61,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .icon-state {
 	display: inline-block;
 	margin: 0 5px 0;
@@ -71,5 +71,12 @@ export default {
 	height: 35px;
 	stroke: rgb(220, 220, 220);
 	fill: rgb(220, 220, 220);
+}
+
+.state-status-display {
+	display: flex;
+	align-items: center;
+	width: 250px;
+	height: 85%;
 }
 </style>
