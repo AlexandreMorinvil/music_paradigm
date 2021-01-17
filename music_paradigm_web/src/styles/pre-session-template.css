@@ -1,0 +1,50 @@
+.pre-session-grid {
+    display: grid;
+    grid-template-rows: 1fr auto;
+}
+
+.button {
+    color: white;
+    box-shadow: 5px 7px 11px rgb(15, 15, 15);
+    border-style: solid;
+    border-width: 2px;
+    padding: 20px;
+    font-size: 2em;
+    outline: none;
+}
+
+.button-small {
+    font-size: 0.7em;
+    padding: 10px;
+}
+
+.button-error {
+    background-color: rgb(220, 50, 0);
+    border-color: rgb(205, 40, 0);
+}
+
+.button-next {
+    background-color: rgb(0, 150, 220);
+    border-color: rgb(50, 100, 205);
+}
+
+.button-start {
+    background-color: rgb(0, 200, 50);
+    border-color: rgb(10, 180, 40);
+}
+
+.button-innactive {
+    color: black;
+    background-color: rgb(150, 150, 150);
+    border-color: rgb(130, 130, 130);
+    cursor: default;
+    outline: none;
+}
+
+.centered-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    margin: auto;
+}

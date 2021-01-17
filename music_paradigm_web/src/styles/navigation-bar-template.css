@@ -1,0 +1,59 @@
+/* Template specifications for the different types of navigation bars */
+
+#app-navigation-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 56px;
+  grid-template-areas: 'left-navigation-bar center-navigation-bar right-navigation-bar';
+  height: 100%;
+  width: 100%;
+  font-size: 20px;
+  color: rgb(200, 200, 200);
+  line-height: 0.8;
+}
+
+.navigation-bar-wrapper {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  font-size: inherit;
+}
+
+.navigation-bar-left {
+  grid-area: left-navigation-bar;
+  justify-content: flex-start;
+}
+
+.navigation-bar-center {
+  grid-area: center-navigation-bar;
+  justify-content: center;
+}
+
+.navigation-bar-right {
+  grid-area: right-navigation-bar;
+  justify-content: flex-end;
+}
+
+.app-navigation-bar-button {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  border-collapse: collapse;
+  border-color: rgb(35, 35, 35);
+  border-width: 0 2px 0;
+  border-style: solid;
+  height: 100%;
+  width: auto;
+  padding: 0 30px 0;
+  margin: 0;
+  font-size: inherit;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+}
+
+.app-navigation-bar-button:hover {
+  background-color: rgb(65, 65, 65);
+  color: white;
+}

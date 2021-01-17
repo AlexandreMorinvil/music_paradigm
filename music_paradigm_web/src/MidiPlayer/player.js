@@ -4,7 +4,7 @@ import { Utils } from './utils';
 // Polyfill Uint8Array.forEach: Doesn't exist on Safari <10
 if (!Uint8Array.prototype.forEach) {
 	Object.defineProperty(Uint8Array.prototype, 'forEach', {
-		value: Array.prototype.forEach
+		value: Array.prototype.forEach,
 	});
 }
 
@@ -15,7 +15,7 @@ if (!Uint8Array.prototype.forEach) {
  */
 class Player {
 	constructor(eventHandler, buffer) {
-		this.sampleRate = 5; // milliseconds
+		this.sampleRate = 5; // Milliseconds
 		this.startTime = 0;
 		this.buffer = buffer || null;
 		this.division;
@@ -34,7 +34,7 @@ class Player {
 		this.totalEvents = 0;
 		this.eventListeners = {};
 
-		if (typeof (eventHandler) === 'function') this.on('midiEvent', eventHandler);
+		if (typeof eventHandler === 'function') this.on('midiEvent', eventHandler);
 	}
 
 	/**
@@ -60,7 +60,7 @@ class Player {
 	 * @return {Player}
 	 */
 	loadFile(path) {
-		var fs = require('fs');
+		const fs = require('fs');
 		this.buffer = fs.readFileSync(path);
 		return this.fileLoaded();
 	}
@@ -81,13 +81,13 @@ class Player {
 	 * @return {Player}
 	 */
 	loadDataUri(dataUri) {
-		// convert base64 to raw binary data held in a string.
+		// Convert base64 to raw binary data held in a string.
 		// doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-		var byteString = Utils.atob(dataUri.split(',')[1]);
+		const byteString = Utils.atob(dataUri.split(',')[1]);
 
-		// write the bytes of the string to an ArrayBuffer
-		var ia = new Uint8Array(byteString.length);
-		for (var i = 0; i < byteString.length; i++) {
+		// Write the bytes of the string to an ArrayBuffer
+		const ia = new Uint8Array(byteString.length);
+		for (let i = 0; i < byteString.length; i++) {
 			ia[i] = byteString.charCodeAt(i);
 		}
 
@@ -110,7 +110,10 @@ class Player {
 	 */
 	fileLoaded() {
 		if (!this.validate()) throw 'Invalid MIDI file; should start with MThd';
-		return this.setTempo(this.defaultTempo).getDivision().getFormat().getTracks().dryRun();
+		return this.setTempo(this.defaultTempo).getDivision()
+.getFormat()
+.getTracks()
+.dryRun();
 	}
 
 	/**
@@ -149,8 +152,10 @@ class Player {
 		let trackOffset = 0;
 		while (trackOffset < this.buffer.length) {
 			if (Utils.bytesToLetters(this.buffer.subarray(trackOffset, trackOffset + 4)) == 'MTrk') {
-				let trackLength = Utils.bytesToNumber(this.buffer.subarray(trackOffset + 4, trackOffset + 8));
-				this.tracks.push(new Track(this.tracks.length, this.buffer.subarray(trackOffset + 8, trackOffset + 8 + trackLength)));
+				const trackLength = Utils.bytesToNumber(this.buffer.subarray(trackOffset + 4, trackOffset + 8));
+				this.tracks.push(
+					new Track(this.tracks.length, this.buffer.subarray(trackOffset + 8, trackOffset + 8 + trackLength)),
+				);
 			}
 
 			trackOffset += Utils.bytesToNumber(this.buffer.subarray(trackOffset + 4, trackOffset + 8)) + 8;
@@ -200,11 +205,11 @@ class Player {
 			this.tracks.forEach(function (track) {
 				// Handle next event
 				if (!dryRun && this.endOfFile()) {
-					//console.log('end of file')
+					// Console.log('end of file')
 					this.triggerPlayerEvent('endOfFile');
 					this.stop();
 				} else {
-					let event = track.handleEvent(this.tick, dryRun);
+					const event = track.handleEvent(this.tick, dryRun);
 
 					if (dryRun && event) {
 						if (event.hasOwnProperty('name') && event.name === 'Set Tempo') {
@@ -219,7 +224,6 @@ class Player {
 						}
 					} else if (event) this.emitEvent(event);
 				}
-
 			}, this);
 
 			if (!dryRun) this.triggerPlayerEvent('playing', { tick: this.tick });
@@ -252,10 +256,10 @@ class Player {
 		if (this.isPlaying()) throw 'Already playing...';
 
 		// Initialize
-		if (!this.startTime) this.startTime = (new Date()).getTime();
+		if (!this.startTime) this.startTime = new Date().getTime();
 
 		// Start play loop
-		//window.requestAnimationFrame(this.playLoop.bind(this));
+		// window.requestAnimationFrame(this.playLoop.bind(this));
 		this.setIntervalId = setInterval(this.playLoop.bind(this), this.sampleRate);
 
 		return this;
@@ -308,8 +312,8 @@ class Player {
 	 * @return {Player}
 	 */
 	skipToPercent(percent) {
-		if (percent < 0 || percent > 100) throw "Percent must be number between 1 and 100.";
-		this.skipToTick(Math.round(percent / 100 * this.totalTicks));
+		if (percent < 0 || percent > 100) throw 'Percent must be number between 1 and 100.';
+		this.skipToTick(Math.round((percent / 100) * this.totalTicks));
 		return this;
 	}
 
@@ -319,9 +323,9 @@ class Player {
 	 * @return {Player}
 	 */
 	skipToSeconds(seconds) {
-		var songTime = this.getSongTime();
-		if (seconds < 0 || seconds > songTime) throw seconds + " seconds not within song time of " + songTime;
-		this.skipToPercent(seconds / songTime * 100);
+		const songTime = this.getSongTime();
+		if (seconds < 0 || seconds > songTime) throw seconds + ' seconds not within song time of ' + songTime;
+		this.skipToPercent((seconds / songTime) * 100);
 		return this;
 	}
 
@@ -342,7 +346,7 @@ class Player {
 		// Leave tracks in pristine condish
 		this.resetTracks();
 
-		//console.log('Song time: ' + this.getSongTime() + ' seconds / ' + this.totalTicks + ' ticks.');
+		// Console.log('Song time: ' + this.getSongTime() + ' seconds / ' + this.totalTicks + ' ticks.');
 
 		this.triggerPlayerEvent('fileLoaded', this);
 		return this;
@@ -353,7 +357,7 @@ class Player {
 	 * @return {Player}
 	 */
 	resetTracks() {
-		this.tracks.forEach(track => track.reset());
+		this.tracks.forEach((track) => track.reset());
 		return this;
 	}
 
@@ -362,7 +366,7 @@ class Player {
 	 * @return {array}
 	 */
 	getEvents() {
-		return this.tracks.map(track => track.events);
+		return this.tracks.map((track) => track.events);
 	}
 
 	/**
@@ -370,7 +374,10 @@ class Player {
 	 * @return {number}
 	 */
 	getTotalTicks() {
-		return Math.max.apply(null, this.tracks.map(track => track.delta));
+		return Math.max.apply(
+			null,
+			this.tracks.map((track) => track.delta),
+		);
 	}
 
 	/**
@@ -378,7 +385,12 @@ class Player {
 	 * @return {number}
 	 */
 	getTotalEvents() {
-		return this.tracks.reduce((a, b) => { return { events: { length: a.events.length + b.events.length } } }, { events: { length: 0 } }).events.length;
+		return this.tracks.reduce(
+			(a, b) => {
+				return { events: { length: a.events.length + b.events.length } };
+			},
+			{ events: { length: 0 } },
+		).events.length;
 	}
 
 	/**
@@ -386,7 +398,7 @@ class Player {
 	 * @return {number}
 	 */
 	getSongTime() {
-		return this.totalTicks / this.division / this.tempo * 60;
+		return (this.totalTicks / this.division / this.tempo) * 60;
 	}
 
 	/**
@@ -394,7 +406,7 @@ class Player {
 	 * @return {number}
 	 */
 	getSongTimeRemaining() {
-		return Math.round((this.totalTicks - this.getCurrentTick()) / this.division / this.tempo * 60);
+		return Math.round(((this.totalTicks - this.getCurrentTick()) / this.division / this.tempo) * 60);
 	}
 
 	/**
@@ -402,7 +414,7 @@ class Player {
 	 * @return {number}
 	 */
 	getSongPercentRemaining() {
-		return Math.round(this.getSongTimeRemaining() / this.getSongTime() * 100);
+		return Math.round((this.getSongTimeRemaining() / this.getSongTime()) * 100);
 	}
 
 	/**
@@ -411,7 +423,16 @@ class Player {
 	 */
 	bytesProcessed() {
 		// Currently assume header chunk is strictly 14 bytes
-		return 14 + this.tracks.length * 8 + this.tracks.reduce((a, b) => { return { pointer: a.pointer + b.pointer } }, { pointer: 0 }).pointer;
+		return (
+			14
+			+ this.tracks.length * 8
+			+ this.tracks.reduce(
+				(a, b) => {
+					return { pointer: a.pointer + b.pointer };
+				},
+				{ pointer: 0 },
+			).pointer
+		);
 	}
 
 	/**
@@ -419,7 +440,12 @@ class Player {
 	 * @return {number}
 	 */
 	eventsPlayed() {
-		return this.tracks.reduce((a, b) => { return { eventIndex: a.eventIndex + b.eventIndex } }, { eventIndex: 0 }).eventIndex;
+		return this.tracks.reduce(
+			(a, b) => {
+				return { eventIndex: a.eventIndex + b.eventIndex };
+			},
+			{ eventIndex: 0 },
+		).eventIndex;
 	}
 
 	/**
@@ -444,7 +470,10 @@ class Player {
 	getCurrentTick() {
 		if (!this.startTime && this.tick) return this.startTick;
 		else if (!this.startTime) return 0;
-		return Math.round(((new Date()).getTime() - this.startTime) / 1000 * (this.division * (this.tempo / 60))) + this.startTick;
+		return (
+			Math.round(((new Date().getTime() - this.startTime) / 1000) * (this.division * (this.tempo / 60)))
+			+ this.startTick
+		);
 	}
 
 	/**
@@ -482,8 +511,7 @@ class Player {
 				const index = this.eventListeners[playerEvent].indexOf(fn);
 				if (index !== -1) this.eventListeners[playerEvent].splice(index, 1);
 			}
-		}
-		else {
+		} else {
 			this.eventListeners[playerEvent] = [];
 		}
 		return this;
@@ -496,10 +524,10 @@ class Player {
 	 * @return {Player}
 	 */
 	triggerPlayerEvent(playerEvent, data) {
-		if (this.eventListeners.hasOwnProperty(playerEvent)) this.eventListeners[playerEvent].forEach(fn => fn(data || {}));
+		if (this.eventListeners.hasOwnProperty(playerEvent))
+			this.eventListeners[playerEvent].forEach((fn) => fn(data || {}));
 		return this;
 	}
-
 }
 
 export { Player };

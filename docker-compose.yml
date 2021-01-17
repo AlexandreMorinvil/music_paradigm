@@ -1,4 +1,4 @@
-version: '2'
+version: "3.5"
 services:
   learn:
     container_name: clasp-webapp
@@ -33,10 +33,18 @@ services:
     image: mongo
     volumes:
       - ./db:/data/db:rw
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   mongo-express:
-     image: mongo-express
-     environment:
+    image: mongo-express
+    environment:
       - ME_CONFIG_MONGODB_SERVER=claspmongo
-     ports:
+    ports:
       - 8080:8081
+    depends_on:
+      - mongo

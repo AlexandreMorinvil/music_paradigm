@@ -7,7 +7,6 @@ const curriculumService = require('./curriculums.service');
 // routes
 router.post('/',                jwtAuthorize(role.admin),  create);
 router.get('/',                 jwtAuthorize(role.admin),  getListAllHeaders);
-// router.get('/current',                                     getCurrent);
 router.get('/:id',              jwtAuthorize(role.admin),  getById);
 router.put('/:id',              jwtAuthorize(role.admin),  update);
 router.delete('/:id',           jwtAuthorize(role.admin),  _delete);
@@ -27,13 +26,6 @@ function getListAllHeaders(req, res, next) {
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
 }
-
-// function getCurrent(req, res, next) {
-//     curriculumService.getById(req.user.sub)
-//         .then(result => res.status(200).json(result))
-//         .catch(error => res.status(400).json({ message: error.message }))
-//         .finally(() => next());
-// }
 
 function getById(req, res, next) {
     curriculumService.getById(req.params.id)

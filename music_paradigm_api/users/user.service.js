@@ -1,14 +1,17 @@
-﻿const bcrypt = require('bcryptjs');
-const db = require('database/db');
+﻿const db = require('database/db');
+const Progression = db.Progression;
 const User = db.User;
 
 // Exports
 module.exports = {
     getAll,
     getById,
-    create,
-    update,
-    delete: _delete
+    createUser,
+    updateUser,
+    deleteUser,
+    assignCurriculum,
+    updateProgression,
+    resetProgression,
 };
 
 async function getAll() {
@@ -27,10 +30,12 @@ async function getById(id) {
     }
 }
 
-async function create(userParam) {
+async function createUser(userParameters) {
     try {
-        const user = new User(userParam);
-        return await user.create();
+        const { user, curriculum } = userParameters;
+        const userCreated = await User.create(user);
+        const progressionInitilized = await userCreated.initializeCurriculum(curriculum);
+        return { user: userCreated, progression: progressionInitilized };
     } catch (err) {
         switch (err.code) {
             case 11000:
@@ -41,10 +46,10 @@ async function create(userParam) {
     }
 }
 
-async function update(id, userIdentity) {
+async function updateUser(id, userParameters) {
     try {
         const user = await User.findById(id);
-        return await user.updateIdentity(userIdentity);
+        return await user.updateUser(userParameters);
     } catch (err) {
         switch (err.code) {
             case 11000:
@@ -55,14 +60,40 @@ async function update(id, userIdentity) {
     }
 }
 
-async function _delete(id) {
+async function deleteUser(userId) {
     try {
-        const user = await User.findById(id);
-        if (!user) throw new Error('User to delete not found');
-        
-        return await user.remove();
+        return await User.delete(userId);
     } catch (err) {
         throw err;
     }
 
 }
+
+async function assignCurriculum(userId, curriculumId) {
+    try {
+        const user = await User.findById(userId);
+        const lastProgression = await user.initializeCurriculum(curriculumId);
+        return { user: user, progression: lastProgression };
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function updateProgression(userId, parameters) {
+    try {
+        const user = await User.findById(userId);
+        return await user.updateCurriculum(parameters);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function resetProgression(userId, curriculumId) {
+    try {
+        const user = await User.findById(userId);
+        return await user.resetProgression();
+    } catch (err) {
+        throw err;
+    }
+}
+

@@ -36,7 +36,7 @@ const schema = new Schema(
         
         email: {
             type: String,
-            default: null,
+            default: undefined,
             sparse: true,
             trim: true,
             unique: true,
@@ -73,7 +73,7 @@ const schema = new Schema(
 
         firstName: {
             type: String,
-            default: "Firstname",
+            default: "",
             trim: true,
             maxlength: [50, firstNameMaxLengthMessage],
             set: setterName
@@ -89,7 +89,7 @@ const schema = new Schema(
 
         lastName: {
             type: String,
-            default: "Lastname",
+            default: "",
             trim: true,
             maxlength: [50, lastNameMaxLengthMessage],
             set: setterName
@@ -163,7 +163,7 @@ function setterUsername(username) {
 // Validator functions
 function validatorEmail(string) {
     if (!string) return true;
-    else return isEmailString(string);
+    else return stringHandler.isEmailString(string);
 }
 
 module.exports = schema;

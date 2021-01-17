@@ -1,33 +1,51 @@
-import config from "@/config";
+import config from '@/config';
 
-const staticDirectory = "/static/";
-const experimentRessourceDirectory = "/experiment-ressources/";
+const staticDirectory = '/static/';
+const experimentRessourceDirectory = '/experiment-ressources/';
 
-const account = "/account/";
-const experiments = "/experiments/";
-const curriculums = "/curriculums/";
-const users = "/users/";
+const adminSessions = '/admin-sessions/';
+const sessions = '/sessions/';
+const account = '/account/';
+const experiments = '/experiments/';
+const curriculums = '/curriculums/';
+const users = '/users/';
+
+const storage = '/storage/';
 
 export default {
-    // File serving
-    static : function(directory) {
-        return config.apiUrl + staticDirectory + directory;
-    },
-    experimentRessource : function(directory) {
-        return config.apiUrl + experimentRessourceDirectory + directory;
-    },
+	// Base URL
+	baseUrl: function () {
+		return config.apiUrl;
+	},
 
-    // API calls
-    account : function(parameters) {
-        return config.apiUrl + account + parameters;
-    },
-    experiments : function(parameters) {
-        return config.apiUrl + experiments + parameters;
-    },
-    curriculums : function(parameters) {
-        return config.apiUrl + curriculums + parameters;
-    },
-    users : function(parameters) {
-        return config.apiUrl + users + parameters;
-    },
-}
+	// File serving
+	static: function (directory) {
+		return config.apiUrl + staticDirectory + directory;
+	},
+	experimentRessource: function (directory) {
+		return config.apiUrl + experimentRessourceDirectory + directory;
+	},
+
+	// API calls
+	adminSessions: function (parameters) {
+		return config.apiUrl + adminSessions + parameters;
+	},
+	sessions: function (parameters) {
+		return config.apiUrl + sessions + parameters;
+	},
+	account: function (parameters) {
+		return config.apiUrl + account + parameters;
+	},
+	experiments: function (parameters) {
+		return config.apiUrl + experiments + parameters;
+	},
+	curriculums: function (parameters) {
+		return config.apiUrl + curriculums + parameters;
+	},
+	users: function (parameters) {
+		return config.apiUrl + users + parameters;
+	},
+	storage: function (parameters) {
+		return config.apiUrl + storage + parameters;
+	},
+};

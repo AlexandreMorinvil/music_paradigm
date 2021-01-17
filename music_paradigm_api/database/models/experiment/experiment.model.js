@@ -6,6 +6,7 @@ const transformationOprtions = {
     virtuals: true,
     transform: function (doc, ret) {
         if (ret.flow) ret.flow.forEach(element => { delete element._id });
+        if (ret.flow) ret.variables.forEach(element => { delete element._id });
         delete ret.id;
         delete ret.__v;
     }
@@ -43,6 +44,12 @@ schema.methods.updateDescription = async function (description) {
     Object.assign(this, description);
     return this;
 };
+
+
+schema.methods.getParameters = async function () {
+    // TODO: ADJUST THAT TO GET THE PARAMETER VARIABLES
+    this.variables.toObject();
+}
 
 // Create the model
 const model = mongoose.model('Experiment', schema);

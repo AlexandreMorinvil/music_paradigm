@@ -1,50 +1,54 @@
 export default {
-    userSelectedId: (state)=> {
-        return state.selection._id;
-    },
-    
-    userSelectedUsername: (state) => {
-        return state.selection.username;
-    },
+	userSelectedId: (state) => {
+		return state.selectedUser._id;
+	},
 
-    userSelectedEmail: (state) => {
-        return state.selection.email;
-    },
+	userSelectedUsername: (state) => {
+		return state.selectedUser.username;
+	},
 
-    userSelectedFirstName: (state) => {
-        return state.selection.firstName;
-    },
+	userSelectedEmail: (state) => {
+		return state.selectedUser.email;
+	},
 
-    userSelectedMiddleName: (state) => {
-        return state.selection.middleName;
-    },
+	userSelectedFirstName: (state) => {
+		return state.selectedUser.firstName;
+	},
 
-    userSelectedLastName: (state) => {
-        return state.selection.lastName;
-    },
+	userSelectedMiddleName: (state) => {
+		return state.selectedUser.middleName;
+	},
 
-    userSelectedTags: (state) => {
-        return state.selection.tags;
-    },
+	userSelectedLastName: (state) => {
+		return state.selectedUser.lastName;
+	},
 
-    userSelectedRole: (state) => {
-        return state.selection.role;
-    },
+	userSelectedTags: (state) => {
+		return state.selectedUser.tags;
+	},
 
-    userSelectedCurriculum: (state) => {
-        return state.selection.curriculum;
-    },
+	userSelectedRole: (state) => {
+		return state.selectedUser.role;
+	},
 
-    usersHeadersList: (state) => {
-        return state.usersHeadersList;
-    },
+	userSelectedCurriculum: (state) => {
+		return state.selectedUser.curriculum;
+	},
 
-    // Status
-    hasSelectedUser: (state) => {
-        return Boolean(state.selection._id);
-    },
+	usersHeadersList: (state) => {
+		return state.usersHeadersList;
+	},
 
-    isFetchingUserHeadersList: (state) => {
-        return state.status.isFetchingUsersHeadersList;
-    }
-}
+	// Status
+	hasSelectedUser: (state) => {
+		return Boolean(state.selectedUser._id);
+	},
+
+	hasCurriculumToSelectedUser: (state) => {
+		return Boolean(state.selectedUser.curriculum);
+	},
+
+	isFetchingUserHeadersList: (state) => {
+		return state.status.isFetchingUsersHeadersList;
+	},
+};

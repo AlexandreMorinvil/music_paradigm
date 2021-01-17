@@ -1,58 +1,38 @@
-import functions from './functions';
+import constants from './constants';
 
 export default {
-    loginRequest(state) {
-        // Set the status to logined in
-        Object.assign(state.status, {
-            loggingIn: true,
-        });
-    },
+	loginRequest(state) {
+		Object.assign(state.status, { loggingIn: true });
+	},
 
-    loginSuccess(state, user) {
-        // Assing the received user to the store user
-        functions.assignUser(state.user, user);
+	loginSuccess(state, user) {
+		state.user = user;
+		Object.assign(state.status, { loggingIn: false, loggedIn: true });
+	},
 
-        // Set the status to logined in
-        Object.assign(state.status, {
-            loggingIn: false,
-            loggedIn: true
-        });
-    },
+	loginFailure(state) {
+		state.user = constants.EMPTY_USER();
+		Object.assign(state.status, { loggingIn: false, loggedIn: false });
+	},
 
-    loginFailure(state) {
-        // Empty the store user
-        functions.assignUser(state.user, {});
+	logout(state) {
+		state.user = constants.EMPTY_USER();
+		Object.assign(state.status, { loggedIn: false });
+	},
 
-        // Set the status to not logged in and not logging in
-        Object.assign(state.status, {
-            loggingIn: false,
-            loggedIn: false
-        });
-    },
+	indicateFetchingProgressionSummary(state) {
+		state.status.isFetchingProgressionSummary = true;
+	},
 
-    logout(state) {
-        // Empty the store user
-        functions.assignUser(state.user, {});
+	indicateFetchingProgressionSummaryEnd(state) {
+		state.status.isFetchingProgressionSummary = false;
+	},
 
-        // Set the status to not logged in
-        Object.assign(state.status, {
-            loggedIn: false
-        });
-    },
+	setDueExperiment(state, dueExperimentAssociativeId) {
+		state.dueExperimentAssociativeId = dueExperimentAssociativeId;
+	},
 
-    indicateFetchingProgressionSummary(state) {
-        state.status.isFetchingProgressionSummary = true;
-    },
-
-    indicateFetchingProgressionSummaryEnd(state) {
-        state.status.isFetchingProgressionSummary = false;
-    },
-
-    setDueExperiment(state, dueExperiment) {
-        state.dueExperiment = dueExperiment;
-    },
-
-    setProgressionSummary(state, progressionSummary) {
-        state.progressionSummary = progressionSummary;
-    }
+	setProgressionSummary(state, progressionSummary) {
+		state.progressionSummary = progressionSummary;
+	},
 };

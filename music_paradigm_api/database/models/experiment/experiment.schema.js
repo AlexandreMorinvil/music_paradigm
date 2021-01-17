@@ -17,15 +17,28 @@ const schema = new Schema(
         successesForSkip: { type: Number, default: 0 },
         hideFeedbackSmiley: { type: Boolean, default: false },
         isSkipStepButtonInFootnote: { type: Boolean, default: undefined },
-        variable: [
+        programmedOctaveOffset: { type: Number, default: 0 },
+        interactivePianoFirstOctave: { type: Number, default: 4 },
+        controlType: { type: String, default: 'piano', enum: ['piano', 'keyboard', 'none'] },
+        variables: [
             {
-                name: String,
-                type: { 
-                    type: String, 
-                    enum: ['counter', 'variable', 'parameter'], 
+                name: { type: String, required: true },
+                type: {
+                    type: String,
+                    enum: ['variable', 'parameter'],
                     default: "variable",
                 },
-                values: []
+                assignation: {
+                    type: String,
+                    enum: ['constant', 'dynamic'],
+                    default: "constant",
+                },
+                assignedValue: {
+                    type: Schema.Types.Mixed,
+                    default: undefined,
+                    required: true
+                },
+                optionValues: { type: [], default: [] },
             }
         ],
         flow: {
@@ -41,8 +54,10 @@ const schema = new Schema(
                     textContent: { type: [], default: undefined },
                     pictureFileName: { type: [], default: undefined },
                     interactivePiano: { type: [], default: undefined },
+                    interactiveKeyboard: { type: [], default: undefined },
                     midiFileName: { type: [String], default: undefined },
                     videoFileName: { type: [String], default: undefined },
+                    referenceKeyboardKeys: { type: [[String]], default: undefined },
                     numberRepetition: { type: Number, default: undefined },
                     followedBy: { type: Boolean, default: undefined },
                     anyPianoKey: { type: Boolean, default: undefined },
@@ -65,14 +80,24 @@ const schema = new Schema(
                     successesForSkipLoop: { type: Number, default: undefined },
                     startSignal: { type: Number, default: undefined },
                     feedbackNumerical: { type: Boolean, default: undefined },
+                    skipLoopOnLastRepetition: { type: Boolean, default: undefined },
 
-                    lastRepetitionVersion: { type: Object, default: undefined }
+                    lastRepetitionVersion: { type: Object, default: undefined },
+                    succeeededForSkipLoopVersion: { type: Object, default: undefined },
+
+                    resetVariable: { type: String, default: undefined },
+                    incrementVariable: { type: String, default: undefined },
+                    decrementVariable: { type: String, default: undefined },
+                    incrementVariableOnSucess: { type: String, default: undefined },
+                    decrementVariableOnSucces: { type: String, default: undefined },
+
+                    controlType: { type: String, default: undefined },
                 }
             ]
         }
     },
     {
-        strict: false,
+        strict: true,
         timestamps: {
             createdAt: 'createdAt',
             updatedAt: 'updatedAt'

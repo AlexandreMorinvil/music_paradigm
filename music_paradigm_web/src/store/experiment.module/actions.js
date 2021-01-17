@@ -1,34 +1,40 @@
 export default {
-    clearState: ({ commit }) => {
-        commit('clearState');
-    },
-    setExperiment: ({ commit }, experiment) => {
-        commit('setExperiment', experiment);
-    },
-    setStartingPoint: ({ commit }, cursor = null) => {
-        commit('initCursor', cursor);
-    },
-    initExperiment: ({ commit }) => {
-        commit('initExperiment');
-    },
-    updateState: ({ commit }) => {
-        commit('updateState');
-    },
-    goNextStep: ({ commit }) => {
-        commit('moveNextStep');
-    },
-    goStepPostSkip: ({ commit }) => {
-        commit('movePostSkip')
-    },
-    endExperimentByTimeout: ({ commit }) => {
-        commit('endExperimentByTimeout');
-    },
-    concludeExperiment: ({ commit }) => {
-        commit('leaveExperiment');
-    },
+	clearState: ({ commit }) => {
+		commit('clearState');
+	},
+	setExperiment: ({ commit }, experiment) => {
+		commit('setExperiment', experiment);
+	},
+	setParameterValues: ({ commit }, variableValues) => {
+		commit('setParameterValues', variableValues);
+	},
+	setStartingPoint: ({ commit }, cursor = null) => {
+		commit('initCursor', cursor);
+	},
+	initExperiment: ({ commit }) => {
+		commit('initExperiment');
+	},
+	updateState: ({ commit }) => {
+		commit('updateState');
+	},
+	goNextStep: ({ commit }) => {
+		commit('moveNextStep');
+	},
+	goStepPostSkip: ({ commit }) => {
+		commit('movePostSkip');
+	},
+	endExperimentByTimeout: ({ commit }) => {
+		commit('endExperimentByTimeout');
+	},
+	concludeExperiment: ({ commit }) => {
+		commit('leaveExperiment');
+	},
 
-    // Record methods
-    addSuccess: ({commit}) => {
-        commit('addSuccess');
-    }
-}
+	// Record methods
+	addSuccess: ({ commit }) => {
+		commit('addSuccess');
+	},
+	stopWaitingStartSignalReady: ({ commit }) => {
+		commit('stopWaitingStartSignalReady');
+	},
+};
