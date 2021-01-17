@@ -66,6 +66,10 @@ export default {
 		return state.state.content.interactivePiano || false;
 	},
 
+	interactiveKeyboard: (state) => {
+		return state.state.content.interactiveKeyboard || false;
+	},
+
 	// Getters for the state media
 	// Playable Media file names
 	midiName: (state) => {

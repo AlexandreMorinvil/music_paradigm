@@ -4,76 +4,76 @@
 		<ul id="keyboard">
 			<li>
 				<ul class="keyboard-row">
-					<li class="key symbol"><span class="off">`</span><span class="on">~</span></li>
-					<li class="key symbol"><span class="off">1</span><span class="on">!</span></li>
-					<li class="key symbol"><span class="off">2</span><span class="on">@</span></li>
-					<li class="key symbol"><span class="off">3</span><span class="on">#</span></li>
-					<li class="key symbol"><span class="off">4</span><span class="on">$</span></li>
-					<li class="key symbol"><span class="off">5</span><span class="on">%</span></li>
-					<li class="key symbol"><span class="off">6</span><span class="on">^</span></li>
-					<li class="key symbol"><span class="off">7</span><span class="on">&amp;</span></li>
-					<li class="key symbol"><span class="off">8</span><span class="on">*</span></li>
-					<li class="key symbol"><span class="off">9</span><span class="on">(</span></li>
-					<li class="key symbol"><span class="off">0</span><span class="on">)</span></li>
-					<li class="key symbol"><span class="off">-</span><span class="on">_</span></li>
-					<li class="key symbol"><span class="off">=</span><span class="on">+</span></li>
-					<li class="key delete lastitem">delete</li>
+					<li class="key symbol locked"><span class="off">`</span><span class="on">~</span></li>
+					<li class="key symbol" ref="1"><span class="off">1</span><span class="on">!</span></li>
+					<li class="key symbol" ref="2"><span class="off">2</span><span class="on">@</span></li>
+					<li class="key symbol" ref="3"><span class="off">3</span><span class="on">#</span></li>
+					<li class="key symbol" ref="4"><span class="off">4</span><span class="on">$</span></li>
+					<li class="key symbol" ref="5"><span class="off">5</span><span class="on">%</span></li>
+					<li class="key symbol" ref="6"><span class="off">6</span><span class="on">^</span></li>
+					<li class="key symbol" ref="7"><span class="off">7</span><span class="on">&amp;</span></li>
+					<li class="key symbol" ref="8"><span class="off">8</span><span class="on">*</span></li>
+					<li class="key symbol" ref="9"><span class="off">9</span><span class="on">(</span></li>
+					<li class="key symbol" ref="0"><span class="off">0</span><span class="on">)</span></li>
+					<li class="key symbol locked" ref="-"><span class="off">-</span><span class="on">_</span></li>
+					<li class="key symbol locked" ref="="><span class="off">=</span><span class="on">+</span></li>
+					<li class="key delete lastitem locked">delete</li>
 				</ul>
 			</li>
 			<li>
 				<ul class="keyboard-row">
-					<li class="key tab">tab</li>
-					<li class="key letter">q</li>
-					<li class="key letter">w</li>
-					<li class="key letter">e</li>
-					<li class="key letter">r</li>
-					<li class="key letter">t</li>
-					<li class="key letter">y</li>
-					<li class="key letter">u</li>
-					<li class="key letter">i</li>
-					<li class="key letter">o</li>
-					<li class="key letter">p</li>
-					<li class="key symbol"><span class="off">[</span><span class="on">{</span></li>
-					<li class="key symbol"><span class="off">]</span><span class="on">}</span></li>
-					<li class="key symbol lastitem"><span class="off">\</span><span class="on">|</span></li>
+					<li class="key tab locked">tab</li>
+					<li class="key letter" ref="q">q</li>
+					<li class="key letter" ref="w">w</li>
+					<li class="key letter" ref="e">e</li>
+					<li class="key letter" ref="r">r</li>
+					<li class="key letter" ref="t">t</li>
+					<li class="key letter" ref="y">y</li>
+					<li class="key letter" ref="u">u</li>
+					<li class="key letter" ref="i">i</li>
+					<li class="key letter" ref="o">o</li>
+					<li class="key letter" ref="p">p</li>
+					<li class="key symbol locked locked"><span class="off">[</span><span class="on">{</span></li>
+					<li class="key symbol locked locked"><span class="off">]</span><span class="on">}</span></li>
+					<li class="key symbol lastitem locked"><span class="off">\</span><span class="on">|</span></li>
 				</ul>
 			</li>
 			<li>
 				<ul class="keyboard-row">
-					<li class="key capslock">caps</li>
-					<li class="key letter">a</li>
-					<li class="key letter">s</li>
-					<li class="key letter">d</li>
-					<li class="key letter">f</li>
-					<li class="key letter">g</li>
-					<li class="key letter">h</li>
-					<li class="key letter">j</li>
-					<li class="key letter">k</li>
-					<li class="key letter">l</li>
-					<li class="key symbol"><span class="off">;</span><span class="on">:</span></li>
-					<li class="key symbol"><span class="off">'</span><span class="on">&quot;</span></li>
-					<li class="key return lastitem">return</li>
+					<li class="key capslock locked">caps</li>
+					<li class="key letter" ref="a">a</li>
+					<li class="key letter" ref="s">s</li>
+					<li class="key letter" ref="d">d</li>
+					<li class="key letter" ref="f">f</li>
+					<li class="key letter" ref="g">g</li>
+					<li class="key letter" ref="h">h</li>
+					<li class="key letter" ref="j">j</li>
+					<li class="key letter" ref="k">k</li>
+					<li class="key letter" ref="l">l</li>
+					<li class="key symbol locked"><span class="off">;</span><span class="on">:</span></li>
+					<li class="key symbol locked"><span class="off">'</span><span class="on">&quot;</span></li>
+					<li class="key return lastitem locked">return</li>
 				</ul>
 			</li>
 			<li>
 				<ul class="keyboard-row">
-					<li class="key left-shift">shift</li>
-					<li class="key letter">z</li>
-					<li class="key letter">x</li>
-					<li class="key letter">c</li>
-					<li class="key letter">v</li>
-					<li class="key letter">b</li>
-					<li class="key letter">n</li>
-					<li class="key letter">m</li>
-					<li class="key symbol"><span class="off">,</span><span class="on">&lt;</span></li>
-					<li class="key symbol"><span class="off">.</span><span class="on">&gt;</span></li>
-					<li class="key symbol"><span class="off">/</span><span class="on">?</span></li>
-					<li class="key right-shift lastitem">shift</li>
+					<li class="key left-shift locked">shift</li>
+					<li class="key letter" ref="z">z</li>
+					<li class="key letter" ref="x">x</li>
+					<li class="key letter" ref="c">c</li>
+					<li class="key letter" ref="v">v</li>
+					<li class="key letter" ref="b">b</li>
+					<li class="key letter" ref="n">n</li>
+					<li class="key letter" ref="m">m</li>
+					<li class="key symbol locked"><span class="off">,</span><span class="on">&lt;</span></li>
+					<li class="key symbol locked"><span class="off">.</span><span class="on">&gt;</span></li>
+					<li class="key symbol locked"><span class="off">/</span><span class="on">?</span></li>
+					<li class="key right-shift lastitem locked">shift</li>
 				</ul>
 			</li>
 			<li>
 				<ul class="keyboard-row">
-					<li class="key space lastitem">&nbsp;</li>
+					<li class="key space lastitem locked">&nbsp;</li>
 				</ul>
 			</li>
 		</ul>
@@ -84,75 +84,95 @@
 import { mapGetters } from 'vuex';
 
 export default {
-	// components: {},
-	// data() {
-	// 	return {
-	// 		highlightedDesignatedKeys: [],
-	// 		NOTE_COUNT: 24,
-	// 		OFFSET_STEP: 12,
-	// 	};
-	// },
-	// computed: {
-	// 	...mapGetters('experiment', ['interactivePiano', 'interactivePianoFirstOctave']),
-	// 	...mapGetters('piano', ['pressedKeys', 'midiFileTriggeredKeys', 'midiFileNotesMidi']),
-	// 	midiOffset() {
-	// 		return this.interactivePianoFirstOctave * this.OFFSET_STEP;
-	// 	},
-	// 	firstNote() {
-	// 		return this.midiOffset;
-	// 	},
-	// 	lastNote() {
-	// 		return this.midiOffset + this.NOTE_COUNT;
-	// 	},
-	// },
-	// methods: {
-	// 	designateKeys(keys) {
-	// 		if (Array.isArray(keys)) this.highlightedDesignatedKeys = keys;
-	// 		else if (typeof keys == 'number') this.highlightedDesignatedKeys = [keys];
-	// 	},
-	// 	clearDesignatedKeys() {
-	// 		this.highlightedDesignatedKeys = [];
-	// 	},
-	// 	hintAllNotes() {
-	// 		const designatedKeys = [];
-	// 		for (let index = 0; index < this.midiFileNotesMidi.length; index++) designatedKeys.push(this.midiFileNotesMidi[index]);
-	// 		this.designateKeys(designatedKeys);
-	// 	},
-	// 	hintFirstNote() {
-	// 		this.designateKeys(this.midiFileNotesMidi[0]);
-	// 	},
-	// },
-	// beforeDestroy() {
-	// 	this.clearDesignatedKeys();
-	// },
-	// watch: {
-	// 	pressedKeys(list) {
-	// 		for (let note = this.firstNote; note <= this.lastNote; note++) {
-	// 			if (list.includes(note)) this.$refs[note.toString()].classList.add('user-triggered');
-	// 			else this.$refs[note.toString()].classList.remove('user-triggered');
-	// 		}
-	// 	},
-	// 	midiFileTriggeredKeys(list) {
-	// 		for (let note = this.firstNote; note <= this.lastNote; note++) {
-	// 			if (list.includes(note)) this.$refs[note.toString()].classList.add('midi-file-triggered');
-	// 			else this.$refs[note.toString()].classList.remove('midi-file-triggered');
-	// 		}
-	// 	},
-	// 	highlightedDesignatedKeys(list) {
-	// 		for (let note = this.firstNote; note <= this.lastNote; note++) {
-	// 			if (list.includes(note)) this.$refs[note.toString()].classList.add('designated');
-	// 			else this.$refs[note.toString()].classList.remove('designated');
-	// 		}
-	// 	},
-	// 	midiFileNotesMidi: {
-	// 		immediate: true,
-	// 		handler: function () {
-	// 			this.clearDesignatedKeys();
-	// 			if (this.interactivePiano === 'first') this.hintFirstNote();
-	// 			if (this.interactivePiano === 'all') this.hintAllNotes();
-	// 		},
-	// 	},
-	// },
+	data() {
+		return {
+			highlightedDesignatedKeys: [],
+			keys: [
+				'1',
+				'2',
+				'3',
+				'4',
+				'5',
+				'6',
+				'7',
+				'8',
+				'9',
+				'0',
+				'a',
+				'b',
+				'c',
+				'd',
+				'e',
+				'f',
+				'g',
+				'h',
+				'i',
+				'j',
+				'k',
+				'l',
+				'm',
+				'n',
+				'o',
+				'p',
+				'q',
+				'r',
+				's',
+				't',
+				'u',
+				'v',
+				'w',
+				'x',
+				'y',
+				'z',
+			],
+		};
+	},
+	computed: {
+		...mapGetters('experiment', ['interactiveKeyboard', 'interactivePianoFirstOctave']),
+		...mapGetters('keyboard', ['currentlyPressedKeyboardKeys', 'referenceKeyboardKeys']),
+	},
+	methods: {
+		designateKeys(keys) {
+			if (Array.isArray(keys)) this.highlightedDesignatedKeys = keys;
+			else if (typeof keys == 'number') this.highlightedDesignatedKeys = [keys];
+		},
+		clearDesignatedKeys() {
+			this.highlightedDesignatedKeys = [];
+		},
+		hintAllKeys() {
+			const designatedKeys = [];
+			for (let index = 0; index < this.referenceKeyboardKeys.length; index++) designatedKeys.push(this.referenceKeyboardKeys[index]);
+			this.designateKeys(designatedKeys);
+		},
+		hintFistKey() {
+			this.designateKeys(this.referenceKeyboardKeys[0]);
+		},
+	},
+	beforeDestroy() {
+		this.clearDesignatedKeys();
+	},
+	watch: {
+		currentlyPressedKeyboardKeys(list) {
+			for (const key of this.keys) {
+				if (list.includes(key)) this.$refs[key.toString()].classList.add('user-triggered');
+				else this.$refs[key.toString()].classList.remove('user-triggered');
+			}
+		},
+		highlightedDesignatedKeys(list) {
+			for (const key of this.keys) {
+				if (list.includes(key)) this.$refs[key.toString()].classList.add('designated');
+				else this.$refs[key.toString()].classList.remove('designated');
+			}
+		},
+		referenceKeyboardKeys: {
+			immediate: true,
+			handler: function () {
+				this.clearDesignatedKeys();
+				if (this.interactiveKeyboard === 'first') this.hintFistKey();
+				if (this.interactiveKeyboard === 'all') this.hintAllKeys();
+			},
+		},
+	},
 };
 </script>
 
@@ -190,7 +210,7 @@ li {
 
 .key {
 	float: left;
-	margin: auto 2.5px;
+	margin: auto 2px;
 	width: 5.813%;
 	height: 95%;
 	line-height: 40px;
@@ -210,7 +230,11 @@ li {
 	color: rgb(209, 210, 212);
 	background-color: rgb(50, 50, 50);
 	border: 1px solid rgb(20, 20, 20);
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.15) inset, 0 1px rgba(17, 17, 17, 0.2) inset, 0 5px 5px rgba(0, 0, 0, 0.35);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.15) inset, 0 1px rgba(17, 17, 17, 0.2) inset, 5px 5px 5px rgba(0, 0, 0, 0.35);
+}
+
+.locked {
+	background-color: rgb(40, 40, 40);
 }
 
 #keyboard > li {
@@ -258,5 +282,16 @@ li {
 	top: 1px;
 	left: 1px;
 	cursor: pointer;
+}
+
+ul .designated {
+	color: rgb(46, 46, 46);
+	border: 1px solid rgb(19, 117, 4);
+	background: linear-gradient(to bottom, rgb(255, 252, 81) 0%, rgb(222, 219, 0) 100%);
+}
+
+ul .user-triggered {
+	border: 1px solid rgb(4, 19, 117);
+	background: linear-gradient(to bottom, rgb(0, 187, 255) 0%, rgb(2, 48, 139) 100%);
 }
 </style>
