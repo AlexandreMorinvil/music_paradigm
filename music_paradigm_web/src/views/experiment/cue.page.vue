@@ -83,13 +83,16 @@ export default {
 <style scoped>
 .text-area {
 	flex-grow: 1;
+	height: 30%;
 }
 
 .image-area {
 	flex-grow: 1;
+	height: 50%;
 }
 
 .piano-area {
 	flex-grow: 1;
+	height: 50%;
 }
 </style>
