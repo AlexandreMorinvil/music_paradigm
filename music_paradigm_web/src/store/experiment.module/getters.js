@@ -131,6 +131,10 @@ export default {
 		}
 	},
 
+	nextPlayingMode: (state) => {
+		return blockHandler.getNextBlock(state.flow, state.cursor).playingMode || state.settings.playingMode;
+	},
+
 	anyPianoKey: (state) => {
 		// The "anyPianoKey" parameter indicates whether the user of the experiment can move to the next step by pressing any piano key
 		// (if the value is "true"), otherwise the experiment will move to the next step only by pressing the space bar key (if the value is false).

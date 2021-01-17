@@ -18,6 +18,7 @@
 			</div>
 		</div>
 		<piano-area-component class="piano-area state-section" />
+		<keyboard-area-component class="piano-area state-section" />
 	</div>
 </template>
 
@@ -26,6 +27,7 @@
 import '@/styles/experiment-content-template.css';
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 
+import KeyboardAreaComponent from '@/components/experiment/visual-content/keyboard-area.component.vue';
 import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 import VideoPlayer from '@/components/experiment/video/video-player.component.vue';
@@ -34,6 +36,7 @@ import { mapGetters } from 'vuex';
 
 export default {
 	components: {
+		KeyboardAreaComponent,
 		PianoAreaComponent,
 		TextAreaComponent,
 		// VideoAreaComponent,

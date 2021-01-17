@@ -21,7 +21,7 @@ export default {
 		},
 	},
 	computed: {
-		...mapGetters('experiment', ['currentStateType', 'nextStateType']),
+		...mapGetters('experiment', ['currentStateType', 'nextStateType', 'playingMode', 'nextPlayingMode']),
 		stateQueried() {
 			if (this.isCurrentStateRequested) return this.currentStateType;
 			else return this.nextStateType;
@@ -48,7 +48,7 @@ export default {
 				case 'instruction':
 					return iconFileName + 'icon-info';
 				case 'playing':
-					return iconFileName + 'icon-piano';
+					return iconFileName + this.getIconPlaying();
 				case 'rest':
 					return iconFileName + 'icon-pause';
 				case 'video':
@@ -56,6 +56,11 @@ export default {
 				default:
 					return iconFileName + 'icon-three-dots';
 			}
+		},
+		getIconPlaying() {
+			const playingMode = this.isCurrentStateRequested ? this.playingMode : this.nextPlayingMode;
+			if (playingMode.includes('keyboard')) return 'icon-keyboard';
+			else return 'icon-piano';
 		},
 	},
 };

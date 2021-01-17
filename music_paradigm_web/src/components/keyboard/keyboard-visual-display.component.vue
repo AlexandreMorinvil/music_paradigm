@@ -285,7 +285,7 @@ li {
 }
 
 ul .designated {
-	color: rgb(46, 46, 46);
+	color: rgb(45, 45, 45);
 	border: 1px solid rgb(19, 117, 4);
 	background: linear-gradient(to bottom, rgb(255, 252, 81) 0%, rgb(222, 219, 0) 100%);
 }
