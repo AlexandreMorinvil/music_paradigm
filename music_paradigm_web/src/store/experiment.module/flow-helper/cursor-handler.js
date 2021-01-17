@@ -35,23 +35,30 @@ function assignCursor(flow, cursorToCopy = null) {
 
 function advance(state, flow, cursor, isInitialized) {
 	determineGroupEnd(flow, cursor);
-	if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop)
-		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
+	if (moveCursorSpecialCases(state, flow, cursor, isInitialized)) return;
 	else moveCursorNext(flow, cursor, isInitialized);
 }
 
 function skip(state, flow, cursor, isInitialized) {
-	if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop) {
-		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
-	} else {
-		do {
-			moveCursorNext(flow, cursor, isInitialized);
-			stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
-		} while (cursor.current.isInSkipableChain);
-	}
+	if (moveCursorSpecialCases(state, flow, cursor, isInitialized)) return;
+	do {
+		moveCursorNext(flow, cursor, isInitialized);
+		stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
+	} while (cursor.current.isInSkipableChain);
+
 }
 
 // Inner cursor move manipulations
+
+function moveCursorSpecialCases(state, flow, cursor, isInitialized) {
+	if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop) {
+		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
+		return true;
+	} else if (blockHandler.getCurrentBlock(flow, cursor).skipLoopOnLastRepetition && cursor.navigation.numberRepetition <= 1) {
+		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
+		return true;
+	} else return false;
+}
 
 function moveCursorNext(flow, cursor, isInitialized) {
 	variableHandler.updateVariables(flow, cursor);

@@ -171,6 +171,7 @@ function validateBlock(block, index = null) {
 		'startSignal',
 		'feedbackNumerical',
 		'interactivePianoFirstOctave',
+		'skipLoopOnLastRepetition',
 
 		'resetVariableValue',
 		'incrementVariable',
@@ -239,6 +240,7 @@ function validateAttributeType(key, value) {
 		case 'hideFeedbackSmiley':
 		case 'skipStepButtonInFootnote':
 		case 'feedbackNumerical':
+		case 'skipLoopOnLastRepetition':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

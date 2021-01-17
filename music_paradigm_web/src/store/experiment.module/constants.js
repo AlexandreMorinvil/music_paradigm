@@ -151,6 +151,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			startSignal: 0, // Signal countdown (if is 0, there is no signal countdown)
 			feedbackNumerical: false, // Indicator of whether the feedback must be given in its numerical form instead of with range bars
 			interactivePianoFirstOctave: DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE, // Block specific "interactivePianoFirstOctave" superseding the general setting
+			skipLoopOnLastRepetition: false, // Indicate whether a block must be skipped if it's on the last repetition
 		},
 		// Session specific informations
 		record: {
