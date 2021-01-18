@@ -9,13 +9,13 @@ export default {
 	components: {
 		ProblemPromptComponent,
 	},
-	data() {
-		return {
-			title: 'Not corresponding notes',
-			solutions: [
-				'The MIDI keyboard has two buttons labelled "octave".\nUse those buttons until the keys you press on your MIDI keyboard correspond to the keys displayed.',
-			],
-		};
+	computed: {
+		title() {
+			return this.$t('user.problem-prompt.piano-correspondance.title');
+		},
+		solutions() {
+			return [this.$t('user.problem-prompt.piano-correspondance.solution-1')];
+		},
 	},
 	methods: {
 		end() {

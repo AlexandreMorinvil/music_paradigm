@@ -2,7 +2,7 @@
 	<footer id="footer" class="area-footer">
 		<hr />
 		<div class="footer-content">
-			<p>{{ $t('application-component.footer.musicParadigmIs') }}</p>
+			<p>{{ $t('application-component.footer.footnote-text') }}</p>
 		</div>
 	</footer>
 </template>

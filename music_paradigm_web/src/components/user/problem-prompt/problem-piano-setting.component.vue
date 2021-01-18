@@ -9,13 +9,13 @@ export default {
 	components: {
 		ProblemPromptComponent,
 	},
-	data() {
-		return {
-			title: 'MIDI keyboard not reachable',
-			solutions: [
-				'Make sure you are using the Google Chrome web browser. Other web browsers as Firefox and Internet Explorer are not compatible with the MIDI keyboard.',
-			],
-		};
+	computed: {
+		title() {
+			return this.$t('user.problem-prompt.piano-setting.title');
+		},
+		solutions() {
+			return [this.$t('user.problem-prompt.piano-setting.solution-1')];
+		},
 	},
 	methods: {
 		end() {

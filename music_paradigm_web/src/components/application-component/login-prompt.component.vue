@@ -1,32 +1,32 @@
 <template>
 	<div id="login-box" class="login-box">
 		<div id="login-box-title" class="login-box-title">
-			<h1>Login</h1>
+			<h1>{{ $t('application-component.login-prompt.login') }}</h1>
 		</div>
 
 		<div id="login-box-form" class="login-box-form">
 			<loader-circular-component v-if="isLoggingIn" class="loader" />
 			<form v-else @submit.prevent="handleSubmit">
 				<div>
-					<label for="username">Username</label>
+					<label for="username">{{ $t('application-component.login-prompt.username') }}</label>
 					<input
 						type="text"
 						v-on:blur="setUsernameHadFocus"
 						v-bind:class="{ 'input-text-danger': hasUsernameError }"
 						v-model="username"
 						name="username"
-						placeholder="Enter Username"
+						:placeholder="$t('application-component.login-prompt.enterUsername')"
 					/>
 					<div v-if="hasUsernameError" class="invalid-input">
 						{{ usernameValidityMessage }}
 					</div>
 				</div>
 				<div>
-					<label for="password">Password</label>
-					<input type="password" v-model="password" name="password" placeholder="Enter Password" />
+					<label for="password">{{ $t('application-component.login-prompt.password') }}</label>
+					<input type="password" v-model="password" name="password" :placeholder="$t('application-component.login-prompt.enterPassword')" />
 				</div>
 				<div>
-					<button class="login-button">Login</button>
+					<button class="login-button">{{ $t('application-component.login-prompt.login') }}</button>
 				</div>
 			</form>
 		</div>
@@ -55,7 +55,7 @@ export default {
 			return (this.hasAttemptedSubmit || this.hasFocusedOnUsername) && !this.username;
 		},
 		usernameValidityMessage() {
-			if (!this.username) return 'Username is required';
+			if (!this.username) return this.$t('application-component.login-prompt.username-required');
 			else return '';
 		},
 	},

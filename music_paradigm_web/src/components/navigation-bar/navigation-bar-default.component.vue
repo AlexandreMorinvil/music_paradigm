@@ -4,15 +4,15 @@
 			<svg class="home-button app-navigation-bar-button" v-on:click="goToHomePage">
 				<use xlink:href="app-sprites.svg#icon-home" />
 			</svg>
-			<p>Welcome {{ fullName }}</p>
+			<p>{{ $t('navigation-bar.welcome', { fullname: fullName }) }}</p>
 		</div>
 
 		<div class="navigation-bar-center navigation-bar-wrapper">
-			<p>Music Paradigm</p>
+			<p>{{ $t('music-paradigm') }}</p>
 		</div>
 
 		<div v-if="isLoggedIn" class="navigation-bar-right navigation-bar-wrapper">
-			<div id="button-leave" class="app-navigation-bar-button" v-on:click="handleLogout">Logout</div>
+			<div id="button-leave" class="app-navigation-bar-button" v-on:click="handleLogout">{{ $t('navigation-bar.logout') }}</div>
 		</div>
 	</div>
 </template>

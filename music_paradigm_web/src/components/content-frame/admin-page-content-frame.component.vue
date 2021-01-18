@@ -9,7 +9,7 @@
 		<div class="area-separation"></div>
 
 		<main class="area-main">
-			<slot> Page to be implemented </slot>
+			<slot>{{ $t('content-frame.page-to-implemented') }}</slot>
 		</main>
 
 		<application-footer-component />

@@ -9,11 +9,13 @@ export default {
 	components: {
 		ProblemPromptComponent,
 	},
-	data() {
-		return {
-			title: 'No MIDI input received',
-			solutions: ['Try uplugging and replugging the keyboard.\nPress the OK buton to restart the MIDI keyboard initialization.'],
-		};
+	computed: {
+		title() {
+			return this.$t('user.problem-prompt.piano-input.title');
+		},
+		solutions() {
+			return [this.$t('user.problem-prompt.piano-input.solution-1')];
+		},
 	},
 	methods: {
 		end() {

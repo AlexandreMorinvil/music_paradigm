@@ -24,8 +24,8 @@ export default {
 			return this.preSessionMessage;
 		},
 		buttonText() {
-			if (this.isLastStage) return 'Start Session';
-			else return 'Continue';
+			if (this.isLastStage) return this.$t('user.pre-session.start-session');
+			else return this.$t('user.pre-session.continue');
 		},
 	},
 	methods: {
