@@ -36,15 +36,12 @@ export default {
 	computed: {
 		...mapGetters('piano', ['isPianoInitializing', 'isPianoInitialized']),
 		message() {
-			return (
-				'Please attach the MIDI-keyboard to your computer using the USB-chord and place it so you can play it comfortably.\n\n' +
-				'When done, press the button below'
-			);
+			return this.$t('user.pre-session.attach-piano.attach-piano');
 		},
 		buttonText() {
-			if (this.isPianoInitializing) return 'Initializing...';
-			if (this.isLastStage) return 'Start Session';
-			else return 'Initialize MIDI';
+			if (this.isPianoInitializing) return this.$t('user.pre-session.attach-piano.initializing');
+			if (this.isLastStage) return this.$t('user.pre-session.start-session');
+			else return this.$t('user.pre-session.attach-piano.initialize-midi');
 		},
 	},
 	methods: {

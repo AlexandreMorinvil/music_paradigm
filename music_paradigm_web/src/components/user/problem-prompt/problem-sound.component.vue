@@ -9,26 +9,20 @@ export default {
 	components: {
 		ProblemPromptComponent,
 	},
-	data() {
-		return {
-			title: 'No sound heard',
-		};
-	},
 	computed: {
+		title() {
+			return this.$t('user.problem-prompt.piano-sound.title');
+		},
 		solutions() {
 			return [
-				'Verify the volume (it might be too low or muted).',
-				'Refresh the page and try again.',
-				'Close this window and retry on a now page.',
-				'Restart the device and try again.',
+				this.$t('user.problem-prompt.piano-sound.solution-1'),
+				this.$t('user.problem-prompt.piano-sound.solution-2'),
+				this.$t('user.problem-prompt.piano-sound.solution-3'),
+				this.$t('user.problem-prompt.piano-sound.solution-4'),
 			];
 		},
 		conclusion() {
-			return (
-				'If the solution(s) above did not fix the problem:\n' +
-				'It is likely that there is a problem with the sound of your computer.\n' +
-				'Please contact the operator of the platform for further technical support.'
-			);
+			return this.$t('user.problem-prompt.piano-sound.conclusion');
 		},
 	},
 	methods: {

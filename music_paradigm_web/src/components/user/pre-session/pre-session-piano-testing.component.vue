@@ -36,8 +36,6 @@ export default {
 	},
 	data() {
 		return {
-			PROBLEM_SIGNAL: 'Nothing happens when I press any key?',
-			PROBLEM_CORRESPONDANCE: 'The keys highlighted do not correspond to the key I press?',
 			SECONDS_TO_RECEIVE_SIGNAL: 10,
 			timeoutUniqueID: 0,
 			hasReceivedSignal: false,
@@ -48,17 +46,23 @@ export default {
 	computed: {
 		...mapGetters('piano', ['pressedKeys']),
 		message() {
-			return 'The piano is now muted: you will not hear any sound.\nVerify that the keys indicated on dislay mirror the keys you press.';
+			return this.$t('user.pre-session.test-piano.verify-piano');
 		},
 		buttonText() {
-			if (!this.hasReceivedSignal) return 'Press any key on the MIDI Keyboard';
-			else if (this.isLastStage) return 'Start Session';
-			else return 'Continue';
+			if (!this.hasReceivedSignal) return this.$t('user.pre-session.test-piano.press-any-key');
+			else if (this.isLastStage) return this.$t('user.pre-session.start-session');
+			else return this.$t('user.pre-session.continue');
 		},
 		buttonStyle() {
 			if (!this.hasReceivedSignal) return 'button-innactive smaller-text';
 			else if (this.isLastStage) return 'button-start';
 			else return 'button-next';
+		},
+		PROBLEM_SIGNAL() {
+			return this.$t('user.pre-session.test-piano.problem-signal');
+		},
+		PROBLEM_CORRESPONDANCE() {
+			return this.$t('user.pre-session.test-piano.problem-correspondance');
 		},
 	},
 	methods: {

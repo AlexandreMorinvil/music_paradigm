@@ -1,8 +1,90 @@
 {
   "message": "hello i18n !!",
+  "music-paradigm": "Music Paradigm",
   "application-component": {
     "footer": {
-      "musicParadigmIs": "Music Paradigm is an open source platform developped for managing remote mutiusers musical training experiments."
+      "footnote-text": "Music Paradigm is an open source platform developped for managing remote mutiusers musical training experiments."
+    },
+    "login-prompt": {
+      "login": "Login",
+      "username": "",
+      "enterUsername": "Enter Username",
+      "password": "Password",
+      "enterPassword": "",
+      "username-required": "Username is required"
+    }
+  },
+  "content-frame": {
+    "content-frame.page-to-implemented": "Page to be implemented"
+  },
+  "navigation-bar": {
+    "welcome": "Welcome {fullname}",
+    "logout": "Logout",
+    "session-in-progress": "Session in progress",
+    "leave": "Leave"
+  },
+  "user": {
+    "home": {
+      "run-today-session": "Run Today’s Session",
+      "today-session-unavailable": "No new session available"
+    },
+    "progression-board": {
+      "available": "Available",
+      "tomorrow": "Tomorrow",
+      "in-x-days": "In {number} day | In {number} days",
+      "in-x-hours": "In {time} hours",
+      "undetermined": "Soon"
+    },
+    "pre-session": {
+      "pre-session-advice": {
+        "close-all": "Please close all other applications and webpages before continuing.",
+        "web-browser": "Make sure you are using the Google Chrome web browser."
+      },
+      "attach-piano": {
+        "attach-piano": "Please attach the MIDI-keyboard to your computer using the USB-chord and place it so you can play it comfortably.\n\nWhen done, press the button below",
+        "initializing": "Initializing...",
+        "initialize-midi": "Initialize MIDI Keyboard"
+      },
+      "test-piano": {
+        "verify-piano": "The piano is now muted: you will not hear any sound.\nVerify that the keys indicated on dislay mirror the keys you press.",
+        "press-any-key": "Press any key on the MIDI Keyboard",
+        "problem-signal": "Nothing happens when I press any key?",
+        "problem-correspondance": "The keys highlighted do not correspond to the key I press?"
+      },
+      "test-sound": {
+        "verify-sound": "You should now hear a piano sound.\n\nPlease Adjust the volume to a confortable level.",
+        "problem-sound": "I hear no sound?"
+      },
+      "continue": "Continue",
+      "start-session": "Start Session"
+    },
+    "problem-prompt": {
+      "default": {
+        "title": "Unspecified",
+        "solution-1": "No solution",
+        "conclusion": "If the solution above did not fix the problem:\n Please contact the operator of the platform for further technical support. | If the solutions above did not fix the problem:\n Please contact the operator of the platform for further technical support.",
+        "button": "OK"
+      },
+      "piano-setting": {
+        "title": "MIDI keyboard not reachable",
+        "solution-1": "Make sure you are using the Google Chrome web browser. Other web browsers as Firefox and Internet Explorer are not compatible with the MIDI keyboard."
+      },
+      "piano-input": {
+        "title": "No MIDI input received",
+        "solution-1": "Try uplugging and replugging the keyboard.\nPress the OK buton to restart the MIDI keyboard initialization."
+      },
+      "piano-correspondance": {
+        "title": "Not corresponding notes",
+        "solution-1": "The MIDI keyboard has two buttons labelled 'octave'.\nUse those buttons until the keys you press on your MIDI keyboard correspond to the keys displayed."
+      },
+      "piano-sound": {
+        "title": "No sound heard",
+        "solution-1": "Verify the volume (it might be too low or muted).",
+        "solution-2": "Refresh the page and try again.",
+        "solution-3": "Close this window and retry on a now page.",
+        "solution-4": "Restart the device and try again.",
+        "conclusion": "If the solution(s) above did not fix the problem:\nIt is likely that there is a problem with the sound of your computer.\nPlease contact the operator of the platform for further technical support."
+      }
     }
   }
 }

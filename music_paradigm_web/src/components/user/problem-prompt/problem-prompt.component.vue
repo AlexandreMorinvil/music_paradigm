@@ -1,14 +1,14 @@
 <template>
 	<div class="dimmensions position layout formatting">
-		<h2 class="title-area"><span> Issue : </span> {{ title }}</h2>
+		<h2 class="title-area"><span> Issue : </span> {{ titleDisplayed }}</h2>
 		<div class="content-area">
 			<p class="solution-message-area">Please try the following solution(s) :</p>
-			<p v-for="(solution, index) in solutions" :key="index" class="solution">
+			<p v-for="(solution, index) in solutionsDisplayed" :key="index" class="solution">
 				<span class="index-square"># {{ index + 1 }}</span>
 				<span class="solution-text-space">{{ solution }}</span>
 			</p>
-			<p class="conclusion">{{ conclusion }}</p>
-			<button v-on:click="preceed" class="button-format">{{ button }}</button>
+			<p class="conclusion">{{ conclusionDisplayed }}</p>
+			<button v-on:click="preceed" class="button-format">{{ buttonDisplayed }}</button>
 		</div>
 	</div>
 </template>
@@ -18,19 +18,33 @@ export default {
 	props: {
 		title: {
 			type: String,
-			default: 'unspecified',
+			default: null,
 		},
 		solutions: {
 			type: Array,
-			default: () => ['No solution'],
+			default: null,
 		},
 		conclusion: {
 			type: String,
-			default: 'If the solution(s) above did not fix the problem:\n Please contact the operator of the platform for further technical support.',
+			default: null,
 		},
 		button: {
 			type: String,
-			default: 'OK',
+			default: null,
+		},
+	},
+	computed: {
+		titleDisplayed() {
+			return this.title ? this.title : this.$t('user.problem-prompt.default.title');
+		},
+		solutionsDisplayed() {
+			return this.solutions ? this.solutions : [this.$t('user.problem-prompt.default.solution-1')];
+		},
+		conclusionDisplayed() {
+			return this.conclusion ? this.conclusion : this.$tc('user.problem-prompt.default.conclusion', this.solutionsDisplayed.length);
+		},
+		buttonDisplayed() {
+			return this.button ? this.button : this.$t('user.problem-prompt.default.button');
 		},
 	},
 	methods: {

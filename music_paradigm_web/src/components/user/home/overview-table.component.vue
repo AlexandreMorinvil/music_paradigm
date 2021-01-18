@@ -1,8 +1,8 @@
 <template>
 	<div class="englobing-box">
-		<div class="overview-ttile">
+		<!-- <div class="overview-ttile">
 			<h2 class="title-area">Program</h2>
-		</div>
+		</div> -->
 		<div class="table-context">
 			<div class="table-inside-context content-flex">
 				<overview-table-session
@@ -42,11 +42,11 @@ export default {
 <style scoped>
 .englobing-box {
 	display: grid;
-	grid-template-rows: auto auto;
+	grid-template-rows: /*auto*/ auto;
 	color: rgb(230, 230, 230);
 }
 
-.title-area {
+/* .title-area {
 	width: 50%;
 	padding: 10px;
 	margin: auto;
@@ -55,7 +55,7 @@ export default {
 	border: 5px rgb(0, 35, 115) solid;
 	border-bottom-style: none;
 	border-radius: 10px 10px 0 0;
-}
+} */
 
 .table-context {
 	padding: 20px;
@@ -84,7 +84,7 @@ export default {
 	text-align: center;
 }
 
-.overview-ttile {
+/* .overview-ttile {
 	text-align: center;
-}
+} */
 </style>

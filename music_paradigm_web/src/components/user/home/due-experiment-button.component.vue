@@ -18,8 +18,8 @@ export default {
 	computed: {
 		...mapGetters('account', ['hasDueExperiment']),
 		message() {
-			if (this.isActive) return 'Run Today’s Session';
-			return 'No new session available';
+			if (this.isActive) return this.$t('user.home.run-today-session');
+			return this.$t('user.home.today-session-unavailable');
 		},
 		isActive() {
 			return this.hasDueExperiment;

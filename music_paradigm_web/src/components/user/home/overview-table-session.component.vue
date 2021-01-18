@@ -41,18 +41,21 @@ export default {
 				case 'timer-left':
 					return this.delay;
 				case 'available':
-					return 'available';
+					return this.$t('user.progression-board.available');
 				default:
 					return '';
 			}
 		},
 		delay() {
-			if (this.session.delayPreAvailabilityInDays > 0) {
-				if (this.session.delayPreAvailabilityInDays === 1) return 'Tomorrow';
-				else return `In ${this.session.delayPreAvailabilityInDays} days`;
-			} else if (this.session.delayPreAvailabilityInHours !== '00:00') return `In ${this.session.delayPreAvailabilityInHours} hours`;
-			else if (this.session.isDelayedByPreviousUniqueInDay) return 'Tomorrow';
-			else return 'Soon'; // THis shsould never happen
+			const delayInDays = this.session.delayPreAvailabilityInDays;
+			const delayInHours = this.session.delayPreAvailabilityInHours;
+			const isDelayedByPreviousUniqueInDay = this.session.isDelayedByPreviousUniqueInDay;
+			if (delayInDays > 0) {
+				if (delayInDays === 1) return this.$t('user.progression-board.tomorrow');
+				else return this.$tc('progression-board.in-x-days', delayInDays, { number: delayInDays });
+			} else if (delayInHours !== '00:00') return this.$tc('user.progression-board.in-x-hours', { time: delayInHours });
+			else if (isDelayedByPreviousUniqueInDay) return this.$t('user.progression-board.tomorrow');
+			else return this.$t('user.progression-board.undetermined'); // This shsould never happen
 		},
 		hasCaption() {
 			return Boolean(this.caption);

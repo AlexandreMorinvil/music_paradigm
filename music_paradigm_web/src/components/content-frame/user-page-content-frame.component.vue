@@ -7,7 +7,7 @@
 
 		<main class="area-user-main widget widget-bg">
 			<div class="page-content">
-				<slot> Page to be implemented </slot>
+				<slot>{{ $t('content-frame.page-to-implemented') }}</slot>
 			</div>
 		</main>
 	</div>
