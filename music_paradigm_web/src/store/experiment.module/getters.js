@@ -1,7 +1,7 @@
 import constants from './constants';
 
-import blockHandler from './flowHelper/blockHandler';
-import cursorHandler from './flowHelper/cursorHandler';
+import blockHandler from './flow-helper/block-handler';
+import cursorHandler from './flow-helper/cursor-handler';
 
 export default {
 	experimentId: (state) => {
@@ -66,6 +66,10 @@ export default {
 		return state.state.content.interactivePiano || false;
 	},
 
+	interactiveKeyboard: (state) => {
+		return state.state.content.interactiveKeyboard || false;
+	},
+
 	// Getters for the state media
 	// Playable Media file names
 	midiName: (state) => {
@@ -84,6 +88,10 @@ export default {
 
 		// Return the video name
 		return `${state.description.folder}/${videoName}`;
+	},
+
+	referenceKeyboardKeys: (state) => {
+		return state.state.mediaFile.referenceKeyboardKeys;
 	},
 
 	// Geters for the state attributes
@@ -121,6 +129,10 @@ export default {
 		else {
 			return blockHandler.getNextBlockType(state.flow, state.cursor);
 		}
+	},
+
+	nextPlayingMode: (state) => {
+		return blockHandler.getNextBlock(state.flow, state.cursor).playingMode || state.settings.playingMode;
 	},
 
 	anyPianoKey: (state) => {
@@ -242,6 +254,10 @@ export default {
 
 	hasInteractivePiano: (state) => {
 		return Boolean(state.state.content.interactivePiano);
+	},
+
+	hasInteractiveKeyboard: (state) => {
+		return Boolean(state.state.content.interactiveKeyboard);
 	},
 
 	hasPicture: (state) => {

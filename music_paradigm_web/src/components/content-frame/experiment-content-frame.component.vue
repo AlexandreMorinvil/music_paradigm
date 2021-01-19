@@ -72,6 +72,7 @@ export default {
 
 .experiment-content-grid {
 	display: grid;
+	position: relative;
 	justify-content: center;
 	align-content: space-between;
 	grid-template-columns: 1fr;
@@ -98,7 +99,7 @@ export default {
 	/* Position */
 	margin: 0;
 	position: absolute;
-	top: 60%;
+	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 

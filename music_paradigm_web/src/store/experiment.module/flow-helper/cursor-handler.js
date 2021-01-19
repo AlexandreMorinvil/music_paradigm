@@ -1,6 +1,6 @@
-import blockHandler from './blockHandler';
-import stateHandler from './stateHandler';
-import variableHandler from './variableHandler';
+import blockHandler from './block-handler';
+import stateHandler from './state-handler';
+import variableHandler from './variable-handler';
 
 import constants from '../constants';
 
@@ -35,23 +35,30 @@ function assignCursor(flow, cursorToCopy = null) {
 
 function advance(state, flow, cursor, isInitialized) {
 	determineGroupEnd(flow, cursor);
-	if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop)
-		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
+	if (moveCursorSpecialCases(state, flow, cursor, isInitialized)) return;
 	else moveCursorNext(flow, cursor, isInitialized);
 }
 
 function skip(state, flow, cursor, isInitialized) {
-	if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop) {
-		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
-	} else {
-		do {
-			moveCursorNext(flow, cursor, isInitialized);
-			stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
-		} while (cursor.current.isInSkipableChain);
-	}
+	if (moveCursorSpecialCases(state, flow, cursor, isInitialized)) return;
+	do {
+		moveCursorNext(flow, cursor, isInitialized);
+		stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
+	} while (cursor.current.isInSkipableChain);
+
 }
 
 // Inner cursor move manipulations
+
+function moveCursorSpecialCases(state, flow, cursor, isInitialized) {
+	if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop) {
+		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
+		return true;
+	} else if (blockHandler.getCurrentBlock(flow, cursor).skipLoopOnLastRepetition && cursor.navigation.numberRepetition <= 1) {
+		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
+		return true;
+	} else return false;
+}
 
 function moveCursorNext(flow, cursor, isInitialized) {
 	variableHandler.updateVariables(flow, cursor);
@@ -117,6 +124,7 @@ function updateCursorNavigation(flow, cursor) {
 		pictureFileName,
 		midiFileName,
 		videoFileName,
+		referenceKeyboardKeys,
 
 		// Cursor parameters
 		numberRepetition,
@@ -130,7 +138,7 @@ function updateCursorNavigation(flow, cursor) {
 	// Set all the navigation parameters
 	setCursorInnerStepsTotal(cursor, textContent, pictureFileName);
 	setCursorLoopStart(cursor, numberRepetition);
-	setCursorMediaDepilingStart(cursor, midiFileName, videoFileName, textContent, pictureFileName);
+	setCursorMediaDepilingStart(cursor, midiFileName, videoFileName, textContent, pictureFileName, referenceKeyboardKeys);
 	setCursorNextStep(cursor, followedBy);
 }
 
@@ -188,14 +196,15 @@ function setCursorLoopStart(cursor, numberRepetition) {
 //
 //  The execution order would be :
 //  A[0] - B[0] - C[0] - A[1] - B[1] - C[1] - D[0] - D[1] - D[2]
-function setCursorMediaDepilingStart(cursor, midiFileName, videoFileName, textContent, pictureFileName) {
+function setCursorMediaDepilingStart(cursor, midiFileName, videoFileName, textContent, pictureFileName, referenceKeyboardKeys) {
 	// Count the number of piled media elements of each type and detemine the maximum number of piled content.
 	const numberMidiFiles = Array.isArray(midiFileName) ? midiFileName.length : 0;
 	const numberVideoFiles = Array.isArray(videoFileName) ? videoFileName.length : 0;
 	const numberTextContent = Array.isArray(textContent) ? textContent.length : 0;
 	const numberPictureFile = Array.isArray(pictureFileName) ? pictureFileName.length : 0;
+	const numberReferenceKeyboardKeys = Array.isArray(referenceKeyboardKeys) ? referenceKeyboardKeys.length : 0;
 
-	const maxNumberContentElement = Math.max(numberMidiFiles, numberVideoFiles, numberTextContent, numberPictureFile);
+	const maxNumberContentElement = Math.max(numberMidiFiles, numberVideoFiles, numberTextContent, numberPictureFile, numberReferenceKeyboardKeys);
 
 	// Initialize the number of piled media content (playable media pile index & number of medias) if :
 	// 1. There is more than one media content element (midi/video) (so the total index > 1),

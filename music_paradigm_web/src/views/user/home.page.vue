@@ -1,5 +1,5 @@
 <template>
-	<user-page-content-frame-component title="Home">
+	<user-page-content-frame-component :title="$t('views.user.home.home')">
 		<div class="home-page-flex">
 			<due-experiment-button-component class="button" />
 			<overview-table-component class="overview-table" />

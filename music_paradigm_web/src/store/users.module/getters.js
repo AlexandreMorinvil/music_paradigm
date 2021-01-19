@@ -1,38 +1,38 @@
 export default {
 	userSelectedId: (state) => {
-		return state.selection._id;
+		return state.selectedUser._id;
 	},
 
 	userSelectedUsername: (state) => {
-		return state.selection.username;
+		return state.selectedUser.username;
 	},
 
 	userSelectedEmail: (state) => {
-		return state.selection.email;
+		return state.selectedUser.email;
 	},
 
 	userSelectedFirstName: (state) => {
-		return state.selection.firstName;
+		return state.selectedUser.firstName;
 	},
 
 	userSelectedMiddleName: (state) => {
-		return state.selection.middleName;
+		return state.selectedUser.middleName;
 	},
 
 	userSelectedLastName: (state) => {
-		return state.selection.lastName;
+		return state.selectedUser.lastName;
 	},
 
 	userSelectedTags: (state) => {
-		return state.selection.tags;
+		return state.selectedUser.tags;
 	},
 
 	userSelectedRole: (state) => {
-		return state.selection.role;
+		return state.selectedUser.role;
 	},
 
 	userSelectedCurriculum: (state) => {
-		return state.selection.curriculum;
+		return state.selectedUser.curriculum;
 	},
 
 	usersHeadersList: (state) => {
@@ -41,7 +41,11 @@ export default {
 
 	// Status
 	hasSelectedUser: (state) => {
-		return Boolean(state.selection._id);
+		return Boolean(state.selectedUser._id);
+	},
+
+	hasCurriculumToSelectedUser: (state) => {
+		return Boolean(state.selectedUser.curriculum);
 	},
 
 	isFetchingUserHeadersList: (state) => {

@@ -1,14 +1,15 @@
 import constants from '../constants';
-import variableHandler from './variableHandler';
+import variableHandler from './variable-handler';
 
 export default {
 	setExperimentId,
+	setExperimentDescription,
+	setImposedParameterValues,
 	populateExperimentConstantVariables,
 	setExperimentDynamicVariables,
-	setExperimentDescription,
 	setExperimentGeneralSettings,
 	setExperimentFlow,
-	setParameterImposedValues,
+	storeParameterImposedValues,
 };
 
 function setExperimentId(state, experiment) {
@@ -24,6 +25,10 @@ function setExperimentDescription(state, experiment) {
 		group: group || '',
 		version: version || 0,
 	};
+}
+
+function setExperimentFlow(state, experiment) {
+	state.flow = JSON.parse(JSON.stringify(experiment.flow));
 }
 
 function setExperimentGeneralSettings(state, experiment) {
@@ -66,8 +71,31 @@ function setExperimentGeneralSettings(state, experiment) {
 	};
 }
 
-function setExperimentFlow(state, experiment) {
-	state.flow = JSON.parse(JSON.stringify(experiment.flow));
+function storeParameterImposedValues(state, parameters) {
+	state.variables.imposed = parameters;
+}
+
+function setImposedParameterValues(state, experiment) {
+	// Get the variables targeted by the imposed parameters
+	const { variables } = experiment;
+	const imposedParameters = state.variables.imposed;
+
+	const parameterNames = Object.keys(imposedParameters);
+	const concernernedVariables = variables.filter((variable) => parameterNames.includes(variable.name));
+
+	// Verify that the parameter imposed are part of the allowed vailues for all parameters
+	for (const variable of concernernedVariables) {
+		const allowedValues = new Set(variable.optionValues);
+		allowedValues.add(variable.assignedValue);
+
+		// If the imposed value is allowed, we set it in the assigned values (constant or dynamic)
+		if (allowedValues.has(imposedParameters[variable.name])) {
+			if (variable.assignation === 'constant')
+				state.variables.constant[variableHandler.wrapVariableName(variable.name)] = imposedParameters[variable.name];
+			else if (variable.assignation === 'dynamic')
+				state.variables.initial[variableHandler.wrapVariableName(variable.name)] = imposedParameters[variable.name];
+		}
+	}
 }
 
 function populateExperimentConstantVariables(state, experiment) {
@@ -75,10 +103,10 @@ function populateExperimentConstantVariables(state, experiment) {
 	if (!Array.isArray(variables)) return;
 
 	// Get the constant variables
-	const constantVariables = {};
+	const constantVariables = { ...state.variables.constant };
 	for (const variable of variables) {
 		const isConstant = variable.assignation === 'constant';
-		const wasAlreadyAssigned = Object.keys(state.variables.initial).includes(variable.name);
+		const wasAlreadyAssigned = Object.keys(constantVariables).includes(variable.name);
 		if (isConstant && !wasAlreadyAssigned) {
 			constantVariables[variableHandler.wrapVariableName(variable.name)] = variable.assignedValue;
 		}
@@ -99,15 +127,6 @@ function setExperimentDynamicVariables(state, experiment) {
 		if (isDynamic && !wasAlreadyAssigned) {
 			state.variables.initial[variableHandler.wrapVariableName(variable.name)] = variable.assignedValue;
 		}
-	}
-	state.variables.value = JSON.parse(JSON.stringify(state.variables.initial));
-}
-
-// TODO : Verify that the parameter imposed are part of the possibilities
-function setParameterImposedValues(state, parameters) {
-	for (const parameter of parameters) {
-		// const { optionValues } = parameter;
-		state.variables.initial[variableHandler.wrapVariableName(parameter.name)] = parameter.assignedValue;
 	}
 	state.variables.value = JSON.parse(JSON.stringify(state.variables.initial));
 }

@@ -54,8 +54,10 @@ const schema = new Schema(
                     textContent: { type: [], default: undefined },
                     pictureFileName: { type: [], default: undefined },
                     interactivePiano: { type: [], default: undefined },
+                    interactiveKeyboard: { type: [], default: undefined },
                     midiFileName: { type: [String], default: undefined },
                     videoFileName: { type: [String], default: undefined },
+                    referenceKeyboardKeys: { type: [[String]], default: undefined },
                     numberRepetition: { type: Number, default: undefined },
                     followedBy: { type: Boolean, default: undefined },
                     anyPianoKey: { type: Boolean, default: undefined },
@@ -78,6 +80,7 @@ const schema = new Schema(
                     successesForSkipLoop: { type: Number, default: undefined },
                     startSignal: { type: Number, default: undefined },
                     feedbackNumerical: { type: Boolean, default: undefined },
+                    skipLoopOnLastRepetition: { type: Boolean, default: undefined },
 
                     lastRepetitionVersion: { type: Object, default: undefined },
                     succeeededForSkipLoopVersion: { type: Object, default: undefined },

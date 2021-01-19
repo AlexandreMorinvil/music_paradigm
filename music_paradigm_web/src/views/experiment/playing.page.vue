@@ -2,6 +2,7 @@
 	<div id="playing-state" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
 		<image-area-component class="image-area state-section" />
+		<keyboard-area-component class="piano-area state-section" />
 		<piano-area-component class="piano-area state-section" />
 		<component :is="playingMode" class="play-area state-section" v-on:finished-playing="handdleEndOfPlaying" ref="playingMode" />
 	</div>
@@ -13,8 +14,11 @@ import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-eve
 import { mapActions, mapGetters } from 'vuex';
 
 import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
+import KeyboardAreaComponent from '@/components/experiment/visual-content/keyboard-area.component.vue';
 import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
+
+import KeyboardPressingSpeedComponent from '@/components/experiment/playing-mode/keyboard-pressing-speed.component';
 
 import PlayingMelodyComponent from '@/components/experiment/playing-mode/playing-melody.component';
 import PlayingRhythmComponent from '@/components/experiment/playing-mode/playing-rhythm.component';
@@ -24,10 +28,12 @@ export default {
 	components: {
 		TextAreaComponent,
 		ImageAreaComponent,
+		KeyboardAreaComponent,
 		PianoAreaComponent,
 		speed: PlayingSpeedComponent,
 		rhythm: PlayingRhythmComponent,
 		melody: PlayingMelodyComponent,
+		'keyboard-speed': KeyboardPressingSpeedComponent,
 	},
 	data() {
 		return {
@@ -43,7 +49,7 @@ export default {
 		...mapActions('experiment', ['addSuccess']),
 		...mapActions('log', ['createSimpleLog']),
 		updateFootnote() {
-			const footnoteMessage = 'The experiment will go to the next step after your performance';
+			const footnoteMessage = this.$t('views.experiment.playing.footnote-after-performance');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		handdleEndOfPlaying() {

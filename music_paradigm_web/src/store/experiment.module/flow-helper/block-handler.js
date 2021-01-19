@@ -1,10 +1,11 @@
 import experimentStoreState from '../state';
-import variableHandler from './variableHandler';
+import variableHandler from './variable-handler';
 
 export default {
 	getCurrentBlock,
 	getCurrentBlockType,
 	getNextBlockType,
+	getNextBlock,
 };
 
 function getCurrentBlockType(flow, cursor) {
@@ -28,4 +29,8 @@ function getCurrentBlock(flow, cursor) {
 	}
 
 	return variableHandler.populateVariables(currentBlock);
+}
+
+function getNextBlock(flow, cursor) {
+	return flow[cursor.navigation.indexNext];
 }

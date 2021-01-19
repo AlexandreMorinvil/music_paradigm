@@ -1,11 +1,9 @@
 <template>
-	<div id="the-piano" class="piano">
-		<div id="piano-display" :class="color">
-			<svg class="piano-icon">
-				<use xlink:href="sprites.svg#icon-piano" />
-			</svg>
-			&nbsp;{{ soundStatus }}
-		</div>
+	<div id="piano-display" :class="color">
+		<svg class="piano-icon">
+			<use xlink:href="sprites.svg#icon-piano" />
+		</svg>
+		&nbsp;{{ soundStatus }}
 	</div>
 </template>
 
@@ -33,16 +31,18 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #piano-display {
 	display: flex;
 	align-items: center;
-	height: 100%;
+	width: 200px;
+	height: 85%;
 }
 
 .piano-icon {
 	display: inline-block;
 	stroke-width: 1px;
+	min-width: 40px;
 	width: 40px;
 	height: 40px;
 }

@@ -3,6 +3,7 @@
 		<text-area-component class="text-area state-section" />
 		<image-area-component class="image-area state-section" />
 		<piano-area-component class="piano-area state-section" />
+		<keyboard-area-component class="piano-area state-section" />
 	</div>
 </template>
 
@@ -12,12 +13,14 @@ import { mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
+import KeyboardAreaComponent from '@/components/experiment/visual-content/keyboard-area.component.vue';
 import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
 		ImageAreaComponent,
+		KeyboardAreaComponent,
 		PianoAreaComponent,
 		TextAreaComponent,
 	},
@@ -48,19 +51,18 @@ export default {
 			const minutes = Math.floor((this.timeLeftInMilliseconds / 1000 / 60) % 60);
 			const seconds = Math.floor((this.timeLeftInMilliseconds / 1000) % 60);
 			if (minutes > 0) {
-				display += `${minutes} minutes `;
+				display += this.$tc('views.experiment.rest.minute', minutes, { minute: minutes });
 			}
-			display += `${seconds} seconds`;
+			display += this.$tc('views.experiment.rest.second', seconds, { second: seconds });
 			return display;
 		},
 	},
 	methods: {
 		updateFootnote() {
-			const footnoteMessage = `The experiment will go to the next step in ${this.timeLeftDisplay}`;
+			const footnoteMessage = this.$t('views.experiment.rest.footnote-after-time', { time: this.timeLeftDisplay });
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		startCountdown() {
-			// This.timeLeftInMilliseconds = this.timeLimitInSeconds * 1000;
 			this.referenceTime = Date.parse(new Date());
 			this.counterUniqueIdentifier = window.setInterval(this.countdown, this.timeStepInMilliseconds);
 		},
@@ -87,13 +89,16 @@ export default {
 <style scoped>
 .text-area {
 	flex-grow: 1;
+	height: 30%;
 }
 
 .image-area {
 	flex-grow: 1;
+	height: 50%;
 }
 
 .piano-area {
 	flex-grow: 1;
+	height: 50%;
 }
 </style>

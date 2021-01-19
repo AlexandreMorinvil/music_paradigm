@@ -1,6 +1,6 @@
 <template>
 	<div id="experiment-launcher" class="widget widget-bg">
-		<experiments-parameter-form-component v-show="needsParameterForm" class="editor-position inner-widget inner-widget-bg" ref="curriculumEdition" />
+		<experiments-parameter-form-component v-show="needsParameterForm" class="editor-position inner-widget inner-widget-bg" />
 
 		<div class="action-buttons-position">
 			<button v-on:click="handleExperimentStart" class="widget-button green run-button" :class="isRunSelectionButtonActive || 'inactive'">

@@ -41,8 +41,8 @@ const schema = new Schema(
 
         // Indicate the values for the experiments with parameters
         curriculumParameters: {
-            type: [Object],
-            default: null
+            type: Object,
+            default: undefined
         },
 
         // List of the experiments composing the curriculum

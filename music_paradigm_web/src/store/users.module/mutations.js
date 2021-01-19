@@ -1,3 +1,5 @@
+import constants from './constants';
+
 export default {
 	// Status Updates
 	indicateFetchingUserList(state) {
@@ -32,14 +34,28 @@ export default {
 		state.status.isDeleting = false;
 	},
 
+	indicateAssignCurriculumRequest(state) {
+		state.status.isAssigningCurriculum = true;
+	},
+
+	indicateAssignCurriculumRequestEnd(state) {
+		state.status.isAssigningCurriculum = false;
+	},
+
 	// Setters
 	setSelectedUser(state, user) {
-		state.selection = {};
-		Object.assign(state.selection, user);
+		state.selectedUser = constants.EMPTY_USER();
+		Object.assign(state.selectedUser, user);
+	},
+
+	setSelectedProgression(state, userProgression) {
+		state.selectedUserProgression = {};
+		Object.assign(state.selectedUserProgression, userProgression);
 	},
 
 	unsetSelectedUser(state) {
-		state.selection = {};
+		state.selectedUser = constants.EMPTY_USER();
+		state.selectedUserProgression = {};
 	},
 
 	setHeadersList(state, usersHeadersLst) {

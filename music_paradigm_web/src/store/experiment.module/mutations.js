@@ -1,17 +1,17 @@
 import { routerNavigation } from '@/_helpers';
 
 import constants from './constants';
-import cursorHandler from './flowHelper/cursorHandler';
-import experimentHandler from './flowHelper/experiment-handler';
-import stateHandler from './flowHelper/stateHandler';
+import cursorHandler from './flow-helper/cursor-handler';
+import experimentHandler from './flow-helper/experiment-handler';
+import stateHandler from './flow-helper/state-handler';
 
 export default {
 	clearState(state) {
 		Object.assign(state, constants.DEFAULT_EXPERIMENT_STATE_VALUES());
 	},
 
-	setParameterValues(state, variableValues) {
-		experimentHandler.setParameterImposedValues(state, variableValues);
+	setParameterValues(state, parameterValues) {
+		experimentHandler.storeParameterImposedValues(state, parameterValues);
 	},
 
 	setExperiment(state, experiment) {
@@ -24,6 +24,7 @@ export default {
 		experimentHandler.setExperimentDescription(state, experiment);
 		experimentHandler.setExperimentFlow(state, experiment);
 		experimentHandler.setExperimentGeneralSettings(state, experiment);
+		experimentHandler.setImposedParameterValues(state, experiment);
 		experimentHandler.populateExperimentConstantVariables(state, experiment);
 		experimentHandler.setExperimentDynamicVariables(state, experiment);
 

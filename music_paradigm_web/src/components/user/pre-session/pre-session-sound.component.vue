@@ -31,16 +31,20 @@ export default {
 	},
 	data() {
 		return {
-			PROBLEM_SOUND: 'I hear no sound?',
 			MIDI_NOTE: 48,
 			hasProblem: false,
-			message: 'You should now hear a piano sound.\n\nPlease Adjust the volume to a confortable level.',
 		};
 	},
 	computed: {
+		message() {
+			return this.$t('user.pre-session.test-sound.verify-sound');
+		},
 		buttonText() {
-			if (this.isLastStage) return 'Start Session';
-			else return 'Continue';
+			if (this.isLastStage) return this.$t('user.pre-session.start-session');
+			else return this.$t('user.pre-session.continue');
+		},
+		PROBLEM_SOUND() {
+			return this.$t('user.pre-session.test-sound.problem-sound');
 		},
 	},
 	methods: {

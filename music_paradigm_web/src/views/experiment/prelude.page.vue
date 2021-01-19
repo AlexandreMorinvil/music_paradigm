@@ -24,8 +24,8 @@ export default {
 		...mapGetters('piano', ['isPianoInitialized']),
 		...mapGetters('keyboard', ['isKeyboardInitialized']),
 		textToDisplay() {
-			if (!this.isPianoInitialized) return 'Loading...';
-			else return 'Ready';
+			if (!this.isReadyToStart) return this.$t('views.experiment.prelude.loading');
+			else return this.$t('views.experiment.prelude.ready');
 		},
 		isReadyToStart() {
 			if (this.controlType === 'keyboard') return this.isKeyboardInitialized;

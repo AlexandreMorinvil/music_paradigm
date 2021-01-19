@@ -36,7 +36,7 @@ const schema = new Schema(
         
         email: {
             type: String,
-            default: null,
+            default: undefined,
             sparse: true,
             trim: true,
             unique: true,

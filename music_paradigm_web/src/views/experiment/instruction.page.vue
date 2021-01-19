@@ -3,6 +3,7 @@
 		<text-area-component class="text-area state-section" />
 		<image-area-component class="image-area state-section" />
 		<piano-area-component class="piano-area state-section" />
+		<keyboard-area-component class="piano-area state-section" />
 	</div>
 </template>
 
@@ -12,12 +13,14 @@ import { mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
+import KeyboardAreaComponent from '@/components/experiment/visual-content/keyboard-area.component.vue';
 import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
 		ImageAreaComponent,
+		KeyboardAreaComponent,
 		PianoAreaComponent,
 		TextAreaComponent,
 	},
@@ -43,8 +46,8 @@ export default {
 	methods: {
 		updateFootnote() {
 			let footnoteMessage = '';
-			if (this.anyPianoKey) footnoteMessage = 'Press any piano key or the space bar for going to the next step';
-			else footnoteMessage = 'Press the space bar for going to the next step';
+			if (this.anyPianoKey) footnoteMessage = this.$t('views.experiment.instruction.footnote-press-any-key');
+			else footnoteMessage = this.$t('views.experiment.instruction.footnote-press-space-bar');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		emitStateEndedSignal() {

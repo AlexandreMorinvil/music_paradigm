@@ -1,14 +1,18 @@
 <template>
 	<div id="status-bar" class="status-bar-grid">
 		<div id="status-bar-header" class="status-bar-header-position">
-			<time-status-component class="status-bar-display-box" ref="timer" />
+			<div class="status-wrapper status-wrapper-left">
+				<time-status-component class="status-bar-display-box" ref="timer" />
+			</div>
 
-			<div id="center-wrapper">
+			<div class="status-wrapper status-wrapper-center">
 				<state-status-component id="current-state-box" class="status-bar-display-box wrapped-display" :isCurrentStateRequested="true" />
 				<state-status-component id="next-state-box" class="status-bar-display-box wrapped-display" :isCurrentStateRequested="false" />
 			</div>
 
-			<piano-status-component :display="true" class="status-bar-display-box" />
+			<div class="status-wrapper status-wrapper-right">
+				<piano-status-component v-if="hasPianoStatus" class="status-bar-display-box" />
+			</div>
 		</div>
 
 		<progress-status-component class="status-bar-progress-position" />
@@ -16,6 +20,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 import PianoStatusComponent from './piano-status.component.vue';
 import ProgressStatusComponent from './progress-status.component.vue';
 import StateStatusComponent from './state-status.component.vue';
@@ -28,6 +34,12 @@ export default {
 		TimeStatusComponent,
 		ProgressStatusComponent,
 	},
+	computed: {
+		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType']),
+		hasPianoStatus() {
+			return this.controlType === 'piano';
+		},
+	},
 	methods: {
 		start() {
 			this.$refs.timer.startTimer();
@@ -37,12 +49,6 @@ export default {
 </script>
 
 <style>
-.status-bar-header-position {
-	grid-area: header;
-}
-.status-bar-progress-position {
-	grid-area: progress;
-}
 .status-bar-grid {
 	display: grid;
 	grid-template-columns: auto;
@@ -53,11 +59,15 @@ export default {
 	grid-gap: 0px;
 }
 
-#status-bar-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+.status-bar-header-position {
+	grid-area: header;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
 	background-color: rgb(30, 30, 30);
+}
+
+.status-bar-progress-position {
+	grid-area: progress;
 }
 
 .status-bar-display-box {
@@ -76,7 +86,6 @@ export default {
 	color: rgb(220, 220, 220);
 
 	height: 85%;
-	width: 15%;
 	min-width: 100px;
 	padding: 0 20px 0;
 	margin: 0 10px 0;
@@ -84,28 +93,26 @@ export default {
 	font-size: 25px;
 	line-height: 0.7;
 }
-#center-wrapper {
+
+.status-wrapper {
 	display: flex;
 	align-items: center;
 	text-align: center;
 	justify-content: center;
 
 	height: 100%;
-	width: 50%;
+	width: 100%;
 }
 
-.wrapped-display {
-	width: 30%;
+.status-wrapper-left {
+	justify-content: flex-start;
 }
 
-.icon-state {
-	display: inline-block;
-	margin: 0 5px 0;
-	min-height: 35px;
-	min-width: 35px;
-	width: 35px;
-	height: 35px;
-	stroke: rgb(220, 220, 220);
-	fill: rgb(220, 220, 220);
+.status-wrapper-center {
+	justify-content: center;
+}
+
+.status-wrapper-right {
+	justify-content: flex-end;
 }
 </style>

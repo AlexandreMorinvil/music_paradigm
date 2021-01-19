@@ -1,7 +1,7 @@
 <template>
-	<div id="playing-speed-area" class="playing-area">
+	<div id="pressing-speed-area" class="playing-area">
 		<div id="playing-progress-bar" class="playing-progress-bar-area">
-			<progress id="progress-bar" :value="playProgress" :max="maxPlayProgress"></progress>
+			<progress id="progress-bar" :value="pressProgress" :max="maxPlayProgress"></progress>
 		</div>
 	</div>
 </template>
@@ -15,11 +15,11 @@ import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-eve
 export default {
 	data() {
 		return {
-			playingStarted: false,
+			pressingStarted: false,
 			defaultTimeLimitInSeconds: 30,
 			counterUniqueIdentifier: 0,
 			referenceTime: 0,
-			playProgress: 0,
+			pressProgress: 0,
 			timeStepInMilliseconds: 100,
 			timeLeftInMilliseconds: 0,
 			minMelodyRepetitionDisplayed: 20,
@@ -28,13 +28,13 @@ export default {
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('experiment', ['timeoutInSeconds', 'melodyRepetition', 'isWaitingStartSignal']),
-		...mapGetters('piano', ['midiFileNotesMidi', 'playedNotesMidi']),
+		...mapGetters('keyboard', ['referenceKeyboardKeys', 'pressedKeyboardKeys']),
 		timeLimit() {
 			return this.timeoutInSeconds || this.defaultTimeLimitInSeconds;
 		},
 		maxPlayProgress() {
 			const factor = Math.max(this.minMelodyRepetitionDisplayed, this.melodyRepetition);
-			return this.midiFileNotesMidi.length * factor;
+			return this.referenceKeyboardKeys.length * factor;
 		},
 		timeLimitInMiliseconds() {
 			return (this.timeoutInSeconds || this.defaultTimeLimitInSeconds) * 1000;
@@ -51,10 +51,10 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('piano', ['evaluateSpeedType']),
+		...mapActions('keyboard', ['evaluateSpeedType']),
 		start() {
 			this.startCountdown();
-			this.playingStarted = true;
+			this.pressingStarted = true;
 		},
 		startCountdown() {
 			this.referenceTime = Date.parse(new Date());
@@ -80,10 +80,10 @@ export default {
 		window.clearInterval(this.counterUniqueIdentifier);
 	},
 	watch: {
-		playedNotesMidi() {
+		pressedKeyboardKeys() {
 			if (this.isWaitingStartSignal) return;
-			else if (!this.playingStarted) this.start();
-			else if (this.midiFileNotesMidi.includes(this.playedNotesMidi[this.playedNotesMidi.length - 1])) this.playProgress += 1;
+			else if (!this.pressingStarted) this.start();
+			else if (this.referenceKeyboardKeys.includes(this.pressedKeyboardKeys[this.pressedKeyboardKeys.length - 1])) this.pressProgress += 1;
 		},
 		timeLeftInMilliseconds(value) {
 			// When the time is over we indicate the end of the playing state

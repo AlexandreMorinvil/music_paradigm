@@ -1,22 +1,22 @@
+import constants from './constants';
+
 export default {
 	status: {
 		isFetchingUsersHeadersList: false,
 		isCreating: false,
 		isUpdating: false,
 		isDeleting: false,
+		isAssigningCurriculum: false,
 	},
 
-	selection: {
-		_id: null,
-		// The Rest of the parameters are also included
-		username: '',
-		email: '',
-		role: '',
-		tags: [],
-		firstName: '',
-		middleName: '',
-		lastName: '',
-		curriculum: null,
+	selectedUser: constants.EMPTY_USER(),
+
+	selectedUserProgression: {
+		userReference: '',
+		curriculumReference: '',
+		startTime: null,
+		lastProgressionDate: null,
+		curriculumParameters: [],
 	},
 
 	usersHeadersList: [

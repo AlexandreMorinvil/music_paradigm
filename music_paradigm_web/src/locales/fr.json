@@ -1,8 +1,51 @@
 {
   "message": "Salut i18n !!",
+  "music-paradigm": "Paradigme de Musique",
   "application-component": {
     "footer": {
-      "musicParadigmIs": "Music Paradigm est une platforme Open Source développée pour gérer des expériences d'entrainement musical à distance"
+      "footnote-text": "Music Paradigm est une platforme Open Source développée pour gérer des expériences d'entrainement musical à distance"
+    },
+    "login-prompt": {
+      "login": "Se connecter",
+      "username": "Nom d'utilisateur",
+      "enterUsername": "Entrer le nom d'utlisateur",
+      "password": "Mot de passe",
+      "enterPassword": "Entrer le mot de passe",
+      "username-required": "Le nom d'utilisateur est requis"
+    }
+  },
+  "content-frame": {
+    "content-frame.page-to-implemented": "Page à implémenter"
+  },
+  "navigation-bar": {
+    "welcome": "Bienvenu {fullname}",
+    "logout": "Se déconnecter",
+    "session-in-progress": "Session en progrès",
+    "leave": "Quitter"
+  },
+  "user": {
+    "pre-session": {
+      "pre-session-advice": {
+        "close-all": "Veuillez fermer toute autre page Web avant de continuer.",
+        "web-browser": "Assurez-vous d'utiliser le navigateur Web Google Chrome."
+      }
+    }
+  },
+  "experiment": {
+    "element": {
+      "start-signal-timer": {
+        "startIn": "DÉBUT DANS :"
+      }
+    }
+  },
+  "views": {
+    "user": {
+      "home": {
+        "home": "Accueil"
+      },
+      "pre-session": {
+        "beforeStarting": "Avant de commencer"
+      }
     }
   }
 }

@@ -7,6 +7,7 @@ export const userService = {
 	getById,
 	update,
 	delete: _delete,
+	assignCurriculum,
 };
 
 function register(user) {
@@ -21,7 +22,7 @@ function register(user) {
 function getListAllHeaders() {
 	const requestOptions = {
 		method: 'GET',
-		headers: authHeader(),
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
 	return fetch(url.users(''), requestOptions).then(handleResponse);
 }
@@ -29,7 +30,7 @@ function getListAllHeaders() {
 function getById(id) {
 	const requestOptions = {
 		method: 'GET',
-		headers: authHeader(),
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
 	return fetch(url.users(id), requestOptions).then(handleResponse);
 }
@@ -46,9 +47,18 @@ function update(id, user) {
 function _delete(id) {
 	const requestOptions = {
 		method: 'DELETE',
-		headers: authHeader(),
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
 	return fetch(url.users(id), requestOptions).then(handleResponse);
+}
+
+function assignCurriculum(userId, curriculumParameters) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(curriculumParameters),
+	};
+	return fetch(url.users('assign-curriculum/' + userId), requestOptions).then(handleResponse);
 }
 
 function handleResponse(reponse) {

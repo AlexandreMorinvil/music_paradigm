@@ -30,22 +30,17 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['midiName', 'controlType']),
-		currentStateIcon() {
-			return this.getIconReference(this.currentStateType);
-		},
-		nextStateIcon() {
-			return this.getIconReference(this.nextStateType);
-		},
+		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType']),
 	},
 	methods: {
 		...mapActions('session', ['concludeSession']),
 		...mapActions('experiment', ['updateState', 'goNextStep', 'goStepPostSkip', 'clearState', 'endExperimentByTimeout', 'concludeExperiment']),
+		...mapActions('keyboard', ['loadReferenceKeyboardKeys', 'resetPressedKeyboardKeysLogs', 'resetKeyboardTracking']),
 		...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
 		...mapActions('log', ['initializeLogSession']),
 		initializeControl() {
 			if (this.controlType === 'piano') PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);
-			if (this.controlType === 'keyboard') KeyboardEventBus.$emit(keyboardEvents.EVENT_TRACKER_INIT_REQUEST);
+			KeyboardEventBus.$emit(keyboardEvents.EVENT_TRACKER_INIT_REQUEST);
 		},
 		terminateControl() {
 			PianoEventBus.$emit(pianoEvents.EVENT_PIANO_TERMINATE_REQUEST);
@@ -60,10 +55,12 @@ export default {
 			this.$refs.status.start();
 		},
 		navigateExperiment() {
+			this.resetPressedKeyboardKeysLogs();
 			this.resetPlayedNotesLogs();
 			this.goNextStep();
 		},
 		navigateExperimentSkip() {
+			this.resetPressedKeyboardKeysLogs();
 			this.resetPlayedNotesLogs();
 			this.goStepPostSkip();
 		},
@@ -103,6 +100,7 @@ export default {
 		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_ENDED, this.endExperiment);
 		ExperimentEventBus.$off(experimentEvents.EVENT_TIMES_UP, this.handleTimesUp);
 
+		this.resetKeyboardTracking();
 		this.resetPianoState();
 		this.clearState();
 	},
@@ -113,12 +111,20 @@ export default {
 				if (midiName !== '') this.loadMidiFile(this.midiName);
 			},
 		},
+
+		referenceKeyboardKeys: {
+			deept: true,
+			immediate: true,
+			handler: function (sequence) {
+				if (sequence) this.loadReferenceKeyboardKeys();
+			},
+		},
 	},
 	beforeRouteLeave(to, from, next) {
 		// We need to verify that the route departure is not a redirection, otherwise
 		// a confirmation will be prompted twice (Once before and after the redirection)
 		if (this.needsConfirmationToLeave && !Object.prototype.hasOwnProperty.call(to, 'redirectedFrom')) {
-			const answer = window.confirm('Do you really want to leave the experiment in progress?');
+			const answer = window.confirm('views.experiment.context.confirm-leave');
 			if (answer) next();
 			else next(false);
 		} else {

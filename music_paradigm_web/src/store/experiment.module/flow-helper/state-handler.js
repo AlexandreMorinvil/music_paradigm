@@ -1,4 +1,6 @@
-import blockHandler from './blockHandler';
+/* eslint-disable prettier/prettier */
+/* eslint-disable key-spacing */
+import blockHandler from './block-handler';
 import { routerNavigation } from '@/_helpers';
 
 export default {
@@ -86,31 +88,31 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
 		startSignal,
 		feedbackNumerical,
 		interactivePianoFirstOctave,
+		skipLoopOnLastRepetition,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
 	currentState.settings = {
-		anyPianoKey: typeof anyPianoKey === 'boolean' ? anyPianoKey : generalSettings.anyPianoKey,
-		enableSoundFlag: typeof enableSoundFlag === 'boolean' ? enableSoundFlag : generalSettings.enableSoundFlag,
-		playingMode: typeof playingMode === 'string' ? playingMode : generalSettings.playingMode,
-		timeoutInSeconds: typeof timeoutInSeconds === 'number' ? timeoutInSeconds : 0,
-		footnote: typeof footnote === 'boolean' ? footnote : generalSettings.footnote,
-		footnoteType: typeof footnoteType === 'string' ? footnoteType : generalSettings.footnoteType,
-		logFlag: typeof logFlag === 'boolean' ? logFlag : generalSettings.logFlag,
-		hideFeedbackSmiley: typeof hideFeedbackSmiley === 'boolean' ? hideFeedbackSmiley : generalSettings.hideFeedbackSmiley,
-		skipStepButton: typeof skipStepButton === 'string' ? skipStepButton : '',
-		skipStepButtonMessage: typeof skipStepButtonMessage === 'string' ? skipStepButtonMessage : '',
-		successFeedbackMessage: typeof successFeedbackMessage === 'string' ? successFeedbackMessage : '',
-		failureFeedbackMessage: typeof failureFeedbackMessage === 'string' ? failureFeedbackMessage : '',
-		footnoteMessage: typeof footnoteMessage === 'string' ? footnoteMessage : '',
-		melodyRepetition: typeof melodyRepetition === 'number' ? melodyRepetition : 1,
-		successesForSkipLoop: typeof successesForSkipLoop === 'number' ? successesForSkipLoop : generalSettings.successesForSkipLoop,
-		isSkipStepButtonInFootnote:
-			typeof isSkipStepButtonInFootnote === 'boolean' ? isSkipStepButtonInFootnote : generalSettings.isSkipStepButtonInFootnote,
-		startSignal: typeof startSignal === 'number' ? startSignal : 0,
-		feedbackNumerical: typeof feedbackNumerical === 'boolean' ? feedbackNumerical : false,
-		interactivePianoFirstOctave:
-			typeof interactivePianoFirstOctave === 'number' ? interactivePianoFirstOctave : generalSettings.interactivePianoFirstOctave,
+		anyPianoKey: 					typeof anyPianoKey === 'boolean' 				? anyPianoKey : generalSettings.anyPianoKey,
+		enableSoundFlag: 				typeof enableSoundFlag === 'boolean' 			? enableSoundFlag : generalSettings.enableSoundFlag,
+		playingMode: 					typeof playingMode === 'string' 				? playingMode : generalSettings.playingMode,
+		timeoutInSeconds: 				typeof timeoutInSeconds === 'number' 			? timeoutInSeconds : 0,
+		footnote: 						typeof footnote === 'boolean' 					? footnote : generalSettings.footnote,
+		footnoteType: 					typeof footnoteType === 'string' 				? footnoteType : generalSettings.footnoteType,
+		logFlag: 						typeof logFlag === 'boolean' 					? logFlag : generalSettings.logFlag,
+		hideFeedbackSmiley: 			typeof hideFeedbackSmiley === 'boolean' 		? hideFeedbackSmiley : generalSettings.hideFeedbackSmiley,
+		skipStepButton: 				typeof skipStepButton === 'string' 				? skipStepButton : '',
+		skipStepButtonMessage: 			typeof skipStepButtonMessage === 'string' 		? skipStepButtonMessage : '',
+		successFeedbackMessage: 		typeof successFeedbackMessage === 'string' 		? successFeedbackMessage : '',
+		failureFeedbackMessage: 		typeof failureFeedbackMessage === 'string' 		? failureFeedbackMessage : '',
+		footnoteMessage: 				typeof footnoteMessage === 'string' 			? footnoteMessage : '',
+		melodyRepetition: 				typeof melodyRepetition === 'number' 			? melodyRepetition : 1,
+		successesForSkipLoop: 			typeof successesForSkipLoop === 'number' 		? successesForSkipLoop : generalSettings.successesForSkipLoop,
+		isSkipStepButtonInFootnote: 	typeof isSkipStepButtonInFootnote === 'boolean' ? isSkipStepButtonInFootnote : generalSettings.isSkipStepButtonInFootnote,
+		startSignal: 					typeof startSignal === 'number' 				? startSignal : 0,
+		feedbackNumerical: 				typeof feedbackNumerical === 'boolean' 			? feedbackNumerical : false,
+		interactivePianoFirstOctave: 	typeof interactivePianoFirstOctave === 'number' ? interactivePianoFirstOctave : generalSettings.interactivePianoFirstOctave,
+		skipLoopOnLastRepetition: 			typeof skipLoopOnLastRepetition === 'boolean' 		? skipLoopOnLastRepetition : false,
 	};
 
 	// Indicate that the state (current block's settings) was already initialized
@@ -124,6 +126,7 @@ function updateStateMediaFiles(currentState, flow, cursor, isInitialized) {
 		// Media files
 		midiFileName,
 		videoFileName,
+		referenceKeyboardKeys,
 	} = currentBlock;
 
 	// Parsing the cursor
@@ -134,10 +137,12 @@ function updateStateMediaFiles(currentState, flow, cursor, isInitialized) {
 
 	const updatedMidiFileName = Array.isArray(midiFileName) ? midiFileName[mediaIndex] || null : null;
 	const updatedVideoFileName = Array.isArray(videoFileName) ? videoFileName[mediaIndex] || null : null;
+	const updatedReferenceKeyboardKeys = Array.isArray(referenceKeyboardKeys) ? referenceKeyboardKeys[mediaIndex] || null : null;
 
 	const oldMediaFile = currentState.mediaFile;
 	currentState.mediaFile.midiName = updatedMidiFileName || oldMediaFile.midiName;
 	currentState.mediaFile.videoName = updatedVideoFileName || oldMediaFile.videoName;
+	currentState.mediaFile.referenceKeyboardKeys = updatedReferenceKeyboardKeys || oldMediaFile.referenceKeyboardKeys;
 
 	// Indicate that the media files is initialized
 	Object.assign(isInitialized, { media: true });
@@ -152,6 +157,7 @@ function updateStateContent(currentState, flow, cursor, isInitialized) {
 		pictureFileName,
 		helperImageFileName,
 		interactivePiano,
+		interactiveKeyboard,
 	} = currentBlock;
 
 	// Parsing the cursor
@@ -161,6 +167,7 @@ function updateStateContent(currentState, flow, cursor, isInitialized) {
 	let updatedPictureFileName = Array.isArray(pictureFileName) ? pictureFileName[piledContentIndex] || null : null;
 	let updatedHelperImageFileName = Array.isArray(helperImageFileName) ? helperImageFileName[piledContentIndex] || null : null;
 	let updatedInteractivePiano = Array.isArray(interactivePiano) ? interactivePiano[piledContentIndex] || false : false;
+	let updatedInteractiveKeyboard = Array.isArray(interactiveKeyboard) ? interactiveKeyboard[piledContentIndex] || false : false;
 
 	const innerStepIndex = cursor.current.innerStepIndex;
 
@@ -168,11 +175,13 @@ function updateStateContent(currentState, flow, cursor, isInitialized) {
 	if (Array.isArray(updatedPictureFileName)) updatedPictureFileName = updatedPictureFileName[innerStepIndex];
 	if (Array.isArray(updatedHelperImageFileName)) updatedHelperImageFileName = updatedHelperImageFileName[innerStepIndex];
 	if (Array.isArray(updatedInteractivePiano)) updatedInteractivePiano = updatedInteractivePiano[innerStepIndex];
+	if (Array.isArray(updatedInteractiveKeyboard)) updatedInteractiveKeyboard = updatedInteractiveKeyboard[innerStepIndex];
 
 	currentState.content.text = updatedTextContent || '';
 	currentState.content.pictureName = updatedPictureFileName || '';
 	currentState.content.helperImageName = updatedHelperImageFileName || '';
 	currentState.content.interactivePiano = updatedInteractivePiano || false;
+	currentState.content.interactiveKeyboard = updatedInteractiveKeyboard || false;
 
 	// Indicate that the media files is initialized
 	Object.assign(isInitialized, { content: false });
