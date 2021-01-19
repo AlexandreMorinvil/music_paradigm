@@ -1,7 +1,7 @@
 <template>
 	<div class="feedback-grade">
 		<div class="feedback-grade-name">
-			<h1>{{ grade.criteria }}</h1>
+			<h1>{{ criteriaName }}</h1>
 		</div>
 
 		<div v-if="!hideFeedbackSmiley" class="feedback-grade-emoji">
@@ -57,6 +57,18 @@ export default {
 		},
 		barColor() {
 			return this.isSuccess ? ' success-color ' : ' info-color ';
+		},
+		criteriaName() {
+			switch (this.grade.criteria) {
+				case 'Sequences Played':
+					return this.$tc('experiment.feedback.feedback-grade.sequences-played');
+				case 'Melody Accuracy':
+					return this.$tc('experiment.feedback.feedback-grade.melody-accuracy');
+				case 'Rhythm Accuracy':
+					return this.$tc('experiment.feedback.feedback-grade.rhythm-accuracy');
+				default:
+					return this.grade.criteria;
+			}
 		},
 	},
 };

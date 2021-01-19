@@ -114,9 +114,24 @@
     },
     "playing-mode": {
       "speed": {
+        "footnote-start-after-press": "The time limit will start after the first key press",
         "footnote-after-time": "The session will go to the next step in {time}",
         "minute": "{minute} minute | {minute} minutes",
         "second": "{second} second | {second} seconds"
+      },
+      "accuracy": {
+        "footnote-after-performance": "The session will go to the next step after your performance",
+        "footnote-after-performance-or-time": "The session will go to the next step after your performance or after {second} second | The session will go to the next step after your performance or after {second} seconds"
+      }
+    },
+    "text-timeout": {
+      "default-message-top": "The time limit was reached.\nThe experiment ends here."
+    },
+    "feedback": {
+      "feedback-grade": {
+        "sequences-played": "Sequences Played",
+        "melody-accuracy": "Melody Accuracy",
+        "rhythm-accuracy": "Rhythm Accuracy"
       }
     }
   },

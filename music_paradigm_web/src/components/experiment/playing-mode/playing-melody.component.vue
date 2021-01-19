@@ -50,7 +50,7 @@ export default {
 		},
 		updateFootnote() {
 			let footnoteMessage = this.$t('experiment.playing-mode.accuracy.footnote-after-performance');
-			if (this.timeoutInSeconds >= 0) {
+			if (this.timeoutInSeconds > 0) {
 				const seconds = this.timeoutInSeconds;
 				footnoteMessage = this.$tc('experiment.playing-mode.accuracy.footnote-after-performance-or-time', seconds, { second: seconds });
 			}
