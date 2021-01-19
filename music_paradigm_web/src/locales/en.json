@@ -110,6 +110,13 @@
         "perform": "perform",
         "rest": "rest",
         "video": "video"
+      },
+      "piano":{
+        "on": "ON",
+        "off": "OFF",
+        "load": "LOAD...",
+        "wait": "WAIT",
+        "error": "ERROR"
       }
     },
     "playing-mode": {
@@ -125,7 +132,7 @@
       }
     },
     "text-timeout": {
-      "default-message-top": "The time limit was reached.\nThe experiment ends here."
+      "default-message": "The time limit was reached.\nThe experiment ends here."
     },
     "feedback": {
       "feedback-grade": {
