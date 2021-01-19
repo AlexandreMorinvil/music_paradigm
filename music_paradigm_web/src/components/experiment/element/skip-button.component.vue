@@ -17,7 +17,8 @@ export default {
 			return this.skipStepButton.toUpperCase();
 		},
 		buttonMessage() {
-			if (!this.skipStepButtonMessage) return 'Press ' + this.skipStepButtonValue + ' to skip';
+			const button = this.skipStepButtonValue;
+			if (!this.skipStepButtonMessage) return this.$t('experiment.element.skip-button.default-message', { button: button });
 			return this.skipStepButtonMessage;
 		},
 	},

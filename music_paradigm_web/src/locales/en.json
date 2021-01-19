@@ -5,6 +5,12 @@
     "footer": {
       "footnote-text": "Music Paradigm is an open source platform developped for managing remote mutiusers musical training experiments."
     },
+    "alert": {
+      "success": "SUCCES",
+      "information": "INFORMATION",
+      "warning": "WARNING",
+      "error": "ERROR"
+    },
     "login-prompt": {
       "login": "Login",
       "username": "",
@@ -84,6 +90,67 @@
         "solution-3": "Close this window and retry on a now page.",
         "solution-4": "Restart the device and try again.",
         "conclusion": "If the solution(s) above did not fix the problem:\nIt is likely that there is a problem with the sound of your computer.\nPlease contact the operator of the platform for further technical support."
+      }
+    }
+  },
+  "experiment": {
+    "element": {
+      "start-signal-timer": {
+        "start-in": "START IN :"
+      },
+      "skip-button": {
+        "default-message": "Press {button} to skip"
+      }
+    }
+  },
+  "views": {
+    "user": {
+      "home": {
+        "home": "Home"
+      },
+      "pre-session": {
+        "before-starting": "Before Starting"
+      }
+    },
+    "experiment": {
+      "context": {
+        "confirm-leave": "Do you really want to leave the session in progress?"
+      },
+      "cue": {
+        "footnote-no-melody": "There is no melody to be played, the session will automatically  go to the next step in {second} second | There is no melody to be played, the session will automatically  go to the next step in {second} seconds",
+        "footnote-after-melody": "The session will automatically go to the next step after the muscial cue"
+      },
+      "end": {
+        "footnote-press-any-key": "Press any piano key or the space bar for ending the session",
+        "footnote-press-space-bar": "Press the space bar for ending the session"
+      },
+      "feedback": {
+        "footnote-press-any-key": "Press any piano key or the space bar for going to the next step",
+        "footnote-press-space-bar": "Press the space bar for going to the next step"
+      },
+      "instruction": {
+        "footnote-press-any-key": "Press any piano key or the space bar for going to the next step",
+        "footnote-press-space-bar": "Press the space bar for going to the next step"
+      },
+      "playing": {
+        "footnote-after-performance": "The session will go to the next step after your performance"
+      },
+      "prelude": {
+        "loading": "Loading...",
+        "ready": "Ready"
+      },
+      "rest": {
+        "footnote-after-time": "The session will go to the next step in {time}",
+        "minute": "{minute} minute | {minute} minutes",
+        "second": "{second} second | {second} seconds"
+      },
+      "video": {
+        "footnote-no-video": "There is no video to be played, the session will automatically go to the next step in {second} second | There is no video to be played, the session will automatically go to the next step in {second} seconds",
+        "footnote-after-video": "The experiment will automatically go to the next step after the video playback",
+        "no-video": "There is no video to be played",
+        "video-countdown": "The video will start in {time}",
+        "minute": "{minute} minute | {minute} minutes",
+        "second": "{second} second | {second} seconds"
       }
     }
   }

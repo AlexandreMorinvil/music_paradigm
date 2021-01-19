@@ -40,7 +40,18 @@ export default {
 		},
 
 		alertPrefix() {
-			return this.alertType.toUpperCase() + ':';
+			switch (this.alertType) {
+				case 'success':
+					return this.$t('application-component.alert.success');
+				case 'information':
+					return this.$t('application-component.alert.information');
+				case 'warning':
+					return this.$t('application-component.alert.warning');
+				case 'error':
+					return this.$t('application-component.alert.error');
+				default:
+					return this.alertType.toUpperCase(); // This should never happen
+			}
 		},
 	},
 	methods: {

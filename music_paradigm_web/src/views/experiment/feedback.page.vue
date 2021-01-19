@@ -47,8 +47,8 @@ export default {
 	methods: {
 		updateFootnote() {
 			let footnoteMessage = '';
-			if (this.anyPianoKey) footnoteMessage = 'Press any piano key or the space bar for going to the next step';
-			else footnoteMessage = 'Press the space bar for going to the next step';
+			if (this.anyPianoKey) footnoteMessage = this.$t('views.experiment.feedback.footnote-press-any-key');
+			else footnoteMessage = this.$t('views.experiment.feedback.footnote-press-space-bar');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		emitStateEndedSignal() {

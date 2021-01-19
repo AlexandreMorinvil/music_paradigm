@@ -101,22 +101,22 @@ export default {
 			const minutes = Math.floor((this.delayLeftInMilliseconds / (60 * 1000)) % 60);
 			const seconds = Math.floor((this.delayLeftInMilliseconds / 1000) % 60);
 			if (minutes > 0) {
-				display += `${minutes} minutes `;
+				display += this.$tc('views.experiment.video.minute', minutes, { minute: minutes });
 			}
-			display += `${seconds} seconds`;
+			display += this.$tc('views.experiment.video.second', seconds, { second: seconds });
 			return display;
 		},
 		videoWaitingMessage() {
-			if (this.videoName === '') return 'There is no video to be played';
-			else return `The video will start in ${this.delayLeftDisplay}`;
+			if (this.videoName === '') return this.$t('views.experiment.video.no-video');
+			else return this.$t('views.experiment.video.video-countdown', { time: this.delayLeftDisplay });
 		},
 	},
 	methods: {
 		updateFootnote() {
 			let footnoteMessage = '';
-			if (!this.hasVideo)
-				footnoteMessage = `There is no video to be played, the experiment will automatically  go to the next step in ${this.errorAutomaticTransitionSeconds} seconds`;
-			else footnoteMessage = 'The experiment will automatically go to the next step after the video playback';
+			const secondsLeft = this.errorAutomaticTransitionSeconds;
+			if (!this.hasVideo) footnoteMessage = this.$tc('views.experiment.video.footnote-no-video', secondsLeft, { second: secondsLeft });
+			else footnoteMessage = this.$t('views.experiment.video.footnote-after-video');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		handdleEndOfVideo() {

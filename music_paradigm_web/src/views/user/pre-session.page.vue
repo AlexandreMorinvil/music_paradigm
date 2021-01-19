@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 <template>
-	<user-page-content-frame-component title="Before Starting">
+	<user-page-content-frame-component :title="$t('views.user.pre-session.before-starting')">
 		<component
 			:is="stageComponent"
 			v-on:end-stage="moveNextStage"

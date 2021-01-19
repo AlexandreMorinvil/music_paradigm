@@ -49,7 +49,7 @@ export default {
 		...mapActions('experiment', ['addSuccess']),
 		...mapActions('log', ['createSimpleLog']),
 		updateFootnote() {
-			const footnoteMessage = 'The experiment will go to the next step after your performance';
+			const footnoteMessage = this.$t('views.experiment.playing.footnote-after-performance');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		handdleEndOfPlaying() {
