@@ -44,9 +44,9 @@ export default {
 			const minutes = Math.floor((this.timeLeftInMilliseconds / 1000 / 60) % 60);
 			const seconds = Math.floor((this.timeLeftInMilliseconds / 1000) % 60);
 			if (minutes > 0) {
-				display += `${minutes} minutes `;
+				display += this.$tc('experiment.playing-mode.speed.minute', minutes, { minute: minutes });
 			}
-			display += `${seconds} seconds`;
+			display += this.$tc('experiment.playing-mode.speed.second', seconds, { second: seconds });
 			return display;
 		},
 	},
@@ -65,8 +65,8 @@ export default {
 		},
 		updateFootnote(firstNotePressed) {
 			let footnoteMessage = '';
-			if (firstNotePressed) footnoteMessage = `The experiment will go to the next step in ${this.timeLeftDisplay}`;
-			else footnoteMessage = 'The time limit will start after the first key press';
+			if (firstNotePressed) footnoteMessage = this.$t('experiment.playing-mode.speed.footnote-after-time', { time: this.timeLeftDisplay });
+			else footnoteMessage = this.$t('experiment.playing-mode.speed.footnote-start-after-press');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		evaluate() {

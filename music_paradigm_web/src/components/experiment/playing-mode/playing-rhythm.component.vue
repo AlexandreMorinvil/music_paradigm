@@ -47,8 +47,11 @@ export default {
 			if (this.hasInteractivePiano) this.$refs.piano.clearDesignatedKeys();
 		},
 		updateFootnote() {
-			let footnoteMessage = 'The experiment will go to the next step after your performance';
-			if (this.timeoutInSeconds !== 0) footnoteMessage += ` or after ${this.timeoutInSeconds} seconds`;
+			let footnoteMessage = this.$t('experiment.playing-mode.accuracy.footnote-after-performance');
+			if (this.timeoutInSeconds >= 0) {
+				const seconds = this.timeoutInSeconds;
+				footnoteMessage = this.$tc('experiment.playing-mode.accuracy.footnote-after-performance-or-time', seconds, { second: seconds });
+			}
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		evaluate() {
