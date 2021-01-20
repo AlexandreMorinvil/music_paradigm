@@ -9,22 +9,6 @@ module.exports = {
     addBlock,
 };
 
-// async function getAll() {
-//     try {
-//         return await AdminLogThorough.getListAllHeaders();
-//     } catch (err) {
-//         throw err;
-//     }
-// }
-
-// async function getById(id) {
-//     try {
-//         return await AdminLogThorough.findById(id);
-//     } catch (err) {
-//         throw err;
-//     }
-// }
-
 async function createSimpleLog(logInformation) {
     try {
         const adminSimpleLog = new AdminLogSimple(logInformation);
@@ -52,13 +36,10 @@ async function addBlock(id, block) {
     }
 }
 
-// async function _delete(id) {
-//     try {
-//         const adminSession = await AdminLogThorough.findById(id);
-//         if (!adminSession) throw new Error('The admin session to delete could not be found');
-//         return await adminSession.remove();
-//     } catch (err) {
-//         throw err;
-//     }
+async function initializeLog(user, logInformation) {
+    try {
+        if(user.role === "admin")
+    } catch (err) {
 
-// }
+    }
+}

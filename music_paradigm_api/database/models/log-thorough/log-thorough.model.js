@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-schema = require('./session.schema');
+schema = require('./log-thorough.schema');
 
 schema.set('toJSON', { virtuals: true });
 
@@ -18,8 +18,8 @@ schema.methods.addBlock = async function (block) {
 };
 
 // Creating the model
-const model = mongoose.model('Session', schema);
-const adminModel = mongoose.model('AdminSession', schema);
+const model = mongoose.model('Log-Thorough', schema);
+const adminModel = mongoose.model('Admin-Log-Thorough', schema);
 
 module.exports = {
     model: model,

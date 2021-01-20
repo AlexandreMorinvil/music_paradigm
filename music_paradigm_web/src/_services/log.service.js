@@ -1,19 +1,19 @@
 import { authHeader, url } from '@/_helpers';
 import defaultResponseHandler from './defaultResponseHandler';
 
-export const adminSessionService = {
-	createSimpleLog,
+export const logService = {
+	addSimpleBlock,
 	createAdminSession,
 	addBlock,
 };
 
-function createSimpleLog(simpleLog) {
+function addSimpleBlock(simpleLog) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(simpleLog),
 	};
-	return fetch(url.adminSessions('create-simple/'), requestOptions).then(handleResponse);
+	return fetch(url.logSimple('add-block'), requestOptions).then(handleResponse);
 }
 
 function createAdminSession(sessionLogHeader) {

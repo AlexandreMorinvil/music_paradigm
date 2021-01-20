@@ -4,6 +4,7 @@ export default {
 
 function EMPTY_SESSION_INFORMATION() {
 	return {
+		curriculumTitle: '',
 		assosiativeId: '',
 		title: '',
 		text: '',

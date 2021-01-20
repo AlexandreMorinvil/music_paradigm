@@ -20,9 +20,11 @@ module.exports = {
     Experiment: require('./models/experiment/experiment.model'),
     Curriculum: require('./models/curriculum/curriculum.model'),
     Progression: require('./models/progression/progression.model'),
-    AdminSimpleLog: require('./models/simple-log/simple-log.model').adminModel,
-    AdminSession: require('./models/session/session.model').adminModel,
-    User: require('./models/user/user.model')
+    User: require('./models/user/user.model'),
+    AdminLogSimple: require('./models/log-simple/log-simple.model').adminModel,
+    AdminLogThorough: require('./models/log-thorough/log-thorough.model').adminModel,
+    LogSimple: require('./models/log-simple/log-simple.model').model,
+    LogThorough: require('./models/log-thorough/log-thorough.model').model,
 };
 
 /**

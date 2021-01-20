@@ -105,6 +105,7 @@ function DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES() {
 			indexPileStart: UNSET_INDEX, // Index to which there remains content to depile
 			indexGroupEnd: UNSET_INDEX, // Index of the end of a group of blocks (the last index with a followedBy or an individual block)
 			totalInnerSteps: 0, // Number of steps in a given block
+			numberTotalRepetions: 1, // Number of repetitions in total
 			numberRepetition: 1, // Number of repetitions left to do
 			numberPiledMedia: 0, // Number of media content piled at the index pile start
 		},

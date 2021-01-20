@@ -20,7 +20,7 @@
     }
   },
   "content-frame": {
-    "content-frame.page-to-implemented": "Page to be implemented"
+    "page-to-implemented": "Page to be implemented"
   },
   "navigation-bar": {
     "welcome": "Welcome {fullname}",

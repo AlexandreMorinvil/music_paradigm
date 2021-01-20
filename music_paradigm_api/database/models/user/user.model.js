@@ -18,6 +18,11 @@ schema.statics.authenticate = async function (username, password) {
     return userWithoutPassword;
 };
 
+schema.statics.isAdmin = async function (userId) {
+    const user = await this.findById(userId);
+    return user.role === roles.admin;
+};
+
 schema.statics.create = async function (userParameters) {
     const user = await new model(userParameters);
     return user.save();
@@ -31,7 +36,7 @@ schema.statics.delete = async function (userId) {
 
 schema.statics.getListAllHeaders = async function () {
     const usersList = await this.find({ role: roles.user }).populate({ path: 'curriculum', select: 'title' }).sort({ role: 1, username: 1 });
-    
+
     const usersHeaderList = [];
     usersList.forEach(element => {
         const userHeader = element.toObject();

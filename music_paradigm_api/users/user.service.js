@@ -1,5 +1,4 @@
 ﻿const db = require('database/db');
-const Progression = db.Progression;
 const User = db.User;
 
 // Exports

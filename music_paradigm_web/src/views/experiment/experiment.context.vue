@@ -1,5 +1,6 @@
 <template>
 	<div id="experiment" class="experiment-grid unselectable">
+		<log-component style="display: none" ref="log" />
 		<status-bar-component class="status-bar-position" ref="status" />
 
 		<div id="state-content" class="state-content-position">
@@ -15,11 +16,13 @@ import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-eve
 import { KeyboardEventBus, keyboardEvents } from '@/_services/keyboard-event-bus.service.js';
 import { PianoEventBus, pianoEvents } from '@/_services/piano-event-bus.service.js';
 import ExperimentContent from '@/components/content-frame/experiment-content-frame.component.vue';
+import LogComponent from '@/components/experiment/log/log.component.vue';
 import StatusBarComponent from '@/components/experiment/status-bar/status-bar.component.vue';
 
 export default {
 	components: {
 		ExperimentContent,
+		LogComponent,
 		StatusBarComponent,
 	},
 	data() {
@@ -50,11 +53,12 @@ export default {
 			this.endExperimentByTimeout();
 		},
 		displayFirstStep() {
-			// This.initializeLogSession();
 			this.updateState();
+			this.$refs.log.initialize();
 			this.$refs.status.start();
 		},
 		navigateExperiment() {
+			this.$refs.log.addBlock();
 			this.resetPressedKeyboardKeysLogs();
 			this.resetPlayedNotesLogs();
 			this.goNextStep();
@@ -65,6 +69,7 @@ export default {
 			this.goStepPostSkip();
 		},
 		endExperiment() {
+			this.$refs.log.conclude();
 			this.needsConfirmationToLeave = false;
 			this.concludeSession();
 			this.concludeExperiment();
