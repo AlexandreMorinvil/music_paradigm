@@ -6,9 +6,9 @@ export default {
 		return new Promise((resolve) => {
 			const block = {
 				userId: rootGetters['account/accountId'],
-				experimentId: rootGetters['experiment/experimentId'],
-				curriculumId: rootGetters['account/curriculumId'] || null,
+				curriculumId: rootGetters['session/curriculumId'] || null,
 				associativeId: rootGetters['session/associativeId'] || null,
+				experimentId: rootGetters['experiment/experimentId'],
 
 				username: rootGetters['account/username'],
 				curriculumTitle: rootGetters['session/curriculumTitle'] || null,

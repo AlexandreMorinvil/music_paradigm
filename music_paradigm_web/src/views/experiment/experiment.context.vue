@@ -36,7 +36,7 @@ export default {
 		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType']),
 	},
 	methods: {
-		...mapActions('session', ['concludeSession']),
+		...mapActions('session', ['concludeSession', 'initializeSession']),
 		...mapActions('experiment', ['updateState', 'goNextStep', 'goStepPostSkip', 'clearState', 'endExperimentByTimeout', 'concludeExperiment']),
 		...mapActions('keyboard', ['loadReferenceKeyboardKeys', 'resetPressedKeyboardKeysLogs', 'resetKeyboardTracking']),
 		...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
@@ -53,6 +53,7 @@ export default {
 			this.endExperimentByTimeout();
 		},
 		displayFirstStep() {
+			this.initializeSession();
 			this.updateState();
 			this.$refs.log.initialize();
 			this.$refs.status.start();

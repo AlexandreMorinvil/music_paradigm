@@ -8,10 +8,16 @@ module.exports = {
     addBlock,
 };
 
-async function addBlock(id, block) {
+async function addBlock(userId, block) {
     try {
-        if (await User.isAdmin(id)) return await AdminLogSimple.addBlock(block);
-        else return await LogSimple.addBlock(block);
+        let addedBlock = null;
+        if (await User.isAdmin(userId)) {
+            addedBlock = await AdminLogSimple.addBlock(block);
+        } else {
+            addedBlock = await LogSimple.addBlock(block);
+            await User.recordBlock(userId, addedBlock);
+        }
+        return addedBlock;
     } catch (err) {
         throw err;
     }

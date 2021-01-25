@@ -5,7 +5,8 @@ export default {
 function EMPTY_SESSION_INFORMATION() {
 	return {
 		curriculumTitle: '',
-		assosiativeId: '',
+		curriculumId: '',
+		associativeId: '',
 		title: '',
 		text: '',
 		experiment: null,

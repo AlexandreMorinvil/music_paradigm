@@ -8,19 +8,14 @@ const bcrypt = require('bcryptjs');
 schema.statics.authenticate = async function (username, password) {
     // Fetch user in the database
     const user = await this.findOne({ username });
-    if (!user) throw new Error;
+    if (!user) throw new Error();
 
     // Validate password
-    if (!bcrypt.compareSync(password, user.passwordHash)) throw new Error;
+    if (!bcrypt.compareSync(password, user.passwordHash)) throw new Error();
     const userWithoutPassword = user.toObject();
     delete userWithoutPassword.password;
 
     return userWithoutPassword;
-};
-
-schema.statics.isAdmin = async function (userId) {
-    const user = await this.findById(userId);
-    return user.role === roles.admin;
 };
 
 schema.statics.create = async function (userParameters) {
@@ -40,6 +35,7 @@ schema.statics.getListAllHeaders = async function () {
     const usersHeaderList = [];
     usersList.forEach(element => {
         const userHeader = element.toObject();
+
         // Adding the name of the current curriculum
         if (userHeader.curriculum) userHeader.curriculumTitle = userHeader.curriculum.title;
         else userHeader.curriculumTitle = "";
@@ -51,6 +47,11 @@ schema.statics.getListAllHeaders = async function () {
     return usersHeaderList;
 };
 
+schema.statics.isAdmin = async function (userId) {
+    const user = await this.findById(userId);
+    return user.role === roles.admin;
+};
+
 schema.statics.getCurriculumAndProgressionData = async function (userId) {
     const curriculumAndProgression = await this.findById(userId, { curriculum: 1, progressions: { $slice: -1 } }).populate({ path: 'curriculum progressions' });
     const { curriculum, progressions } = curriculumAndProgression.toObject();
@@ -60,6 +61,11 @@ schema.statics.getCurriculumAndProgressionData = async function (userId) {
 schema.statics.getLastProgression = async function (userId) {
     return getLastProgression({ _id: userId }, this) || null;
 };
+
+schema.statics.recordBlock = async function(userId, block) {
+    const lastProgression = await this.getLastProgression(userId);
+    return await lastProgression.patchBlockAssociatedExperiment(block);
+}
 
 // Instance methods
 schema.methods.updateUser = async function (updatedUser) {
@@ -110,6 +116,10 @@ schema.methods.resetProgression = async function () {
 
     await this.save();
     return await getLastProgression(this, model);
+}
+
+schema.methods.abc = async function () {
+
 }
 
 // Helper functions

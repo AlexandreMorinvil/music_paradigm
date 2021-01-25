@@ -37,6 +37,7 @@ export default {
 			});
 	},
 
+	// Bring the user in the experiment mode
 	startSession({ dispatch, getters }) {
 		if (!getters.hasSessionLoaded) return;
 		dispatch('experiment/setExperiment', getters.sessionExperiment, { root: true });
@@ -46,13 +47,34 @@ export default {
 		dispatch('experiment/initExperiment', null, { root: true });
 	},
 
+	// Send a signal to the back-end to indicate that the session can be considered as started
+	initializeSession({ commit, dispatch, getters }) {
+		commit('setIsInitializingSession');
+		return sessionService
+			.initializeSession(getters.associativeId)
+			.then(
+				() => { },
+				(error) => {
+					// TODO: Keep on memory the failed initialization in localstorage nad reattempt at every time we send log data
+					console.log(error)
+				},
+			)
+			.finally(() => {
+				commit('setIsInitializingSessionEnd');
+			});
+	},
+
+	// Send a signal to the back-end to indicate that the session can be considered as completed
 	concludeSession({ commit, dispatch, getters }) {
 		commit('setIsConcludingSession');
 		return sessionService
 			.concludeSession(getters.associativeId)
 			.then(
 				() => { },
-				(error) => { console.log(error) },
+				(error) => {
+					// TODO : Keep in memory the failed completion in localstorage to make sure on the next login we handle it
+					console.log(error)
+				},
 			)
 			.finally(() => {
 				dispatch('clearSessionInformation', null, { root: true });

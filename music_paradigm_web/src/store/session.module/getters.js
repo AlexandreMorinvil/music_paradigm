@@ -1,7 +1,14 @@
 export default {
+	curriculumTitle: (state) => {
+		return state.sessionInformation.curriculumTitle || null;
+	},
+
+	curriculumId: (state) => {
+		return state.sessionInformation.curriculumId || null;
+	},
+
 	associativeId: (state) => {
-		// FIXME: Associative is not written properly
-		return state.sessionInformation.assosiativeId || null;
+		return state.sessionInformation.associativeId || null;
 	},
 
 	sessionExperiment: (state) => {
@@ -13,7 +20,7 @@ export default {
 	},
 
 	preSessionMessage: (state) => {
-		return state.sessionInformation.text;
+		return state.sessionInformation.text || '';
 	},
 
 	hasSessionLoaded: (state) => {

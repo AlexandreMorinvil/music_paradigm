@@ -10,7 +10,7 @@ const schema = new Schema(
         associativeId: { type: String, default: undefined },
 
         username: { type: String, default: undefined },
-        curriculumTitle: { type: Schema.Types.ObjectId, default: null },
+        curriculumTitle: { type: String, default: null },
         experimentGroup: { type: String, default: undefined },
         experimentName: { type: String, default: undefined },
         experimentVersion: { type: Number, default: undefined },
