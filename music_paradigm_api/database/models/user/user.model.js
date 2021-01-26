@@ -64,7 +64,7 @@ schema.statics.getLastProgression = async function (userId) {
 
 schema.statics.recordBlock = async function(userId, block) {
     const lastProgression = await this.getLastProgression(userId);
-    return await lastProgression.patchBlockAssociatedExperiment(block);
+    return await lastProgression.patchLogBlockAssociatedExperiment(block);
 }
 
 // Instance methods

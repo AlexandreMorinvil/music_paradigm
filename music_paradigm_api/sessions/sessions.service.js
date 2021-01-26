@@ -8,6 +8,7 @@ module.exports = {
 
 async function initializeSession(userId, associativeId) {
     try {
+        if (!userId || !associativeId || associativeId === 'null') return;
         const progression = await User.getLastProgression(userId);
         await progression.initializeExperiment(associativeId);
         return;

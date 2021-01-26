@@ -88,10 +88,10 @@ schema.methods.concludeExperiment = async function (associativeId) {
     return this.save();
 };
 
-schema.methods.patchBlockAssociatedExperiment = async function (logBock) {
+schema.methods.patchLogBlockAssociatedExperiment = async function (logBock) {
     // Get experiment associated
     associativeId = logBock.associativeId;
-    if (!logBock.associativeId) throw new Error('No associative ID')
+    if (!associativeId) throw new Error('No associative ID')
 
     // Add the log block to the progression
     const progressionNestedExperiment = await this.getExperimentAssociated(associativeId);

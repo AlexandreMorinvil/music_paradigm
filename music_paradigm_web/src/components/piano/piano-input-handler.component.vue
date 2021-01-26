@@ -1,5 +1,7 @@
 <template>
-	<div style="display: none"></div>
+	<div style="display: none">
+		<piano-admin-input-handler-component v-on:simulated-midi-signal="manageMidiNote" style="display: none" />
+	</div>
 </template>
 
 <script>
@@ -7,17 +9,18 @@ import { mapActions, mapGetters } from 'vuex';
 
 import { PianoEventBus, pianoEvents } from '@/_services/piano-event-bus.service.js';
 import MidiPlayer from '@/MidiPlayer';
-import map from '@/_helpers/keyboardMapping';
+import PianoAdminInputHandlerComponent from './piano-admin-input-handler.component';
 
 export default {
+	components: {
+		PianoAdminInputHandlerComponent,
+	},
 	data() {
 		return {
 			player: null,
 			audioConctext: null,
 			piano: null,
 			playingNotes: {},
-			currentOctave: 4, // FIXME: This should be directly in the keyboard mapping
-			keyboardTracker: {}, // Keeps track of keydown and keyup events for each key
 			midiAccess: null,
 			midiInputs: [],
 		};
@@ -114,9 +117,6 @@ export default {
 				time: new Date().getTime(),
 			});
 		},
-		toNote(e) {
-			return map[e.key];
-		},
 		playNoteFromMidiFile(noteName, velocity) {
 			const currentTime = this.audioConctext.currentTime;
 			this.piano.play(noteName, currentTime, {
@@ -152,10 +152,6 @@ export default {
 					});
 				});
 
-				// Keyboard events listeners
-				window.addEventListener('keydown', this.handleKeyPress);
-				window.addEventListener('keyup', this.handleKeyRelease);
-
 				// Midi messages listener (To handle played automatically MIDI files)
 				this.player.on('midiEvent', this.handleMidiMessage);
 				this.player.on('endOfFile', this.handleMidiFileEndOfFile);
@@ -163,43 +159,6 @@ export default {
 				this.setInitializedState(true);
 				this.setInitializingState(false);
 			});
-		},
-		handleKeyPress(key) {
-			const note = this.toNote(key);
-			// PianokeyDown => 'Note On'
-			// If the key doesn't exist in the midi map, or we're trying to send a
-			// noteOn event without having most recently sent a noteOff, end here.
-			if (!note || this.keyboardTracker[note]) return;
-			this.keyboardTracker[note] = true;
-			this.manageMidiNote({ data: [144, note, 127] });
-		},
-		handleKeyRelease(key) {
-			switch (key.code) {
-				// Octave down
-				case 'ShiftLeft': {
-					this.currentOctave -= 1;
-					for (const mapKey in map) {
-						if (mapKey !== ' ') map[mapKey] -= 12;
-					}
-					break;
-				}
-				// Octave up
-				case 'ShiftRight': {
-					this.currentOctave += 1;
-					for (const mapKey in map) {
-						if (mapKey !== ' ') map[mapKey] += 12;
-					}
-					break;
-				}
-				// Piano keyUp  => 'Note Off'
-				default: {
-					const note = this.toNote(key);
-					if (note) {
-						this.keyboardTracker[note] = false;
-						this.manageMidiNote({ data: [128, note, 127] });
-					}
-				}
-			}
 		},
 		/**
 		 * Hanfling the midi messages to play a midi file

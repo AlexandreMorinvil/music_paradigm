@@ -16,6 +16,7 @@ export default {
 			repeaterUniqueID: 0,
 			isRepeaterTurnedOn: false,
 			playingNote: null,
+			instrument: null,
 		};
 	},
 	computed: {
@@ -25,7 +26,7 @@ export default {
 		makeSound(midiNumber) {
 			if (this.playingNote) this.playingNote.stop();
 			if (this.isPianoInitialized)
-				this.playingNote = this.piano.play(midiNumber, 0, {
+				this.playingNote = this.instrument.play(midiNumber, 0, {
 					gain: (vel) => {
 						return vel / 127;
 					},
@@ -70,9 +71,21 @@ export default {
 			else return octave || 0;
 		},
 	},
+	beforeMount() {
+		this.instrument = this.piano;
+	},
 	beforeDestroy() {
 		this.stopNoteLoop();
 		this.stopSound();
+	},
+	watch: {
+		piano: {
+			deep: true,
+			immediate: true,
+			handler: function (pianoObject) {
+				this.instrument = pianoObject;
+			},
+		},
 	},
 };
 </script>

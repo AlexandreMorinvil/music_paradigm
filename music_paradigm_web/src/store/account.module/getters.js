@@ -34,4 +34,8 @@ export default {
 	hasDueExperiment: (state) => {
 		return Boolean(state.dueExperimentAssociativeId);
 	},
+
+	isAdmin: (state) => {
+		return state.user.role === 'admin';
+	},
 };
