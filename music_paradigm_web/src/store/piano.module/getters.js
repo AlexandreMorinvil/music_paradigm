@@ -50,21 +50,22 @@ export default {
 	pianoSimpleLogSummary: (state) => {
 		return {
 			referenceName: state.midiFile.name,
-			referenceMidi: state.midiFile.notes.midi,
+			referenceKeys: state.midiFile.notes.midi,
 			referenceTime: state.midiFile.notes.time,
 			referenceDuration: state.midiFile.notes.duration,
 			referenceVelocity: state.midiFile.notes.velocity,
 
-			playedStartTime: state.played.startTime,
-			playedMidi: state.played.notes.midi,
-			playedTime: state.played.notes.time,
-			playedVelocity: state.played.notes.velocity,
-			playedDuration: state.played.notes.duration,
+			pressedStartTime: state.played.startTime,
+			pressedKeys: state.played.notes.midi,
+			pressedTime: state.played.notes.time,
+			pressedDuration: state.played.notes.duration,
+			pressedvelocity: state.played.notes.velocity,
 		};
 	},
 
 	pianoSimpleLogPreprocesed: (state) => {
 		return {
+			consideredStart: state.played.evaluation.consideredStart,
 			...state.played.evaluation.results,
 		};
 	},
@@ -80,11 +81,10 @@ export default {
 			},
 			played: {
 				startTime: state.played.startTime,
-				// Volume: state.played.notes.volume,
 				midi: state.played.notes.midi,
 				time: state.played.notes.time,
-				velocity: state.played.notes.velocity,
 				duration: state.played.notes.duration,
+				velocity: state.played.notes.velocity,
 			},
 			evaluation: {
 				type: state.played.evaluation.type,

@@ -1,13 +1,23 @@
 ﻿const db = require('database/db');
-const Progression = db.Progression;
 const User = db.User;
 
 module.exports = {
-    concludeExperiment
+    initializeSession,
+    concludeSession,
 };
 
+async function initializeSession(userId, associativeId) {
+    try {
+        if (!userId || !associativeId || associativeId === 'null') return;
+        const progression = await User.getLastProgression(userId);
+        await progression.initializeExperiment(associativeId);
+        return;
+    } catch (err) {
+        throw err;
+    }
+}
 
-async function concludeExperiment(userId, associativeId) {
+async function concludeSession(userId, associativeId) {
     try {
         const progression = await User.getLastProgression(userId);
         await progression.concludeExperiment(associativeId);

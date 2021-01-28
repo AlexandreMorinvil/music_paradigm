@@ -7,6 +7,10 @@ export default {
 		return state.user.username;
 	},
 
+	curriculumId: (state) => {
+		return state.user.curriculum;
+	},
+
 	isLoggedIn: (state) => {
 		return state.status.loggedIn;
 	},
@@ -29,5 +33,9 @@ export default {
 
 	hasDueExperiment: (state) => {
 		return Boolean(state.dueExperimentAssociativeId);
+	},
+
+	isAdmin: (state) => {
+		return state.user.role === 'admin';
 	},
 };

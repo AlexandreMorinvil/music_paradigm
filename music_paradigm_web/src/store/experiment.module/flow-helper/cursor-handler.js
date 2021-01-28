@@ -172,11 +172,13 @@ function setCursorInnerStepsTotal(cursor, textContent, pictureFileName) {
 //  The execution order would be :
 //  A - B - C - A - B - C - A - B - C - C - C - D
 function setCursorLoopStart(cursor, numberRepetition) {
+	if (cursor.flag.needsResetLoopParameters) cursor.navigation.numberTotalRepetions = 1;
 	// Initialize a loop (loop start index & number of repetitions) if :
 	// 1. A number of repetition greater than 1 is specified in the block's settings,
 	// 2. The cursor is not currently in a loop (thus the number of reptition left is <= 1)
 	// 3. The current index is not the start index of a previous loop (to avoid resetting a loop twice)
 	if (numberRepetition > 1 && cursor.navigation.numberRepetition <= 1 && cursor.current.index !== cursor.navigation.indexLoopStart) {
+		cursor.navigation.numberTotalRepetions = numberRepetition;
 		cursor.navigation.indexLoopStart = cursor.current.index;
 		cursor.navigation.numberRepetition = numberRepetition;
 	}

@@ -11,6 +11,14 @@ export default {
 		state.status.isFetchingSession = false;
 	},
 
+	setIsInitializingSession(state) {
+		state.status.isInitializingSession = true;
+	},
+
+	setIsInitializingSessionEnd(state) {
+		state.status.isInitializingSession = false;
+	},
+
 	setIsConcludingSession(state) {
 		state.status.isConcludingSession = true;
 	},

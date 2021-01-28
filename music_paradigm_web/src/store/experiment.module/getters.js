@@ -17,6 +17,20 @@ export default {
 		return cursorHandler.countStepsLeft(state.flow, state.cursor);
 	},
 
+	currentIndex: (state) => {
+		return state.cursor.current.index;
+	},
+
+	currentInnerStepIndex: (state) => {
+		return state.cursor.current.innerStepIndex;
+	},
+
+	currentRepetition: (state) => {
+		const totalRepetitions = state.cursor.navigation.numberTotalRepetions;
+		const repetitionsLeft = state.cursor.navigation.numberRepetition;
+		return totalRepetitions - repetitionsLeft + 1;
+	},
+
 	// Getters for the experiment settings
 	experimentGroup: (state) => {
 		return state.description.group || 'UNKNOWN_GROUP';

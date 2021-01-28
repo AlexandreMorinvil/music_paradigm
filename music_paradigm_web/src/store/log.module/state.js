@@ -1,6 +1,6 @@
 export default {
 	status: {
-		isCreating: false,
+		isAddingBlock: false,
 	},
 
 	_id: null,

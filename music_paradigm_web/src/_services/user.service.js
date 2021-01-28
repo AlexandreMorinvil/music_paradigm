@@ -8,6 +8,7 @@ export const userService = {
 	update,
 	delete: _delete,
 	assignCurriculum,
+	resetProgression,
 };
 
 function register(user) {
@@ -59,6 +60,14 @@ function assignCurriculum(userId, curriculumParameters) {
 		body: JSON.stringify(curriculumParameters),
 	};
 	return fetch(url.users('assign-curriculum/' + userId), requestOptions).then(handleResponse);
+}
+
+function resetProgression(userId) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+	};
+	return fetch(url.users('reset-progression/' + userId), requestOptions).then(handleResponse);
 }
 
 function handleResponse(reponse) {

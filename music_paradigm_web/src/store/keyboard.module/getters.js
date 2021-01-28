@@ -28,10 +28,11 @@ export default {
 
 	keyboardSimpleLogSummary: (state) => {
 		return {
-			reference: state.referenceKeys,
+			referenceName: 'keyboard sequence',
+			referenceKeys: state.referenceKeys,
 
-			pressStartTime: state.played.startTime,
-			pressedKeys: state.played.presses.midi,
+			pressedStartTime: state.played.startTime,
+			pressedKeys: state.played.presses.keys,
 			pressedTime: state.played.presses.time,
 			pressedDuration: state.played.presses.duration,
 		};

@@ -7,6 +7,7 @@ export default {
 		isUpdating: false,
 		isDeleting: false,
 		isAssigningCurriculum: false,
+		isResetingProgression: false,
 	},
 
 	selectedUser: constants.EMPTY_USER(),
