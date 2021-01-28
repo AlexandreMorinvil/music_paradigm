@@ -1,137 +1,144 @@
 {
-  "music-paradigm": "Music Paradigm",
+  "music-paradigm": "Pianoträning",
   "application-component": {
     "footer": {
-      "footnote-text": "Music Paradigm is an open source platform developped for managing remote mutiusers musical training experiments."
+      "footnote-text": "REMOVE"
     },
     "alert": {
-      "success": "SUCCES",
+      "success": "SUCCESS",
       "information": "INFORMATION",
       "warning": "WARNING",
       "error": "ERROR"
     },
     "login-prompt": {
-      "login": "Login",
+      "login": "Logga in",
       "username": "",
-      "enterUsername": "Enter Username",
-      "password": "Password",
+      "enterUsername": "Användarnamn",
+      "password": "Lösenord",
       "enterPassword": "",
-      "username-required": "Username is required"
+      "username-required": "Vänligen ange användarnamn"
     }
   },
   "content-frame": {
-    "content-frame.page-to-implemented": "Page to be implemented"
+    "page-to-implemented": "Denna sida inte färdigimplementerad."
   },
   "navigation-bar": {
-    "welcome": "Welcome {fullname}",
-    "logout": "Logout",
-    "session-in-progress": "Session in progress",
-    "leave": "Leave"
+    "welcome": "Välkommen {fullname}!",
+    "logout": "Logga ut",
+    "session-in-progress": "REMOVE",
+    "leave": "Avsluta"
   },
   "user": {
     "home": {
-      "run-today-session": "Run Today’s Session",
-      "today-session-unavailable": "No new session available"
+      "run-today-session": "REMOVE",
+      "today-session-unavailable": "REMOVE"
     },
     "progression-board": {
-      "available": "Available",
-      "tomorrow": "Tomorrow",
-      "in-x-days": "In {number} day | In {number} days",
-      "in-x-hours": "In {time} hours",
-      "undetermined": "Soon"
+      "available": "Tillgänglig",
+      "tomorrow": "Imorgon",
+      "in-x-days": "Om {number} dag | Om {number} dagar",
+      "in-x-hours": "Om {time} timmar",
+      "undetermined": "Snart"
     },
     "pre-session": {
       "pre-session-advice": {
-        "close-all": "Please close all other applications and webpages before continuing.",
-        "web-browser": "Make sure you are using the Google Chrome web browser."
+        "close-all": "Vänligen stäng alla andra fönster och program innan du går vidare.",
+        "web-browser": "För att detta program ska fungera korrekt måste du köra det i Google Chrome webbläsare."
       },
       "attach-piano": {
-        "attach-piano": "Please attach the MIDI-keyboard to your computer using the USB-chord and place it so you can play it comfortably.\n\nWhen done, press the button below",
-        "initializing": "Initializing...",
-        "initialize-midi": "Initialize MIDI Keyboard"
+        "attach-piano": "Anslut pianot till din dator med USB-sladden och placera det så att du kan spela bekvämt med högerhanden.\n\nTryck sedan knappen nedanför för att gå vidare.",
+        "initializing": "Konfigurerar...",
+        "initialize-midi": "Konfigurera pianot"
       },
       "test-piano": {
-        "verify-piano": "The piano is now muted: you will not hear any sound.\nVerify that the keys indicated on dislay mirror the keys you press.",
-        "press-any-key": "Press any key on the MIDI Keyboard",
-        "problem-signal": "Nothing happens when I press any key?",
-        "problem-correspondance": "The keys highlighted do not correspond to the key I press?"
+        "verify-piano": "För detta test har ljudet på pianot stängts av.\n\nSäkerställ att tangenterna som visas på skärmen blir blå när du trycker ner motsvarande tangenter på pianot.",
+        "press-any-key": "Tryck på vilken tangent du vill.",
+        "problem-signal": "Händer ingenting på skärmen när du trycker på pianotangenterna?",
+        "problem-correspondance": "Är det inte samma tangenter som blir blå på skärmen som du trycker ner på pianot?"
       },
       "test-sound": {
-        "verify-sound": "You should now hear a piano sound.\n\nPlease Adjust the volume to a confortable level.",
-        "problem-sound": "I hear no sound?"
+        "verify-sound": "Nu borde du höra en ton upprepas.\n\nJustera volymen till en tydlig och behaglig nivå.",
+        "problem-sound": "Hör du inget ljud?"
       },
-      "continue": "Continue",
-      "start-session": "Start Session"
+      "continue": "Fortsätt",
+      "start-session": "Börja träningssessionen"
     },
     "problem-prompt": {
       "default": {
-        "title": "Unspecified",
-        "solution-1": "No solution",
-        "conclusion": "If the solution above did not fix the problem:\n Please contact the operator of the platform for further technical support. | If the solutions above did not fix the problem:\n Please contact the operator of the platform for further technical support.",
+        "title": "Ospecificerad",
+        "solution-1": "Ingen lösning kunde hittas",
+        "conclusion": "Om åtgärden ovan inte löste problemet:\nVänligen kontakta teknisk support. | Om åtgärderna ovan inte löste problemet:\nVänligen kontakta teknisk support.",
         "button": "OK"
       },
       "piano-setting": {
-        "title": "MIDI keyboard not reachable",
-        "solution-1": "Make sure you are using the Google Chrome web browser. Other web browsers as Firefox and Internet Explorer are not compatible with the MIDI keyboard."
+        "title": "Pianot kan inte anslutas.",
+        "solution-1": "Säkerställ att du använder Google Chrome webbläsare.\nAndra webbläsare som till exempel Firefox eller Internet Explorer är inte fullt kompatibla med programmet."
       },
       "piano-input": {
-        "title": "No MIDI input received",
-        "solution-1": "Try uplugging and replugging the keyboard.\nPress the OK buton to restart the MIDI keyboard initialization."
+        "title": "Pianot ger ingen signal.",
+        "solution-1": "Försök med att dra ur och återansluta pianot.\nSäkerställ att USB-sladden sitter i ordentligt i både datorn och pianot.\n\nTryck därefter OK för att upprepa konfigureringen av pianot."
       },
       "piano-correspondance": {
-        "title": "Not corresponding notes",
-        "solution-1": "The MIDI keyboard has two buttons labelled 'octave'.\nUse those buttons until the keys you press on your MIDI keyboard correspond to the keys displayed."
+        "title": "Andra tangenter blir blå än dem jag spelar på pianot.",
+        "solution-1": "Pianot har två knappar på vänster sida som indikeras 'octave'.\nAnvänd dessa knappar för att justera tangenterna tills pianottangenterna motsvarar de som blir blå på skärmen."
       },
       "piano-sound": {
-        "title": "No sound heard",
-        "solution-1": "Verify the volume (it might be too low or muted).",
-        "solution-2": "Refresh the page and try again.",
-        "solution-3": "Close this window and retry on a now page.",
-        "solution-4": "Restart the device and try again.",
-        "conclusion": "If the solution(s) above did not fix the problem:\nIt is likely that there is a problem with the sound of your computer.\nPlease contact the operator of the platform for further technical support."
+        "title": "Inget ljud hörs.",
+        "solution-1": "Säkerställ att volymen är på och inte för låg, och att du lyssnar på rätt utgång (t.ex. högtalare eller hörlurar).",
+        "solution-2": "Testa att uppdatera webbsidan och försök igen.",
+        "solution-3": "Testa att stänga browsern och öppna/logga in igen.",
+        "solution-4": "Testa att starta om datorn och försök igen.",
+        "conclusion": "Om ingen av ovanstående lösningar fungerade:\nVänligen kontakta teknisk support."
       }
     }
   },
   "experiment": {
     "element": {
       "start-signal-timer": {
-        "start-in": "START IN :"
+        "start-in": "Börjar om :"
       },
       "skip-button": {
-        "default-message": "Press {button} to skip"
+        "default-message": "Tryck {button} för att hoppa över."
       }
     },
     "status-bar": {
       "state": {
-        "cue": "cue",
-        "end": "end",
-        "feedback": "feedback",
-        "instruction": "instruction",
-        "perform": "perform",
-        "rest": "rest",
-        "video": "video"
+        "cue": "REMOVE",
+        "end": "REMOVE",
+        "feedback": "REMOVE",
+        "instruction": "REMOVE",
+        "perform": "REMOVE",
+        "rest": "REMOVE",
+        "video": "REMOVE"
+      },
+      "piano":{
+        "on": "PÅ",
+        "off": "AV",
+        "load": "Laddar...",
+        "wait": "Vänta",
+        "error": "FEL"
       }
     },
     "playing-mode": {
       "speed": {
-        "footnote-start-after-press": "The time limit will start after the first key press",
-        "footnote-after-time": "The session will go to the next step in {time}",
-        "minute": "{minute} minute | {minute} minutes",
-        "second": "{second} second | {second} seconds"
+        "footnote-start-after-press": "Tiden börjar efter det första tangentnedslaget.",
+        "footnote-after-time": "Sessionen går vidare till nästa moment om {time}",
+        "minute": "{minute} minut| {minute} minuter",
+        "second": "{second} sekund | {second} sekunder"
       },
       "accuracy": {
-        "footnote-after-performance": "The session will go to the next step after your performance",
-        "footnote-after-performance-or-time": "The session will go to the next step after your performance or after {second} second | The session will go to the next step after your performance or after {second} seconds"
+        "footnote-after-performance": "REMOVE",
+        "footnote-after-performance-or-time": "Sessionen fortsätter efter ditt genomförande eller om {second} sekund. | Sessionen fortsätter efter ditt genomförande eller om {second} sekunder."
       }
     },
     "text-timeout": {
-      "default-message-top": "The time limit was reached.\nThe experiment ends here."
+      "default-message": "Tidsgränsen är uppnådd.\nTräningen avslutas."
     },
     "feedback": {
       "feedback-grade": {
-        "sequences-played": "Sequences Played",
-        "melody-accuracy": "Melody Accuracy",
-        "rhythm-accuracy": "Rhythm Accuracy"
+        "sequences-played": "Spelade sekvenser",
+        "melody-accuracy": "Precision melodi",
+        "rhythm-accuracy": "Precision rytm"
       }
     }
   },
@@ -141,49 +148,49 @@
         "home": "Home"
       },
       "pre-session": {
-        "before-starting": "Before Starting"
+        "before-starting": "Förberedelser"
       }
     },
     "experiment": {
       "context": {
-        "confirm-leave": "Do you really want to leave the session in progress?"
+        "confirm-leave": "Vill du verkligen avsluta den påbörjade sessionen?"
       },
       "cue": {
-        "footnote-no-melody": "There is no melody to be played, the session will automatically  go to the next step in {second} second | There is no melody to be played, the session will automatically  go to the next step in {second} seconds",
-        "footnote-after-melody": "The session will automatically go to the next step after the muscial cue"
+        "footnote-no-melody": "Det finns ingen melodi att spela,\nsessionen kommer automatiskt gå vidare till nästa moment om {second} sekund | Det finns ingen melodi att spela,\nsessionen kommer automatiskt gå vidare till nästa moment om {second} sekunder",
+        "footnote-after-melody": "REMOVE"
       },
       "end": {
-        "footnote-press-any-key": "Press any piano key or the space bar for ending the session",
-        "footnote-press-space-bar": "Press the space bar for ending the session"
+        "footnote-press-any-key": "Tryck på valfri piano- eller datortangent för att avsluta sessionen.",
+        "footnote-press-space-bar": "Tryck mellanslag för att avsluta sessionen."
       },
       "feedback": {
-        "footnote-press-any-key": "Press any piano key or the space bar for going to the next step",
-        "footnote-press-space-bar": "Press the space bar for going to the next step"
+        "footnote-press-any-key": "Tryck på valfri pianotangent eller mellanslag för att gå vidare till nästa moment.",
+        "footnote-press-space-bar": "Tryck mellanslag för att gå vidare till nästa moment."
       },
       "instruction": {
-        "footnote-press-any-key": "Press any piano key or the space bar for going to the next step",
-        "footnote-press-space-bar": "Press the space bar for going to the next step"
+        "footnote-press-any-key": "Tryck på valfri pianotangent eller mellanslag för att gå vidare till nästa moment.",
+        "footnote-press-space-bar": "Tryck på mellanslag för att gå vidare till nästa moment."
       },
       "playing": {
-        "footnote-after-performance": "The session will go to the next step after your performance"
+        "footnote-after-performance": "REMOVE"
         
       },
       "prelude": {
-        "loading": "Loading...",
-        "ready": "Ready"
+        "loading": "Laddar...",
+        "ready": "Klar"
       },
       "rest": {
-        "footnote-after-time": "The session will go to the next step in {time}",
-        "minute": "{minute} minute | {minute} minutes",
-        "second": "{second} second | {second} seconds"
+        "footnote-after-time": "Sessionen kommer att gå vidare till nästa moment om {time}",
+        "minute": "{minute} minut | {minute} minuter",
+        "second": "{second} sekund | {second} sekunder"
       },
       "video": {
-        "footnote-no-video": "There is no video to be played, the session will automatically go to the next step in {second} second | There is no video to be played, the session will automatically go to the next step in {second} seconds",
-        "footnote-after-video": "The experiment will automatically go to the next step after the video playback",
-        "no-video": "There is no video to be played",
-        "video-countdown": "The video will start in {time}",
-        "minute": "{minute} minute | {minute} minutes",
-        "second": "{second} second | {second} seconds"
+        "footnote-no-video": "Det finns ingen video att spela upp,\nsessionen kommer att gå vidare automatiskt till nästa moment om {second} sekund | Det finns ingen video att spela upp,\nsessionen kommer att gå vidare automatiskt till nästa moment om {second} sekunder",
+        "footnote-after-video": "REMOVE",
+        "no-video": "Det finns ingen video att spela upp.",
+        "video-countdown": "Instruktionsvideon kommer att spelas upp om {time}",
+        "minute": "{minute} minut | {minute} minuter",
+        "second": "{second} sekund | {second} sekunder"
       }
     }
   }
