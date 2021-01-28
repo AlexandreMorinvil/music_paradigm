@@ -38,8 +38,6 @@ export default {
 			'setPiano',
 			'clearPlayer',
 			'clearPiano',
-			'addPlayerEndOfFileAction',
-			'removePlayerEndOfFileAction',
 			'addPressedKey',
 			'deletePressedKey',
 			'addPressedNoteLog',
