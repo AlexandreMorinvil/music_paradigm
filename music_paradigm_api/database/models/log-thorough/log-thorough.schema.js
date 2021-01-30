@@ -6,8 +6,11 @@ const schema = new Schema(
     {
         userId: { type: Schema.Types.ObjectId, default: null },
         experimentId: { type: Schema.Types.ObjectId, default: null },
+        curriculumId: { type: Schema.Types.ObjectId, default: null },
+        associativeId: { type: String, default: undefined },
 
         username: { type: String, default: undefined },
+        curriculumTitle: { type: String, default: null },
         experimentGroup: { type: String, default: undefined },
         experimentName: { type: String, default: undefined },
         experimentVersion: { type: Number, default: undefined },
@@ -16,20 +19,48 @@ const schema = new Schema(
         endTimestamp: { type: Date, default: null },
 
         // List of midi files referenced
-        referenceMidi: {
-            type: [Object],
-            default: []
+        reference: {
+            type: [
+                {
+                    referenceName: { type: String, default: null },
+                    referenceKeys: { type: [], default: [] },
+                    referenceTime: { type: [Number], default: undefined },
+                    referenceDuration: { type: [Number], default: undefined },
+                    referenceVelocity: { type: [Number], default: undefined },
+                }
+            ],
+            default: undefined
         },
 
         // List of blocks encountered in the session
-        states: {
+        block: {
             type: [
                 {
-                    blockType: { type: String },
                     timestamp: { type: Date },
-                    notes: { type: Object, default: null },
-                    state: { type: Object, default: undefined },
-                    cursor: { type: Object, default: undefined }
+
+                    blockType: { type: String },
+                    blockSubType: { type: String },
+                    index: { type: Number },
+                    innerIndex: { type: Number },
+                    repetition: { type: Number },
+                    timestamp: { type: Date },
+
+                    reference: { type: Object },
+
+                    pressedStartTime: { type: Date, default: undefined },
+                    pressedKeys: { type: [], default: undefined },
+                    pressedTime: { type: [Number], default: undefined },
+                    pressedDuration: { type: [Number], default: undefined },
+                    pressedVelocity: { type: [Number], default: undefined },
+
+                    pressedKeyboardStartTime: { type: Date, default: undefined },
+                    pressedKeyboardKeys: { type: [], default: undefined },
+                    pressedKeyboardTime: { type: [Number], default: undefined },
+                    pressedKeyboardDuration: { type: [Number], default: undefined },
+
+                    text: { type: String, default: undefined },
+                    pictureName: { type: String, default: undefined },
+                    helperImageName: { type: String, default: undefined },
                 }
             ],
             default: []

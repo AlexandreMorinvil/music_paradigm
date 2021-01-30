@@ -10,6 +10,7 @@ const curriculums = '/curriculums/';
 const users = '/users/';
 
 const logSimple = '/log-simple/';
+const logThorough = '/log-thorough/';
 
 const storage = '/storage/';
 
@@ -45,6 +46,9 @@ export default {
 	},
 	logSimple: function (parameters) {
 		return config.apiUrl + logSimple + parameters;
+	},
+	logThorough: function (parameters) {
+		return config.apiUrl + logThorough + parameters;
 	},
 	storage: function (parameters) {
 		return config.apiUrl + storage + parameters;

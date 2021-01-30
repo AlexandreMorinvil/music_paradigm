@@ -3,17 +3,15 @@ schema = require('./log-thorough.schema');
 
 schema.set('toJSON', { virtuals: true });
 
-// Instance methods
-schema.methods.create = async function () {
-    // if (!this.email) this.userId = undefined;
-    // if (!this.experimentName) this.username = undefined;
-    // if (!this.experimentName) this.experimentName = undefined;
-    // if (!this.timestamp) this.timestamp = Date.now;
-    return this.save();
+// Static methods
+schema.statics.initializeLog = async function (logHeader) {
+    const createdLog = new this(logHeader);
+    return createdLog.save();
 }
 
-schema.methods.addBlock = async function (block) {
-    this.states.push(block);
+// Instance methods
+schema.methods.addLogBlock = async function (block) {
+    this.block.push(block);
     return this.save();
 };
 

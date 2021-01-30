@@ -62,9 +62,14 @@ schema.statics.getLastProgression = async function (userId) {
     return getLastProgression({ _id: userId }, this) || null;
 };
 
-schema.statics.recordBlock = async function(userId, block) {
+schema.statics.recordSimpleBlock = async function(userId, block) {
     const lastProgression = await this.getLastProgression(userId);
-    return await lastProgression.patchLogBlockAssociatedExperiment(block);
+    return await lastProgression.addSimpleLogBlockAssociatedExperiment(block);
+}
+
+schema.statics.recordThoroughLog = async function(userId, associativeId, logId) {
+    const lastProgression = await this.getLastProgression(userId);
+    return await lastProgression.addThoroughLogAssociatedExperiment(associativeId, logId);
 }
 
 // Instance methods

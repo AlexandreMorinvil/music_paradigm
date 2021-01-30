@@ -47,12 +47,7 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 		flow: [], // Description of the different steps of the experiment
 
 		// Mandatory description of the flow
-		description: {
-			name: '', // Name of the experiment
-			folder: '', // Folder in which the resources for the experiment are located
-			group: '', // Group of the experiment
-			version: 0, // Version of the experiment
-		},
+		description: DEFAULT_DESCRIPTION_SETTINGS_VALUES(),
 
 		// General settings of the flow
 		settings: DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES(),
@@ -68,6 +63,15 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 
 		// Initialization status of vue pages
 		isInitialized: IS_FULLY_NOT_INITIALIZED_STATUS(),
+	};
+}
+
+function DEFAULT_DESCRIPTION_SETTINGS_VALUES() {
+	return {
+		name: '', // Name of the experiment
+		folder: '', // Folder in which the resources for the experiment are located
+		group: '', // Group of the experiment
+		version: 0, // Version of the experiment
 	};
 }
 

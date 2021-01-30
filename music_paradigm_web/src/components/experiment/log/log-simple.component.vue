@@ -10,9 +10,9 @@ export default {
 		...mapGetters('experiment', ['currentStateType']),
 	},
 	methods: {
-		...mapActions('log', ['logAddSimmpleBlock']),
+		...mapActions('log', ['addSimmpleLogBlock']),
 		addBlock() {
-			if (this.currentStateType === 'playing') this.logAddSimmpleBlock();
+			if (this.currentStateType === 'playing') this.addSimmpleLogBlock();
 		},
 	},
 };

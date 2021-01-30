@@ -80,6 +80,7 @@ schema.methods.concludeExperiment = async function (associativeId) {
         experimentInProgression.completionCount += 1;
         if (experimentInProgression.cursor) delete experimentInProgression.cursor;
         if (experimentInProgression.state) delete experimentInProgression.state;
+        if (experimentInProgression.logId) delete experimentInProgression.logId;
     }
 
     // If the experiment was completed for a first, it is a progression in the curriculum, therrefore, we update the last progression time
@@ -88,17 +89,28 @@ schema.methods.concludeExperiment = async function (associativeId) {
     return this.save();
 };
 
-schema.methods.patchLogBlockAssociatedExperiment = async function (logBock) {
+schema.methods.addSimpleLogBlockAssociatedExperiment = async function (logBock) {
     // Get experiment associated
     associativeId = logBock.associativeId;
     if (!associativeId) throw new Error('No associative ID')
 
     // Add the log block to the progression
     const progressionNestedExperiment = await this.getExperimentAssociated(associativeId);
-    progressionNestedExperiment.logReference.push(logBock._id);
+    progressionNestedExperiment.simpleLogReferences.push(logBock._id);
     await progressionNestedExperiment.save();
     return await this.save();
 };
+
+schema.methods.addThoroughLogAssociatedExperiment = async function (associativeId, logId) {
+    if (!associativeId) throw new Error('No associative ID')
+
+    // Add the initialized log to the progression
+    const progressionNestedExperiment = await this.getExperimentAssociated(associativeId);
+    progressionNestedExperiment.thoroughLogReferences.push(logId);
+    await progressionNestedExperiment.save();
+    return await this.save();
+};
+
 
 schema.methods.isForCurriculum = function (curriculumId) {
     return this.curriculumReference === curriculumId;
