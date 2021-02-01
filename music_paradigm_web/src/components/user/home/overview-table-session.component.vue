@@ -178,25 +178,24 @@ export default {
 }
 
 .new-available {
-	background-color: rgb(200, 180, 0);
-	border-color: rgb(195, 175, 0);
-	color: rgb(250, 250, 250);
-	stroke: rgb(100, 100, 60);
-	fill: rgb(100, 100, 60);
-}
-
-.completed-available {
-	background-color: rgb(0, 100, 200);
-	border-color: rgb(0, 95, 195);
-	color: rgb(160, 180, 250);
-	fill: rgb(0, 60, 130);
-}
-
-.completed {
 	background-color: rgb(0, 190, 50);
 	border-color: rgb(0, 185, 45);
 	color: rgb(0, 130, 0);
 	fill: rgb(0, 130, 0);
+}
+
+.completed-available {
+	background-color: rgb(40, 40, 40);
+	border-color: rgb(35, 35, 35);
+	color: rgb(80, 80, 80);
+	fill: rgb(20, 20, 20);
+}
+
+.completed {
+	background-color: rgb(40, 40, 40);
+	border-color: rgb(35, 35, 35);
+	color: rgb(80, 80, 80);
+	fill: rgb(20, 20, 20);
 	cursor: default;
 	outline: none;
 }
