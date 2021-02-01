@@ -18,12 +18,12 @@ function initializeLog(req, res, next) {
 
 function addLogBlock(req, res, next) {
     service.addLogBlock(req.user.sub, req.params.logId, req.body)
-        .then(() => res.status(200))
+        .then(() => res.sendStatus(200))
         .catch(err => next(err));
 }
 
 function concludeLog(req, res, next) {
     service.concludeLog(req.user.sub, req.params.logId, req.body)
-        .then(() => res.status(200))
+        .then(() => res.sendStatus(200))
         .catch(err => next(err));
 }

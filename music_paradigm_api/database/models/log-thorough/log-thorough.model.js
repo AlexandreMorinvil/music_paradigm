@@ -6,12 +6,12 @@ schema.set('toJSON', { virtuals: true });
 // Static methods
 schema.statics.initializeLog = async function (logHeader) {
     const createdLog = new this(logHeader);
-    return createdLog.save();
+    return await createdLog.save();
 }
 
 schema.statics.addLogBlock = async function (logId, block) {
-    console.log('GOT IT');
     const log = await this.findById(logId);
+    if (!log) throw new Error('No low associated to log ID');
     log.blocks.push(block);
     return log.save();
 };
