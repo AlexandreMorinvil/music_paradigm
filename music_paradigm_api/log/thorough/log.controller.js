@@ -17,13 +17,13 @@ function initializeLog(req, res, next) {
 
 
 function addLogBlock(req, res, next) {
-    service.addLogBlock(req.params.logId, req.body)
+    service.addLogBlock(req.user.sub, req.params.logId, req.body)
         .then(() => res.status(200))
         .catch(err => next(err));
 }
 
 function concludeLog(req, res, next) {
-    service.concludeLog(req.params.logId, req.body)
+    service.concludeLog(req.user.sub, req.params.logId, req.body)
         .then(() => res.status(200))
         .catch(err => next(err));
 }

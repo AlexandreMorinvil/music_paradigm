@@ -139,7 +139,7 @@ export default {
 		};
 		commit('indicateConcludeLogRequest');
 		return logService
-			.createAdminSession(getters.logId, logConclusion)
+			.concludeThoroughLog(getters.logId, logConclusion)
 			.then(
 				() => {
 					console.log('Log concluded');

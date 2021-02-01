@@ -60,37 +60,11 @@ export default {
 			pressedTime: state.played.notes.time,
 			pressedDuration: state.played.notes.duration,
 			pressedvelocity: state.played.notes.velocity,
+			pressConsideredStart: state.played.evaluation.consideredStart,
 		};
 	},
 
 	pianoSimpleLogPreprocesed: (state) => {
-		return {
-			consideredStart: state.played.evaluation.consideredStart,
-			...state.played.evaluation.results,
-		};
-	},
-
-	pianoLogSummary: (state) => {
-		return {
-			reference: {
-				name: state.midiFile.name,
-				midi: state.midiFile.notes.midi,
-				time: state.midiFile.notes.time,
-				duration: state.midiFile.notes.duration,
-				velocity: state.midiFile.notes.velocity,
-			},
-			played: {
-				startTime: state.played.startTime,
-				midi: state.played.notes.midi,
-				time: state.played.notes.time,
-				duration: state.played.notes.duration,
-				velocity: state.played.notes.velocity,
-			},
-			evaluation: {
-				type: state.played.evaluation.type,
-				grades: state.played.evaluation.grades,
-			},
-			preprocessedMetrics: state.played.evaluation.results,
-		};
+		return state.played.evaluation.results;
 	},
 };

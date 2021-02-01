@@ -33,7 +33,7 @@ const schema = new Schema(
         },
 
         // List of blocks encountered in the session
-        block: {
+        blocks: {
             type: [
                 {
                     timestamp: { type: Date },

@@ -9,10 +9,16 @@ schema.statics.initializeLog = async function (logHeader) {
     return createdLog.save();
 }
 
-// Instance methods
-schema.methods.addLogBlock = async function (block) {
-    this.block.push(block);
-    return this.save();
+schema.statics.addLogBlock = async function (logId, block) {
+    const log = await this.findById(logId);
+    log.blocks.push(block);
+    return log.save();
+};
+
+schema.statics.concludeLog = async function (logId, logConclusion) {
+    const log = await this.findById(logId);
+    log.endTimestamp = logConclusion.endTimestamp || Date.now();
+    return log.save();
 };
 
 // Creating the model

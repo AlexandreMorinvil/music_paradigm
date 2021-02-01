@@ -26,13 +26,13 @@ async function initializeLog(userId, logInformation) {
     }
 }
 
-async function addLogBlock(logId, block) {
+async function addLogBlock(userId, logId, block) {
     try {
         let addedBlock = null;
         if (await User.isAdmin(userId)) {
-            addedBlock = await AdminLogThorough.addLogBlock(block);
+            addedBlock = await AdminLogThorough.addLogBlock(logId, block);
         } else {
-            addedBlock = await LogThorough.addLogBlock(block);
+            addedBlock = await LogThorough.addLogBlock(logId, block);
         }
         return;
     } catch (err) {
@@ -40,13 +40,13 @@ async function addLogBlock(logId, block) {
     }
 }
 
-async function concludeLog(logId, logInformation) {
+async function concludeLog(userId, logId, logConclusion) {
     try {
         let addedBlock = null;
         if (await User.isAdmin(userId)) {
-            addedBlock = await AdminLogThorough.concludeLog(logInformation);
+            addedBlock = await AdminLogThorough.concludeLog(logId, logConclusion);
         } else {
-            addedBlock = await LogThorough.concludeLog(logInformation);
+            addedBlock = await LogThorough.concludeLog(logId, logConclusion);
         }
         return;
     } catch (err) {

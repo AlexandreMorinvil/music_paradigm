@@ -32,7 +32,7 @@ function addThoroughLogBlock(logId, block) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(block),
 	};
-	return fetch(url.adminSessions('add-log-block/' + logId), requestOptions).then(handleResponse);
+	return fetch(url.logThorough('add-log-block/' + logId), requestOptions).then(handleResponse);
 }
 
 function concludeThoroughLog(logId, logConclusion) {
@@ -41,7 +41,7 @@ function concludeThoroughLog(logId, logConclusion) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(logConclusion),
 	};
-	return fetch(url.adminSessions('add-log-block/' + logId), requestOptions).then(handleResponse);
+	return fetch(url.logThorough('add-log-block/' + logId), requestOptions).then(handleResponse);
 }
 
 function handleResponse(reponse) {

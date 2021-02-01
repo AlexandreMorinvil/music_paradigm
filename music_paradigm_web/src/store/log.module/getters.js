@@ -1,5 +1,5 @@
 export default {
 	logId: (state) => {
-		return state.setLogId;
+		return state.logId;
 	},
 };

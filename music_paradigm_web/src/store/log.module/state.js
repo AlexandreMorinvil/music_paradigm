@@ -5,5 +5,5 @@ export default {
 		isConcludingLog: false,
 	},
 
-	_id: null,
+	logId: null,
 };

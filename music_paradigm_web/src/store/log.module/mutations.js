@@ -24,7 +24,11 @@ export default {
 		state.status.isConcludingLog = false;
 	},
 
-	setLogId(state, setLogId) {
-		state.setLogId = setLogId;
+	setLogId(state, logId) {
+		state.logId = logId;
+	},
+
+	clearLogId(state) {
+		state.logId = null;
 	},
 };
