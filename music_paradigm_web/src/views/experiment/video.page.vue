@@ -1,22 +1,22 @@
 <template>
 	<div class="state-content-flex">
 		<text-area-component class="text-area state-section" />
-		<div class="visual-media-board video-area state-section">
-			<div class="video-box">
-				<div v-show="!isPlaying" class="video-hidding-thumbnail" :style="videoWidthCSSvariable + ';' + videoHeightCSSvariable">
-					{{ videoWaitingMessage }}
-				</div>
-				<video-player
-					v-if="hasVideo"
-					v-show="isPlaying"
-					:src="urlExperimentRessource(videoName)"
-					:dimension="videoDimensions"
-					:playBack="playBack"
-					v-on:finished-playback="handdleEndOfVideo"
-					ref="video"
-				/>
+
+		<div class="video-box video-area">
+			<div v-show="!isPlaying" class="video-hidding-thumbnail" :style="videoWidthCSSvariable + ';' + videoHeightCSSvariable">
+				{{ videoWaitingMessage }}
 			</div>
+			<video-player
+				v-if="hasVideo"
+				v-show="isPlaying"
+				:src="urlExperimentRessource(videoName)"
+				:dimension="videoDimensions"
+				:playBack="playBack"
+				v-on:finished-playback="handdleEndOfVideo"
+				ref="video"
+			/>
 		</div>
+
 		<piano-area-component class="piano-area state-section" />
 		<keyboard-area-component class="piano-area state-section" />
 	</div>
@@ -165,19 +165,10 @@ export default {
 </script>
 
 <style scoped>
-.visual-media-board {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	height: 100%;
-	width: 100%;
-}
 .video-box {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 80%;
 	width: 100%;
 }
 .video-hidding-thumbnail {
@@ -190,11 +181,12 @@ export default {
 }
 
 .text-area {
-	flex-grow: 1;
+	height: 10%;
 }
 
 .video-area {
-	flex-grow: 5;
+	flex-grow: 1;
+	margin-bottom: 5%;
 }
 
 .piano-area {

@@ -35,7 +35,8 @@ export default {
 #piano-display {
 	display: flex;
 	align-items: center;
-	width: 200px;
+	justify-content: center;
+	min-width: 200px;
 	height: 85%;
 }
 

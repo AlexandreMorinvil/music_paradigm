@@ -10,6 +10,7 @@ schema.statics.initializeLog = async function (logHeader) {
 }
 
 schema.statics.addLogBlock = async function (logId, block) {
+    console.log('GOT IT');
     const log = await this.findById(logId);
     log.blocks.push(block);
     return log.save();
