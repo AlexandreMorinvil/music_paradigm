@@ -3,18 +3,23 @@ schema = require('./log-thorough.schema');
 
 schema.set('toJSON', { virtuals: true });
 
-// Instance methods
-schema.methods.create = async function () {
-    // if (!this.email) this.userId = undefined;
-    // if (!this.experimentName) this.username = undefined;
-    // if (!this.experimentName) this.experimentName = undefined;
-    // if (!this.timestamp) this.timestamp = Date.now;
-    return this.save();
+// Static methods
+schema.statics.initializeLog = async function (logHeader) {
+    const createdLog = new this(logHeader);
+    return await createdLog.save();
 }
 
-schema.methods.addBlock = async function (block) {
-    this.states.push(block);
-    return this.save();
+schema.statics.addLogBlock = async function (logId, block) {
+    const log = await this.findById(logId);
+    if (!log) throw new Error('No low associated to log ID');
+    log.blocks.push(block);
+    return log.save();
+};
+
+schema.statics.concludeLog = async function (logId, logConclusion) {
+    const log = await this.findById(logId);
+    log.endTimestamp = logConclusion.endTimestamp || Date.now();
+    return log.save();
 };
 
 // Creating the model

@@ -28,34 +28,18 @@ export default {
 
 	keyboardSimpleLogSummary: (state) => {
 		return {
-			referenceName: 'keyboard sequence',
-			referenceKeys: state.referenceKeys,
+			referenceKeyboardName: '@keyboard_sequence : ' + state.referenceKeys.join('-'),
+			referenceKeyboardKeys: state.referenceKeys,
 
-			pressedStartTime: state.played.startTime,
-			pressedKeys: state.played.presses.keys,
-			pressedTime: state.played.presses.time,
-			pressedDuration: state.played.presses.duration,
+			pressedKeyboardStartTime: state.played.startTime,
+			pressedKeyboardKeys: state.played.presses.keys,
+			pressedKeyboardTime: state.played.presses.time,
+			pressedKeyboardDuration: state.played.presses.duration,
+			pressKeyboardConsideredStart: state.played.evaluation.consideredStart,
 		};
 	},
 
 	keyboardSimpleLogPreprocesed: (state) => {
-		return {
-			consideredStart: state.played.evaluation.consideredStart,
-			...state.played.evaluation.results,
-		};
-	},
-
-	keyboardLogSummary: (state) => {
-		return {
-			reference: state.referenceKeys,
-			played: {
-				startTime: state.played.startTime,
-				keys: state.played.presses.keys,
-				time: state.played.presses.time,
-				duration: state.played.presses.duration,
-			},
-			consideredStart: state.played.evaluation.consideredStart,
-			preprocessedMetrics: state.played.evaluation.results,
-		};
+		return state.played.evaluation.results;
 	},
 };

@@ -20,7 +20,7 @@ export default {
 	},
 	computed: {
 		type() {
-			return 'simple';
+			return 'thorough';
 		},
 	},
 	methods: {

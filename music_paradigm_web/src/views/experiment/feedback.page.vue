@@ -1,8 +1,8 @@
 <template>
 	<div id="feedback-state" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
-		<feedback-area-component class="feedback-area state-section" />
 		<feedback-message-area-component class="feedback-message-area state-section" />
+		<feedback-area-component class="feedback-area state-section" />
 	</div>
 </template>
 

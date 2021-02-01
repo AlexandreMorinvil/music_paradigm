@@ -2,12 +2,13 @@ import { authHeader, url } from '@/_helpers';
 import defaultResponseHandler from './defaultResponseHandler';
 
 export const logService = {
-	addSimpleBlock,
-	createAdminSession,
-	addBlock,
+	addSimpleLogBlock,
+	initializeThoroughLog,
+	addThoroughLogBlock,
+	concludeThoroughLog,
 };
 
-function addSimpleBlock(simpleLog) {
+function addSimpleLogBlock(simpleLog) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -16,22 +17,31 @@ function addSimpleBlock(simpleLog) {
 	return fetch(url.logSimple('add-block'), requestOptions).then(handleResponse);
 }
 
-function createAdminSession(sessionLogHeader) {
+function initializeThoroughLog(logHeader) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(sessionLogHeader),
+		body: JSON.stringify(logHeader),
 	};
-	return fetch(url.adminSessions('create'), requestOptions).then(handleResponse);
+	return fetch(url.logThorough('initialize-log'), requestOptions).then(handleResponse);
 }
 
-function addBlock(id, block) {
+function addThoroughLogBlock(logId, block) {
 	const requestOptions = {
 		method: 'PATCH',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(block),
 	};
-	return fetch(url.adminSessions('add-block/' + id), requestOptions).then(handleResponse);
+	return fetch(url.logThorough('add-log-block/' + logId), requestOptions).then(handleResponse);
+}
+
+function concludeThoroughLog(logId, logConclusion) {
+	const requestOptions = {
+		method: 'PATCH',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(logConclusion),
+	};
+	return fetch(url.logThorough('add-log-block/' + logId), requestOptions).then(handleResponse);
 }
 
 function handleResponse(reponse) {

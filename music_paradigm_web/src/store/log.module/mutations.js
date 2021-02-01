@@ -1,5 +1,13 @@
 export default {
 	// Status Updates
+	indicateInitializeLogRequest(state) {
+		state.status.isInitializingLog = true;
+	},
+
+	indicateInitializeLogRequestEnd(state) {
+		state.status.isInitializingLog = false;
+	},
+
 	indicateAddBlockRequest(state) {
 		state.status.isAddingBlock = true;
 	},
@@ -8,7 +16,19 @@ export default {
 		state.status.isAddingBlock = false;
 	},
 
-	setAdminLogSessionId(state, initializedLogSession) {
-		state._id = initializedLogSession._id;
+	indicateConcludeLogRequest(state) {
+		state.status.isConcludingLog = true;
+	},
+
+	indicateConcludeLogRequestEnd(state) {
+		state.status.isConcludingLog = false;
+	},
+
+	setLogId(state, logId) {
+		state.logId = logId;
+	},
+
+	clearLogId(state) {
+		state.logId = null;
 	},
 };

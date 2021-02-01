@@ -66,6 +66,7 @@
     "problem-prompt": {
       "default": {
         "title": "Unspecified",
+        "solution-message": "Please try the following solution | Please try the following solutions",
         "solution-1": "No solution",
         "conclusion": "If the solution above did not fix the problem:\n Please contact the operator of the platform for further technical support. | If the solutions above did not fix the problem:\n Please contact the operator of the platform for further technical support.",
         "button": "OK"

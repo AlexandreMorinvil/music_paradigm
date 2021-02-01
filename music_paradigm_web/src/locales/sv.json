@@ -66,6 +66,7 @@
     "problem-prompt": {
       "default": {
         "title": "Ospecificerad",
+        "solution-message": "Vänligen prova följande | Vänligen prova följande",
         "solution-1": "Ingen lösning kunde hittas",
         "conclusion": "Om åtgärden ovan inte löste problemet:\nVänligen kontakta teknisk support. | Om åtgärderna ovan inte löste problemet:\nVänligen kontakta teknisk support.",
         "button": "OK"

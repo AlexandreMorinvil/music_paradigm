@@ -1,45 +1,57 @@
 ﻿const db = require('database/db');
-const AdminLogSimple = db.AdminLogSimple;
 const AdminLogThorough = db.AdminLogThorough;
+const LogThorough = db.LogThorough;
+const User = db.User;
 
 // Exports
 module.exports = {
-    createSimpleLog,
-    initialize,
-    addBlock,
+    initializeLog,
+    addLogBlock,
+    concludeLog
 };
 
-async function createSimpleLog(logInformation) {
+async function initializeLog(userId, logInformation) {
     try {
-        const adminSimpleLog = new AdminLogSimple(logInformation);
-        return await adminSimpleLog.create();
+        let initializedLog = null;
+        if (await User.isAdmin(userId)) {
+            initializedLog = await AdminLogThorough.initializeLog(logInformation);
+        } else {
+            initializedLog = await LogThorough.initializeLog(logInformation);
+            const associativeId = logInformation.associativeId;
+            await User.recordThoroughLog(userId, associativeId, initializedLog);
+        }
+        return initializedLog._id;
     } catch (err) {
         throw err;
     }
 }
 
-async function initialize(adminSessionToCreate) {
+async function addLogBlock(userId, logId, block) {
     try {
-        const adminSession = new AdminLogThorough(adminSessionToCreate);
-        return await adminSession.create();
+        let addedBlock = null;
+        if (await User.isAdmin(userId)) {
+            addedBlock = await AdminLogThorough.addLogBlock(logId, block);
+        } else {
+            addedBlock = await LogThorough.addLogBlock(logId, block);
+        }
+        return;
     } catch (err) {
         throw err;
     }
 }
 
-async function addBlock(id, block) {
+async function concludeLog(userId, logId, logConclusion) {
     try {
-        const adminSession = await AdminLogThorough.findById(id);
-        return await adminSession.addBlock(block);
+        let addedBlock = null;
+        if (await User.isAdmin(userId)) {
+            addedBlock = await AdminLogThorough.concludeLog(logId, logConclusion);
+        } else {
+            addedBlock = await LogThorough.concludeLog(logId, logConclusion);
+        }
+        return;
     } catch (err) {
         throw err;
     }
 }
 
-async function initializeLog(user, logInformation) {
-    try {
-        if(user.role === "admin")
-    } catch (err) {
 
-    }
-}
