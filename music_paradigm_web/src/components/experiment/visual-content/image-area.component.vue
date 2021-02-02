@@ -8,9 +8,9 @@
 				'background: url(' +
 				urlExperimentRessource(pictureName) +
 				');' +
-				'background-size: contain;' +
-				'background-repeat: no-repeat;' +
-				'background-position: center;'
+				'background-size: contain !important;' +
+				'background-repeat: no-repeat !important;' +
+				'background-position: center !important;'
 			"
 			class="background-image"
 			role="img"
@@ -44,5 +44,8 @@ export default {
 	width: 100%;
 	height: 100%;
 	min-height: 100px;
+	background-size: contain !important;
+	background-repeat: no-repeat !important;
+	background-position: center !important;
 }
 </style>

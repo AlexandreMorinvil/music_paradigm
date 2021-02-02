@@ -100,6 +100,9 @@
       },
       "skip-button": {
         "default-message": "Press {button} to skip"
+      },
+      "go-back-button": {
+        "default-message": "Press {button} to go back"
       }
     },
     "status-bar": {

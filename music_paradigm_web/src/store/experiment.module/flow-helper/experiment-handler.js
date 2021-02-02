@@ -44,6 +44,7 @@ function setExperimentGeneralSettings(state, experiment) {
 		successesForSkip,
 		hideFeedbackSmiley,
 		isSkipStepButtonInFootnote,
+		isGoBackButtonInFootnote,
 		programmedOctaveOffset,
 		interactivePianoFirstOctave,
 		controlType,
@@ -64,6 +65,7 @@ function setExperimentGeneralSettings(state, experiment) {
 		hideFeedbackSmiley: typeof hideFeedbackSmiley === 'boolean' ? hideFeedbackSmiley : defaultSettings.hideFeedbackSmiley,
 		isSkipStepButtonInFootnote:
 			typeof isSkipStepButtonInFootnote === 'boolean' ? isSkipStepButtonInFootnote : defaultSettings.isSkipStepButtonInFootnote,
+		isGoBackButtonInFootnote: typeof isGoBackButtonInFootnote === 'boolean' ? isGoBackButtonInFootnote : defaultSettings.isGoBackButtonInFootnote,
 		programmedOctaveOffset: typeof programmedOctaveOffset === 'number' ? programmedOctaveOffset : defaultSettings.programmedOctaveOffset,
 		interactivePianoFirstOctave:
 			typeof interactivePianoFirstOctave === 'number' ? interactivePianoFirstOctave : defaultSettings.interactivePianoFirstOctave,

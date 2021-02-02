@@ -20,6 +20,9 @@ export default {
 	goNextStep: ({ commit }) => {
 		commit('moveNextStep');
 	},
+	goPreviousInnerStep: ({ commit }) => {
+		commit('movePreviousInnerStep');
+	},
 	goStepPostSkip: ({ commit }) => {
 		commit('movePostSkip');
 	},

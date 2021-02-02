@@ -8,6 +8,7 @@ export default {
 	countStepsLeft,
 	assignCursor,
 	advance,
+	goBack,
 	skip,
 };
 
@@ -39,17 +40,20 @@ function advance(state, flow, cursor, isInitialized) {
 	else moveCursorNext(flow, cursor, isInitialized);
 }
 
+function goBack(flow, cursor, isInitialized) {
+	determineGroupEnd(flow, cursor);
+	moveCursorBack(flow, cursor, isInitialized);
+}
+
 function skip(state, flow, cursor, isInitialized) {
 	if (moveCursorSpecialCases(state, flow, cursor, isInitialized)) return;
 	do {
 		moveCursorNext(flow, cursor, isInitialized);
 		stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
 	} while (cursor.current.isInSkipableChain);
-
 }
 
 // Inner cursor move manipulations
-
 function moveCursorSpecialCases(state, flow, cursor, isInitialized) {
 	if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop) {
 		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
@@ -66,6 +70,12 @@ function moveCursorNext(flow, cursor, isInitialized) {
 	updateCursorNavigation(flow, cursor);
 }
 
+function moveCursorBack(flow, cursor, isInitialized) {
+	variableHandler.updateVariables(flow, cursor);
+	performCursorDisplacementBackward(cursor, isInitialized);
+	updateCursorNavigation(flow, cursor);
+}
+
 function moveCursorSkipRepetions(state, flow, cursor, isInitialized) {
 	do {
 		moveCursorNext(flow, cursor, isInitialized);
@@ -76,7 +86,7 @@ function moveCursorSkipRepetions(state, flow, cursor, isInitialized) {
 function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 	let needsResetLoopParameters = false;
 
-	// Moving to the next inner step if there remains inner steps (only in instruction blocks)
+	// Moving to the next inner step if there remains inner steps
 	if (cursor.current.innerStepIndex < cursor.navigation.totalInnerSteps) {
 		cursor.current.innerStepIndex += 1;
 		Object.assign(isInitialized, { content: false });
@@ -113,6 +123,19 @@ function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 
 	// Adjust the flags
 	cursor.flag.needsResetLoopParameters = needsResetLoopParameters;
+}
+
+// THe backward mobility only exists for inner steps
+function performCursorDisplacementBackward(cursor, isInitialized = {}) {
+	// By moving backward, we are necessarily not beyond the last step
+	cursor.current.isBeyondEnd = false;
+
+	// Moving to the previous inner step if there remains inner steps
+	if (cursor.current.innerStepIndex > 0) {
+		cursor.current.innerStepIndex -= 1;
+		cursor.current.innerStepIndex = Math.max(0, cursor.current.innerStepIndex);
+		Object.assign(isInitialized, { content: false });
+	}
 }
 
 function updateCursorNavigation(flow, cursor) {

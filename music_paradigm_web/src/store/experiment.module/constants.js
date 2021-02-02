@@ -33,6 +33,7 @@ const DEFAULT_LOG_FLAG = true;
 const DEFAULT_SUCCESSES_FOR_SKIP = 0;
 const DEFAULT_HIDE_FEEDBACK_SMILEY = false;
 const DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE = false;
+const DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE = false;
 const DEFAULT_PROGRAMMED_OCTAVE_OFFSET = 0;
 const DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE = 4;
 const DEFAULT_CONTROL_TYPE = 'piano';
@@ -88,6 +89,7 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		successesForSkip: DEFAULT_SUCCESSES_FOR_SKIP, // Indicate the number of successful 'Playing' states before being able to leave a group of blocks
 		hideFeedbackSmiley: DEFAULT_HIDE_FEEDBACK_SMILEY, // Indicate whether the feedback state contains a smiley by default
 		isSkipStepButtonInFootnote: DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE, // Indicates wether the skip buttons are displayed by default in the footnote when there is a button footnote
+		isGoBackButtonInFootnote: DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE, // Indicates wether the go back button is displayed by default in the footnote when there is a button footnote
 		programmedOctaveOffset: DEFAULT_PROGRAMMED_OCTAVE_OFFSET, // Indicates a preset octave shift for the midi piano (knowing that most midi piano are on octave 3 by default)
 		interactivePianoFirstOctave: DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE, // Indicate the first octave from which the notes must be displayed on the interactive piano (which has 2 octaves)
 		controlType: DEFAULT_CONTROL_TYPE, // Indicate which type of controle is used by the application ('piano', 'keyboard' or 'none'). Will also affect the pre-session preparation of the user
@@ -157,6 +159,10 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			feedbackNumerical: false, // Indicator of whether the feedback must be given in its numerical form instead of with range bars
 			interactivePianoFirstOctave: DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE, // Block specific "interactivePianoFirstOctave" superseding the general setting
 			skipLoopOnLastRepetition: false, // Indicate whether a block must be skipped if it's on the last repetition
+			canGoBack: false, // Indicate that it is possible to go back one INNER STEP (we can not go back a block)
+			goBackStepButton: '', // Button to press to go back to the previous inner step (is valid only if a button is specified)
+			goBackButtonMessage: '', // Message indicated on the go back button if there is a go back button
+			isGoBackButtonInFootnote: DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE, // Block specific isGoBackButtonInFootnote superceeding the general parameter
 		},
 		// Session specific informations
 		record: {

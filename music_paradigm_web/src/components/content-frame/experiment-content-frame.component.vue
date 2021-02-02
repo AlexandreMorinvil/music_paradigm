@@ -1,6 +1,7 @@
 <template>
 	<div id="content-frame" class="experiment-content-container experiment-content-grid">
 		<helper-image-component v-if="hasHelperImage" class="helper" />
+		<go-back-button-component v-if="hasGoBackOption && !isGoBackButtonInFootnote" class="go-back-button" />
 		<skip-button-component v-if="hasSkipOption && !isSkipButtonInFootnote" class="skip-button" />
 		<start-signal-timer-component v-if="isWaitingStartSignal" class="start-signal" />
 
@@ -17,6 +18,7 @@
 <script>
 import '@/styles/experiment-content-template.css';
 import FootnoteComponent from '@/components/experiment/footnote/footnote.component.vue';
+import GoBackButtonComponent from '@/components/experiment/element/go-back-button.component.vue';
 import HelperImageComponent from '@/components/experiment/element/helper-image.component.vue';
 import SkipButtonComponent from '@/components/experiment/element/skip-button.component.vue';
 import StartSignalTimerComponent from '@/components/experiment/element/start-signal-timer.component.vue';
@@ -26,6 +28,7 @@ import { mapGetters } from 'vuex';
 export default {
 	components: {
 		HelperImageComponent,
+		GoBackButtonComponent,
 		SkipButtonComponent,
 		StartSignalTimerComponent,
 		FootnoteComponent,
@@ -47,7 +50,15 @@ export default {
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['pressedKeys']),
-		...mapGetters('experiment', ['hasFootnote', 'hasHelperImage', 'hasSkipOption', 'isWaitingStartSignal', 'isSkipButtonInFootnote']),
+		...mapGetters('experiment', [
+			'hasFootnote',
+			'hasHelperImage',
+			'hasSkipOption',
+			'hasGoBackOption',
+			'isWaitingStartSignal',
+			'isSkipButtonInFootnote',
+			'isGoBackButtonInFootnote',
+		]),
 	},
 };
 </script>
@@ -84,6 +95,15 @@ export default {
 	position: absolute;
 	right: 0;
 	width: 9%;
+}
+
+.go-back-button {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 9%;
+	min-height: 10%;
+	max-height: 30%;
 }
 
 .skip-button {

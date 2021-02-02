@@ -17,6 +17,7 @@ const schema = new Schema(
         successesForSkip: { type: Number, default: 0 },
         hideFeedbackSmiley: { type: Boolean, default: false },
         isSkipStepButtonInFootnote: { type: Boolean, default: undefined },
+        isGoBackButtonInFootnote: { type: Boolean, default: undefined },
         programmedOctaveOffset: { type: Number, default: 0 },
         interactivePianoFirstOctave: { type: Number, default: 4 },
         controlType: { type: String, default: 'piano', enum: ['piano', 'keyboard', 'none'] },
@@ -81,6 +82,11 @@ const schema = new Schema(
                     startSignal: { type: Number, default: undefined },
                     feedbackNumerical: { type: Boolean, default: undefined },
                     skipLoopOnLastRepetition: { type: Boolean, default: undefined },
+
+                    canGoBack: { type: Boolean, default: undefined },
+                    isGoBackButtonInFootnote: { type: Boolean, default: undefined },
+                    goBackStepButton: { type: String, default: undefined },
+                    goBackButtonMessage: { type: String, default: undefined },
 
                     lastRepetitionVersion: { type: Object, default: undefined },
                     succeeededForSkipLoopVersion: { type: Object, default: undefined },

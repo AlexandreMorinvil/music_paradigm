@@ -11,19 +11,19 @@ module.exports = router;
 
 function initializeLog(req, res, next) {
     service.initializeLog(req.user.sub, req.body)
-        .then((logId) => res.json(logId))
+        .then((logId) => res.status(200).json(logId))
         .catch(err => next(err));
 }
 
 
 function addLogBlock(req, res, next) {
     service.addLogBlock(req.user.sub, req.params.logId, req.body)
-        .then(() => res.sendStatus(200))
+        .then((logId) => res.status(200).json(logId))
         .catch(err => next(err));
 }
 
 function concludeLog(req, res, next) {
     service.concludeLog(req.user.sub, req.params.logId, req.body)
-        .then(() => res.sendStatus(200))
+        .then((logId) => res.status(200).json(logId))
         .catch(err => next(err));
 }

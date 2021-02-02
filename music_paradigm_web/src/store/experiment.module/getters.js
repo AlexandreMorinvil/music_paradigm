@@ -199,6 +199,14 @@ export default {
 		return state.state.settings.startSignal || 0;
 	},
 
+	goBackStepButton: (state) => {
+		return state.state.settings.goBackStepButton.toLowerCase() || '';
+	},
+
+	goBackButtonMessage: (state) => {
+		return state.state.settings.goBackButtonMessage || '';
+	},
+
 	skipStepButton: (state) => {
 		return state.state.settings.skipStepButton.toLowerCase() || '';
 	},
@@ -286,6 +294,11 @@ export default {
 		return Boolean(state.state.settings.skipStepButton);
 	},
 
+	hasGoBackOption: (state) => {
+		const hasPreviousInnerStep = state.cursor.current.innerStepIndex > 0;
+		return hasPreviousInnerStep && state.state.settings.canGoBack;
+	},
+
 	hasSuccessFeedbackMessage(state) {
 		return Boolean(state.state.settings.successFeedbackMessage);
 	},
@@ -295,6 +308,10 @@ export default {
 
 	isSkipButtonInFootnote: (state) => {
 		return state.state.settings.footnote && state.state.settings.footnoteType === 'button' && state.state.settings.isSkipStepButtonInFootnote;
+	},
+
+	isGoBackButtonInFootnote: (state) => {
+		return state.state.settings.footnote && state.state.settings.footnoteType === 'button' && state.state.settings.isGoBackButtonInFootnote;
 	},
 
 	isWaitingStartSignal: (state) => {
