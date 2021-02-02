@@ -34,7 +34,7 @@ async function addLogBlock(userId, logId, block) {
         } else {
             addedBlock = await LogThorough.addLogBlock(logId, block);
         }
-        return;
+        return logId;
     } catch (err) {
         throw err;
     }
@@ -48,7 +48,7 @@ async function concludeLog(userId, logId, logConclusion) {
         } else {
             addedBlock = await LogThorough.concludeLog(logId, logConclusion);
         }
-        return;
+        return logId;
     } catch (err) {
         throw err;
     }

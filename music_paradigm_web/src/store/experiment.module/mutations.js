@@ -55,6 +55,12 @@ export default {
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
+	movePreviousInnerStep: (state) => {
+		const { flow, cursor, isInitialized, settings } = state;
+		cursorHandler.goBack(flow, cursor, isInitialized);
+		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
+	},
+
 	movePostSkip: (state) => {
 		const { flow, cursor, isInitialized, settings } = state;
 		cursorHandler.skip(state.state, flow, cursor, isInitialized);

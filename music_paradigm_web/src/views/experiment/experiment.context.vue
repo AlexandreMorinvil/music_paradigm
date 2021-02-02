@@ -37,10 +37,17 @@ export default {
 	},
 	methods: {
 		...mapActions('session', ['concludeSession', 'initializeSession']),
-		...mapActions('experiment', ['updateState', 'goNextStep', 'goStepPostSkip', 'clearState', 'endExperimentByTimeout', 'concludeExperiment']),
+		...mapActions('experiment', [
+			'updateState',
+			'goNextStep',
+			'goPreviousInnerStep',
+			'goStepPostSkip',
+			'clearState',
+			'endExperimentByTimeout',
+			'concludeExperiment',
+		]),
 		...mapActions('keyboard', ['loadReferenceKeyboardKeys', 'resetPressedKeyboardKeysLogs', 'resetKeyboardTracking']),
 		...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
-		...mapActions('log', ['initializeLogSession']),
 		initializeControl() {
 			if (this.controlType === 'piano') PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);
 			KeyboardEventBus.$emit(keyboardEvents.EVENT_TRACKER_INIT_REQUEST);
@@ -59,14 +66,15 @@ export default {
 			this.$refs.status.start();
 		},
 		navigateExperiment() {
-			this.$refs.log.addBlock();
-			this.resetPressedKeyboardKeysLogs();
-			this.resetPlayedNotesLogs();
+			this.resetPresses();
 			this.goNextStep();
 		},
+		navigateBackAnInnerStep() {
+			this.resetPresses();
+			this.goPreviousInnerStep();
+		},
 		navigateExperimentSkip() {
-			this.resetPressedKeyboardKeysLogs();
-			this.resetPlayedNotesLogs();
+			this.resetPresses();
 			this.goStepPostSkip();
 		},
 		endExperiment() {
@@ -74,6 +82,11 @@ export default {
 			this.needsConfirmationToLeave = false;
 			this.concludeSession();
 			this.concludeExperiment();
+		},
+		resetPresses() {
+			this.$refs.log.addBlock();
+			this.resetPressedKeyboardKeysLogs();
+			this.resetPlayedNotesLogs();
 		},
 		handleButtonPress(pressedKey) {
 			if (pressedKey.key === ' ') this.isSpaceBarPressed = true;
@@ -88,6 +101,7 @@ export default {
 		window.addEventListener('keydown', this.handleButtonPress);
 		window.addEventListener('keyup', this.handleButtonRelease);
 		ExperimentEventBus.$on(experimentEvents.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
+		ExperimentEventBus.$on(experimentEvents.EVENT_GO_BACK_REQUET, this.navigateBackAnInnerStep);
 		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_READY, this.displayFirstStep);
 		ExperimentEventBus.$on(experimentEvents.EVENT_STATE_ENDED, this.navigateExperiment);
 		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_ENDED, this.endExperiment);
@@ -101,6 +115,7 @@ export default {
 		window.removeEventListener('keydown', this.handleButtonPress);
 		window.removeEventListener('keyup', this.handleButtonRelease);
 		ExperimentEventBus.$off(experimentEvents.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
+		ExperimentEventBus.$off(experimentEvents.EVENT_GO_BACK_REQUET, this.navigateBackAnInnerStep);
 		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_READY, this.displayFirstStep);
 		ExperimentEventBus.$off(experimentEvents.EVENT_STATE_ENDED, this.navigateExperiment);
 		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_ENDED, this.endExperiment);
