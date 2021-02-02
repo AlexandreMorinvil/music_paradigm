@@ -4,7 +4,7 @@
 			<div class="widget widget-bg">
 				Admin Home page
 				<br /><br />
-				*Update 09-01-2021*
+				*Update 01-02-2021*
 			</div>
 		</widget-content-frame>
 	</admin-page-content-frame>
