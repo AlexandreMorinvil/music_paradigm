@@ -27,6 +27,22 @@ export default {
 		state.status.isConcludingSession = false;
 	},
 
+	setIsSavingSessionState(state) {
+		state.status.isSavingSessionState = true;
+	},
+
+	setIsSavingSessionStateEnd(state) {
+		state.status.isSavingSessionState = false;
+	},
+
+	setIsForgettingSessionState(state) {
+		state.status.isForgettingSessionState = true;
+	},
+
+	setIsForgettingSessionStateEnd(state) {
+		state.status.isForgettingSessionState = false;
+	},
+
 	setFetchedSession(state, sessionInformation) {
 		state.sessionInformation = sessionInformation;
 	},

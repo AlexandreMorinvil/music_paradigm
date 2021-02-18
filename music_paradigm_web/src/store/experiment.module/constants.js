@@ -15,6 +15,7 @@ export default {
 	DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES,
 	DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES,
 	DEFAULT_EXPERIMENT_VARIABLE_VALUES,
+	DEFAULT_EXPERIMENT_STATE_STATE_VALUES,
 	IS_FULLY_NOT_INITIALIZED_STATUS,
 };
 
@@ -116,7 +117,9 @@ function DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES() {
 			numberPiledMedia: 0, // Number of media content piled at the index pile start
 		},
 		flag: {
-			needsResetLoopParameters: false, // Indicator of whether he loop specific parameters need to be restarted (only when we enter a need block)
+			isFirstIndexPassage: true, // Indicator of whether it is the first time the index has reached a certain value (is false whenever the cursor loops back)
+			needsResetLoopParameters: false, // Indicator of whether he loop specific parameters need to be restarted (only when we enter a need block group)
+			isNewBlock: true, // Indicatio of wheter a new block was entered (Thus, we are not in just another inner step)
 		},
 	};
 }
@@ -163,6 +166,8 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			goBackStepButton: '', // Button to press to go back to the previous inner step (is valid only if a button is specified)
 			goBackButtonMessage: '', // Message indicated on the go back button if there is a go back button
 			isGoBackButtonInFootnote: DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE, // Block specific isGoBackButtonInFootnote superceeding the general parameter
+			checkpoint: true, // Indicate whether the state should be saved at the current block
+			strictPlay: false, // Indicate whether the playing state must be stopped upon a mistake
 		},
 		// Session specific informations
 		record: {

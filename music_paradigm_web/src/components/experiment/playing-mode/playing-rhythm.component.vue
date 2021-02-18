@@ -22,7 +22,7 @@ export default {
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
-		...mapGetters('experiment', ['timeoutInSeconds']),
+		...mapGetters('experiment', ['timeoutInSeconds', 'strictPlay']),
 		...mapGetters('piano', ['midiFileNotesMidi', 'playedNotesMidi', 'pressedKeys']),
 		playProgress() {
 			return this.playedNotesMidi.length;
@@ -66,6 +66,16 @@ export default {
 		window.clearTimeout(this.timeLimitUniqueIdentifier);
 	},
 	watch: {
+		playedNotesMidi: {
+			deep: true,
+			handler: function () {
+				if (!this.strictPlay) return;
+				const playedNoteIndex = this.playedNotesMidi.length - 1;
+				const referenceIndex = playedNoteIndex % this.midiFileNotesMidi.length;
+				const hasError = this.playedNotesMidi[playedNoteIndex] !== this.midiFileNotesMidi[referenceIndex];
+				if (hasError) this.$emit('finished-playing');
+			},
+		},
 		playProgress(value) {
 			if (value >= this.maxPlayProgress) {
 				this.hasPlayedAllNotes = true;

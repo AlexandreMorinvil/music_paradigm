@@ -98,6 +98,8 @@ const schema = new Schema(
                     decrementVariableOnSucces: { type: String, default: undefined },
 
                     controlType: { type: String, default: undefined },
+                    checkpoint: { type: String, default: undefined },
+                    strictPlay: { type: Boolean, default: undefined },
                 }
             ]
         }

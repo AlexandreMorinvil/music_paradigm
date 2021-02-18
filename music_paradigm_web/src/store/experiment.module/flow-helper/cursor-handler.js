@@ -89,6 +89,7 @@ function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 	// Moving to the next inner step if there remains inner steps
 	if (cursor.current.innerStepIndex < cursor.navigation.totalInnerSteps) {
 		cursor.current.innerStepIndex += 1;
+		cursor.flag.isNewBlock = false;
 		Object.assign(isInitialized, { content: false });
 	}
 
@@ -98,6 +99,8 @@ function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 
 		// If the index of the next block is lower than or equal to the index of the current block, this means that we are looping
 		if (cursor.navigation.indexNext <= cursor.current.index) {
+			cursor.flag.isFirstIndexPassage = false;
+
 			if (cursor.navigation.numberRepetition > 1) {
 				cursor.navigation.numberRepetition -= 1;
 			} else if (cursor.navigation.numberPiledMedia > 1) {
@@ -109,9 +112,13 @@ function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 
 		// Otherwise, if the next step is beyond a group of blocks, we reset the piled content index
 		else if (cursor.navigation.indexNext > cursor.navigation.indexGroupEnd) {
+			cursor.flag.isFirstIndexPassage = true;
 			cursor.current.piledContentIndex = 0;
 			needsResetLoopParameters = cursor.navigation.indexNext > cursor.navigation.indexGroupEnd; // Flag asjustment
 		}
+
+		// Indicate that we just moved in a new block
+		cursor.flag.isNewBlock = true;
 
 		// We move the current intdex to the next step
 		cursor.current.index = cursor.navigation.indexNext;
