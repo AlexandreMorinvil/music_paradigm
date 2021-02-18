@@ -280,7 +280,11 @@ export default {
 	},
 
 	checkpoint: (state) => {
-		return state.state.settings.checkpoint || false;
+		return state.state.settings.checkpoint || '';
+	},
+
+	strictPlay: (state) => {
+		return state.state.settings.strictPlay || false;
 	},
 
 	// Getters used for the content disposition on the screen

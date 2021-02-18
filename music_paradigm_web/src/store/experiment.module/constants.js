@@ -167,6 +167,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			goBackButtonMessage: '', // Message indicated on the go back button if there is a go back button
 			isGoBackButtonInFootnote: DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE, // Block specific isGoBackButtonInFootnote superceeding the general parameter
 			checkpoint: true, // Indicate whether the state should be saved at the current block
+			strictPlay: false, // Indicate whether the playing state must be stopped upon a mistake
 		},
 		// Session specific informations
 		record: {

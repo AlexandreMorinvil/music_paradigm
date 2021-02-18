@@ -178,6 +178,7 @@ function validateBlock(block, index = null) {
 		'goBackStepButton',
 		'goBackButtonMessage',
 		'checkpoint',
+		'strictPlay',
 
 		'resetVariableValue',
 		'incrementVariable',
@@ -252,6 +253,7 @@ function validateAttributeType(key, value) {
 		case 'skipLoopOnLastRepetition':
 		case 'canGoBack':
 		case 'isGoBackButtonInFootnote':
+		case 'strictPlay':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

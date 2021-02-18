@@ -99,6 +99,7 @@ const schema = new Schema(
 
                     controlType: { type: String, default: undefined },
                     checkpoint: { type: String, default: undefined },
+                    strictPlay: { type: Boolean, default: undefined },
                 }
             ]
         }
