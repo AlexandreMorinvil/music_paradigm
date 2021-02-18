@@ -15,6 +15,7 @@ export default {
 	DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES,
 	DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES,
 	DEFAULT_EXPERIMENT_VARIABLE_VALUES,
+	DEFAULT_EXPERIMENT_STATE_STATE_VALUES,
 	IS_FULLY_NOT_INITIALIZED_STATUS,
 };
 
@@ -116,6 +117,7 @@ function DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES() {
 			numberPiledMedia: 0, // Number of media content piled at the index pile start
 		},
 		flag: {
+			isFirstIndexPassage: true, // Indicator of whether it is the first time the index has reached a certain value (is false whenever the cursor loops back)
 			needsResetLoopParameters: false, // Indicator of whether he loop specific parameters need to be restarted (only when we enter a need block group)
 			isNewBlock: true, // Indicatio of wheter a new block was entered (Thus, we are not in just another inner step)
 		},

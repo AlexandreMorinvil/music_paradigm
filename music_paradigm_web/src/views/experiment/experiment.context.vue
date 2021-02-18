@@ -33,7 +33,15 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType', 'checkpoint', 'isNewBlock', 'needsResetLoopParameters']),
+		...mapGetters('experiment', [
+			'midiName',
+			'referenceKeyboardKeys',
+			'controlType',
+			'checkpoint',
+			'isFirstIndexPassage',
+			'needsResetLoopParameters',
+			'isNewBlock',
+		]),
 	},
 	methods: {
 		...mapActions('session', ['concludeSession', 'initializeSession', 'saveSessionState', 'forgetSessionState']),
@@ -61,6 +69,7 @@ export default {
 		},
 		handleSaveSessionState() {
 			if (!this.checkpoint) return;
+			else if (this.checkpoint === 'once' && this.isFirstIndexPassage) this.saveSessionState();
 			else if (this.checkpoint === 'first' && this.needsResetLoopParameters) this.saveSessionState();
 			else if (this.checkpoint === 'all' && this.isNewBlock) this.saveSessionState();
 		},

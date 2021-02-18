@@ -40,12 +40,16 @@ export default {
 		return totalRepetitions - repetitionsLeft + 1;
 	},
 
-	isNewBlock: (state) => {
-		return state.cursor.flag.isNewBlock;
+	isFirstIndexPassage: (state) => {
+		return state.cursor.flag.isFirstIndexPassage;
 	},
 
 	needsResetLoopParameters: (state) => {
 		return state.cursor.flag.needsResetLoopParameters;
+	},
+
+	isNewBlock: (state) => {
+		return state.cursor.flag.isNewBlock;
 	},
 
 	// Getters for the experiment settings
