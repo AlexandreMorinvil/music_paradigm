@@ -44,7 +44,7 @@ export default {
 		// TODO: Integrate the imposed parameter to the user's progression
 		// dispatch('experiment/setParameterValues', getters.imposedParameterValues, { root: true });
 		dispatch('experiment/setStartingPoint', getters.sessionCursor, { root: true });
-		dispatch('experiment/initExperiment', null, { root: true });
+		dispatch('experiment/initExperiment', getters.sessionState, { root: true });
 	},
 
 	// Send a signal to the back-end to indicate that the session can be considered as started
@@ -56,7 +56,7 @@ export default {
 				() => { },
 				(error) => {
 					// TODO: Keep on memory the failed initialization in localstorage nad reattempt at every time we send log data
-					console.log(error)
+					console.log(error);
 				},
 			)
 			.finally(() => {
@@ -73,12 +73,46 @@ export default {
 				() => { },
 				(error) => {
 					// TODO : Keep in memory the failed completion in localstorage to make sure on the next login we handle it
-					console.log(error)
+					console.log(error);
 				},
 			)
 			.finally(() => {
 				dispatch('clearSessionInformation', null, { root: true });
 				commit('setIsConcludingSessionEnd');
+			});
+	},
+
+	// Send a signal to the back-end to indicate that the session can be considered as started
+	saveSessionState({ commit, getters, rootGetters }) {
+		commit('setIsSavingSessionState');
+		return sessionService
+			.saveSessionState(getters.associativeId, rootGetters['experiment/cursor'], rootGetters['experiment/state'])
+			.then(
+				() => { },
+				(error) => {
+					// TODO: Keep on memory the failed state to save in localstorage and reattempt at every time we send log data
+					console.log(error);
+				},
+			)
+			.finally(() => {
+				commit('setIsSavingSessionStateEnd');
+			});
+	},
+
+	// Send a signal to the back-end to indicate that the session can be considered as completed
+	forgetSessionState({ commit, getters }) {
+		commit('setIsForgettingSessionState');
+		return sessionService
+			.forgetSessionState(getters.associativeId)
+			.then(
+				() => { },
+				(error) => {
+					// TODO : Keep in memory the failed completion in localstorage to make sure on the next login we handle it
+					console.log(error);
+				},
+			)
+			.finally(() => {
+				commit('setIsForgettingSessionStateEnd');
 			});
 	},
 

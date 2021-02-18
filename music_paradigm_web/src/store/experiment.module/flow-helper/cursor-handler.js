@@ -89,6 +89,7 @@ function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 	// Moving to the next inner step if there remains inner steps
 	if (cursor.current.innerStepIndex < cursor.navigation.totalInnerSteps) {
 		cursor.current.innerStepIndex += 1;
+		cursor.flag.isNewBlock = false;
 		Object.assign(isInitialized, { content: false });
 	}
 
@@ -112,6 +113,9 @@ function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 			cursor.current.piledContentIndex = 0;
 			needsResetLoopParameters = cursor.navigation.indexNext > cursor.navigation.indexGroupEnd; // Flag asjustment
 		}
+
+		// Indicate that we just moved in a new block
+		cursor.flag.isNewBlock = true;
 
 		// We move the current intdex to the next step
 		cursor.current.index = cursor.navigation.indexNext;

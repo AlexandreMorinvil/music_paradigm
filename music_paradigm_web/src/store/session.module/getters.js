@@ -16,7 +16,11 @@ export default {
 	},
 
 	sessionCursor: (state) => {
-		return state.sessionInformation.cursor || null;
+		return state.sessionInformation.previousCursor || null;
+	},
+
+	sessionState: (state) => {
+		return state.sessionInformation.previousState || null;
 	},
 
 	preSessionMessage: (state) => {

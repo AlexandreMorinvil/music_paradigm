@@ -177,6 +177,7 @@ function validateBlock(block, index = null) {
 		'isGoBackButtonInFootnote',
 		'goBackStepButton',
 		'goBackButtonMessage',
+		'checkpoint',
 
 		'resetVariableValue',
 		'incrementVariable',
@@ -221,6 +222,7 @@ function validateAttributeType(key, value) {
 		case 'controlType':
 		case 'goBackStepButton':
 		case 'goBackButtonMessage':
+		case 'checkpoint':
 			if (!(typeof value === 'string')) {
 				throw new Error(`The key '${key}' must be of type 'String'`);
 			}

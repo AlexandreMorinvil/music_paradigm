@@ -111,6 +111,33 @@ schema.methods.addThoroughLogAssociatedExperiment = async function (associativeI
     return await this.save();
 };
 
+schema.methods.saveSessionState = async function (associativeId, cursor, state) {
+    let experimentInProgression = await this.getExperimentAssociated(associativeId);
+
+    // Error handling if the experiment in progression searched is not found
+    if (!experimentInProgression) return null;
+
+    // We set the cursor and the current state
+    experimentInProgression.cursor = cursor;
+    experimentInProgression.state = state;
+
+    return this.save();
+};
+
+
+schema.methods.forgetSessionState = async function (associativeId) {
+    let experimentInProgression = await this.getExperimentAssociated(associativeId);
+
+    // Error handling if the experiment in progression searched is not found
+    if (!experimentInProgression) return null;
+
+    // We delete the cursor amd the current state
+    experimentInProgression.cursor = undefined;
+    experimentInProgression.state = undefined;
+
+    return this.save();
+};
+
 
 schema.methods.isForCurriculum = function (curriculumId) {
     return this.curriculumReference === curriculumId;

@@ -94,6 +94,7 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
 		canGoBack,
 		goBackStepButton,
 		goBackButtonMessage,
+		checkpoint,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -122,6 +123,7 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
 		canGoBack:						typeof canGoBack === 'boolean'					? canGoBack : false,
 		goBackStepButton:				typeof goBackStepButton === 'string'			? goBackStepButton : '',
 		goBackButtonMessage:			typeof goBackButtonMessage === 'string'			? goBackButtonMessage : '',
+		checkpoint:						typeof checkpoint === 'string'					? checkpoint : false,
 	};
 
 	// Indicate that the state (current block's settings) was already initialized

@@ -33,10 +33,10 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType']),
+		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType', 'checkpoint', 'isNewBlock', 'needsResetLoopParameters']),
 	},
 	methods: {
-		...mapActions('session', ['concludeSession', 'initializeSession']),
+		...mapActions('session', ['concludeSession', 'initializeSession', 'saveSessionState', 'forgetSessionState']),
 		...mapActions('experiment', [
 			'updateState',
 			'goNextStep',
@@ -59,6 +59,11 @@ export default {
 		handleTimesUp() {
 			this.endExperimentByTimeout();
 		},
+		handleSaveSessionState() {
+			if (!this.checkpoint) return;
+			else if (this.checkpoint === 'first' && this.needsResetLoopParameters) this.saveSessionState();
+			else if (this.checkpoint === 'all' && this.isNewBlock) this.saveSessionState();
+		},
 		displayFirstStep() {
 			this.initializeSession();
 			this.updateState();
@@ -68,6 +73,7 @@ export default {
 		navigateExperiment() {
 			this.resetPresses();
 			this.goNextStep();
+			this.handleSaveSessionState();
 		},
 		navigateBackAnInnerStep() {
 			this.resetPresses();
@@ -76,10 +82,12 @@ export default {
 		navigateExperimentSkip() {
 			this.resetPresses();
 			this.goStepPostSkip();
+			this.handleSaveSessionState();
 		},
 		endExperiment() {
 			this.$refs.log.conclude();
 			this.needsConfirmationToLeave = false;
+			this.forgetSessionState();
 			this.concludeSession();
 			this.concludeExperiment();
 		},

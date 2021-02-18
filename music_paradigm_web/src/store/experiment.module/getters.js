@@ -8,6 +8,15 @@ export default {
 		return state._id;
 	},
 
+	// Session state
+	cursor: (state) => {
+		return state.cursor;
+	},
+
+	state: (state) => {
+		return state.state;
+	},
+
 	// Getters for the experiment flow's information
 	stepsTotalCount: (state) => {
 		return cursorHandler.countStepsLeft(state.flow);
@@ -29,6 +38,14 @@ export default {
 		const totalRepetitions = state.cursor.navigation.numberTotalRepetions;
 		const repetitionsLeft = state.cursor.navigation.numberRepetition;
 		return totalRepetitions - repetitionsLeft + 1;
+	},
+
+	isNewBlock: (state) => {
+		return state.cursor.flag.isNewBlock;
+	},
+
+	needsResetLoopParameters: (state) => {
+		return state.cursor.flag.needsResetLoopParameters;
 	},
 
 	// Getters for the experiment settings
@@ -256,6 +273,10 @@ export default {
 
 	controlType: (state) => {
 		return state.settings.controlType || constants.DEFAULT_CONTROL_TYPE;
+	},
+
+	checkpoint: (state) => {
+		return state.state.settings.checkpoint || false;
 	},
 
 	// Getters used for the content disposition on the screen
