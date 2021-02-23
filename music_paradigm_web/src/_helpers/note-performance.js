@@ -87,7 +87,7 @@ function evaluateMelodyType(midiFileNotes, playedNotes) {
 function gradeSpeedType(evaluationResults, { minSequencePlayed }) {
 	const grades = [
 		{
-			criteria: 'Sequence Played',
+			criteria: 'Sequences Played',
 			mark: evaluationResults.sequenceCount,
 			passMark: 1,
 			topMark: Math.ceil((minSequencePlayed + 5) / 10) * 10,

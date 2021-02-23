@@ -40,8 +40,8 @@ export default {
 	methods: {
 		updateFootnote() {
 			let footnoteMessage = '';
-			if (this.anyPianoKey) footnoteMessage = 'Press any piano key or the space bar for ending the experiment';
-			else footnoteMessage = 'Press the space bar for ending the experiment';
+			if (this.anyPianoKey) footnoteMessage = this.$t('views.experiment.end.footnote-press-any-key');
+			else footnoteMessage = this.$t('views.experiment.end.footnote-press-space-bar');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 	},

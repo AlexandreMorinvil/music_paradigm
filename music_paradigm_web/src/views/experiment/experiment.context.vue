@@ -1,5 +1,6 @@
 <template>
 	<div id="experiment" class="experiment-grid unselectable">
+		<log-component style="display: none" ref="log" />
 		<status-bar-component class="status-bar-position" ref="status" />
 
 		<div id="state-content" class="state-content-position">
@@ -15,11 +16,13 @@ import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-eve
 import { KeyboardEventBus, keyboardEvents } from '@/_services/keyboard-event-bus.service.js';
 import { PianoEventBus, pianoEvents } from '@/_services/piano-event-bus.service.js';
 import ExperimentContent from '@/components/content-frame/experiment-content-frame.component.vue';
+import LogComponent from '@/components/experiment/log/log.component.vue';
 import StatusBarComponent from '@/components/experiment/status-bar/status-bar.component.vue';
 
 export default {
 	components: {
 		ExperimentContent,
+		LogComponent,
 		StatusBarComponent,
 	},
 	data() {
@@ -30,14 +33,29 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType']),
+		...mapGetters('experiment', [
+			'midiName',
+			'referenceKeyboardKeys',
+			'controlType',
+			'checkpoint',
+			'isFirstIndexPassage',
+			'needsResetLoopParameters',
+			'isNewBlock',
+		]),
 	},
 	methods: {
-		...mapActions('session', ['concludeSession']),
-		...mapActions('experiment', ['updateState', 'goNextStep', 'goStepPostSkip', 'clearState', 'endExperimentByTimeout', 'concludeExperiment']),
+		...mapActions('session', ['concludeSession', 'initializeSession', 'saveSessionState', 'forgetSessionState']),
+		...mapActions('experiment', [
+			'updateState',
+			'goNextStep',
+			'goPreviousInnerStep',
+			'goStepPostSkip',
+			'clearState',
+			'endExperimentByTimeout',
+			'concludeExperiment',
+		]),
 		...mapActions('keyboard', ['loadReferenceKeyboardKeys', 'resetPressedKeyboardKeysLogs', 'resetKeyboardTracking']),
 		...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
-		...mapActions('log', ['initializeLogSession']),
 		initializeControl() {
 			if (this.controlType === 'piano') PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);
 			KeyboardEventBus.$emit(keyboardEvents.EVENT_TRACKER_INIT_REQUEST);
@@ -49,25 +67,43 @@ export default {
 		handleTimesUp() {
 			this.endExperimentByTimeout();
 		},
+		handleSaveSessionState() {
+			if (!this.checkpoint) return;
+			else if (this.checkpoint === 'once' && this.isFirstIndexPassage) this.saveSessionState();
+			else if (this.checkpoint === 'first' && this.needsResetLoopParameters) this.saveSessionState();
+			else if (this.checkpoint === 'all' && this.isNewBlock) this.saveSessionState();
+		},
 		displayFirstStep() {
-			// This.initializeLogSession();
+			this.initializeSession();
 			this.updateState();
+			this.$refs.log.initialize();
 			this.$refs.status.start();
 		},
 		navigateExperiment() {
-			this.resetPressedKeyboardKeysLogs();
-			this.resetPlayedNotesLogs();
+			this.resetPresses();
 			this.goNextStep();
+			this.handleSaveSessionState();
+		},
+		navigateBackAnInnerStep() {
+			this.resetPresses();
+			this.goPreviousInnerStep();
 		},
 		navigateExperimentSkip() {
-			this.resetPressedKeyboardKeysLogs();
-			this.resetPlayedNotesLogs();
+			this.resetPresses();
 			this.goStepPostSkip();
+			this.handleSaveSessionState();
 		},
 		endExperiment() {
+			this.$refs.log.conclude();
 			this.needsConfirmationToLeave = false;
+			this.forgetSessionState();
 			this.concludeSession();
 			this.concludeExperiment();
+		},
+		resetPresses() {
+			this.$refs.log.addBlock();
+			this.resetPressedKeyboardKeysLogs();
+			this.resetPlayedNotesLogs();
 		},
 		handleButtonPress(pressedKey) {
 			if (pressedKey.key === ' ') this.isSpaceBarPressed = true;
@@ -82,6 +118,7 @@ export default {
 		window.addEventListener('keydown', this.handleButtonPress);
 		window.addEventListener('keyup', this.handleButtonRelease);
 		ExperimentEventBus.$on(experimentEvents.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
+		ExperimentEventBus.$on(experimentEvents.EVENT_GO_BACK_REQUET, this.navigateBackAnInnerStep);
 		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_READY, this.displayFirstStep);
 		ExperimentEventBus.$on(experimentEvents.EVENT_STATE_ENDED, this.navigateExperiment);
 		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_ENDED, this.endExperiment);
@@ -95,6 +132,7 @@ export default {
 		window.removeEventListener('keydown', this.handleButtonPress);
 		window.removeEventListener('keyup', this.handleButtonRelease);
 		ExperimentEventBus.$off(experimentEvents.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
+		ExperimentEventBus.$off(experimentEvents.EVENT_GO_BACK_REQUET, this.navigateBackAnInnerStep);
 		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_READY, this.displayFirstStep);
 		ExperimentEventBus.$off(experimentEvents.EVENT_STATE_ENDED, this.navigateExperiment);
 		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_ENDED, this.endExperiment);
@@ -124,7 +162,7 @@ export default {
 		// We need to verify that the route departure is not a redirection, otherwise
 		// a confirmation will be prompted twice (Once before and after the redirection)
 		if (this.needsConfirmationToLeave && !Object.prototype.hasOwnProperty.call(to, 'redirectedFrom')) {
-			const answer = window.confirm('Do you really want to leave the experiment in progress?');
+			const answer = window.confirm('views.experiment.context.confirm-leave');
 			if (answer) next();
 			else next(false);
 		} else {

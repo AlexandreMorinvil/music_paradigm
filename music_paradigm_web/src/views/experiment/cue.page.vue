@@ -47,9 +47,9 @@ export default {
 		...mapActions('piano', ['playMidiFile', 'addPlayerEndOfFileAction', 'removePlayerEndOfFileAction']),
 		updateFootnote() {
 			let footnoteMessage = '';
-			if (!this.midiName)
-				footnoteMessage = `There is no melody to be played, the experiment will automatically  go to the next step in ${this.errorAutomaticTransitionSeconds} seconds`;
-			else footnoteMessage = 'The experiment will automatically go to the next step after the muscial cue';
+			const secondsLeft = this.errorAutomaticTransitionSeconds;
+			if (!this.midiName) footnoteMessage = this.$tc('views.experiment.cue.footnote-no-melody', secondsLeft, { second: secondsLeft });
+			else footnoteMessage = this.$t('views.experiment.cue.footnote-after-melody');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		handleEndOfMidiFile() {

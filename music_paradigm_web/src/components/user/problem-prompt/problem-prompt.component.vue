@@ -1,8 +1,8 @@
 <template>
 	<div class="dimmensions position layout formatting">
-		<h2 class="title-area"><span> Issue : </span> {{ titleDisplayed }}</h2>
+		<h2 class="title-area">{{ titleDisplayed }}</h2>
 		<div class="content-area">
-			<p class="solution-message-area">Please try the following solution(s) :</p>
+			<p class="solution-message-area">{{ solutionMessage }} :</p>
 			<p v-for="(solution, index) in solutionsDisplayed" :key="index" class="solution">
 				<span class="index-square"># {{ index + 1 }}</span>
 				<span class="solution-text-space">{{ solution }}</span>
@@ -36,6 +36,10 @@ export default {
 	computed: {
 		titleDisplayed() {
 			return this.title ? this.title : this.$t('user.problem-prompt.default.title');
+		},
+		solutionMessage() {
+			const solutionCount = Array.isArray(this.solutions) ? this.solutions.length : 0;
+			return this.$tc('user.problem-prompt.default.solution-message', solutionCount);
 		},
 		solutionsDisplayed() {
 			return this.solutions ? this.solutions : [this.$t('user.problem-prompt.default.solution-1')];

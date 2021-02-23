@@ -3,7 +3,7 @@
 		<svg id="icon-current-state" class="icon-state">
 			<use :xlink:href="icon" />
 		</svg>
-		{{ text }}
+		{{ stateText }}
 	</div>
 </template>
 
@@ -20,6 +20,12 @@ export default {
 			},
 		},
 	},
+	data() {
+		return {
+			iconFileName: 'icon-three-dots',
+			stateText: '',
+		};
+	},
 	computed: {
 		...mapGetters('experiment', ['currentStateType', 'nextStateType', 'playingMode', 'nextPlayingMode']),
 		stateQueried() {
@@ -27,40 +33,58 @@ export default {
 			else return this.nextStateType;
 		},
 		icon() {
-			return this.getIconReference(this.stateQueried);
-		},
-		text() {
-			return this.stateQueried;
+			return 'sprites.svg#' + this.iconFileName;
 		},
 	},
 	methods: {
-		getIconReference(stateType) {
-			const iconFileName = 'sprites.svg#';
-			switch (stateType) {
+		updateStatus() {
+			switch (this.stateQueried) {
 				case 'cue':
-					return iconFileName + 'icon-volume-high';
+					this.iconFileName = 'icon-volume-high';
+					this.stateText = this.$t('experiment.status-bar.state.cue');
+					break;
 				case 'end':
-					return iconFileName + 'icon-finish';
+					this.iconFileName = 'icon-finish';
+					this.stateText = this.$t('experiment.status-bar.state.end');
+					break;
 				case 'feedback':
-					return iconFileName + 'icon-check-circle';
-				case 'introduction':
-					return iconFileName + 'icon-location';
+					this.iconFileName = 'icon-check-circle';
+					this.stateText = this.$t('experiment.status-bar.state.feedback');
+					break;
 				case 'instruction':
-					return iconFileName + 'icon-info';
+					this.iconFileName = 'icon-info';
+					this.stateText = this.$t('experiment.status-bar.state.instruction');
+					break;
 				case 'playing':
-					return iconFileName + this.getIconPlaying();
+					this.iconFileName = this.getIconPlaying();
+					this.stateText = this.$t('experiment.status-bar.state.perform');
+					break;
 				case 'rest':
-					return iconFileName + 'icon-pause';
+					this.iconFileName = 'icon-pause';
+					this.stateText = this.$t('experiment.status-bar.state.rest');
+					break;
 				case 'video':
-					return iconFileName + 'icon-film';
+					this.iconFileName = 'icon-film';
+					this.stateText = this.$t('experiment.status-bar.state.video');
+					break;
 				default:
-					return iconFileName + 'icon-three-dots';
+					this.iconFileName = 'icon-three-dots';
+					this.stateText = '';
+					break;
 			}
 		},
 		getIconPlaying() {
 			const playingMode = this.isCurrentStateRequested ? this.playingMode : this.nextPlayingMode;
 			if (playingMode.includes('keyboard')) return 'icon-keyboard';
 			else return 'icon-piano';
+		},
+	},
+	watch: {
+		stateQueried: {
+			immediate: true,
+			handler: function () {
+				this.updateStatus();
+			},
 		},
 	},
 };

@@ -1,6 +1,6 @@
 ﻿const db = require('database/db');
-const AdminSimpleLog = db.AdminSimpleLog;
-const AdminSession = db.AdminSession;
+const AdminLogSimple = db.AdminLogSimple;
+const AdminLogThorough = db.AdminLogThorough;
 
 // Exports
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
 
 // async function getAll() {
 //     try {
-//         return await AdminSession.getListAllHeaders();
+//         return await AdminLogThorough.getListAllHeaders();
 //     } catch (err) {
 //         throw err;
 //     }
@@ -19,7 +19,7 @@ module.exports = {
 
 // async function getById(id) {
 //     try {
-//         return await AdminSession.findById(id);
+//         return await AdminLogThorough.findById(id);
 //     } catch (err) {
 //         throw err;
 //     }
@@ -27,7 +27,7 @@ module.exports = {
 
 async function createSimpleLog(logInformation) {
     try {
-        const adminSimpleLog = new AdminSimpleLog(logInformation);
+        const adminSimpleLog = new AdminLogSimple(logInformation);
         return await adminSimpleLog.create();
     } catch (err) {
         throw err;
@@ -36,7 +36,7 @@ async function createSimpleLog(logInformation) {
 
 async function initialize(adminSessionToCreate) {
     try {
-        const adminSession = new AdminSession(adminSessionToCreate);
+        const adminSession = new AdminLogThorough(adminSessionToCreate);
         return await adminSession.create();
     } catch (err) {
         throw err;
@@ -45,7 +45,7 @@ async function initialize(adminSessionToCreate) {
 
 async function addBlock(id, block) {
     try {
-        const adminSession = await AdminSession.findById(id);
+        const adminSession = await AdminLogThorough.findById(id);
         return await adminSession.addBlock(block);
     } catch (err) {
         throw err;
@@ -54,7 +54,7 @@ async function addBlock(id, block) {
 
 // async function _delete(id) {
 //     try {
-//         const adminSession = await AdminSession.findById(id);
+//         const adminSession = await AdminLogThorough.findById(id);
 //         if (!adminSession) throw new Error('The admin session to delete could not be found');
 //         return await adminSession.remove();
 //     } catch (err) {

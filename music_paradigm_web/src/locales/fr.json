@@ -30,5 +30,22 @@
         "web-browser": "Assurez-vous d'utiliser le navigateur Web Google Chrome."
       }
     }
+  },
+  "experiment": {
+    "element": {
+      "start-signal-timer": {
+        "startIn": "DÉBUT DANS :"
+      }
+    }
+  },
+  "views": {
+    "user": {
+      "home": {
+        "home": "Accueil"
+      },
+      "pre-session": {
+        "beforeStarting": "Avant de commencer"
+      }
+    }
   }
 }

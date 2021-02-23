@@ -8,6 +8,15 @@ export default {
 		return state._id;
 	},
 
+	// Session state
+	cursor: (state) => {
+		return state.cursor;
+	},
+
+	state: (state) => {
+		return state.state;
+	},
+
 	// Getters for the experiment flow's information
 	stepsTotalCount: (state) => {
 		return cursorHandler.countStepsLeft(state.flow);
@@ -15,6 +24,32 @@ export default {
 
 	stepsLeftCount: (state) => {
 		return cursorHandler.countStepsLeft(state.flow, state.cursor);
+	},
+
+	currentIndex: (state) => {
+		return state.cursor.current.index;
+	},
+
+	currentInnerStepIndex: (state) => {
+		return state.cursor.current.innerStepIndex;
+	},
+
+	currentRepetition: (state) => {
+		const totalRepetitions = state.cursor.navigation.numberTotalRepetions;
+		const repetitionsLeft = state.cursor.navigation.numberRepetition;
+		return totalRepetitions - repetitionsLeft + 1;
+	},
+
+	isFirstIndexPassage: (state) => {
+		return state.cursor.flag.isFirstIndexPassage;
+	},
+
+	needsResetLoopParameters: (state) => {
+		return state.cursor.flag.needsResetLoopParameters;
+	},
+
+	isNewBlock: (state) => {
+		return state.cursor.flag.isNewBlock;
 	},
 
 	// Getters for the experiment settings
@@ -185,6 +220,14 @@ export default {
 		return state.state.settings.startSignal || 0;
 	},
 
+	goBackStepButton: (state) => {
+		return state.state.settings.goBackStepButton.toLowerCase() || '';
+	},
+
+	goBackButtonMessage: (state) => {
+		return state.state.settings.goBackButtonMessage || '';
+	},
+
 	skipStepButton: (state) => {
 		return state.state.settings.skipStepButton.toLowerCase() || '';
 	},
@@ -236,6 +279,14 @@ export default {
 		return state.settings.controlType || constants.DEFAULT_CONTROL_TYPE;
 	},
 
+	checkpoint: (state) => {
+		return state.state.settings.checkpoint || '';
+	},
+
+	strictPlay: (state) => {
+		return state.state.settings.strictPlay || false;
+	},
+
 	// Getters used for the content disposition on the screen
 	hasFootnote: (state) => {
 		let hasFootNote = constants.DEFAULT_FOOTNOTE;
@@ -272,6 +323,11 @@ export default {
 		return Boolean(state.state.settings.skipStepButton);
 	},
 
+	hasGoBackOption: (state) => {
+		const hasPreviousInnerStep = state.cursor.current.innerStepIndex > 0;
+		return hasPreviousInnerStep && state.state.settings.canGoBack;
+	},
+
 	hasSuccessFeedbackMessage(state) {
 		return Boolean(state.state.settings.successFeedbackMessage);
 	},
@@ -281,6 +337,10 @@ export default {
 
 	isSkipButtonInFootnote: (state) => {
 		return state.state.settings.footnote && state.state.settings.footnoteType === 'button' && state.state.settings.isSkipStepButtonInFootnote;
+	},
+
+	isGoBackButtonInFootnote: (state) => {
+		return state.state.settings.footnote && state.state.settings.footnoteType === 'button' && state.state.settings.isGoBackButtonInFootnote;
 	},
 
 	isWaitingStartSignal: (state) => {

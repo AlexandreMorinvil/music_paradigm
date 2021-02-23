@@ -51,19 +51,18 @@ export default {
 			const minutes = Math.floor((this.timeLeftInMilliseconds / 1000 / 60) % 60);
 			const seconds = Math.floor((this.timeLeftInMilliseconds / 1000) % 60);
 			if (minutes > 0) {
-				display += `${minutes} minutes `;
+				display += this.$tc('views.experiment.rest.minute', minutes, { minute: minutes });
 			}
-			display += `${seconds} seconds`;
+			display += this.$tc('views.experiment.rest.second', seconds, { second: seconds });
 			return display;
 		},
 	},
 	methods: {
 		updateFootnote() {
-			const footnoteMessage = `The experiment will go to the next step in ${this.timeLeftDisplay}`;
+			const footnoteMessage = this.$t('views.experiment.rest.footnote-after-time', { time: this.timeLeftDisplay });
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		startCountdown() {
-			// This.timeLeftInMilliseconds = this.timeLimitInSeconds * 1000;
 			this.referenceTime = Date.parse(new Date());
 			this.counterUniqueIdentifier = window.setInterval(this.countdown, this.timeStepInMilliseconds);
 		},

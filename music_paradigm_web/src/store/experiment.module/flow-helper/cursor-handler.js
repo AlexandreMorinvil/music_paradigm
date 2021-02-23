@@ -8,6 +8,7 @@ export default {
 	countStepsLeft,
 	assignCursor,
 	advance,
+	goBack,
 	skip,
 };
 
@@ -39,17 +40,20 @@ function advance(state, flow, cursor, isInitialized) {
 	else moveCursorNext(flow, cursor, isInitialized);
 }
 
+function goBack(flow, cursor, isInitialized) {
+	determineGroupEnd(flow, cursor);
+	moveCursorBack(flow, cursor, isInitialized);
+}
+
 function skip(state, flow, cursor, isInitialized) {
 	if (moveCursorSpecialCases(state, flow, cursor, isInitialized)) return;
 	do {
 		moveCursorNext(flow, cursor, isInitialized);
 		stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
 	} while (cursor.current.isInSkipableChain);
-
 }
 
 // Inner cursor move manipulations
-
 function moveCursorSpecialCases(state, flow, cursor, isInitialized) {
 	if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop) {
 		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
@@ -66,6 +70,12 @@ function moveCursorNext(flow, cursor, isInitialized) {
 	updateCursorNavigation(flow, cursor);
 }
 
+function moveCursorBack(flow, cursor, isInitialized) {
+	variableHandler.updateVariables(flow, cursor);
+	performCursorDisplacementBackward(cursor, isInitialized);
+	updateCursorNavigation(flow, cursor);
+}
+
 function moveCursorSkipRepetions(state, flow, cursor, isInitialized) {
 	do {
 		moveCursorNext(flow, cursor, isInitialized);
@@ -76,9 +86,10 @@ function moveCursorSkipRepetions(state, flow, cursor, isInitialized) {
 function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 	let needsResetLoopParameters = false;
 
-	// Moving to the next inner step if there remains inner steps (only in instruction blocks)
+	// Moving to the next inner step if there remains inner steps
 	if (cursor.current.innerStepIndex < cursor.navigation.totalInnerSteps) {
 		cursor.current.innerStepIndex += 1;
+		cursor.flag.isNewBlock = false;
 		Object.assign(isInitialized, { content: false });
 	}
 
@@ -88,6 +99,8 @@ function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 
 		// If the index of the next block is lower than or equal to the index of the current block, this means that we are looping
 		if (cursor.navigation.indexNext <= cursor.current.index) {
+			cursor.flag.isFirstIndexPassage = false;
+
 			if (cursor.navigation.numberRepetition > 1) {
 				cursor.navigation.numberRepetition -= 1;
 			} else if (cursor.navigation.numberPiledMedia > 1) {
@@ -99,9 +112,13 @@ function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 
 		// Otherwise, if the next step is beyond a group of blocks, we reset the piled content index
 		else if (cursor.navigation.indexNext > cursor.navigation.indexGroupEnd) {
+			cursor.flag.isFirstIndexPassage = true;
 			cursor.current.piledContentIndex = 0;
 			needsResetLoopParameters = cursor.navigation.indexNext > cursor.navigation.indexGroupEnd; // Flag asjustment
 		}
+
+		// Indicate that we just moved in a new block
+		cursor.flag.isNewBlock = true;
 
 		// We move the current intdex to the next step
 		cursor.current.index = cursor.navigation.indexNext;
@@ -113,6 +130,19 @@ function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 
 	// Adjust the flags
 	cursor.flag.needsResetLoopParameters = needsResetLoopParameters;
+}
+
+// THe backward mobility only exists for inner steps
+function performCursorDisplacementBackward(cursor, isInitialized = {}) {
+	// By moving backward, we are necessarily not beyond the last step
+	cursor.current.isBeyondEnd = false;
+
+	// Moving to the previous inner step if there remains inner steps
+	if (cursor.current.innerStepIndex > 0) {
+		cursor.current.innerStepIndex -= 1;
+		cursor.current.innerStepIndex = Math.max(0, cursor.current.innerStepIndex);
+		Object.assign(isInitialized, { content: false });
+	}
 }
 
 function updateCursorNavigation(flow, cursor) {
@@ -172,11 +202,13 @@ function setCursorInnerStepsTotal(cursor, textContent, pictureFileName) {
 //  The execution order would be :
 //  A - B - C - A - B - C - A - B - C - C - C - D
 function setCursorLoopStart(cursor, numberRepetition) {
+	if (cursor.flag.needsResetLoopParameters) cursor.navigation.numberTotalRepetions = 1;
 	// Initialize a loop (loop start index & number of repetitions) if :
 	// 1. A number of repetition greater than 1 is specified in the block's settings,
 	// 2. The cursor is not currently in a loop (thus the number of reptition left is <= 1)
 	// 3. The current index is not the start index of a previous loop (to avoid resetting a loop twice)
 	if (numberRepetition > 1 && cursor.navigation.numberRepetition <= 1 && cursor.current.index !== cursor.navigation.indexLoopStart) {
+		cursor.navigation.numberTotalRepetions = numberRepetition;
 		cursor.navigation.indexLoopStart = cursor.current.index;
 		cursor.navigation.numberRepetition = numberRepetition;
 	}

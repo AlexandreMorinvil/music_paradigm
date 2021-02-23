@@ -2,19 +2,44 @@ import { authHeader, url } from '@/_helpers';
 import defaultResponseHandler from './defaultResponseHandler';
 
 export const sessionService = {
+	initializeSession,
 	concludeSession,
+	saveSessionState,
+	forgetSessionState,
 };
 
-
+function initializeSession(associativeId) {
+	const requestOptions = {
+		method: 'POST',
+		headers: authHeader(),
+	};
+	return fetch(url.sessions('initialize-session' + '/' + associativeId), requestOptions).then(handleResponse);
+}
 
 function concludeSession(associativeId) {
 	const requestOptions = {
 		method: 'POST',
 		headers: authHeader(),
 	};
-	return fetch(url.sessions('/conclude-experiment' + '/' + associativeId), requestOptions).then(handleResponse);
+	return fetch(url.sessions('conclude-session' + '/' + associativeId), requestOptions).then(handleResponse);
 }
 
+function saveSessionState(associativeId, cursor, state) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify({ cursor: cursor, state: state }),
+	};
+	return fetch(url.sessions('save-session-state' + '/' + associativeId), requestOptions).then(handleResponse);
+}
+
+function forgetSessionState(associativeId) {
+	const requestOptions = {
+		method: 'POST',
+		headers: authHeader(),
+	};
+	return fetch(url.sessions('forget-session-state' + '/' + associativeId), requestOptions).then(handleResponse);
+}
 
 function handleResponse(reponse) {
 	return defaultResponseHandler(reponse, (status) => {

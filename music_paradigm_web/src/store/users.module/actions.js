@@ -114,4 +114,24 @@ export default {
 				commit('indicateAssignCurriculumRequestEnd');
 			});
 	},
+
+	resetProgression({ commit, dispatch }, { userId }) {
+		commit('indicateResetProgressionRequest');
+		return userService
+			.resetProgression(userId)
+			.then(
+				(updatedUser) => {
+					commit('setSelectedUser', updatedUser.user);
+					commit('setSelectedProgression', updatedUser.progression);
+					dispatch('alert/setSuccessAlert', 'Progression resetting successful', { root: true });
+					dispatch('fetchAllUsersHeaders');
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateResetProgressionRequestEnd');
+			});
+	},
 };

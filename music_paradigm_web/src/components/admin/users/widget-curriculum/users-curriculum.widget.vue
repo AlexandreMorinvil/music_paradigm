@@ -34,7 +34,7 @@ export default {
 	computed: {
 		...mapGetters('users', ['hasSelectedUser', 'userSelectedId', 'hasCurriculumToSelectedUser']),
 		isResetButtonActive() {
-			return this.hasSelectedUser && this.hasCurriculumToSelectedUser;
+			return false; // this.hasSelectedUser && this.hasCurriculumToSelectedUser;
 		},
 	},
 	methods: {
@@ -57,7 +57,8 @@ export default {
 			console.log('update');
 		},
 		submitProgressionToReset() {
-			console.log('reset');
+			const answer = window.confirm('Are your sure you want to reset the progression of the selected user(s)?');
+			if (answer) this.resetProgression(this.userSelectedId);
 		},
 		// submitUserToUpdate() {
 		// 	const answer = window.confirm('Are your sure you want to edit the user(s)?');

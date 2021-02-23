@@ -35,5 +35,6 @@ export default {
 	justify-content: center;
 	align-items: center;
 	align-content: center;
+	font-size: 1.7em;
 }
 </style>

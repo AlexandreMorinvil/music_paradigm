@@ -93,6 +93,7 @@ function validateExperiment(experiment) {
 		'programmedOctaveOffset',
 		'interactivePianoFirstOctave',
 		'controlType',
+		'isGoBackButtonInFootnote',
 	];
 	Object.keys(experiment).forEach((key) => {
 		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the general parameters is not allowed`);
@@ -172,6 +173,12 @@ function validateBlock(block, index = null) {
 		'feedbackNumerical',
 		'interactivePianoFirstOctave',
 		'skipLoopOnLastRepetition',
+		'canGoBack',
+		'isGoBackButtonInFootnote',
+		'goBackStepButton',
+		'goBackButtonMessage',
+		'checkpoint',
+		'strictPlay',
 
 		'resetVariableValue',
 		'incrementVariable',
@@ -214,6 +221,9 @@ function validateAttributeType(key, value) {
 		case 'failureFeedbackMessage':
 		case 'footnoteMessage':
 		case 'controlType':
+		case 'goBackStepButton':
+		case 'goBackButtonMessage':
+		case 'checkpoint':
 			if (!(typeof value === 'string')) {
 				throw new Error(`The key '${key}' must be of type 'String'`);
 			}
@@ -241,6 +251,9 @@ function validateAttributeType(key, value) {
 		case 'skipStepButtonInFootnote':
 		case 'feedbackNumerical':
 		case 'skipLoopOnLastRepetition':
+		case 'canGoBack':
+		case 'isGoBackButtonInFootnote':
+		case 'strictPlay':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

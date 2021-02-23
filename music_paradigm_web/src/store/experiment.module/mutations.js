@@ -40,8 +40,9 @@ export default {
 		state.isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
 	},
 
-	initExperiment: () => {
+	initExperiment: (state, initialState) => {
 		routerNavigation.moveToExperimentPrelude();
+		state.state = initialState || constants.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
 	},
 
 	updateState: (state) => {
@@ -52,6 +53,12 @@ export default {
 	moveNextStep: (state) => {
 		const { flow, cursor, isInitialized, settings } = state;
 		cursorHandler.advance(state.state, flow, cursor, isInitialized);
+		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
+	},
+
+	movePreviousInnerStep: (state) => {
+		const { flow, cursor, isInitialized, settings } = state;
+		cursorHandler.goBack(flow, cursor, isInitialized);
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 

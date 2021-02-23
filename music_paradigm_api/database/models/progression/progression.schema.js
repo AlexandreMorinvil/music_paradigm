@@ -29,7 +29,7 @@ const schema = new Schema(
         // Indicate the start time of the curriculum. The delays in days are counted starting from that date
         startTime: {
             type: Date,
-            default: Date.now
+            default: null
         },
 
         // Date of the last time the last available experiment was completed for the first time (This is used
@@ -58,7 +58,14 @@ const schema = new Schema(
                         set: setterAssociativeId
                     },
 
-                    // Number of times the experiment was completed
+                    // Number of times the experiment was started from the start (an experiment can only be start one time more than it was completed)
+                    startCount: {
+                        type: Number,
+                        default: 0,
+                        min: 0
+                    },
+
+                    // Number of times the experiment was completed (an experiment can not be completed more times than it was started)
                     completionCount: {
                         type: Number,
                         default: 0,
@@ -73,20 +80,36 @@ const schema = new Schema(
                     },
 
                     // Reference to the log files associated to each completion of the experiment
-                    logReference: {
+                    simpleLogReferences: {
                         type: [Schema.Types.ObjectId],
-                        ref: 'Completion'
+                        ref: 'Log-Simple',
+                        default: []
                     },
 
+                    thoroughLogReferences: {
+                        type: [Schema.Types.ObjectId],
+                        ref: 'Log-Thorough',
+                        default: []
+                    },
+
+                    // Data to restart a session from where we leave it
+                    // Cursor at the position where the experiment was left
                     cursor: {
                         type: Object,
-                        default: null
+                        default: undefined
                     },
 
+                    // Last state when the experiment was left
                     state: {
                         type: Object,
-                        default: null
+                        default: undefined
                     },
+
+                    // Log session id of the experiment
+                    logId: {
+                        type: Object,
+                        default: undefined
+                    }
                 }
             ],
             default: []

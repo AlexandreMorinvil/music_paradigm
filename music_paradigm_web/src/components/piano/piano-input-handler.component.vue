@@ -1,5 +1,7 @@
 <template>
-	<div style="display: none"></div>
+	<div style="display: none">
+		<piano-admin-input-handler-component v-on:simulated-midi-signal="manageMidiNote" style="display: none" />
+	</div>
 </template>
 
 <script>
@@ -7,17 +9,19 @@ import { mapActions, mapGetters } from 'vuex';
 
 import { PianoEventBus, pianoEvents } from '@/_services/piano-event-bus.service.js';
 import MidiPlayer from '@/MidiPlayer';
-import map from '@/_helpers/keyboardMapping';
+import PianoAdminInputHandlerComponent from './piano-admin-input-handler.component';
 
 export default {
+	components: {
+		PianoAdminInputHandlerComponent,
+	},
 	data() {
 		return {
 			player: null,
 			audioConctext: null,
 			piano: null,
 			playingNotes: {},
-			currentOctave: 4, // FIXME: This should be directly in the keyboard mapping
-			keyboardTracker: {}, // Keeps track of keydown and keyup events for each key
+			midiFilePlayingNotes: {},
 			midiAccess: null,
 			midiInputs: [],
 		};
@@ -34,8 +38,6 @@ export default {
 			'setPiano',
 			'clearPlayer',
 			'clearPiano',
-			'addPlayerEndOfFileAction',
-			'removePlayerEndOfFileAction',
 			'addPressedKey',
 			'deletePressedKey',
 			'addPressedNoteLog',
@@ -114,22 +116,18 @@ export default {
 				time: new Date().getTime(),
 			});
 		},
-		toNote(e) {
-			return map[e.key];
-		},
 		playNoteFromMidiFile(noteName, velocity) {
+			if (this.midiFilePlayingNotes[noteName]) return;
 			const currentTime = this.audioConctext.currentTime;
-			this.piano.play(noteName, currentTime, {
+			this.midiFilePlayingNotes[noteName] = this.piano.play(noteName, currentTime, {
 				gain: velocity / 127,
 				duration: 1,
 			});
 		},
 		stopNoteFromMidiFile(noteName) {
-			const currentTime = this.audioConctext.currentTime;
-			this.piano.play(noteName, currentTime, {
-				gain: 0,
-				duration: 1,
-			});
+			if (!this.midiFilePlayingNotes[noteName]) return;
+			this.midiFilePlayingNotes[noteName].stop();
+			delete this.midiFilePlayingNotes[noteName];
 		},
 		initPiano() {
 			if (this.isPianoInitialized || this.isPianoInitializing) return;
@@ -152,10 +150,6 @@ export default {
 					});
 				});
 
-				// Keyboard events listeners
-				window.addEventListener('keydown', this.handleKeyPress);
-				window.addEventListener('keyup', this.handleKeyRelease);
-
 				// Midi messages listener (To handle played automatically MIDI files)
 				this.player.on('midiEvent', this.handleMidiMessage);
 				this.player.on('endOfFile', this.handleMidiFileEndOfFile);
@@ -164,42 +158,20 @@ export default {
 				this.setInitializingState(false);
 			});
 		},
-		handleKeyPress(key) {
-			const note = this.toNote(key);
-			// PianokeyDown => 'Note On'
-			// If the key doesn't exist in the midi map, or we're trying to send a
-			// noteOn event without having most recently sent a noteOff, end here.
-			if (!note || this.keyboardTracker[note]) return;
-			this.keyboardTracker[note] = true;
-			this.manageMidiNote({ data: [144, note, 127] });
-		},
-		handleKeyRelease(key) {
-			switch (key.code) {
-				// Octave down
-				case 'ShiftLeft': {
-					this.currentOctave -= 1;
-					for (const mapKey in map) {
-						if (mapKey !== ' ') map[mapKey] -= 12;
-					}
-					break;
-				}
-				// Octave up
-				case 'ShiftRight': {
-					this.currentOctave += 1;
-					for (const mapKey in map) {
-						if (mapKey !== ' ') map[mapKey] += 12;
-					}
-					break;
-				}
-				// Piano keyUp  => 'Note Off'
-				default: {
-					const note = this.toNote(key);
-					if (note) {
-						this.keyboardTracker[note] = false;
-						this.manageMidiNote({ data: [128, note, 127] });
-					}
-				}
+		terminatePiano() {
+			window.removeEventListener('keydown', this.handleKeyPress);
+			window.removeEventListener('keyup', this.handleKeyRelease);
+			if (this.player) {
+				this.player.off('midiEvent', this.handleMidiMessage);
+				this.player.off('endOfFile', this.handleMidiFileEndOfFile);
+				this.player = null;
+				this.clearPlayer();
 			}
+			this.clearPiano();
+			while (this.midiInputs.length > 0) this.midiInputs.pop().onmidimessage = null;
+			this.midiAccess = null;
+			this.setInitializedState(false);
+			this.setInitializingState(false);
 		},
 		/**
 		 * Hanfling the midi messages to play a midi file
@@ -220,8 +192,10 @@ export default {
 		handleMidiMessage(midiMessage) {
 			if (midiMessage.name === 'Note on') {
 				this.playNoteFromMidiFile(midiMessage.noteName, midiMessage.velocity);
-				if (midiMessage.velocity === 0) this.deleteMidiFileTriggeredKey(midiMessage.noteNumber);
-				else this.addMidiFileTriggeredKey(midiMessage.noteNumber);
+				if (midiMessage.velocity === 0) {
+					this.stopNoteFromMidiFile(midiMessage.noteName);
+					this.deleteMidiFileTriggeredKey(midiMessage.noteNumber);
+				} else this.addMidiFileTriggeredKey(midiMessage.noteNumber);
 			} else if (midiMessage.name === 'Note off') {
 				this.stopNoteFromMidiFile(midiMessage.noteName);
 				this.deleteMidiFileTriggeredKey(midiMessage.noteNumber);
@@ -237,21 +211,6 @@ export default {
 			// We also stop the playing of the last note manually
 			const lastNoteName = this.midiFileNotesName[this.midiFileNotesName.length - 1];
 			this.stopNoteFromMidiFile(lastNoteName);
-		},
-		terminatePiano() {
-			window.removeEventListener('keydown', this.handleKeyPress);
-			window.removeEventListener('keyup', this.handleKeyRelease);
-			if (this.player) {
-				this.player.off('midiEvent', this.handleMidiMessage);
-				this.player.off('endOfFile', this.handleMidiFileEndOfFile);
-				this.player = null;
-				this.clearPlayer();
-			}
-			this.clearPiano();
-			while (this.midiInputs.length > 0) this.midiInputs.pop().onmidimessage = null;
-			this.midiAccess = null;
-			this.setInitializedState(false);
-			this.setInitializingState(false);
 		},
 		probeCompatibility() {
 			// Verifying MIDI support

@@ -11,14 +11,17 @@ export default {
 	setStartingPoint: ({ commit }, cursor = null) => {
 		commit('initCursor', cursor);
 	},
-	initExperiment: ({ commit }) => {
-		commit('initExperiment');
+	initExperiment: ({ commit }, initialState = null) => {
+		commit('initExperiment', initialState);
 	},
 	updateState: ({ commit }) => {
 		commit('updateState');
 	},
 	goNextStep: ({ commit }) => {
 		commit('moveNextStep');
+	},
+	goPreviousInnerStep: ({ commit }) => {
+		commit('movePreviousInnerStep');
 	},
 	goStepPostSkip: ({ commit }) => {
 		commit('movePostSkip');

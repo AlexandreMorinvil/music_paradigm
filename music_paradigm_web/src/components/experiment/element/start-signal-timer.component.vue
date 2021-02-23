@@ -1,8 +1,5 @@
 <template>
-	<div v-if="isSignalBeingWaited" id="signal">
-		START IN :
-		<br />{{ timerDisplay }}
-	</div>
+	<div v-if="isSignalBeingWaited" id="signal">{{ $t('experiment.element.start-signal-timer.start-in') }}<br />{{ timerDisplay }}</div>
 </template>
 
 <script>

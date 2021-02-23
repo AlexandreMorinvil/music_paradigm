@@ -3,12 +3,14 @@ import config from '@/config';
 const staticDirectory = '/static/';
 const experimentRessourceDirectory = '/experiment-ressources/';
 
-const adminSessions = '/admin-sessions/';
 const sessions = '/sessions/';
 const account = '/account/';
 const experiments = '/experiments/';
 const curriculums = '/curriculums/';
 const users = '/users/';
+
+const logSimple = '/log-simple/';
+const logThorough = '/log-thorough/';
 
 const storage = '/storage/';
 
@@ -27,9 +29,6 @@ export default {
 	},
 
 	// API calls
-	adminSessions: function (parameters) {
-		return config.apiUrl + adminSessions + parameters;
-	},
 	sessions: function (parameters) {
 		return config.apiUrl + sessions + parameters;
 	},
@@ -44,6 +43,12 @@ export default {
 	},
 	users: function (parameters) {
 		return config.apiUrl + users + parameters;
+	},
+	logSimple: function (parameters) {
+		return config.apiUrl + logSimple + parameters;
+	},
+	logThorough: function (parameters) {
+		return config.apiUrl + logThorough + parameters;
 	},
 	storage: function (parameters) {
 		return config.apiUrl + storage + parameters;

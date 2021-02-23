@@ -16,10 +16,10 @@ export default {
 		...mapGetters('experiment', ['enableSoundFlag']),
 		soundStatus() {
 			// If this value is not evaluted, the midi handling is not compatible
-			if (!navigator.requestMIDIAccess) return 'ERROR';
-			else if (!this.isPianoInitialized) return 'LOAD...';
-			else if (this.isPianoPaused) return 'WAIT';
-			else return this.enableSoundFlag ? 'ON' : 'OFF';
+			if (!navigator.requestMIDIAccess) return this.$t('experiment.status-bar.piano.error');
+			else if (!this.isPianoInitialized) return this.$t('experiment.status-bar.piano.load');
+			else if (this.isPianoPaused) return this.$t('experiment.status-bar.piano.wait');
+			else return this.enableSoundFlag ? this.$t('experiment.status-bar.piano.on') : this.$t('experiment.status-bar.piano.off');
 		},
 		color() {
 			if (!navigator.requestMIDIAccess) return 'error';
@@ -35,7 +35,8 @@ export default {
 #piano-display {
 	display: flex;
 	align-items: center;
-	width: 200px;
+	justify-content: center;
+	min-width: 200px;
 	height: 85%;
 }
 

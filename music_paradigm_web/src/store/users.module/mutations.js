@@ -42,6 +42,14 @@ export default {
 		state.status.isAssigningCurriculum = false;
 	},
 
+	indicateResetProgressionRequest(state) {
+		state.status.isResetingProgression = true;
+	},
+
+	indicateResetProgressionRequestEnd(state) {
+		state.status.isResetingProgression = false;
+	},
+
 	// Setters
 	setSelectedUser(state, user) {
 		state.selectedUser = constants.EMPTY_USER();

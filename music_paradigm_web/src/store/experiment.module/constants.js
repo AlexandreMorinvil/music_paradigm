@@ -15,6 +15,7 @@ export default {
 	DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES,
 	DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES,
 	DEFAULT_EXPERIMENT_VARIABLE_VALUES,
+	DEFAULT_EXPERIMENT_STATE_STATE_VALUES,
 	IS_FULLY_NOT_INITIALIZED_STATUS,
 };
 
@@ -33,6 +34,7 @@ const DEFAULT_LOG_FLAG = true;
 const DEFAULT_SUCCESSES_FOR_SKIP = 0;
 const DEFAULT_HIDE_FEEDBACK_SMILEY = false;
 const DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE = false;
+const DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE = false;
 const DEFAULT_PROGRAMMED_OCTAVE_OFFSET = 0;
 const DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE = 4;
 const DEFAULT_CONTROL_TYPE = 'piano';
@@ -47,12 +49,7 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 		flow: [], // Description of the different steps of the experiment
 
 		// Mandatory description of the flow
-		description: {
-			name: '', // Name of the experiment
-			folder: '', // Folder in which the resources for the experiment are located
-			group: '', // Group of the experiment
-			version: 0, // Version of the experiment
-		},
+		description: DEFAULT_DESCRIPTION_SETTINGS_VALUES(),
 
 		// General settings of the flow
 		settings: DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES(),
@@ -71,6 +68,15 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 	};
 }
 
+function DEFAULT_DESCRIPTION_SETTINGS_VALUES() {
+	return {
+		name: '', // Name of the experiment
+		folder: '', // Folder in which the resources for the experiment are located
+		group: '', // Group of the experiment
+		version: 0, // Version of the experiment
+	};
+}
+
 function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 	return {
 		anyPianoKey: DEFAULT_ANY_PIANO_KEY, // Allowing any piano key press to advance to the next page
@@ -84,6 +90,7 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		successesForSkip: DEFAULT_SUCCESSES_FOR_SKIP, // Indicate the number of successful 'Playing' states before being able to leave a group of blocks
 		hideFeedbackSmiley: DEFAULT_HIDE_FEEDBACK_SMILEY, // Indicate whether the feedback state contains a smiley by default
 		isSkipStepButtonInFootnote: DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE, // Indicates wether the skip buttons are displayed by default in the footnote when there is a button footnote
+		isGoBackButtonInFootnote: DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE, // Indicates wether the go back button is displayed by default in the footnote when there is a button footnote
 		programmedOctaveOffset: DEFAULT_PROGRAMMED_OCTAVE_OFFSET, // Indicates a preset octave shift for the midi piano (knowing that most midi piano are on octave 3 by default)
 		interactivePianoFirstOctave: DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE, // Indicate the first octave from which the notes must be displayed on the interactive piano (which has 2 octaves)
 		controlType: DEFAULT_CONTROL_TYPE, // Indicate which type of controle is used by the application ('piano', 'keyboard' or 'none'). Will also affect the pre-session preparation of the user
@@ -105,11 +112,14 @@ function DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES() {
 			indexPileStart: UNSET_INDEX, // Index to which there remains content to depile
 			indexGroupEnd: UNSET_INDEX, // Index of the end of a group of blocks (the last index with a followedBy or an individual block)
 			totalInnerSteps: 0, // Number of steps in a given block
+			numberTotalRepetions: 1, // Number of repetitions in total
 			numberRepetition: 1, // Number of repetitions left to do
 			numberPiledMedia: 0, // Number of media content piled at the index pile start
 		},
 		flag: {
-			needsResetLoopParameters: false, // Indicator of whether he loop specific parameters need to be restarted (only when we enter a need block)
+			isFirstIndexPassage: true, // Indicator of whether it is the first time the index has reached a certain value (is false whenever the cursor loops back)
+			needsResetLoopParameters: false, // Indicator of whether he loop specific parameters need to be restarted (only when we enter a need block group)
+			isNewBlock: true, // Indicatio of wheter a new block was entered (Thus, we are not in just another inner step)
 		},
 	};
 }
@@ -152,6 +162,12 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			feedbackNumerical: false, // Indicator of whether the feedback must be given in its numerical form instead of with range bars
 			interactivePianoFirstOctave: DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE, // Block specific "interactivePianoFirstOctave" superseding the general setting
 			skipLoopOnLastRepetition: false, // Indicate whether a block must be skipped if it's on the last repetition
+			canGoBack: false, // Indicate that it is possible to go back one INNER STEP (we can not go back a block)
+			goBackStepButton: '', // Button to press to go back to the previous inner step (is valid only if a button is specified)
+			goBackButtonMessage: '', // Message indicated on the go back button if there is a go back button
+			isGoBackButtonInFootnote: DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE, // Block specific isGoBackButtonInFootnote superceeding the general parameter
+			checkpoint: true, // Indicate whether the state should be saved at the current block
+			strictPlay: false, // Indicate whether the playing state must be stopped upon a mistake
 		},
 		// Session specific informations
 		record: {

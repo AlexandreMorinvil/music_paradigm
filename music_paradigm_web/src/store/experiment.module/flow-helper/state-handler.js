@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 /* eslint-disable prettier/prettier */
 /* eslint-disable key-spacing */
 import blockHandler from './block-handler';
@@ -85,10 +86,16 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
 		melodyRepetition,
 		successesForSkipLoop,
 		isSkipStepButtonInFootnote,
+		isGoBackButtonInFootnote,
 		startSignal,
 		feedbackNumerical,
 		interactivePianoFirstOctave,
 		skipLoopOnLastRepetition,
+		canGoBack,
+		goBackStepButton,
+		goBackButtonMessage,
+		checkpoint,
+		strictPlay,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -109,10 +116,16 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
 		melodyRepetition: 				typeof melodyRepetition === 'number' 			? melodyRepetition : 1,
 		successesForSkipLoop: 			typeof successesForSkipLoop === 'number' 		? successesForSkipLoop : generalSettings.successesForSkipLoop,
 		isSkipStepButtonInFootnote: 	typeof isSkipStepButtonInFootnote === 'boolean' ? isSkipStepButtonInFootnote : generalSettings.isSkipStepButtonInFootnote,
+		isGoBackButtonInFootnote:		typeof isGoBackButtonInFootnote === 'boolean'	? isGoBackButtonInFootnote : generalSettings.isGoBackButtonInFootnote,
 		startSignal: 					typeof startSignal === 'number' 				? startSignal : 0,
 		feedbackNumerical: 				typeof feedbackNumerical === 'boolean' 			? feedbackNumerical : false,
 		interactivePianoFirstOctave: 	typeof interactivePianoFirstOctave === 'number' ? interactivePianoFirstOctave : generalSettings.interactivePianoFirstOctave,
-		skipLoopOnLastRepetition: 			typeof skipLoopOnLastRepetition === 'boolean' 		? skipLoopOnLastRepetition : false,
+		skipLoopOnLastRepetition: 		typeof skipLoopOnLastRepetition === 'boolean' 	? skipLoopOnLastRepetition : false,
+		canGoBack:						typeof canGoBack === 'boolean'					? canGoBack : false,
+		goBackStepButton:				typeof goBackStepButton === 'string'			? goBackStepButton : '',
+		goBackButtonMessage:			typeof goBackButtonMessage === 'string'			? goBackButtonMessage : '',
+		checkpoint:						typeof checkpoint === 'string'					? checkpoint : false,
+		strictPlay: 					typeof strictPlay === 'boolean'					? strictPlay : false,
 	};
 
 	// Indicate that the state (current block's settings) was already initialized

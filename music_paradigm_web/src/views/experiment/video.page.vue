@@ -1,22 +1,22 @@
 <template>
 	<div class="state-content-flex">
 		<text-area-component class="text-area state-section" />
-		<div class="visual-media-board video-area state-section">
-			<div class="video-box">
-				<div v-show="!isPlaying" class="video-hidding-thumbnail" :style="videoWidthCSSvariable + ';' + videoHeightCSSvariable">
-					{{ videoWaitingMessage }}
-				</div>
-				<video-player
-					v-if="hasVideo"
-					v-show="isPlaying"
-					:src="urlExperimentRessource(videoName)"
-					:dimension="videoDimensions"
-					:playBack="playBack"
-					v-on:finished-playback="handdleEndOfVideo"
-					ref="video"
-				/>
+
+		<div class="video-box video-area">
+			<div v-show="!isPlaying" class="video-hidding-thumbnail" :style="videoWidthCSSvariable + ';' + videoHeightCSSvariable">
+				{{ videoWaitingMessage }}
 			</div>
+			<video-player
+				v-if="hasVideo"
+				v-show="isPlaying"
+				:src="urlExperimentRessource(videoName)"
+				:dimension="videoDimensions"
+				:playBack="playBack"
+				v-on:finished-playback="handdleEndOfVideo"
+				ref="video"
+			/>
 		</div>
+
 		<piano-area-component class="piano-area state-section" />
 		<keyboard-area-component class="piano-area state-section" />
 	</div>
@@ -101,22 +101,22 @@ export default {
 			const minutes = Math.floor((this.delayLeftInMilliseconds / (60 * 1000)) % 60);
 			const seconds = Math.floor((this.delayLeftInMilliseconds / 1000) % 60);
 			if (minutes > 0) {
-				display += `${minutes} minutes `;
+				display += this.$tc('views.experiment.video.minute', minutes, { minute: minutes });
 			}
-			display += `${seconds} seconds`;
+			display += this.$tc('views.experiment.video.second', seconds, { second: seconds });
 			return display;
 		},
 		videoWaitingMessage() {
-			if (this.videoName === '') return 'There is no video to be played';
-			else return `The video will start in ${this.delayLeftDisplay}`;
+			if (this.videoName === '') return this.$t('views.experiment.video.no-video');
+			else return this.$t('views.experiment.video.video-countdown', { time: this.delayLeftDisplay });
 		},
 	},
 	methods: {
 		updateFootnote() {
 			let footnoteMessage = '';
-			if (!this.hasVideo)
-				footnoteMessage = `There is no video to be played, the experiment will automatically  go to the next step in ${this.errorAutomaticTransitionSeconds} seconds`;
-			else footnoteMessage = 'The experiment will automatically go to the next step after the video playback';
+			const secondsLeft = this.errorAutomaticTransitionSeconds;
+			if (!this.hasVideo) footnoteMessage = this.$tc('views.experiment.video.footnote-no-video', secondsLeft, { second: secondsLeft });
+			else footnoteMessage = this.$t('views.experiment.video.footnote-after-video');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		handdleEndOfVideo() {
@@ -165,19 +165,10 @@ export default {
 </script>
 
 <style scoped>
-.visual-media-board {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	height: 100%;
-	width: 100%;
-}
 .video-box {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 80%;
 	width: 100%;
 }
 .video-hidding-thumbnail {
@@ -190,11 +181,12 @@ export default {
 }
 
 .text-area {
-	flex-grow: 1;
+	height: 10%;
 }
 
 .video-area {
-	flex-grow: 5;
+	flex-grow: 1;
+	margin-bottom: 5%;
 }
 
 .piano-area {

@@ -26,11 +26,15 @@ app.use(jwt());
 
 // api routes
 app.use('/sessions', require('sessions/sessions.controller'));
-app.use('/admin-sessions', require('admin-sessions/admin-sessions.controller'));
+app.use('/log-simple', require('log/simple/log.controller'));
+app.use('/log-thorough', require('log/thorough/log.controller'));
+
+
 app.use('/account', require('account/account.controller'));
 app.use('/experiments', require('experiments/experiments.controller'));
 app.use('/curriculums', require('curriculums/curriculums.controller'));
 app.use('/users', require('users/users.controller'));
+
 
 // setup routes for file browser
 app.use("/storage", sdk.Router([

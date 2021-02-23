@@ -22,7 +22,7 @@ export default {
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
-		...mapGetters('experiment', ['timeoutInSeconds']),
+		...mapGetters('experiment', ['timeoutInSeconds', 'strictPlay']),
 		...mapGetters('piano', ['midiFileNotesMidi', 'playedNotesMidi', 'pressedKeys']),
 		playProgress() {
 			return this.playedNotesMidi.length;
@@ -47,8 +47,11 @@ export default {
 			if (this.hasInteractivePiano) this.$refs.piano.clearDesignatedKeys();
 		},
 		updateFootnote() {
-			let footnoteMessage = 'The experiment will go to the next step after your performance';
-			if (this.timeoutInSeconds !== 0) footnoteMessage += ` or after ${this.timeoutInSeconds} seconds`;
+			let footnoteMessage = this.$t('experiment.playing-mode.accuracy.footnote-after-performance');
+			if (this.timeoutInSeconds > 0) {
+				const seconds = this.timeoutInSeconds;
+				footnoteMessage = this.$tc('experiment.playing-mode.accuracy.footnote-after-performance-or-time', seconds, { second: seconds });
+			}
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		evaluate() {
@@ -63,6 +66,16 @@ export default {
 		window.clearTimeout(this.timeLimitUniqueIdentifier);
 	},
 	watch: {
+		playedNotesMidi: {
+			deep: true,
+			handler: function () {
+				if (!this.strictPlay) return;
+				const playedNoteIndex = this.playedNotesMidi.length - 1;
+				const referenceIndex = playedNoteIndex % this.midiFileNotesMidi.length;
+				const hasError = this.playedNotesMidi[playedNoteIndex] !== this.midiFileNotesMidi[referenceIndex];
+				if (hasError) this.$emit('finished-playing');
+			},
+		},
 		playProgress(value) {
 			if (value >= this.maxPlayProgress) {
 				this.hasPlayedAllNotes = true;

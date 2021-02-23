@@ -51,7 +51,6 @@
 		"camelcase": ["error", { "properties": "never", "ignoreDestructuring": true, "ignoreImports": true }],
 		"array-bracket-spacing": ["error", "never"],
 		"block-spacing": "error",
-		"capitalized-comments": ["error", "always", { "ignoreInlineComments": true, "ignoreConsecutiveComments": true }],
 		"comma-spacing": ["error", { "before": false, "after": true }],
 		"computed-property-spacing": ["error", "never"],
 		"eol-last": ["error", "always"],

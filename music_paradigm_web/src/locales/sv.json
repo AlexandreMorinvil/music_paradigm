@@ -1,3 +1,198 @@
 {
-  "message": "Hej i18n !!"
+  "music-paradigm": "Pianoträning",
+  "application-component": {
+    "footer": {
+      "footnote-text": "REMOVE"
+    },
+    "alert": {
+      "success": "SUCCESS",
+      "information": "INFORMATION",
+      "warning": "WARNING",
+      "error": "ERROR"
+    },
+    "login-prompt": {
+      "login": "Logga in",
+      "username": "",
+      "enterUsername": "Användarnamn",
+      "password": "Lösenord",
+      "enterPassword": "",
+      "username-required": "Vänligen ange användarnamn"
+    }
+  },
+  "content-frame": {
+    "page-to-implemented": "Denna sida inte färdigimplementerad."
+  },
+  "navigation-bar": {
+    "welcome": "Välkommen {fullname}!",
+    "logout": "Logga ut",
+    "session-in-progress": "REMOVE",
+    "leave": "Avsluta"
+  },
+  "user": {
+    "home": {
+      "run-today-session": "REMOVE",
+      "today-session-unavailable": "REMOVE"
+    },
+    "progression-board": {
+      "available": "Tillgänglig",
+      "tomorrow": "Imorgon",
+      "in-x-days": "Om {number} dag | Om {number} dagar",
+      "in-x-hours": "Om {time} timmar",
+      "undetermined": "Snart"
+    },
+    "pre-session": {
+      "pre-session-advice": {
+        "close-all": "Vänligen stäng alla andra fönster och program innan du går vidare.",
+        "web-browser": "För att detta program ska fungera korrekt måste du köra det i Google Chrome webbläsare."
+      },
+      "attach-piano": {
+        "attach-piano": "Anslut pianot till din dator med USB-sladden och placera det så att du kan spela bekvämt med högerhanden.\n\nTryck sedan knappen nedanför för att gå vidare.",
+        "initializing": "Konfigurerar...",
+        "initialize-midi": "Konfigurera pianot"
+      },
+      "test-piano": {
+        "verify-piano": "För detta test har ljudet på pianot stängts av.\n\nSäkerställ att tangenterna som visas på skärmen blir blå när du trycker ner motsvarande tangenter på pianot.",
+        "press-any-key": "Tryck på vilken tangent du vill.",
+        "problem-signal": "Händer ingenting på skärmen när du trycker på pianotangenterna?",
+        "problem-correspondance": "Är det inte samma tangenter som blir blå på skärmen som du trycker ner på pianot?"
+      },
+      "test-sound": {
+        "verify-sound": "Nu borde du höra en ton upprepas.\n\nJustera volymen till en tydlig och behaglig nivå.",
+        "problem-sound": "Hör du inget ljud?"
+      },
+      "continue": "Fortsätt",
+      "start-session": "Börja träningssessionen"
+    },
+    "problem-prompt": {
+      "default": {
+        "title": "Ospecificerad",
+        "solution-message": "Vänligen prova följande | Vänligen prova följande",
+        "solution-1": "Ingen lösning kunde hittas",
+        "conclusion": "Om åtgärden ovan inte löste problemet:\nVänligen kontakta teknisk support. | Om åtgärderna ovan inte löste problemet:\nVänligen kontakta teknisk support.",
+        "button": "OK"
+      },
+      "piano-setting": {
+        "title": "Pianot kan inte anslutas.",
+        "solution-1": "Säkerställ att du använder Google Chrome webbläsare.\nAndra webbläsare som till exempel Firefox eller Internet Explorer är inte fullt kompatibla med programmet."
+      },
+      "piano-input": {
+        "title": "Pianot ger ingen signal.",
+        "solution-1": "Försök med att dra ur och återansluta pianot.\nSäkerställ att USB-sladden sitter i ordentligt i både datorn och pianot.\n\nTryck därefter OK för att upprepa konfigureringen av pianot."
+      },
+      "piano-correspondance": {
+        "title": "Andra tangenter blir blå än dem jag spelar på pianot.",
+        "solution-1": "Pianot har två knappar på vänster sida som indikeras 'octave'.\nAnvänd dessa knappar för att justera tangenterna tills pianottangenterna motsvarar de som blir blå på skärmen."
+      },
+      "piano-sound": {
+        "title": "Inget ljud hörs.",
+        "solution-1": "Säkerställ att volymen är på och inte för låg, och att du lyssnar på rätt utgång (t.ex. högtalare eller hörlurar).",
+        "solution-2": "Testa att uppdatera webbsidan och försök igen.",
+        "solution-3": "Testa att stänga browsern och öppna/logga in igen.",
+        "solution-4": "Testa att starta om datorn och försök igen.",
+        "conclusion": "Om ingen av ovanstående lösningar fungerade:\nVänligen kontakta teknisk support."
+      }
+    }
+  },
+  "experiment": {
+    "element": {
+      "start-signal-timer": {
+        "start-in": "Börjar om :"
+      },
+      "skip-button": {
+        "default-message": "Tryck {button} för att hoppa över."
+      }
+    },
+    "status-bar": {
+      "state": {
+        "cue": "REMOVE",
+        "end": "REMOVE",
+        "feedback": "REMOVE",
+        "instruction": "REMOVE",
+        "perform": "REMOVE",
+        "rest": "REMOVE",
+        "video": "REMOVE"
+      },
+      "piano":{
+        "on": "PÅ",
+        "off": "AV",
+        "load": "Laddar...",
+        "wait": "Vänta",
+        "error": "FEL"
+      }
+    },
+    "playing-mode": {
+      "speed": {
+        "footnote-start-after-press": "Tiden börjar efter det första tangentnedslaget.",
+        "footnote-after-time": "Sessionen går vidare till nästa moment om {time}",
+        "minute": "{minute} minut| {minute} minuter",
+        "second": "{second} sekund | {second} sekunder"
+      },
+      "accuracy": {
+        "footnote-after-performance": "REMOVE",
+        "footnote-after-performance-or-time": "Sessionen fortsätter efter ditt genomförande eller om {second} sekund. | Sessionen fortsätter efter ditt genomförande eller om {second} sekunder."
+      }
+    },
+    "text-timeout": {
+      "default-message": "Tidsgränsen är uppnådd.\nTräningen avslutas."
+    },
+    "feedback": {
+      "feedback-grade": {
+        "sequences-played": "Spelade sekvenser",
+        "melody-accuracy": "Precision melodi",
+        "rhythm-accuracy": "Precision rytm"
+      }
+    }
+  },
+  "views": {
+    "user": {
+      "home": {
+        "home": "Home"
+      },
+      "pre-session": {
+        "before-starting": "Förberedelser"
+      }
+    },
+    "experiment": {
+      "context": {
+        "confirm-leave": "Vill du verkligen avsluta den påbörjade sessionen?"
+      },
+      "cue": {
+        "footnote-no-melody": "Det finns ingen melodi att spela,\nsessionen kommer automatiskt gå vidare till nästa moment om {second} sekund | Det finns ingen melodi att spela,\nsessionen kommer automatiskt gå vidare till nästa moment om {second} sekunder",
+        "footnote-after-melody": "REMOVE"
+      },
+      "end": {
+        "footnote-press-any-key": "Tryck på valfri piano- eller datortangent för att avsluta sessionen.",
+        "footnote-press-space-bar": "Tryck mellanslag för att avsluta sessionen."
+      },
+      "feedback": {
+        "footnote-press-any-key": "Tryck på valfri pianotangent eller mellanslag för att gå vidare till nästa moment.",
+        "footnote-press-space-bar": "Tryck mellanslag för att gå vidare till nästa moment."
+      },
+      "instruction": {
+        "footnote-press-any-key": "Tryck på valfri pianotangent eller mellanslag för att gå vidare till nästa moment.",
+        "footnote-press-space-bar": "Tryck på mellanslag för att gå vidare till nästa moment."
+      },
+      "playing": {
+        "footnote-after-performance": "REMOVE"
+        
+      },
+      "prelude": {
+        "loading": "Laddar...",
+        "ready": "Klar"
+      },
+      "rest": {
+        "footnote-after-time": "Sessionen kommer att gå vidare till nästa moment om {time}",
+        "minute": "{minute} minut | {minute} minuter",
+        "second": "{second} sekund | {second} sekunder"
+      },
+      "video": {
+        "footnote-no-video": "Det finns ingen video att spela upp,\nsessionen kommer att gå vidare automatiskt till nästa moment om {second} sekund | Det finns ingen video att spela upp,\nsessionen kommer att gå vidare automatiskt till nästa moment om {second} sekunder",
+        "footnote-after-video": "REMOVE",
+        "no-video": "Det finns ingen video att spela upp.",
+        "video-countdown": "Instruktionsvideon kommer att spelas upp om {time}",
+        "minute": "{minute} minut | {minute} minuter",
+        "second": "{second} sekund | {second} sekunder"
+      }
+    }
+  }
 }
