@@ -56,8 +56,10 @@ const schema = new Schema(
                     pictureFileName: { type: [], default: undefined },
                     interactivePiano: { type: [], default: undefined },
                     interactiveKeyboard: { type: [], default: undefined },
+                    interactiveKeyboardTextMapping: { type: [], default: undefined },
                     midiFileName: { type: [String], default: undefined },
                     videoFileName: { type: [String], default: undefined },
+
                     referenceKeyboardKeys: { type: [[String]], default: undefined },
                     numberRepetition: { type: Number, default: undefined },
                     followedBy: { type: Boolean, default: undefined },

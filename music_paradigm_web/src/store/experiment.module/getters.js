@@ -101,6 +101,10 @@ export default {
 		return state.state.content.interactivePiano || false;
 	},
 
+	interactiveKeyboardTextMapping: (state) => {
+		return state.state.mediaFile.interactiveKeyboardTextMapping || null;
+	},
+
 	interactiveKeyboard: (state) => {
 		return state.state.content.interactiveKeyboard || false;
 	},

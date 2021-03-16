@@ -143,6 +143,7 @@ function validateBlock(block, index = null) {
 		'textContent',
 		'interactivePiano',
 		'interactiveKeyboard',
+		'interactiveKeyboardTextMapping',
 		'pictureFileName',
 		'helperImageFileName',
 		'midiFileName',
@@ -262,6 +263,7 @@ function validateAttributeType(key, value) {
 		// Object
 		case 'lastRepetitionVersion':
 		case 'succeeededForSkipLoopVersion':
+		case 'interactiveKeyboardTextMapping':
 			if (!(typeof value === 'object')) {
 				throw new Error(`The key '${key}' must be of type 'Object'`);
 			}
