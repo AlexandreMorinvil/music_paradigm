@@ -93,11 +93,14 @@ function gradeSpeedType(evaluationResults, { minSequencePlayed }) {
 	return grades;
 }
 
-function gradeRhythmType(evaluationResults, { minNoteAccuracy, maxRhythmError }, isRelativeRhythm) {
-	const rythmRelativeErrorMeasure = isRelativeRhythm
-		? evaluationResults.relativeInterOnsetIntervalsRelativeError
-		: evaluationResults.interOnsetIntervalsRelativeError;
+function gradeRhythmType(evaluationResults, { minNoteAccuracy, maxRhythmError }, relativeRhythmImportance) {
 
+	// Give weighted importance to IOI error and relative IOI error
+	const rythmRelativeErrorMeasure =
+		relativeRhythmImportance * evaluationResults.relativeInterOnsetIntervalsRelativeError +
+		Number(1 - relativeRhythmImportance) * evaluationResults.interOnsetIntervalsRelativeError;
+
+	// Compute the grades
 	const grades = [
 		{
 			criteria: 'Melody Accuracy',

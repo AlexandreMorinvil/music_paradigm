@@ -22,7 +22,7 @@ export default {
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
-		...mapGetters('experiment', ['timeoutInSeconds', 'strictPlay', 'isRelativeRhythm']),
+		...mapGetters('experiment', ['timeoutInSeconds', 'strictPlay', 'relativeRhythmImportance']),
 		...mapGetters('piano', ['midiFileNotesMidi', 'playedNotesMidi', 'pressedKeys']),
 		playProgress() {
 			return this.playedNotesMidi.length;
@@ -55,7 +55,7 @@ export default {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		evaluate() {
-			this.evaluateRhythmType(this.isRelativeRhythm);
+			this.evaluateRhythmType(this.relativeRhythmImportance);
 		},
 	},
 	mounted() {

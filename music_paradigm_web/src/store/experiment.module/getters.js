@@ -291,8 +291,12 @@ export default {
 		return state.state.settings.strictPlay || false;
 	},
 
-	isRelativeRhythm: (state) => {
-		return state.settings.isRelativeRhythm || false;
+	relativeRhythmImportance: (state) => {
+		let relativeRhythmImportance = state.settings.relativeRhythmImportance;
+		if (typeof state.settings.relativeRhythmImportance !== 'number') relativeRhythmImportance = constants.DEFAULT_RELATIVE_RHYTHM_IMPORTANCE;
+		if (relativeRhythmImportance < 0) return 0;
+		else if (relativeRhythmImportance > 1) return 1;
+		else return relativeRhythmImportance;
 	},
 
 	// Getters used for the content disposition on the screen

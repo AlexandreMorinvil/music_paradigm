@@ -8,11 +8,11 @@ export default {
 		});
 	},
 
-	evaluateRhythmType: (state, { results: results, isRelativeRhythm: isRelativeRhythm }) => {
+	evaluateRhythmType: (state, { results: results, relativeRhythmImportance: relativeRhythmImportance }) => {
 		state.grades = notePerformance.gradeRhythmType(
 			results,
 			{ minNoteAccuracy: config.minNoteAccuracy || 100, maxRhythmError: config.maxRhythmError || 15 },
-			isRelativeRhythm,
+			relativeRhythmImportance,
 		);
 	},
 
