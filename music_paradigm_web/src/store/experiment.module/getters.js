@@ -291,6 +291,10 @@ export default {
 		return state.state.settings.strictPlay || false;
 	},
 
+	isRelativeRhythm: (state) => {
+		return state.settings.isRelativeRhythm || false;
+	},
+
 	// Getters used for the content disposition on the screen
 	hasFootnote: (state) => {
 		let hasFootNote = constants.DEFAULT_FOOTNOTE;

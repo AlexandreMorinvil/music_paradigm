@@ -99,9 +99,9 @@ export default {
 	},
 
 	// Performance evaluation
-	evaluateRhythmType: ({ commit, dispatch, getters }) => {
+	evaluateRhythmType: ({ commit, dispatch, getters }, isRelativeRhythm = false) => {
 		commit('evaluateRhythmType');
-		dispatch('evaluation/evaluateRhythmType', getters.results, { root: true });
+		dispatch('evaluation/evaluateRhythmType', { results: getters.results, isRelativeRhythm: isRelativeRhythm }, { root: true });
 	},
 	evaluateSpeedType: ({ commit, dispatch, getters }) => {
 		commit('evaluateSpeedType');

@@ -94,6 +94,7 @@ function validateExperiment(experiment) {
 		'interactivePianoFirstOctave',
 		'controlType',
 		'isGoBackButtonInFootnote',
+		'isRelativeRhythm',
 	];
 	Object.keys(experiment).forEach((key) => {
 		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the general parameters is not allowed`);
@@ -255,6 +256,7 @@ function validateAttributeType(key, value) {
 		case 'canGoBack':
 		case 'isGoBackButtonInFootnote':
 		case 'strictPlay':
+		case 'isRelativeRhythm':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

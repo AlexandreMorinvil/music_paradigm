@@ -21,6 +21,7 @@ const schema = new Schema(
         programmedOctaveOffset: { type: Number, default: 0 },
         interactivePianoFirstOctave: { type: Number, default: 4 },
         controlType: { type: String, default: 'piano', enum: ['piano', 'keyboard', 'none'] },
+        isRelativeRhythm: { type: Boolean, default: undefined },
         variables: [
             {
                 name: { type: String, required: true },

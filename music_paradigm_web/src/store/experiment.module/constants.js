@@ -40,6 +40,7 @@ const DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE = false;
 const DEFAULT_PROGRAMMED_OCTAVE_OFFSET = 0;
 const DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE = 4;
 const DEFAULT_CONTROL_TYPE = 'piano';
+const DEFAULT_IS_RELATIVE_RYTHM = false;
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
 	return {
@@ -96,6 +97,7 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		programmedOctaveOffset: DEFAULT_PROGRAMMED_OCTAVE_OFFSET, 					// Indicates a preset octave shift for the midi piano (knowing that most midi piano are on octave 3 by default)
 		interactivePianoFirstOctave: DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE,		// Indicate the first octave from which the notes must be displayed on the interactive piano (which has 2 octaves)
 		controlType: DEFAULT_CONTROL_TYPE, 											// Indicate which type of controle is used by the application ('piano', 'keyboard' or 'none'). Will also affect the pre-session preparation of the user
+		isRelativeRhythm: DEFAULT_IS_RELATIVE_RYTHM,									// Indicate wether the relative rhythm accuracy is computed with the IOI (false) or relative IOI (true)
 	};
 }
 

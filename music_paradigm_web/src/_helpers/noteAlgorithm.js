@@ -4,12 +4,10 @@ export default {
 	getTransitionSpeeds,
 	getSequenceErrorCount,
 	getPitchAccuracy,
-	getPitchErrorCount,
 	getDurationsRelativeError,
-	getRhythm,
-	getMissedNotes,
 	getInterOnsetIntervals,
 	getInterOnsetIntervalsRelativeError,
+	getRelativeInterOnsetIntervalsRelativeError,
 	getSequenceDuration,
 };
 
@@ -23,40 +21,55 @@ function findSubarray(subarr, arr, fromIndex = 0) {
 	const lastCheckIndex = arr.length - subarr.length;
 	const subArrayLength = subarr.length;
 
-	positionLoop: for (let i = fromIndex; i <= lastCheckIndex; ++i) {
+	for (let i = fromIndex; i <= lastCheckIndex; ++i) {
 		for (let j = 0; j < subArrayLength; ++j) {
 			if (arr[i + j] !== subarr[j]) {
-				continue positionLoop;
+				break;
 			} else if (j === subArrayLength - 1) {
 				found.push(i);
-				i = i + j - 1; // Starts at the last index (the for loop will increment thus cancel the -1)
-				continue positionLoop;
+				i += j;
+				break;
 			}
 		}
 	}
-
 	return found; // Return list of indices
 }
 
-// Search for sub array
-function findSubarraySegment(subarr, arr, fromIndex = 0) {
-	let maxLength = 0;
-	let startIndex = 0;
-	let endIndex = 0;
+function computeLevenshteinDistance(reference, played) {
+	if (reference.length === 0) return played.length;
+	if (played.length === 0) return reference.length;
 
-	positionLoop: for (let i = fromIndex; i <= arr.length - maxLength; i++) {
-		for (let j = 0; j < subarr.length; j++) {
-			if (arr[i + j] !== subarr[j]) {
-				continue positionLoop;
-			} else if (j + 1 > maxLength) {
-				maxLength = j + 1;
-				startIndex = i;
-				endIndex = i + j;
+	const matrix = [];
+
+	// increment along the first column of each row
+	let i;
+	for (i = 0; i <= played.length; i++) {
+		matrix[i] = [i];
+	}
+
+	// increment each column in the first row
+	let j;
+	for (j = 0; j <= reference.length; j++) {
+		matrix[0][j] = j;
+	}
+
+	// Fill in the rest of the matrix
+	for (i = 1; i <= played.length; i++) {
+		for (j = 1; j <= reference.length; j++) {
+			if (played[i - 1] == reference[j - 1]) {
+				matrix[i][j] = matrix[i - 1][j - 1];
+			} else {
+				matrix[i][j] = Math.min(
+					matrix[i - 1][j - 1] + 1, // substitution
+					Math.min(
+						matrix[i][j - 1] + 1, // insertion
+						matrix[i - 1][j] + 1, // deletion
+					)
+				);
 			}
 		}
 	}
-
-	return { startIndex: startIndex, endIndex: endIndex, length: maxLength };
+	return matrix[played.length][reference.length];
 }
 
 // Make sure arrays are defined and of same length
@@ -134,50 +147,27 @@ function getTransitionSpeeds(refNoteArr, noteArr, timeArr) {
 }
 
 // The number of errors made relative to the number of correctly typed sequences per 30-sec trial
-// incorrectly typed sequence. Count the number of icorrect note sequences >= sequenceLength notes
-// Old name : getAccuracyW
-// FIXME: This concept could be improved maybe
-function getSequenceErrorCount(refNoteArr, noteArr, sequenceLength) {
-	const idxArr = findSubarray(refNoteArr, noteArr);
-	if (idxArr.length < 1) {
-		return -1; // Exceptional case
-	}
+function getSequenceErrorCount(referenceNotes, playedNotes) {
 
-	sequenceLength = sequenceLength || refNoteArr.length;
-	const noteLength = Math.min(sequenceLength, refNoteArr.length);
-	let incorrect = 0;
-	let tempIncorrect = 0;
-	if (idxArr[0] !== 0) {
-		tempIncorrect = idxArr[0] / noteLength;
-		incorrect += tempIncorrect >= 1 ? Math.floor(tempIncorrect - 1) : Math.floor(tempIncorrect);
-	}
-	for (let idx = 1; idx < idxArr.length; idx++) {
-		tempIncorrect = (idxArr[idx] - idxArr[idx - 1]) / noteLength;
-		incorrect += tempIncorrect >= 1 ? Math.floor(tempIncorrect - 1) : Math.floor(tempIncorrect);
-	}
-	tempIncorrect = (noteArr.length - idxArr[idxArr.length - 1]) / noteLength;
-	incorrect += tempIncorrect >= 1 ? Math.floor(tempIncorrect - 1) : Math.floor(tempIncorrect);
+	const perfectSequence = [];
+	const referenceNotesCount = referenceNotes.length;
+	const playedNotesCount = playedNotes.length;
+	for (let i = 0; i < playedNotesCount; i++) perfectSequence.push(referenceNotes[i % referenceNotesCount]);
+	const levenshteinDistance = computeLevenshteinDistance(perfectSequence, playedNotes);
 
-	return incorrect;
+	return levenshteinDistance;
 }
 
-// Melody mode (task 2) performance measures
-// Brown and Penhune: percentage of pitches performed in the correct order
-// Old name : getAccuracyB_2
-function getPitchAccuracy(refNoteArr, noteArr) {
-	if (!arraysValid(noteArr, refNoteArr)) return -1;
-	const { length } = findSubarraySegment(refNoteArr, noteArr);
-	return (length / refNoteArr.length) * 100;
-}
+// Use the Levenshtein distance to get the percentage of the melody that was properly performed
+function getPitchAccuracy(reference, played) {
+	const levenshteinDistance = computeLevenshteinDistance(reference, played);
+	const percentage = ((reference.length - levenshteinDistance) / reference.length) * 100;
+	const pitchAccuracy = Math.max(0, percentage);
 
-// (Duke: mean) number of pitch errors per sequence
-// Old name : getAccuracyD_2
-function getPitchErrorCount(refNoteArr, noteArr) {
-	if (!arraysValid(noteArr, refNoteArr)) return -1;
-
-	const { startIndex, length } = findSubarraySegment(refNoteArr, noteArr);
-	const arrDiff = noteArr.length - length;
-	return arrDiff + startIndex;
+	return {
+		pitchAccuracy: pitchAccuracy,
+		levenshteinDistance: levenshteinDistance,
+	};
 }
 
 // (percentage of IOI durations performed in the correct order)
@@ -194,34 +184,6 @@ function getDurationsRelativeError(refDurArr, durArr) {
 	}
 
 	return (arrDiff / refDurArr.length) * 100;
-}
-
-// FIXME: This is a function that Weiwei never finished implementing
-// get rhythm, excluding tempo (not working yet)
-function getRhythm(refDurArr, durArr) {
-	if (!arraysValid(durArr, refDurArr)) return -1;
-
-	let arrRatio = 0;
-	let refArrRatio = 0;
-	for (let i = 1; i < durArr.length; i++) {
-		arrRatio += durArr[i] / durArr[0];
-		refArrRatio += refDurArr[i] / refDurArr[0];
-	}
-	// Console.log(`arrRatio:${arrRatio}, refArrRatio:${refArrRatio}`);
-	return Math.abs(arrRatio - refArrRatio) / (durArr.length - 1);
-}
-
-// Get array of missedNotes
-function getMissedNotes(refNoteArr, noteArr) {
-	if (!arraysValid(noteArr, refNoteArr)) return -1;
-	let missedNotes = [];
-
-	const { length } = findSubarraySegment(refNoteArr, noteArr);
-
-	if (length < refNoteArr.length) {
-		missedNotes = refNoteArr.slice(length, refNoteArr.length);
-	}
-	return { missedNotes: missedNotes, missedNotesCount: missedNotes.length };
 }
 
 // Old name : getIOIs
@@ -244,6 +206,24 @@ function getInterOnsetIntervalsRelativeError(refTimeArr, timeArr) {
 	let arrDiff = 0;
 	for (let i = 0; i < referenceIoi.length; i++) {
 		arrDiff += Math.abs(experimentalIoi[i] - referenceIoi[i]) / referenceIoi[i];
+	}
+
+	return (arrDiff / experimentalIoi.length) * 100;
+}
+
+function getRelativeInterOnsetIntervalsRelativeError(refTimeArr, timeArr) {
+	if (!arraysValid(timeArr, refTimeArr)) return -1;
+	const referenceIoi = getInterOnsetIntervals(refTimeArr);
+	const experimentalIoi = getInterOnsetIntervals(timeArr);
+
+	const referenceAvergageIOI = referenceIoi.reduce((a, b) => a + b, 0) / referenceIoi.length;
+	const experimentalAvergageIOI = experimentalIoi.reduce((a, b) => a + b, 0) / experimentalIoi.length;
+
+	let arrDiff = 0;
+	for (let i = 0; i < referenceIoi.length; i++) {
+		const referenceRelativeIoi = referenceIoi[i] / referenceAvergageIOI;
+		const experimentalRelativeIoi = experimentalIoi[i] / experimentalAvergageIOI;
+		arrDiff += Math.abs(experimentalRelativeIoi - referenceRelativeIoi) / referenceRelativeIoi;
 	}
 
 	return (arrDiff / experimentalIoi.length) * 100;
