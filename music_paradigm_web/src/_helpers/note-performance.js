@@ -1,4 +1,4 @@
-import noteAlgorithm from './noteAlgorithm';
+import noteAlgorithm from './performance-algorithms';
 
 export default {
 	evaluateSpeedType,
@@ -16,7 +16,7 @@ function evaluateSpeedType(midiFileNotes, playedNotes) {
 
 	const { transitionSpeeds, transitionSpeedsAverage } = noteAlgorithm.getTransitionSpeeds(midiFileNotes.midi, playedNotes.midi, playedNotes.time);
 
-	const sequenceErrorCount = noteAlgorithm.getSequenceErrorCount(midiFileNotes.midi, playedNotes.midi, 5);
+	const sequenceErrorCount = noteAlgorithm.getSequenceErrorCount(midiFileNotes.midi, playedNotes.midi);
 
 	return {
 		type: 'speed',
@@ -94,7 +94,6 @@ function gradeSpeedType(evaluationResults, { minSequencePlayed }) {
 }
 
 function gradeRhythmType(evaluationResults, { minNoteAccuracy, maxRhythmError }, relativeRhythmImportance) {
-
 	// Give weighted importance to IOI error and relative IOI error
 	const rythmRelativeErrorMeasure =
 		relativeRhythmImportance * evaluationResults.relativeInterOnsetIntervalsRelativeError +

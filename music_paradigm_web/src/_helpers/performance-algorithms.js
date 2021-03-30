@@ -72,17 +72,11 @@ function computeLevenshteinDistance(reference, played) {
 	return matrix[played.length][reference.length];
 }
 
-// Make sure arrays are defined and of same length
+// Make sure arrays are defined
 function arraysValid(arr1, arr2) {
-	if (arr1 == undefined || arr2 == undefined) {
-		// Console.error('undefined array');
-		return false;
-	}
-	if (arr1.length === 0 || arr2.length === 0) {
-		// Console.error('different-length or empty array');
-		return false;
-	}
-	return true;
+	if (!arr1 || !arr2) return false;
+	else if (arr1.length === 0 || arr2.length === 0) return false;
+	else return true;
 }
 
 // Const average = data => data.length > 0 ? data.reduce((sum, value) => sum + value) / data.length : 0;
@@ -148,7 +142,6 @@ function getTransitionSpeeds(refNoteArr, noteArr, timeArr) {
 
 // The number of errors made relative to the number of correctly typed sequences per 30-sec trial
 function getSequenceErrorCount(referenceNotes, playedNotes) {
-
 	const perfectSequence = [];
 	const referenceNotesCount = referenceNotes.length;
 	const playedNotesCount = playedNotes.length;

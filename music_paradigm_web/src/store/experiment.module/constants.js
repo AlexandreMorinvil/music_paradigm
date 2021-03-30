@@ -14,6 +14,7 @@ export default {
 	DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE,
 	DEFAULT_CONTROL_TYPE,
 	DEFAULT_RELATIVE_RHYTHM_IMPORTANCE,
+	DEFAULT_WITH_PROGRESSION_BAR,
 	DEFAULT_EXPERIMENT_STATE_VALUES,
 	DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES,
 	DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES,
@@ -42,6 +43,7 @@ const DEFAULT_PROGRAMMED_OCTAVE_OFFSET = 0;
 const DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE = 4;
 const DEFAULT_CONTROL_TYPE = 'piano';
 const DEFAULT_RELATIVE_RHYTHM_IMPORTANCE = 0;
+const DEFAULT_WITH_PROGRESSION_BAR = true;
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
 	return {
@@ -99,6 +101,7 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		interactivePianoFirstOctave: DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE,		// Indicate the first octave from which the notes must be displayed on the interactive piano (which has 2 octaves)
 		controlType: DEFAULT_CONTROL_TYPE, 											// Indicate which type of controle is used by the application ('piano', 'keyboard' or 'none'). Will also affect the pre-session preparation of the user
 		relativeRhythmImportance: DEFAULT_RELATIVE_RHYTHM_IMPORTANCE,				// Indicate wether the relative rhythm accuracy is computed with the IOI (false) or relative IOI (true)
+		withProgressionBar: DEFAULT_WITH_PROGRESSION_BAR,							// Indicate wether ther must be a progrssion bar displayed in the experiment
 	};
 }
 

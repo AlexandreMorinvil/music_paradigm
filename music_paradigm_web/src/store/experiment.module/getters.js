@@ -299,6 +299,12 @@ export default {
 		else return relativeRhythmImportance;
 	},
 
+	withProgressionBar: (state) => {
+		let withProgressionBar = constants.DEFAULT_WITH_PROGRESSION_BAR;
+		if (typeof state.settings.withProgressionBar === 'boolean') withProgressionBar = state.settings.withProgressionBar;
+		return withProgressionBar;
+	},
+
 	// Getters used for the content disposition on the screen
 	hasFootnote: (state) => {
 		let hasFootNote = constants.DEFAULT_FOOTNOTE;

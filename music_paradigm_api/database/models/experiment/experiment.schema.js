@@ -22,6 +22,7 @@ const schema = new Schema(
         interactivePianoFirstOctave: { type: Number, default: 4 },
         controlType: { type: String, default: 'piano', enum: ['piano', 'keyboard', 'none'] },
         relativeRhythmImportance: { type: Number, default: undefined },
+        withProgressionBar: { type: Boolean, default: true },
         variables: [
             {
                 name: { type: String, required: true },
