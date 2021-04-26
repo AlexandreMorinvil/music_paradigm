@@ -140,6 +140,7 @@ function updateStateMediaFiles(currentState, flow, cursor, isInitialized) {
 		midiFileName,
 		videoFileName,
 		referenceKeyboardKeys,
+		interactiveKeyboardTextMapping,
 	} = currentBlock;
 
 	// Parsing the cursor
@@ -151,11 +152,17 @@ function updateStateMediaFiles(currentState, flow, cursor, isInitialized) {
 	const updatedMidiFileName = Array.isArray(midiFileName) ? midiFileName[mediaIndex] || null : null;
 	const updatedVideoFileName = Array.isArray(videoFileName) ? videoFileName[mediaIndex] || null : null;
 	const updatedReferenceKeyboardKeys = Array.isArray(referenceKeyboardKeys) ? referenceKeyboardKeys[mediaIndex] || null : null;
+	const updatedInteractiveKeyboardTextMapping = Array.isArray(interactiveKeyboardTextMapping) ? interactiveKeyboardTextMapping[piledContentIndex] || false : false;
 
 	const oldMediaFile = currentState.mediaFile;
+
+	// If the midifileName is specified (whether it is new or not), we also reset the virtual piano's text
+	if (updatedMidiFileName) oldMediaFile.interactiveKeyboardTextMapping = null;
+
 	currentState.mediaFile.midiName = updatedMidiFileName || oldMediaFile.midiName;
 	currentState.mediaFile.videoName = updatedVideoFileName || oldMediaFile.videoName;
 	currentState.mediaFile.referenceKeyboardKeys = updatedReferenceKeyboardKeys || oldMediaFile.referenceKeyboardKeys;
+	currentState.mediaFile.interactiveKeyboardTextMapping = updatedInteractiveKeyboardTextMapping || oldMediaFile.interactiveKeyboardTextMapping;
 
 	// Indicate that the media files is initialized
 	Object.assign(isInitialized, { media: true });

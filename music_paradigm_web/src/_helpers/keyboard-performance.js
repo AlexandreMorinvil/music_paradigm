@@ -1,4 +1,4 @@
-import noteAlgorithm from './noteAlgorithm';
+import noteAlgorithm from './performance-algorithms';
 
 export default {
 	evaluateSpeedType,
@@ -9,7 +9,7 @@ function evaluateSpeedType(referenceKeys, pressedKeys) {
 	const sequenceCount = noteAlgorithm.getCorrectSequenceCount(referenceKeys, pressedKeys.keys);
 	const { durations, durationsAverage } = noteAlgorithm.getSequenceDurations(referenceKeys, pressedKeys.keys, pressedKeys.time);
 	const { transitionSpeeds, transitionSpeedsAverage } = noteAlgorithm.getTransitionSpeeds(referenceKeys, pressedKeys.keys, pressedKeys.time);
-	const sequenceErrorCount = noteAlgorithm.getSequenceErrorCount(referenceKeys, pressedKeys.keys, 5);
+	const sequenceErrorCount = noteAlgorithm.getSequenceErrorCount(referenceKeys, pressedKeys.keys);
 
 	return {
 		type: 'speed-keyboard',

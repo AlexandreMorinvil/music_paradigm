@@ -21,6 +21,8 @@ const schema = new Schema(
         programmedOctaveOffset: { type: Number, default: 0 },
         interactivePianoFirstOctave: { type: Number, default: 4 },
         controlType: { type: String, default: 'piano', enum: ['piano', 'keyboard', 'none'] },
+        relativeRhythmImportance: { type: Number, default: undefined },
+        withProgressionBar: { type: Boolean, default: true },
         variables: [
             {
                 name: { type: String, required: true },
@@ -56,8 +58,10 @@ const schema = new Schema(
                     pictureFileName: { type: [], default: undefined },
                     interactivePiano: { type: [], default: undefined },
                     interactiveKeyboard: { type: [], default: undefined },
+                    interactiveKeyboardTextMapping: { type: [], default: undefined },
                     midiFileName: { type: [String], default: undefined },
                     videoFileName: { type: [String], default: undefined },
+
                     referenceKeyboardKeys: { type: [[String]], default: undefined },
                     numberRepetition: { type: Number, default: undefined },
                     followedBy: { type: Boolean, default: undefined },

@@ -34,7 +34,7 @@ export default {
 	computed: {
 		...mapGetters('users', ['hasSelectedUser', 'userSelectedId', 'hasCurriculumToSelectedUser']),
 		isResetButtonActive() {
-			return this.hasSelectedUser && this.hasCurriculumToSelectedUser;
+			return false; // this.hasSelectedUser && this.hasCurriculumToSelectedUser;
 		},
 	},
 	methods: {

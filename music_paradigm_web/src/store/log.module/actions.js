@@ -31,6 +31,7 @@ export default {
 				case 'piano':
 					Object.assign(performanceLog, rootGetters['piano/pianoSimpleLogSummary']);
 					Object.assign(performanceLog, rootGetters['piano/pianoSimpleLogPreprocesed']);
+					performanceLog.grades = rootGetters['evaluation/grades'];
 					break;
 				case 'keyboard':
 					Object.assign(performanceLog, rootGetters['keyboard/keyboardSimpleLogSummary']);
@@ -52,7 +53,7 @@ export default {
 				.addSimpleLogBlock(block)
 				.then(
 					(addedBlock) => {
-						console.log(addedBlock);
+						// console.log(addedBlock);
 					},
 					(error) => {
 						console.log(error);

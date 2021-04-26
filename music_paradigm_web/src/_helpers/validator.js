@@ -94,6 +94,8 @@ function validateExperiment(experiment) {
 		'interactivePianoFirstOctave',
 		'controlType',
 		'isGoBackButtonInFootnote',
+		'relativeRhythmImportance',
+		'withProgressionBar',
 	];
 	Object.keys(experiment).forEach((key) => {
 		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the general parameters is not allowed`);
@@ -143,6 +145,7 @@ function validateBlock(block, index = null) {
 		'textContent',
 		'interactivePiano',
 		'interactiveKeyboard',
+		'interactiveKeyboardTextMapping',
 		'pictureFileName',
 		'helperImageFileName',
 		'midiFileName',
@@ -236,6 +239,7 @@ function validateAttributeType(key, value) {
 		case 'melodyRepetition':
 		case 'startSignal':
 		case 'interactivePianoFirstOctave':
+		case 'relativeRhythmImportance':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
@@ -254,6 +258,7 @@ function validateAttributeType(key, value) {
 		case 'canGoBack':
 		case 'isGoBackButtonInFootnote':
 		case 'strictPlay':
+		case 'withProgressionBar':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}
@@ -262,6 +267,7 @@ function validateAttributeType(key, value) {
 		// Object
 		case 'lastRepetitionVersion':
 		case 'succeeededForSkipLoopVersion':
+		case 'interactiveKeyboardTextMapping':
 			if (!(typeof value === 'object')) {
 				throw new Error(`The key '${key}' must be of type 'Object'`);
 			}

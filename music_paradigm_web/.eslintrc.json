@@ -79,7 +79,6 @@
 		"object-curly-newline": ["error", { "consistent": true }],
 		"object-curly-spacing": ["error", "always"],
 		"operator-assignment": ["error", "always"],
-		"operator-linebreak": ["error", "after"],
 		"quote-props": ["error", "as-needed"],
 		"semi-spacing": ["error", { "before": false, "after": true }],
 		"semi-style": ["error", "last"],

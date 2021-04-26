@@ -2,31 +2,81 @@
 	<!-- The HTML definition of this piano adapted from the open source project : https://codepen.io/zastrow/pen/oDBki -->
 	<div id="visual-piano" class="visual-piano">
 		<ul class="set">
-			<li id="note-48" :ref="'' + (0 + midiOffset)" class="white c"></li>
-			<li id="note-49" :ref="'' + (1 + midiOffset)" class="black cs"></li>
-			<li id="note-50" :ref="'' + (2 + midiOffset)" class="white d"></li>
-			<li id="note-51" :ref="'' + (3 + midiOffset)" class="black ds"></li>
-			<li id="note-52" :ref="'' + (4 + midiOffset)" class="white e"></li>
-			<li id="note-53" :ref="'' + (5 + midiOffset)" class="white f"></li>
-			<li id="note-54" :ref="'' + (6 + midiOffset)" class="black fs"></li>
-			<li id="note-55" :ref="'' + (7 + midiOffset)" class="white g"></li>
-			<li id="note-56" :ref="'' + (8 + midiOffset)" class="black gs"></li>
-			<li id="note-57" :ref="'' + (9 + midiOffset)" class="white a"></li>
-			<li id="note-58" :ref="'' + (10 + midiOffset)" class="black as"></li>
-			<li id="note-59" :ref="'' + (11 + midiOffset)" class="white b"></li>
-			<li id="note-60" :ref="'' + (12 + midiOffset)" class="white c"></li>
-			<li id="note-61" :ref="'' + (13 + midiOffset)" class="black cs"></li>
-			<li id="note-62" :ref="'' + (14 + midiOffset)" class="white d"></li>
-			<li id="note-63" :ref="'' + (15 + midiOffset)" class="black ds"></li>
-			<li id="note-64" :ref="'' + (16 + midiOffset)" class="white e"></li>
-			<li id="note-65" :ref="'' + (17 + midiOffset)" class="white f"></li>
-			<li id="note-66" :ref="'' + (18 + midiOffset)" class="black fs"></li>
-			<li id="note-67" :ref="'' + (19 + midiOffset)" class="white g"></li>
-			<li id="note-68" :ref="'' + (20 + midiOffset)" class="black gs"></li>
-			<li id="note-69" :ref="'' + (21 + midiOffset)" class="white a"></li>
-			<li id="note-70" :ref="'' + (22 + midiOffset)" class="black as"></li>
-			<li id="note-71" :ref="'' + (23 + midiOffset)" class="white b"></li>
-			<li id="note-72" :ref="'' + (24 + midiOffset)" class="white c"></li>
+			<li id="note-48" :ref="'' + (0 + midiOffset)" class="white c">
+				<span>{{ textMapping[0] }}</span>
+			</li>
+			<li id="note-49" :ref="'' + (1 + midiOffset)" class="black cs">
+				<span>{{ textMapping[1] }}</span>
+			</li>
+			<li id="note-50" :ref="'' + (2 + midiOffset)" class="white d">
+				<span>{{ textMapping[2] }}</span>
+			</li>
+			<li id="note-51" :ref="'' + (3 + midiOffset)" class="black ds">
+				<span>{{ textMapping[3] }}</span>
+			</li>
+			<li id="note-52" :ref="'' + (4 + midiOffset)" class="white e">
+				<span>{{ textMapping[4] }}</span>
+			</li>
+			<li id="note-53" :ref="'' + (5 + midiOffset)" class="white f">
+				<span>{{ textMapping[5] }}</span>
+			</li>
+			<li id="note-54" :ref="'' + (6 + midiOffset)" class="black fs">
+				<span>{{ textMapping[6] }}</span>
+			</li>
+			<li id="note-55" :ref="'' + (7 + midiOffset)" class="white g">
+				<span>{{ textMapping[7] }}</span>
+			</li>
+			<li id="note-56" :ref="'' + (8 + midiOffset)" class="black gs">
+				<span>{{ textMapping[8] }}</span>
+			</li>
+			<li id="note-57" :ref="'' + (9 + midiOffset)" class="white a">
+				<span>{{ textMapping[9] }}</span>
+			</li>
+			<li id="note-58" :ref="'' + (10 + midiOffset)" class="black as">
+				<span>{{ textMapping[10] }}</span>
+			</li>
+			<li id="note-59" :ref="'' + (11 + midiOffset)" class="white b">
+				<span>{{ textMapping[11] }}</span>
+			</li>
+			<li id="note-60" :ref="'' + (12 + midiOffset)" class="white c">
+				<span>{{ textMapping[12] }}</span>
+			</li>
+			<li id="note-61" :ref="'' + (13 + midiOffset)" class="black cs">
+				<span>{{ textMapping[13] }}</span>
+			</li>
+			<li id="note-62" :ref="'' + (14 + midiOffset)" class="white d">
+				<span>{{ textMapping[14] }}</span>
+			</li>
+			<li id="note-63" :ref="'' + (15 + midiOffset)" class="black ds">
+				<span>{{ textMapping[15] }}</span>
+			</li>
+			<li id="note-64" :ref="'' + (16 + midiOffset)" class="white e">
+				<span>{{ textMapping[16] }}</span>
+			</li>
+			<li id="note-65" :ref="'' + (17 + midiOffset)" class="white f">
+				<span>{{ textMapping[17] }}</span>
+			</li>
+			<li id="note-66" :ref="'' + (18 + midiOffset)" class="black fs">
+				<span>{{ textMapping[18] }}</span>
+			</li>
+			<li id="note-67" :ref="'' + (19 + midiOffset)" class="white g">
+				<span>{{ textMapping[19] }}</span>
+			</li>
+			<li id="note-68" :ref="'' + (20 + midiOffset)" class="black gs">
+				<span>{{ textMapping[20] }}</span>
+			</li>
+			<li id="note-69" :ref="'' + (21 + midiOffset)" class="white a">
+				<span>{{ textMapping[21] }}</span>
+			</li>
+			<li id="note-70" :ref="'' + (22 + midiOffset)" class="black as">
+				<span>{{ textMapping[22] }}</span>
+			</li>
+			<li id="note-71" :ref="'' + (23 + midiOffset)" class="white b">
+				<span>{{ textMapping[23] }}</span>
+			</li>
+			<li id="note-72" :ref="'' + (24 + midiOffset)" class="white c">
+				<span>{{ textMapping[24] }}</span>
+			</li>
 		</ul>
 	</div>
 </template>
@@ -39,12 +89,13 @@ export default {
 	data() {
 		return {
 			highlightedDesignatedKeys: [],
-			NOTE_COUNT: 24,
+			NOTE_COUNT: 25,
 			OFFSET_STEP: 12,
+			textKey0: '',
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['interactivePiano', 'interactivePianoFirstOctave']),
+		...mapGetters('experiment', ['interactivePiano', 'interactivePianoFirstOctave', 'interactiveKeyboardTextMapping']),
 		...mapGetters('piano', ['pressedKeys', 'midiFileTriggeredKeys', 'midiFileNotesMidi']),
 		midiOffset() {
 			return this.interactivePianoFirstOctave * this.OFFSET_STEP;
@@ -53,7 +104,42 @@ export default {
 			return this.midiOffset;
 		},
 		lastNote() {
-			return this.midiOffset + this.NOTE_COUNT;
+			return this.midiOffset + this.NOTE_COUNT - 1;
+		},
+		textMapping() {
+			const textMapping = [];
+
+			if (Array.isArray(this.interactiveKeyboardTextMapping))
+				for (const index in this.interactiveKeyboardTextMapping) {
+					// Get the index of the key, if it is within the range to the displayed keys
+					const currentMidiKeyNumber = this.midiFileNotesMidi[index];
+					const correspondingKeyIndex = currentMidiKeyNumber - this.midiOffset;
+					if (correspondingKeyIndex < 0 || correspondingKeyIndex > this.NOTE_COUNT - 1) continue;
+
+					// Get the text to assign to the key
+					const keyTextAssignation = this.interactiveKeyboardTextMapping[index];
+					textMapping[correspondingKeyIndex] = keyTextAssignation;
+				}
+			else if (typeof this.interactiveKeyboardTextMapping === 'object') {
+				for (const key in this.interactiveKeyboardTextMapping) {
+					// Get the index of the key, if it is within the range to the displayed keys
+					if (key < 0 || key > this.NOTE_COUNT - 1) continue;
+
+					// Get the text to assign to the key
+					const keyTextAssignation = this.interactiveKeyboardTextMapping[key];
+					textMapping[key] = keyTextAssignation;
+				}
+			} else {
+				// Get the index of the key, if it is within the range to the displayed keys
+				const currentMidiKeyNumber = this.midiFileNotesMidi[0];
+				const correspondingKeyIndex = currentMidiKeyNumber - this.midiOffset;
+				if (correspondingKeyIndex < 0 || correspondingKeyIndex > this.NOTE_COUNT - 1) return [];
+
+				// Get the text to assign to the key
+				const keyTextAssignation = this.interactiveKeyboardTextMapping;
+				textMapping[correspondingKeyIndex] = keyTextAssignation;
+			}
+			return textMapping;
 		},
 	},
 	methods: {
@@ -196,17 +282,44 @@ ul li:last-child {
 }
 
 ul .designated {
+	color: black;
 	border: 1px solid rgb(19, 117, 4);
 	background: linear-gradient(to bottom, rgb(255, 252, 81) 0%, rgb(222, 219, 0) 100%);
 }
 
 ul .user-triggered {
+	color: white;
 	border: 1px solid rgb(4, 19, 117);
 	background: linear-gradient(to bottom, rgb(0, 187, 255) 0%, rgb(2, 48, 139) 100%);
 }
 
 ul .midi-file-triggered {
+	color: white;
 	border: 1px solid rgb(19, 117, 4);
 	background: linear-gradient(to bottom, rgb(21, 255, 0) 0%, rgb(9, 139, 2) 100%);
+}
+
+.black,
+.white {
+	position: relative;
+	vertical-align: bottom;
+	padding-bottom: 10px;
+}
+
+span {
+	position: absolute;
+	text-align: center;
+	font-size: 1.2em;
+	width: 100%;
+	bottom: 8%;
+}
+
+.white {
+	color: black;
+	padding-top: auto;
+}
+
+.black {
+	color: white;
 }
 </style>

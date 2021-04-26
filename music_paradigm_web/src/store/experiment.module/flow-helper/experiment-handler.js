@@ -48,6 +48,8 @@ function setExperimentGeneralSettings(state, experiment) {
 		programmedOctaveOffset,
 		interactivePianoFirstOctave,
 		controlType,
+		relativeRhythmImportance,
+		withProgressionBar,
 	} = experiment;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -70,6 +72,8 @@ function setExperimentGeneralSettings(state, experiment) {
 		interactivePianoFirstOctave:
 			typeof interactivePianoFirstOctave === 'number' ? interactivePianoFirstOctave : defaultSettings.interactivePianoFirstOctave,
 		controlType: typeof controlType === 'string' ? controlType : defaultSettings.controlType,
+		relativeRhythmImportance: typeof relativeRhythmImportance === 'number' ? relativeRhythmImportance : defaultSettings.relativeRhythmImportance,
+		withProgressionBar: typeof withProgressionBar === 'boolean' ? withProgressionBar : defaultSettings.withProgressionBar,
 	};
 }
 

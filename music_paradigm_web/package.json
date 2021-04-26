@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "serve-dev": "vue-cli-service serve --host 0.0.0.0 --https",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --type-check --format stylish --ext js,.vue",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",

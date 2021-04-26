@@ -11,7 +11,7 @@
 			<piano-status-component v-if="hasPianoStatus" class="status-bar-display-box status-wrapper-right" />
 		</div>
 
-		<progress-status-component class="status-bar-progress-position" />
+		<progress-status-component v-if="hasProgressionBar" class="status-bar-progress-position" />
 	</div>
 </template>
 
@@ -31,10 +31,14 @@ export default {
 		ProgressStatusComponent,
 	},
 	computed: {
-		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType']),
+		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType', 'withProgressionBar']),
 		hasPianoStatus() {
 			return this.controlType === 'piano';
 		},
+		hasProgressionBar() {
+			if (typeof this.withProgressionBar !== 'boolean') return true;
+			else return this.withProgressionBar;
+		}
 	},
 	methods: {
 		start() {

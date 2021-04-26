@@ -160,20 +160,20 @@
         "confirm-leave": "Do you really want to leave the session in progress?"
       },
       "cue": {
-        "footnote-no-melody": "There is no melody to be played, the session will automatically  go to the next step in {second} second | There is no melody to be played, the session will automatically  go to the next step in {second} seconds",
+        "footnote-no-melody": "There is no melody to be played, the session will automatically go to the next step in {second} second | There is no melody to be played, the session will automatically go to the next step in {second} seconds",
         "footnote-after-melody": "The session will automatically go to the next step after the muscial cue"
       },
       "end": {
         "footnote-press-any-key": "Press any piano key or the space bar for ending the session",
-        "footnote-press-space-bar": "Press the space bar for ending the session"
+        "footnote-press-space-bar": "Press the space bar to end the session"
       },
       "feedback": {
         "footnote-press-any-key": "Press any piano key or the space bar for going to the next step",
-        "footnote-press-space-bar": "Press the space bar for going to the next step"
+        "footnote-press-space-bar": "Press the space bar to go to the next step"
       },
       "instruction": {
         "footnote-press-any-key": "Press any piano key or the space bar for going to the next step",
-        "footnote-press-space-bar": "Press the space bar for going to the next step"
+        "footnote-press-space-bar": "Press the space bar to go to the next step"
       },
       "playing": {
         "footnote-after-performance": "The session will go to the next step after your performance"

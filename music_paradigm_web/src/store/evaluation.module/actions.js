@@ -1,7 +1,7 @@
 export default {
 	// Performance evaluation
-	evaluateRhythmType: ({ commit }, results) => {
-		commit('evaluateRhythmType', results);
+	evaluateRhythmType: ({ commit }, { results: results, relativeRhythmImportance: relativeRhythmImportance }) => {
+		commit('evaluateRhythmType', { results: results, relativeRhythmImportance: relativeRhythmImportance });
 	},
 	evaluateSpeedType: ({ commit }, results) => {
 		commit('evaluateSpeedType', results);

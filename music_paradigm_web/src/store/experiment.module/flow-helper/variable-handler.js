@@ -66,6 +66,7 @@ function getAllVariables() {
 	const variables = experimentStoreState.variables.value;
 
 	const stateVariables = {};
+	stateVariables[wrapStateVariableName('REPETITIONS_CURRENT')] = experimentStoreState.cursor.navigation.numberTotalRepetions - experimentStoreState.cursor.navigation.numberRepetition + 1;
 	stateVariables[wrapStateVariableName('REPETITIONS_LEFT')] = experimentStoreState.cursor.navigation.numberRepetition;
 	stateVariables[wrapStateVariableName('SUCCESSES_IN_LOOP')] = experimentStoreState.state.record.successesInLoop;
 	return { ...variables, ...stateVariables };

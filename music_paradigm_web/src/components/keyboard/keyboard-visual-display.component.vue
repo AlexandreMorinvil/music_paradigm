@@ -154,14 +154,19 @@ export default {
 	watch: {
 		currentlyPressedKeyboardKeys(list) {
 			for (const key of this.keys) {
-				if (list.includes(key)) this.$refs[key.toString()].classList.add('user-triggered');
-				else this.$refs[key.toString()].classList.remove('user-triggered');
+				const keyString = key.toString();
+				if (list.includes(key)) {
+					if (!this.referenceKeyboardKeys.includes(key)) this.$refs[keyString].classList.add('wrong');
+				} else {
+					this.$refs[keyString].classList.remove('wrong');
+				}
 			}
 		},
 		highlightedDesignatedKeys(list) {
 			for (const key of this.keys) {
-				if (list.includes(key)) this.$refs[key.toString()].classList.add('designated');
-				else this.$refs[key.toString()].classList.remove('designated');
+				const keyString = key.toString();
+				if (list.includes(key)) this.$refs[keyString].classList.add('designated');
+				else this.$refs[keyString].classList.remove('designated');
 			}
 		},
 		referenceKeyboardKeys: {
@@ -293,5 +298,11 @@ ul .designated {
 ul .user-triggered {
 	border: 1px solid rgb(4, 19, 117);
 	background: linear-gradient(to bottom, rgb(0, 187, 255) 0%, rgb(2, 48, 139) 100%);
+}
+
+ul .wrong {
+	color: rgb(45, 45, 45);
+	border: 1px solid rgb(117, 4, 4);
+	background: linear-gradient(to bottom, rgb(255, 81, 81) 0%, rgb(222, 0, 0) 100%);
 }
 </style>
