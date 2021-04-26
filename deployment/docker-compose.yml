@@ -49,6 +49,7 @@ services:
   learn:
     container_name: clasp-webapp
     build: music_paradigm/music_paradigm_web
+    restart: always
     environment:
       - VIRTUAL_HOST=${HOST_FRONTEND_SERVER}
       - LETSENCRYPT_HOST=${HOST_FRONTEND_SERVER}
@@ -61,6 +62,7 @@ services:
   claspweb:
     container_name: clasp-api
     build: music_paradigm/music_paradigm_api
+    restart: always
     environment:
       - VIRTUAL_HOST=${HOST_BACKEND_SERVER}
       - VIRTUAL_PORT=4000
@@ -75,11 +77,13 @@ services:
   claspmongo:
     container_name: claspmongo
     image: mongo
+    restart: always
     volumes:
       - ./db:/data/db:rw
 
   mongo-express:
      image: mongo-express
+     restart: always
      environment:
       - ME_CONFIG_MONGODB_SERVER=claspmongo
       - VIRTUAL_HOST=${HOST_DATABASE_MANAGER}
