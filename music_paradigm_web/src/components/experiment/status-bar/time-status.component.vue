@@ -13,7 +13,7 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
+import { ExperimentEventBus, experimentEvents } from '@/_services/event-bus/experiment-event-bus.service.js';
 
 export default {
 	components: {},

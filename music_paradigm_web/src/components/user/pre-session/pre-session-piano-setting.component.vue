@@ -13,7 +13,7 @@
 import '@/styles/pre-session-template.css';
 import { mapGetters } from 'vuex';
 
-import { PianoEventBus, pianoEvents } from '@/_services/piano-event-bus.service.js';
+import { PianoEventBus, pianoEvents } from '@/_services/event-bus/piano-event-bus.service.js';
 import ProblemPianoSettingComponent from '@/components/user/problem-prompt/problem-piano-setting.component.vue';
 
 export default {

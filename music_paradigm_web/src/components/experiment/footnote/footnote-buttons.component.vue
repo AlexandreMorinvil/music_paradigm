@@ -9,7 +9,7 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
+import { ExperimentEventBus, experimentEvents } from '@/_services/event-bus/experiment-event-bus.service.js';
 import FootnoteMessageComponent from '@/components/experiment/footnote/footnote-message.component.vue';
 import GoBackButtonComponent from '@/components/experiment/element/go-back-button.component.vue';
 import SkipButtonComponent from '@/components/experiment/element/skip-button.component.vue';

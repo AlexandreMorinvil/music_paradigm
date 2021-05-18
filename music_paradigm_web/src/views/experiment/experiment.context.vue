@@ -12,9 +12,9 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
-import { KeyboardEventBus, keyboardEvents } from '@/_services/keyboard-event-bus.service.js';
-import { PianoEventBus, pianoEvents } from '@/_services/piano-event-bus.service.js';
+import { ExperimentEventBus, experimentEvents } from '@/_services/event-bus/experiment-event-bus.service.js';
+import { KeyboardEventBus, keyboardEvents } from '@/_services/event-bus/keyboard-event-bus.service.js';
+import { PianoEventBus, pianoEvents } from '@/_services/event-bus/piano-event-bus.service.js';
 import ExperimentContent from '@/components/content-frame/experiment-content-frame.component.vue';
 import LogComponent from '@/components/experiment/log/log.component.vue';
 import StatusBarComponent from '@/components/experiment/status-bar/status-bar.component.vue';
@@ -73,6 +73,14 @@ export default {
 			else if (this.checkpoint === 'first' && this.needsResetLoopParameters) this.saveSessionState();
 			else if (this.checkpoint === 'all' && this.isNewBlock) this.saveSessionState();
 		},
+		startExperiement() {
+			if (this.hasPrelude) this.initializePrelude();
+			else this.displayFirstStep();
+		},
+		displayPrelude() {
+			this.initializeSession();
+			this.updateState();
+		},
 		displayFirstStep() {
 			this.initializeSession();
 			this.updateState();
@@ -119,7 +127,8 @@ export default {
 		window.addEventListener('keyup', this.handleButtonRelease);
 		ExperimentEventBus.$on(experimentEvents.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
 		ExperimentEventBus.$on(experimentEvents.EVENT_GO_BACK_REQUET, this.navigateBackAnInnerStep);
-		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_READY, this.displayFirstStep);
+		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_READY, this.startExperiement);
+		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_PRELUDE_OVER, this.displayFirstStep);
 		ExperimentEventBus.$on(experimentEvents.EVENT_STATE_ENDED, this.navigateExperiment);
 		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_ENDED, this.endExperiment);
 		ExperimentEventBus.$on(experimentEvents.EVENT_TIMES_UP, this.handleTimesUp);
@@ -133,7 +142,8 @@ export default {
 		window.removeEventListener('keyup', this.handleButtonRelease);
 		ExperimentEventBus.$off(experimentEvents.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
 		ExperimentEventBus.$off(experimentEvents.EVENT_GO_BACK_REQUET, this.navigateBackAnInnerStep);
-		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_READY, this.displayFirstStep);
+		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_READY, this.startExperiement);
+		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_PRELUDE_OVER, this.displayFirstStep);
 		ExperimentEventBus.$off(experimentEvents.EVENT_STATE_ENDED, this.navigateExperiment);
 		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_ENDED, this.endExperiment);
 		ExperimentEventBus.$off(experimentEvents.EVENT_TIMES_UP, this.handleTimesUp);

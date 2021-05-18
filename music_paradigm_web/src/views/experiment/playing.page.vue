@@ -10,7 +10,7 @@
 
 <script>
 import '@/styles/experiment-content-template.css';
-import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
+import { ExperimentEventBus, experimentEvents } from '@/_services/event-bus/experiment-event-bus.service.js';
 import { mapActions, mapGetters } from 'vuex';
 
 import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';

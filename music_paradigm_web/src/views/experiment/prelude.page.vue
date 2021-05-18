@@ -1,57 +1,72 @@
 <template>
 	<div id="preparing-state">
-		<div id="text-area" class="experiment-state-division state-division-text">
-			{{ textToDisplay }}
-		</div>
+		<text-area-component class="text-area state-section" />
+		<image-area-component class="image-area state-section" />
+		<piano-area-component class="piano-area state-section" />
+		<keyboard-area-component class="piano-area state-section" />
 	</div>
 </template>
 
 <script>
 import '@/styles/experiment-content-template.css';
-import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
 import { mapGetters } from 'vuex';
 
+import { ExperimentEventBus, experimentEvents } from '@/_services/event-bus/experiment-event-bus.service.js';
+import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
+import KeyboardAreaComponent from '@/components/experiment/visual-content/keyboard-area.component.vue';
+import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';
+import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
+
 export default {
-	data() {
-		return {
-			isIntervalStarted: false,
-			repeaterUniqieID: 0,
-			REPEATITION_INTERVAL: 500,
-		};
+	props: {
+		lastPressedKey: {
+			type: String,
+			default() {
+				return '';
+			},
+		},
+		isSpaceBarPressed: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
+	},
+	components: {
+		ImageAreaComponent,
+		KeyboardAreaComponent,
+		PianoAreaComponent,
+		TextAreaComponent,
 	},
 	computed: {
-		...mapGetters('experiment', ['controlType']),
-		...mapGetters('piano', ['isPianoInitialized']),
-		...mapGetters('keyboard', ['isKeyboardInitialized']),
-		textToDisplay() {
-			if (!this.isReadyToStart) return this.$t('views.experiment.preparing.loading');
-			else return this.$t('views.experiment.preparing.ready');
-		},
-		isReadyToStart() {
-			if (this.controlType === 'keyboard') return this.isKeyboardInitialized;
-			if (this.controlType === 'piano') return this.isPianoInitialized;
-			else return true;
-		},
+		...mapGetters(['urlExperimentRessource']),
+		...mapGetters('piano', ['pressedKeys']),
+		...mapGetters('experiment', ['anyPianoKey']),
 	},
 	methods: {
-		sendStartSignal() {
-			// This strategy of repeating the signal periodically is used in case the signal is sent too early and is not caught but the parent component at the first emition
-			if (this.isIntervalStarted) return;
-			this.repeaterUniqieID = setInterval(function () {
-				ExperimentEventBus.$emit(experimentEvents.EVENT_EXPERIMENT_READY);
-			}, this.REPEATITION_INTERVAL);
-			this.isIntervalStarted = true;
+		updateFootnote() {
+			let footnoteMessage = '';
+			if (this.anyPianoKey) footnoteMessage = this.$t('views.experiment.instruction.footnote-press-any-key');
+			else footnoteMessage = this.$t('views.experiment.instruction.footnote-press-space-bar');
+			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
+		},
+		emitPreludeEndedSignal() {
+			ExperimentEventBus.$emit(experimentEvents.EVENT_EXPERIMENT_PRELUDE_OVER);
 		},
 	},
+	beforeMount() {
+		this.updateFootnote();
+		ExperimentEventBus.$on(experimentEvents.EVENT_ADVANCE_REQUEST, this.emitPreludeEndedSignal);
+	},
 	beforeDestroy() {
-		clearInterval(this.repeaterUniqieID);
+		ExperimentEventBus.$off(experimentEvents.EVENT_ADVANCE_REQUEST, this.emitPreludeEndedSignal);
 	},
 	watch: {
-		isReadyToStart: {
-			immediate: true,
-			handler: function (isReady) {
-				if (isReady) this.sendStartSignal();
-			},
+		isSpaceBarPressed(isPressed) {
+			if (isPressed) this.emitPreludeEndedSignal();
+		},
+		pressedKeys(keys) {
+			if (this.anyPianoKey && keys.length > 0) this.emitPreludeEndedSignal();
 		},
 	},
 };

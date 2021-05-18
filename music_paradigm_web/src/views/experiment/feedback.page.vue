@@ -10,7 +10,7 @@
 import { mapGetters } from 'vuex';
 
 import '@/styles/experiment-content-template.css';
-import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
+import { ExperimentEventBus, experimentEvents } from '@/_services/event-bus/experiment-event-bus.service.js';
 
 import FeedbackAreaComponent from '@/components/experiment/visual-content/feedback-area.component.vue';
 import FeedbackMessageAreaComponent from '@/components/experiment/visual-content/feedback-message-area.component.vue';

@@ -7,7 +7,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import { PianoEventBus, pianoEvents } from '@/_services/piano-event-bus.service.js';
+import { PianoEventBus, pianoEvents } from '@/_services/event-bus/piano-event-bus.service.js';
 import MidiPlayer from '@/MidiPlayer';
 import PianoAdminInputHandlerComponent from './piano-admin-input-handler.component';
 
