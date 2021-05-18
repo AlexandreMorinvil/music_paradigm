@@ -176,7 +176,7 @@
         "footnote-after-performance": "REMOVE"
         
       },
-      "prelude": {
+      "preparing": {
         "loading": "Laddar...",
         "ready": "Klar"
       },

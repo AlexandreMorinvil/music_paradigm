@@ -8,7 +8,7 @@ export default {
 
 	// Experiment navigation
 	moveToExperimentPrelude: function () {
-		router.push({ name: 'experiment.' + 'prelude' });
+		router.push({ name: 'experiment.' + 'preparing' });
 	},
 	moveToState: function (blockTyoe) {
 		// The instantaneous "transition" page is to force Vue to unmount a page and then remount it
