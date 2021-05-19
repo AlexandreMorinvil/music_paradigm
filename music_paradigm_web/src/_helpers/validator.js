@@ -111,9 +111,10 @@ function validateExperiment(experiment) {
 		validateBlock(element, index);
 	});
 
-	experiment.prelude.forEach((element, index) => {
-		validateBlock(element, index, false);
-	});
+	if (experiment.prelude)
+		experiment.prelude.forEach((element, index) => {
+			validateBlock(element, index, false);
+		});
 
 	return true;
 }

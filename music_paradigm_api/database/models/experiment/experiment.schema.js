@@ -44,8 +44,7 @@ const schema = new Schema(
                 optionValues: { type: [], default: [] },
             }
         ],
-
-        flow: {
+        prelude: {
             required: true,
             default: [],
             type: [

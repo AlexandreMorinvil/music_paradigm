@@ -20,7 +20,8 @@ export default {
 	},
 
 	// Prelude actions
-	initPreludeCursor: ({ commit }) => {
+	initializePrelude: ({ commit }) => {
+		commit('initializePrelude');
 		commit('initPreludeCursor');
 	},
 	updateStateInPrelude: ({ commit }) => {

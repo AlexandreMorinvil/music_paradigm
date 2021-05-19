@@ -364,4 +364,8 @@ export default {
 	isWaitingStartSignal: (state) => {
 		return state.state.record.isWaitingReadyStartSignal;
 	},
+
+	hasPrelude: (state) => {
+		return Array.isArray(state.prelude) && state.prelude.length > 0;
+	},
 };

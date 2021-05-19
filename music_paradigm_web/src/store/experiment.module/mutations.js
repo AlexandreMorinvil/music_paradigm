@@ -41,7 +41,6 @@ export default {
 		state.isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
 	},
 
-
 	initExperiment: (state, initialState) => {
 		routerNavigation.moveToExperimentPreparation();
 		state.state = initialState || constants.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
@@ -53,6 +52,11 @@ export default {
 	},
 
 	// Prelude initialization functions
+	initializePrelude: (state, initialState) => {
+		routerNavigation.moveToExperimentPrelude();
+		state.state = initialState || constants.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
+	},
+
 	initPreludeCursor(state) {
 		state.cursor = cursorHandler.assignCursor(state.prelude);
 		state.isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();

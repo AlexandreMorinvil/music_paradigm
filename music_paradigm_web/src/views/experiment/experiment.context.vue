@@ -34,6 +34,7 @@ export default {
 	},
 	computed: {
 		...mapGetters('experiment', [
+			'hasPrelude',
 			'midiName',
 			'referenceKeyboardKeys',
 			'controlType',
@@ -46,6 +47,7 @@ export default {
 	methods: {
 		...mapActions('session', ['concludeSession', 'initializeSession', 'saveSessionState', 'forgetSessionState']),
 		...mapActions('experiment', [
+			'initializePrelude',
 			'updateState',
 			'goNextStep',
 			'goPreviousInnerStep',
