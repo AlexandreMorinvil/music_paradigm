@@ -74,6 +74,7 @@ function validateExperiment(experiment) {
 
 	// Verification of the attributes
 	const allowedAttributes = [
+		'prelude',
 		'flow',
 		'variables',
 		'group',
@@ -110,10 +111,14 @@ function validateExperiment(experiment) {
 		validateBlock(element, index);
 	});
 
+	experiment.prelude.forEach((element, index) => {
+		validateBlock(element, index, false);
+	});
+
 	return true;
 }
 
-function validateBlock(block, index = null) {
+function validateBlock(block, index = null, hasType = true) {
 	// Set the index message addon
 	let indexMessage = '';
 	if (typeof index === 'number') {
@@ -126,16 +131,16 @@ function validateBlock(block, index = null) {
 	}
 
 	// Verification of the type
-	if (!Object.prototype.hasOwnProperty.call(block, 'type')) {
+	if (hasType && !Object.prototype.hasOwnProperty.call(block, 'type')) {
 		throw new Error(`The block${indexMessage} does not have a type`);
 	}
 
-	if (!(typeof block.type === 'string')) {
+	if (hasType && !(typeof block.type === 'string')) {
 		throw new Error(`The type of the block${indexMessage} name must be a string`);
 	}
 
 	const allowedTypes = ['cue', 'end', 'feedback', 'instruction', 'playing', 'rest', 'video'];
-	if (!allowedTypes.includes(block.type)) {
+	if (hasType && !allowedTypes.includes(block.type)) {
 		throw new Error(`The type '${block.type}' of the block${indexMessage} is not allowed`);
 	}
 
@@ -274,6 +279,7 @@ function validateAttributeType(key, value) {
 			break;
 
 		// Array
+		case 'prelude':
 		case 'textContent':
 		case 'pictureFileName':
 		case 'helperImageFileName':

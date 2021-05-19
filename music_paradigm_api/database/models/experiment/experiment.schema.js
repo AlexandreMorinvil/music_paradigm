@@ -44,6 +44,28 @@ const schema = new Schema(
                 optionValues: { type: [], default: [] },
             }
         ],
+
+        flow: {
+            required: true,
+            default: [],
+            type: [
+                {
+                    textContent: { type: [], default: undefined },
+                    pictureFileName: { type: [], default: undefined },
+                    interactivePiano: { type: [], default: undefined },
+                    interactiveKeyboard: { type: [], default: undefined },
+                    interactiveKeyboardTextMapping: { type: [], default: undefined },
+                    midiFileName: { type: [String], default: undefined },
+                    videoFileName: { type: [String], default: undefined },
+
+                    anyPianoKey: { type: Boolean, default: undefined },
+                    enableSoundFlag: { type: Boolean, default: undefined },
+                    timeoutInSeconds: { type: Number, default: undefined },
+                    footnote: { type: Boolean, default: undefined },
+                    footnoteMessage: { type: String, default: undefined },
+                }
+            ],
+        },
         flow: {
             required: true,
             default: [],
