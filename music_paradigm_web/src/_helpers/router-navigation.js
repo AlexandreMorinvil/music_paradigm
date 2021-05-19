@@ -7,7 +7,7 @@ export default {
 	},
 
 	// Experiment navigation
-	moveToExperimentPrelude: function () {
+	moveToExperimentPreparation: function () {
 		router.push({ name: 'experiment.' + 'preparing' });
 	},
 	moveToState: function (blockTyoe) {

@@ -51,6 +51,9 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 		_id: null, // Id of the experiment
 		hasExperiment: false, // Indicator of whether or not an experiment was parsed
 
+		// The prelude sequence of the experiment
+		prelude: [], // Description of the different steps of the prelude
+
 		// The sequence of the experiment
 		flow: [], // Description of the different steps of the experiment
 
@@ -62,6 +65,7 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 
 		// Data to navigate through the flow
 		cursor: DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES(),
+		preludeCursor: DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES(),
 
 		// Data used by the view pages
 		state: DEFAULT_EXPERIMENT_STATE_STATE_VALUES(),

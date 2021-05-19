@@ -8,6 +8,7 @@ export default {
 	populateExperimentConstantVariables,
 	setExperimentDynamicVariables,
 	setExperimentGeneralSettings,
+	setExperimentPrelude,
 	setExperimentFlow,
 	storeParameterImposedValues,
 };
@@ -27,7 +28,18 @@ function setExperimentDescription(state, experiment) {
 	};
 }
 
+function setExperimentPrelude(state, experiment) {
+	// Verify if a prelude is provided
+	if (!experiment.prelude) return;
+	let { prelude } = experiment;
+
+	// Deep copying the prelude
+	prelude = Array.isArray(prelude) ? prelude : [];
+	state.prelude = JSON.parse(JSON.stringify(prelude));
+}
+
 function setExperimentFlow(state, experiment) {
+	// Deep copying the flow
 	state.flow = JSON.parse(JSON.stringify(experiment.flow));
 }
 

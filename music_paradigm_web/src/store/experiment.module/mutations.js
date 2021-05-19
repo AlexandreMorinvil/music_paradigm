@@ -22,6 +22,7 @@ export default {
 
 		experimentHandler.setExperimentId(state, experiment);
 		experimentHandler.setExperimentDescription(state, experiment);
+		experimentHandler.setExperimentPrelude(state, experiment);
 		experimentHandler.setExperimentFlow(state, experiment);
 		experimentHandler.setExperimentGeneralSettings(state, experiment);
 		experimentHandler.setImposedParameterValues(state, experiment);
@@ -40,8 +41,9 @@ export default {
 		state.isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
 	},
 
+
 	initExperiment: (state, initialState) => {
-		routerNavigation.moveToExperimentPrelude();
+		routerNavigation.moveToExperimentPreparation();
 		state.state = initialState || constants.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
 	},
 
@@ -50,6 +52,18 @@ export default {
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
+	// Prelude initialization functions
+	initPreludeCursor(state) {
+		state.cursor = cursorHandler.assignCursor(state.prelude);
+		state.isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
+	},
+
+	updateStateInPrelude: (state) => {
+		const { prelude, preludeCursor, isInitialized, settings } = state;
+		stateHandler.updateState(state.state, prelude, preludeCursor, isInitialized, settings);
+	},
+
+	// Cursor handling
 	moveNextStep: (state) => {
 		const { flow, cursor, isInitialized, settings } = state;
 		cursorHandler.advance(state.state, flow, cursor, isInitialized);
@@ -74,6 +88,7 @@ export default {
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
+	// End functions
 	endExperimentByTimeout: (state) => {
 		const message = 'The time limit was reached.\nThe experiment ends here.';
 		stateHandler.forceEndState(state.state, state.isInitialized, message);
@@ -83,6 +98,7 @@ export default {
 		routerNavigation.goToRootPage();
 	},
 
+	// Record functions
 	addSuccess: (state) => {
 		state.state.record.isSuccess = true;
 		state.state.record.sucesses += 1;
