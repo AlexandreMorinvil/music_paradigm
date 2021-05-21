@@ -53,7 +53,12 @@ export default {
 
 	// Prelude initialization functions
 	initializePrelude: (state, initialState) => {
+		// Set the route to the prelude page
 		routerNavigation.moveToExperimentPrelude();
+		state.isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
+		Object.assign(state.isInitialized, { route: true });
+
+		// Initialize the state for the prelude
 		state.state = initialState || constants.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
 	},
 
@@ -63,7 +68,17 @@ export default {
 	},
 
 	updateStateInPrelude: (state) => {
-		const { prelude, preludeCursor, isInitialized, settings } = state;
+		const { prelude, preludeCursor, settings } = state;
+		const isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
+		Object.assign(isInitialized, { route: true });
+		stateHandler.updateState(state.state, prelude, preludeCursor, isInitialized, settings);
+	},
+
+	movePreludeNextStep: (state) => {
+		const { prelude, preludeCursor, settings } = state;
+		const isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
+		Object.assign(isInitialized, { route: true });
+		cursorHandler.advance(state.state, prelude, preludeCursor, isInitialized);
 		stateHandler.updateState(state.state, prelude, preludeCursor, isInitialized, settings);
 	},
 

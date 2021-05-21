@@ -9,7 +9,7 @@
 
 <script>
 import '@/styles/experiment-content-template.css';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/_services/event-bus/experiment-event-bus.service.js';
 import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
@@ -44,6 +44,11 @@ export default {
 		...mapGetters('experiment', ['anyPianoKey']),
 	},
 	methods: {
+		...mapActions('experiment', ['goPreludeNextStep']),
+		displayPreludeFirstStep() {
+			this.initializeSession();
+			this.updateState();
+		},
 		updateFootnote() {
 			let footnoteMessage = '';
 			if (this.anyPianoKey) footnoteMessage = this.$t('views.experiment.instruction.footnote-press-any-key');

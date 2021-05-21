@@ -79,10 +79,6 @@ export default {
 			if (this.hasPrelude) this.initializePrelude();
 			else this.displayFirstStep();
 		},
-		displayPrelude() {
-			this.initializeSession();
-			this.updateState();
-		},
 		displayFirstStep() {
 			this.initializeSession();
 			this.updateState();

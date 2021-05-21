@@ -18,14 +18,20 @@ export default {
 	updateState: ({ commit }) => {
 		commit('updateState');
 	},
+	initializeFlow: ({ commit }) => {
+		commit('initializePrelude');
+		commit('initPreludeCursor');
+		commit('updateStateInPrelude');
+	},
 
 	// Prelude actions
 	initializePrelude: ({ commit }) => {
 		commit('initializePrelude');
 		commit('initPreludeCursor');
-	},
-	updateStateInPrelude: ({ commit }) => {
 		commit('updateStateInPrelude');
+	},
+	goPreludeNextStep: ({ commit }) => {
+		commit('movePreludeNextStep');
 	},
 
 	// Cursor handling actions
