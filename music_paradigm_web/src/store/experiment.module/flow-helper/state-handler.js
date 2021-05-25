@@ -168,15 +168,23 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 		interactiveKeyboard,
 	} = currentBlock;
 
-	// Parsing the cursor
+	// Using the values that are not set in an array if there are any
+	let updatedTextContent = typeof textContent === 'string' ? textContent : null;
+	let updatedPictureFileName = typeof pictureFileName === 'string' ? pictureFileName : null;
+	let updatedHelperImageFileName = typeof helperImageFileName === 'string' ? helperImageFileName : null;
+	let updatedInteractivePiano = typeof interactivePiano === 'string' || typeof interactivePiano === 'boolean' ? interactivePiano : null;
+	let updatedInteractiveKeyboard = typeof interactiveKeyboard === 'string' || typeof interactiveKeyboard === 'boolean' ? interactiveKeyboard : null;
+
+	// If the value is in an array
 	const piledContentIndex = cursor.current.piledContentIndex;
 
-	let updatedTextContent = Array.isArray(textContent) ? textContent[piledContentIndex] || null : null;
-	let updatedPictureFileName = Array.isArray(pictureFileName) ? pictureFileName[piledContentIndex] || null : null;
-	let updatedHelperImageFileName = Array.isArray(helperImageFileName) ? helperImageFileName[piledContentIndex] || null : null;
-	let updatedInteractivePiano = Array.isArray(interactivePiano) ? interactivePiano[piledContentIndex] || false : false;
-	let updatedInteractiveKeyboard = Array.isArray(interactiveKeyboard) ? interactiveKeyboard[piledContentIndex] || false : false;
+	if (Array.isArray(textContent)) updatedTextContent = textContent[piledContentIndex] || null;
+	if (Array.isArray(pictureFileName)) updatedPictureFileName = pictureFileName[piledContentIndex] || null;
+	if (Array.isArray(helperImageFileName)) updatedHelperImageFileName = helperImageFileName[piledContentIndex] || null;
+	if (Array.isArray(interactivePiano)) updatedInteractivePiano = interactivePiano[piledContentIndex] || null;
+	if (Array.isArray(interactiveKeyboard)) updatedInteractiveKeyboard = interactiveKeyboard[piledContentIndex] || null;
 
+	// If the value is in a nested array
 	const innerStepIndex = cursor.current.innerStepIndex;
 
 	if (Array.isArray(updatedTextContent)) updatedTextContent = updatedTextContent[innerStepIndex];
@@ -185,6 +193,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(updatedInteractivePiano)) updatedInteractivePiano = updatedInteractivePiano[innerStepIndex];
 	if (Array.isArray(updatedInteractiveKeyboard)) updatedInteractiveKeyboard = updatedInteractiveKeyboard[innerStepIndex];
 
+	// Update the state
 	currentState.content.text = updatedTextContent || '';
 	currentState.content.pictureName = updatedPictureFileName || '';
 	currentState.content.helperImageName = updatedHelperImageFileName || '';
