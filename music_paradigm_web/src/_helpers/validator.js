@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 export default {
 	getMinimalValidExperimentStructure,
@@ -274,14 +275,13 @@ function validateAttributeType(key, value) {
 		// Object
 		case 'lastRepetitionVersion':
 		case 'succeeededForSkipLoopVersion':
-		case 'interactiveKeyboardTextMapping':
-			if (!(typeof value === 'object')) {
+			if (!(typeof value === 'object') || Array.isArray(value)) {
 				throw new Error(`The key '${key}' must be of type 'Object'`);
 			}
 			break;
 
-		// Array
-		case 'prelude':
+		// Array elements or elements taken out of their array
+		case 'interactiveKeyboardTextMapping':
 		case 'textContent':
 		case 'pictureFileName':
 		case 'helperImageFileName':
@@ -290,93 +290,143 @@ function validateAttributeType(key, value) {
 		case 'interactiveKeyboard':
 		case 'midiFileName':
 		case 'referenceKeyboardKeys':
+			// Elements of the array
 			if (!Array.isArray(value)) {
-				throw new Error(`The key '${key}' must be of type 'Array'`);
+				switch (key) {
+					case 'interactiveKeyboardTextMapping':
+						throw new Error(`The key '${key}' must be of type 'Array'`);
+
+					case 'textContent':
+					case 'pictureFileName':
+					case 'helperImageFileName':
+					case 'videoFileName':
+					case 'midiFileName':
+						if (!(typeof value === 'string')) {
+							throw new Error(`The key '${key}' must be of type 'String' or 'Array'`);
+						}
+						break;
+
+					case 'interactivePiano':
+					case 'interactiveKeyboard':
+						if (!(typeof value === 'string' || typeof value === 'boolean')) {
+							throw new Error(`The key '${key}' must be of type 'String', 'Boolean' or 'Array'`);
+						}
+						break;
+
+					default:
+						break;
+				}
 			}
 
 			// Verification in the elments of the array
-			switch (key) {
-				// Arrays of String
-				case 'helperImageFileName':
-					value.forEach((element, index) => {
-						if (!(typeof element === 'string')) {
-							throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String'`);
-						}
-					});
-					break;
-
-				// Array of String or boolean OR array of array of string or boolean
-				case 'interactivePiano':
-				case 'interactiveKeyboard':
-					value.forEach((element, index) => {
-						if (!(typeof element === 'string' || typeof element === 'boolean' || Array.isArray(element))) {
-							throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String' or boolean or array`);
-						}
-
-						const allowedEntries = ['all', 'midi', 'first'];
-						if (typeof element === 'string' && !allowedEntries.includes(element)) {
-							throw new Error(`The element number ${index + 1} in the array of the key '${key}' cannot have the value ${element}`);
-						}
-
-						if (Array.isArray(element)) {
-							element.forEach((subElement, subIndex) => {
-								if (!(typeof subElement === 'string' || typeof subElement === 'boolean')) {
-									throw new Error(
-										// eslint-disable-next-line prettier/prettier
-										`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String' or boolean`,
-									);
-								}
-
-								if (typeof subElement === 'string' && !allowedEntries.includes(subElement)) {
-									throw new Error(
-										// eslint-disable-next-line prettier/prettier
-										`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' cannot have the value ${subElement}`,
-									);
-								}
-							});
-						}
-					});
-					break;
-
-				// Array of String or array of array of strings
-				case 'midiFileName':
-				case 'pictureFileName':
-				case 'textContent':
-				case 'videoFileName':
-					value.forEach((element, index) => {
-						if (!(typeof element === 'string' || Array.isArray(element))) {
-							throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String' or boolean`);
-						}
-
-						if (Array.isArray(element)) {
-							element.forEach((subElement, subIndex) => {
-								if (!(typeof subElement === 'string')) {
-									throw new Error(
-										// eslint-disable-next-line prettier/prettier
-										`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String'`,
-									);
-								}
-							});
-						}
-					});
-					break;
-
-				case 'referenceKeyboardKeys':
-					value.forEach((element, index) => {
-						if (!Array.isArray(element)) throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'Array`);
-						element.forEach((subElement, subIndex) => {
-							if (!(typeof subElement === 'string')) {
-								throw new Error(
-									// eslint-disable-next-line prettier/prettier
-									`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String'`,
-								);
+			else {
+				switch (key) {
+					// Arrays of String
+					case 'helperImageFileName':
+						value.forEach((element, index) => {
+							if (!(typeof element === 'string')) {
+								throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String'`);
 							}
 						});
-					});
-					break;
+						break;
 
-				default:
-					break;
+					// Array of String or boolean OR array of array of string or boolean
+					case 'interactivePiano':
+					case 'interactiveKeyboard':
+						value.forEach((element, index) => {
+							if (!(typeof element === 'string' || typeof element === 'boolean' || Array.isArray(element))) {
+								throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String' or boolean or array`);
+							}
+
+							const allowedEntries = ['all', 'midi', 'first'];
+							if (typeof element === 'string' && !allowedEntries.includes(element)) {
+								throw new Error(`The element number ${index + 1} in the array of the key '${key}' cannot have the value ${element}`);
+							}
+
+							if (Array.isArray(element)) {
+								element.forEach((subElement, subIndex) => {
+									if (!(typeof subElement === 'string' || typeof subElement === 'boolean')) {
+										throw new Error(
+											// eslint-disable-next-line prettier/prettier
+											`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String' or boolean`,
+										);
+									}
+
+									if (typeof subElement === 'string' && !allowedEntries.includes(subElement)) {
+										throw new Error(
+											// eslint-disable-next-line prettier/prettier
+											`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' cannot have the value ${subElement}`,
+										);
+									}
+								});
+							}
+						});
+						break;
+
+					// Array of String or array of array of strings
+					case 'midiFileName':
+					case 'pictureFileName':
+					case 'textContent':
+					case 'videoFileName':
+						value.forEach((element, index) => {
+							if (!(typeof element === 'string' || Array.isArray(element))) {
+								throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String' or boolean`);
+							}
+
+							if (Array.isArray(element)) {
+								element.forEach((subElement, subIndex) => {
+									if (!(typeof subElement === 'string')) {
+										throw new Error(
+											// eslint-disable-next-line prettier/prettier
+											`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String'`,
+										);
+									}
+								});
+							}
+						});
+						break;
+
+					case 'referenceKeyboardKeys':
+						// Verifying whether the array contains subarrays (of type array) or keys (of type number or character)
+						// In the case of sub arrays
+						if (Array.isArray(value[0]))
+							value.forEach((element, index) => {
+								if (!Array.isArray(element))
+									throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'Array`);
+
+								element.forEach((subElement, subIndex) => {
+									if (!(typeof subElement === 'string')) {
+										throw new Error(
+											// eslint-disable-next-line prettier/prettier
+											`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String'`,
+										);
+									}
+								});
+							});
+						// In the case of keys indicated directly in the array
+						else if (typeof value[0] === 'string')
+							value.forEach((element, index) => {
+								if (!(typeof element === 'string'))
+									throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String'`);
+							});
+						// Otherwise, the types are incorrect
+						else
+							throw new Error(
+								`The elements in the array of the key '${key}' must all be of the type 'String' or they must all be of the type 'Array'`,
+							);
+						break;
+
+					default:
+						break;
+				}
+			}
+
+			break;
+
+		// Array
+		case 'prelude':
+			if (!Array.isArray(value)) {
+				throw new Error(`The key '${key}' must be of type 'Array'`);
 			}
 			break;
 
