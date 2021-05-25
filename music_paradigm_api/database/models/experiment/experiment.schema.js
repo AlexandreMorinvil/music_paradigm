@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const flowSchema = new Schema({
+const stateSchema = new Schema({
     type: {
         type: String,
         required: true,
@@ -84,6 +84,21 @@ const schema = new Schema({
     controlType: { type: String, default: 'piano', enum: ['piano', 'keyboard', 'none'] },
     relativeRhythmImportance: { type: Number, default: undefined },
     withProgressionBar: { type: Boolean, default: true },
+    prelude: {
+        default: [],
+        type: [stateSchema],
+        required: false,
+    },
+    timeOutState: {
+        default: undefined,
+        type: stateSchema,
+        required: false
+    },
+    flow: {
+        default: [],
+        type: [stateSchema],
+        required: true
+    },
     variables: [
         {
             name: { type: String, required: true },
@@ -107,17 +122,7 @@ const schema = new Schema({
                  default: [] 
             },
         }
-    ],
-    prelude: {
-        required: false,
-        default: [],
-        type: [flowSchema],
-    },
-    flow: {
-        required: true,
-        default: [],
-        type: [flowSchema]
-    }
+    ]
 },
     {
         strict: true,

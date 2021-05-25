@@ -7,55 +7,43 @@ import { routerNavigation } from '@/_helpers';
 export default {
 	updateState,
 	updateStateOnSkip,
-	forceEndState,
+	imposeState,
 };
 
-function updateStateOnSkip(currentState, flow, cursor, isInitialized) {
-	if (cursor.current.isBeyondEnd) forceEndState(currentState, isInitialized);
-	else if (!isInitialized.media) {
-		updateRecords(currentState, flow, cursor, isInitialized);
-		updateStateMediaFiles(currentState, flow, cursor, isInitialized);
-	}
+function transitionState(currentState, targetState, cursor, isInitialized, generalSettings) {
+	if (!isInitialized.route) updateRoute(currentState, targetState, isInitialized);
+	if (!isInitialized.record) updateRecords(currentState, targetState, cursor, isInitialized);
+	if (!isInitialized.state) updateStateSettings(currentState, targetState, isInitialized, generalSettings);
+	if (!isInitialized.media) updateStateMediaFiles(currentState, targetState, cursor, isInitialized);
+	if (!isInitialized.content) updateStateContent(currentState, targetState, cursor, isInitialized);
+}
+
+function imposeState(currentState, targetState, cursor, isInitialized, generalSettings) {
+	transitionState(currentState, targetState, cursor, isInitialized, generalSettings);
 }
 
 function updateState(currentState, flow, cursor, isInitialized, generalSettings) {
-	if (cursor.current.isBeyondEnd) forceEndState(currentState, isInitialized);
-	else {
-		if (!isInitialized.route) updateRoute(currentState, flow, cursor, isInitialized);
-		if (!isInitialized.record) updateRecords(currentState, flow, cursor, isInitialized);
-		if (!isInitialized.state) updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings);
-		if (!isInitialized.media) updateStateMediaFiles(currentState, flow, cursor, isInitialized);
-		if (!isInitialized.content) updateStateContent(currentState, flow, cursor, isInitialized);
+	const targetState = blockHandler.getCurrentBlock(flow, cursor);
+	transitionState(currentState, targetState, cursor, isInitialized, generalSettings);
+}
+
+function updateStateOnSkip(currentState, flow, cursor, isInitialized) {
+	const targetState = blockHandler.getCurrentBlock(flow, cursor);
+	if (!isInitialized.media) {
+		updateRecords(currentState, targetState, cursor, isInitialized);
+		updateStateMediaFiles(currentState, targetState, cursor, isInitialized);
 	}
 }
 
-function forceEndState(currentState, isInitialized, message) {
-	// We update the route
-	routerNavigation.moveToState('end');
-
-	// We render the state display as empty
-	currentState.content.text = message || '';
-	currentState.content.pictureName = '';
-	currentState.content.interactivePiano = false;
-
-	// We set the initialization status to true
-	Object.assign(isInitialized, {
-		route: true,
-		record: true,
-		state: true,
-		media: true,
-		content: true,
-	});
-}
-
-function updateRoute(currentState, flow, cursor, isInitialized) {
-	currentState.type = blockHandler.getCurrentBlock(flow, cursor).type;
+// Functions to perform the state transition
+function updateRoute(currentState, targetState, isInitialized) {
+	currentState.type = targetState.type;
 	routerNavigation.moveToState(currentState.type);
 	Object.assign(isInitialized, { route: true });
 }
 
-function updateRecords(currentState, flow, cursor, isInitialized) {
-	const currentBlock = blockHandler.getCurrentBlock(flow, cursor);
+function updateRecords(currentState, targetState, cursor, isInitialized) {
+	const currentBlock = targetState;
 
 	const { startSignal } = currentBlock;
 	currentState.record.isWaitingReadyStartSignal = typeof startSignal === 'number' ? startSignal > 0 : false;
@@ -66,9 +54,9 @@ function updateRecords(currentState, flow, cursor, isInitialized) {
 	Object.assign(isInitialized, { record: true });
 }
 
-function updateStateSettings(currentState, flow, cursor, isInitialized, generalSettings) {
+function updateStateSettings(currentState, targetState, isInitialized, generalSettings) {
 	// Parsing the current block's state settings
-	const currentBlock = blockHandler.getCurrentBlock(flow, cursor);
+	const currentBlock = targetState;
 	const {
 		anyPianoKey,
 		enableSoundFlag,
@@ -116,25 +104,25 @@ function updateStateSettings(currentState, flow, cursor, isInitialized, generalS
 		melodyRepetition: 				typeof melodyRepetition === 'number' 			? melodyRepetition : 1,
 		successesForSkipLoop: 			typeof successesForSkipLoop === 'number' 		? successesForSkipLoop : generalSettings.successesForSkipLoop,
 		isSkipStepButtonInFootnote: 	typeof isSkipStepButtonInFootnote === 'boolean' ? isSkipStepButtonInFootnote : generalSettings.isSkipStepButtonInFootnote,
-		isGoBackButtonInFootnote:		typeof isGoBackButtonInFootnote === 'boolean'	? isGoBackButtonInFootnote : generalSettings.isGoBackButtonInFootnote,
+		isGoBackButtonInFootnote: 		typeof isGoBackButtonInFootnote === 'boolean' 	? isGoBackButtonInFootnote : generalSettings.isGoBackButtonInFootnote,
 		startSignal: 					typeof startSignal === 'number' 				? startSignal : 0,
 		feedbackNumerical: 				typeof feedbackNumerical === 'boolean' 			? feedbackNumerical : false,
 		interactivePianoFirstOctave: 	typeof interactivePianoFirstOctave === 'number' ? interactivePianoFirstOctave : generalSettings.interactivePianoFirstOctave,
 		skipLoopOnLastRepetition: 		typeof skipLoopOnLastRepetition === 'boolean' 	? skipLoopOnLastRepetition : false,
-		canGoBack:						typeof canGoBack === 'boolean'					? canGoBack : false,
-		goBackStepButton:				typeof goBackStepButton === 'string'			? goBackStepButton : '',
-		goBackButtonMessage:			typeof goBackButtonMessage === 'string'			? goBackButtonMessage : '',
-		checkpoint:						typeof checkpoint === 'string'					? checkpoint : false,
-		strictPlay: 					typeof strictPlay === 'boolean'					? strictPlay : false,
+		canGoBack: 						typeof canGoBack === 'boolean' 					? canGoBack : false,
+		goBackStepButton: 				typeof goBackStepButton === 'string' 			? goBackStepButton : '',
+		goBackButtonMessage: 			typeof goBackButtonMessage === 'string' 		? goBackButtonMessage : '',
+		checkpoint: 					typeof checkpoint === 'string' 					? checkpoint : false,
+		strictPlay: 					typeof strictPlay === 'boolean' 				? strictPlay : false,
 	};
 
 	// Indicate that the state (current block's settings) was already initialized
 	Object.assign(isInitialized, { state: true });
 }
 
-function updateStateMediaFiles(currentState, flow, cursor, isInitialized) {
+function updateStateMediaFiles(currentState, targetState, cursor, isInitialized) {
 	// Parsing the current block
-	const currentBlock = blockHandler.getCurrentBlock(flow, cursor); // Flow[cursor.current.index];
+	const currentBlock = targetState; // Flow[cursor.current.index];
 	const {
 		// Media files
 		midiFileName,
@@ -168,9 +156,9 @@ function updateStateMediaFiles(currentState, flow, cursor, isInitialized) {
 	Object.assign(isInitialized, { media: true });
 }
 
-function updateStateContent(currentState, flow, cursor, isInitialized) {
+function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	// Parsing the current block
-	const currentBlock = blockHandler.getCurrentBlock(flow, cursor); // Flow[cursor.current.index];
+	const currentBlock = targetState; // Flow[cursor.current.index];
 	const {
 		// Content elements
 		textContent,
@@ -204,5 +192,5 @@ function updateStateContent(currentState, flow, cursor, isInitialized) {
 	currentState.content.interactiveKeyboard = updatedInteractiveKeyboard || false;
 
 	// Indicate that the media files is initialized
-	Object.assign(isInitialized, { content: false });
+	Object.assign(isInitialized, { content: true });
 }

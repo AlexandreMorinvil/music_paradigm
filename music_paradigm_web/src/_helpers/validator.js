@@ -74,6 +74,7 @@ function validateExperiment(experiment) {
 
 	// Verification of the attributes
 	const allowedAttributes = [
+		'timeOutState',
 		'prelude',
 		'flow',
 		'variables',

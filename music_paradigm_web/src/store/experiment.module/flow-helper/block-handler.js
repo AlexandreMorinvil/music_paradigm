@@ -1,3 +1,4 @@
+import defaultState from './default-block';
 import experimentStoreState from '../state';
 import variableHandler from './variable-handler';
 
@@ -20,7 +21,9 @@ function getCurrentBlock(flow, cursor) {
 	let currentBlock = flow[cursor.current.index];
 	const { lastRepetitionVersion, succeeededForSkipLoopVersion } = currentBlock;
 
-	if (lastRepetitionVersion && cursor.navigation.numberRepetition <= 1) {
+	if (cursor.current.isBeyondEnd) {
+		currentBlock = defaultState.DEFAULT_END();
+	} else if (lastRepetitionVersion && cursor.navigation.numberRepetition <= 1) {
 		currentBlock = lastRepetitionVersion;
 	} else if (succeeededForSkipLoopVersion && experimentStoreState.state.record.successesInLoop >= currentBlock.successesForSkipLoop) {
 		const { successesForSkipLoop } = currentBlock;

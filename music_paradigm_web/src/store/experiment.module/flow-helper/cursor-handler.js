@@ -126,7 +126,10 @@ function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 	}
 
 	// Moving beyond the last block of the flow
-	else cursor.current.isBeyondEnd = true;
+	else {
+		cursor.current.isBeyondEnd = true;
+		Object.assign(isInitialized, constants.IS_FULLY_NOT_INITIALIZED_STATUS());
+	}
 
 	// Adjust the flags
 	cursor.flag.needsResetLoopParameters = needsResetLoopParameters;
