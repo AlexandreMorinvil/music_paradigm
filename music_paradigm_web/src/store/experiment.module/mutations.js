@@ -52,34 +52,25 @@ export default {
 	},
 
 	// Prelude initialization functions
-	initializePrelude: (state, initialState) => {
-		// Set the route to the prelude page
-		routerNavigation.moveToExperimentPrelude();
-		state.isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
-		Object.assign(state.isInitialized, { route: true });
+	initializePrelude: (state) => {
+		// Moving the experiment flow, state and curdsor in a temporary memory to run the prelude
+		state.tempMemory.flow = state.flow;
+		state.tempMemory.state = state.state;
+		state.tempMemory.cursor = state.cursor;
 
-		// Initialize the state for the prelude
-		state.state = initialState || constants.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
-	},
-
-	initPreludeCursor(state) {
-		state.cursor = cursorHandler.assignCursor(state.prelude);
+		// Set the prelude as the experiment to run
+		state.flow = state.prelude;
+		state.state = constants.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
+		state.cursor = cursorHandler.assignCursor(state.flow);
 		state.isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
 	},
 
-	updateStateInPrelude: (state) => {
-		const { prelude, preludeCursor, settings } = state;
-		const isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
-		Object.assign(isInitialized, { route: true });
-		stateHandler.updateState(state.state, prelude, preludeCursor, isInitialized, settings);
-	},
-
-	movePreludeNextStep: (state) => {
-		const { prelude, preludeCursor, settings } = state;
-		const isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
-		Object.assign(isInitialized, { route: true });
-		cursorHandler.advance(state.state, prelude, preludeCursor, isInitialized);
-		stateHandler.updateState(state.state, prelude, preludeCursor, isInitialized, settings);
+	leavePrelude: (state) => {
+		// Set the real experiment as the experiment to run
+		state.flow = state.tempMemory.flow;
+		state.state = state.tempMemory.state;
+		state.cursor = state.tempMemory.cursor;
+		state.isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
 	},
 
 	// Cursor handling

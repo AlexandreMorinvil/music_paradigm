@@ -65,7 +65,6 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 
 		// Data to navigate through the flow
 		cursor: DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES(),
-		preludeCursor: DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES(),
 
 		// Data used by the view pages
 		state: DEFAULT_EXPERIMENT_STATE_STATE_VALUES(),
@@ -75,6 +74,9 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 
 		// Initialization status of vue pages
 		isInitialized: IS_FULLY_NOT_INITIALIZED_STATUS(),
+
+		// Temporary space to store the flow, cursor and state of the real experiment while in prelude mode
+		tempMemory: { /* flow, state, cursor */ }
 	};
 }
 

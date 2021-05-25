@@ -113,13 +113,13 @@ function validateExperiment(experiment) {
 
 	if (experiment.prelude)
 		experiment.prelude.forEach((element, index) => {
-			validateBlock(element, index, false);
+			validateBlock(element, index);
 		});
 
 	return true;
 }
 
-function validateBlock(block, index = null, hasType = true) {
+function validateBlock(block, index = null) {
 	// Set the index message addon
 	let indexMessage = '';
 	if (typeof index === 'number') {
@@ -132,16 +132,16 @@ function validateBlock(block, index = null, hasType = true) {
 	}
 
 	// Verification of the type
-	if (hasType && !Object.prototype.hasOwnProperty.call(block, 'type')) {
+	if (!Object.prototype.hasOwnProperty.call(block, 'type')) {
 		throw new Error(`The block${indexMessage} does not have a type`);
 	}
 
-	if (hasType && !(typeof block.type === 'string')) {
+	if (!(typeof block.type === 'string')) {
 		throw new Error(`The type of the block${indexMessage} name must be a string`);
 	}
 
 	const allowedTypes = ['cue', 'end', 'feedback', 'instruction', 'playing', 'rest', 'video'];
-	if (hasType && !allowedTypes.includes(block.type)) {
+	if (!allowedTypes.includes(block.type)) {
 		throw new Error(`The type '${block.type}' of the block${indexMessage} is not allowed`);
 	}
 
