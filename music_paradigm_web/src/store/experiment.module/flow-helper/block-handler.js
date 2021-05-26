@@ -5,17 +5,11 @@ import variableHandler from './variable-handler';
 export default {
 	getCurrentBlock,
 	getCurrentBlockType,
-	getNextBlockType,
-	getNextBlock,
 	getTimeUpBlock,
 };
 
 function getCurrentBlockType(flow, cursor) {
 	return flow[cursor.current.index].type;
-}
-
-function getNextBlockType(flow, cursor) {
-	return flow[cursor.navigation.indexNext].type;
 }
 
 function getCurrentBlock(flow, cursor) {
@@ -34,10 +28,6 @@ function getCurrentBlock(flow, cursor) {
 	}
 
 	return variableHandler.populateVariables(currentBlock);
-}
-
-function getNextBlock(flow, cursor) {
-	return flow[cursor.navigation.indexNext];
 }
 
 function getTimeUpBlock() {

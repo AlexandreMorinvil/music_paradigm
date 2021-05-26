@@ -150,38 +150,6 @@ export default {
 		return state.state.type || '';
 	},
 
-	nextStateType: (state) => {
-		// Return the type of the next state
-		// If we are currently beyond the last block of the flow or if there is no current state type step, we return no next step
-		if (state.cursor.current.isBeyondEnd || !state.state.type) {
-			return '';
-		}
-
-		// If the current block is an end block, regardless of whether or not there exists another block in the flow description flow, there is no next step to be indicated
-		else if (state.state.type === 'end') {
-			return '';
-		}
-
-		// If the next step is beyond the last block of the flow, we return "end"
-		else if (state.cursor.navigation.indexNext > state.flow.length - 1) {
-			return 'end';
-		}
-
-		// If There remains inner steps in the current block, the next step is of the same type as the current step
-		else if (state.cursor.current.innerStepIndex < state.cursor.navigation.totalInnerSteps) {
-			return state.state.type;
-		}
-
-		// Otherwise, if it is none of the edge casess, the type of the next step is the type of the following block
-		else {
-			return blockHandler.getNextBlockType(state.flow, state.cursor);
-		}
-	},
-
-	nextPlayingMode: (state) => {
-		return blockHandler.getNextBlock(state.flow, state.cursor).playingMode || state.settings.playingMode;
-	},
-
 	anyPianoKey: (state) => {
 		// The "anyPianoKey" parameter indicates whether the user of the experiment can move to the next step by pressing any piano key
 		// (if the value is "true"), otherwise the experiment will move to the next step only by pressing the space bar key (if the value is false).
