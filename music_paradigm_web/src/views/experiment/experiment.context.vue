@@ -169,7 +169,10 @@ export default {
 			},
 		},
 		isBeyondEnd() {
-			if (this.isInPrelude) this.leavePrelude();
+			if (this.isInPrelude) {
+				this.leavePrelude();
+				this.displayFirstStep();
+			}
 		},
 	},
 	beforeRouteLeave(to, from, next) {
