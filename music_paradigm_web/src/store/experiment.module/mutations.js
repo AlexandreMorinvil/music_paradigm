@@ -25,6 +25,7 @@ export default {
 		experimentHandler.setExperimentDescription(state, experiment);
 		experimentHandler.setExperimentPrelude(state, experiment);
 		experimentHandler.setExperimentFlow(state, experiment);
+		experimentHandler.setExperimentTimeUpState(state, experiment);
 		experimentHandler.setExperimentGeneralSettings(state, experiment);
 		experimentHandler.setImposedParameterValues(state, experiment);
 		experimentHandler.populateExperimentConstantVariables(state, experiment);

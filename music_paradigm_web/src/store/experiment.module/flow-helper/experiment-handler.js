@@ -13,6 +13,7 @@ export default {
 	setExperimentGeneralSettings,
 	setExperimentPrelude,
 	setExperimentFlow,
+	setExperimentTimeUpState,
 	storeParameterImposedValues,
 };
 
@@ -44,6 +45,12 @@ function setExperimentPrelude(state, experiment) {
 function setExperimentFlow(state, experiment) {
 	// Deep copying the flow
 	state.flow = JSON.parse(JSON.stringify(experiment.flow));
+}
+
+function setExperimentTimeUpState(state, experiment) {
+	// Deep copying the state
+	state.timeUpState = JSON.parse(JSON.stringify(experiment.timeUpState));
+	if (state.timeUpState) state.timeUpState.type = 'end';
 }
 
 function setExperimentGeneralSettings(state, experiment) {

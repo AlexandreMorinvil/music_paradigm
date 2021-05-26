@@ -75,7 +75,7 @@ function validateExperiment(experiment) {
 
 	// Verification of the attributes
 	const allowedAttributes = [
-		'timeOutState',
+		'timeUpState',
 		'prelude',
 		'flow',
 		'variables',
@@ -273,6 +273,7 @@ function validateAttributeType(key, value) {
 			break;
 
 		// Object
+		case 'timeUpState':
 		case 'lastRepetitionVersion':
 		case 'succeeededForSkipLoopVersion':
 			if (!(typeof value === 'object') || Array.isArray(value)) {

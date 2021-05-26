@@ -57,6 +57,9 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 		// The sequence of the experiment
 		flow: [], // Description of the different steps of the experiment
 
+		// The state to reach upon timeout
+		timeUpState: null,
+
 		// Mandatory description of the flow
 		description: DEFAULT_DESCRIPTION_SETTINGS_VALUES(),
 

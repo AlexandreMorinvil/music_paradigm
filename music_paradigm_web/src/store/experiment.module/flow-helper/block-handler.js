@@ -41,5 +41,7 @@ function getNextBlock(flow, cursor) {
 }
 
 function getTimeUpBlock() {
-	return defaultState.DEFAULT_TIME_UP();
+	const timeoutState = experimentStoreState.timeUpState;
+	if (timeoutState) return timeoutState;
+	else return defaultState.DEFAULT_TIME_UP();
 }

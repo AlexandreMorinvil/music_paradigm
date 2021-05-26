@@ -89,7 +89,7 @@ const schema = new Schema({
         type: [stateSchema],
         required: false,
     },
-    timeOutState: {
+    timeUpState: {
         default: undefined,
         type: stateSchema,
         required: false
