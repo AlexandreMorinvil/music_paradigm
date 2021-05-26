@@ -247,10 +247,10 @@ function setCursorMediaDepilingStart(cursor, midiFileName, videoFileName, textCo
 	// 3. The current index is not the start index of a previous pile (to avoid depiling a pile twice)
 	// 4. The current index is beyond the loop end (in order to not start a loop of depilement within a group of blocks)
 	if (
-		maxNumberContentElement > 1
-		&& cursor.navigation.numberPiledMedia <= 1
-		&& cursor.current.index !== cursor.navigation.indexPileStart
-		&& cursor.current.index > cursor.navigation.indexGroupEnd
+		maxNumberContentElement > 1 &&
+		cursor.navigation.numberPiledMedia <= 1 &&
+		cursor.current.index !== cursor.navigation.indexPileStart &&
+		cursor.current.index > cursor.navigation.indexGroupEnd
 	) {
 		cursor.navigation.indexPileStart = cursor.current.index;
 		cursor.navigation.numberPiledMedia = maxNumberContentElement;

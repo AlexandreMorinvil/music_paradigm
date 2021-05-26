@@ -54,22 +54,30 @@ export default {
 	// Prelude initialization functions
 	initializePrelude: (state) => {
 		// Moving the experiment flow, state and curdsor in a temporary memory to run the prelude
-		state.tempMemory.flow = state.flow;
-		state.tempMemory.state = state.state;
-		state.tempMemory.cursor = state.cursor;
+		state.tempMemory.flow = JSON.parse(JSON.stringify(state.flow));
+		state.tempMemory.state = JSON.parse(JSON.stringify(state.state));
+		state.tempMemory.cursor = JSON.parse(JSON.stringify(state.cursor));
 
 		// Set the prelude as the experiment to run
 		state.flow = state.prelude;
 		state.state = constants.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
 		state.cursor = cursorHandler.assignCursor(state.flow);
+		state.cursor.flag.isInPrelude = true;
+
 		state.isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
 	},
 
 	leavePrelude: (state) => {
 		// Set the real experiment as the experiment to run
-		state.flow = state.tempMemory.flow;
-		state.state = state.tempMemory.state;
-		state.cursor = state.tempMemory.cursor;
+		state.flow = JSON.parse(JSON.stringify(state.tempMemory.flow));
+		state.state = JSON.parse(JSON.stringify(state.tempMemory.state));
+		state.cursor = JSON.parse(JSON.stringify(state.tempMemory.cursor));
+
+		// Delete the prelude data
+		delete state.tempMemory.flow;
+		delete state.tempMemory.state;
+		delete state.tempMemory.cursor;
+
 		state.isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
 	},
 

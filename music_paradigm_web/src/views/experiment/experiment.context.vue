@@ -35,6 +35,8 @@ export default {
 	computed: {
 		...mapGetters('experiment', [
 			'hasPrelude',
+			'isInPrelude',
+			'isBeyondEnd',
 			'midiName',
 			'referenceKeyboardKeys',
 			'controlType',
@@ -48,6 +50,7 @@ export default {
 		...mapActions('session', ['concludeSession', 'initializeSession', 'saveSessionState', 'forgetSessionState']),
 		...mapActions('experiment', [
 			'initializePrelude',
+			'leavePrelude',
 			'updateState',
 			'goNextStep',
 			'goPreviousInnerStep',
@@ -164,6 +167,9 @@ export default {
 			handler: function (sequence) {
 				if (sequence) this.loadReferenceKeyboardKeys();
 			},
+		},
+		isBeyondEnd() {
+			if (this.isInPrelude) this.leavePrelude();
 		},
 	},
 	beforeRouteLeave(to, from, next) {

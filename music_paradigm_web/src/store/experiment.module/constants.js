@@ -131,6 +131,7 @@ function DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES() {
 			numberPiledMedia: 0, 													// Number of media content piled at the index pile start
 		},
 		flag: {
+			isInPrelude: false,														// Indicator of wehether or not the cursor is pointing at hte main experiment (as opposed to the prelude)
 			isFirstIndexPassage: true,												// Indicator of whether it is the first time the index has reached a certain value (is false whenever the cursor loops back)
 			needsResetLoopParameters: false,										// Indicator of whether he loop specific parameters need to be restarted (only when we enter a need block group)
 			isNewBlock: true,														// Indicatio of wheter a new block was entered (Thus, we are not in just another inner step)

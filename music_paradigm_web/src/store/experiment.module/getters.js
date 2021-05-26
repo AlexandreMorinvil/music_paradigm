@@ -18,12 +18,20 @@ export default {
 	},
 
 	// Getters for the experiment flow's information
+	isInPrelude: (state) => {
+		return state.cursor.flag.isInPrelude;
+	},
+
 	stepsTotalCount: (state) => {
 		return cursorHandler.countStepsLeft(state.flow);
 	},
 
 	stepsLeftCount: (state) => {
 		return cursorHandler.countStepsLeft(state.flow, state.cursor);
+	},
+
+	isBeyondEnd: (state) => {
+		return state.cursor.current.isBeyondEnd;
 	},
 
 	currentIndex: (state) => {

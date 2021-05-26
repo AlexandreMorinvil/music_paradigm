@@ -5,9 +5,9 @@ import blockHandler from './block-handler';
 import { routerNavigation } from '@/_helpers';
 
 export default {
+	imposeState,
 	updateState,
 	updateStateOnSkip,
-	imposeState,
 };
 
 function transitionState(currentState, targetState, cursor, isInitialized, generalSettings) {
@@ -23,7 +23,9 @@ function imposeState(currentState, targetState, cursor, isInitialized, generalSe
 }
 
 function updateState(currentState, flow, cursor, isInitialized, generalSettings) {
+	// Get the target state and if no block is specified, we abort the operation
 	const targetState = blockHandler.getCurrentBlock(flow, cursor);
+	if (!targetState) return;
 	transitionState(currentState, targetState, cursor, isInitialized, generalSettings);
 }
 
