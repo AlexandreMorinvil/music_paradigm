@@ -141,6 +141,7 @@ function populateExperimentConstantVariables(state, experiment) {
 	// Populate the constant variables
 	for (const index in flow) state.flow[index] = variableHandler.populateVariables(flow[index], constantVariables);
 	for (const index in prelude) state.prelude[index] = variableHandler.populateVariables(prelude[index], constantVariables);
+	if (state.timeUpState) state.timeUpState = variableHandler.populateVariables(state.timeUpState, constantVariables);
 }
 
 function setExperimentDynamicVariables(state, experiment) {
