@@ -1,6 +1,7 @@
 import { routerNavigation } from '@/_helpers';
 
 import constants from './constants';
+import blockHandler from './flow-helper/block-handler';
 import cursorHandler from './flow-helper/cursor-handler';
 import experimentHandler from './flow-helper/experiment-handler';
 import stateHandler from './flow-helper/state-handler';
@@ -108,8 +109,10 @@ export default {
 
 	// End functions
 	endExperimentByTimeout: (state) => {
-		const message = 'The time limit was reached.\nThe experiment ends here.';
-		stateHandler.forceEndState(state.state, state.isInitialized, message);
+		const { cursor, settings } = state;
+		const timeoutBlock = blockHandler.getTimeUpBlock();
+		const isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
+		stateHandler.imposeState(state.state, timeoutBlock, cursor, isInitialized, settings);
 	},
 
 	leaveExperiment: () => {

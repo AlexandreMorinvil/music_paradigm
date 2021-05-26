@@ -7,6 +7,7 @@ export default {
 	getCurrentBlockType,
 	getNextBlockType,
 	getNextBlock,
+	getTimeUpBlock,
 };
 
 function getCurrentBlockType(flow, cursor) {
@@ -37,4 +38,8 @@ function getCurrentBlock(flow, cursor) {
 
 function getNextBlock(flow, cursor) {
 	return flow[cursor.navigation.indexNext];
+}
+
+function getTimeUpBlock() {
+	return defaultState.DEFAULT_TIME_UP();
 }

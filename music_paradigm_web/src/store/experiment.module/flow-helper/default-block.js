@@ -1,6 +1,7 @@
+/* eslint-disable quotes */
 export default {
 	DEFAULT_IMPOSED_TRANSITION,
-	DEFAULT_TIMEOUT,
+	DEFAULT_TIME_UP,
 	DEFAULT_END,
 };
 
@@ -17,9 +18,9 @@ function DEFAULT_END() {
 	};
 }
 
-function DEFAULT_TIMEOUT() {
+function DEFAULT_TIME_UP() {
 	return {
 		type: 'end',
-		textContent: 'Time Out',
+		textContent: "Time's Up",
 	};
 }
