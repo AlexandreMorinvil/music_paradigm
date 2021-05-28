@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-schema = require('./progression.schema');
+schema = require('./progression.middleware');
 
 schema.set('toJSON', { virtuals: true });
 

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-schema = require('./experiment.schema');
+schema = require('./experiment.middleware');
 
 // Options for Object/JSON tranformations
 const transformationOprtions = {

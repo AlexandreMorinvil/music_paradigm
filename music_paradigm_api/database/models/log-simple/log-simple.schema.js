@@ -6,6 +6,7 @@ const schema = new Schema(
     {
         userId: { type: Schema.Types.ObjectId, default: null },
         experimentId: { type: Schema.Types.ObjectId, default: null },
+        progressionId: { type: Schema.Types.ObjectId, default: null },
         curriculumId: { type: Schema.Types.ObjectId, default: null },
         associativeId: { type: String, default: undefined },
 

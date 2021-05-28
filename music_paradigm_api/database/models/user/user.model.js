@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-schema = require('./user.schema');
+schema = require('./user.middleware');
 
 const roles = require('_helpers/role');
 const bcrypt = require('bcryptjs');
@@ -121,10 +121,6 @@ schema.methods.resetProgression = async function () {
 
     await this.save();
     return await getLastProgression(this, model);
-}
-
-schema.methods.abc = async function () {
-
 }
 
 // Helper functions

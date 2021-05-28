@@ -49,8 +49,12 @@ function setExperimentFlow(state, experiment) {
 
 function setExperimentTimeUpState(state, experiment) {
 	// Deep copying the state
-	state.timeUpState = JSON.parse(JSON.stringify(experiment.timeUpState));
-	if (state.timeUpState) state.timeUpState.type = 'end';
+	const timeUpState = experiment.timeUpState;
+
+	if (timeUpState) {
+		state.timeUpState = JSON.parse(JSON.stringify(timeUpState));
+		state.timeUpState.type = 'end';
+	}
 }
 
 function setExperimentGeneralSettings(state, experiment) {
