@@ -1,6 +1,5 @@
 import constants from './constants';
 
-import blockHandler from './flow-helper/block-handler';
 import cursorHandler from './flow-helper/cursor-handler';
 
 export default {

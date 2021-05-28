@@ -11,7 +11,7 @@ schema.statics.initializeLog = async function (logHeader) {
 
 schema.statics.addLogBlock = async function (logId, block) {
     const log = await this.findById(logId);
-    if (!log) throw new Error('No low associated to log ID');
+    if (!log) throw new Error('No log associated to log ID');
     log.blocks.push(block);
     return log.save();
 };

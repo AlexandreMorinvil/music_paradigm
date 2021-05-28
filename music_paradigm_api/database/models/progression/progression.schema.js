@@ -79,19 +79,6 @@ const schema = new Schema(
                         required: [true, curriculumRequiredMessage],
                     },
 
-                    // Reference to the log files associated to each completion of the experiment
-                    simpleLogReferences: {
-                        type: [Schema.Types.ObjectId],
-                        ref: 'Log-Simple',
-                        default: []
-                    },
-
-                    thoroughLogReferences: {
-                        type: [Schema.Types.ObjectId],
-                        ref: 'Log-Thorough',
-                        default: []
-                    },
-
                     // Data to restart a session from where we leave it
                     // Cursor at the position where the experiment was left
                     cursor: {

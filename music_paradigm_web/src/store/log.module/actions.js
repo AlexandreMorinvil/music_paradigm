@@ -7,6 +7,7 @@ export default {
 			const block = {
 				userId: rootGetters['account/accountId'],
 				curriculumId: rootGetters['session/curriculumId'] || null,
+				progressionId: rootGetters['session/progressionId'] || null,
 				associativeId: rootGetters['session/associativeId'] || null,
 				experimentId: rootGetters['experiment/experimentId'],
 
@@ -67,6 +68,7 @@ export default {
 		const logHeader = {
 			userId: rootGetters['account/accountId'],
 			curriculumId: rootGetters['session/curriculumId'] || null,
+			progressionId: rootGetters['session/progressionId'] || null,
 			associativeId: rootGetters['session/associativeId'] || null,
 			experimentId: rootGetters['experiment/experimentId'],
 

@@ -6,6 +6,7 @@ function EMPTY_SESSION_INFORMATION() {
 	return {
 		curriculumTitle: '',
 		curriculumId: '',
+		progressionId: '',
 		associativeId: '',
 		title: '',
 		text: '',

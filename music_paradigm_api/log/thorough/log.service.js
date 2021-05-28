@@ -17,8 +17,6 @@ async function initializeLog(userId, logInformation) {
             initializedLog = await AdminLogThorough.initializeLog(logInformation);
         } else {
             initializedLog = await LogThorough.initializeLog(logInformation);
-            const associativeId = logInformation.associativeId;
-            await User.recordThoroughLog(userId, associativeId, initializedLog);
         }
         return initializedLog._id;
     } catch (err) {

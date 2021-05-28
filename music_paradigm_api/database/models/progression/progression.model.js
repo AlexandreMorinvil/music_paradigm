@@ -22,6 +22,7 @@ schema.methods.getSessionInformation = async function (associativeId) {
     const sessionInformation = {
         curriculumTitle: curriculum.title,
         curriculumId: curriculum._id,
+        progressionId: this._id,
         associativeId: associativeId,
         title: curriculumNestedExperiment.title,
         text: curriculumNestedExperiment.text,
@@ -87,28 +88,6 @@ schema.methods.concludeExperiment = async function (associativeId) {
     if (experimentInProgression.completionCount === 1) this.lastProgressionDate = Date.now();
 
     return this.save();
-};
-
-schema.methods.addSimpleLogBlockAssociatedExperiment = async function (logBock) {
-    // Get experiment associated
-    associativeId = logBock.associativeId;
-    if (!associativeId) throw new Error('No associative ID')
-
-    // Add the log block to the progression
-    const progressionNestedExperiment = await this.getExperimentAssociated(associativeId);
-    progressionNestedExperiment.simpleLogReferences.push(logBock._id);
-    await progressionNestedExperiment.save();
-    return await this.save();
-};
-
-schema.methods.addThoroughLogAssociatedExperiment = async function (associativeId, logId) {
-    if (!associativeId) throw new Error('No associative ID')
-
-    // Add the initialized log to the progression
-    const progressionNestedExperiment = await this.getExperimentAssociated(associativeId);
-    progressionNestedExperiment.thoroughLogReferences.push(logId);
-    await progressionNestedExperiment.save();
-    return await this.save();
 };
 
 schema.methods.saveSessionState = async function (associativeId, cursor, state) {
