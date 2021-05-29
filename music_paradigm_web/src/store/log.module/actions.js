@@ -6,10 +6,13 @@ export default {
 		return new Promise((resolve) => {
 			const block = {
 				userId: rootGetters['account/accountId'],
+				experimentId: rootGetters['experiment/experimentId'],
 				curriculumId: rootGetters['session/curriculumId'] || null,
 				progressionId: rootGetters['session/progressionId'] || null,
 				associativeId: rootGetters['session/associativeId'] || null,
-				experimentId: rootGetters['experiment/experimentId'],
+
+				startCount: rootGetters['session/startCount'],
+				completionCount: rootGetters['session/completionCount'],
 
 				username: rootGetters['account/username'],
 				curriculumTitle: rootGetters['session/curriculumTitle'] || null,
@@ -72,6 +75,8 @@ export default {
 			associativeId: rootGetters['session/associativeId'] || null,
 			experimentId: rootGetters['experiment/experimentId'],
 
+			completionCount: rootGetters['session/completionCount'],
+
 			username: rootGetters['account/username'],
 			curriculumTitle: rootGetters['session/curriculumTitle'] || null,
 			experimentGroup: rootGetters['experiment/experimentGroup'],
@@ -98,6 +103,8 @@ export default {
 	makeThoroughLogBlock({ rootGetters }) {
 		return new Promise((resolve) => {
 			const block = {
+				startCount: rootGetters['session/startCount'],
+
 				blockType: rootGetters['experiment/currentStateType'],
 				blockSubType: rootGetters['experiment/playingMode'],
 				controlType: rootGetters['experiment/controlType'],

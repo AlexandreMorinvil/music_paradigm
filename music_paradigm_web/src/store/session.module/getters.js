@@ -15,6 +15,14 @@ export default {
 		return state.sessionInformation.associativeId || null;
 	},
 
+	startCount: (state) => {
+		return state.sessionInformation.startCount || 1;
+	},
+
+	completionCount: (state) => {
+		return state.sessionInformation.completionCount || 0;
+	},
+
 	sessionExperiment: (state) => {
 		return state.sessionInformation.experiment || null;
 	},

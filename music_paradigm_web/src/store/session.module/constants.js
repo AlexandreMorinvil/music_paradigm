@@ -8,6 +8,8 @@ function EMPTY_SESSION_INFORMATION() {
 		curriculumId: '',
 		progressionId: '',
 		associativeId: '',
+		startCount: 1,
+		completionCount: 0,
 		title: '',
 		text: '',
 		experiment: null,

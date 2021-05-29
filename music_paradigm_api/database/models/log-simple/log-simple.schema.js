@@ -10,6 +10,9 @@ const schema = new Schema(
         curriculumId: { type: Schema.Types.ObjectId, default: null },
         associativeId: { type: String, default: undefined },
 
+        startCount: { type: Number, default: 1 },
+        completionCount: { type: Number, default: 0 },
+
         username: { type: String, default: undefined },
         curriculumTitle: { type: String, default: null },
         experimentGroup: { type: String, default: undefined },
