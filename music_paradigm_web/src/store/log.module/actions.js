@@ -143,9 +143,10 @@ export default {
 		});
 	},
 
-	concludeThoroughLog({ commit, getters }) {
+	concludeThoroughLog({ commit, getters }, isInTimeUp) {
 		const logConclusion = {
-			startTimestamp: Date.now(),
+			time: Date.now(),
+			isInTimeUp: isInTimeUp,
 		};
 		commit('indicateConcludeLogRequest');
 		return logService

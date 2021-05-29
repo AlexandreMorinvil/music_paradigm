@@ -16,8 +16,8 @@ export default {
 		addBlock() {
 			this.addThoroughLogBlock();
 		},
-		conclude() {
-			this.concludeThoroughLog();
+		conclude(isInTimeUp) {
+			this.concludeThoroughLog(isInTimeUp);
 		},
 	},
 };

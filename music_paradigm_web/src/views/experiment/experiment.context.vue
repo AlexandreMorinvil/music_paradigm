@@ -36,6 +36,7 @@ export default {
 		...mapGetters('experiment', [
 			'hasPrelude',
 			'isInPrelude',
+			'isInTimeUp',
 			'isBeyondEnd',
 			'midiName',
 			'referenceKeyboardKeys',
@@ -103,10 +104,10 @@ export default {
 			this.handleSaveSessionState();
 		},
 		endExperiment() {
-			this.$refs.log.conclude();
 			this.needsConfirmationToLeave = false;
-			this.concludeSession();
-			this.concludeExperiment();
+			this.$refs.log.conclude(this.isInTimeUp);
+			this.concludeSession(this.isInTimeUp);
+			this.concludeExperiment(this.isInTimeUp);
 		},
 		resetPresses() {
 			this.$refs.log.addBlock();

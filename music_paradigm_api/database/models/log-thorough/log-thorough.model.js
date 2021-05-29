@@ -18,7 +18,11 @@ schema.statics.addLogBlock = async function (logId, block) {
 
 schema.statics.concludeLog = async function (logId, logConclusion) {
     const log = await this.findById(logId);
-    log.endTimestamp = logConclusion.endTimestamp || Date.now();
+    log.endTimestamp.push({
+        time: logConclusion.endTimestamp || Date.now(),
+        isInTimeUp: logConclusion.endTimestamp || false
+    });
+
     return log.save();
 };
 

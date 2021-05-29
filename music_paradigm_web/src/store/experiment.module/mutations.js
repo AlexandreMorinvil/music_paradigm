@@ -1,6 +1,7 @@
 import { routerNavigation } from '@/_helpers';
 
 import constants from './constants';
+
 import blockHandler from './flow-helper/block-handler';
 import cursorHandler from './flow-helper/cursor-handler';
 import experimentHandler from './flow-helper/experiment-handler';
@@ -30,8 +31,6 @@ export default {
 		experimentHandler.setImposedParameterValues(state, experiment);
 		experimentHandler.populateExperimentConstantVariables(state, experiment);
 		experimentHandler.setExperimentDynamicVariables(state, experiment);
-
-		state.hasExperiment = true;
 	},
 
 	initCursor(state, presetCursor = null) {
@@ -110,6 +109,8 @@ export default {
 
 	// End functions
 	endExperimentByTimeout: (state) => {
+		if (state.state.type === 'end') return;
+		state.cursor.flag.isInTimeUp = true;
 		const { cursor, settings } = state;
 		const timeoutBlock = blockHandler.getTimeUpBlock();
 		const isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();

@@ -17,6 +17,10 @@ export default {
 	},
 
 	// Getters for the experiment flow's information
+	isInTimeUp: (state) => {
+		return state.cursor.flag.isInTimeUp;
+	},
+
 	isInPrelude: (state) => {
 		return state.cursor.flag.isInPrelude;
 	},

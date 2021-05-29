@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+const LogConclusion = new Schema({
+    time: { type: [Date], default: Date.now },
+    isInTimeUp: { type: Boolean, default: false }
+})
+
 const schema = new Schema(
     {
         userId: { type: Schema.Types.ObjectId, default: null },
@@ -19,7 +24,7 @@ const schema = new Schema(
         experimentVersion: { type: Number, default: undefined },
 
         startTimestamp: { type: [Date], default: Date.now },
-        endTimestamp: { type: Date, default: null },
+        endTimestamp: { type: [LogConclusion], default: null },
 
         // List of midi files referenced
         reference: {
