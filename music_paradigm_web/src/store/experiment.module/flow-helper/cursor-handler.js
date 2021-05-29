@@ -58,7 +58,7 @@ function moveCursorSpecialCases(state, flow, cursor, isInitialized) {
 	if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop) {
 		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
 		return true;
-	} else if (blockHandler.getCurrentBlock(flow, cursor).skipLoopOnLastRepetition && cursor.navigation.numberRepetition <= 1) {
+	} else if (blockHandler.getCurrentBlock(flow, cursor).skipLoopOnLastRepetition && cursor.current.numberRepetition <= 1) {
 		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
 		return true;
 	} else return false;
@@ -87,7 +87,7 @@ function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 	let needsResetLoopParameters = false;
 
 	// Moving to the next inner step if there remains inner steps
-	if (cursor.current.innerStepIndex < cursor.navigation.totalInnerSteps) {
+	if (cursor.current.innerStepIndex < cursor.navigation.lastInnerStepsIndex) {
 		cursor.current.innerStepIndex += 1;
 		cursor.flag.isNewBlock = false;
 		Object.assign(isInitialized, { content: false });
@@ -101,10 +101,10 @@ function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 		if (cursor.navigation.indexNext <= cursor.current.index) {
 			cursor.flag.isFirstIndexPassage = false;
 
-			if (cursor.navigation.numberRepetition > 1) {
-				cursor.navigation.numberRepetition -= 1;
-			} else if (cursor.navigation.numberPiledMedia > 1) {
-				cursor.navigation.numberPiledMedia -= 1;
+			if (cursor.current.numberRepetition > 1) {
+				cursor.current.numberRepetition -= 1;
+			} else if (cursor.navigation.lastPiledContentIndex > 1) {
+				cursor.navigation.lastPiledContentIndex -= 1;
 				cursor.current.piledContentIndex += 1;
 				needsResetLoopParameters = true; // Flag asjustment
 			}
@@ -189,7 +189,7 @@ function setCursorInnerStepsTotal(cursor, textContent, pictureFileName) {
 	}
 
 	const maxNumberContentElement = Math.max(innerStepsTextContent, innerStepsPictureFile);
-	cursor.navigation.totalInnerSteps = maxNumberContentElement;
+	cursor.navigation.lastInnerStepsIndex = maxNumberContentElement;
 }
 
 // Let A, B, C and D be three blocks, that are not instruction blocks.
@@ -205,15 +205,15 @@ function setCursorInnerStepsTotal(cursor, textContent, pictureFileName) {
 //  The execution order would be :
 //  A - B - C - A - B - C - A - B - C - C - C - D
 function setCursorLoopStart(cursor, numberRepetition) {
-	if (cursor.flag.needsResetLoopParameters) cursor.navigation.numberTotalRepetions = 1;
+	if (cursor.flag.needsResetLoopParameters) cursor.navigation.totalNumberRepetitions = 1;
 	// Initialize a loop (loop start index & number of repetitions) if :
 	// 1. A number of repetition greater than 1 is specified in the block's settings,
 	// 2. The cursor is not currently in a loop (thus the number of reptition left is <= 1)
 	// 3. The current index is not the start index of a previous loop (to avoid resetting a loop twice)
-	if (numberRepetition > 1 && cursor.navigation.numberRepetition <= 1 && cursor.current.index !== cursor.navigation.indexLoopStart) {
-		cursor.navigation.numberTotalRepetions = numberRepetition;
+	if (numberRepetition > 1 && cursor.current.numberRepetition <= 1 && cursor.current.index !== cursor.navigation.indexLoopStart) {
+		cursor.navigation.totalNumberRepetitions = numberRepetition;
 		cursor.navigation.indexLoopStart = cursor.current.index;
-		cursor.navigation.numberRepetition = numberRepetition;
+		cursor.current.numberRepetition = numberRepetition;
 	}
 }
 
@@ -248,12 +248,12 @@ function setCursorMediaDepilingStart(cursor, midiFileName, videoFileName, textCo
 	// 4. The current index is beyond the loop end (in order to not start a loop of depilement within a group of blocks)
 	if (
 		maxNumberContentElement > 1 &&
-		cursor.navigation.numberPiledMedia <= 1 &&
+		cursor.navigation.lastPiledContentIndex <= 1 &&
 		cursor.current.index !== cursor.navigation.indexPileStart &&
 		cursor.current.index > cursor.navigation.indexGroupEnd
 	) {
 		cursor.navigation.indexPileStart = cursor.current.index;
-		cursor.navigation.numberPiledMedia = maxNumberContentElement;
+		cursor.navigation.lastPiledContentIndex = maxNumberContentElement;
 	}
 }
 
@@ -266,12 +266,12 @@ function setCursorNextStep(cursor, followedBy) {
 
 	// If the block is not followed by another block, it is necesserily the end of a group of blocks
 	// If there remains reptitions: We loop back to the start of the loop
-	else if (cursor.navigation.numberRepetition > 1) {
+	else if (cursor.current.numberRepetition > 1) {
 		cursor.navigation.indexNext = cursor.navigation.indexLoopStart;
 	}
 
 	// If there remains content to depile, reset the loop start in order to be able to loop again with the new media content
-	else if (cursor.navigation.numberPiledMedia > 1) {
+	else if (cursor.navigation.lastPiledContentIndex > 1) {
 		cursor.navigation.indexNext = cursor.navigation.indexPileStart;
 		cursor.navigation.indexLoopStart = constants.UNSET_INDEX;
 	}

@@ -47,7 +47,7 @@ export default {
 		]),
 	},
 	methods: {
-		...mapActions('session', ['concludeSession', 'initializeSession', 'saveSessionState', 'forgetSessionState']),
+		...mapActions('session', ['concludeSession', 'initializeSession', 'saveSessionState']),
 		...mapActions('experiment', [
 			'initializePrelude',
 			'leavePrelude',
@@ -105,7 +105,6 @@ export default {
 		endExperiment() {
 			this.$refs.log.conclude();
 			this.needsConfirmationToLeave = false;
-			this.forgetSessionState();
 			this.concludeSession();
 			this.concludeExperiment();
 		},

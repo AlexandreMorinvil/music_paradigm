@@ -19,7 +19,7 @@ function getCurrentBlock(flow, cursor) {
 	if (cursor.flag.isBeyondEnd) {
 		if (cursor.flag.isInPrelude) currentBlock = defaultState.DEFAULT_IMPOSED_TRANSITION();
 		else currentBlock = defaultState.DEFAULT_END();
-	} else if (lastRepetitionVersion && cursor.navigation.numberRepetition <= 1) {
+	} else if (lastRepetitionVersion && cursor.current.numberRepetition <= 1) {
 		currentBlock = lastRepetitionVersion;
 	} else if (succeeededForSkipLoopVersion && experimentStoreState.state.record.successesInLoop >= currentBlock.successesForSkipLoop) {
 		const { successesForSkipLoop } = currentBlock;

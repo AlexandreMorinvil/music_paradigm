@@ -118,22 +118,22 @@ function DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES() {
 	return {
 		current: {
 			index: 0, 																// Index of the current block of the flow
-			piledContentIndex: 0, 													// Index of the current step of the block (browses the midi and video file names)
 			innerStepIndex: 0, 														// Index of the current step of the block (browses the picture file names)
-			isBeyondEnd: false, 													// Indicator of whether the index as reached the end of the flow (is checked before moving the cursor forward)
-			isInSkipableChain: false, 												// Indicates whether the block must be skipped upon a skip request
+			numberRepetition: 1, 													// Number of repetitions left to do
+			piledContentIndex: 0, 													// Index of the current step of the block (browses the midi and video file names)
 		},
 		navigation: {
 			indexNext: 1, 															// Index of the next block of the flow
+			indexGroupEnd: UNSET_INDEX, 											// Index of the end of a group of blocks (the last index with a followedBy or an individual block)
 			indexLoopStart: UNSET_INDEX, 											// Index to which a loop start
 			indexPileStart: UNSET_INDEX, 											// Index to which there remains content to depile
-			indexGroupEnd: UNSET_INDEX, 											// Index of the end of a group of blocks (the last index with a followedBy or an individual block)
-			totalInnerSteps: 0, 													// Number of steps in a given block
-			numberTotalRepetions: 1, 												// Number of repetitions in total
-			numberRepetition: 1, 													// Number of repetitions left to do
-			numberPiledMedia: 0, 													// Number of media content piled at the index pile start
+			lastInnerStepsIndex: 0, 												// Last index of inner steps in a given block
+			totalNumberRepetitions: 1, 												// Number of repetitions in total
+			lastPiledContentIndex: 0, 												// Last index of media content piled at the index pile start
 		},
 		flag: {
+			isBeyondEnd: false, 													// Indicator of whether the index as reached the end of the flow (is checked before moving the cursor forward)
+			isInSkipableChain: false, 												// Indicator of whether the block must be skipped upon a skip request
 			isInPrelude: false,														// Indicator of wehether or not the cursor is pointing at hte main experiment (as opposed to the prelude)
 			isFirstIndexPassage: true,												// Indicator of whether it is the first time the index has reached a certain value (is false whenever the cursor loops back)
 			needsResetLoopParameters: false,										// Indicator of whether he loop specific parameters need to be restarted (only when we enter a need block group)

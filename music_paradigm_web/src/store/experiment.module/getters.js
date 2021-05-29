@@ -42,8 +42,8 @@ export default {
 	},
 
 	currentRepetition: (state) => {
-		const totalRepetitions = state.cursor.navigation.numberTotalRepetions;
-		const repetitionsLeft = state.cursor.navigation.numberRepetition;
+		const totalRepetitions = state.cursor.navigation.totalNumberRepetitions;
+		const repetitionsLeft = state.cursor.current.numberRepetition;
 		return totalRepetitions - repetitionsLeft + 1;
 	},
 
