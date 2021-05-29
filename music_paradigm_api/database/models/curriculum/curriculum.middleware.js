@@ -4,7 +4,7 @@ const User = require('database/models/user/user.model');
 schema.pre('remove', function (next) {
 
     // Remove the curriculm from all users upon deletion
-    User.update(
+    User.updateMany(
         { curriculum: this._id },
         { $set: { curriculum: null } },
         { multi: true })

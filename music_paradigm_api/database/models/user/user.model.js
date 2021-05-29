@@ -83,12 +83,13 @@ schema.methods.initializeCurriculum = async function (curriculumInformation) {
     // Initialize Progression
     const lastProgression = await getLastProgression(this, model);
     if (lastProgression) {
-        if (lastProgression.wasStarted() && lastProgression.isForCurriculum(this.curriculum)) { }
-        else {
-            await removeProgression(this, lastProgression);
+        if (!(lastProgression.wasStarted() && lastProgression.isForCurriculum(this.curriculum))) {
+            await lastProgression.remove();
             addNewProgression(this, curriculumInformation);
         }
-    } else addNewProgression(this, curriculumInformation);
+    } 
+    
+    else addNewProgression(this, curriculumInformation);
 
     // Assign parameters
     assignProgressionParameters(this, model, curriculumInformation);
@@ -107,7 +108,7 @@ schema.methods.updateCurriculum = async function (parameters) {
 schema.methods.resetProgression = async function () {
     const lastProgression = await getLastProgression(this, model);
     addNewProgression(this, curriculumInformation);
-    if (lastProgression && !lastProgression.wasStarted()) await removeProgression(this, lastProgression);
+    if (lastProgression && !lastProgression.wasStarted()) await lastProgression.remove();
 
     await this.save();
     return await getLastProgression(this, model);
@@ -121,7 +122,9 @@ async function getCurriculumAndProgressionData(instance, model) {
 }
 
 async function getLastProgression(instance, model) {
-    const user = await model.findById(instance._id, { progressions: { $slice: -1 } }).populate({ path: 'progressions' });
+    const user = await model
+        .findById(instance._id, { progressions: { $slice: -1 } })
+        .populate({ path: 'progressions' });
     const progressions = user.progressions;
     const lastProgression = progressions[0];
     return lastProgression;
@@ -136,11 +139,6 @@ function addNewProgression(instance, parameters) {
     });
     newProgression.save();
     instance.progressions.push(newProgression);
-}
-
-async function removeProgression(instance, progression) {
-    instance.progressions.pull({ _id: progression._id });
-    progression.remove();
 }
 
 async function removeAllProgressions(instance) {

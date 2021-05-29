@@ -13,22 +13,23 @@ schema.methods.getExperimentAssociated = async function (associativeId) {
 schema.methods.getSessionInformation = async function (associativeId) {
     const Curriculum = require('database/models/curriculum/curriculum.model');
     const Experiment = require('database/models/experiment/experiment.model');
+    const ExperimentMaker = require('./experiment-marker/experiment-marker.model');
 
     const curriculum = await Curriculum.findById(this.curriculumReference);
-    const curriculumNestedExperiment = await curriculum.getExperimentAssociated(associativeId);
-    const experiment = await Experiment.findById(curriculumNestedExperiment.experimentReference);
-    const progressionNestedExperiment = await this.getExperimentAssociated(associativeId) || {};
+    const curriculumPlannedExperiment = await curriculum.getExperimentAssociated(associativeId);
+    const experimentDefinition = await Experiment.findById(curriculumPlannedExperiment.experimentReference);
+    const experimentMaker = await ExperimentMaker.findMarker(this._id, associativeId) || {};
 
     const sessionInformation = {
         curriculumTitle: curriculum.title,
         curriculumId: curriculum._id,
         progressionId: this._id,
         associativeId: associativeId,
-        title: curriculumNestedExperiment.title,
-        text: curriculumNestedExperiment.text,
-        experiment: await experiment.getDefinition(),
-        previousState: progressionNestedExperiment.state || null,
-        previousCursor: progressionNestedExperiment.cursor || null,
+        title: curriculumPlannedExperiment.title,
+        text: curriculumPlannedExperiment.text,
+        experiment: await experimentDefinition.getDefinition(),
+        previousState: experimentMaker.state,
+        previousCursor: experimentMaker.cursor,
     };
 
     return sessionInformation;
@@ -36,19 +37,23 @@ schema.methods.getSessionInformation = async function (associativeId) {
 
 schema.methods.initializeExperiment = async function (associativeId) {
     const Curriculum = require('database/models/curriculum/curriculum.model');
+
     const curriculum = await Curriculum.findById(this.curriculumReference);
-    const curriculumNestedExperiment = await curriculum.getExperimentAssociated(associativeId);
+    const curriculumPlannedExperiment = await curriculum.getExperimentAssociated(associativeId);
     let experimentInProgression = await this.getExperimentAssociated(associativeId);
 
     // Create a nexted associated experiment to put in the progression if it doesn't exist
     if (!experimentInProgression) {
-        experimentInProgression = {
-            experimentReference: curriculumNestedExperiment.experimentReference,
-            associativeId: associativeId,
-            completionCount: 0,
-        }
+
+        // Create the experiment in the progression
+        experimentInProgression = {};
+        experimentInProgression.associativeId = associativeId;
+        experimentInProgression.experimentReference = curriculumPlannedExperiment.experimentReference;
+        
+        // Add the record in the progression
         this.experiments.push(experimentInProgression);
     }
+
     // Increment the number of times the experiment was started to be one more time than it was completed
     else {
         const completionCount = Math.max(experimentInProgression.completionCount, 0);
@@ -63,25 +68,30 @@ schema.methods.initializeExperiment = async function (associativeId) {
 
 schema.methods.concludeExperiment = async function (associativeId) {
     const Curriculum = require('database/models/curriculum/curriculum.model');
+
     const curriculum = await Curriculum.findById(this.curriculumReference);
-    const curriculumNestedExperiment = await curriculum.getExperimentAssociated(associativeId);
+    const curriculumPlannedExperiment = await curriculum.getExperimentAssociated(associativeId);
     let experimentInProgression = await this.getExperimentAssociated(associativeId);
 
     // Create a nexted associated experiment to put in the progression
     if (!experimentInProgression) {
-        experimentInProgression = {
-            experimentReference: curriculumNestedExperiment.experimentReference,
-            associativeId: associativeId,
-            completionCount: 1,
-        }
+
+        // create the experiment in the progression
+        experimentInProgression = {};
+        experimentInProgression.experimentReference = curriculumPlannedExperiment.experimentReference;
+        experimentInProgression.associativeId = associativeId;
+        experimentInProgression.completionCount = 1;
+        experimentInProgression.startCount = 1;
+
+        // Add the record in the progression
         this.experiments.push(experimentInProgression);
     }
+
     // Erase previous session's information and increase completion count
     else {
+        const ExperimentMarker = require('./experiment-marker/experiment-marker.model');
         experimentInProgression.completionCount += 1;
-        if (experimentInProgression.cursor) delete experimentInProgression.cursor;
-        if (experimentInProgression.state) delete experimentInProgression.state;
-        if (experimentInProgression.logId) delete experimentInProgression.logId;
+        await ExperimentMarker.deleteMarker(this._id, associativeId);
     }
 
     // If the experiment was completed for a first, it is a progression in the curriculum, therrefore, we update the last progression time
@@ -91,30 +101,24 @@ schema.methods.concludeExperiment = async function (associativeId) {
 };
 
 schema.methods.saveSessionState = async function (associativeId, cursor, state) {
-    let experimentInProgression = await this.getExperimentAssociated(associativeId);
-
+    
     // Error handling if the experiment in progression searched is not found
+    const experimentInProgression = await this.getExperimentAssociated(associativeId);
     if (!experimentInProgression) return null;
 
-    // We set the cursor and the current state
-    experimentInProgression.cursor = cursor;
-    experimentInProgression.state = state;
+    // Update or create the marker
+    const ExperimentMarker = require('./experiment-marker/experiment-marker.model');
+    const experimentMarker = await ExperimentMarker.findMarker(this._id, associativeId);
+    if (experimentMarker) experimentMarker.updateMaker(cursor, state);
+    else ExperimentMarker.createMaker(this._id, associativeId, cursor, state);
 
     return this.save();
 };
 
 
 schema.methods.forgetSessionState = async function (associativeId) {
-    let experimentInProgression = await this.getExperimentAssociated(associativeId);
-
-    // Error handling if the experiment in progression searched is not found
-    if (!experimentInProgression) return null;
-
     // We delete the cursor amd the current state
-    experimentInProgression.cursor = undefined;
-    experimentInProgression.state = undefined;
-
-    return this.save();
+    return await ExperimentMarker.deleteMarker(this._id, associativeId);
 };
 
 
@@ -123,7 +127,7 @@ schema.methods.isForCurriculum = function (curriculumId) {
 }
 
 schema.methods.wasStarted = function () {
-    return Boolean(this.experiments[0]);
+    return Boolean(this.experiments.length > 0);
 };
 
 
