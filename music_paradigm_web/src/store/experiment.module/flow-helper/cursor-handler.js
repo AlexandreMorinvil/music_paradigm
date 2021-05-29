@@ -17,7 +17,7 @@ function countStepsLeft(flow, startPointCursor) {
 	const stepTracerCursor = assignCursor(flow, startPointCursor);
 	let stepsCounter = 0;
 
-	while (!stepTracerCursor.current.isBeyondEnd && !(blockHandler.getCurrentBlockType(flow, stepTracerCursor) === 'end')) {
+	while (!stepTracerCursor.flag.isBeyondEnd && !(blockHandler.getCurrentBlockType(flow, stepTracerCursor) === 'end')) {
 		moveCursorNext(flow, stepTracerCursor);
 		stepsCounter += 1;
 	}
@@ -127,7 +127,7 @@ function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 
 	// Moving beyond the last block of the flow
 	else {
-		cursor.current.isBeyondEnd = true;
+		cursor.flag.isBeyondEnd = true;
 		Object.assign(isInitialized, constants.IS_FULLY_NOT_INITIALIZED_STATUS());
 	}
 
@@ -138,7 +138,7 @@ function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 // THe backward mobility only exists for inner steps
 function performCursorDisplacementBackward(cursor, isInitialized = {}) {
 	// By moving backward, we are necessarily not beyond the last step
-	cursor.current.isBeyondEnd = false;
+	cursor.flag.isBeyondEnd = false;
 
 	// Moving to the previous inner step if there remains inner steps
 	if (cursor.current.innerStepIndex > 0) {
@@ -284,7 +284,7 @@ function setCursorNextStep(cursor, followedBy) {
 
 function determineGroupEnd(flow, cursor) {
 	const cursorCopy = assignCursor(flow, cursor);
-	while (blockHandler.getCurrentBlock(flow, cursorCopy).followedBy && !cursorCopy.current.isBeyondEnd) {
+	while (blockHandler.getCurrentBlock(flow, cursorCopy).followedBy && !cursorCopy.flag.isBeyondEnd) {
 		moveCursorNext(flow, cursorCopy);
 	}
 	cursor.navigation.indexGroupEnd = cursorCopy.current.index;

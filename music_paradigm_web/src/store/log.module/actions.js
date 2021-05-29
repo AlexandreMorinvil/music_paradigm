@@ -56,8 +56,8 @@ export default {
 			return logService
 				.addSimpleLogBlock(block)
 				.then(
-					(addedBlock) => {
-						// console.log(addedBlock);
+					() => {
+						// Nothing is done
 					},
 					(error) => {
 						console.log(error);

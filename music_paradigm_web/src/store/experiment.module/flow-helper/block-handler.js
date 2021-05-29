@@ -16,7 +16,7 @@ function getCurrentBlock(flow, cursor) {
 	let currentBlock = flow[cursor.current.index];
 	const { lastRepetitionVersion, succeeededForSkipLoopVersion } = currentBlock;
 
-	if (cursor.current.isBeyondEnd) {
+	if (cursor.flag.isBeyondEnd) {
 		if (cursor.flag.isInPrelude) currentBlock = defaultState.DEFAULT_IMPOSED_TRANSITION();
 		else currentBlock = defaultState.DEFAULT_END();
 	} else if (lastRepetitionVersion && cursor.navigation.numberRepetition <= 1) {

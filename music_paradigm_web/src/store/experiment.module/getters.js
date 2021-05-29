@@ -30,7 +30,7 @@ export default {
 	},
 
 	isBeyondEnd: (state) => {
-		return state.cursor.current.isBeyondEnd;
+		return state.cursor.flag.isBeyondEnd;
 	},
 
 	currentIndex: (state) => {
@@ -143,7 +143,7 @@ export default {
 	// Geters for the state attributes
 	currentStateType: (state) => {
 		// Return the type of the current state
-		if (state.cursor.current.isBeyondEnd) {
+		if (state.cursor.flag.isBeyondEnd) {
 			return 'end';
 		}
 		return state.state.type || '';
