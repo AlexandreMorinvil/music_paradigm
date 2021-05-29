@@ -46,9 +46,10 @@ schema.methods.initializeExperiment = async function (associativeId) {
     if (!experimentInProgression) {
 
         // Create the experiment in the progression
-        experimentInProgression = {};
-        experimentInProgression.associativeId = associativeId;
-        experimentInProgression.experimentReference = curriculumPlannedExperiment.experimentReference;
+        experimentInProgression = {
+            associativeId : associativeId,
+            experimentReference : curriculumPlannedExperiment.experimentReference
+        };
         
         // Add the record in the progression
         this.experiments.push(experimentInProgression);
@@ -77,11 +78,12 @@ schema.methods.concludeExperiment = async function (associativeId) {
     if (!experimentInProgression) {
 
         // create the experiment in the progression
-        experimentInProgression = {};
-        experimentInProgression.experimentReference = curriculumPlannedExperiment.experimentReference;
-        experimentInProgression.associativeId = associativeId;
-        experimentInProgression.completionCount = 1;
-        experimentInProgression.startCount = 1;
+        experimentInProgression = {
+            experimentReference : curriculumPlannedExperiment.experimentReference,
+            associativeId : associativeId,
+            completionCount : 1,
+            startCount : 1
+        };
 
         // Add the record in the progression
         this.experiments.push(experimentInProgression);

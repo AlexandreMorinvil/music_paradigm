@@ -7,6 +7,10 @@ export default {
 		return state.sessionInformation.curriculumId || null;
 	},
 
+	progressionId: (state) => {
+		return state.sessionInformation.progressionId || null;
+	},
+
 	associativeId: (state) => {
 		return state.sessionInformation.associativeId || null;
 	},

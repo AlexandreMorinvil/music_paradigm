@@ -7,7 +7,7 @@ const stateSchema = new Schema({
         required: true,
         enum: ["cue", "end", "feedback", "instruction", "playing", "rest", "video"]
     },
-    textContent: { type: [], default: undefined },
+    textContent: { type: Schema.Types.Mixed, default: undefined },
     pictureFileName: { type: Schema.Types.Mixed, default: undefined },
     interactivePiano: { type: Schema.Types.Mixed, default: undefined },
     interactiveKeyboard: { type: Schema.Types.Mixed, default: undefined },
