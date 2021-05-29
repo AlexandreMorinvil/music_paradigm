@@ -53,7 +53,9 @@ export default {
 		return sessionService
 			.initializeSession(getters.associativeId)
 			.then(
-				() => { },
+				() => {
+					/* Nothing is done */
+				},
 				(error) => {
 					// TODO: Keep on memory the failed initialization in localstorage nad reattempt at every time we send log data
 					console.log(error);
@@ -65,12 +67,14 @@ export default {
 	},
 
 	// Send a signal to the back-end to indicate that the session can be considered as completed
-	concludeSession({ commit, dispatch, getters }) {
+	concludeSession({ commit, dispatch, getters }, isInTimeUp) {
 		commit('setIsConcludingSession');
 		return sessionService
-			.concludeSession(getters.associativeId)
+			.concludeSession(getters.associativeId, isInTimeUp)
 			.then(
-				() => { },
+				() => {
+					/* Nothing is done */
+				},
 				(error) => {
 					// TODO : Keep in memory the failed completion in localstorage to make sure on the next login we handle it
 					console.log(error);
@@ -88,7 +92,9 @@ export default {
 		return sessionService
 			.saveSessionState(getters.associativeId, rootGetters['experiment/cursor'], rootGetters['experiment/state'])
 			.then(
-				() => { },
+				() => {
+					/* Nothing is done */
+				},
 				(error) => {
 					// TODO: Keep on memory the failed state to save in localstorage and reattempt at every time we send log data
 					console.log(error);
@@ -105,7 +111,9 @@ export default {
 		return sessionService
 			.forgetSessionState(getters.associativeId)
 			.then(
-				() => { },
+				() => {
+					/* Nothing is done */
+				},
 				(error) => {
 					// TODO : Keep in memory the failed completion in localstorage to make sure on the next login we handle it
 					console.log(error);

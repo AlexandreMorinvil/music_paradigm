@@ -58,7 +58,7 @@ export default {
 			'goStepPostSkip',
 			'clearState',
 			'endExperimentByTimeout',
-			'concludeExperiment',
+			'leaveExperiment',
 		]),
 		...mapActions('keyboard', ['loadReferenceKeyboardKeys', 'resetPressedKeyboardKeysLogs', 'resetKeyboardTracking']),
 		...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
@@ -107,7 +107,7 @@ export default {
 			this.needsConfirmationToLeave = false;
 			this.$refs.log.conclude(this.isInTimeUp);
 			this.concludeSession(this.isInTimeUp);
-			this.concludeExperiment(this.isInTimeUp);
+			this.leaveExperiment();
 		},
 		resetPresses() {
 			this.$refs.log.addBlock();

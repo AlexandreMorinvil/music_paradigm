@@ -19,7 +19,10 @@ function initializeSession(req, res, next) {
 }
 
 function concludeSession(req, res, next) {
-    service.concludeSession(req.user.sub, req.params.associativeId)
+    const userId = req.user.sub;
+    const associativeId = req.params.associativeId;
+    const isInTimeUp = req.body.isInTimeUp;
+    service.concludeSession(userId, associativeId, isInTimeUp)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());

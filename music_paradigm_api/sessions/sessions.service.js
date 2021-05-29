@@ -19,10 +19,10 @@ async function initializeSession(userId, associativeId) {
     }
 }
 
-async function concludeSession(userId, associativeId) {
+async function concludeSession(userId, associativeId, isInTimeUp) {
     try {
         const progression = await User.getLastProgression(userId);
-        await progression.concludeExperiment(associativeId);
+        await progression.concludeExperiment(associativeId, isInTimeUp);
         return;
     } catch (err) {
         throw err;

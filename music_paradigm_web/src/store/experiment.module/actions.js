@@ -44,7 +44,7 @@ export default {
 	endExperimentByTimeout: ({ commit }) => {
 		commit('endExperimentByTimeout');
 	},
-	concludeExperiment: ({ commit }) => {
+	leaveExperiment: ({ commit }) => {
 		commit('leaveExperiment');
 	},
 

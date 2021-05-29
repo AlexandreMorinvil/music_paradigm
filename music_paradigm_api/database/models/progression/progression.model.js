@@ -67,7 +67,7 @@ schema.methods.initializeExperiment = async function (associativeId) {
     return this.save();
 };
 
-schema.methods.concludeExperiment = async function (associativeId) {
+schema.methods.concludeExperiment = async function (associativeId, isInTimeUp) {
     const Curriculum = require('database/models/curriculum/curriculum.model');
 
     const curriculum = await Curriculum.findById(this.curriculumReference);
@@ -86,12 +86,13 @@ schema.methods.concludeExperiment = async function (associativeId) {
 
         // Add the record in the progression
         this.experiments.push(experimentInProgression);
-    }
+    } 
+    // Increase completion count
+    else experimentInProgression.completionCount += 1;
 
-    // Erase previous session's information and increase completion count
-    else {
+    // Remove the experiment marker if the experiment was completely finished (keep it if it was ended through a timeout)
+    if (!isInTimeUp) {
         const ExperimentMarker = require('./experiment-marker/experiment-marker.model');
-        experimentInProgression.completionCount += 1;
         await ExperimentMarker.deleteMarker(this._id, associativeId);
     }
 

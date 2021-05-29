@@ -13,15 +13,16 @@ function initializeSession(associativeId) {
 		method: 'POST',
 		headers: authHeader(),
 	};
-	return fetch(url.sessions('initialize-session' + '/' + associativeId), requestOptions).then(handleResponse);
+	return fetch(url.sessions('initialize-session/' + associativeId), requestOptions).then(handleResponse);
 }
 
-function concludeSession(associativeId) {
+function concludeSession(associativeId, isInTimeUp = false) {
 	const requestOptions = {
 		method: 'POST',
-		headers: authHeader(),
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify({ isInTimeUp: isInTimeUp }),
 	};
-	return fetch(url.sessions('conclude-session' + '/' + associativeId), requestOptions).then(handleResponse);
+	return fetch(url.sessions('conclude-session/' + associativeId), requestOptions).then(handleResponse);
 }
 
 function saveSessionState(associativeId, cursor, state) {
@@ -30,15 +31,15 @@ function saveSessionState(associativeId, cursor, state) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ cursor: cursor, state: state }),
 	};
-	return fetch(url.sessions('save-session-state' + '/' + associativeId), requestOptions).then(handleResponse);
+	return fetch(url.sessions('save-session-state/' + associativeId), requestOptions).then(handleResponse);
 }
 
 function forgetSessionState(associativeId) {
 	const requestOptions = {
 		method: 'POST',
-		headers: authHeader(),
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
-	return fetch(url.sessions('forget-session-state' + '/' + associativeId), requestOptions).then(handleResponse);
+	return fetch(url.sessions('forget-session-state/' + associativeId), requestOptions).then(handleResponse);
 }
 
 function handleResponse(reponse) {
