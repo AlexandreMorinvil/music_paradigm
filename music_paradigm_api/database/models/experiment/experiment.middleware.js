@@ -4,7 +4,7 @@ const Curriculum = require('database/models/curriculum/curriculum.model');
 schema.pre('remove', function (next) {
     
     // Remove the experiment from all curriculums upon deletion
-    Curriculum.update(
+    Curriculum.updateMany(
         {},
         { $pull: { experiments: { experimentReference: this._id } } },
         { multi: true })
