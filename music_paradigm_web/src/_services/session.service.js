@@ -8,21 +8,21 @@ export const sessionService = {
 	forgetSessionState,
 };
 
-function initializeSession(associativeId) {
+function initializeSession(associativeId, associativeIdOrdinalNumber) {
 	const requestOptions = {
 		method: 'POST',
 		headers: authHeader(),
 	};
-	return fetch(url.sessions('initialize-session/' + associativeId), requestOptions).then(handleResponse);
+	return fetch(url.sessions('initialize-session' + '/' + associativeId + '/' + associativeIdOrdinalNumber), requestOptions).then(handleResponse);
 }
 
-function concludeSession(associativeId, isInTimeUp = false) {
+function concludeSession(associativeId, associativeIdOrdinalNumber, isInTimeUp = false) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ isInTimeUp: isInTimeUp }),
 	};
-	return fetch(url.sessions('conclude-session/' + associativeId), requestOptions).then(handleResponse);
+	return fetch(url.sessions('conclude-session/' + associativeId + '/' + associativeIdOrdinalNumber), requestOptions).then(handleResponse);
 }
 
 function saveSessionState(associativeId, cursor, state) {

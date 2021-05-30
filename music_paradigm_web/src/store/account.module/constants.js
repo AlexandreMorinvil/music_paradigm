@@ -21,6 +21,7 @@ function EMPTY_PROGRESSION_SUMMARY() {
 	return [
 		{
 			associativeId: '',
+			associativeIdOrdinalNumber: 0,
 			title: '',
 			text: '',
 			releaseTime: '',

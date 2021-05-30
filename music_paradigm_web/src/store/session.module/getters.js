@@ -15,6 +15,10 @@ export default {
 		return state.sessionInformation.associativeId || null;
 	},
 
+	associativeIdOrdinalNumber: (state) => {
+		return state.sessionInformation.associativeIdOrdinalNumber || 0;
+	},
+
 	startCount: (state) => {
 		return state.sessionInformation.startCount || 1;
 	},

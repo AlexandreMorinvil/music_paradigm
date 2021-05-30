@@ -60,12 +60,12 @@ function fetchDueExperimentSession() {
 	return fetch(url.account('due-experiment'), requestOptions).then(handleResponse);
 }
 
-function fetchSpecificExperimentSession(associativeId) {
+function fetchSpecificExperimentSession(associativeId, associativeIdOrdinalNumber = 0) {
 	const requestOptions = {
 		method: 'GET',
 		headers: authHeader(),
 	};
-	return fetch(url.account('specific-experiment' + '/' + associativeId), requestOptions).then(handleResponse);
+	return fetch(url.account('specific-experiment' + '/' + associativeId + '/' + associativeIdOrdinalNumber), requestOptions).then(handleResponse);
 }
 
 function handleResponse(reponse) {

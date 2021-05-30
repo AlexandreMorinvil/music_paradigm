@@ -28,6 +28,7 @@ export default {
 	getBlankCurriculumExperiment: () => (index) => {
 		return {
 			associativeId: 'id' + index,
+			associativeIdOrdinalNumber: 0,
 			experimentReference: '',
 			title: '',
 			delayInDays: 0,
@@ -35,7 +36,7 @@ export default {
 			isUniqueIndDay: true,
 			isCompletionLimited: true,
 			text: '',
-		}
+		};
 	},
 
 	// Status

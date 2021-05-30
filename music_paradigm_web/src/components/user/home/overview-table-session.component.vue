@@ -63,7 +63,11 @@ export default {
 	},
 	methods: {
 		startSession() {
-			if (this.session.isAvailable) this.$emit('start-session', this.session.associativeId);
+			if (this.session.isAvailable)
+				this.$emit('start-session', {
+					associativeId: this.session.associativeId,
+					associativeIdOrdinalNumber: this.session.associativeIdOrdinalNumber,
+				});
 		},
 		detrmineIsUnavailable() {
 			return !this.session.isAvailable && this.session.isDelayedByPreviousSequential;

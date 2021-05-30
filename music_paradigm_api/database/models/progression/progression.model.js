@@ -4,13 +4,16 @@ schema = require('./progression.middleware');
 schema.set('toJSON', { virtuals: true });
 
 // Instance methods
-schema.methods.getExperimentAssociated = async function (associativeId) {
-    const nestedExperimentArray = this.experiments.filter(experiment => { return experiment.associativeId === associativeId; });
+schema.methods.getExperimentAssociated = function (associativeId, associativeIdOrdinalNumber) {
+    const nestedExperimentArray = this.experiments.filter(experiment => {
+        return (experiment.associativeId === associativeId) &&
+            (experiment.associativeIdOrdinalNumber === associativeIdOrdinalNumber);
+    });
     const experimentInProgression = nestedExperimentArray[0];
     return experimentInProgression;
 };
 
-schema.methods.getSessionInformation = async function (associativeId) {
+schema.methods.getSessionInformation = async function (associativeId, associativeIdOrdinalNumber) {
     const Curriculum = require('database/models/curriculum/curriculum.model');
     const Experiment = require('database/models/experiment/experiment.model');
     const ExperimentMaker = require('./experiment-marker/experiment-marker.model');
@@ -18,7 +21,7 @@ schema.methods.getSessionInformation = async function (associativeId) {
     const curriculum = await Curriculum.findById(this.curriculumReference);
     const curriculumPlannedExperiment = await curriculum.getExperimentAssociated(associativeId);
     const experimentDefinition = await Experiment.findById(curriculumPlannedExperiment.experimentReference);
-    const experimentInProgression = await this.getExperimentAssociated(associativeId) || {};
+    const experimentInProgression = this.getExperimentAssociated(associativeId, associativeIdOrdinalNumber) || {};
     const experimentMaker = await ExperimentMaker.findMarker(this._id, associativeId) || {};
 
     const sessionInformation = {
@@ -26,6 +29,7 @@ schema.methods.getSessionInformation = async function (associativeId) {
         curriculumId: curriculum._id,
         progressionId: this._id,
         associativeId: associativeId,
+        associativeIdOrdinalNumber: associativeIdOrdinalNumber,
         startCount: (experimentInProgression.startCount || 0) + 1,
         completionCount: (experimentInProgression.completionCount || 0),
         title: curriculumPlannedExperiment.title,
@@ -38,22 +42,23 @@ schema.methods.getSessionInformation = async function (associativeId) {
     return sessionInformation;
 };
 
-schema.methods.initializeExperiment = async function (associativeId) {
+schema.methods.initializeExperiment = async function (associativeId, associativeIdOrdinalNumber) {
     const Curriculum = require('database/models/curriculum/curriculum.model');
 
     const curriculum = await Curriculum.findById(this.curriculumReference);
     const curriculumPlannedExperiment = await curriculum.getExperimentAssociated(associativeId);
-    let experimentInProgression = await this.getExperimentAssociated(associativeId);
+    let experimentInProgression = this.getExperimentAssociated(associativeId, associativeIdOrdinalNumber);
 
     // Create a nexted associated experiment to put in the progression if it doesn't exist
     if (!experimentInProgression) {
 
         // Create the experiment in the progression
         experimentInProgression = {
-            associativeId : associativeId,
-            experimentReference : curriculumPlannedExperiment.experimentReference
+            associativeId: associativeId,
+            associativeIdOrdinalNumber: associativeIdOrdinalNumber,
+            experimentReference: curriculumPlannedExperiment.experimentReference
         };
-        
+
         // Add the record in the progression
         this.experiments.push(experimentInProgression);
     }
@@ -67,26 +72,27 @@ schema.methods.initializeExperiment = async function (associativeId) {
     return this.save();
 };
 
-schema.methods.concludeExperiment = async function (associativeId, isInTimeUp) {
+schema.methods.concludeExperiment = async function (associativeId, associativeIdOrdinalNumber, isInTimeUp) {
     const Curriculum = require('database/models/curriculum/curriculum.model');
 
     const curriculum = await Curriculum.findById(this.curriculumReference);
     const curriculumPlannedExperiment = await curriculum.getExperimentAssociated(associativeId);
-    let experimentInProgression = await this.getExperimentAssociated(associativeId);
+    let experimentInProgression = this.getExperimentAssociated(associativeId, associativeIdOrdinalNumber);
 
     // Create a nexted associated experiment to put in the progression
     if (!experimentInProgression) {
 
         // create the experiment in the progression
         experimentInProgression = {
-            experimentReference : curriculumPlannedExperiment.experimentReference,
-            associativeId : associativeId,
-            completionCount : 1
+            experimentReference: curriculumPlannedExperiment.experimentReference,
+            associativeId: associativeId,
+            associativeIdOrdinalNumber: associativeIdOrdinalNumber,
+            completionCount: 1
         };
 
         // Add the record in the progression
         this.experiments.push(experimentInProgression);
-    } 
+    }
     // Increase completion count
     else experimentInProgression.completionCount += 1;
 
@@ -103,14 +109,9 @@ schema.methods.concludeExperiment = async function (associativeId, isInTimeUp) {
 };
 
 schema.methods.saveSessionState = async function (associativeId, cursor, state) {
-    
-    // Error handling if the experiment in progression searched is not found
-    const experimentInProgression = await this.getExperimentAssociated(associativeId);
-    if (!experimentInProgression) return null;
-
-    // Update or create the marker
     const ExperimentMarker = require('./experiment-marker/experiment-marker.model');
-
+    
+    // Update or create the marker
     const experimentMarker = await ExperimentMarker.findMarker(this._id, associativeId);
     if (experimentMarker) experimentMarker.updateMaker(cursor, state);
     else ExperimentMarker.createMaker(this._id, associativeId, cursor, state);

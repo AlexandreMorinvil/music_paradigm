@@ -32,8 +32,11 @@ export default {
 	},
 	methods: {
 		...mapActions('session', ['fetchSpecificExperimentSession']),
-		startSession(associativeId) {
-			this.fetchSpecificExperimentSession(associativeId);
+		startSession(experimentSession) {
+			this.fetchSpecificExperimentSession({
+				associativeId: experimentSession.associativeId,
+				associativeIdOrdinalNumber: experimentSession.associativeIdOrdinalNumber,
+			});
 		},
 	},
 };

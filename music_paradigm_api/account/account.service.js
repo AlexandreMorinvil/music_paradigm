@@ -55,17 +55,20 @@ async function getTodayExperiment(userId) {
     }
 }
 
-async function getSpecificExperiment(userId, associativeId) {
+async function getSpecificExperiment(userId, associativeId, associativeIdOrdinalNumber) {
     try {
         const progressionSummary = await progressionService.generateProgressionSummary(userId);
         const history = progressionSummary.history;
         const isExperimentAvailable = history.some(value => {
-            return (value.associativeId === associativeId) && (value.isAvailable)
+            return (
+                value.associativeId === associativeId) &&
+                (value.associativeIdOrdinalNumber === associativeIdOrdinalNumber) &&
+                (value.isAvailable)
         });
-        
-        if(!isExperimentAvailable) throw new Error('There experiment requested is not available');
+
+        if (!isExperimentAvailable) throw new Error('There experiment requested is not available');
         const progression = await User.getLastProgression(userId);
-        const sessionInformation = await progression.getSessionInformation(associativeId);
+        const sessionInformation = await progression.getSessionInformation(associativeId, associativeIdOrdinalNumber);
 
         return sessionInformation
     } catch (err) {

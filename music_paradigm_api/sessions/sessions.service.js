@@ -8,21 +8,21 @@ module.exports = {
     forgetSessionState
 };
 
-async function initializeSession(userId, associativeId) {
+async function initializeSession(userId, associativeId, associativeIdOrdinalNumber) {
     try {
         if (!userId || !associativeId || associativeId === 'null') return;
         const progression = await User.getLastProgression(userId);
-        await progression.initializeExperiment(associativeId);
+        await progression.initializeExperiment(associativeId, associativeIdOrdinalNumber);
         return;
     } catch (err) {
         throw err;
     }
 }
 
-async function concludeSession(userId, associativeId, isInTimeUp) {
+async function concludeSession(userId, associativeId, associativeIdOrdinalNumber, isInTimeUp) {
     try {
         const progression = await User.getLastProgression(userId);
-        await progression.concludeExperiment(associativeId, isInTimeUp);
+        await progression.concludeExperiment(associativeId, associativeIdOrdinalNumber, isInTimeUp);
         return;
     } catch (err) {
         throw err;

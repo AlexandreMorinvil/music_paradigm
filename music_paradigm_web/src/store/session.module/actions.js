@@ -19,10 +19,10 @@ export default {
 			});
 	},
 
-	fetchSpecificExperimentSession({ commit, dispatch }, associativeId) {
+	fetchSpecificExperimentSession({ commit, dispatch }, { associativeId, associativeIdOrdinalNumber }) {
 		commit('isFetchingSession');
 		return accountService
-			.fetchSpecificExperimentSession(associativeId)
+			.fetchSpecificExperimentSession(associativeId, associativeIdOrdinalNumber)
 			.then(
 				(sessionInformation) => {
 					commit('setFetchedSession', sessionInformation);
@@ -48,10 +48,10 @@ export default {
 	},
 
 	// Send a signal to the back-end to indicate that the session can be considered as started
-	initializeSession({ commit, dispatch, getters }) {
+	initializeSession({ commit, getters }) {
 		commit('setIsInitializingSession');
 		return sessionService
-			.initializeSession(getters.associativeId)
+			.initializeSession(getters.associativeId, getters.associativeIdOrdinalNumber)
 			.then(
 				() => {
 					/* Nothing is done */
@@ -70,7 +70,7 @@ export default {
 	concludeSession({ commit, dispatch, getters }, isInTimeUp) {
 		commit('setIsConcludingSession');
 		return sessionService
-			.concludeSession(getters.associativeId, isInTimeUp)
+			.concludeSession(getters.associativeId, getters.associativeIdOrdinalNumber, isInTimeUp)
 			.then(
 				() => {
 					/* Nothing is done */

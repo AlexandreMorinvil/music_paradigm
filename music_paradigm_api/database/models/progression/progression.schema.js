@@ -49,13 +49,20 @@ const schema = new Schema(
         experiments: {
             type: [
                 {
-                    // Title of the experiment within the curriculum
+                    // Id associated to the experiment within the curriculum
                     associativeId: {
                         type: String,
                         default: "",
                         sparse: true,
                         trim: true,
                         set: setterAssociativeId
+                    },
+
+                    // Ordinal number indicating the number of times the associative ID was encountered in the curriculum before this one
+                    associativeIdOrdinalNumber: {
+                        type: Number,
+                        default: 0,
+                        min: 0
                     },
 
                     // Number of times the experiment was started from the start (an experiment can only be start one time more than it was completed)

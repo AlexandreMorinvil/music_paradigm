@@ -10,6 +10,7 @@ export default {
 				curriculumId: rootGetters['session/curriculumId'] || null,
 				progressionId: rootGetters['session/progressionId'] || null,
 				associativeId: rootGetters['session/associativeId'] || null,
+				associativeIdOrdinalNumber: rootGetters['session/associativeIdOrdinalNumber'] || null,
 
 				startCount: rootGetters['session/startCount'],
 				completionCount: rootGetters['session/completionCount'],
@@ -70,10 +71,11 @@ export default {
 	initializeThoroughLog({ commit, rootGetters }) {
 		const logHeader = {
 			userId: rootGetters['account/accountId'],
+			experimentId: rootGetters['experiment/experimentId'],
 			curriculumId: rootGetters['session/curriculumId'] || null,
 			progressionId: rootGetters['session/progressionId'] || null,
 			associativeId: rootGetters['session/associativeId'] || null,
-			experimentId: rootGetters['experiment/experimentId'],
+			associativeIdOrdinalNumber: rootGetters['session/associativeIdOrdinalNumber'] || null,
 
 			completionCount: rootGetters['session/completionCount'],
 

@@ -14,6 +14,7 @@ const schema = new Schema(
         progressionId: { type: Schema.Types.ObjectId, default: null },
         curriculumId: { type: Schema.Types.ObjectId, default: null },
         associativeId: { type: String, default: undefined },
+        associativeIdOrdinalNumber: { type: Number, default: undefined },
 
         completionCount: { type: Number, default: 0 },
 

@@ -9,6 +9,7 @@ const schema = new Schema(
         progressionId: { type: Schema.Types.ObjectId, default: null },
         curriculumId: { type: Schema.Types.ObjectId, default: null },
         associativeId: { type: String, default: undefined },
+        associativeIdOrdinalNumber : { type: Number, default: undefined },
 
         startCount: { type: Number, default: 1 },
         completionCount: { type: Number, default: 0 },
