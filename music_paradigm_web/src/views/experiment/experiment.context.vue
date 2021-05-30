@@ -27,6 +27,7 @@ export default {
 	},
 	data() {
 		return {
+			hasConlcluded: false,
 			isSpaceBarPressed: false,
 			needsConfirmationToLeave: true,
 			lastPressedKey: '',
@@ -103,10 +104,14 @@ export default {
 			this.goStepPostSkip();
 			this.handleSaveSessionState();
 		},
-		endExperiment() {
+		concludeExperiment() {
+			if (this.hasConlcluded) return;
+			this.hasConlcluded = true;
 			this.needsConfirmationToLeave = false;
 			this.$refs.log.conclude(this.isInTimeUp);
 			this.concludeSession(this.isInTimeUp);
+		},
+		leave() {
 			this.leaveExperiment();
 		},
 		resetPresses() {
@@ -131,7 +136,8 @@ export default {
 		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_READY, this.startExperiement);
 		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_PRELUDE_OVER, this.displayFirstStep);
 		ExperimentEventBus.$on(experimentEvents.EVENT_STATE_ENDED, this.navigateExperiment);
-		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_ENDED, this.endExperiment);
+		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_REACHED_CONCLUSION, this.concludeExperiment);
+		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_ENDED, this.leaveExperiment);
 		ExperimentEventBus.$on(experimentEvents.EVENT_TIMES_UP, this.handleTimesUp);
 
 		this.initializeControl();
@@ -146,7 +152,8 @@ export default {
 		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_READY, this.startExperiement);
 		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_PRELUDE_OVER, this.displayFirstStep);
 		ExperimentEventBus.$off(experimentEvents.EVENT_STATE_ENDED, this.navigateExperiment);
-		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_ENDED, this.endExperiment);
+		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_REACHED_CONCLUSION, this.concludeExperiment);
+		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_ENDED, this.leaveExperiment);
 		ExperimentEventBus.$off(experimentEvents.EVENT_TIMES_UP, this.handleTimesUp);
 
 		this.resetKeyboardTracking();

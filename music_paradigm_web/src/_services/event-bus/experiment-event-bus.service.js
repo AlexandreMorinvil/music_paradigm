@@ -4,6 +4,7 @@ export const ExperimentEventBus = new Vue();
 
 export const experimentEvents = {
 	EVENT_EXPERIMENT_READY: 'experiment-ready',
+	EVENT_EXPERIMENT_REACHED_CONCLUSION: 'experiment-reached-conclusion',
 	EVENT_EXPERIMENT_ENDED: 'experiment-ended',
 	EVENT_EXPERIMENT_PRELUDE_OVER: 'experiment-prelude-over',
 	EVENT_SKIP_REQUET: 'skip-request',

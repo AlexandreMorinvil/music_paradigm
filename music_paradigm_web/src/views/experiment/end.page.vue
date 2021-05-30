@@ -47,6 +47,7 @@ export default {
 	},
 	beforeMount() {
 		this.updateFootnote();
+		ExperimentEventBus.$emit(experimentEvents.EVENT_EXPERIMENT_REACHED_CONCLUSION);
 	},
 	watch: {
 		isSpaceBarPressed(isPressed) {
