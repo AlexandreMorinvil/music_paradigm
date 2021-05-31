@@ -113,7 +113,11 @@ async function generateProgressionSummary(userId) {
         progressionSummary.push(elements);
 
         // Update the experiment due today
-        if (elements.isAvailable && !Boolean(elements.completionCount) && !Boolean(dueExperimentAssociativeId)) dueExperimentAssociativeId = curriculumExperiment.associativeId;
+        if (elements.isAvailable && !Boolean(elements.completionCount) && !Boolean(dueExperimentAssociativeId))  {
+            dueExperiment = {};
+            dueExperiment.associativeId = elements.associativeId;
+            dueExperiment.associativeIdOrdinalNumber = elements.associativeIdOrdinalNumber;
+        }
 
         // Update the blocking elements that propagate in the later elements
         hasBlockingIncompleteInSequence = updateHasBlockingIncompleteInSequence(
@@ -127,7 +131,7 @@ async function generateProgressionSummary(userId) {
             wasTodayCompleted
         );
     }
-    return { history: progressionSummary, dueExperimentAssociativeId: dueExperimentAssociativeId };
+    return { history: progressionSummary, dueExperiment: dueExperiment };
 }
 
 async function generateProgression(userId) {

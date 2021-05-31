@@ -9,5 +9,6 @@ export default {
 	user: constants.EMPTY_USER(),
 
 	dueExperimentAssociativeId: '',
+	dueExperimentAssociativeIdOrdinalNumber: 0,
 	progressionSummary: constants.EMPTY_PROGRESSION_SUMMARY(),
 };

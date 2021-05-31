@@ -144,6 +144,7 @@ export default {
 		this.initializeControl();
 	},
 	beforeDestroy() {
+		if (this.considerExperimentFinished) this.concludeExperiment();
 		this.terminateControl();
 
 		window.removeEventListener('keydown', this.handleButtonPress);
@@ -194,8 +195,10 @@ export default {
 		// a confirmation will be prompted twice (Once before and after the redirection)
 		if (this.needsConfirmationToLeave && !Object.prototype.hasOwnProperty.call(to, 'redirectedFrom')) {
 			const answer = window.confirm('views.experiment.context.confirm-leave');
-			if (answer) next();
-			else next(false);
+			if (answer) {
+				if (this.considerExperimentFinished) this.concludeExperiment();
+				next();
+			} else next(false);
 		} else {
 			next();
 		}

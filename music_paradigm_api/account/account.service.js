@@ -42,12 +42,12 @@ async function getProgressionSummary(userId) {
 
 async function getTodayExperiment(userId) {
     try {
-        const progressionSummary = await progressionService.generateProgressionSummary(userId);
-        const dueExperimentAssociativeId = progressionSummary.dueExperimentAssociativeId;
+        const { dueExperiment } = await progressionService.generateProgressionSummary(userId);
+        const { associativeId, associativeIdOrdinalNumber } = dueExperiment;
 
-        if (!dueExperimentAssociativeId) throw new Error('There is no due experiment');
+        if (!associativeId) throw new Error('There is no due experiment');
         const progression = await User.getLastProgression(userId);
-        const sessionInformation = await progression.getSessionInformation(dueExperimentAssociativeId);
+        const sessionInformation = await progression.getSessionInformation(associativeId, associativeIdOrdinalNumber);
 
         return sessionInformation
     } catch (err) {
