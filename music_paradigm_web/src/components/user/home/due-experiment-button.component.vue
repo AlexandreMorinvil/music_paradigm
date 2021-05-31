@@ -43,8 +43,8 @@ export default {
 
 .active {
 	color: white;
-	background-color: rgb(0, 200, 50);
-	border-color: rgb(10, 190, 40);
+	background-color: rgb(200, 180, 0);
+	border-color: rgb(195, 175, 0);
 }
 
 .innactive {
