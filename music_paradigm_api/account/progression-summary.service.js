@@ -71,11 +71,11 @@ async function generateProgressionSummary(userId) {
             progressionExperiment: progressionExperiment
         });
         encounteredAssociativeId[associativeId] += 1;
-        
+
     }
 
     // Generate the progression summary
-    let dueExperimentAssociativeId = null;
+    let dueExperiment = null;
     const wasTodayCompleted = timeHandler.isToday(progression.lastProgressionDate);
     const timeElapsedInDays = (progression.isSequential) ? timeHandler.calculateDaysElapsed(progression.lastProgressionDate) : timeHandler.calculateDaysElapsed(progression.startTime);
     let hasBlockingIncompleteInSequence = false;
@@ -113,7 +113,10 @@ async function generateProgressionSummary(userId) {
         progressionSummary.push(elements);
 
         // Update the experiment due today
-        if (elements.isAvailable && !Boolean(elements.completionCount) && !Boolean(dueExperimentAssociativeId))  {
+        if (elements.isAvailable &&
+            !Boolean(elements.completionCount) &&
+            !Boolean(dueExperiment.associativeId)
+        ) {
             dueExperiment = {};
             dueExperiment.associativeId = elements.associativeId;
             dueExperiment.associativeIdOrdinalNumber = elements.associativeIdOrdinalNumber;
