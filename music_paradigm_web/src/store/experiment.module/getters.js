@@ -284,6 +284,10 @@ export default {
 		return withProgressionBar;
 	},
 
+	considerExperimentFinished: (state) => {
+		return state.state.record.considerExperimentFinished;
+	},
+
 	// Getters used for the content disposition on the screen
 	hasFootnote: (state) => {
 		let hasFootNote = constants.DEFAULT_FOOTNOTE;

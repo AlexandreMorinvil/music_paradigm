@@ -194,6 +194,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			successesInLoop: 0, 													// Number of successes recorded in the loop
 			isSuccess: false, 														// Indicate whether the current step was a success
 			isWaitingReadyStartSignal: false, 										// Indicate whether a 'Ready Start' signal is being awaited
+			considerExperimentFinished: false,										// Signal that indicates whether at the current position in experiment, the sesion can be considered completed (it is set as a record since it must be considered even when skipping steps)
 		},
 	};
 }

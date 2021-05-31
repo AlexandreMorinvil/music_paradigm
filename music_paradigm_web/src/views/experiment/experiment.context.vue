@@ -46,6 +46,7 @@ export default {
 			'isFirstIndexPassage',
 			'needsResetLoopParameters',
 			'isNewBlock',
+			'considerExperimentFinished',
 		]),
 	},
 	methods: {
@@ -75,7 +76,7 @@ export default {
 			this.endExperimentByTimeout();
 		},
 		handleSaveSessionState() {
-			if (!this.checkpoint) return;
+			if (!this.checkpoint || this.considerExperimentFinished) return;
 			else if (this.checkpoint === 'once' && this.isFirstIndexPassage) this.saveSessionState();
 			else if (this.checkpoint === 'first' && this.needsResetLoopParameters) this.saveSessionState();
 			else if (this.checkpoint === 'all' && this.isNewBlock) this.saveSessionState();
@@ -180,6 +181,12 @@ export default {
 				this.leavePrelude();
 				this.displayFirstStep();
 			}
+		},
+		considerExperimentFinished: {
+			immediate: true,
+			handler: function (isConsideredFinished) {
+				if (isConsideredFinished) this.concludeExperiment();
+			},
 		},
 	},
 	beforeRouteLeave(to, from, next) {

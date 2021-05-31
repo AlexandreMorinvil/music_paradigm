@@ -190,6 +190,7 @@ function validateBlock(block, index = null) {
 		'goBackButtonMessage',
 		'checkpoint',
 		'strictPlay',
+		'considerExperimentFinished',
 
 		'resetVariableValue',
 		'incrementVariable',
@@ -267,6 +268,7 @@ function validateAttributeType(key, value) {
 		case 'isGoBackButtonInFootnote':
 		case 'strictPlay':
 		case 'withProgressionBar':
+		case 'considerExperimentFinished':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}
