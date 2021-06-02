@@ -54,9 +54,9 @@ export default {
 			.finally(() => commit('indicateAddBlockRequestEnd'));
 	},
 
-	concludeThoroughLog({ commit }, isInTimeUp) {
-		const logHeader = log.makeThoroughLogHeader();
-		const logConclusion = log.makeThoroughLogConclusion(isInTimeUp);
+	concludeThoroughLog({ commit }, { isInTimeUp, oldLogLabel, newLogLabel }) {
+		const logHeader = log.makeThoroughLogHeader(oldLogLabel);
+		const logConclusion = log.makeThoroughLogConclusion(isInTimeUp, newLogLabel);
 		commit('indicateConcludeLogRequest');
 		return logService
 			.concludeThoroughLog(logHeader, logConclusion)

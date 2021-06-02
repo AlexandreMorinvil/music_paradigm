@@ -41,7 +41,7 @@ function concludeThoroughLog(logHeader, logConclusion) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ logHeader: logHeader, logConclusion: logConclusion }),
 	};
-	return fetch(url.logThorough('add-log-block'), requestOptions).then(handleResponse);
+	return fetch(url.logThorough('conclude-log'), requestOptions).then(handleResponse);
 }
 
 function handleResponse(reponse) {

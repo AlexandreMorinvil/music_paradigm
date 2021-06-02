@@ -29,8 +29,9 @@ export default {
 	},
 
 	setDueExperiment(state, dueExperiment) {
-		state.dueExperimentAssociativeId = dueExperiment.associativeId;
-		state.dueExperimentAssociativeIdOrdinalNumber = dueExperiment.associativeIdOrdinalNumber;
+		const { associativeId, associativeIdOrdinalNumber } = dueExperiment || {};
+		state.dueExperimentAssociativeId = associativeId;
+		state.dueExperimentAssociativeIdOrdinalNumber = associativeIdOrdinalNumber;
 	},
 
 	setProgressionSummary(state, progressionSummary) {

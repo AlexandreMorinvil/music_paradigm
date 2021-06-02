@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const LogConclusion = new Schema({
-    time: { type: [Date], default: Date.now },
-    isInTimeUp: { type: Boolean, default: false }
+    time: { type: Date, default: Date.now },
+    isInTimeUp: { type: Boolean, default: false },
+    nextLogLabel: { type: String, default: undefined },
 })
 
 const schema = new Schema(
@@ -27,20 +28,6 @@ const schema = new Schema(
 
         startTimestamp: { type: [Date], default: Date.now },
         endTimestamp: { type: [LogConclusion], default: null },
-
-        // List of midi files referenced
-        reference: {
-            type: [
-                {
-                    referenceName: { type: String, default: null },
-                    referenceKeys: { type: [], default: [] },
-                    referenceTime: { type: [Number], default: undefined },
-                    referenceDuration: { type: [Number], default: undefined },
-                    referenceVelocity: { type: [Number], default: undefined },
-                }
-            ],
-            default: undefined
-        },
 
         // List of blocks encountered in the session
         blocks: {

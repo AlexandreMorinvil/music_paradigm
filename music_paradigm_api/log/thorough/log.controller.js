@@ -5,7 +5,7 @@ const service = require('./log.service');
 // routes
 router.post('/initialize-log', initializeLog);
 router.patch('/add-log-block', addLogBlock);
-router.post('/conclude-log', concludeLog);
+router.patch('/conclude-log', concludeLog);
 
 module.exports = router;
 

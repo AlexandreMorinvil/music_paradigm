@@ -90,7 +90,7 @@ function makeSimpleLogBlockPerformanceInformation() {
 
 // Thorough Log
 
-function makeThoroughLogHeader() {
+function makeThoroughLogHeader(targetLogLabel) {
 	return {
 		userId: gettersAccount.accountId(stateAccount),
 		experimentId: gettersExperiment.experimentId(stateExperiment),
@@ -98,7 +98,7 @@ function makeThoroughLogHeader() {
 		progressionId: gettersSession.progressionId(stateSession) || null,
 		associativeId: gettersSession.associativeId(stateSession) || null,
 		associativeIdOrdinalNumber: gettersSession.associativeIdOrdinalNumber(stateSession) || 0,
-		logLabel: gettersExperiment.logLabel(stateExperiment),
+		logLabel: targetLogLabel || gettersExperiment.logLabel(stateExperiment),
 
 		completionCount: gettersSession.completionCount(stateSession),
 
@@ -145,9 +145,10 @@ function makeSimpleBlockPerformanceInformation() {
 	return performanceLog;
 }
 
-function makeThoroughLogConclusion(isInTimeUp = false) {
+function makeThoroughLogConclusion(isInTimeUp = false, newLogLabel) {
 	return {
 		time: Date.now(),
 		isInTimeUp: isInTimeUp,
+		nextLogLabel: newLogLabel,
 	};
 }
