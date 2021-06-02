@@ -10,43 +10,31 @@ module.exports = {
     concludeLog
 };
 
-async function initializeLog(userId, logInformation) {
+async function initializeLog(userId, logHeader) {
     try {
-        let initializedLog = null;
-        if (await User.isAdmin(userId)) {
-            initializedLog = await AdminLogThorough.initializeLog(logInformation);
-        } else {
-            initializedLog = await LogThorough.initializeLog(logInformation);
-        }
-        return initializedLog._id;
+        if (await User.isAdmin(userId)) await AdminLogThorough.initializeLog(logHeader);
+        else await LogThorough.initializeLog(logHeader);
+        return;
     } catch (err) {
         throw err;
     }
 }
 
-async function addLogBlock(userId, logId, block) {
+async function addLogBlock(userId, logHeader, block) {
     try {
-        let addedBlock = null;
-        if (await User.isAdmin(userId)) {
-            addedBlock = await AdminLogThorough.addLogBlock(logId, block);
-        } else {
-            addedBlock = await LogThorough.addLogBlock(logId, block);
-        }
-        return logId;
+        if (await User.isAdmin(userId)) await AdminLogThorough.addLogBlock(logHeader, block);
+        else await LogThorough.addLogBlock(logHeader, block);
+        return;
     } catch (err) {
         throw err;
     }
 }
 
-async function concludeLog(userId, logId, logConclusion) {
+async function concludeLog(userId, logHeader, logConclusion) {
     try {
-        let addedBlock = null;
-        if (await User.isAdmin(userId)) {
-            addedBlock = await AdminLogThorough.concludeLog(logId, logConclusion);
-        } else {
-            addedBlock = await LogThorough.concludeLog(logId, logConclusion);
-        }
-        return logId;
+        if (await User.isAdmin(userId)) await AdminLogThorough.concludeLog(logHeader, logConclusion);
+        else await LogThorough.concludeLog(logHeader, logConclusion);
+        return;
     } catch (err) {
         throw err;
     }

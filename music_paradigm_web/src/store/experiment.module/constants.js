@@ -44,6 +44,7 @@ const DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE = 4;
 const DEFAULT_CONTROL_TYPE = 'piano';
 const DEFAULT_RELATIVE_RHYTHM_IMPORTANCE = 0;
 const DEFAULT_WITH_PROGRESSION_BAR = true;
+const DEFAULT_LOG_LABEL = 'default';
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
 	return {
@@ -190,6 +191,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 		},
 		// Session specific informations
 		record: {
+			logLabel: DEFAULT_LOG_LABEL,											// Active label that will be associated to the logs
 			sucesses: 0, 															// Number of successes recorded
 			successesInLoop: 0, 													// Number of successes recorded in the loop
 			isSuccess: false, 														// Indicate whether the current step was a success

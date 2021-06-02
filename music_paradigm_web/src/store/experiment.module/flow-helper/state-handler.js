@@ -47,7 +47,7 @@ function updateRoute(currentState, targetState, isInitialized) {
 function updateRecords(currentState, targetState, cursor, isInitialized) {
 	const currentBlock = targetState;
 
-	const { startSignal, considerExperimentFinished } = currentBlock;
+	const { startSignal, considerExperimentFinished, logLabel } = currentBlock;
 
 	// If a start signal's delay is indicated, we set its value here 
 	currentState.record.isWaitingReadyStartSignal = typeof startSignal === 'number' ? startSignal > 0 : false;
@@ -55,6 +55,7 @@ function updateRecords(currentState, targetState, cursor, isInitialized) {
 	// If the considerExperimentFinished record is already set to true, is will permanently stay true
 	// Otherwise, we set this record to the value given in the experiment, if a value is provided
 	if (!currentState.record.considerExperimentFinished) currentState.record.considerExperimentFinished = typeof considerExperimentFinished === 'boolean' ? considerExperimentFinished : false;
+	if (logLabel && currentState.record.logLabel !== logLabel && typeof logLabel === 'string') currentState.record.logLabel = logLabel;
 
 	// When moving to a new state, we systematically considered that the state was not a success (yet)
 	currentState.record.isSuccess = false;

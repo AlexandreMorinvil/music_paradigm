@@ -1,97 +1,32 @@
 /* eslint-disable max-lines-per-function */
+import { log } from '@/store-helper';
 import { logService } from '@/_services';
 
 export default {
-	makeSimpleBlock({ rootGetters }) {
-		return new Promise((resolve) => {
-			const block = {
-				userId: rootGetters['account/accountId'],
-				experimentId: rootGetters['experiment/experimentId'],
-				curriculumId: rootGetters['session/curriculumId'] || null,
-				progressionId: rootGetters['session/progressionId'] || null,
-				associativeId: rootGetters['session/associativeId'] || null,
-				associativeIdOrdinalNumber: rootGetters['session/associativeIdOrdinalNumber'] || null,
-
-				startCount: rootGetters['session/startCount'],
-				completionCount: rootGetters['session/completionCount'],
-
-				username: rootGetters['account/username'],
-				curriculumTitle: rootGetters['session/curriculumTitle'] || null,
-				experimentGroup: rootGetters['experiment/experimentGroup'],
-				experimentName: rootGetters['experiment/experimentName'],
-				experimentVersion: rootGetters['experiment/experimentVersion'],
-
-				blockType: rootGetters['experiment/currentStateType'],
-				blockSubType: rootGetters['experiment/playingMode'],
-				controlType: rootGetters['experiment/controlType'],
-				index: rootGetters['experiment/currentIndex'],
-				innerStepIndex: rootGetters['experiment/currentInnerStepIndex'],
-				repetition: rootGetters['experiment/currentRepetition'],
-				timestamp: Date.now(),
-			};
-
-			const controlType = rootGetters['experiment/controlType'];
-			const performanceLog = {};
-			switch (controlType) {
-				case 'piano':
-					Object.assign(performanceLog, rootGetters['piano/pianoSimpleLogSummary']);
-					Object.assign(performanceLog, rootGetters['piano/pianoSimpleLogPreprocesed']);
-					performanceLog.grades = rootGetters['evaluation/grades'];
-					break;
-				case 'keyboard':
-					Object.assign(performanceLog, rootGetters['keyboard/keyboardSimpleLogSummary']);
-					Object.assign(performanceLog, rootGetters['keyboard/keyboardSimpleLogPreprocesed']);
-					break;
-				default:
-					break;
-			}
-
-			Object.assign(block, performanceLog);
-			resolve(block);
-		});
+	addSimmpleLogBlock({ commit }) {
+		const block = log.makeSimpleLogBlock();
+		commit('indicateAddBlockRequest');
+		return logService
+			.addSimpleLogBlock(block)
+			.then(
+				() => {
+					// Nothing is done
+				},
+				(error) => {
+					console.log(error);
+				},
+			)
+			.finally(() => commit('indicateAddBlockRequestEnd'));
 	},
 
-	addSimmpleLogBlock({ commit, dispatch }) {
-		dispatch('makeSimpleBlock').then((block) => {
-			commit('indicateAddBlockRequest');
-			return logService
-				.addSimpleLogBlock(block)
-				.then(
-					() => {
-						// Nothing is done
-					},
-					(error) => {
-						console.log(error);
-					},
-				)
-				.finally(() => commit('indicateAddBlockRequestEnd'));
-		});
-	},
-
-	initializeThoroughLog({ commit, rootGetters }) {
-		const logHeader = {
-			userId: rootGetters['account/accountId'],
-			experimentId: rootGetters['experiment/experimentId'],
-			curriculumId: rootGetters['session/curriculumId'] || null,
-			progressionId: rootGetters['session/progressionId'] || null,
-			associativeId: rootGetters['session/associativeId'] || null,
-			associativeIdOrdinalNumber: rootGetters['session/associativeIdOrdinalNumber'] || null,
-
-			completionCount: rootGetters['session/completionCount'],
-
-			username: rootGetters['account/username'],
-			curriculumTitle: rootGetters['session/curriculumTitle'] || null,
-			experimentGroup: rootGetters['experiment/experimentGroup'],
-			experimentName: rootGetters['experiment/experimentName'],
-			experimentVersion: rootGetters['experiment/experimentVersion'],
-			startTimestamp: Date.now(),
-		};
+	initializeThoroughLog({ commit }) {
+		const logHeader = log.makeThoroughLogHeader();
 		commit('indicateInitializeLogRequest');
 		return logService
 			.initializeThoroughLog(logHeader)
 			.then(
-				(logId) => {
-					commit('setLogId', logId);
+				() => {
+					// Nothing is done
 				},
 				(error) => {
 					console.log(error);
@@ -102,60 +37,32 @@ export default {
 			});
 	},
 
-	makeThoroughLogBlock({ rootGetters }) {
-		return new Promise((resolve) => {
-			const block = {
-				startCount: rootGetters['session/startCount'],
-
-				blockType: rootGetters['experiment/currentStateType'],
-				blockSubType: rootGetters['experiment/playingMode'],
-				controlType: rootGetters['experiment/controlType'],
-				index: rootGetters['experiment/currentIndex'],
-				innerStepIndex: rootGetters['experiment/currentInnerStepIndex'],
-				repetition: rootGetters['experiment/currentRepetition'],
-				timestamp: Date.now(),
-
-				textContent: rootGetters['experiment/textContent'],
-				pictureName: rootGetters['experiment/pictureName'],
-				helperImageName: rootGetters['experiment/helperImageName'],
-			};
-			Object.assign(block, rootGetters['piano/pianoSimpleLogSummary']);
-			Object.assign(block, rootGetters['piano/pianoSimpleLogPreprocesed']);
-			Object.assign(block, rootGetters['keyboard/keyboardSimpleLogSummary']);
-			Object.assign(block, rootGetters['keyboard/keyboardSimpleLogPreprocesed']);
-
-			resolve(block);
-		});
-	},
-
-	addThoroughLogBlock({ commit, dispatch, getters }) {
-		dispatch('makeThoroughLogBlock').then((block) => {
-			commit('indicateAddBlockRequest');
-			return logService
-				.addThoroughLogBlock(getters.logId, block)
-				.then(
-					() => {
-						console.log('Log block added');
-					},
-					(error) => {
-						console.log(error);
-					},
-				)
-				.finally(() => commit('indicateAddBlockRequestEnd'));
-		});
-	},
-
-	concludeThoroughLog({ commit, getters }, isInTimeUp) {
-		const logConclusion = {
-			time: Date.now(),
-			isInTimeUp: isInTimeUp,
-		};
-		commit('indicateConcludeLogRequest');
+	addThoroughLogBlock({ commit }) {
+		const logHeader = log.makeThoroughLogHeader();
+		const block = log.makeThoroughLogBlock();
+		commit('indicateAddBlockRequest');
 		return logService
-			.concludeThoroughLog(getters.logId, logConclusion)
+			.addThoroughLogBlock(logHeader, block)
 			.then(
 				() => {
-					console.log('Log concluded');
+					// Nothing is done
+				},
+				(error) => {
+					console.log(error);
+				},
+			)
+			.finally(() => commit('indicateAddBlockRequestEnd'));
+	},
+
+	concludeThoroughLog({ commit }, isInTimeUp) {
+		const logHeader = log.makeThoroughLogHeader();
+		const logConclusion = log.makeThoroughLogConclusion(isInTimeUp);
+		commit('indicateConcludeLogRequest');
+		return logService
+			.concludeThoroughLog(logHeader, logConclusion)
+			.then(
+				() => {
+					// Nothing is done
 				},
 				(error) => {
 					console.log(error);

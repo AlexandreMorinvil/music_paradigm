@@ -5,26 +5,47 @@ schema.set('toJSON', { virtuals: true });
 
 // Static methods
 schema.statics.initializeLog = async function (logHeader) {
-    const createdLog = new this(logHeader);
-    return await createdLog.save();
+    const thoroughLog = await this.findOrCreate(logHeader);
+    return await thoroughLog.save();
 }
 
-schema.statics.addLogBlock = async function (logId, block) {
-    const log = await this.findById(logId);
-    if (!log) throw new Error('No log associated to log ID');
-    log.blocks.push(block);
-    return log.save();
+schema.statics.addLogBlock = async function (logHeader, block) {
+    const thoroughLog = await this.findOrCreate(logHeader);
+    thoroughLog.blocks.push(block);
+    return thoroughLog.save();
 };
 
-schema.statics.concludeLog = async function (logId, logConclusion) {
-    const log = await this.findById(logId);
-    log.endTimestamp.push({
-        time: logConclusion.endTimestamp || Date.now(),
-        isInTimeUp: logConclusion.endTimestamp || false
-    });
-
-    return log.save();
+schema.statics.concludeLog = async function (logHeader, logConclusion) {
+    const thoroughLog = await this.findOrCreate(logHeader);
+    thoroughLog.endTimestamp.push(logConclusion);
+    return thoroughLog.save();
 };
+
+schema.statics.findOrCreate = async function (logHeader) {
+    const logReference = makeLogReference(logHeader);
+    let thoroughLog = await this.findOne(logReference)
+    if (!thoroughLog) thoroughLog = new this(logHeader);
+    return thoroughLog;
+}
+
+// Helper functions
+function makeLogReference(logHeader) {
+    const {
+        progressionId,
+        associativeId,
+        associativeIdOrdinalNumber,
+        logLabel,
+        completionCount
+    } = logHeader;
+
+    return {
+        progressionId: progressionId,
+        associativeId: associativeId,
+        associativeIdOrdinalNumber: associativeIdOrdinalNumber,
+        logLabel: logLabel,
+        completionCount: completionCount,
+    }
+}
 
 // Creating the model
 const model = mongoose.model('Log-Thorough', schema);

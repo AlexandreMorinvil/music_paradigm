@@ -11,6 +11,7 @@ export default {
 	populateExperimentConstantVariables,
 	setExperimentDynamicVariables,
 	setExperimentGeneralSettings,
+	setExperimentInitialState,
 	setExperimentPrelude,
 	setExperimentFlow,
 	setExperimentTimeUpState,
@@ -99,6 +100,12 @@ function setExperimentGeneralSettings(state, experiment) {
 		relativeRhythmImportance:		typeof relativeRhythmImportance === 'number' 	? relativeRhythmImportance : defaultSettings.relativeRhythmImportance,
 		withProgressionBar:				typeof withProgressionBar === 'boolean' 		? withProgressionBar : defaultSettings.withProgressionBar,
 	};
+}
+
+function setExperimentInitialState(state, experiment) {
+	const { logLabel } = experiment;
+	const defaultSettings = constants.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
+	state.state.record.logLabel = typeof logLabel === 'string' ? logLabel : defaultSettings.logLabel;
 }
 
 function storeParameterImposedValues(state, parameters) {

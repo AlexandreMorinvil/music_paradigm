@@ -99,6 +99,7 @@ function validateExperiment(experiment) {
 		'isGoBackButtonInFootnote',
 		'relativeRhythmImportance',
 		'withProgressionBar',
+		'logLabel',
 	];
 	Object.keys(experiment).forEach((key) => {
 		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the general parameters is not allowed`);
@@ -197,6 +198,8 @@ function validateBlock(block, index = null) {
 		'decrementVariable',
 		'incrementVariableOnSucess',
 		'decrementVariableOnSucces',
+
+		'logLabel',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -236,6 +239,7 @@ function validateAttributeType(key, value) {
 		case 'goBackStepButton':
 		case 'goBackButtonMessage':
 		case 'checkpoint':
+		case 'logLabel':
 			if (!(typeof value === 'string')) {
 				throw new Error(`The key '${key}' must be of type 'String'`);
 			}

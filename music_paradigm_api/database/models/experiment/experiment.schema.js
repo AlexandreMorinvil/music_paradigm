@@ -58,6 +58,8 @@ const stateSchema = new Schema({
     checkpoint: { type: String, default: undefined },
     strictPlay: { type: Boolean, default: undefined },
     considerExperimentFinished: { type: Boolean, default: undefined },
+
+    logLabel: {type: String, default: undefined },
 },
     {
         strict: true
@@ -85,6 +87,7 @@ const schema = new Schema({
     controlType: { type: String, default: 'piano', enum: ['piano', 'keyboard', 'none'] },
     relativeRhythmImportance: { type: Number, default: undefined },
     withProgressionBar: { type: Boolean, default: true },
+    logLabel: {type: String, default: 'default' },
     prelude: {
         default: [],
         type: [stateSchema],

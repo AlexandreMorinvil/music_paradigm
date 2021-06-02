@@ -288,6 +288,10 @@ export default {
 		return state.state.record.considerExperimentFinished;
 	},
 
+	logLabel: (state) => {
+		return state.state.record.logLabel;
+	},
+
 	// Getters used for the content disposition on the screen
 	hasFootnote: (state) => {
 		let hasFootNote = constants.DEFAULT_FOOTNOTE;

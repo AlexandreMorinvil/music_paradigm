@@ -115,7 +115,7 @@ async function generateProgressionSummary(userId) {
         // Update the experiment due today
         if (elements.isAvailable &&
             !Boolean(elements.completionCount) &&
-            !Boolean(dueExperiment.associativeId)
+            !Boolean(dueExperiment && dueExperiment.associativeId)
         ) {
             dueExperiment = {};
             dueExperiment.associativeId = elements.associativeId;
