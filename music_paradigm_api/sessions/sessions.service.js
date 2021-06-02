@@ -29,11 +29,11 @@ async function concludeSession(userId, associativeId, associativeIdOrdinalNumber
     }
 }
 
-async function saveSessionState(userId, associativeId, cursor, state) {
+async function saveSessionState(userId, associativeId, cursor, state, timeIndicated) {
     try {
         if (!userId || !associativeId || associativeId === 'null') return;
         const progression = await User.getLastProgression(userId);
-        await progression.saveSessionState(associativeId, cursor, state);
+        await progression.saveSessionState(associativeId, cursor, state, timeIndicated);
         return;
     } catch (err) {
         throw err;

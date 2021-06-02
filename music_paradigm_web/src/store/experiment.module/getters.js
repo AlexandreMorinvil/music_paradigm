@@ -16,6 +16,14 @@ export default {
 		return state.state;
 	},
 
+	initialTimeInSeconds: (state) => {
+		return state.initialTimeIndicated;
+	},
+
+	timeIndicated: (state) => {
+		return state.state.record.timeIndicatedInMilliseconds;
+	},
+
 	// Getters for the experiment flow's information
 	isInTimeUp: (state) => {
 		return state.cursor.flag.isInTimeUp;

@@ -37,6 +37,7 @@ schema.methods.getSessionInformation = async function (associativeId, associativ
         experiment: await experimentDefinition.getDefinition(),
         previousState: experimentMaker.state,
         previousCursor: experimentMaker.cursor,
+        previousTimeIndicated: experimentMaker.timeIndicated,
     };
 
     return sessionInformation;
@@ -101,6 +102,9 @@ schema.methods.concludeExperiment = async function (associativeId, associativeId
         const ExperimentMarker = require('./experiment-marker/experiment-marker.model');
         await ExperimentMarker.deleteMarker(this._id, associativeId);
     }
+    else {
+
+    }
 
     // If the experiment was completed for a first, it is a progression in the curriculum, therrefore, we update the last progression time
     if (experimentInProgression.completionCount === 1) this.lastProgressionDate = Date.now();
@@ -108,13 +112,13 @@ schema.methods.concludeExperiment = async function (associativeId, associativeId
     return this.save();
 };
 
-schema.methods.saveSessionState = async function (associativeId, cursor, state) {
+schema.methods.saveSessionState = async function (associativeId, cursor, state, timeIndicated) {
     const ExperimentMarker = require('./experiment-marker/experiment-marker.model');
     
     // Update or create the marker
     const experimentMarker = await ExperimentMarker.findMarker(this._id, associativeId);
-    if (experimentMarker) experimentMarker.updateMaker(cursor, state);
-    else ExperimentMarker.createMaker(this._id, associativeId, cursor, state);
+    if (experimentMarker) experimentMarker.updateMaker(cursor, state, timeIndicated);
+    else ExperimentMarker.createMaker(this._id, associativeId, cursor, state, timeIndicated);
 
     return this.save();
 };

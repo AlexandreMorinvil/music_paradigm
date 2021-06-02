@@ -14,7 +14,9 @@ export default {
 	initExperiment: ({ commit }, initialState = null) => {
 		commit('initExperiment', initialState);
 	},
-
+	initInitialTime: ({ commit }, initialTime) => {
+		commit('initInitialTime', initialTime);
+	},
 	updateState: ({ commit }) => {
 		commit('updateState');
 	},
@@ -54,5 +56,8 @@ export default {
 	},
 	stopWaitingStartSignalReady: ({ commit }) => {
 		commit('stopWaitingStartSignalReady');
+	},
+	trackExperimentTimeIndicated: ({ commit }, timeIndicated) => {
+		commit('trackExperimentTimeIndicated', timeIndicated);
 	},
 };

@@ -39,6 +39,10 @@ export default {
 		return state.sessionInformation.previousState || null;
 	},
 
+	sessionInitialTime: (state) => {
+		return state.sessionInformation.previousTimeIndicated || 0;
+	},
+
 	preSessionMessage: (state) => {
 		return state.sessionInformation.text || '';
 	},

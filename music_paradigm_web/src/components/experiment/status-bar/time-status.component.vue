@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/_services/event-bus/experiment-event-bus.service.js';
 
@@ -32,7 +32,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['timeLimitInSeconds']),
+		...mapGetters('experiment', ['initialTimeInSeconds', 'timeLimitInSeconds']),
 		color() {
 			return this.turnedOn ? 'active' : 'inactive';
 		},
@@ -44,8 +44,15 @@ export default {
 			if (this.hours > 0) hours = (this.hours < 10 ? '0' + this.hours : this.hours) + ':';
 			return hours + (this.minutes < 10 ? '0' + this.minutes : this.minutes) + ':' + (this.seconds < 10 ? '0' + this.seconds : this.seconds);
 		},
+		initialTimeToSet() {
+			// Only if the experiment is one with a countdown, we set the initial time to the value provided in the experiment-marker
+			// (This is to handle the situation where a user comes back to an experiment after having left it early)
+			if (this.mustCountDown && this.initialTimeInSeconds) return this.initialTimeInSeconds;
+			else return this.timeLimitInSeconds;
+		},
 	},
 	methods: {
+		...mapActions('experiment', ['trackExperimentTimeIndicated']),
 		setTime(value) {
 			this.cumulatedTime = value * 1000;
 			this.totalTime = this.cumulatedTime;
@@ -72,9 +79,12 @@ export default {
 		countDown() {
 			this.totalTime = this.cumulatedTime - (Date.parse(new Date()) - Date.parse(this.referenceTime));
 		},
+		recordTime() {
+			this.trackExperimentTimeIndicated(this.totalTime);
+		},
 	},
 	mounted() {
-		this.setTime(this.timeLimitInSeconds);
+		this.setTime(this.initialTimeToSet);
 	},
 	beforeDestroy() {
 		window.clearInterval(this.counterUniqueIdentifier);

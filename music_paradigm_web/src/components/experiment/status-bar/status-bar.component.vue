@@ -36,6 +36,9 @@ export default {
 		start() {
 			this.$refs.timer.startTimer();
 		},
+		recordTime() {
+			this.$refs.timer.recordTime();
+		},
 	},
 };
 </script>

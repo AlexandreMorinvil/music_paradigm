@@ -60,6 +60,9 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 		// The state to reach upon timeout
 		timeUpState: null,
 
+		// Initial Time
+		initialTimeIndicated: 0,
+
 		// Mandatory description of the flow
 		description: DEFAULT_DESCRIPTION_SETTINGS_VALUES(),
 
@@ -197,6 +200,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			isSuccess: false, 														// Indicate whether the current step was a success
 			isWaitingReadyStartSignal: false, 										// Indicate whether a 'Ready Start' signal is being awaited
 			considerExperimentFinished: false,										// Signal that indicates whether at the current position in experiment, the sesion can be considered completed (it is set as a record since it must be considered even when skipping steps)
+			timeIndicatedInMilliseconds: 0											// Value in indicating the time indicated in the experiment (is used when the experiment has a time limit, this allows the app to make the user restart with the time he had left if he leaves the experiment early)
 		},
 	};
 }

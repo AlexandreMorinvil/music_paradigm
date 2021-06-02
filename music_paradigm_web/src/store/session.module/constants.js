@@ -16,5 +16,6 @@ function EMPTY_SESSION_INFORMATION() {
 		experiment: null,
 		previousState: null,
 		previousCursor: null,
+		previousTimeIndicated: 0,
 	};
 }

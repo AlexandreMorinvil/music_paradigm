@@ -45,6 +45,7 @@ export default {
 		// dispatch('experiment/setParameterValues', getters.imposedParameterValues, { root: true });
 		dispatch('experiment/setStartingPoint', getters.sessionCursor, { root: true });
 		dispatch('experiment/initExperiment', getters.sessionState, { root: true });
+		dispatch('experiment/initInitialTime', getters.sessionInitialTime, { root: true });
 	},
 
 	// Send a signal to the back-end to indicate that the session can be considered as started
@@ -90,7 +91,12 @@ export default {
 	saveSessionState({ commit, getters, rootGetters }) {
 		commit('setIsSavingSessionState');
 		return sessionService
-			.saveSessionState(getters.associativeId, rootGetters['experiment/cursor'], rootGetters['experiment/state'])
+			.saveSessionState(
+				getters.associativeId, 
+				rootGetters['experiment/cursor'],
+				rootGetters['experiment/state'],
+				rootGetters['experiment/timeIndicated'],
+			)
 			.then(
 				() => {
 					/* Nothing is done */

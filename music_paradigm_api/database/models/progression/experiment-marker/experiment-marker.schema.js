@@ -33,6 +33,11 @@ const schema = new Schema(
             type: Object,
             default: undefined
         },
+
+        timeIndicated: {
+            type: Number,
+            default: null 
+        },
     },
     {
         strict: false,

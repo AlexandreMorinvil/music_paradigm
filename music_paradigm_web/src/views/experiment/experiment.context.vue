@@ -92,6 +92,7 @@ export default {
 			this.$refs.status.start();
 		},
 		navigateExperiment() {
+			this.$refs.status.recordTime();
 			this.resetPresses();
 			this.goNextStep();
 			this.handleSaveSessionState();
@@ -101,6 +102,7 @@ export default {
 			this.goPreviousInnerStep();
 		},
 		navigateExperimentSkip() {
+			this.$refs.status.recordTime();
 			this.resetPresses();
 			this.goStepPostSkip();
 			this.handleSaveSessionState();

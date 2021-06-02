@@ -46,6 +46,11 @@ export default {
 	initExperiment: (state, initialState) => {
 		routerNavigation.moveToExperimentPreparation();
 		state.state = initialState || constants.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
+		state.initialTimeIndicated = state.state.record.timeIndicated;
+	},
+
+	initInitialTime: (state, initialTimeInMilliseconds) => {
+		state.initialTimeIndicated = initialTimeInMilliseconds ? initialTimeInMilliseconds / 1000 : state.settings.timeLimitInSeconds;
 	},
 
 	updateState: (state) => {
@@ -116,6 +121,7 @@ export default {
 		const timeoutBlock = blockHandler.getTimeUpBlock();
 		const isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
 		stateHandler.imposeState(state.state, timeoutBlock, cursor, isInitialized, settings);
+		state.state.record.timeIndicated = 0;
 	},
 
 	leaveExperiment: () => {
@@ -131,5 +137,9 @@ export default {
 
 	stopWaitingStartSignalReady: (state) => {
 		state.state.record.isWaitingReadyStartSignal = false;
+	},
+
+	trackExperimentTimeIndicated: (state, timeIndicated) => {
+		state.state.record.timeIndicatedInMilliseconds = timeIndicated;
 	},
 };
