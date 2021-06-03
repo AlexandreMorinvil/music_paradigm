@@ -80,7 +80,7 @@ function moveCursorSkipRepetions(state, flow, cursor, isInitialized) {
 	do {
 		moveCursorNext(flow, cursor, isInitialized);
 		stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
-	} while (!cursor.flag.needsResetLoopParameters);
+	} while (!cursor.flag.needsResetLoopParameters && !cursor.flag.isBeyondEnd);
 }
 
 function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {

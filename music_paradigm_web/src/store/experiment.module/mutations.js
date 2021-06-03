@@ -101,12 +101,6 @@ export default {
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
-	movePostSkipRepetions: (state) => {
-		const { flow, cursor, isInitialized, settings } = state;
-		cursorHandler.moveCursorPostSkipRepetions(state.state, flow, cursor, isInitialized);
-		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
-	},
-
 	// End functions
 	endExperimentByTimeout: (state) => {
 		if (state.state.type === 'end') return;
