@@ -1,8 +1,8 @@
+import defaultState from './default-state';
+
 import blockHandler from './block-handler';
 import stateHandler from './state-handler';
 import variableHandler from './variable-handler';
-
-import constants from '@/store/experiment.module/constants';
 
 export default {
 	countStepsLeft,
@@ -28,7 +28,7 @@ function assignCursor(flow, cursorToCopy = null) {
 	if (cursorToCopy) {
 		return JSON.parse(JSON.stringify(cursorToCopy));
 	} else {
-		const defaultCursor = constants.DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES();
+		const defaultCursor = defaultState.DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES();
 		updateCursorNavigation(flow, defaultCursor);
 		return defaultCursor;
 	}
@@ -122,13 +122,13 @@ function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 
 		// We move the current intdex to the next step
 		cursor.current.index = cursor.navigation.indexNext;
-		Object.assign(isInitialized, constants.IS_FULLY_NOT_INITIALIZED_STATUS());
+		Object.assign(isInitialized, defaultState.IS_FULLY_NOT_INITIALIZED_STATUS());
 	}
 
 	// Moving beyond the last block of the flow
 	else {
 		cursor.flag.isBeyondEnd = true;
-		Object.assign(isInitialized, constants.IS_FULLY_NOT_INITIALIZED_STATUS());
+		Object.assign(isInitialized, defaultState.IS_FULLY_NOT_INITIALIZED_STATUS());
 	}
 
 	// Adjust the flags
@@ -176,16 +176,16 @@ function updateCursorNavigation(flow, cursor) {
 }
 
 function setCursorInnerStepsTotal(cursor, textContent, pictureFileName) {
-	let innerStepsTextContent = constants.UNSET_INDEX;
+	let innerStepsTextContent = defaultState.UNSET_INDEX;
 	if (Array.isArray(textContent)) {
 		const currentTextContent = textContent[cursor.current.piledContentIndex];
-		innerStepsTextContent = Array.isArray(currentTextContent) ? currentTextContent.length - 1 : constants.UNSET_INDEX;
+		innerStepsTextContent = Array.isArray(currentTextContent) ? currentTextContent.length - 1 : defaultState.UNSET_INDEX;
 	}
 
-	let innerStepsPictureFile = constants.UNSET_INDEX;
+	let innerStepsPictureFile = defaultState.UNSET_INDEX;
 	if (Array.isArray(pictureFileName)) {
 		const currentPictureFile = pictureFileName[cursor.current.piledContentIndex];
-		innerStepsPictureFile = Array.isArray(currentPictureFile) ? currentPictureFile.length - 1 : constants.UNSET_INDEX;
+		innerStepsPictureFile = Array.isArray(currentPictureFile) ? currentPictureFile.length - 1 : defaultState.UNSET_INDEX;
 	}
 
 	const maxNumberContentElement = Math.max(innerStepsTextContent, innerStepsPictureFile);
@@ -273,7 +273,7 @@ function setCursorNextStep(cursor, followedBy) {
 	// If there remains content to depile, reset the loop start in order to be able to loop again with the new media content
 	else if (cursor.navigation.lastPiledContentIndex > 1) {
 		cursor.navigation.indexNext = cursor.navigation.indexPileStart;
-		cursor.navigation.indexLoopStart = constants.UNSET_INDEX;
+		cursor.navigation.indexLoopStart = defaultState.UNSET_INDEX;
 	}
 
 	// By default, the next block is the following block

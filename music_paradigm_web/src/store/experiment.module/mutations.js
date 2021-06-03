@@ -1,12 +1,9 @@
-import constants from './constants';
-
-import { blockHandler, cursorHandler, experimentHandler, stateHandler } from '@/store-helper/experiment.module-helper';
+import { blockHandler, cursorHandler, defaultState, experimentHandler, stateHandler } from '@/store-helper/experiment.module-helper';
 import { routerNavigation } from '@/_helpers';
-
 
 export default {
 	clearState(state) {
-		Object.assign(state, constants.DEFAULT_EXPERIMENT_STATE_VALUES());
+		Object.assign(state, defaultState.DEFAULT_EXPERIMENT_STATE_VALUES());
 	},
 
 	setParameterValues(state, parameterValues) {
@@ -37,12 +34,12 @@ export default {
 		state.cursor = cursorHandler.assignCursor(state.flow, presetCursor);
 
 		// Set the initialization indicators to false
-		state.isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
+		state.isInitialized = defaultState.IS_FULLY_NOT_INITIALIZED_STATUS();
 	},
 
 	initExperiment: (state, initialState) => {
 		routerNavigation.moveToExperimentPreparation();
-		state.state = initialState || constants.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
+		state.state = initialState || defaultState.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
 		state.initialTimeIndicated = state.state.record.timeIndicated;
 	},
 
@@ -64,11 +61,11 @@ export default {
 
 		// Set the prelude as the experiment to run
 		state.flow = state.prelude;
-		state.state = constants.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
+		state.state = defaultState.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
 		state.cursor = cursorHandler.assignCursor(state.flow);
 		state.cursor.flag.isInPrelude = true;
 
-		state.isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
+		state.isInitialized = defaultState.IS_FULLY_NOT_INITIALIZED_STATUS();
 	},
 
 	leavePrelude: (state) => {
@@ -82,7 +79,7 @@ export default {
 		delete state.tempMemory.state;
 		delete state.tempMemory.cursor;
 
-		state.isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
+		state.isInitialized = defaultState.IS_FULLY_NOT_INITIALIZED_STATUS();
 	},
 
 	// Cursor handling
@@ -116,7 +113,7 @@ export default {
 		state.cursor.flag.isInTimeUp = true;
 		const { cursor, settings } = state;
 		const timeoutBlock = blockHandler.getTimeUpBlock();
-		const isInitialized = constants.IS_FULLY_NOT_INITIALIZED_STATUS();
+		const isInitialized = defaultState.IS_FULLY_NOT_INITIALIZED_STATUS();
 		stateHandler.imposeState(state.state, timeoutBlock, cursor, isInitialized, settings);
 		state.state.record.timeIndicated = 0;
 	},

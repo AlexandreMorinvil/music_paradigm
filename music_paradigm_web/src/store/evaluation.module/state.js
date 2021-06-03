@@ -1,3 +1,3 @@
-import constants from './constants';
+import { defaultState } from '@/store-helper/evaluation.module-helper';
 
-export default constants.EMPTY_EVALUATION_VALUES();
+export default defaultState.EMPTY_EVALUATION_VALUES();

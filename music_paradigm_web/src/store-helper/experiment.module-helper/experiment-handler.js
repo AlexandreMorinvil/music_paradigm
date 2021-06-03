@@ -1,9 +1,9 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable prettier/prettier */
 /* eslint-disable key-spacing */
-import variableHandler from './variable-handler';
+import defaultState from './default-state';
 
-import constants from '@/store/experiment.module/constants';
+import variableHandler from './variable-handler';
 
 export default {
 	setExperimentId,
@@ -81,7 +81,7 @@ function setExperimentGeneralSettings(state, experiment) {
 	} = experiment;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
-	const defaultSettings = constants.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
+	const defaultSettings = defaultState.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
 	state.settings = {
 		anyPianoKey:					typeof anyPianoKey === 'boolean' 				? anyPianoKey : defaultSettings.anyPianoKey,
 		enableSoundFlag:				typeof enableSoundFlag === 'boolean' 			? enableSoundFlag : defaultSettings.enableSoundFlag,
@@ -105,7 +105,7 @@ function setExperimentGeneralSettings(state, experiment) {
 
 function setExperimentInitialState(state, experiment) {
 	const { logLabel } = experiment;
-	const defaultSettings = constants.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
+	const defaultSettings = defaultState.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
 	state.state.record.logLabel = typeof logLabel === 'string' ? logLabel : defaultSettings.logLabel;
 }
 

@@ -1,4 +1,4 @@
-import constants from './constants';
+import { defaultState } from '@/store-helper/users.module-helper';
 
 export default {
 	// Status Updates
@@ -52,7 +52,7 @@ export default {
 
 	// Setters
 	setSelectedUser(state, user) {
-		state.selectedUser = constants.EMPTY_USER();
+		state.selectedUser = defaultState.EMPTY_USER();
 		Object.assign(state.selectedUser, user);
 	},
 
@@ -62,7 +62,7 @@ export default {
 	},
 
 	unsetSelectedUser(state) {
-		state.selectedUser = constants.EMPTY_USER();
+		state.selectedUser = defaultState.EMPTY_USER();
 		state.selectedUserProgression = {};
 	},
 

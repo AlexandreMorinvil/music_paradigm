@@ -1,4 +1,4 @@
-import constants from './constants';
+import { defaultState } from '@/store-helper/users.module-helper';
 
 export default {
 	status: {
@@ -10,7 +10,7 @@ export default {
 		isResetingProgression: false,
 	},
 
-	selectedUser: constants.EMPTY_USER(),
+	selectedUser: defaultState.EMPTY_USER(),
 
 	selectedUserProgression: {
 		userReference: '',
