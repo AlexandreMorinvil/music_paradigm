@@ -1,5 +1,5 @@
 import blockHandler from './block-handler';
-import experimentStoreState from '../state';
+import experimentStoreState from '@/store/experiment.module/state';
 
 export default {
 	populateVariables,

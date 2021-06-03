@@ -1,6 +1,7 @@
 import defaultState from './default-block';
-import experimentStoreState from '../state';
 import variableHandler from './variable-handler';
+
+import experimentStoreState from '@/store/experiment.module/state';
 
 export default {
 	getCurrentBlock,

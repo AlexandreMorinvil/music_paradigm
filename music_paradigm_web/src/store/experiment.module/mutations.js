@@ -1,11 +1,8 @@
-import { routerNavigation } from '@/_helpers';
-
 import constants from './constants';
 
-import blockHandler from './flow-helper/block-handler';
-import cursorHandler from './flow-helper/cursor-handler';
-import experimentHandler from './flow-helper/experiment-handler';
-import stateHandler from './flow-helper/state-handler';
+import { blockHandler, cursorHandler, experimentHandler, stateHandler } from '@/store-helper/experiment.module-helper';
+import { routerNavigation } from '@/_helpers';
+
 
 export default {
 	clearState(state) {

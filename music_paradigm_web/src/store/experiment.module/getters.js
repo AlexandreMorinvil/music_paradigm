@@ -1,6 +1,6 @@
 import constants from './constants';
 
-import cursorHandler from './flow-helper/cursor-handler';
+import { cursorHandler } from '@/store-helper/experiment.module-helper';
 
 export default {
 	experimentId: (state) => {

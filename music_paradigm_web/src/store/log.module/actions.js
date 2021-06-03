@@ -1,10 +1,10 @@
 /* eslint-disable max-lines-per-function */
-import { log } from '@/store-helper';
+import { logFormat } from '@/store-helper/log.module-helper';
 import { logService } from '@/_services';
 
 export default {
 	addSimmpleLogBlock({ commit }) {
-		const block = log.makeSimpleLogBlock();
+		const block = logFormat.makeSimpleLogBlock();
 		commit('indicateAddBlockRequest');
 		return logService
 			.addSimpleLogBlock(block)
@@ -20,7 +20,7 @@ export default {
 	},
 
 	initializeThoroughLog({ commit }) {
-		const logHeader = log.makeThoroughLogHeader();
+		const logHeader = logFormat.makeThoroughLogHeader();
 		commit('indicateInitializeLogRequest');
 		return logService
 			.initializeThoroughLog(logHeader)
@@ -38,8 +38,8 @@ export default {
 	},
 
 	addThoroughLogBlock({ commit }) {
-		const logHeader = log.makeThoroughLogHeader();
-		const block = log.makeThoroughLogBlock();
+		const logHeader = logFormat.makeThoroughLogHeader();
+		const block = logFormat.makeThoroughLogBlock();
 		commit('indicateAddBlockRequest');
 		return logService
 			.addThoroughLogBlock(logHeader, block)
@@ -55,8 +55,8 @@ export default {
 	},
 
 	concludeThoroughLog({ commit }, { isInTimeUp, oldLogLabel, newLogLabel }) {
-		const logHeader = log.makeThoroughLogHeader(oldLogLabel);
-		const logConclusion = log.makeThoroughLogConclusion(isInTimeUp, newLogLabel);
+		const logHeader = logFormat.makeThoroughLogHeader(oldLogLabel);
+		const logConclusion = logFormat.makeThoroughLogConclusion(isInTimeUp, newLogLabel);
 		commit('indicateConcludeLogRequest');
 		return logService
 			.concludeThoroughLog(logHeader, logConclusion)

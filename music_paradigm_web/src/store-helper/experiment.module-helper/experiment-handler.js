@@ -1,8 +1,9 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable prettier/prettier */
 /* eslint-disable key-spacing */
-import constants from '../constants';
 import variableHandler from './variable-handler';
+
+import constants from '@/store/experiment.module/constants';
 
 export default {
 	setExperimentId,

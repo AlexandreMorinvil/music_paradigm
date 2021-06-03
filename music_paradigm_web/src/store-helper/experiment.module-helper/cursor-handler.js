@@ -2,7 +2,7 @@ import blockHandler from './block-handler';
 import stateHandler from './state-handler';
 import variableHandler from './variable-handler';
 
-import constants from '../constants';
+import constants from '@/store/experiment.module/constants';
 
 export default {
 	countStepsLeft,

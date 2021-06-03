@@ -1,7 +1,7 @@
 import { midiConversion, notePerformance } from '@/_helpers';
 import { Midi } from '@tonejs/midi';
 import constants from './constants';
-import functions from './functions';
+import { notesHandler } from '@/store-helper/piano.module-helper';
 
 export default {
 	resetPianoState: (state) => {
@@ -120,7 +120,7 @@ export default {
 		state.midiFile.name = '';
 		state.player.deleteFile();
 		state.midiFile.isLoaded = false;
-		functions.clearMidiFileNotes(state);
+		notesHandler.clearMidiFileNotes(state);
 	},
 	setMidiFileName: (state, midiFileName) => {
 		state.midiFile.name = midiFileName;
@@ -132,7 +132,7 @@ export default {
 	parseMidiNotes: (state, midiFile) => {
 		const jsonMidi = new Midi(midiFile);
 		const notes = jsonMidi.tracks[0].notes;
-		functions.clearMidiFileNotes(state);
+		notesHandler.clearMidiFileNotes(state);
 		for (const i in notes) {
 			state.midiFile.notes.midi.push(notes[i].midi);
 			state.midiFile.notes.time.push(notes[i].time * 1000);
@@ -146,18 +146,18 @@ export default {
 
 	// Mutations for note performance evaluation
 	evaluateSpeedType: (state) => {
-		const consideredPlayedNotes = functions.selectConsideredNotes(state.played.notes, state.played.evaluation.consideredStart);
+		const consideredPlayedNotes = notesHandler.selectConsideredNotes(state.played.notes, state.played.evaluation.consideredStart);
 		Object.assign(state.played.evaluation, notePerformance.evaluateSpeedType(state.midiFile.notes, consideredPlayedNotes));
 	},
 
 	evaluateRhythmType: (state) => {
-		const consideredPlayedNotes = functions.selectConsideredNotes(state.played.notes, state.played.evaluation.consideredStart);
+		const consideredPlayedNotes = notesHandler.selectConsideredNotes(state.played.notes, state.played.evaluation.consideredStart);
 		Object.assign(state.played.evaluation, notePerformance.evaluateRhythmType(state.midiFile.notes, consideredPlayedNotes));
 	},
 
 	evaluateMelodyType: (state, melodyRepetion) => {
-		const consideredPlayedNotes = functions.selectConsideredNotes(state.played.notes, state.played.evaluation.consideredStart);
-		const reference = functions.multiplyMidiFileNotes(state, melodyRepetion);
+		const consideredPlayedNotes = notesHandler.selectConsideredNotes(state.played.notes, state.played.evaluation.consideredStart);
+		const reference = notesHandler.multiplyMidiFileNotes(state, melodyRepetion);
 		Object.assign(state.played.evaluation, notePerformance.evaluateMelodyType(reference, consideredPlayedNotes));
 	},
 };
