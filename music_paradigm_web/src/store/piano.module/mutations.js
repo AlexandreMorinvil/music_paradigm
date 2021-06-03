@@ -31,10 +31,6 @@ export default {
 	setPlayer: (state, player) => {
 		state.player = player;
 	},
-	clearPlayer: (state) => {
-		state.player = null;
-	},
-
 	playMidiFile: (state) => {
 		state.player.play();
 	},

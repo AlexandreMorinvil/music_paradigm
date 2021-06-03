@@ -28,10 +28,6 @@ export default {
 	setPlayer: ({ commit }, player) => {
 		commit('setPlayer', player);
 	},
-	clearPlayer: ({ commit }) => {
-		commit('clearPlayer');
-	},
-
 	playMidiFile: ({ commit }) => {
 		commit('playMidiFile');
 	},

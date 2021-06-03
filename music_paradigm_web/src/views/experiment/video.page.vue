@@ -59,7 +59,7 @@ export default {
 			defaultVideoWidth: 480,
 			// Delay before playback variables
 			referenceTime: 0,
-			playbackDelayInSeconds: 3,
+			playbackDelayInSeconds: 2,
 			delayLeftInMilliseconds: 5000,
 			timeStepInMilliseconds: 200,
 			// Delay after playback variable
@@ -99,7 +99,7 @@ export default {
 		delayLeftDisplay() {
 			let display = '';
 			const minutes = Math.floor((this.delayLeftInMilliseconds / (60 * 1000)) % 60);
-			const seconds = Math.floor((this.delayLeftInMilliseconds / 1000) % 60);
+			const seconds = Math.floor((this.delayLeftInMilliseconds / 1000) % 60) + 1;
 			if (minutes > 0) {
 				display += this.$tc('views.experiment.video.minute', minutes, { minute: minutes });
 			}

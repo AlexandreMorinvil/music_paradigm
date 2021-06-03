@@ -36,7 +36,6 @@ export default {
 			'setInitializingState',
 			'setPlayer',
 			'setPiano',
-			'clearPlayer',
 			'clearPiano',
 			'addPressedKey',
 			'deletePressedKey',
@@ -164,8 +163,6 @@ export default {
 			if (this.player) {
 				this.player.off('midiEvent', this.handleMidiMessage);
 				this.player.off('endOfFile', this.handleMidiFileEndOfFile);
-				this.player = null;
-				this.clearPlayer();
 			}
 			this.clearPiano();
 			while (this.midiInputs.length > 0) this.midiInputs.pop().onmidimessage = null;
