@@ -55,7 +55,7 @@ const stateSchema = new Schema({
     decrementVariableOnSucces: { type: String, default: undefined },
 
     controlType: { type: String, default: undefined },
-    checkpoint: { type: String, default: undefined },
+    checkpoint: { type: String, default: undefined, enum: ['once', 'first', 'all'] },
     strictPlay: { type: Boolean, default: undefined },
     considerExperimentFinished: { type: Boolean, default: undefined },
 
