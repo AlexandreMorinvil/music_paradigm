@@ -1,6 +1,7 @@
 <template>
 	<div id="experiment" class="experiment-grid unselectable">
 		<log-component style="display: none" ref="log" />
+		<session-component style="display: none" ref="session" />
 		<status-bar-component class="status-bar-position" ref="status" />
 
 		<div id="state-content" class="state-content-position">
@@ -17,12 +18,14 @@ import { KeyboardEventBus, keyboardEvents } from '@/_services/event-bus/keyboard
 import { PianoEventBus, pianoEvents } from '@/_services/event-bus/piano-event-bus.service.js';
 import ExperimentContent from '@/components/content-frame/experiment-content-frame.component.vue';
 import LogComponent from '@/components/experiment/log/log.component.vue';
+import SessionComponent from '@/components/experiment/session/session.component.vue';
 import StatusBarComponent from '@/components/experiment/status-bar/status-bar.component.vue';
 
 export default {
 	components: {
 		ExperimentContent,
 		LogComponent,
+		SessionComponent,
 		StatusBarComponent,
 	},
 	data() {
@@ -37,20 +40,14 @@ export default {
 		...mapGetters('experiment', [
 			'hasPrelude',
 			'isInPrelude',
-			'isInTimeUp',
 			'isBeyondEnd',
 			'midiName',
 			'referenceKeyboardKeys',
 			'controlType',
-			'checkpoint',
-			'isFirstIndexPassage',
-			'needsResetLoopParameters',
-			'isNewBlock',
 			'considerExperimentFinished',
 		]),
 	},
 	methods: {
-		...mapActions('session', ['concludeSession', 'initializeSession', 'saveSessionState']),
 		...mapActions('experiment', [
 			'initializePrelude',
 			'leavePrelude',
@@ -75,18 +72,12 @@ export default {
 		handleTimesUp() {
 			this.endExperimentByTimeout();
 		},
-		handleSaveSessionState() {
-			if (!this.checkpoint || this.considerExperimentFinished) return;
-			else if (this.checkpoint === 'once' && this.isFirstIndexPassage) this.saveSessionState();
-			else if (this.checkpoint === 'first' && this.needsResetLoopParameters) this.saveSessionState();
-			else if (this.checkpoint === 'all' && this.isNewBlock) this.saveSessionState();
-		},
 		startExperiement() {
 			if (this.hasPrelude) this.initializePrelude();
 			else this.displayFirstStep();
 		},
 		displayFirstStep() {
-			this.initializeSession();
+			this.$refs.session.initialize();
 			this.updateState();
 			this.$refs.log.initialize();
 			this.$refs.status.start();
@@ -95,7 +86,7 @@ export default {
 			this.$refs.status.recordTime();
 			this.resetPresses();
 			this.goNextStep();
-			this.handleSaveSessionState();
+			this.$refs.session.saveState();
 		},
 		navigateBackAnInnerStep() {
 			this.resetPresses();
@@ -105,14 +96,14 @@ export default {
 			this.$refs.status.recordTime();
 			this.resetPresses();
 			this.goStepPostSkip();
-			this.handleSaveSessionState();
+			this.$refs.session.saveState();
 		},
 		concludeExperiment() {
 			if (this.hasConlcluded) return;
 			this.hasConlcluded = true;
 			this.needsConfirmationToLeave = false;
-			this.$refs.log.conclude(this.isInTimeUp);
-			this.concludeSession(this.isInTimeUp);
+			this.$refs.log.conclude();
+			this.$refs.session.conclude();
 		},
 		leave() {
 			this.leaveExperiment();

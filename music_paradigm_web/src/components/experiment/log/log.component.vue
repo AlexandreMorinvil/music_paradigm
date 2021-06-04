@@ -28,8 +28,8 @@ export default {
 		addBlock() {
 			if (this.$refs.log.addBlock) this.$refs.log.addBlock();
 		},
-		conclude(isInTimeUp) {
-			if (this.$refs.log.conclude) this.$refs.log.conclude(isInTimeUp);
+		conclude() {
+			if (this.$refs.log.conclude) this.$refs.log.conclude();
 		},
 	},
 };

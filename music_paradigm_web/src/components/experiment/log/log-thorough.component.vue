@@ -9,7 +9,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
 	computed: {
-		...mapGetters('experiment', ['logLabel']),
+		...mapGetters('experiment', ['logLabel', 'isInTimeUp']),
 	},
 	methods: {
 		...mapActions('log', ['initializeThoroughLog', 'addThoroughLogBlock', 'concludeThoroughLog']),
