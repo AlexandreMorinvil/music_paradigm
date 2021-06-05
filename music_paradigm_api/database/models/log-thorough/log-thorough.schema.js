@@ -42,6 +42,7 @@ const schema = new Schema(
                     index: { type: Number },
                     innerIndex: { type: Number },
                     repetition: { type: Number },
+                    isInPrelude: { type: Boolean },
                     timestamp: { type: Date },
 
                     reference: { type: Object },

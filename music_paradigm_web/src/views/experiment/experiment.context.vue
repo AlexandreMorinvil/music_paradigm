@@ -73,13 +73,13 @@ export default {
 			this.endExperimentByTimeout();
 		},
 		startExperiement() {
+			this.$refs.session.initialize();
+			this.$refs.log.initialize();
 			if (this.hasPrelude) this.initializePrelude();
 			else this.displayFirstStep();
 		},
 		displayFirstStep() {
-			this.$refs.session.initialize();
 			this.updateState();
-			this.$refs.log.initialize();
 			this.$refs.status.start();
 		},
 		navigateExperiment() {
