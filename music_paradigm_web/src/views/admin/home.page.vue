@@ -4,7 +4,7 @@
 			<div class="widget widget-bg">
 				Admin Home page
 				<br /><br />
-				Recent activity on the server and important information from the users
+				No Recent activity.
 			</div>
 		</widget-content-frame>
 	</admin-page-content-frame>

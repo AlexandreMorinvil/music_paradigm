@@ -1,8 +1,8 @@
 <template>
 	<admin-page-content-frame title="Experiments">
-		<widget-content-frame title="Reviewier">
+		<!-- <widget-content-frame title="Reviewier">
 			<experiments-viewer />
-		</widget-content-frame>
+		</widget-content-frame> -->
 
 		<widget-content-frame title="Editor">
 			<experiments-editor />
@@ -23,7 +23,7 @@ import AdminPageContentFrame from '@/components/content-frame/admin-page-content
 import ExperimentsEditor from '@/components/admin/experiments/ExperimentsEditorWidget.vue';
 import ExperimentsLauncherWidget from '@/components/admin/experiments/widget-launcher/experiments-launcher.widget.vue';
 import ExperimentsTable from '@/components/admin/experiments/ExperimentsTableWidget.vue';
-import ExperimentsViewer from '@/components/admin/experiments/ExperimentsViewerWidget.vue';
+// import ExperimentsViewer from '@/components/admin/experiments/ExperimentsViewerWidget.vue';
 import WidgetContentFrame from '@/components/content-frame/widget-content-frame.component.vue';
 
 export default {
@@ -31,7 +31,7 @@ export default {
 		AdminPageContentFrame: AdminPageContentFrame,
 		ExperimentsLauncherWidget,
 		WidgetContentFrame: WidgetContentFrame,
-		experimentsViewer: ExperimentsViewer,
+		// experimentsViewer: ExperimentsViewer,
 		experimentsEditor: ExperimentsEditor,
 		ExperimentsTable: ExperimentsTable,
 	},

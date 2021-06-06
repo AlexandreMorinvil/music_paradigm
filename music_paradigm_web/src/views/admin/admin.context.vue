@@ -6,8 +6,8 @@
 			<router-link :to="{ name: 'admin.experiments' }" :class="{ currentLink: activePage === 'experiments' }">Experiments</router-link>
 			<router-link :to="{ name: 'admin.curriculums' }" :class="{ currentLink: activePage === 'curriculums' }">Curriculums</router-link>
 			<router-link :to="{ name: 'admin.ressources' }" :class="{ currentLink: activePage === 'ressources' }">Ressources</router-link>
-			<router-link :to="{ name: 'admin.data' }" :class="{ currentLink: activePage === 'data' }">Data</router-link>
-			<router-link :to="{ name: 'admin.account' }" :class="{ currentLink: activePage === 'account' }">Account</router-link>
+			<!-- <router-link :to="{ name: 'admin.data' }" :class="{ currentLink: activePage === 'data' }">Data</router-link>
+			<router-link :to="{ name: 'admin.account' }" :class="{ currentLink: activePage === 'account' }">Account</router-link> -->
 		</div>
 		<div id="user-main" class="main-position">
 			<router-view class="main-display" />
