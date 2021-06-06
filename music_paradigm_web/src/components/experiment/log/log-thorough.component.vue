@@ -25,7 +25,10 @@ export default {
 	},
 	watch: {
 		logLabel(newLogLabel, oldLogLabel) {
-			if (newLogLabel !== oldLogLabel) this.concludeThoroughLog({ newLogLabel: newLogLabel, oldLogLabel: oldLogLabel });
+			if (newLogLabel !== oldLogLabel) {
+				this.concludeThoroughLog({ newLogLabel: newLogLabel, oldLogLabel: oldLogLabel });
+				this.initializeThoroughLog();
+			}
 		},
 	},
 };
