@@ -1,8 +1,8 @@
 export default {
-    getParameterVariables,
+	getParameterVariables,
 };
 
 function getParameterVariables(experiment) {
-    if (!experiment.variables) return [];
-    return experiment.variables.filter(variable => variable.type === 'parameter');
+	if (!experiment.variables) return [];
+	return experiment.variables.filter((variable) => variable.type === 'parameter');
 }

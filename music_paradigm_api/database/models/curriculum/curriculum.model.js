@@ -32,7 +32,21 @@ schema.methods.update = async function (updatedCurriculum) {
     return this;
 };
 
-schema.methods.getParameters = async function () {}
+schema.methods.getParameters = async function () {
+    const allParameters = [];
+    const experiments = await this
+        .findOne(
+            { _id: this._id },
+            { 'experiments.experimentReference': 1 }
+        )
+        .populate(
+            { path: 'experiments.experimentReference', select: 'variables' }
+        )
+    experiments.forEach(experiment, () => {
+        allParameters.push(experiments.getParameters());
+    })
+    return allParameters;
+}
 
 
 // Creating the model

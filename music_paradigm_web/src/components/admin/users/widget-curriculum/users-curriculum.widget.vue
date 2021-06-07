@@ -1,6 +1,7 @@
 <template>
 	<div id="users-editor" class="widget widget-bg">
-		<users-curriculum-form-component class="editor-position inner-widget" ref="userCurriculumForm" />
+		<users-curriculum-form-component class="curticulum-position inner-widget" ref="userCurriculumForm" />
+		<users-parameters-form-component class="parameters-position inner-widget" ref="userParametersForm" />
 
 		<div class="submission-buttons-position">
 			<button v-on:click="assignSelectedToForm" class="widget-button blue" :class="{ inactive: !isRevertButtonActive }">Revert</button>
@@ -19,10 +20,12 @@ import '@/styles/form-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
 import UsersCurriculumFormComponent from './users-curriculum-form.component.vue';
+import UsersParametersFormComponent from './users-parameters-form.component.vue';
 
 export default {
 	components: {
 		UsersCurriculumFormComponent,
+		UsersParametersFormComponent,
 	},
 	data() {
 		return {
@@ -46,6 +49,7 @@ export default {
 		assignSelectedToForm() {
 			if (!this.isRevertButtonActive) return;
 			this.$refs.userCurriculumForm.assignSelectedToForm();
+			this.$refs.userParametersForm.assignSelectedToForm();
 		},
 		submitCurriculumToAssign() {
 			if (!this.isAssignButtonActive) return;
@@ -105,8 +109,12 @@ export default {
 	grid-template-columns: 1fr 1fr;
 }
 
-.editor-position {
-	grid-area: editor;
+.curticulum-position {
+	grid-area: curticulum;
+}
+
+.parameters-position {
+	grid-area: parameters;
 }
 
 .submission-buttons-position {
@@ -119,7 +127,8 @@ export default {
 .widget {
 	grid-template-columns: 100%;
 	grid-template-areas:
-		'editor'
+		'curticulum'
+		'parameters'
 		'submission-btn';
 }
 </style>
