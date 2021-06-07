@@ -42,7 +42,7 @@ export default {
 	},
 	data() {
 		return {
-			VOLUME_ADJUSTMENT: 0.05,
+			VOLUME_ADJUSTMENT: 0.1,
 			player: null,
 			volume: 0,
 			time: 0,

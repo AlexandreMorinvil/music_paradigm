@@ -5,8 +5,6 @@
 </template>
 
 <script>
-// import { mapActions, mapGetters } from 'vuex';
-
 import LogSimpleComponent from './log-simple.component.vue';
 import LogThoroughComponent from './log-thorough.component.vue';
 
@@ -20,7 +18,7 @@ export default {
 	},
 	computed: {
 		type() {
-			return 'simple';
+			return 'thorough';
 		},
 	},
 	methods: {

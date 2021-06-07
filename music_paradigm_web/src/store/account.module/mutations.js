@@ -1,4 +1,4 @@
-import constants from './constants';
+import { defaultState } from '@/store-helper/account.module-helper';
 
 export default {
 	loginRequest(state) {
@@ -11,12 +11,12 @@ export default {
 	},
 
 	loginFailure(state) {
-		state.user = constants.EMPTY_USER();
+		state.user = defaultState.EMPTY_USER();
 		Object.assign(state.status, { loggingIn: false, loggedIn: false });
 	},
 
 	logout(state) {
-		state.user = constants.EMPTY_USER();
+		state.user = defaultState.EMPTY_USER();
 		Object.assign(state.status, { loggedIn: false });
 	},
 
@@ -28,8 +28,10 @@ export default {
 		state.status.isFetchingProgressionSummary = false;
 	},
 
-	setDueExperiment(state, dueExperimentAssociativeId) {
-		state.dueExperimentAssociativeId = dueExperimentAssociativeId;
+	setDueExperiment(state, dueExperiment) {
+		const { associativeId, associativeIdOrdinalNumber } = dueExperiment || {};
+		state.dueExperimentAssociativeId = associativeId;
+		state.dueExperimentAssociativeIdOrdinalNumber = associativeIdOrdinalNumber;
 	},
 
 	setProgressionSummary(state, progressionSummary) {

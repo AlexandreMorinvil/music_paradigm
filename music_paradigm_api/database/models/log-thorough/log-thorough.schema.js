@@ -2,12 +2,23 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+const LogConclusion = new Schema({
+    time: { type: Date, default: Date.now },
+    isInTimeUp: { type: Boolean, default: false },
+    nextLogLabel: { type: String, default: undefined },
+})
+
 const schema = new Schema(
     {
         userId: { type: Schema.Types.ObjectId, default: null },
         experimentId: { type: Schema.Types.ObjectId, default: null },
+        progressionId: { type: Schema.Types.ObjectId, default: null },
         curriculumId: { type: Schema.Types.ObjectId, default: null },
         associativeId: { type: String, default: undefined },
+        associativeIdOrdinalNumber: { type: Number, default: undefined },
+        logLabel: { type: String, default: 'default' },
+
+        completionCount: { type: Number, default: 0 },
 
         username: { type: String, default: undefined },
         curriculumTitle: { type: String, default: null },
@@ -16,21 +27,7 @@ const schema = new Schema(
         experimentVersion: { type: Number, default: undefined },
 
         startTimestamp: { type: [Date], default: Date.now },
-        endTimestamp: { type: Date, default: null },
-
-        // List of midi files referenced
-        reference: {
-            type: [
-                {
-                    referenceName: { type: String, default: null },
-                    referenceKeys: { type: [], default: [] },
-                    referenceTime: { type: [Number], default: undefined },
-                    referenceDuration: { type: [Number], default: undefined },
-                    referenceVelocity: { type: [Number], default: undefined },
-                }
-            ],
-            default: undefined
-        },
+        endTimestamp: { type: [LogConclusion], default: null },
 
         // List of blocks encountered in the session
         blocks: {
@@ -38,11 +35,14 @@ const schema = new Schema(
                 {
                     timestamp: { type: Date },
 
+                    startCount: { type: Number, default: 1 },
+
                     blockType: { type: String },
                     blockSubType: { type: String },
                     index: { type: Number },
                     innerIndex: { type: Number },
                     repetition: { type: Number },
+                    isInPrelude: { type: Boolean },
                     timestamp: { type: Date },
 
                     reference: { type: Object },

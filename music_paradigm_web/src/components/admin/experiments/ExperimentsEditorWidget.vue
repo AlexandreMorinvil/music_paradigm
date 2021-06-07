@@ -68,7 +68,7 @@ export default {
 			return status;
 		},
 		selectionStatus() {
-			return 'Selection Status (TODO)';
+			return 'DISPLAYED BELOW';
 		},
 	},
 	methods: {

@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
-schema = require('./experiment.schema');
+schema = require('./experiment.middleware');
 
 // Options for Object/JSON tranformations
 const transformationOprtions = {
     virtuals: true,
     transform: function (doc, ret) {
         if (ret.flow) ret.flow.forEach(element => { delete element._id });
-        if (ret.flow) ret.variables.forEach(element => { delete element._id });
+        if (ret.prelude) ret.prelude.forEach(element => { delete element._id });
+        if (ret.variables) ret.variables.forEach(element => { delete element._id });
+        if (ret.timeUpState) delete ret.timeUpState._id;
         delete ret.id;
         delete ret.__v;
     }

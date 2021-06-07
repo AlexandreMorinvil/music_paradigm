@@ -1,6 +1,6 @@
 import constants from './constants';
-import functions from './functions';
 import { keyboardPerformance } from '@/_helpers';
+import { keysHandler } from '@/store-helper/keyboard.module-helper';
 
 export default {
 	resetKeyboardTracking: (state) => {
@@ -76,7 +76,7 @@ export default {
 
 	// Mutations for note performance evaluation
 	evaluateSpeedType: (state) => {
-		const consideredPressedKeys = functions.selectConsideredKeys(state.played.presses, state.played.evaluation.consideredStart);
+		const consideredPressedKeys = keysHandler.selectConsideredKeys(state.played.presses, state.played.evaluation.consideredStart);
 		Object.assign(state.played.evaluation, keyboardPerformance.evaluateSpeedType(state.referenceKeys, consideredPressedKeys));
 	},
 };

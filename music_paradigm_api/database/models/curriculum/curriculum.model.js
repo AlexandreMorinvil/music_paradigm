@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const schema = require('./curriculum.schema');
+const schema = require('./curriculum.middleware');
 
 schema.set('toJSON', { virtuals: true });
 

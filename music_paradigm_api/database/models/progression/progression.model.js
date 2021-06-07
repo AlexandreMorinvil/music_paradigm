@@ -1,58 +1,71 @@
 const mongoose = require('mongoose');
-schema = require('./progression.schema');
+schema = require('./progression.middleware');
 
 schema.set('toJSON', { virtuals: true });
 
 // Instance methods
-schema.methods.getExperimentAssociated = async function (associativeId) {
-    const nestedExperimentArray = this.experiments.filter(experiment => { return experiment.associativeId === associativeId; });
+schema.methods.getExperimentAssociated = function (associativeId, associativeIdOrdinalNumber) {
+    const nestedExperimentArray = this.experiments.filter(experiment => {
+        return (experiment.associativeId === associativeId) &&
+            (experiment.associativeIdOrdinalNumber === associativeIdOrdinalNumber);
+    });
     const experimentInProgression = nestedExperimentArray[0];
     return experimentInProgression;
 };
 
-schema.methods.getSessionInformation = async function (associativeId) {
+schema.methods.getSessionInformation = async function (associativeId, associativeIdOrdinalNumber) {
     const Curriculum = require('database/models/curriculum/curriculum.model');
     const Experiment = require('database/models/experiment/experiment.model');
+    const ExperimentMaker = require('./experiment-marker/experiment-marker.model');
 
     const curriculum = await Curriculum.findById(this.curriculumReference);
-    const curriculumNestedExperiment = await curriculum.getExperimentAssociated(associativeId);
-    const experiment = await Experiment.findById(curriculumNestedExperiment.experimentReference);
-    const progressionNestedExperiment = await this.getExperimentAssociated(associativeId) || {};
+    const curriculumPlannedExperiment = await curriculum.getExperimentAssociated(associativeId);
+    const experimentDefinition = await Experiment.findById(curriculumPlannedExperiment.experimentReference);
+    const experimentInProgression = this.getExperimentAssociated(associativeId, associativeIdOrdinalNumber) || {};
+    const experimentMaker = await ExperimentMaker.findMarker(this._id, associativeId) || {};
 
     const sessionInformation = {
         curriculumTitle: curriculum.title,
         curriculumId: curriculum._id,
+        progressionId: this._id,
         associativeId: associativeId,
-        title: curriculumNestedExperiment.title,
-        text: curriculumNestedExperiment.text,
-        experiment: await experiment.getDefinition(),
-        previousState: progressionNestedExperiment.state || null,
-        previousCursor: progressionNestedExperiment.cursor || null,
+        associativeIdOrdinalNumber: associativeIdOrdinalNumber,
+        startCount: (experimentInProgression.startCount || 0) + 1,
+        completionCount: (experimentInProgression.completionCount || 0),
+        title: curriculumPlannedExperiment.title,
+        text: curriculumPlannedExperiment.text,
+        experiment: await experimentDefinition.getDefinition(),
+        previousState: experimentMaker.state,
+        previousCursor: experimentMaker.cursor,
+        previousTimeIndicated: experimentMaker.timeIndicated,
     };
 
     return sessionInformation;
 };
 
-schema.methods.initializeExperiment = async function (associativeId) {
+schema.methods.initializeExperiment = async function (associativeId, associativeIdOrdinalNumber) {
     const Curriculum = require('database/models/curriculum/curriculum.model');
+
     const curriculum = await Curriculum.findById(this.curriculumReference);
-    const curriculumNestedExperiment = await curriculum.getExperimentAssociated(associativeId);
-    let experimentInProgression = await this.getExperimentAssociated(associativeId);
+    const curriculumPlannedExperiment = await curriculum.getExperimentAssociated(associativeId);
+    let experimentInProgression = this.getExperimentAssociated(associativeId, associativeIdOrdinalNumber);
 
     // Create a nexted associated experiment to put in the progression if it doesn't exist
     if (!experimentInProgression) {
+
+        // Create the experiment in the progression
         experimentInProgression = {
-            experimentReference: curriculumNestedExperiment.experimentReference,
             associativeId: associativeId,
-            completionCount: 0,
-        }
+            associativeIdOrdinalNumber: associativeIdOrdinalNumber,
+            experimentReference: curriculumPlannedExperiment.experimentReference
+        };
+
+        // Add the record in the progression
         this.experiments.push(experimentInProgression);
     }
-    // Increment the number of times the experiment was started to be one more time than it was completed
-    else {
-        const completionCount = Math.max(experimentInProgression.completionCount, 0);
-        experimentInProgression.startCount = completionCount + 1;
-    }
+
+    // Increment the number of times the experiment was started
+    experimentInProgression.startCount += 1;
 
     // If the start time is not set, this is the first time we do an experiment and we are this starting the curriculum now
     if (!this.startTime) this.startTime = Date.now();
@@ -60,27 +73,37 @@ schema.methods.initializeExperiment = async function (associativeId) {
     return this.save();
 };
 
-schema.methods.concludeExperiment = async function (associativeId) {
+schema.methods.concludeExperiment = async function (associativeId, associativeIdOrdinalNumber, isInTimeUp) {
     const Curriculum = require('database/models/curriculum/curriculum.model');
+
     const curriculum = await Curriculum.findById(this.curriculumReference);
-    const curriculumNestedExperiment = await curriculum.getExperimentAssociated(associativeId);
-    let experimentInProgression = await this.getExperimentAssociated(associativeId);
+    const curriculumPlannedExperiment = await curriculum.getExperimentAssociated(associativeId);
+    let experimentInProgression = this.getExperimentAssociated(associativeId, associativeIdOrdinalNumber);
 
     // Create a nexted associated experiment to put in the progression
     if (!experimentInProgression) {
+
+        // create the experiment in the progression
         experimentInProgression = {
-            experimentReference: curriculumNestedExperiment.experimentReference,
+            experimentReference: curriculumPlannedExperiment.experimentReference,
             associativeId: associativeId,
-            completionCount: 1,
-        }
+            associativeIdOrdinalNumber: associativeIdOrdinalNumber,
+            completionCount: 1
+        };
+
+        // Add the record in the progression
         this.experiments.push(experimentInProgression);
     }
-    // Erase previous session's information and increase completion count
+    // Increase completion count
+    else experimentInProgression.completionCount += 1;
+
+    // Remove the experiment marker if the experiment was completely finished (keep it if it was ended through a timeout)
+    if (!isInTimeUp) {
+        const ExperimentMarker = require('./experiment-marker/experiment-marker.model');
+        await ExperimentMarker.deleteMarker(this._id, associativeId);
+    }
     else {
-        experimentInProgression.completionCount += 1;
-        if (experimentInProgression.cursor) delete experimentInProgression.cursor;
-        if (experimentInProgression.state) delete experimentInProgression.state;
-        if (experimentInProgression.logId) delete experimentInProgression.logId;
+
     }
 
     // If the experiment was completed for a first, it is a progression in the curriculum, therrefore, we update the last progression time
@@ -89,62 +112,27 @@ schema.methods.concludeExperiment = async function (associativeId) {
     return this.save();
 };
 
-schema.methods.addSimpleLogBlockAssociatedExperiment = async function (logBock) {
-    // Get experiment associated
-    associativeId = logBock.associativeId;
-    if (!associativeId) throw new Error('No associative ID')
-
-    // Add the log block to the progression
-    const progressionNestedExperiment = await this.getExperimentAssociated(associativeId);
-    progressionNestedExperiment.simpleLogReferences.push(logBock._id);
-    await progressionNestedExperiment.save();
-    return await this.save();
-};
-
-schema.methods.addThoroughLogAssociatedExperiment = async function (associativeId, logId) {
-    if (!associativeId) throw new Error('No associative ID')
-
-    // Add the initialized log to the progression
-    const progressionNestedExperiment = await this.getExperimentAssociated(associativeId);
-    progressionNestedExperiment.thoroughLogReferences.push(logId);
-    await progressionNestedExperiment.save();
-    return await this.save();
-};
-
-schema.methods.saveSessionState = async function (associativeId, cursor, state) {
-    let experimentInProgression = await this.getExperimentAssociated(associativeId);
-
-    // Error handling if the experiment in progression searched is not found
-    if (!experimentInProgression) return null;
-
-    // We set the cursor and the current state
-    experimentInProgression.cursor = cursor;
-    experimentInProgression.state = state;
+schema.methods.saveSessionState = async function (associativeId, cursor, state, timeIndicated) {
+    const ExperimentMarker = require('./experiment-marker/experiment-marker.model');
+    
+    // Update or create the marker
+    const experimentMarker = await ExperimentMarker.findMarker(this._id, associativeId);
+    if (experimentMarker) experimentMarker.updateMaker(cursor, state, timeIndicated);
+    else ExperimentMarker.createMaker(this._id, associativeId, cursor, state, timeIndicated);
 
     return this.save();
 };
-
 
 schema.methods.forgetSessionState = async function (associativeId) {
-    let experimentInProgression = await this.getExperimentAssociated(associativeId);
-
-    // Error handling if the experiment in progression searched is not found
-    if (!experimentInProgression) return null;
-
-    // We delete the cursor amd the current state
-    experimentInProgression.cursor = undefined;
-    experimentInProgression.state = undefined;
-
-    return this.save();
+    return await ExperimentMarker.deleteMarker(this._id, associativeId);
 };
-
 
 schema.methods.isForCurriculum = function (curriculumId) {
     return this.curriculumReference === curriculumId;
 }
 
 schema.methods.wasStarted = function () {
-    return Boolean(this.experiments[0]);
+    return Boolean(this.experiments.length > 0);
 };
 
 

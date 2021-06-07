@@ -44,15 +44,24 @@ const DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE = 4;
 const DEFAULT_CONTROL_TYPE = 'piano';
 const DEFAULT_RELATIVE_RHYTHM_IMPORTANCE = 0;
 const DEFAULT_WITH_PROGRESSION_BAR = true;
+const DEFAULT_LOG_LABEL = 'default';
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
 	return {
 		// Indicator of wether or not the experiment was set
 		_id: null, // Id of the experiment
-		hasExperiment: false, // Indicator of whether or not an experiment was parsed
+
+		// The prelude sequence of the experiment
+		prelude: [], // Description of the different steps of the prelude
 
 		// The sequence of the experiment
 		flow: [], // Description of the different steps of the experiment
+
+		// The state to reach upon timeout
+		timeUpState: null,
+
+		// Initial Time
+		initialTimeIndicated: 0,
 
 		// Mandatory description of the flow
 		description: DEFAULT_DESCRIPTION_SETTINGS_VALUES(),
@@ -71,6 +80,9 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 
 		// Initialization status of vue pages
 		isInitialized: IS_FULLY_NOT_INITIALIZED_STATUS(),
+
+		// Temporary space to store the flow, cursor and state of the real experiment while in prelude mode
+		tempMemory: { /* flow, state, cursor */ }
 	};
 }
 
@@ -109,22 +121,24 @@ function DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES() {
 	return {
 		current: {
 			index: 0, 																// Index of the current block of the flow
-			piledContentIndex: 0, 													// Index of the current step of the block (browses the midi and video file names)
 			innerStepIndex: 0, 														// Index of the current step of the block (browses the picture file names)
-			isBeyondEnd: false, 													// Indicator of whether the index as reached the end of the flow (is checked before moving the cursor forward)
-			isInSkipableChain: false, 												// Indicates whether the block must be skipped upon a skip request
+			numberRepetition: 1, 													// Number of repetitions left to do
+			piledContentIndex: 0, 													// Index of the current step of the block (browses the midi and video file names)
 		},
 		navigation: {
 			indexNext: 1, 															// Index of the next block of the flow
+			indexGroupEnd: UNSET_INDEX, 											// Index of the end of a group of blocks (the last index with a followedBy or an individual block)
 			indexLoopStart: UNSET_INDEX, 											// Index to which a loop start
 			indexPileStart: UNSET_INDEX, 											// Index to which there remains content to depile
-			indexGroupEnd: UNSET_INDEX, 											// Index of the end of a group of blocks (the last index with a followedBy or an individual block)
-			totalInnerSteps: 0, 													// Number of steps in a given block
-			numberTotalRepetions: 1, 												// Number of repetitions in total
-			numberRepetition: 1, 													// Number of repetitions left to do
-			numberPiledMedia: 0, 													// Number of media content piled at the index pile start
+			lastInnerStepsIndex: 0, 												// Last index of inner steps in a given block
+			totalNumberRepetitions: 1, 												// Number of repetitions in total
+			lastPiledContentIndex: 0, 												// Last index of media content piled at the index pile start
 		},
 		flag: {
+			isInPrelude: false,														// Indicator of whether or not the cursor is pointing at hte main experiment (as opposed to the prelude)
+			isInTimeUp: false, 													// Indicator of whether or not the time limit is reached
+			isBeyondEnd: false, 													// Indicator of whether the index as reached the end of the flow (is checked before moving the cursor forward)
+			isInSkipableChain: false, 												// Indicator of whether the block must be skipped upon a skip request
 			isFirstIndexPassage: true,												// Indicator of whether it is the first time the index has reached a certain value (is false whenever the cursor loops back)
 			needsResetLoopParameters: false,										// Indicator of whether he loop specific parameters need to be restarted (only when we enter a need block group)
 			isNewBlock: true,														// Indicatio of wheter a new block was entered (Thus, we are not in just another inner step)
@@ -180,10 +194,13 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 		},
 		// Session specific informations
 		record: {
+			logLabel: DEFAULT_LOG_LABEL,											// Active label that will be associated to the logs
 			sucesses: 0, 															// Number of successes recorded
 			successesInLoop: 0, 													// Number of successes recorded in the loop
 			isSuccess: false, 														// Indicate whether the current step was a success
 			isWaitingReadyStartSignal: false, 										// Indicate whether a 'Ready Start' signal is being awaited
+			considerExperimentFinished: false,										// Signal that indicates whether at the current position in experiment, the sesion can be considered completed (it is set as a record since it must be considered even when skipping steps)
+			timeIndicatedInMilliseconds: 0											// Value in indicating the time indicated in the experiment (is used when the experiment has a time limit, this allows the app to make the user restart with the time he had left if he leaves the experiment early)
 		},
 	};
 }

@@ -14,9 +14,24 @@ export default {
 	initExperiment: ({ commit }, initialState = null) => {
 		commit('initExperiment', initialState);
 	},
+	initInitialTime: ({ commit }, initialTime) => {
+		commit('initInitialTime', initialTime);
+	},
 	updateState: ({ commit }) => {
 		commit('updateState');
 	},
+
+	// Prelude actions
+	initializePrelude: ({ commit }) => {
+		commit('initializePrelude');
+		commit('updateState');
+	},
+	leavePrelude: ({ commit }) => {
+		commit('leavePrelude');
+		commit('updateState');
+	},
+
+	// Cursor handling actions
 	goNextStep: ({ commit }) => {
 		commit('moveNextStep');
 	},
@@ -26,18 +41,23 @@ export default {
 	goStepPostSkip: ({ commit }) => {
 		commit('movePostSkip');
 	},
+
+	// End actions
 	endExperimentByTimeout: ({ commit }) => {
 		commit('endExperimentByTimeout');
 	},
-	concludeExperiment: ({ commit }) => {
+	leaveExperiment: ({ commit }) => {
 		commit('leaveExperiment');
 	},
 
-	// Record methods
+	// Record actions
 	addSuccess: ({ commit }) => {
 		commit('addSuccess');
 	},
 	stopWaitingStartSignalReady: ({ commit }) => {
 		commit('stopWaitingStartSignalReady');
+	},
+	trackExperimentTimeIndicated: ({ commit }, timeIndicated) => {
+		commit('trackExperimentTimeIndicated', timeIndicated);
 	},
 };

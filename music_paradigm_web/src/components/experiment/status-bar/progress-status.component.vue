@@ -9,9 +9,10 @@ import { mapGetters } from 'vuex';
 
 export default {
 	computed: {
-		...mapGetters('experiment', ['stepsTotalCount', 'stepsLeftCount']),
+		...mapGetters('experiment', ['stepsTotalCount', 'stepsLeftCount', 'isInPrelude']),
 		progressBarWith() {
-			return 100 * (1 - this.stepsLeftCount / this.stepsTotalCount);
+			if (this.isInPrelude) return 0;
+			else return 100 * (1 - this.stepsLeftCount / this.stepsTotalCount);
 		},
 	},
 };

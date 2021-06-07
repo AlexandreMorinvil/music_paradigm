@@ -5,9 +5,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
+	computed: {
+		...mapGetters('experiment', ['logLabel', 'isInTimeUp']),
+	},
 	methods: {
 		...mapActions('log', ['initializeThoroughLog', 'addThoroughLogBlock', 'concludeThoroughLog']),
 		initialize() {
@@ -17,7 +20,15 @@ export default {
 			this.addThoroughLogBlock();
 		},
 		conclude() {
-			this.concludeThoroughLog();
+			this.concludeThoroughLog({ isInTimeUp: this.isInTimeUp });
+		},
+	},
+	watch: {
+		logLabel(newLogLabel, oldLogLabel) {
+			if (newLogLabel !== oldLogLabel) {
+				this.concludeThoroughLog({ newLogLabel: newLogLabel, oldLogLabel: oldLogLabel });
+				this.initializeThoroughLog();
+			}
 		},
 	},
 };

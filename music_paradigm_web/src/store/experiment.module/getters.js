@@ -1,7 +1,4 @@
-import constants from './constants';
-
-import blockHandler from './flow-helper/block-handler';
-import cursorHandler from './flow-helper/cursor-handler';
+import { cursorHandler, defaultState } from '@/store-helper/experiment.module-helper';
 
 export default {
 	experimentId: (state) => {
@@ -17,13 +14,33 @@ export default {
 		return state.state;
 	},
 
+	initialTimeInSeconds: (state) => {
+		return state.initialTimeIndicated;
+	},
+
+	timeIndicated: (state) => {
+		return state.state.record.timeIndicatedInMilliseconds;
+	},
+
 	// Getters for the experiment flow's information
+	isInTimeUp: (state) => {
+		return state.cursor.flag.isInTimeUp;
+	},
+
+	isInPrelude: (state) => {
+		return state.cursor.flag.isInPrelude;
+	},
+
 	stepsTotalCount: (state) => {
 		return cursorHandler.countStepsLeft(state.flow);
 	},
 
 	stepsLeftCount: (state) => {
 		return cursorHandler.countStepsLeft(state.flow, state.cursor);
+	},
+
+	isBeyondEnd: (state) => {
+		return state.cursor.flag.isBeyondEnd;
 	},
 
 	currentIndex: (state) => {
@@ -35,8 +52,8 @@ export default {
 	},
 
 	currentRepetition: (state) => {
-		const totalRepetitions = state.cursor.navigation.numberTotalRepetions;
-		const repetitionsLeft = state.cursor.navigation.numberRepetition;
+		const totalRepetitions = state.cursor.navigation.totalNumberRepetitions;
+		const repetitionsLeft = state.cursor.current.numberRepetition;
 		return totalRepetitions - repetitionsLeft + 1;
 	},
 
@@ -66,7 +83,7 @@ export default {
 	},
 
 	timbreFile: (state) => {
-		return state.settings.timbreFile || constants.DEFAULT_TIMBRE_FILE;
+		return state.settings.timbreFile || defaultState.DEFAULT_TIMBRE_FILE;
 	},
 
 	timeLimitInSeconds: (state) => {
@@ -136,42 +153,10 @@ export default {
 	// Geters for the state attributes
 	currentStateType: (state) => {
 		// Return the type of the current state
-		if (state.cursor.current.isBeyondEnd) {
+		if (state.cursor.flag.isBeyondEnd) {
 			return 'end';
 		}
 		return state.state.type || '';
-	},
-
-	nextStateType: (state) => {
-		// Return the type of the next state
-		// If we are currently beyond the last block of the flow or if there is no current state type step, we return no next step
-		if (state.cursor.current.isBeyondEnd || !state.state.type) {
-			return '';
-		}
-
-		// If the current block is an end block, regardless of whether or not there exists another block in the flow description flow, there is no next step to be indicated
-		else if (state.state.type === 'end') {
-			return '';
-		}
-
-		// If the next step is beyond the last block of the flow, we return "end"
-		else if (state.cursor.navigation.indexNext > state.flow.length - 1) {
-			return 'end';
-		}
-
-		// If There remains inner steps in the current block, the next step is of the same type as the current step
-		else if (state.cursor.current.innerStepIndex < state.cursor.navigation.totalInnerSteps) {
-			return state.state.type;
-		}
-
-		// Otherwise, if it is none of the edge casess, the type of the next step is the type of the following block
-		else {
-			return blockHandler.getNextBlockType(state.flow, state.cursor);
-		}
-	},
-
-	nextPlayingMode: (state) => {
-		return blockHandler.getNextBlock(state.flow, state.cursor).playingMode || state.settings.playingMode;
 	},
 
 	anyPianoKey: (state) => {
@@ -181,14 +166,14 @@ export default {
 
 		if (typeof state.state.settings.anyPianoKey === 'boolean') anyPianoKey = state.state.settings.anyPianoKey;
 		else if (typeof state.settings.anyPianoKey === 'boolean') anyPianoKey = state.settings.anyPianoKey;
-		else anyPianoKey = constants.DEFAULT_ANY_PIANO_KEY;
+		else anyPianoKey = defaultState.DEFAULT_ANY_PIANO_KEY;
 
 		return anyPianoKey;
 	},
 
 	playingMode: (state) => {
 		// Return the playing mode specified by the block if it exists, otherwise, the default playing mode of the experiment is returned.
-		let playingMode = constants.DEFAULT_PLAYING_MODE;
+		let playingMode = defaultState.DEFAULT_PLAYING_MODE;
 
 		if (typeof state.state.settings.playingMode === 'string') playingMode = state.state.settings.playingMode;
 		else if (typeof state.settings.playingMode === 'string') playingMode = state.settings.playingMode;
@@ -198,7 +183,7 @@ export default {
 
 	enableSoundFlag: (state) => {
 		// Return whether or not the piano output is enabled.
-		let enableSoundFlag = constants.DEFAULT_ENABLE_SOUND_FLAG;
+		let enableSoundFlag = defaultState.DEFAULT_ENABLE_SOUND_FLAG;
 
 		if (state.state.type === 'playing') enableSoundFlag = true;
 		else if (typeof state.state.settings.enableSoundFlag === 'boolean') enableSoundFlag = state.state.settings.enableSoundFlag;
@@ -208,7 +193,7 @@ export default {
 	},
 
 	interactivePianoFirstOctave: (state) => {
-		let interactivePianoFirstOctave = constants.DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE;
+		let interactivePianoFirstOctave = defaultState.DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE;
 		if (typeof state.state.settings.interactivePianoFirstOctave === 'number')
 			interactivePianoFirstOctave = state.state.settings.interactivePianoFirstOctave;
 		else if (typeof state.settings.interactivePianoFirstOctave === 'number') interactivePianoFirstOctave = state.settings.interactivePianoFirstOctave;
@@ -261,14 +246,14 @@ export default {
 	},
 
 	hideFeedbackSmiley: (state) => {
-		let hideFeedbackSmiley = constants.DEFAULT_HIDE_FEEDBACK_SMILEY;
+		let hideFeedbackSmiley = defaultState.DEFAULT_HIDE_FEEDBACK_SMILEY;
 		if (typeof state.state.settings.hideFeedbackSmiley === 'boolean') hideFeedbackSmiley = state.state.settings.hideFeedbackSmiley;
 		else if (typeof state.settings.hideFeedbackSmiley === 'boolean') hideFeedbackSmiley = state.settings.hideFeedbackSmiley;
 		return hideFeedbackSmiley;
 	},
 
 	footnoteType: (state) => {
-		let footnoteType = constants.DEFAULT_FOOTNOTE_TYPE;
+		let footnoteType = defaultState.DEFAULT_FOOTNOTE_TYPE;
 		if (typeof state.state.settings.footnoteType === 'string') footnoteType = state.state.settings.footnoteType;
 		else if (typeof state.settings.footnoteType === 'string') footnoteType = state.settings.footnoteType;
 		return footnoteType;
@@ -280,7 +265,7 @@ export default {
 	},
 
 	controlType: (state) => {
-		return state.settings.controlType || constants.DEFAULT_CONTROL_TYPE;
+		return state.settings.controlType || defaultState.DEFAULT_CONTROL_TYPE;
 	},
 
 	checkpoint: (state) => {
@@ -293,21 +278,29 @@ export default {
 
 	relativeRhythmImportance: (state) => {
 		let relativeRhythmImportance = state.settings.relativeRhythmImportance;
-		if (typeof state.settings.relativeRhythmImportance !== 'number') relativeRhythmImportance = constants.DEFAULT_RELATIVE_RHYTHM_IMPORTANCE;
+		if (typeof state.settings.relativeRhythmImportance !== 'number') relativeRhythmImportance = defaultState.DEFAULT_RELATIVE_RHYTHM_IMPORTANCE;
 		if (relativeRhythmImportance < 0) return 0;
 		else if (relativeRhythmImportance > 1) return 1;
 		else return relativeRhythmImportance;
 	},
 
 	withProgressionBar: (state) => {
-		let withProgressionBar = constants.DEFAULT_WITH_PROGRESSION_BAR;
+		let withProgressionBar = defaultState.DEFAULT_WITH_PROGRESSION_BAR;
 		if (typeof state.settings.withProgressionBar === 'boolean') withProgressionBar = state.settings.withProgressionBar;
 		return withProgressionBar;
 	},
 
+	considerExperimentFinished: (state) => {
+		return state.state.record.considerExperimentFinished;
+	},
+
+	logLabel: (state) => {
+		return state.state.record.logLabel;
+	},
+
 	// Getters used for the content disposition on the screen
 	hasFootnote: (state) => {
-		let hasFootNote = constants.DEFAULT_FOOTNOTE;
+		let hasFootNote = defaultState.DEFAULT_FOOTNOTE;
 		if (typeof state.state.settings.footnote === 'boolean') hasFootNote = state.state.settings.footnote;
 		else if (typeof state.settings.footnote === 'boolean') hasFootNote = state.settings.footnote;
 		return hasFootNote;
@@ -363,5 +356,9 @@ export default {
 
 	isWaitingStartSignal: (state) => {
 		return state.state.record.isWaitingReadyStartSignal;
+	},
+
+	hasPrelude: (state) => {
+		return Array.isArray(state.prelude) && state.prelude.length > 0;
 	},
 };

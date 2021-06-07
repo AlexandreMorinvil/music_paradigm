@@ -15,7 +15,6 @@ async function addBlock(userId, block) {
             addedBlock = await AdminLogSimple.addBlock(block);
         } else {
             addedBlock = await LogSimple.addBlock(block);
-            await User.recordSimpleBlock(userId, addedBlock);
         }
         return addedBlock;
     } catch (err) {

@@ -1,4 +1,8 @@
-import constants from '../constants';
+/* eslint-disable max-lines-per-function */
+/* eslint-disable prettier/prettier */
+/* eslint-disable key-spacing */
+import defaultState from './default-state';
+
 import variableHandler from './variable-handler';
 
 export default {
@@ -8,7 +12,10 @@ export default {
 	populateExperimentConstantVariables,
 	setExperimentDynamicVariables,
 	setExperimentGeneralSettings,
+	setExperimentInitialState,
+	setExperimentPrelude,
 	setExperimentFlow,
+	setExperimentTimeUpState,
 	storeParameterImposedValues,
 };
 
@@ -27,8 +34,29 @@ function setExperimentDescription(state, experiment) {
 	};
 }
 
+function setExperimentPrelude(state, experiment) {
+	// Verify if a prelude is provided
+	if (!experiment.prelude) return;
+	let { prelude } = experiment;
+
+	// Deep copying the prelude
+	prelude = Array.isArray(prelude) ? prelude : [];
+	state.prelude = JSON.parse(JSON.stringify(prelude));
+}
+
 function setExperimentFlow(state, experiment) {
+	// Deep copying the flow
 	state.flow = JSON.parse(JSON.stringify(experiment.flow));
+}
+
+function setExperimentTimeUpState(state, experiment) {
+	// Deep copying the state
+	const timeUpState = experiment.timeUpState;
+
+	if (timeUpState) {
+		state.timeUpState = JSON.parse(JSON.stringify(timeUpState));
+		state.timeUpState.type = 'end';
+	}
 }
 
 function setExperimentGeneralSettings(state, experiment) {
@@ -53,28 +81,32 @@ function setExperimentGeneralSettings(state, experiment) {
 	} = experiment;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
-	const defaultSettings = constants.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
+	const defaultSettings = defaultState.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
 	state.settings = {
-		anyPianoKey: typeof anyPianoKey === 'boolean' ? anyPianoKey : defaultSettings.anyPianoKey,
-		enableSoundFlag: typeof enableSoundFlag === 'boolean' ? enableSoundFlag : defaultSettings.enableSoundFlag,
-		playingMode: typeof playingMode === 'string' ? playingMode : defaultSettings.playingMode,
-		timbreFile: typeof timbreFile === 'string' ? timbreFile : defaultSettings.timbreFile,
-		footnote: typeof footnote === 'boolean' ? footnote : defaultSettings.footnote,
-		footnoteType: typeof footnoteType === 'string' ? footnoteType : defaultSettings.footnoteType,
-		timeLimitInSeconds: typeof timeLimitInSeconds === 'number' ? timeLimitInSeconds : defaultSettings.timeLimitInSeconds,
-		logFlag: typeof logFlag === 'boolean' ? logFlag : defaultSettings.logFlag,
-		successesForSkip: typeof successesForSkip === 'number' ? successesForSkip : defaultSettings.successesForSkip,
-		hideFeedbackSmiley: typeof hideFeedbackSmiley === 'boolean' ? hideFeedbackSmiley : defaultSettings.hideFeedbackSmiley,
-		isSkipStepButtonInFootnote:
-			typeof isSkipStepButtonInFootnote === 'boolean' ? isSkipStepButtonInFootnote : defaultSettings.isSkipStepButtonInFootnote,
-		isGoBackButtonInFootnote: typeof isGoBackButtonInFootnote === 'boolean' ? isGoBackButtonInFootnote : defaultSettings.isGoBackButtonInFootnote,
-		programmedOctaveOffset: typeof programmedOctaveOffset === 'number' ? programmedOctaveOffset : defaultSettings.programmedOctaveOffset,
-		interactivePianoFirstOctave:
-			typeof interactivePianoFirstOctave === 'number' ? interactivePianoFirstOctave : defaultSettings.interactivePianoFirstOctave,
-		controlType: typeof controlType === 'string' ? controlType : defaultSettings.controlType,
-		relativeRhythmImportance: typeof relativeRhythmImportance === 'number' ? relativeRhythmImportance : defaultSettings.relativeRhythmImportance,
-		withProgressionBar: typeof withProgressionBar === 'boolean' ? withProgressionBar : defaultSettings.withProgressionBar,
+		anyPianoKey:					typeof anyPianoKey === 'boolean' 				? anyPianoKey : defaultSettings.anyPianoKey,
+		enableSoundFlag:				typeof enableSoundFlag === 'boolean' 			? enableSoundFlag : defaultSettings.enableSoundFlag,
+		playingMode:					typeof playingMode === 'string' 				? playingMode : defaultSettings.playingMode,
+		timbreFile:						typeof timbreFile === 'string' 					? timbreFile : defaultSettings.timbreFile,
+		footnote:						typeof footnote === 'boolean' 					? footnote : defaultSettings.footnote,
+		footnoteType:					typeof footnoteType === 'string' 				? footnoteType : defaultSettings.footnoteType,
+		timeLimitInSeconds:				typeof timeLimitInSeconds === 'number' 			? timeLimitInSeconds : defaultSettings.timeLimitInSeconds,
+		logFlag:						typeof logFlag === 'boolean' 					? logFlag : defaultSettings.logFlag,
+		successesForSkip:				typeof successesForSkip === 'number' 			? successesForSkip : defaultSettings.successesForSkip,
+		hideFeedbackSmiley:				typeof hideFeedbackSmiley === 'boolean' 		? hideFeedbackSmiley : defaultSettings.hideFeedbackSmiley,
+		isSkipStepButtonInFootnote:		typeof isSkipStepButtonInFootnote === 'boolean' ? isSkipStepButtonInFootnote : defaultSettings.isSkipStepButtonInFootnote,
+		isGoBackButtonInFootnote:		typeof isGoBackButtonInFootnote === 'boolean' 	? isGoBackButtonInFootnote : defaultSettings.isGoBackButtonInFootnote,
+		programmedOctaveOffset:			typeof programmedOctaveOffset === 'number' 		? programmedOctaveOffset : defaultSettings.programmedOctaveOffset,
+		interactivePianoFirstOctave:	typeof interactivePianoFirstOctave === 'number' ? interactivePianoFirstOctave : defaultSettings.interactivePianoFirstOctave,
+		controlType:					typeof controlType === 'string' 				? controlType : defaultSettings.controlType,
+		relativeRhythmImportance:		typeof relativeRhythmImportance === 'number' 	? relativeRhythmImportance : defaultSettings.relativeRhythmImportance,
+		withProgressionBar:				typeof withProgressionBar === 'boolean' 		? withProgressionBar : defaultSettings.withProgressionBar,
 	};
+}
+
+function setExperimentInitialState(state, experiment) {
+	const { logLabel } = experiment;
+	const defaultSettings = defaultState.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
+	state.state.record.logLabel = typeof logLabel === 'string' ? logLabel : defaultSettings.logLabel;
 }
 
 function storeParameterImposedValues(state, parameters) {
@@ -105,7 +137,7 @@ function setImposedParameterValues(state, experiment) {
 }
 
 function populateExperimentConstantVariables(state, experiment) {
-	const { variables, flow } = experiment;
+	const { variables, flow, prelude } = experiment;
 	if (!Array.isArray(variables)) return;
 
 	// Get the constant variables
@@ -120,6 +152,8 @@ function populateExperimentConstantVariables(state, experiment) {
 
 	// Populate the constant variables
 	for (const index in flow) state.flow[index] = variableHandler.populateVariables(flow[index], constantVariables);
+	for (const index in prelude) state.prelude[index] = variableHandler.populateVariables(prelude[index], constantVariables);
+	if (state.timeUpState) state.timeUpState = variableHandler.populateVariables(state.timeUpState, constantVariables);
 }
 
 function setExperimentDynamicVariables(state, experiment) {

@@ -7,8 +7,24 @@ export default {
 		return state.sessionInformation.curriculumId || null;
 	},
 
+	progressionId: (state) => {
+		return state.sessionInformation.progressionId || null;
+	},
+
 	associativeId: (state) => {
 		return state.sessionInformation.associativeId || null;
+	},
+
+	associativeIdOrdinalNumber: (state) => {
+		return state.sessionInformation.associativeIdOrdinalNumber || 0;
+	},
+
+	startCount: (state) => {
+		return state.sessionInformation.startCount || 1;
+	},
+
+	completionCount: (state) => {
+		return state.sessionInformation.completionCount || 0;
 	},
 
 	sessionExperiment: (state) => {
@@ -21,6 +37,10 @@ export default {
 
 	sessionState: (state) => {
 		return state.sessionInformation.previousState || null;
+	},
+
+	sessionInitialTime: (state) => {
+		return state.sessionInformation.previousTimeIndicated || 0;
 	},
 
 	preSessionMessage: (state) => {

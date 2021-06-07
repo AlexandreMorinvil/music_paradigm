@@ -6,8 +6,14 @@ const schema = new Schema(
     {
         userId: { type: Schema.Types.ObjectId, default: null },
         experimentId: { type: Schema.Types.ObjectId, default: null },
+        progressionId: { type: Schema.Types.ObjectId, default: null },
         curriculumId: { type: Schema.Types.ObjectId, default: null },
         associativeId: { type: String, default: undefined },
+        associativeIdOrdinalNumber : { type: Number, default: undefined },
+        logLabel: { type: String, default: 'default' },
+
+        startCount: { type: Number, default: 1 },
+        completionCount: { type: Number, default: 0 },
 
         username: { type: String, default: undefined },
         curriculumTitle: { type: String, default: null },
@@ -20,6 +26,7 @@ const schema = new Schema(
         index: { type: Number },
         innerIndex: { type: Number },
         repetition: { type: Number },
+        isInPrelude: { type: Boolean },
         timestamp: { type: Date },
 
         referenceName: { type: String, default: null },

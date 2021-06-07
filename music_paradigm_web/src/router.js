@@ -36,9 +36,9 @@ const router = new Router({
 			component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/experiment.context.vue'),
 			children: [
 				{
-					path: 'prelude',
-					name: 'experiment.prelude',
-					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/prelude.page.vue'),
+					path: 'preparing',
+					name: 'experiment.preparing',
+					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/preparing.page.vue'),
 				},
 				{
 					path: 'transition',

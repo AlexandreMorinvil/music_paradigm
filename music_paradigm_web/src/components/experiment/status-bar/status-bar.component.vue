@@ -2,12 +2,6 @@
 	<div id="status-bar" class="status-bar-grid">
 		<div id="status-bar-header" class="status-bar-header-position">
 			<time-status-component class="status-bar-display-box status-wrapper-left" ref="timer" />
-
-			<!-- <div class="status-wrapper status-wrapper-center">
-				<state-status-component id="current-state-box" class="status-bar-display-box wrapped-display" :isCurrentStateRequested="true" />
-				<state-status-component id="next-state-box" class="status-bar-display-box wrapped-display" :isCurrentStateRequested="false" />
-			</div> -->
-
 			<piano-status-component v-if="hasPianoStatus" class="status-bar-display-box status-wrapper-right" />
 		</div>
 
@@ -20,13 +14,11 @@ import { mapGetters } from 'vuex';
 
 import PianoStatusComponent from './piano-status.component.vue';
 import ProgressStatusComponent from './progress-status.component.vue';
-// import StateStatusComponent from './state-status.component.vue';
 import TimeStatusComponent from './time-status.component.vue';
 
 export default {
 	components: {
 		PianoStatusComponent,
-		// StateStatusComponent,
 		TimeStatusComponent,
 		ProgressStatusComponent,
 	},
@@ -38,11 +30,14 @@ export default {
 		hasProgressionBar() {
 			if (typeof this.withProgressionBar !== 'boolean') return true;
 			else return this.withProgressionBar;
-		}
+		},
 	},
 	methods: {
 		start() {
 			this.$refs.timer.startTimer();
+		},
+		recordTime() {
+			this.$refs.timer.recordTime();
 		},
 	},
 };
@@ -105,16 +100,4 @@ export default {
 	height: 100%;
 	width: 100%;
 }
-/*
-.status-wrapper-left {
-	justify-content: flex-start;
-}
-
-.status-wrapper-center {
-	justify-content: center;
-}
-
-.status-wrapper-right {
-	justify-content: flex-end;
-}*/
 </style>

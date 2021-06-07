@@ -1,6 +1,7 @@
 <template>
 	<div id="experiment" class="experiment-grid unselectable">
 		<log-component style="display: none" ref="log" />
+		<session-component style="display: none" ref="session" />
 		<status-bar-component class="status-bar-position" ref="status" />
 
 		<div id="state-content" class="state-content-position">
@@ -12,21 +13,24 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
-import { KeyboardEventBus, keyboardEvents } from '@/_services/keyboard-event-bus.service.js';
-import { PianoEventBus, pianoEvents } from '@/_services/piano-event-bus.service.js';
+import { ExperimentEventBus, experimentEvents } from '@/_services/event-bus/experiment-event-bus.service.js';
+import { KeyboardEventBus, keyboardEvents } from '@/_services/event-bus/keyboard-event-bus.service.js';
+import { PianoEventBus, pianoEvents } from '@/_services/event-bus/piano-event-bus.service.js';
 import ExperimentContent from '@/components/content-frame/experiment-content-frame.component.vue';
 import LogComponent from '@/components/experiment/log/log.component.vue';
+import SessionComponent from '@/components/experiment/session/session.component.vue';
 import StatusBarComponent from '@/components/experiment/status-bar/status-bar.component.vue';
 
 export default {
 	components: {
 		ExperimentContent,
 		LogComponent,
+		SessionComponent,
 		StatusBarComponent,
 	},
 	data() {
 		return {
+			hasConlcluded: false,
 			isSpaceBarPressed: false,
 			needsConfirmationToLeave: true,
 			lastPressedKey: '',
@@ -34,25 +38,26 @@ export default {
 	},
 	computed: {
 		...mapGetters('experiment', [
+			'hasPrelude',
+			'isInPrelude',
+			'isBeyondEnd',
 			'midiName',
 			'referenceKeyboardKeys',
 			'controlType',
-			'checkpoint',
-			'isFirstIndexPassage',
-			'needsResetLoopParameters',
-			'isNewBlock',
+			'considerExperimentFinished',
 		]),
 	},
 	methods: {
-		...mapActions('session', ['concludeSession', 'initializeSession', 'saveSessionState', 'forgetSessionState']),
 		...mapActions('experiment', [
+			'initializePrelude',
+			'leavePrelude',
 			'updateState',
 			'goNextStep',
 			'goPreviousInnerStep',
 			'goStepPostSkip',
 			'clearState',
 			'endExperimentByTimeout',
-			'concludeExperiment',
+			'leaveExperiment',
 		]),
 		...mapActions('keyboard', ['loadReferenceKeyboardKeys', 'resetPressedKeyboardKeysLogs', 'resetKeyboardTracking']),
 		...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
@@ -67,38 +72,41 @@ export default {
 		handleTimesUp() {
 			this.endExperimentByTimeout();
 		},
-		handleSaveSessionState() {
-			if (!this.checkpoint) return;
-			else if (this.checkpoint === 'once' && this.isFirstIndexPassage) this.saveSessionState();
-			else if (this.checkpoint === 'first' && this.needsResetLoopParameters) this.saveSessionState();
-			else if (this.checkpoint === 'all' && this.isNewBlock) this.saveSessionState();
+		startExperiement() {
+			this.$refs.session.initialize();
+			this.$refs.log.initialize();
+			if (this.hasPrelude) this.initializePrelude();
+			else this.displayFirstStep();
 		},
 		displayFirstStep() {
-			this.initializeSession();
 			this.updateState();
-			this.$refs.log.initialize();
 			this.$refs.status.start();
 		},
 		navigateExperiment() {
+			this.$refs.status.recordTime();
 			this.resetPresses();
 			this.goNextStep();
-			this.handleSaveSessionState();
+			this.$refs.session.saveState();
 		},
 		navigateBackAnInnerStep() {
 			this.resetPresses();
 			this.goPreviousInnerStep();
 		},
 		navigateExperimentSkip() {
+			this.$refs.status.recordTime();
 			this.resetPresses();
 			this.goStepPostSkip();
-			this.handleSaveSessionState();
+			this.$refs.session.saveState();
 		},
-		endExperiment() {
-			this.$refs.log.conclude();
+		concludeExperiment() {
+			if (this.hasConlcluded) return;
+			this.hasConlcluded = true;
 			this.needsConfirmationToLeave = false;
-			this.forgetSessionState();
-			this.concludeSession();
-			this.concludeExperiment();
+			this.$refs.log.conclude();
+			this.$refs.session.conclude();
+		},
+		leave() {
+			this.leaveExperiment();
 		},
 		resetPresses() {
 			this.$refs.log.addBlock();
@@ -119,23 +127,28 @@ export default {
 		window.addEventListener('keyup', this.handleButtonRelease);
 		ExperimentEventBus.$on(experimentEvents.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
 		ExperimentEventBus.$on(experimentEvents.EVENT_GO_BACK_REQUET, this.navigateBackAnInnerStep);
-		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_READY, this.displayFirstStep);
+		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_READY, this.startExperiement);
+		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_PRELUDE_OVER, this.displayFirstStep);
 		ExperimentEventBus.$on(experimentEvents.EVENT_STATE_ENDED, this.navigateExperiment);
-		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_ENDED, this.endExperiment);
+		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_REACHED_CONCLUSION, this.concludeExperiment);
+		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_ENDED, this.leaveExperiment);
 		ExperimentEventBus.$on(experimentEvents.EVENT_TIMES_UP, this.handleTimesUp);
 
 		this.initializeControl();
 	},
 	beforeDestroy() {
+		if (this.considerExperimentFinished) this.concludeExperiment();
 		this.terminateControl();
 
 		window.removeEventListener('keydown', this.handleButtonPress);
 		window.removeEventListener('keyup', this.handleButtonRelease);
 		ExperimentEventBus.$off(experimentEvents.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
 		ExperimentEventBus.$off(experimentEvents.EVENT_GO_BACK_REQUET, this.navigateBackAnInnerStep);
-		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_READY, this.displayFirstStep);
+		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_READY, this.startExperiement);
+		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_PRELUDE_OVER, this.displayFirstStep);
 		ExperimentEventBus.$off(experimentEvents.EVENT_STATE_ENDED, this.navigateExperiment);
-		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_ENDED, this.endExperiment);
+		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_REACHED_CONCLUSION, this.concludeExperiment);
+		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_ENDED, this.leaveExperiment);
 		ExperimentEventBus.$off(experimentEvents.EVENT_TIMES_UP, this.handleTimesUp);
 
 		this.resetKeyboardTracking();
@@ -157,14 +170,28 @@ export default {
 				if (sequence) this.loadReferenceKeyboardKeys();
 			},
 		},
+		isBeyondEnd() {
+			if (this.isInPrelude) {
+				this.leavePrelude();
+				this.displayFirstStep();
+			}
+		},
+		considerExperimentFinished: {
+			immediate: true,
+			handler: function (isConsideredFinished) {
+				if (isConsideredFinished) this.concludeExperiment();
+			},
+		},
 	},
 	beforeRouteLeave(to, from, next) {
 		// We need to verify that the route departure is not a redirection, otherwise
 		// a confirmation will be prompted twice (Once before and after the redirection)
 		if (this.needsConfirmationToLeave && !Object.prototype.hasOwnProperty.call(to, 'redirectedFrom')) {
 			const answer = window.confirm('views.experiment.context.confirm-leave');
-			if (answer) next();
-			else next(false);
+			if (answer) {
+				if (this.considerExperimentFinished) this.concludeExperiment();
+				next();
+			} else next(false);
 		} else {
 			next();
 		}

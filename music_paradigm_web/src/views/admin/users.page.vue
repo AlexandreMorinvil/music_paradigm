@@ -1,8 +1,8 @@
 <template>
 	<admin-page-content-frame title="Users">
-		<widget-content-frame-component title="Reviewer">
+		<!-- <widget-content-frame-component title="Reviewer">
 			<users-viewer />
-		</widget-content-frame-component>
+		</widget-content-frame-component> -->
 
 		<widget-content-frame-component title="User Editor">
 			<users-editor-widget ref="editor" v-on:create-user="submitUserToCreate" />
@@ -23,7 +23,7 @@ import AdminPageContentFrame from '@/components/content-frame/admin-page-content
 import UsersCurriculumWidget from '@/components/admin/users/widget-curriculum/users-curriculum.widget.vue';
 import UsersEditorWidget from '@/components/admin/users/widget-editor/users-editor.widget.vue';
 import UsersTable from '@/components/admin/users/UsersTableWidget.vue';
-import UsersViewer from '@/components/admin/users/UsersViewerWidget.vue';
+// import UsersViewer from '@/components/admin/users/UsersViewerWidget.vue';
 import WidgetContentFrameComponent from '@/components/content-frame/widget-content-frame.component.vue';
 
 import { mapActions } from 'vuex';
@@ -32,7 +32,7 @@ export default {
 	components: {
 		AdminPageContentFrame: AdminPageContentFrame,
 		WidgetContentFrameComponent,
-		UsersViewer: UsersViewer,
+		// UsersViewer: UsersViewer,
 		UsersCurriculumWidget,
 		UsersEditorWidget,
 		UsersTable: UsersTable,

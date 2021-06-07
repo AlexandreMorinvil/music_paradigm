@@ -49,7 +49,7 @@ const schema = new Schema(
         experiments: {
             type: [
                 {
-                    // Title of the experiment within the curriculum
+                    // Id associated to the experiment within the curriculum
                     associativeId: {
                         type: String,
                         default: "",
@@ -58,11 +58,18 @@ const schema = new Schema(
                         set: setterAssociativeId
                     },
 
-                    // Number of times the experiment was started from the start (an experiment can only be start one time more than it was completed)
-                    startCount: {
+                    // Ordinal number indicating the number of times the associative ID was encountered in the curriculum before this one
+                    associativeIdOrdinalNumber: {
                         type: Number,
                         default: 0,
                         min: 0
+                    },
+
+                    // Number of times the experiment was started from the start (an experiment can only be start one time more than it was completed)
+                    startCount: {
+                        type: Number,
+                        default: 1,
+                        min: 1
                     },
 
                     // Number of times the experiment was completed (an experiment can not be completed more times than it was started)
@@ -78,38 +85,6 @@ const schema = new Schema(
                         ref: 'Experiment',
                         required: [true, curriculumRequiredMessage],
                     },
-
-                    // Reference to the log files associated to each completion of the experiment
-                    simpleLogReferences: {
-                        type: [Schema.Types.ObjectId],
-                        ref: 'Log-Simple',
-                        default: []
-                    },
-
-                    thoroughLogReferences: {
-                        type: [Schema.Types.ObjectId],
-                        ref: 'Log-Thorough',
-                        default: []
-                    },
-
-                    // Data to restart a session from where we leave it
-                    // Cursor at the position where the experiment was left
-                    cursor: {
-                        type: Object,
-                        default: undefined
-                    },
-
-                    // Last state when the experiment was left
-                    state: {
-                        type: Object,
-                        default: undefined
-                    },
-
-                    // Log session id of the experiment
-                    logId: {
-                        type: Object,
-                        default: undefined
-                    }
                 }
             ],
             default: []

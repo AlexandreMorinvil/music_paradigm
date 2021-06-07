@@ -1,4 +1,4 @@
-import constants from './constants';
+import { defaultState } from '@/store-helper/account.module-helper';
 
 export default {
 	status: {
@@ -6,8 +6,9 @@ export default {
 		loggedIn: false,
 		isFetchingProgressionSummary: false,
 	},
-	user: constants.EMPTY_USER(),
+	user: defaultState.EMPTY_USER(),
 
 	dueExperimentAssociativeId: '',
-	progressionSummary: constants.EMPTY_PROGRESSION_SUMMARY(),
+	dueExperimentAssociativeIdOrdinalNumber: 0,
+	progressionSummary: defaultState.EMPTY_PROGRESSION_SUMMARY(),
 };

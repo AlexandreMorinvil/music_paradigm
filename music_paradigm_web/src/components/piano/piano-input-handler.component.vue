@@ -7,7 +7,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import { PianoEventBus, pianoEvents } from '@/_services/piano-event-bus.service.js';
+import { PianoEventBus, pianoEvents } from '@/_services/event-bus/piano-event-bus.service.js';
 import MidiPlayer from '@/MidiPlayer';
 import PianoAdminInputHandlerComponent from './piano-admin-input-handler.component';
 
@@ -36,7 +36,6 @@ export default {
 			'setInitializingState',
 			'setPlayer',
 			'setPiano',
-			'clearPlayer',
 			'clearPiano',
 			'addPressedKey',
 			'deletePressedKey',
@@ -164,8 +163,6 @@ export default {
 			if (this.player) {
 				this.player.off('midiEvent', this.handleMidiMessage);
 				this.player.off('endOfFile', this.handleMidiFileEndOfFile);
-				this.player = null;
-				this.clearPlayer();
 			}
 			this.clearPiano();
 			while (this.midiInputs.length > 0) this.midiInputs.pop().onmidimessage = null;

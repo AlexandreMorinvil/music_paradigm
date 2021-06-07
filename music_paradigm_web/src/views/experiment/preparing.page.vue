@@ -1,5 +1,5 @@
 <template>
-	<div id="prelude-state">
+	<div id="preparing-state">
 		<div id="text-area" class="experiment-state-division state-division-text">
 			{{ textToDisplay }}
 		</div>
@@ -8,7 +8,7 @@
 
 <script>
 import '@/styles/experiment-content-template.css';
-import { ExperimentEventBus, experimentEvents } from '@/_services/experiment-event-bus.service.js';
+import { ExperimentEventBus, experimentEvents } from '@/_services/event-bus/experiment-event-bus.service.js';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -24,8 +24,8 @@ export default {
 		...mapGetters('piano', ['isPianoInitialized']),
 		...mapGetters('keyboard', ['isKeyboardInitialized']),
 		textToDisplay() {
-			if (!this.isReadyToStart) return this.$t('views.experiment.prelude.loading');
-			else return this.$t('views.experiment.prelude.ready');
+			if (!this.isReadyToStart) return this.$t('views.experiment.preparing.loading');
+			else return this.$t('views.experiment.preparing.ready');
 		},
 		isReadyToStart() {
 			if (this.controlType === 'keyboard') return this.isKeyboardInitialized;

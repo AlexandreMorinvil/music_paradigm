@@ -1,36 +1,34 @@
-// schema = require('./progression.schema');
+const schema = require('./progression.schema');
+const ExperimentMarker = require('./experiment-marker/experiment-marker.model');
+const User = require('database/models/user/user.model');
+const LogSimple = require('database/models/log-simple/log-simple.model').model;
+const LogThorough = require('database/models/log-thorough/log-thorough.model').model;
 
-// schema.pre('remove', function (nextAction) {
-//     const LogSimple = require('database/models/log-simple/log-simple.model');
-//     const LogThorough = require('database/models/log-thorough/log-thorough.model');
+// Remove the logs associated to the progressions
+schema.pre('remove', function (next) {
 
-//     let progression = this;
+    // Delete any experiment marker related to this progression
+    ExperimentMarker
+        .deleteMany({ progressionReference: this._id })
+        .exec();
 
-//     // Delete the progression for the user concerned
-//     progression.model('User').update({
-//         _id: { $in: progression.userReference }
-//     }, {
-//         $pull: { progressions: progression._id }
-//     },
-//         next
-//     );
+    // Remove the progression from the user concerned upon deletion
+    User
+        .updateMany(
+            { _id: this.userReference },
+            { $pull: { progressions: this._id } })
+        .exec();
 
-//     // Delete all the nested recoded experiment completions
-//     Async.each(progression.experiments, function (progressionExperiment, next) {
+    // Delete the logs that possess the progression ID concerned
+    LogSimple
+        .deleteMany({ progressionId: this._id })
+        .exec();
 
-//         console.log("Just a test");
+    LogThorough
+        .deleteMany({ progressionId: this._id })
+        .exec();
 
-//         // Retreive the logs
-//         const logReference = progressionExperiment.logReference;
-//         if (!logReference) return;
+    next();
+});
 
-//         // Delete all the logs related to the deleted progression
-//         logReference.forEach(logId => {
-//             LogSimple.remove({ _id: logId }).exec();
-//             LogThorough.remove({ _id: logId }).exec();
-//         });
-
-//     }, function () {
-//         nextAction();
-//     })
-// });
+module.exports = schema;
