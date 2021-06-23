@@ -70,7 +70,7 @@ schema.statics.getCurriculumAndProgressionData = async function (userId) {
 
     return {
         curriculum: curriculum ? curriculum.toObject() : null,
-        progression: progressions ? progressions.toObject() : null,
+        progression: progressions[0] ? progressions[0].toObject() : null,
         optionParameters: optionParameters || null,
         assignedParameters: assignedParameters || null
     }
@@ -103,11 +103,11 @@ schema.methods.initializeCurriculum = async function (curriculum, parameters) {
     if (lastProgression) {
         if (!(lastProgression.wasStarted() && lastProgression.isForCurriculum(this.curriculum))) {
             await lastProgression.remove();
-            addNewProgression(this, parameters);
+            addNewProgression(this, curriculum, parameters);
         }
     }
 
-    else addNewProgression(this, parameters);
+    else addNewProgression(this, curriculum, parameters);
 
     await this.save();
     return await getLastProgression(this, model);
@@ -120,6 +120,7 @@ schema.methods.updateCurriculum = async function (parameters) {
     return await getLastProgression(this, model);
 }
 
+// TODO : To fix
 schema.methods.resetProgression = async function () {
     const lastProgression = await getLastProgression(this, model);
     addNewProgression(this, curriculumInformation);
@@ -139,12 +140,12 @@ async function getLastProgression(instance, model) {
     return lastProgression;
 }
 
-function addNewProgression(instance, parameters) {
+function addNewProgression(instance, curriculum, parameters) {
     const Progression = require('database/models/progression/progression.model');
     const newProgression = new Progression({
         userReference: instance._id,
-        curriculumReference: instance.curriculum,
-        curriculumParameters: parameters || null
+        curriculumReference: curriculum,
+        curriculumParameters: parameters,
     });
     newProgression.save();
     instance.progressions.push(newProgression);

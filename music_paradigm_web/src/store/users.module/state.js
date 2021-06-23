@@ -7,6 +7,7 @@ export default {
 		isUpdating: false,
 		isDeleting: false,
 		isAssigningCurriculum: false,
+		isUpdatingParameters: false,
 		isResetingProgression: false,
 	},
 

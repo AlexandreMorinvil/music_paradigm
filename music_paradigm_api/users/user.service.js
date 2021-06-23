@@ -37,10 +37,18 @@ async function getById(id) {
 
 async function createUser(userParameters) {
     try {
-        const { user, curriculum, assignedParameters } = userParameters;
+        let { user, curriculum, assignedParameters } = userParameters;
         const userCreated = await User.create(user);
         const progressionInitilized = await userCreated.initializeCurriculum(curriculum, assignedParameters);
-        return { user: userCreated, progression: progressionInitilized };
+
+        
+        return {
+            user: {
+                ...(await User.getCurriculumAndProgressionData(userCreated._id)),
+                ...userCreated.toObject(),
+            }, 
+            progression: progressionInitilized
+        };
     } catch (err) {
         switch (err.code) {
             case 11000:

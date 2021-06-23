@@ -42,6 +42,14 @@ export default {
 		state.status.isAssigningCurriculum = false;
 	},
 
+	indicateUpdateParametersRequest(state) {
+		state.status.isUpdatingParameters = true;
+	},
+
+	indicateUpdateParametersRequestEnd(state) {
+		state.status.isUpdatingParameters = false;
+	},
+
 	indicateResetProgressionRequest(state) {
 		state.status.isResetingProgression = true;
 	},

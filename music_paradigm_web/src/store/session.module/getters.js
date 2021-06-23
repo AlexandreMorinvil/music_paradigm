@@ -43,6 +43,10 @@ export default {
 		return state.sessionInformation.previousTimeIndicated || 0;
 	},
 
+	assignedParameters: (state) => {
+		return state.sessionInformation.assignedParameters || {};
+	},
+
 	preSessionMessage: (state) => {
 		return state.sessionInformation.text || '';
 	},

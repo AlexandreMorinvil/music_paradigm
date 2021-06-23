@@ -42,7 +42,7 @@ export default {
 		if (!getters.hasSessionLoaded) return;
 		dispatch('experiment/setExperiment', getters.sessionExperiment, { root: true });
 		// TODO: Integrate the imposed parameter to the user's progression
-		// dispatch('experiment/setParameterValues', getters.imposedParameterValues, { root: true });
+		dispatch('experiment/setParameterValues', getters.assignedParameters, { root: true });
 		dispatch('experiment/setStartingPoint', getters.sessionCursor, { root: true });
 		dispatch('experiment/initExperiment', getters.sessionState, { root: true });
 		dispatch('experiment/initInitialTime', getters.sessionInitialTime, { root: true });
