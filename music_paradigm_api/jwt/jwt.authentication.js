@@ -1,6 +1,7 @@
 const expressJwt = require('express-jwt');
 const config = require('config.json');
-const userService = require('../users/user.service');
+const db = require('database/db');
+const User = db.User;
 
 // Exporting the middleware function
 module.exports = jwtMiddlewareAuthentication;
@@ -37,7 +38,7 @@ async function isRevoked(req, payload, done) {
     let user;
     try {
         // Verify that the user still exists
-        user = await userService.getById(payload.sub);
+        user = await await User.findById(payload.sub);
     } catch (err) {
         // If an error occurs, it should be related to a timeout,
         // meaning that the database can not being accessed

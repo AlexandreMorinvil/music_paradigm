@@ -34,7 +34,8 @@ schema.methods.update = async function (updatedCurriculum) {
 
 schema.methods.getParameters = async function () {
     const allParameters = [];
-    const experiments = await this
+    const formattedVariables = {};
+    const curriculum = await model
         .findOne(
             { _id: this._id },
             { 'experiments.experimentReference': 1 }
@@ -42,10 +43,18 @@ schema.methods.getParameters = async function () {
         .populate(
             { path: 'experiments.experimentReference', select: 'variables' }
         )
-    experiments.forEach(experiment, () => {
-        allParameters.push(experiments.getParameters());
-    })
-    return allParameters;
+    const experimentsList = curriculum.experiments;
+    const experimentDefinitionsList = experimentsList.map(experiment => experiment.experimentReference);
+    experimentDefinitionsList.forEach((experiment) => allParameters.push(experiment.getParameters()))
+    allParameters.forEach(variablesArray => {
+        variablesArray.forEach(variable => {
+            const { name, optionValues } = variable
+            if (!formattedVariables[name]) formattedVariables[name] = [];
+            formattedVariables[name] = formattedVariables[name].concat(optionValues);
+            formattedVariables[name] = [...new Set(formattedVariables[name])];
+        });
+    });
+    return formattedVariables;
 }
 
 

@@ -53,9 +53,19 @@ schema.statics.isAdmin = async function (userId) {
 };
 
 schema.statics.getCurriculumAndProgressionData = async function (userId) {
-    const curriculumAndProgression = await this.findById(userId, { curriculum: 1, progressions: { $slice: -1 } }).populate({ path: 'curriculum progressions' });
-    const { curriculum, progressions } = curriculumAndProgression.toObject();
-    return { curriculum: curriculum || null, progression: (progressions) ? progressions[0] : null }
+    const curriculumAndProgression = await this
+        .findById(userId, { curriculum: 1, progressions: { $slice: -1 } })
+        .populate({ path: 'curriculum progressions' });
+    const { curriculum, progressions } = curriculumAndProgression;
+    const parameters = (curriculum) ? await curriculum.getParameters() : null;
+    const assignedParameters = (progressions[0]) ? progressions[0].getAssignedParameters() : null;
+
+    return {
+        curriculum: curriculum.toObject() || null,
+        progression: progressions.toObject() || null,
+        parameters: parameters || null,
+        assignedParameters: assignedParameters || null
+    }
 };
 
 schema.statics.getLastProgression = async function (userId) {
@@ -87,8 +97,8 @@ schema.methods.initializeCurriculum = async function (curriculumInformation) {
             await lastProgression.remove();
             addNewProgression(this, curriculumInformation);
         }
-    } 
-    
+    }
+
     else addNewProgression(this, curriculumInformation);
 
     // Assign parameters
@@ -115,12 +125,6 @@ schema.methods.resetProgression = async function () {
 }
 
 // Helper functions
-async function getCurriculumAndProgressionData(instance, model) {
-    const curriculumAndProgression = await model.findById(instance._id, { curriculum: 1, progressions: { $slice: -1 } }).populate({ path: 'curriculum progressions' });
-    const { curriculum, progressions } = curriculumAndProgression.toObject();
-    return { curriculum: curriculum || null, progression: (progressions) ? progressions[0] : null }
-}
-
 async function getLastProgression(instance, model) {
     const user = await model
         .findById(instance._id, { progressions: { $slice: -1 } })
