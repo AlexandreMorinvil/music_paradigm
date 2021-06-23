@@ -45,8 +45,8 @@ export default {
 		...mapActions('users', ['assignCurriculum', 'updateProgression', 'resetProgression']),
 		bundleUserCurriculumInformation() {
 			return {
-				curriculum: this.$refs.userCurriculumForm.bundleCurriculumForm(),
-				parameters: this.$refs.userParametersForm.bundleParametersForm(),
+				...this.$refs.userCurriculumForm.bundleCurriculumForm(),
+				...this.$refs.userParametersForm.bundleParametersForm(),
 			};
 		},
 		assignSelectedToForm() {
