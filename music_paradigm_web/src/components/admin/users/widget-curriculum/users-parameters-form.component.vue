@@ -3,10 +3,11 @@
 		<div>
 			<h3>Parameter : Value</h3>
 		</div>
-		<div v-for="(variable, index) in parameters" :key="index" class="inner-inner-widget parameter-grid">
-			<label for="completion-limit"> {{ variable.name }} : </label>
-			<select name="parameter-value" v-model="variable.assignedValue" v-on:change="updateImposedParameters">
-				<option v-for="(option, index) in variable.optionValues || []" :key="index" :value="option">
+
+		<div v-for="(imposedValue, parameter) in parameters" :key="parameter" class="inner-inner-widget parameter-grid">
+			<label for="parameter-value"> {{ parameter }} : </label>
+			<select name="parameter-value" v-model="selectedParameters[parameter]">
+				<option v-for="(option, index) in parameterOptions[parameter] || []" :key="index" :value="option">
 					{{ option }}
 				</option>
 			</select>
@@ -17,28 +18,40 @@
 <script>
 import '@/styles/widget-template.css';
 import '@/styles/form-template.css';
-import { mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
 	components: {},
+	data() {
+		return {
+			selectedParameters: {},
+		};
+	},
 	computed: {
-		...mapGetters('experiments', ['experimentSelectedParameters']),
+		...mapGetters('users', ['userSelectedId', 'userSelectedOptionParameters', 'userSelectedImposedParameters']),
 		parameters() {
-			return this.experimentSelectedParameters;
+			return this.userSelectedImposedParameters;
+		},
+		parameterOptions() {
+			return this.userSelectedOptionParameters;
+		},
+		wasParametersModified() {
+			let wasModified = false;
+			for (const name in this.selectedParameters) if (this.selectedParameters[name] !== this.userSelectedImposedParameters[name]) wasModified = true;
+			return wasModified;
 		},
 	},
 	methods: {
-		...mapActions('experiments', ['setImposedParameterValues']),
-		updateImposedParameters() {
-			this.setImposedParameterValues(this.parameters);
+		bundleParametersForm() {
+			return { assignedParameters: this.selectedParameters };
 		},
 	},
 	watch: {
-		experimentSelectedParameters: {
+		userSelectedId: {
 			deep: true,
 			immediate: true,
 			handler: function () {
-				this.setImposedParameterValues(this.parameters);
+				this.selectedParameters = JSON.parse(JSON.stringify(this.userSelectedImposedParameters)) || {};
 			},
 		},
 	},

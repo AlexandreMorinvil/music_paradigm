@@ -44,7 +44,10 @@ export default {
 		...mapActions('curriculums', ['fetchAllCurriculumHeaders']),
 		...mapActions('users', ['assignCurriculum', 'updateProgression', 'resetProgression']),
 		bundleUserCurriculumInformation() {
-			return this.$refs.userCurriculumForm.bundleCurriculumForm();
+			return {
+				curriculum: this.$refs.userCurriculumForm.bundleCurriculumForm(),
+				parameters: this.$refs.userParametersForm.bundleParametersForm(),
+			};
 		},
 		assignSelectedToForm() {
 			if (!this.isRevertButtonActive) return;
@@ -90,6 +93,9 @@ export default {
 		evaluateIsAssignButtonActive(wasCurriculumModified) {
 			this.isAssignButtonActive = this.hasSelectedUser && wasCurriculumModified;
 		},
+		evaluateIsUpdateParametersButtonActive(wasParametersModified) {
+			this.isUpdateButtonActive = this.hasSelectedUser && wasParametersModified;
+		},
 	},
 	beforeMount() {
 		this.fetchAllCurriculumHeaders();
@@ -97,6 +103,7 @@ export default {
 	mounted() {
 		this.$watch(() => this.$refs.userCurriculumForm.wasFormModified, this.evaluateIsRevertButtonActive, { immediate: true });
 		this.$watch(() => this.$refs.userCurriculumForm.wasCurriculumModified, this.evaluateIsAssignButtonActive, { immediate: true });
+		this.$watch(() => this.$refs.userParametersForm.wasParametersModified, this.evaluateIsUpdateParametersButtonActive, { immediate: true });
 	},
 };
 </script>

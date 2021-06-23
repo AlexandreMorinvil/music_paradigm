@@ -57,13 +57,21 @@ schema.statics.getCurriculumAndProgressionData = async function (userId) {
         .findById(userId, { curriculum: 1, progressions: { $slice: -1 } })
         .populate({ path: 'curriculum progressions' });
     const { curriculum, progressions } = curriculumAndProgression;
-    const parameters = (curriculum) ? await curriculum.getParameters() : null;
-    const assignedParameters = (progressions[0]) ? progressions[0].getAssignedParameters() : null;
+
+    let optionParameters = {};
+    let defaultValues = {};
+    if (curriculum) {
+        const { optionVariableValues, defaultVariableAssignation } = await curriculum.getParameters();
+        defaultValues = defaultVariableAssignation;
+        optionParameters = optionVariableValues;
+    }
+    let assignedParameters = (progressions[0]) ? progressions[0].getAssignedParameters() : null;
+    assignedParameters = Object.assign(defaultValues, assignedParameters);
 
     return {
-        curriculum: curriculum.toObject() || null,
-        progression: progressions.toObject() || null,
-        parameters: parameters || null,
+        curriculum: curriculum ? curriculum.toObject() : null,
+        progression: progressions ? progressions.toObject() : null,
+        optionParameters: optionParameters || null,
         assignedParameters: assignedParameters || null
     }
 };

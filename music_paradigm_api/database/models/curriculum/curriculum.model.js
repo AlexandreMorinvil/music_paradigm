@@ -35,6 +35,7 @@ schema.methods.update = async function (updatedCurriculum) {
 schema.methods.getParameters = async function () {
     const allParameters = [];
     const formattedVariables = {};
+    const defaultVariableAssignation = {};
     const curriculum = await model
         .findOne(
             { _id: this._id },
@@ -48,15 +49,20 @@ schema.methods.getParameters = async function () {
     experimentDefinitionsList.forEach((experiment) => allParameters.push(experiment.getParameters()))
     allParameters.forEach(variablesArray => {
         variablesArray.forEach(variable => {
-            const { name, optionValues } = variable
+            const { name, optionValues, assignedValue } = variable
+            if (!defaultVariableAssignation[name]) defaultVariableAssignation[name] = assignedValue;
+
             if (!formattedVariables[name]) formattedVariables[name] = [];
             formattedVariables[name] = formattedVariables[name].concat(optionValues);
+            formattedVariables[name] = formattedVariables[name].concat(assignedValue);
             formattedVariables[name] = [...new Set(formattedVariables[name])];
         });
     });
-    return formattedVariables;
+    return {
+        optionVariableValues: formattedVariables,
+        defaultVariableAssignation: defaultVariableAssignation
+    };
 }
-
 
 // Creating the model
 const model = mongoose.model('Curriculum', schema);
