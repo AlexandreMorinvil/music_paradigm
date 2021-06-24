@@ -26,7 +26,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('curriculums', ['curriculumsHeadersList']),
+		...mapGetters('curriculums', ['curriculumsList']),
 		...mapGetters('users', ['hasSelectedUser', 'userSelectedId', 'userSelectedCurriculum']),
 		wasCurriculumModified() {
 			return this.curriculum !== this.userSelectedCurriculum;
@@ -35,7 +35,7 @@ export default {
 			return this.wasCurriculumModified;
 		},
 		curriculumsReferences() {
-			return this.curriculumsHeadersList;
+			return this.curriculumsList;
 		},
 		userSelectedCurriculumDisplay() {
 			return this.hasSelectedUser ? this.getCurriculumTitleFromList(this.userSelectedCurriculum) || '---' : '';
@@ -46,7 +46,7 @@ export default {
 			return { curriculum: this.curriculum };
 		},
 		getCurriculumTitleFromList(id) {
-			const curriculum = this.curriculumsHeadersList.filter((obj) => {
+			const curriculum = this.curriculumsList.filter((obj) => {
 				return obj._id === id;
 			});
 			if (curriculum[0]) return curriculum[0].title;

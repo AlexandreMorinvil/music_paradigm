@@ -12,8 +12,9 @@ schema.statics.getListAllHeaders = async function () {
 
     for (element of curriculumDocumentsList) {
         let curriculum = element.toObject();
-        const parameters = await element.getParameters();
-        curriculum = Object.assign(curriculum, parameters);
+        const { optionVariableValues, defaultVariableAssignation } = await element.getParameters();
+        curriculum['optionVariableValues'] = optionVariableValues;
+        curriculum['defaultVariableAssignation'] = defaultVariableAssignation;
         curriculumObjectsList.push(curriculum);
     }
     return curriculumObjectsList;

@@ -24,11 +24,10 @@ async function getAll() {
 async function getById(id) {
     try {
         const user = await User.findById(id).select('-password');
-        const { optionParameters, assignedParameters } = await User.getCurriculumAndProgressionData(id);
+        const { progression } = await User.getCurriculumAndProgressionData(id);
         return {
-            assignedParameters: assignedParameters,
-            optionParameters: optionParameters,
-            ...user.toObject(),
+            user: user,
+            progression: progression,
         };
     } catch (err) {
         throw err;

@@ -39,10 +39,6 @@ export default {
 		return state.selectedUser.assignedParameters;
 	},
 
-	userSelectedOptionParameters: (state) => {
-		return state.selectedUser.optionParameters;
-	},
-
 	usersHeadersList: (state) => {
 		return state.usersHeadersList;
 	},

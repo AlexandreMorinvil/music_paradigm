@@ -58,21 +58,12 @@ schema.statics.getCurriculumAndProgressionData = async function (userId) {
         .populate({ path: 'curriculum progressions' });
     const { curriculum, progressions } = curriculumAndProgression;
 
-    let optionParameters = {};
-    let defaultValues = {};
-    if (curriculum) {
-        const { optionVariableValues, defaultVariableAssignation } = await curriculum.getParameters();
-        defaultValues = defaultVariableAssignation;
-        optionParameters = optionVariableValues;
-    }
-    let assignedParameters = (progressions[0]) ? progressions[0].getAssignedParameters() : null;
-    assignedParameters = Object.assign(defaultValues, assignedParameters);
-
+    const userCurriculum = curriculum ? curriculum.toObject() : null;
+    const userProgression = progressions[0] ? progressions[0].toObject() : null;
+    
     return {
-        curriculum: curriculum ? curriculum.toObject() : null,
-        progression: progressions[0] ? progressions[0].toObject() : null,
-        optionParameters: optionParameters || null,
-        assignedParameters: assignedParameters || null
+        curriculum: userCurriculum,
+        progression: userProgression,
     }
 };
 

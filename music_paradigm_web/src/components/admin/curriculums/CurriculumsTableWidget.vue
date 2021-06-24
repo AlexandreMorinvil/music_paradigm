@@ -18,7 +18,7 @@
 
 				<tbody>
 					<tr
-						v-for="(header, index) in curriculumsHeadersList"
+						v-for="(header, index) in curriculumsList"
 						:key="header._id"
 						:class="header._id === curriculumSelectedId && 'selected'"
 					>
@@ -50,8 +50,8 @@ export default {
 	},
 	computed: {
 		...mapGetters('curriculums', [
-			'isFetchingCurriculumsHeadersList',
-			'curriculumsHeadersList',
+			'isFetchingCurriculumsList',
+			'curriculumsList',
 			'curriculumSelectedId',
 		]),
 		isListLoading() {

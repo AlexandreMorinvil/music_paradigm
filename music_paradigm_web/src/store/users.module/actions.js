@@ -20,8 +20,9 @@ export default {
 
 	setSelectedUser({ commit, dispatch }, id) {
 		return userService.getById(id).then(
-			(user) => {
-				commit('setSelectedUser', user);
+			(response) => {
+				commit('setSelectedUser', response.user);
+				commit('setSelectedProgression', response.userProgression);
 			},
 			(error) => {
 				dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
@@ -112,6 +113,27 @@ export default {
 			)
 			.finally(() => {
 				commit('indicateAssignCurriculumRequestEnd');
+			});
+	},
+
+	updateParameters({ commit, dispatch }, { userId, curriculumParameters }) {
+		commit('indicateUpdateParametersRequest');
+		return userService
+			// TODO: Set a function to 
+			.assignCurriculum(userId, curriculumParameters)
+			.then(
+				(updatedUser) => {
+					commit('setSelectedUser', updatedUser.user);
+					commit('setSelectedProgression', updatedUser.progression);
+					dispatch('alert/setSuccessAlert', 'Parameter update sucessful', { root: true });
+					dispatch('fetchAllUsersHeaders');
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateUpdateParametersRequestEnd');
 			});
 	},
 
