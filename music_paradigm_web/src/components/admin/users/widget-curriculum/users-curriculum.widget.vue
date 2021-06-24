@@ -1,6 +1,6 @@
 <template>
 	<div id="users-editor" class="widget widget-bg">
-		<users-curriculum-form-component class="curticulum-position inner-widget" ref="userCurriculumForm" />
+		<users-curriculum-form-component class="curticulum-position inner-widget" v-on:change="changeCurriculum" ref="userCurriculumForm" />
 		<users-parameters-form-component class="parameters-position inner-widget" ref="userParametersForm" />
 
 		<div class="submission-buttons-position">
@@ -95,6 +95,9 @@ export default {
 		},
 		evaluateIsUpdateParametersButtonActive(wasParametersModified) {
 			this.isUpdateButtonActive = this.hasSelectedUser && wasParametersModified;
+		},
+		changeCurriculum(curriculum) {
+			this.$refs.userParametersForm.changeCurriculum(curriculum);
 		},
 	},
 	beforeMount() {

@@ -5,21 +5,24 @@ schema.set('toJSON', { virtuals: true });
 
 // Static methods
 schema.statics.getListAllHeaders = async function () {
-    const curriculumList = await this.find({}).sort({ updatedAt: -1, createdAt: 1, title: 1 });
-    const curriculumHeaderList = [];
+    const curriculumDocumentsList = await this
+        .find({})
+        .sort({ updatedAt: -1, createdAt: 1, title: 1 });
+    const curriculumObjectsList = [];
 
-    curriculumList.forEach(element => {
-        const curriculumHeader = element.toObject();
-        curriculumHeader.experimentsCount = curriculumHeader.experiments.length;
-        delete curriculumHeader.experiments;
-        curriculumHeaderList.push(curriculumHeader);
-    });
-    return curriculumHeaderList;
+    for (element of curriculumDocumentsList) {
+        let curriculum = element.toObject();
+        const parameters = await element.getParameters();
+        curriculum = Object.assign(curriculum, parameters);
+        curriculumObjectsList.push(curriculum);
+    }
+    return curriculumObjectsList;
 };
 
 // Instance methods
 schema.methods.getExperimentAssociated = async function (associativeId) {
-    const experimentArrayCurriculum = this.experiments.filter(experiment => { return experiment.associativeId === associativeId; });
+    const experimentArrayCurriculum = this.experiments
+        .filter(experiment => { return experiment.associativeId === associativeId; });
     const experimentInCurriculum = experimentArrayCurriculum[0];
     return experimentInCurriculum;
 };

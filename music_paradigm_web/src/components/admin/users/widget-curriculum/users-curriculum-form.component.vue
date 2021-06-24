@@ -63,6 +63,11 @@ export default {
 		},
 	},
 	watch: {
+		curriculum: {
+			handler: function () {
+				this.$emit('change', this.curriculum);
+			},
+		},
 		userSelectedId: {
 			immediate: true,
 			handler: function () {

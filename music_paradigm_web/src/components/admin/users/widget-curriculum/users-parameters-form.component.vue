@@ -45,6 +45,9 @@ export default {
 		bundleParametersForm() {
 			return { assignedParameters: this.selectedParameters };
 		},
+		changeCurriculum() {
+			console.log('Change curriculum reached destination');
+		},
 	},
 	watch: {
 		userSelectedId: {
