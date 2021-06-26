@@ -27,7 +27,7 @@ function EMPTY_SELECTED_USER_PROGRESSION() {
 		curriculumReference: '',
 		startTime: null,
 		lastProgressionDate: null,
-		curriculumParameters: [],
+		assignedParameters: [],
 	};
 }
 

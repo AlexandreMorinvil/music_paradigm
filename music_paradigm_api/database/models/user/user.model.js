@@ -136,7 +136,7 @@ function addNewProgression(instance, curriculum, parameters) {
     const newProgression = new Progression({
         userReference: instance._id,
         curriculumReference: curriculum,
-        curriculumParameters: parameters,
+        assignedParameters: parameters,
     });
     newProgression.save();
     instance.progressions.push(newProgression);
@@ -150,7 +150,7 @@ async function removeAllProgressions(instance) {
 
 async function assignProgressionParameters(instance, model, parameters) {
     const lastProgression = await getLastProgression(instance, model);
-    lastProgression.curriculumParameters = parameters;
+    lastProgression.assignedParameters = parameters;
     return lastProgression;
 }
 

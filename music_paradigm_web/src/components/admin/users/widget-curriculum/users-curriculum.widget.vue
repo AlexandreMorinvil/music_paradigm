@@ -4,7 +4,7 @@
 		<users-parameters-form-component class="parameters-position inner-widget" ref="userParametersForm" />
 
 		<div class="submission-buttons-position">
-			<button v-on:click="assignSelectedToForm" class="widget-button blue" :class="{ inactive: !isRevertButtonActive }">Revert</button>
+			<button v-on:click="handleRevert" class="widget-button blue" :class="{ inactive: !isRevertButtonActive }">Revert</button>
 			<button v-on:click="submitCurriculumToAssign" class="widget-button green" :class="{ inactive: !isAssignButtonActive }">
 				Assign Curriculum
 			</button>
@@ -49,7 +49,7 @@ export default {
 				...this.$refs.userParametersForm.bundleParametersForm(),
 			};
 		},
-		assignSelectedToForm() {
+		handleRevert() {
 			if (!this.isRevertButtonActive) return;
 			this.$refs.userCurriculumForm.assignSelectedToForm();
 			this.$refs.userParametersForm.assignSelectedToForm();
@@ -81,20 +81,24 @@ export default {
 		// 	const answer = window.confirm('Are your sure you want to reset the progression of this user?');
 		// 	// if (answer) this.deleteUser(this.userSelectedId);
 		// },
-		// handleRevert() {
-		// 	this.assignSelectedToForm();
-		// },
 		// handleUnselection() {
 		// 	this.unsetSelectedUser();
 		// },
-		evaluateIsRevertButtonActive(wasFormModified) {
-			this.isRevertButtonActive = this.hasSelectedUser && wasFormModified;
+		evaluateAllButtonsActive() {
+			const wasCurriculumModified = this.$refs.userCurriculumForm.wasCurriculumModified;
+			const wasParametersModified = this.$refs.userParametersForm.wasParametersModified;
+			this.evaluateIsRevertButtonActive(wasCurriculumModified, wasParametersModified);
+			this.evaluateIsAssignButtonActive(wasCurriculumModified);
+			this.evaluateIsUpdateParametersButtonActive(wasCurriculumModified, wasParametersModified);
+		},
+		evaluateIsRevertButtonActive(wasCurriculumModified, wasParametersModified) {
+			this.isRevertButtonActive = this.hasSelectedUser && (wasCurriculumModified || wasParametersModified);
 		},
 		evaluateIsAssignButtonActive(wasCurriculumModified) {
 			this.isAssignButtonActive = this.hasSelectedUser && wasCurriculumModified;
 		},
-		evaluateIsUpdateParametersButtonActive(wasParametersModified) {
-			this.isUpdateButtonActive = this.hasSelectedUser && wasParametersModified;
+		evaluateIsUpdateParametersButtonActive(wasCurriculumModified, wasParametersModified) {
+			this.isUpdateButtonActive = this.hasSelectedUser && wasParametersModified && !wasCurriculumModified;
 		},
 		changeCurriculum(curriculum) {
 			this.$refs.userParametersForm.changeCurriculum(curriculum);
@@ -104,9 +108,8 @@ export default {
 		this.fetchAllCurriculumHeaders();
 	},
 	mounted() {
-		this.$watch(() => this.$refs.userCurriculumForm.wasFormModified, this.evaluateIsRevertButtonActive, { immediate: true });
-		this.$watch(() => this.$refs.userCurriculumForm.wasCurriculumModified, this.evaluateIsAssignButtonActive, { immediate: true });
-		this.$watch(() => this.$refs.userParametersForm.wasParametersModified, this.evaluateIsUpdateParametersButtonActive, { immediate: true });
+		this.$watch(() => this.$refs.userCurriculumForm.wasCurriculumModified, this.evaluateAllButtonsActive, { immediate: true });
+		this.$watch(() => this.$refs.userParametersForm.wasParametersModified, this.evaluateAllButtonsActive, { immediate: true });
 	},
 };
 </script>

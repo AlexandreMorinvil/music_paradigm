@@ -40,7 +40,7 @@ const schema = new Schema(
         },
 
         // Indicate the values for the experiments with parameters
-        curriculumParameters: {
+        assignedParameters: {
             type: Object, // { VARIABLE_NAME: IMPOSED_VALUE, ... }
             default: null
         },

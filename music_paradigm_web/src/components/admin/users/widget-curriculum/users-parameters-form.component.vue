@@ -31,7 +31,7 @@ export default {
 	computed: {
 		...mapGetters('users', ['userSelectedId', 'userSelectedImposedParameters']),
 		...mapGetters('curriculums', ['curriculumsList']),
-		defaultImposedValues() {
+		currentlyAssignedValues() {
 			return Object.assign({}, this.parameterDefaultValues, this.userSelectedImposedParameters);
 		},
 		selectedCurriculum() {
@@ -46,7 +46,7 @@ export default {
 		},
 		wasParametersModified() {
 			let wasModified = false;
-			for (const name in this.selectedParameters) if (this.selectedParameters[name] !== this.userSelectedImposedParameters[name]) wasModified = true;
+			for (const name in this.selectedParameters) if (this.selectedParameters[name] !== this.currentlyAssignedValues[name]) wasModified = true;
 			return wasModified;
 		},
 	},
@@ -57,13 +57,17 @@ export default {
 		changeCurriculum(curriculum) {
 			this.curriculum = curriculum;
 		},
+		assignSelectedToForm() {
+			console.log(Object.assign({}, this.parameterDefaultValues, this.userSelectedImposedParameters));
+			this.selectedParameters = JSON.parse(JSON.stringify(this.currentlyAssignedValues)) || {};
+		},
 	},
 	watch: {
 		userSelectedId: {
 			deep: true,
 			immediate: true,
 			handler: function () {
-				this.selectedParameters = JSON.parse(JSON.stringify(this.defaultImposedValues)) || {};
+				this.assignSelectedToForm();
 			},
 		},
 	},

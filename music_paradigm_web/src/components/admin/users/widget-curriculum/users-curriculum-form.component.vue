@@ -31,9 +31,6 @@ export default {
 		wasCurriculumModified() {
 			return this.curriculum !== this.userSelectedCurriculum;
 		},
-		wasFormModified() {
-			return this.wasCurriculumModified;
-		},
 		curriculumsReferences() {
 			return this.curriculumsList;
 		},
