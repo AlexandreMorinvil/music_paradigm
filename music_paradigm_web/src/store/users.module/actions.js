@@ -116,15 +116,13 @@ export default {
 			});
 	},
 
-	updateParameters({ commit, dispatch }, { userId, curriculumParameters }) {
+	updateParameters({ commit, dispatch }, { userId, assignedParameters }) {
 		commit('indicateUpdateParametersRequest');
 		return userService
-			// TODO: Set a function to 
-			.assignCurriculum(userId, curriculumParameters)
+			.assignParameters(userId, assignedParameters)
 			.then(
-				(updatedUser) => {
-					commit('setSelectedUser', updatedUser.user);
-					commit('setSelectedProgression', updatedUser.progression);
+				(updatedProgression) => {
+					commit('setSelectedProgression', updatedProgression);
 					dispatch('alert/setSuccessAlert', 'Parameter update sucessful', { root: true });
 					dispatch('fetchAllUsersHeaders');
 				},
@@ -142,9 +140,8 @@ export default {
 		return userService
 			.resetProgression(userId)
 			.then(
-				(updatedUser) => {
-					commit('setSelectedUser', updatedUser.user);
-					commit('setSelectedProgression', updatedUser.progression);
+				(updatedProgression) => {
+					commit('setSelectedProgression', updatedProgression);
 					dispatch('alert/setSuccessAlert', 'Progression resetting successful', { root: true });
 					dispatch('fetchAllUsersHeaders');
 				},

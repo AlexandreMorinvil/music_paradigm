@@ -25,7 +25,6 @@ schema.statics.create = async function (userParameters) {
 
 schema.statics.delete = async function (userId) {
     const user = await model.findById(userId);
-    await removeAllProgressions(user, userId);
     return await user.remove();
 };
 
@@ -68,7 +67,8 @@ schema.statics.getCurriculumAndProgressionData = async function (userId) {
 };
 
 schema.statics.getLastProgression = async function (userId) {
-    return getLastProgression({ _id: userId }, this) || null;
+    const user = await this.findOne({ _id: userId });
+    return user.getLastProgression();
 };
 
 // Instance methods
@@ -97,18 +97,16 @@ schema.methods.initializeCurriculum = async function (curriculum, parameters) {
             addNewProgression(this, curriculum, parameters);
         }
     }
-
     else addNewProgression(this, curriculum, parameters);
 
     await this.save();
-    return await getLastProgression(this, model);
+    return this.getLastProgression();
 }
 
-schema.methods.updateCurriculum = async function (parameters) {
-    assignProgressionParameters(this, model, parameters);
-
-    await this.save();
-    return await getLastProgression(this, model);
+schema.methods.assignParameters = async function (parameters) {
+    const lastProgression = await this.getLastProgression();
+    lastProgression.assignedParameters = parameters;
+    return await lastProgression.save();
 }
 
 // TODO : To fix
@@ -118,19 +116,19 @@ schema.methods.resetProgression = async function () {
     if (lastProgression && !lastProgression.wasStarted()) await lastProgression.remove();
 
     await this.save();
-    return await getLastProgression(this, model);
+    return this.getLastProgression(this, model);
 }
 
-// Helper functions
-async function getLastProgression(instance, model) {
+schema.methods.getLastProgression = async function() {
     const user = await model
-        .findById(instance._id, { progressions: { $slice: -1 } })
+        .findById(this._id, { progressions: { $slice: -1 } })
         .populate({ path: 'progressions' });
     const progressions = user.progressions;
     const lastProgression = progressions[0];
     return lastProgression;
 }
 
+// Helper functions
 function addNewProgression(instance, curriculum, parameters) {
     const Progression = require('database/models/progression/progression.model');
     const newProgression = new Progression({
@@ -140,18 +138,6 @@ function addNewProgression(instance, curriculum, parameters) {
     });
     newProgression.save();
     instance.progressions.push(newProgression);
-}
-
-async function removeAllProgressions(instance) {
-    const Progression = require('database/models/progression/progression.model');
-    instance.progressions.pull();
-    Progression.remove({ userReference: instance._id });
-}
-
-async function assignProgressionParameters(instance, model, parameters) {
-    const lastProgression = await getLastProgression(instance, model);
-    lastProgression.assignedParameters = parameters;
-    return lastProgression;
 }
 
 // Creating the model

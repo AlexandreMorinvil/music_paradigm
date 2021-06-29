@@ -9,7 +9,7 @@ module.exports = {
     updateUser,
     deleteUser,
     assignCurriculum,
-    updateProgression,
+    assignParameters,
     resetProgression,
 };
 
@@ -91,10 +91,10 @@ async function assignCurriculum(userId, curriculumId) {
     }
 }
 
-async function updateProgression(userId, parameters) {
+async function assignParameters(userId, parameters) {
     try {
         const user = await User.findById(userId);
-        return await user.updateCurriculum(parameters);
+        return await user.assignParameters(parameters);
     } catch (err) {
         throw err;
     }

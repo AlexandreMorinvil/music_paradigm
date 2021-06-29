@@ -42,7 +42,7 @@ export default {
 	},
 	methods: {
 		...mapActions('curriculums', ['fetchAllCurriculumHeaders']),
-		...mapActions('users', ['assignCurriculum', 'updateProgression', 'resetProgression']),
+		...mapActions('users', ['assignCurriculum', 'updateParameters', 'resetProgression']),
 		bundleUserCurriculumInformation() {
 			return {
 				...this.$refs.userCurriculumForm.bundleCurriculumForm(),
@@ -61,7 +61,8 @@ export default {
 		},
 		submitParametersToUpdate() {
 			if (!this.isUpdateButtonActive) return;
-			console.log('update');
+			const parameters = this.$refs.userParametersForm.bundleParametersForm();
+			this.updateParameters({ userId: this.userSelectedId, assignedParameters: parameters });
 		},
 		submitProgressionToReset() {
 			const answer = window.confirm('Are your sure you want to reset the progression of the selected user(s)?');

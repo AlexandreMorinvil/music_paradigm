@@ -5,15 +5,15 @@ const jwtAuthorize = require('jwt/jwt.authorization');
 const role = require('_helpers/role');
 
 // routes
-router.post('/register',            jwtAuthorize(role.admin),  register);
-router.post('/assign-curriculum/:id',   jwtAuthorize(role.admin),  assignCurriculum);
-router.post('/update-progression/:id',  jwtAuthorize(role.admin),  updateProgression);
-router.post('/reset-progression/:id',   jwtAuthorize(role.admin),  resetProgression);
-router.get('/',                     jwtAuthorize(role.admin),  getAll);
-router.get('/current',                                         getCurrent);
-router.get('/:id',                  jwtAuthorize(role.admin),  getById);
-router.put('/:id',                  jwtAuthorize(role.admin),  update);
-router.delete('/:id',               jwtAuthorize(role.admin),  _delete);
+router.post('/register',                jwtAuthorize(role.admin), register);
+router.post('/assign-curriculum/:id',   jwtAuthorize(role.admin), assignCurriculum);
+router.post('/assign-parameters/:id',   jwtAuthorize(role.admin), assignParameters);
+router.post('/reset-progression/:id',   jwtAuthorize(role.admin), resetProgression);
+router.get('/',                         jwtAuthorize(role.admin), getAll);
+router.get('/current',                                            getCurrent);
+router.get('/:id',                      jwtAuthorize(role.admin), getById);
+router.put('/:id',                      jwtAuthorize(role.admin), update);
+router.delete('/:id',                   jwtAuthorize(role.admin), _delete);
 
 module.exports = router;
 
@@ -66,8 +66,8 @@ function assignCurriculum(req, res, next) {
         .finally(() => next());
 }
 
-function updateProgression(req, res, next) {
-    userService.updateProgression(req.params.id, req.body)
+function assignParameters(req, res, next) {
+    userService.assignParameters(req.params.id, req.body)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
