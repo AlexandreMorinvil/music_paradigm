@@ -25,7 +25,7 @@
 <script>
 // TODO: This needs refactoring
 import '@/styles/experiment-content-template.css';
-import { ExperimentEventBus, experimentEvents } from '@/_services/event-bus/experiment-event-bus.service.js';
+import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
 
 import KeyboardAreaComponent from '@/components/experiment/visual-content/keyboard-area.component.vue';
 import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';

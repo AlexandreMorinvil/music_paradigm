@@ -13,9 +13,9 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import { ExperimentEventBus, experimentEvents } from '@/_services/event-bus/experiment-event-bus.service.js';
-import { KeyboardEventBus, keyboardEvents } from '@/_services/event-bus/keyboard-event-bus.service.js';
-import { PianoEventBus, pianoEvents } from '@/_services/event-bus/piano-event-bus.service.js';
+import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
+import { KeyboardEventBus, keyboardEvents } from '@/event-bus/keyboard-event-bus.service.js';
+import { PianoEventBus, pianoEvents } from '@/event-bus/piano-event-bus.service.js';
 import ExperimentContent from '@/components/content-frame/experiment-content-frame.component.vue';
 import LogComponent from '@/components/experiment/log/log.component.vue';
 import SessionComponent from '@/components/experiment/session/session.component.vue';

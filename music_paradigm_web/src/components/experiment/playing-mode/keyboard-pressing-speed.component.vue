@@ -10,7 +10,7 @@
 import '@/styles/playing-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
-import { ExperimentEventBus, experimentEvents } from '@/_services/event-bus/experiment-event-bus.service.js';
+import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
 
 export default {
 	data() {
