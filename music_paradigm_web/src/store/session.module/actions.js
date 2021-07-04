@@ -40,8 +40,8 @@ export default {
 	// Bring the user in the experiment mode
 	startSession({ dispatch, getters }) {
 		if (!getters.hasSessionLoaded) return;
-		dispatch('experiment/setExperiment', getters.sessionExperiment, { root: true });
 		dispatch('experiment/setParameterValues', getters.assignedParameters, { root: true });
+		dispatch('experiment/setExperiment', getters.sessionExperiment, { root: true });
 		dispatch('experiment/setStartingPoint', getters.sessionCursor, { root: true });
 		dispatch('experiment/initExperiment', getters.sessionState, { root: true });
 		dispatch('experiment/initInitialTime', getters.sessionInitialTime, { root: true });
