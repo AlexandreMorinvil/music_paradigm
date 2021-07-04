@@ -1,9 +1,9 @@
 <template>
 	<form class="form-grid" @submit.prevent>
 		<div class="curriculum-area input">
-			<label for="curriculum">
+			<h3 for="curriculum">
 				Curriculum : <span class="selected-element-text">{{ userSelectedCurriculumDisplay }}</span>
-			</label>
+			</h3>
 			<select name="curriculum-reference" v-model="curriculum">
 				<option :value="null">-- No curriculum is assigned --</option>
 				<option v-for="(reference, index) in curriculumsReferences" :key="index" :value="curriculumsReferences[index]._id">
@@ -17,6 +17,7 @@
 <script>
 import '@/styles/widget-template.css';
 import '@/styles/form-template.css';
+import { AdminUsersEventBus, adminUsersEvents } from '@/event-bus/admin-users.event-bus.js';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -62,7 +63,7 @@ export default {
 	watch: {
 		curriculum: {
 			handler: function () {
-				this.$emit('change', this.curriculum);
+				AdminUsersEventBus.$emit(adminUsersEvents.SELECTED_USER_CURRICULUM_CHANGED, this.curriculum);
 			},
 		},
 		userSelectedId: {

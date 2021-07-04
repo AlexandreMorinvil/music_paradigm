@@ -1,7 +1,7 @@
 <template>
 	<form class="parameter-form form-area">
 		<div>
-			<h3>Parameter : Value</h3>
+			<h3>Parameter(s) : </h3>
 		</div>
 
 		<div v-for="(options, parameter) in parameterOptions" :key="parameter" class="inner-inner-widget parameter-grid">
@@ -18,13 +18,14 @@
 <script>
 import '@/styles/widget-template.css';
 import '@/styles/form-template.css';
+import { AdminUsersEventBus, adminUsersEvents } from '@/event-bus/admin-users.event-bus.js';
 import { mapGetters } from 'vuex';
 
 export default {
 	components: {},
 	data() {
 		return {
-			curriculum: null,
+			curriculumId: null,
 			selectedParameters: {},
 		};
 	},
@@ -35,7 +36,7 @@ export default {
 			return Object.assign({}, this.parameterDefaultValues, this.userSelectedImposedParameters);
 		},
 		selectedCurriculum() {
-			const filteredCurriculum = this.curriculumsList.filter((curriculum) => curriculum._id === this.curriculum);
+			const filteredCurriculum = this.curriculumsList.filter((curriculum) => curriculum._id === this.curriculumId);
 			return filteredCurriculum[0];
 		},
 		parameterDefaultValues() {
@@ -55,12 +56,18 @@ export default {
 			return { assignedParameters: this.selectedParameters };
 		},
 		changeCurriculum(curriculum) {
-			this.curriculum = curriculum;
+			this.curriculumId = curriculum;
+			this.assignSelectedToForm();
 		},
 		assignSelectedToForm() {
-			console.log(Object.assign({}, this.parameterDefaultValues, this.userSelectedImposedParameters));
 			this.selectedParameters = JSON.parse(JSON.stringify(this.currentlyAssignedValues)) || {};
 		},
+	},
+	mounted() {
+		AdminUsersEventBus.$on(adminUsersEvents.SELECTED_USER_CURRICULUM_CHANGED, this.changeCurriculum);
+	},
+	beforeDestroy() {
+		AdminUsersEventBus.$off(adminUsersEvents.SELECTED_USER_CURRICULUM_CHANGED, this.changeCurriculum);
 	},
 	watch: {
 		userSelectedId: {
