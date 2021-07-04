@@ -36,7 +36,7 @@ export default {
 	},
 
 	userSelectedImposedParameters: (state) => {
-		return state.selectedUser.assignedParameters;
+		return state.selectedUserProgression.assignedParameters;
 	},
 
 	usersHeadersList: (state) => {

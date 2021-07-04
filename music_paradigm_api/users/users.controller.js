@@ -25,49 +25,62 @@ function getAll(req, res, next) {
 }
 
 function getCurrent(req, res, next) {
-    userService.getById(req.user.sub)
+    const userId = req.user.sub;
+    userService.getById(userId)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
 }
 
 function getById(req, res, next) {
-    userService.getById(req.params.id)
+    const userId = req.params.id;
+    userService.getById(userId)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
 }
 
 function register(req, res, next) {
-    userService.createUser(req.body)
+    const user = req.body.user;
+    const curriculumId = req.body.curriculum;
+    const assignedParameters = req.body.assignedParameters;
+    userService.createUser(user, curriculumId, assignedParameters)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
 }
 
 function update(req, res, next) {
-    userService.updateUser(req.params.id, req.body)
+    const userId = req.params.id;
+    const userUpdated = req.body;
+    userService.updateUser(userId, userUpdated)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
 }
 
 function _delete(req, res, next) {
-    userService.deleteUser(req.params.id)
+    const userId = req.params.id;
+    userService.deleteUser(userId)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
 }
 
 function assignCurriculum(req, res, next) {
-    userService.assignCurriculum(req.params.id, req.body)
+    const userId = req.params.id;
+    const curriculumId = req.body.curriculum;
+    const assignedParameters = req.body.assignedParameters;
+    userService.assignCurriculum(userId, curriculumId, assignedParameters)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
 }
 
 function assignParameters(req, res, next) {
-    userService.assignParameters(req.params.id, req.body)
+    const userId = req.params.id;
+    const assignedParameters = req.body.assignedParameters;
+    userService.assignParameters(userId, assignedParameters)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());

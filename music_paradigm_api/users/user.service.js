@@ -21,32 +21,26 @@ async function getAll() {
     }
 }
 
-async function getById(id) {
+async function getById(userId) {
     try {
-        const user = await User.findById(id).select('-password');
-        const { progression } = await User.getCurriculumAndProgressionData(id);
+        const user = await User.findById(userId).select('-password');
+        const lastProgression = await user.getLastProgression();
         return {
             user: user,
-            progression: progression,
+            progression: lastProgression,
         };
     } catch (err) {
         throw err;
     }
 }
 
-async function createUser(userParameters) {
+async function createUser(user, curriculumId, assignedParameters) {
     try {
-        let { user, curriculum, assignedParameters } = userParameters;
         const userCreated = await User.create(user);
-        const progressionInitilized = await userCreated.initializeCurriculum(curriculum, assignedParameters);
-
-        
+        const progressionInitilized = await userCreated.initializeCurriculum(curriculumId, assignedParameters);
         return {
-            user: {
-                ...(await User.getCurriculumAndProgressionData(userCreated._id)),
-                ...userCreated.toObject(),
-            }, 
-            progression: progressionInitilized
+            user: userCreated, 
+            progression: progressionInitilized,
         };
     } catch (err) {
         switch (err.code) {
@@ -58,9 +52,9 @@ async function createUser(userParameters) {
     }
 }
 
-async function updateUser(id, userParameters) {
+async function updateUser(userId, userParameters) {
     try {
-        const user = await User.findById(id);
+        const user = await User.findById(userId);
         return await user.updateUser(userParameters);
     } catch (err) {
         switch (err.code) {
@@ -81,20 +75,27 @@ async function deleteUser(userId) {
 
 }
 
-async function assignCurriculum(userId, curriculumId) {
+async function assignCurriculum(userId, curriculumId, assignedParameters) {
     try {
         const user = await User.findById(userId);
-        const lastProgression = await user.initializeCurriculum(curriculumId);
-        return { user: user, progression: lastProgression };
+        const lastProgression = await user.initializeCurriculum(curriculumId, assignedParameters);
+        return { 
+            user: user, 
+            progression: lastProgression 
+        };
     } catch (err) {
         throw err;
     }
 }
 
-async function assignParameters(userId, parameters) {
+async function assignParameters(userId, assignedParameters) {
     try {
         const user = await User.findById(userId);
-        return await user.assignParameters(parameters);
+        const lastProgression = await user.assignParameters(assignedParameters);
+        return { 
+            user: user, 
+            progression: lastProgression 
+        };
     } catch (err) {
         throw err;
     }

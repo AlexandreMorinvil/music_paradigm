@@ -1,7 +1,7 @@
 <template>
 	<form class="parameter-form form-area">
 		<div>
-			<h3>Parameter(s) : </h3>
+			<h3>Parameter(s) :</h3>
 		</div>
 
 		<div v-for="(options, parameter) in parameterOptions" :key="parameter" class="inner-inner-widget parameter-grid">

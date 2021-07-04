@@ -68,7 +68,8 @@ schema.statics.getCurriculumAndProgressionData = async function (userId) {
 
 schema.statics.getLastProgression = async function (userId) {
     const user = await this.findOne({ _id: userId });
-    return user.getLastProgression();
+    if (user) return user.getLastProgression();
+    else return null;
 };
 
 // Instance methods
@@ -90,33 +91,30 @@ schema.methods.initializeCurriculum = async function (curriculum, parameters) {
     this.curriculum = curriculum;
 
     // Initialize Progression
-    const lastProgression = await getLastProgression(this, model);
+    const lastProgression = await this.getLastProgression();
     if (lastProgression) {
         if (!(lastProgression.wasStarted() && lastProgression.isForCurriculum(this.curriculum))) {
             await lastProgression.remove();
-            addNewProgression(this, curriculum, parameters);
+            this.addNewProgression(curriculum, parameters);
         }
     }
-    else addNewProgression(this, curriculum, parameters);
+    else this.addNewProgression(curriculum, parameters);
 
-    await this.save();
     return this.getLastProgression();
 }
 
 schema.methods.assignParameters = async function (parameters) {
     const lastProgression = await this.getLastProgression();
     lastProgression.assignedParameters = parameters;
-    return await lastProgression.save();
+    return lastProgression.save();
 }
 
-// TODO : To fix
 schema.methods.resetProgression = async function () {
-    const lastProgression = await getLastProgression(this, model);
-    addNewProgression(this, curriculumInformation);
+    const lastProgression = await this.getLastProgression();
+    await this.addNewProgression(curriculumInformation);
     if (lastProgression && !lastProgression.wasStarted()) await lastProgression.remove();
-
-    await this.save();
-    return this.getLastProgression(this, model);
+    
+    return this.getLastProgression();
 }
 
 schema.methods.getLastProgression = async function() {
@@ -128,16 +126,16 @@ schema.methods.getLastProgression = async function() {
     return lastProgression;
 }
 
-// Helper functions
-function addNewProgression(instance, curriculum, parameters) {
+schema.methods.addNewProgression = async function(curriculum, parameters) {
     const Progression = require('database/models/progression/progression.model');
     const newProgression = new Progression({
-        userReference: instance._id,
+        userReference: this._id,
         curriculumReference: curriculum,
-        assignedParameters: parameters,
+        assignedParameters: { ...parameters },
     });
-    newProgression.save();
-    instance.progressions.push(newProgression);
+    await newProgression.save();
+    this.progressions.push(newProgression);
+    return this.save();
 }
 
 // Creating the model

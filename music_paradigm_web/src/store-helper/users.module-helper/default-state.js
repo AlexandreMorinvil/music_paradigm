@@ -16,8 +16,6 @@ function EMPTY_USER() {
 		middleName: '',
 		lastName: '',
 		curriculum: null,
-
-		assignedParameters: {},
 	};
 }
 

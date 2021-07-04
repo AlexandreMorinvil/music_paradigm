@@ -22,7 +22,7 @@ export default {
 		return userService.getById(id).then(
 			(response) => {
 				commit('setSelectedUser', response.user);
-				commit('setSelectedProgression', response.userProgression);
+				commit('setSelectedProgression', response.progression);
 			},
 			(error) => {
 				dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
@@ -121,8 +121,9 @@ export default {
 		return userService
 			.assignParameters(userId, assignedParameters)
 			.then(
-				(updatedProgression) => {
-					commit('setSelectedProgression', updatedProgression);
+				(updatedUser) => {
+					commit('setSelectedUser', updatedUser.user);
+					commit('setSelectedProgression', updatedUser.progression);
 					dispatch('alert/setSuccessAlert', 'Parameter update sucessful', { root: true });
 					dispatch('fetchAllUsersHeaders');
 				},
