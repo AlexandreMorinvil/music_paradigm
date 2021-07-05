@@ -55,7 +55,7 @@ services:
       - LETSENCRYPT_HOST=${HOST_FRONTEND_SERVER}
       - LESTENCRYPT_EMAIL=${MANAGEMENT_EMAIL}
       - NODE_ENV=production
-      - VIRTUAL_PORT=443
+      - VIRTUAL_PORT=8080
     depends_on:
       - claspweb
 
