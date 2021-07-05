@@ -1,11 +1,11 @@
 export default {
 	// // Status Updates
 	indicateFetchingCurriculumList(state) {
-		state.status.isFetchingCurriculumsHeadersList = true;
+		state.status.isFetchingCurriculumsList = true;
 	},
 
 	indicateFetchingCurriculumListEnd(state) {
-		state.status.isFetchingCurriculumsHeadersList = false;
+		state.status.isFetchingCurriculumsList = false;
 	},
 
 	indicateCreateRequest(state) {
@@ -43,6 +43,6 @@ export default {
 	},
 
 	setHeadersList(state, usersHeadersLst) {
-		state.curriculumsHeadersList = usersHeadersLst;
+		state.curriculumsList = usersHeadersLst;
 	},
 };

@@ -20,8 +20,9 @@ export default {
 
 	setSelectedUser({ commit, dispatch }, id) {
 		return userService.getById(id).then(
-			(user) => {
-				commit('setSelectedUser', user);
+			(response) => {
+				commit('setSelectedUser', response.user);
+				commit('setSelectedProgression', response.progression);
 			},
 			(error) => {
 				dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
@@ -115,14 +116,33 @@ export default {
 			});
 	},
 
+	updateParameters({ commit, dispatch }, { userId, assignedParameters }) {
+		commit('indicateUpdateParametersRequest');
+		return userService
+			.assignParameters(userId, assignedParameters)
+			.then(
+				(updatedUser) => {
+					commit('setSelectedUser', updatedUser.user);
+					commit('setSelectedProgression', updatedUser.progression);
+					dispatch('alert/setSuccessAlert', 'Parameter update sucessful', { root: true });
+					dispatch('fetchAllUsersHeaders');
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateUpdateParametersRequestEnd');
+			});
+	},
+
 	resetProgression({ commit, dispatch }, { userId }) {
 		commit('indicateResetProgressionRequest');
 		return userService
 			.resetProgression(userId)
 			.then(
-				(updatedUser) => {
-					commit('setSelectedUser', updatedUser.user);
-					commit('setSelectedProgression', updatedUser.progression);
+				(updatedProgression) => {
+					commit('setSelectedProgression', updatedProgression);
 					dispatch('alert/setSuccessAlert', 'Progression resetting successful', { root: true });
 					dispatch('fetchAllUsersHeaders');
 				},

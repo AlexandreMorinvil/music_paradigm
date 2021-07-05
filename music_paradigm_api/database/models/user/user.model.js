@@ -25,7 +25,6 @@ schema.statics.create = async function (userParameters) {
 
 schema.statics.delete = async function (userId) {
     const user = await model.findById(userId);
-    await removeAllProgressions(user, userId);
     return await user.remove();
 };
 
@@ -53,13 +52,24 @@ schema.statics.isAdmin = async function (userId) {
 };
 
 schema.statics.getCurriculumAndProgressionData = async function (userId) {
-    const curriculumAndProgression = await this.findById(userId, { curriculum: 1, progressions: { $slice: -1 } }).populate({ path: 'curriculum progressions' });
-    const { curriculum, progressions } = curriculumAndProgression.toObject();
-    return { curriculum: curriculum || null, progression: (progressions) ? progressions[0] : null }
+    const curriculumAndProgression = await this
+        .findById(userId, { curriculum: 1, progressions: { $slice: -1 } })
+        .populate({ path: 'curriculum progressions' });
+    const { curriculum, progressions } = curriculumAndProgression;
+
+    const userCurriculum = curriculum ? curriculum.toObject() : null;
+    const userProgression = progressions[0] ? progressions[0].toObject() : null;
+    
+    return {
+        curriculum: userCurriculum,
+        progression: userProgression,
+    }
 };
 
 schema.statics.getLastProgression = async function (userId) {
-    return getLastProgression({ _id: userId }, this) || null;
+    const user = await this.findOne({ _id: userId });
+    if (user) return user.getLastProgression();
+    else return null;
 };
 
 // Instance methods
@@ -75,82 +85,57 @@ schema.methods.updateUser = async function (updatedUser) {
     return this.save();
 };
 
-schema.methods.initializeCurriculum = async function (curriculumInformation) {
+schema.methods.initializeCurriculum = async function (curriculum, parameters) {
     // Assign curriculum
-    if (!curriculumInformation.curriculum) return null;
-    this.curriculum = curriculumInformation.curriculum;
+    if (!curriculum) return null;
+    this.curriculum = curriculum;
 
     // Initialize Progression
-    const lastProgression = await getLastProgression(this, model);
+    const lastProgression = await this.getLastProgression();
     if (lastProgression) {
         if (!(lastProgression.wasStarted() && lastProgression.isForCurriculum(this.curriculum))) {
             await lastProgression.remove();
-            addNewProgression(this, curriculumInformation);
+            this.addNewProgression(curriculum, parameters);
         }
-    } 
-    
-    else addNewProgression(this, curriculumInformation);
+    }
+    else this.addNewProgression(curriculum, parameters);
 
-    // Assign parameters
-    assignProgressionParameters(this, model, curriculumInformation);
-
-    await this.save();
-    return await getLastProgression(this, model);
+    return this.getLastProgression();
 }
 
-schema.methods.updateCurriculum = async function (parameters) {
-    assignProgressionParameters(this, model, parameters);
-
-    await this.save();
-    return await getLastProgression(this, model);
+schema.methods.assignParameters = async function (parameters) {
+    const lastProgression = await this.getLastProgression();
+    lastProgression.assignedParameters = parameters;
+    return lastProgression.save();
 }
 
 schema.methods.resetProgression = async function () {
-    const lastProgression = await getLastProgression(this, model);
-    addNewProgression(this, curriculumInformation);
+    const lastProgression = await this.getLastProgression();
+    await this.addNewProgression(curriculumInformation);
     if (lastProgression && !lastProgression.wasStarted()) await lastProgression.remove();
-
-    await this.save();
-    return await getLastProgression(this, model);
+    
+    return this.getLastProgression();
 }
 
-// Helper functions
-async function getCurriculumAndProgressionData(instance, model) {
-    const curriculumAndProgression = await model.findById(instance._id, { curriculum: 1, progressions: { $slice: -1 } }).populate({ path: 'curriculum progressions' });
-    const { curriculum, progressions } = curriculumAndProgression.toObject();
-    return { curriculum: curriculum || null, progression: (progressions) ? progressions[0] : null }
-}
-
-async function getLastProgression(instance, model) {
+schema.methods.getLastProgression = async function() {
     const user = await model
-        .findById(instance._id, { progressions: { $slice: -1 } })
+        .findById(this._id, { progressions: { $slice: -1 } })
         .populate({ path: 'progressions' });
     const progressions = user.progressions;
     const lastProgression = progressions[0];
     return lastProgression;
 }
 
-function addNewProgression(instance, parameters) {
+schema.methods.addNewProgression = async function(curriculum, parameters) {
     const Progression = require('database/models/progression/progression.model');
     const newProgression = new Progression({
-        userReference: instance._id,
-        curriculumReference: instance.curriculum,
-        curriculumParameters: parameters.curriculumParameters || null
+        userReference: this._id,
+        curriculumReference: curriculum,
+        assignedParameters: { ...parameters },
     });
-    newProgression.save();
-    instance.progressions.push(newProgression);
-}
-
-async function removeAllProgressions(instance) {
-    const Progression = require('database/models/progression/progression.model');
-    instance.progressions.pull();
-    Progression.remove({ userReference: instance._id });
-}
-
-async function assignProgressionParameters(instance, model, parameters) {
-    const lastProgression = await getLastProgression(instance, model);
-    if (parameters.hasOwnProperty('curriculumParameters')) lastProgression.curriculumParameters = parameters.curriculumParameters;
-    return lastProgression;
+    await newProgression.save();
+    this.progressions.push(newProgression);
+    return this.save();
 }
 
 // Creating the model

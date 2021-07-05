@@ -17,5 +17,6 @@ function EMPTY_SESSION_INFORMATION() {
 		previousState: null,
 		previousCursor: null,
 		previousTimeIndicated: 0,
+		assignedParameters: {},
 	};
 }

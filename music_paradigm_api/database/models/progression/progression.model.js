@@ -34,10 +34,11 @@ schema.methods.getSessionInformation = async function (associativeId, associativ
         completionCount: (experimentInProgression.completionCount || 0),
         title: curriculumPlannedExperiment.title,
         text: curriculumPlannedExperiment.text,
-        experiment: await experimentDefinition.getDefinition(),
+        experiment: experimentDefinition.getDefinition(),
         previousState: experimentMaker.state,
         previousCursor: experimentMaker.cursor,
         previousTimeIndicated: experimentMaker.timeIndicated,
+        assignedParameters: this.assignedParameters,
     };
 
     return sessionInformation;
@@ -133,6 +134,10 @@ schema.methods.isForCurriculum = function (curriculumId) {
 
 schema.methods.wasStarted = function () {
     return Boolean(this.experiments.length > 0);
+};
+
+schema.methods.getAssignedParameters = function () {
+    return this.assignedParameters;
 };
 
 

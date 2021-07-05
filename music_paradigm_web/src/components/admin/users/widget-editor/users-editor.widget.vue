@@ -37,7 +37,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('curriculums', ['curriculumsHeadersList']),
+		...mapGetters('curriculums', ['curriculumsList']),
 		...mapGetters('users', ['hasSelectedUser', 'userSelectedId']),
 		isUnselectButtonActive() {
 			return this.hasSelectedUser;

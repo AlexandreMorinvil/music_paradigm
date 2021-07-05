@@ -35,6 +35,10 @@ export default {
 		return state.selectedUser.curriculum;
 	},
 
+	userSelectedImposedParameters: (state) => {
+		return state.selectedUserProgression.assignedParameters;
+	},
+
 	usersHeadersList: (state) => {
 		return state.usersHeadersList;
 	},

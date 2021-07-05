@@ -144,9 +144,10 @@ function populateExperimentConstantVariables(state, experiment) {
 	const constantVariables = { ...state.variables.constant };
 	for (const variable of variables) {
 		const isConstant = variable.assignation === 'constant';
-		const wasAlreadyAssigned = Object.keys(constantVariables).includes(variable.name);
+		const wrappedVariableName = variableHandler.wrapVariableName(variable.name);
+		const wasAlreadyAssigned = Object.keys(constantVariables).includes(wrappedVariableName);
 		if (isConstant && !wasAlreadyAssigned) {
-			constantVariables[variableHandler.wrapVariableName(variable.name)] = variable.assignedValue;
+			constantVariables[wrappedVariableName] = variable.assignedValue;
 		}
 	}
 
@@ -163,9 +164,10 @@ function setExperimentDynamicVariables(state, experiment) {
 	// Get the dynamic variables
 	for (const variable of variables) {
 		const isDynamic = variable.assignation === 'dynamic';
-		const wasAlreadyAssigned = Object.keys(state.variables.initial).includes(variable.name);
+		const wrappedVariableName = variableHandler.wrapVariableName(variable.name);
+		const wasAlreadyAssigned = Object.keys(state.variables.initial).includes(wrappedVariableName);
 		if (isDynamic && !wasAlreadyAssigned) {
-			state.variables.initial[variableHandler.wrapVariableName(variable.name)] = variable.assignedValue;
+			state.variables.initial[wrappedVariableName] = variable.assignedValue;
 		}
 	}
 	state.variables.value = JSON.parse(JSON.stringify(state.variables.initial));

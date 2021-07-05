@@ -1,9 +1,10 @@
 <template>
 	<div id="users-editor" class="widget widget-bg">
-		<users-curriculum-form-component class="editor-position inner-widget" ref="userCurriculumForm" />
+		<users-curriculum-form-component class="curticulum-position inner-widget" ref="userCurriculumForm" />
+		<users-parameters-form-component class="parameters-position inner-widget" ref="userParametersForm" />
 
 		<div class="submission-buttons-position">
-			<button v-on:click="assignSelectedToForm" class="widget-button blue" :class="{ inactive: !isRevertButtonActive }">Revert</button>
+			<button v-on:click="handleRevert" class="widget-button blue" :class="{ inactive: !isRevertButtonActive }">Revert</button>
 			<button v-on:click="submitCurriculumToAssign" class="widget-button green" :class="{ inactive: !isAssignButtonActive }">
 				Assign Curriculum
 			</button>
@@ -19,10 +20,12 @@ import '@/styles/form-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
 import UsersCurriculumFormComponent from './users-curriculum-form.component.vue';
+import UsersParametersFormComponent from './users-parameters-form.component.vue';
 
 export default {
 	components: {
 		UsersCurriculumFormComponent,
+		UsersParametersFormComponent,
 	},
 	data() {
 		return {
@@ -39,13 +42,17 @@ export default {
 	},
 	methods: {
 		...mapActions('curriculums', ['fetchAllCurriculumHeaders']),
-		...mapActions('users', ['assignCurriculum', 'updateProgression', 'resetProgression']),
+		...mapActions('users', ['assignCurriculum', 'updateParameters', 'resetProgression']),
 		bundleUserCurriculumInformation() {
-			return this.$refs.userCurriculumForm.bundleCurriculumForm();
+			return {
+				...this.$refs.userCurriculumForm.bundleCurriculumForm(),
+				...this.$refs.userParametersForm.bundleParametersForm(),
+			};
 		},
-		assignSelectedToForm() {
+		handleRevert() {
 			if (!this.isRevertButtonActive) return;
 			this.$refs.userCurriculumForm.assignSelectedToForm();
+			this.$refs.userParametersForm.assignSelectedToForm();
 		},
 		submitCurriculumToAssign() {
 			if (!this.isAssignButtonActive) return;
@@ -54,7 +61,8 @@ export default {
 		},
 		submitParametersToUpdate() {
 			if (!this.isUpdateButtonActive) return;
-			console.log('update');
+			const parameters = this.$refs.userParametersForm.bundleParametersForm();
+			this.updateParameters({ userId: this.userSelectedId, assignedParameters: parameters });
 		},
 		submitProgressionToReset() {
 			const answer = window.confirm('Are your sure you want to reset the progression of the selected user(s)?');
@@ -74,25 +82,32 @@ export default {
 		// 	const answer = window.confirm('Are your sure you want to reset the progression of this user?');
 		// 	// if (answer) this.deleteUser(this.userSelectedId);
 		// },
-		// handleRevert() {
-		// 	this.assignSelectedToForm();
-		// },
 		// handleUnselection() {
 		// 	this.unsetSelectedUser();
 		// },
-		evaluateIsRevertButtonActive(wasFormModified) {
-			this.isRevertButtonActive = this.hasSelectedUser && wasFormModified;
+		evaluateAllButtonsActive() {
+			const wasCurriculumModified = this.$refs.userCurriculumForm.wasCurriculumModified;
+			const wasParametersModified = this.$refs.userParametersForm.wasParametersModified;
+			this.evaluateIsRevertButtonActive(wasCurriculumModified, wasParametersModified);
+			this.evaluateIsAssignButtonActive(wasCurriculumModified);
+			this.evaluateIsUpdateParametersButtonActive(wasCurriculumModified, wasParametersModified);
+		},
+		evaluateIsRevertButtonActive(wasCurriculumModified, wasParametersModified) {
+			this.isRevertButtonActive = this.hasSelectedUser && (wasCurriculumModified || wasParametersModified);
 		},
 		evaluateIsAssignButtonActive(wasCurriculumModified) {
 			this.isAssignButtonActive = this.hasSelectedUser && wasCurriculumModified;
+		},
+		evaluateIsUpdateParametersButtonActive(wasCurriculumModified, wasParametersModified) {
+			this.isUpdateButtonActive = this.hasSelectedUser && wasParametersModified && !wasCurriculumModified;
 		},
 	},
 	beforeMount() {
 		this.fetchAllCurriculumHeaders();
 	},
 	mounted() {
-		this.$watch(() => this.$refs.userCurriculumForm.wasFormModified, this.evaluateIsRevertButtonActive, { immediate: true });
-		this.$watch(() => this.$refs.userCurriculumForm.wasCurriculumModified, this.evaluateIsAssignButtonActive, { immediate: true });
+		this.$watch(() => this.$refs.userCurriculumForm.wasCurriculumModified, this.evaluateAllButtonsActive, { immediate: true });
+		this.$watch(() => this.$refs.userParametersForm.wasParametersModified, this.evaluateAllButtonsActive, { immediate: true });
 	},
 };
 </script>
@@ -105,8 +120,12 @@ export default {
 	grid-template-columns: 1fr 1fr;
 }
 
-.editor-position {
-	grid-area: editor;
+.curticulum-position {
+	grid-area: curticulum;
+}
+
+.parameters-position {
+	grid-area: parameters;
 }
 
 .submission-buttons-position {
@@ -119,7 +138,8 @@ export default {
 .widget {
 	grid-template-columns: 100%;
 	grid-template-areas:
-		'editor'
+		'curticulum'
+		'parameters'
 		'submission-btn';
 }
 </style>

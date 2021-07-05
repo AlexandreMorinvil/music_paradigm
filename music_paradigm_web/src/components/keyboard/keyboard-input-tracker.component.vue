@@ -5,7 +5,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import { KeyboardEventBus, keyboardEvents } from '@/_services/event-bus/keyboard-event-bus.service.js';
+import { KeyboardEventBus, keyboardEvents } from '@/event-bus/keyboard-event-bus.service.js';
 
 export default {
 	data() {

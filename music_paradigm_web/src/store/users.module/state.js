@@ -7,30 +7,11 @@ export default {
 		isUpdating: false,
 		isDeleting: false,
 		isAssigningCurriculum: false,
+		isUpdatingParameters: false,
 		isResetingProgression: false,
 	},
 
 	selectedUser: defaultState.EMPTY_USER(),
-
-	selectedUserProgression: {
-		userReference: '',
-		curriculumReference: '',
-		startTime: null,
-		lastProgressionDate: null,
-		curriculumParameters: [],
-	},
-
-	usersHeadersList: [
-		{
-			_id: '',
-			username: '',
-			email: '',
-			role: '',
-			tags: [],
-			firstName: '',
-			middleName: '',
-			lastName: '',
-			curriculumTitle: '',
-		},
-	],
+	selectedUserProgression: defaultState.EMPTY_SELECTED_USER_PROGRESSION(),
+	usersHeadersList: defaultState.EMPTY_USERS_HEADERS_LIST(),
 };

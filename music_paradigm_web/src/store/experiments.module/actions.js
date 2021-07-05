@@ -46,12 +46,11 @@ export default {
 	},
 
 	startSelectedExperiment({ dispatch, getters }) {
-		if (getters.hasExperimentSelection) {
-			dispatch('experiment/setParameterValues', getters.imposedParameterValues, { root: true });
-			dispatch('experiment/setExperiment', getters.experimentSelected, { root: true });
-			dispatch('experiment/setStartingPoint', null, { root: true });
-			dispatch('experiment/initExperiment', null, { root: true });
-		}
+		if (!getters.hasExperimentSelection) return;
+		dispatch('experiment/setParameterValues', getters.imposedParameterValues, { root: true });
+		dispatch('experiment/setExperiment', getters.experimentSelected, { root: true });
+		dispatch('experiment/setStartingPoint', null, { root: true });
+		dispatch('experiment/initExperiment', null, { root: true });
 	},
 
 	startExperimentQuick({ commit, dispatch }, id) {

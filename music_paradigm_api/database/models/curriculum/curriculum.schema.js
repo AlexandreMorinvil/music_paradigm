@@ -149,14 +149,8 @@ function validatorTime(time) {
 }
 
 function validatorExperiments(array) {
-    // Verify the the curriculum contains at least one experiment
+    // Verify that the curriculum contains at least one experiment
     if (array.length <= 0) return false
-
-    // Verify the uniqueness of the associative IDs
-    // const idArray = [];
-    // for (experiment of array) idArray.push(experiment.associativeId)
-    // if (((new Set(idArray)).size !== array.length)) return false
-
     else return true;
 }
 

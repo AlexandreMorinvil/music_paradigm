@@ -1,3 +1,5 @@
+import { defaultState } from '@/store-helper/curriculums.module-helper';
+
 export default {
 	curriculumSelectedId: (state) => {
 		return state.selection._id;
@@ -20,23 +22,13 @@ export default {
 		else return {};
 	},
 
-	curriculumsHeadersList: (state) => {
-		return state.curriculumsHeadersList;
+	curriculumsList: (state) => {
+		return state.curriculumsList;
 	},
 
 	// Template
 	getBlankCurriculumExperiment: () => (index) => {
-		return {
-			associativeId: 'id' + index,
-			associativeIdOrdinalNumber: 0,
-			experimentReference: '',
-			title: '',
-			delayInDays: 0,
-			releaseTime: '00:00',
-			isUniqueIndDay: true,
-			isCompletionLimited: true,
-			text: '',
-		};
+		return defaultState.BLANK_CURRICULUM_EXPERIMENT(index);
 	},
 
 	// Status
@@ -44,7 +36,7 @@ export default {
 		return Boolean(state.selection._id);
 	},
 
-	isFetchingCurriculumsHeadersList: (state) => {
-		return state.status.isFetchingCurriculumsHeadersList;
+	isFetchingCurriculumsList: (state) => {
+		return state.status.isFetchingCurriculumsList;
 	},
 };

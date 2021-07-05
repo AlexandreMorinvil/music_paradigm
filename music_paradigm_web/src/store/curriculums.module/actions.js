@@ -6,8 +6,8 @@ export default {
 		return curriculumService
 			.getListAllHeaders()
 			.then(
-				(curriculumsHeadersList) => {
-					commit('setHeadersList', curriculumsHeadersList);
+				(curriculumsList) => {
+					commit('setHeadersList', curriculumsList);
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });

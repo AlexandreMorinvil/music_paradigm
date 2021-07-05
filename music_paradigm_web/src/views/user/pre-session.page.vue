@@ -15,7 +15,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import { PianoEventBus, pianoEvents } from '@/_services/event-bus/piano-event-bus.service.js';
+import { PianoEventBus, pianoEvents } from '@/event-bus/piano-event-bus.service.js';
 import PreSessionAdviceComponent from '@/components/user/pre-session/pre-session-advice.component.vue';
 import PreSessionMessageComponent from '@/components/user/pre-session/pre-session-message.component.vue';
 import PreSessionPianoSettingComponent from '@/components/user/pre-session/pre-session-piano-setting.component.vue';

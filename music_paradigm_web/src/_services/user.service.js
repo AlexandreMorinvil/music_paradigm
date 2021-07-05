@@ -8,6 +8,7 @@ export const userService = {
 	update,
 	delete: _delete,
 	assignCurriculum,
+	assignParameters,
 	resetProgression,
 };
 
@@ -53,13 +54,22 @@ function _delete(id) {
 	return fetch(url.users(id), requestOptions).then(handleResponse);
 }
 
-function assignCurriculum(userId, curriculumParameters) {
+function assignCurriculum(userId, curriculumInformation) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(curriculumParameters),
+		body: JSON.stringify(curriculumInformation),
 	};
 	return fetch(url.users('assign-curriculum/' + userId), requestOptions).then(handleResponse);
+}
+
+function assignParameters(userId, parameters) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(parameters),
+	};
+	return fetch(url.users('assign-parameters/' + userId), requestOptions).then(handleResponse);
 }
 
 function resetProgression(userId) {

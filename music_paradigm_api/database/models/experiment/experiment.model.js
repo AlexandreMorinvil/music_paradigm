@@ -30,7 +30,7 @@ schema.statics.getListAllHeaders = function () {
 };
 
 // Instance methods
-schema.methods.getDefinition = async function () {
+schema.methods.getDefinition = function () {
     let experimentDefinition = {};
     Object.assign(experimentDefinition, this.toObject());
     delete experimentDefinition.createdAt;
@@ -38,8 +38,8 @@ schema.methods.getDefinition = async function () {
     return experimentDefinition;
 };
 
-schema.methods.updateDescription = async function (description) {
-    const oldDescription = await this.getDefinition();
+schema.methods.updateDescription = function (description) {
+    const oldDescription = this.getDefinition();
     for (var attribute in oldDescription)
         if (oldDescription.hasOwnProperty(attribute))
             delete this[attribute];
@@ -47,10 +47,10 @@ schema.methods.updateDescription = async function (description) {
     return this;
 };
 
-
-schema.methods.getParameters = async function () {
-    // TODO: ADJUST THAT TO GET THE PARAMETER VARIABLES
-    this.variables.toObject();
+schema.methods.getParameters = function () {
+    const allVariables = this.variables.toObject();
+    const parameters = allVariables.filter(variable => variable.type === 'parameter');
+    return parameters;
 }
 
 // Create the model

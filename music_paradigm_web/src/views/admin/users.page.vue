@@ -42,7 +42,7 @@ export default {
 		bundleUserInformation() {
 			return {
 				user: this.$refs.editor.bundleUserFromForm(),
-				curriculum: this.$refs.userCurriculum.bundleUserCurriculumInformation(),
+				...this.$refs.userCurriculum.bundleUserCurriculumInformation(),
 			};
 		},
 		submitUserToCreate() {

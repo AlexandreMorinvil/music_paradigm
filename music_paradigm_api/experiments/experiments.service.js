@@ -31,7 +31,7 @@ async function getById(id) {
 async function getDescriptionFromId(id) {
     try {
         const exeperiment = await Experiment.findById(id);
-        return await exeperiment.getDefinition();
+        return exeperiment.getDefinition();
     } catch (err) {
         throw err;
     }
@@ -40,7 +40,7 @@ async function getDescriptionFromId(id) {
 async function create(experiment) {
     try {
         const createdExperiment = await Experiment.create(experiment);
-        return await createdExperiment.getDefinition();
+        return createdExperiment.getDefinition();
     } catch (err) {
         switch (err.code) {
             case 11000:
@@ -58,7 +58,7 @@ async function update(id, description) {
         if (!experiment) throw new Error('Experiment to update not found');
 
         // Update the experiment
-        await experiment.updateDescription(description);
+        experiment.updateDescription(description);
         await experiment.save();
         return experiment.getDefinition();
     }
