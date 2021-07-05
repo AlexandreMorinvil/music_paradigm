@@ -1,6 +1,6 @@
 const schema = require('./progression.schema');
 const ExperimentMarker = require('./experiment-marker/experiment-marker.model');
-const User = require('database/models/user/user.model');
+// const User = require('database/models/user/user.model');
 const LogSimple = require('database/models/log-simple/log-simple.model').model;
 const LogThorough = require('database/models/log-thorough/log-thorough.model').model;
 
@@ -12,12 +12,13 @@ schema.pre('remove', function (next) {
         .deleteMany({ progressionReference: this._id })
         .exec();
 
+    // TODO: Try to fix the User's Import
     // Remove the progression from the user concerned upon deletion
-    User
-        .updateMany(
-            { _id: this.userReference },
-            { $pull: { progressions: this._id } })
-        .exec();
+    // User
+    //     .updateMany(
+    //         { _id: this.userReference },
+    //         { $pull: { progressions: this._id } })
+    //     .exec();
 
     // Delete the logs that possess the progression ID concerned
     LogSimple
