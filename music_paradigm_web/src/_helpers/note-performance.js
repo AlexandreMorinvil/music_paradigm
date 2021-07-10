@@ -31,15 +31,19 @@ function evaluateSpeedType(midiFileNotes, playedNotes) {
 	};
 }
 
-function evaluateRhythmType(midiFileNotes, playedNotes) {
+function evaluateRhythmType(midiFileNotes, playedNotes, errorMargin = 0) {
 	const { pitchAccuracy, levenshteinDistance } = noteAlgorithm.getPitchAccuracy(midiFileNotes.midi, playedNotes.midi);
 
 	const durationsRelativeError = noteAlgorithm.getDurationsRelativeError(midiFileNotes.duration, playedNotes.duration);
 
 	const interOnsetInterval = noteAlgorithm.getInterOnsetIntervals(playedNotes.time);
 
-	const interOnsetIntervalsRelativeError = noteAlgorithm.getInterOnsetIntervalsRelativeError(midiFileNotes.time, playedNotes.time);
-	const relativeInterOnsetIntervalsRelativeError = noteAlgorithm.getRelativeInterOnsetIntervalsRelativeError(midiFileNotes.time, playedNotes.time);
+	const interOnsetIntervalsRelativeError = noteAlgorithm.getInterOnsetIntervalsRelativeError(midiFileNotes.time, playedNotes.time, errorMargin);
+	const relativeInterOnsetIntervalsRelativeError = noteAlgorithm.getRelativeInterOnsetIntervalsRelativeError(
+		midiFileNotes.time,
+		playedNotes.time,
+		errorMargin,
+	);
 
 	const sequenceDuration = noteAlgorithm.getSequenceDuration(playedNotes.time, playedNotes.duration);
 

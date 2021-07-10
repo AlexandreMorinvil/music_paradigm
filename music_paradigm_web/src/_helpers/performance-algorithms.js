@@ -42,13 +42,13 @@ function computeLevenshteinDistance(reference, played) {
 	const matrix = [];
 
 	// increment along the first column of each row
-	let i;
+	let i = 0;
 	for (i = 0; i <= played.length; i++) {
 		matrix[i] = [i];
 	}
 
 	// increment each column in the first row
-	let j;
+	let j = 0;
 	for (j = 0; j <= reference.length; j++) {
 		matrix[0][j] = j;
 	}
@@ -191,32 +191,39 @@ function getInterOnsetIntervals(timeArr) {
 	return IOIs; // Return [a,b,c,d]
 }
 
-function getInterOnsetIntervalsRelativeError(refTimeArr, timeArr) {
+function getInterOnsetIntervalsRelativeError(refTimeArr, timeArr, errorMargin = 0) {
 	if (!arraysValid(timeArr, refTimeArr)) return -1;
 	const referenceIoi = getInterOnsetIntervals(refTimeArr);
 	const experimentalIoi = getInterOnsetIntervals(timeArr);
 
 	let arrDiff = 0;
 	for (let i = 0; i < referenceIoi.length; i++) {
-		arrDiff += Math.abs(experimentalIoi[i] - referenceIoi[i]) / referenceIoi[i];
+		const difference = Math.abs(experimentalIoi[i] - referenceIoi[i]);
+		const differencetOutsideErrorMargin = Math.max(0, difference - errorMargin);
+		arrDiff += differencetOutsideErrorMargin / referenceIoi[i];
 	}
 
 	return (arrDiff / experimentalIoi.length) * 100;
 }
 
-function getRelativeInterOnsetIntervalsRelativeError(refTimeArr, timeArr) {
+function getRelativeInterOnsetIntervalsRelativeError(refTimeArr, timeArr, errorMargin = 0) {
 	if (!arraysValid(timeArr, refTimeArr)) return -1;
 	const referenceIoi = getInterOnsetIntervals(refTimeArr);
 	const experimentalIoi = getInterOnsetIntervals(timeArr);
 
 	const referenceAvergageIOI = referenceIoi.reduce((a, b) => a + b, 0) / referenceIoi.length;
 	const experimentalAvergageIOI = experimentalIoi.reduce((a, b) => a + b, 0) / experimentalIoi.length;
+	const relativeErrorMargin = errorMargin / referenceAvergageIOI;
 
 	let arrDiff = 0;
 	for (let i = 0; i < referenceIoi.length; i++) {
 		const referenceRelativeIoi = referenceIoi[i] / referenceAvergageIOI;
 		const experimentalRelativeIoi = experimentalIoi[i] / experimentalAvergageIOI;
-		arrDiff += Math.abs(experimentalRelativeIoi - referenceRelativeIoi) / referenceRelativeIoi;
+
+		const difference = Math.abs(experimentalRelativeIoi - referenceRelativeIoi);
+		const differencetOutsideErrorMargin = Math.max(0, difference - relativeErrorMargin);
+
+		arrDiff += differencetOutsideErrorMargin / referenceRelativeIoi;
 	}
 
 	return (arrDiff / experimentalIoi.length) * 100;

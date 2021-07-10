@@ -97,7 +97,10 @@ function validateExperiment(experiment) {
 		'interactivePianoFirstOctave',
 		'controlType',
 		'isGoBackButtonInFootnote',
+
 		'relativeRhythmImportance',
+		'rhythmErrorMarginInMilliseconds',
+
 		'withProgressionBar',
 		'logLabel',
 	];
@@ -253,6 +256,7 @@ function validateAttributeType(key, value) {
 		case 'startSignal':
 		case 'interactivePianoFirstOctave':
 		case 'relativeRhythmImportance':
+		case 'rhythmErrorMarginInMilliseconds':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
