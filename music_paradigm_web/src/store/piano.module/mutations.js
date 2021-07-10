@@ -146,9 +146,12 @@ export default {
 		Object.assign(state.played.evaluation, notePerformance.evaluateSpeedType(state.midiFile.notes, consideredPlayedNotes));
 	},
 
-	evaluateRhythmType: (state) => {
+	evaluateRhythmType: (state, { rhythmErrorMarginInMilliseconds = 0 }) => {
 		const consideredPlayedNotes = notesHandler.selectConsideredNotes(state.played.notes, state.played.evaluation.consideredStart);
-		Object.assign(state.played.evaluation, notePerformance.evaluateRhythmType(state.midiFile.notes, consideredPlayedNotes));
+		Object.assign(
+			state.played.evaluation,
+			notePerformance.evaluateRhythmType(state.midiFile.notes, consideredPlayedNotes, rhythmErrorMarginInMilliseconds),
+		);
 	},
 
 	evaluateMelodyType: (state, melodyRepetion) => {
