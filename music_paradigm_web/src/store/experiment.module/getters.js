@@ -284,6 +284,10 @@ export default {
 		else return relativeRhythmImportance;
 	},
 
+	rhythmErrorMarginInMilliseconds: (state) => {
+		return state.settings.rhythmErrorMarginInMilliseconds;
+	},
+
 	withProgressionBar: (state) => {
 		let withProgressionBar = defaultState.DEFAULT_WITH_PROGRESSION_BAR;
 		if (typeof state.settings.withProgressionBar === 'boolean') withProgressionBar = state.settings.withProgressionBar;

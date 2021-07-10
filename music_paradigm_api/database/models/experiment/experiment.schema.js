@@ -85,7 +85,10 @@ const schema = new Schema({
     programmedOctaveOffset: { type: Number, default: 0 },
     interactivePianoFirstOctave: { type: Number, default: 4 },
     controlType: { type: String, default: 'piano', enum: ['piano', 'keyboard', 'none'] },
+    
     relativeRhythmImportance: { type: Number, default: undefined },
+    rhythmErrorMarginInMilliseconds: { type: Number, default: undefined },
+
     withProgressionBar: { type: Boolean, default: true },
     logLabel: {type: String, default: 'default' },
     prelude: {
