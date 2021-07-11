@@ -31,18 +31,23 @@ function evaluateSpeedType(midiFileNotes, playedNotes) {
 	};
 }
 
-function evaluateRhythmType(midiFileNotes, playedNotes, errorMargin = 0) {
+function evaluateRhythmType(midiFileNotes, playedNotes, errorMargin = 0, relativeErrorMargin = 0) {
 	const { pitchAccuracy, levenshteinDistance } = noteAlgorithm.getPitchAccuracy(midiFileNotes.midi, playedNotes.midi);
 
 	const durationsRelativeError = noteAlgorithm.getDurationsRelativeError(midiFileNotes.duration, playedNotes.duration);
 
 	const interOnsetInterval = noteAlgorithm.getInterOnsetIntervals(playedNotes.time);
 
-	const interOnsetIntervalsRelativeError = noteAlgorithm.getInterOnsetIntervalsRelativeError(midiFileNotes.time, playedNotes.time, errorMargin);
-	const relativeInterOnsetIntervalsRelativeError = noteAlgorithm.getRelativeInterOnsetIntervalsRelativeError(
+	const interOnsetIntervalsRelativeError = noteAlgorithm.getInterOnsetIntervalsRelativeError(
 		midiFileNotes.time,
 		playedNotes.time,
 		errorMargin,
+		relativeErrorMargin,
+	);
+	const relativeInterOnsetIntervalsRelativeError = noteAlgorithm.getRelativeInterOnsetIntervalsRelativeError(
+		midiFileNotes.time,
+		playedNotes.time,
+		relativeErrorMargin,
 	);
 
 	const sequenceDuration = noteAlgorithm.getSequenceDuration(playedNotes.time, playedNotes.duration);
@@ -57,6 +62,8 @@ function evaluateRhythmType(midiFileNotes, playedNotes, errorMargin = 0) {
 			interOnsetIntervalsRelativeError: interOnsetIntervalsRelativeError, // Relative error of the inter-onset intervals
 			relativeInterOnsetIntervalsRelativeError: relativeInterOnsetIntervalsRelativeError, // Relative error of the relative inter-onset intervals
 			sequenceDuration: sequenceDuration, // Duration of the corresponding sequence of notes played (ms)
+			errorMarginInMilliseconds: errorMargin, // Uncertainty applied on the inter onset interval's error
+			relativeErrorMarginInFloat: relativeErrorMargin, // Relative uncertainty applied on the inter onset ineterval's error
 		},
 	};
 }
@@ -86,12 +93,13 @@ function evaluateMelodyType(midiFileNotes, playedNotes) {
 }
 
 function gradeSpeedType(evaluationResults, { minSequencePlayed }) {
+	const ADDITIONAL_SEQUENCES = 5;
 	const grades = [
 		{
 			criteria: 'Sequences Played',
 			mark: evaluationResults.sequenceCount,
 			passMark: 1,
-			topMark: Math.ceil((minSequencePlayed + 5) / 10) * 10,
+			topMark: Math.ceil((minSequencePlayed + ADDITIONAL_SEQUENCES) / 10) * 10,
 		},
 	];
 	return grades;

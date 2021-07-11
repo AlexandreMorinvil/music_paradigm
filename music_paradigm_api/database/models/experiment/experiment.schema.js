@@ -88,6 +88,7 @@ const schema = new Schema({
     
     relativeRhythmImportance: { type: Number, default: undefined },
     rhythmErrorMarginInMilliseconds: { type: Number, default: undefined },
+    rhythmRelativeErrorMarginInFloat: { type: Number, default: undefined },
 
     withProgressionBar: { type: Boolean, default: true },
     logLabel: {type: String, default: 'default' },

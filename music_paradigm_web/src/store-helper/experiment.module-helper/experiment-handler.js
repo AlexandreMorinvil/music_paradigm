@@ -78,6 +78,7 @@ function setExperimentGeneralSettings(state, experiment) {
 		controlType,
 		relativeRhythmImportance,
 		rhythmErrorMarginInMilliseconds,
+		rhythmRelativeErrorMarginInFloat,
 		withProgressionBar,
 	} = experiment;
 
@@ -101,6 +102,7 @@ function setExperimentGeneralSettings(state, experiment) {
 		controlType:						typeof controlType === 'string' 					? controlType : defaultSettings.controlType,
 		relativeRhythmImportance:			typeof relativeRhythmImportance === 'number' 		? relativeRhythmImportance : defaultSettings.relativeRhythmImportance,
 		rhythmErrorMarginInMilliseconds: 	typeof rhythmErrorMarginInMilliseconds == 'number' 	? rhythmErrorMarginInMilliseconds : defaultSettings.rhythmErrorMarginInMilliseconds,
+		rhythmRelativeErrorMarginInFloat:	typeof rhythmRelativeErrorMarginInFloat == 'number' ? rhythmRelativeErrorMarginInFloat : defaultSettings.rhythmRelativeErrorMarginInFloat,
 		withProgressionBar:					typeof withProgressionBar === 'boolean' 			? withProgressionBar : defaultSettings.withProgressionBar,
 	};
 }

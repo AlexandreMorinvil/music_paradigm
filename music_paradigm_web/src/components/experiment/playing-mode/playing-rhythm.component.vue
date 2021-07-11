@@ -22,7 +22,13 @@ export default {
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
-		...mapGetters('experiment', ['timeoutInSeconds', 'strictPlay', 'relativeRhythmImportance', 'rhythmErrorMarginInMilliseconds']),
+		...mapGetters('experiment', [
+			'timeoutInSeconds',
+			'strictPlay',
+			'relativeRhythmImportance',
+			'rhythmErrorMarginInMilliseconds',
+			'rhythmRelativeErrorMarginInFloat',
+		]),
 		...mapGetters('piano', ['midiFileNotesMidi', 'playedNotesMidi', 'pressedKeys']),
 		playProgress() {
 			return this.playedNotesMidi.length;
@@ -58,6 +64,7 @@ export default {
 			this.evaluateRhythmType({
 				relativeRhythmImportance: this.relativeRhythmImportance,
 				rhythmErrorMarginInMilliseconds: this.rhythmErrorMarginInMilliseconds,
+				rhythmRelativeErrorMarginInFloat: this.rhythmRelativeErrorMarginInFloat,
 			});
 		},
 	},

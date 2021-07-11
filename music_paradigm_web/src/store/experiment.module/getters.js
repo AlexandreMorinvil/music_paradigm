@@ -285,7 +285,11 @@ export default {
 	},
 
 	rhythmErrorMarginInMilliseconds: (state) => {
-		return state.settings.rhythmErrorMarginInMilliseconds;
+		return Math.max(0, state.settings.rhythmErrorMarginInMilliseconds);
+	},
+
+	rhythmRelativeErrorMarginInFloat: (state) => {
+		return Math.max(0, state.settings.rhythmRelativeErrorMarginInFloat);
 	},
 
 	withProgressionBar: (state) => {

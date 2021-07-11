@@ -64,7 +64,7 @@ function computeLevenshteinDistance(reference, played) {
 					Math.min(
 						matrix[i][j - 1] + 1, // insertion
 						matrix[i - 1][j] + 1, // deletion
-					)
+					),
 				);
 			}
 		}
@@ -191,39 +191,39 @@ function getInterOnsetIntervals(timeArr) {
 	return IOIs; // Return [a,b,c,d]
 }
 
-function getInterOnsetIntervalsRelativeError(refTimeArr, timeArr, errorMargin = 0) {
+function getInterOnsetIntervalsRelativeError(refTimeArr, timeArr, errorMargin = 0, relativeErrorMargin = 0) {
 	if (!arraysValid(timeArr, refTimeArr)) return -1;
 	const referenceIoi = getInterOnsetIntervals(refTimeArr);
 	const experimentalIoi = getInterOnsetIntervals(timeArr);
 
+	const useRelativeError = relativeErrorMargin > 0;
+
 	let arrDiff = 0;
 	for (let i = 0; i < referenceIoi.length; i++) {
-		const difference = Math.abs(experimentalIoi[i] - referenceIoi[i]);
-		const differencetOutsideErrorMargin = Math.max(0, difference - errorMargin);
-		arrDiff += differencetOutsideErrorMargin / referenceIoi[i];
+		const differenceOutsideErrorMargin = useRelativeError
+			? getDifferenceAdjustedWithRelativeError(refTimeArr[i], timeArr[i], relativeErrorMargin)
+			: getDifferenceAdjustedWithAbsoluteError(refTimeArr[i], timeArr[i], errorMargin);
+		arrDiff += differenceOutsideErrorMargin / referenceIoi[i];
 	}
 
 	return (arrDiff / experimentalIoi.length) * 100;
 }
 
-function getRelativeInterOnsetIntervalsRelativeError(refTimeArr, timeArr, errorMargin = 0) {
+function getRelativeInterOnsetIntervalsRelativeError(refTimeArr, timeArr, relativeErrorMargin = 0) {
 	if (!arraysValid(timeArr, refTimeArr)) return -1;
 	const referenceIoi = getInterOnsetIntervals(refTimeArr);
 	const experimentalIoi = getInterOnsetIntervals(timeArr);
 
 	const referenceAvergageIOI = referenceIoi.reduce((a, b) => a + b, 0) / referenceIoi.length;
 	const experimentalAvergageIOI = experimentalIoi.reduce((a, b) => a + b, 0) / experimentalIoi.length;
-	const relativeErrorMargin = errorMargin / referenceAvergageIOI;
 
 	let arrDiff = 0;
 	for (let i = 0; i < referenceIoi.length; i++) {
 		const referenceRelativeIoi = referenceIoi[i] / referenceAvergageIOI;
 		const experimentalRelativeIoi = experimentalIoi[i] / experimentalAvergageIOI;
 
-		const difference = Math.abs(experimentalRelativeIoi - referenceRelativeIoi);
-		const differencetOutsideErrorMargin = Math.max(0, difference - relativeErrorMargin);
-
-		arrDiff += differencetOutsideErrorMargin / referenceRelativeIoi;
+		const differenceOutsideErrorMargin = getDifferenceAdjustedWithRelativeError(referenceRelativeIoi, experimentalRelativeIoi, relativeErrorMargin);
+		arrDiff += differenceOutsideErrorMargin / referenceRelativeIoi;
 	}
 
 	return (arrDiff / experimentalIoi.length) * 100;
@@ -233,4 +233,17 @@ function getRelativeInterOnsetIntervalsRelativeError(refTimeArr, timeArr, errorM
 function getSequenceDuration(timeArr, durationArr) {
 	const noteCount = timeArr.length;
 	return timeArr[0] + durationArr[noteCount - 1] - timeArr[noteCount - 1];
+}
+
+function getDifferenceAdjustedWithAbsoluteError(target, value, errorMargin = 0) {
+	const difference = Math.abs(value - target);
+	const differenceAdjustedwithErrorMargin = Math.max(0, difference - errorMargin);
+	return differenceAdjustedwithErrorMargin;
+}
+
+function getDifferenceAdjustedWithRelativeError(target, value, relativeErrorMargin = 0) {
+	const difference = Math.abs(value - target);
+	const absoluteErrorMargin = Math.abs(relativeErrorMargin * target);
+	const differenceOutsideErrorMargin = Math.max(0, difference - absoluteErrorMargin);
+	return differenceOutsideErrorMargin;
 }
