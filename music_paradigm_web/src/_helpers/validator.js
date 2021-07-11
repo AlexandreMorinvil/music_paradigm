@@ -100,6 +100,7 @@ function validateExperiment(experiment) {
 
 		'relativeRhythmImportance',
 		'rhythmErrorMarginInMilliseconds',
+		'rhythmRelativeErrorMarginInFloat',
 
 		'withProgressionBar',
 		'logLabel',
@@ -257,6 +258,7 @@ function validateAttributeType(key, value) {
 		case 'interactivePianoFirstOctave':
 		case 'relativeRhythmImportance':
 		case 'rhythmErrorMarginInMilliseconds':
+		case 'rhythmRelativeErrorMarginInFloat':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}

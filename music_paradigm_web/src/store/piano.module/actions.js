@@ -95,8 +95,14 @@ export default {
 	},
 
 	// Performance evaluation
-	evaluateRhythmType: ({ commit, dispatch, getters }, { relativeRhythmImportance, rhythmErrorMarginInMilliseconds }) => {
-		commit('evaluateRhythmType', { rhythmErrorMarginInMilliseconds: rhythmErrorMarginInMilliseconds });
+	evaluateRhythmType: (
+		{ commit, dispatch, getters },
+		{ relativeRhythmImportance, rhythmErrorMarginInMilliseconds, rhythmRelativeErrorMarginInFloat },
+	) => {
+		commit('evaluateRhythmType', {
+			rhythmErrorMarginInMilliseconds: rhythmErrorMarginInMilliseconds,
+			rhythmRelativeErrorMarginInFloat: rhythmRelativeErrorMarginInFloat,
+		});
 		dispatch(
 			'evaluation/evaluateRhythmType',
 			{
