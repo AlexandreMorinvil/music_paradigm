@@ -44,6 +44,7 @@ const DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE = 4;
 const DEFAULT_CONTROL_TYPE = 'piano';
 const DEFAULT_RELATIVE_RHYTHM_IMPORTANCE = 0;
 const DEFAULT_RHYTHM_ERROR_MARGIN_IN_MILLISECONDS = 0;
+const DEFAULT_RHYTHM_RELATIVE_ERROR_MARGIN_IN_FLOAT = 0;
 const DEFAULT_WITH_PROGRESSION_BAR = true;
 const DEFAULT_LOG_LABEL = 'default';
 
@@ -98,24 +99,25 @@ function DEFAULT_DESCRIPTION_SETTINGS_VALUES() {
 
 function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 	return {
-		anyPianoKey: DEFAULT_ANY_PIANO_KEY, 											// Allowing any piano key press to advance to the next page
-		enableSoundFlag: DEFAULT_ENABLE_SOUND_FLAG, 									// Whether or not the piano output is enabled by default in the session
-		playingMode: DEFAULT_PLAYING_MODE, 												// Mode of the experiment ("rhythm" or "speed")
-		timbreFile: DEFAULT_TIMBRE_FILE, 												// URL or location of the timbre file used for the piano
-		footnote: DEFAULT_FOOTNOTE, 													// Whether or not the experiment must display the inidcative foot note in each state
-		footnoteType: DEFAULT_FOOTNOTE_TYPE, 											// Whether the footnote is made of simple text or buttons
-		timeLimitInSeconds: DEFAULT_TIME_LIMIT, 										// Time limit of the experiment. If set to 0, ther is no limit and the timer will count up, otherwise the timer will count down
-		logFlag: DEFAULT_LOG_FLAG, 														// Indicate wether or not the blocks must log it's data
-		successesForSkip: DEFAULT_SUCCESSES_FOR_SKIP, 									// Indicate the number of successful 'Playing' states before being able to leave a group of blocks
-		hideFeedbackSmiley: DEFAULT_HIDE_FEEDBACK_SMILEY, 								// Indicate whether the feedback state contains a smiley by default
-		isSkipStepButtonInFootnote: DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE, 				// Indicates wether the skip buttons are displayed by default in the footnote when there is a button footnote
-		isGoBackButtonInFootnote: DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE, 				// Indicates wether the go back button is displayed by default in the footnote when there is a button footnote
-		programmedOctaveOffset: DEFAULT_PROGRAMMED_OCTAVE_OFFSET, 						// Indicates a preset octave shift for the midi piano (knowing that most midi piano are on octave 3 by default)
-		interactivePianoFirstOctave: DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE,			// Indicate the first octave from which the notes must be displayed on the interactive piano (which has 2 octaves)
-		controlType: DEFAULT_CONTROL_TYPE, 												// Indicate which type of controle is used by the application ('piano', 'keyboard' or 'none'). Will also affect the pre-session preparation of the user
-		relativeRhythmImportance: DEFAULT_RELATIVE_RHYTHM_IMPORTANCE,					// Indicate wether the relative rhythm accuracy is computed with the IOI (false) or relative IOI (true)
-		rhythmErrorMarginInMilliseconds: DEFAULT_RHYTHM_ERROR_MARGIN_IN_MILLISECONDS,	// Error margin allowed in the rhythm accuracy calculation
-		withProgressionBar: DEFAULT_WITH_PROGRESSION_BAR,								// Indicate wether ther must be a progrssion bar displayed in the experiment
+		anyPianoKey: DEFAULT_ANY_PIANO_KEY, 												// Allowing any piano key press to advance to the next page
+		enableSoundFlag: DEFAULT_ENABLE_SOUND_FLAG, 										// Whether or not the piano output is enabled by default in the session
+		playingMode: DEFAULT_PLAYING_MODE, 													// Mode of the experiment ("rhythm" or "speed")
+		timbreFile: DEFAULT_TIMBRE_FILE, 													// URL or location of the timbre file used for the piano
+		footnote: DEFAULT_FOOTNOTE, 														// Whether or not the experiment must display the inidcative foot note in each state
+		footnoteType: DEFAULT_FOOTNOTE_TYPE, 												// Whether the footnote is made of simple text or buttons
+		timeLimitInSeconds: DEFAULT_TIME_LIMIT, 											// Time limit of the experiment. If set to 0, ther is no limit and the timer will count up, otherwise the timer will count down
+		logFlag: DEFAULT_LOG_FLAG, 															// Indicate wether or not the blocks must log it's data
+		successesForSkip: DEFAULT_SUCCESSES_FOR_SKIP, 										// Indicate the number of successful 'Playing' states before being able to leave a group of blocks
+		hideFeedbackSmiley: DEFAULT_HIDE_FEEDBACK_SMILEY, 									// Indicate whether the feedback state contains a smiley by default
+		isSkipStepButtonInFootnote: DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE, 					// Indicates wether the skip buttons are displayed by default in the footnote when there is a button footnote
+		isGoBackButtonInFootnote: DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE, 					// Indicates wether the go back button is displayed by default in the footnote when there is a button footnote
+		programmedOctaveOffset: DEFAULT_PROGRAMMED_OCTAVE_OFFSET, 							// Indicates a preset octave shift for the midi piano (knowing that most midi piano are on octave 3 by default)
+		interactivePianoFirstOctave: DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE,				// Indicate the first octave from which the notes must be displayed on the interactive piano (which has 2 octaves)
+		controlType: DEFAULT_CONTROL_TYPE, 													// Indicate which type of controle is used by the application ('piano', 'keyboard' or 'none'). Will also affect the pre-session preparation of the user
+		relativeRhythmImportance: DEFAULT_RELATIVE_RHYTHM_IMPORTANCE,						// Indicate wether the relative rhythm accuracy is computed with the IOI (false) or relative IOI (true)
+		rhythmErrorMarginInMilliseconds: DEFAULT_RHYTHM_ERROR_MARGIN_IN_MILLISECONDS,		// Error margin allowed in the rhythm accuracy calculation
+		rhythmRelativeErrorMarginInFloat: DEFAULT_RHYTHM_RELATIVE_ERROR_MARGIN_IN_FLOAT, 	// Relative error margin allowed in the rhythm accuracy calculation (overwrites the absolute value's error margin)
+		withProgressionBar: DEFAULT_WITH_PROGRESSION_BAR,									// Indicate wether ther must be a progrssion bar displayed in the experiment
 	};
 }
 
