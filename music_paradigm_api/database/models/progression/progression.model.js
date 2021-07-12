@@ -104,7 +104,7 @@ schema.methods.concludeExperiment = async function (associativeId, associativeId
         await ExperimentMarker.deleteMarker(this._id, associativeId);
     }
     else {
-
+        await ExperimentMarker.forgetTimeLeft(this._id, associativeId);
     }
 
     // If the experiment was completed for a first, it is a progression in the curriculum, therrefore, we update the last progression time
