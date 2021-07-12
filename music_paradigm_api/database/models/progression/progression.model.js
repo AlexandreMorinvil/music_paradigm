@@ -99,8 +99,8 @@ schema.methods.concludeExperiment = async function (associativeId, associativeId
     else experimentInProgression.completionCount += 1;
 
     // Remove the experiment marker if the experiment was completely finished (keep it if it was ended through a timeout)
+    const ExperimentMarker = require('./experiment-marker/experiment-marker.model');
     if (!isInTimeUp) {
-        const ExperimentMarker = require('./experiment-marker/experiment-marker.model');
         await ExperimentMarker.deleteMarker(this._id, associativeId);
     }
     else {
