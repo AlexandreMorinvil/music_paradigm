@@ -95,10 +95,10 @@ schema.methods.initializeCurriculum = async function (curriculum, parameters) {
     if (lastProgression) {
         if (!(lastProgression.wasStarted() && lastProgression.isForCurriculum(this.curriculum))) {
             await lastProgression.remove();
-            this.addNewProgression(curriculum, parameters);
+            await this.addNewProgression(curriculum, parameters);
         }
     }
-    else this.addNewProgression(curriculum, parameters);
+    else await this.addNewProgression(curriculum, parameters);
 
     return this.getLastProgression();
 }
