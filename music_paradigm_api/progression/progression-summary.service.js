@@ -1,7 +1,8 @@
 const timeHandler = require('_helpers/timeHandler')
-const db = require('database/db');
-const Progression = db.Progression;
-const User = db.User;
+
+const progressionAssociation = require('./progression-association.service');
+const Progression = require('database/db').Progression;
+const User = require('database/db').User;
 
 module.exports = {
     updateProgression,
@@ -27,52 +28,7 @@ async function generateProgressionSummary(userId) {
     const { curriculum, progression } = await User.getCurriculumAndProgressionData(userId);
 
     // Generate progression to curriculum association
-    // This conversion table is particularily useful to handle the situations where the curriculum would be modified 
-    // while a user's prgression was already well advanced. This way, it is possible to retreive the completed part 
-    // of the curriculum from the progression, even though the two might not correspond 1 to 1 anymore.
-    encounteredAssociativeId = {};
-    const association = []
-    for (let i = 0; i < curriculum.experiments.length; i++) {
-
-        // Initialize the counter for the numnber of time the associative ID is encountered (to avoid having 2 experiments 
-        // considered as exactly the same) if they have the same associative ID
-        let encountersCount = 0;
-        const associativeId = curriculum.experiments[i].associativeId;
-        if (typeof encounteredAssociativeId[associativeId] !== 'number') encounteredAssociativeId[associativeId] = 0;
-
-        // Initialize an association
-        association.push({
-            associativeId: associativeId,
-            curriculumExperiment: curriculum.experiments[i],
-        });
-
-        // If the association is not fount in the progression, we will associate an empty dummy progression experiment
-        let progressionExperiment = {};
-
-        // Perform the association between the expriments in the curriculum and the experiments done
-        for (let j = 0; j < progression.experiments.length; j++) {
-            if (curriculum.experiments[i].associativeId === progression.experiments[j].associativeId) {
-
-                // Everytime the associative Id is encountered, we increment the encounter count
-                if (encountersCount < encounteredAssociativeId[associativeId]) encountersCount += 1;
-
-                // If the associativeId and the associativeIdOrdinalNumber correspond, we will add this progression 
-                // experiment to the associtaiton and we memory the ordinal number of this associativeId
-                else {
-                    progressionExperiment = progression.experiments[j]
-                    break;
-                }
-            }
-        }
-
-        // Associate the progression experiment
-        Object.assign(association[i], {
-            associativeIdOrdinalNumber: encounteredAssociativeId[associativeId],
-            progressionExperiment: progressionExperiment
-        });
-        encounteredAssociativeId[associativeId] += 1;
-
-    }
+    const association = progressionAssociation.generateProgressionToCurriculumAssociation(curriculum, progression); 
 
     // Generate the progression summary
     let dueExperiment = null;
