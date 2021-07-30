@@ -12,8 +12,8 @@
 			<users-curriculum-widget ref="userCurriculum" />
 		</widget-content-frame-component>
 
-		<widget-content-frame-component title="Overview Table">
-			<users-table />
+		<widget-content-frame-component title="Users List">
+			<users-list />
 		</widget-content-frame-component>
 	</admin-page-content-frame>
 </template>
@@ -22,7 +22,7 @@
 import AdminPageContentFrame from '@/components/content-frame/admin-page-content-frame.component.vue';
 import UsersCurriculumWidget from '@/components/admin/users/widget-curriculum/users-curriculum.widget.vue';
 import UsersEditorWidget from '@/components/admin/users/widget-editor/users-editor.widget.vue';
-import UsersTable from '@/components/admin/users/UsersTableWidget.vue';
+import UsersList from '@/components/admin/users/widget-list/users-list.widget.vue';
 // import UsersViewer from '@/components/admin/users/UsersViewerWidget.vue';
 import WidgetContentFrameComponent from '@/components/content-frame/widget-content-frame.component.vue';
 
@@ -35,7 +35,7 @@ export default {
 		// UsersViewer: UsersViewer,
 		UsersCurriculumWidget,
 		UsersEditorWidget,
-		UsersTable: UsersTable,
+		UsersList,
 	},
 	methods: {
 		...mapActions('users', ['createUser']),

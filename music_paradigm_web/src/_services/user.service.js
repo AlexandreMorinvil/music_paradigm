@@ -3,7 +3,7 @@ import defaultResponseHandler from './defaultResponseHandler';
 
 export const userService = {
 	register,
-	getListAllHeaders,
+	getListAllSummaries,
 	getById,
 	update,
 	delete: _delete,
@@ -21,7 +21,7 @@ function register(user) {
 	return fetch(url.users('register'), requestOptions).then(handleResponse);
 }
 
-function getListAllHeaders() {
+function getListAllSummaries() {
 	const requestOptions = {
 		method: 'GET',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },

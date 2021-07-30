@@ -39,8 +39,8 @@ export default {
 		return state.selectedUserProgression.assignedParameters;
 	},
 
-	usersHeadersList: (state) => {
-		return state.usersHeadersList;
+	usersSummaryList: (state) => {
+		return state.usersSummaryList;
 	},
 
 	// Status
@@ -52,7 +52,7 @@ export default {
 		return Boolean(state.selectedUser.curriculum);
 	},
 
-	isFetchingUserHeadersList: (state) => {
-		return state.status.isFetchingUsersHeadersList;
+	isFetchingUsersSummaryList: (state) => {
+		return state.status.isFetchingUsersSummaryList;
 	},
 };
