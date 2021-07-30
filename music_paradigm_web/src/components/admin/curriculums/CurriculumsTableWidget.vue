@@ -55,7 +55,7 @@ export default {
 			'curriculumSelectedId',
 		]),
 		isListLoading() {
-			return this.isFetchingUserHeadersList;
+			return this.isFetchingUsersSummaryList;
 		},
 	},
 	methods: {

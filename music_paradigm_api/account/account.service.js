@@ -1,6 +1,6 @@
 ﻿const db = require('database/db');
 const jwt = require('jwt/jwt');
-const progressionService = require('account/progression-summary.service');
+const progressionService = require('progression/progression-summary.service');
 const User = db.User;
 
 module.exports = {
@@ -8,10 +8,6 @@ module.exports = {
     getProgressionSummary,
     getTodayExperiment,
     getSpecificExperiment,
-    // getListAllHeaders,
-    // getById,
-    // update,
-    // delete: _delete
 };
 
 async function authenticate({ username, password }) {

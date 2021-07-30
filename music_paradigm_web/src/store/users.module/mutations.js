@@ -3,11 +3,11 @@ import { defaultState } from '@/store-helper/users.module-helper';
 export default {
 	// Status Updates
 	indicateFetchingUserList(state) {
-		state.status.isFetchingUsersHeadersList = true;
+		state.status.isFetchingUsersSummaryList = true;
 	},
 
 	indicateFetchingUserListEnd(state) {
-		state.status.isFetchingUsersHeadersList = false;
+		state.status.isFetchingUsersSummaryList = false;
 	},
 
 	indicateCreateRequest(state) {
@@ -74,7 +74,7 @@ export default {
 		state.selectedUserProgression = {};
 	},
 
-	setHeadersList(state, usersHeadersLst) {
-		state.usersHeadersList = usersHeadersLst;
+	setSummariesList(state, usersSummaryList) {
+		state.usersSummaryList = usersSummaryList;
 	},
 };
