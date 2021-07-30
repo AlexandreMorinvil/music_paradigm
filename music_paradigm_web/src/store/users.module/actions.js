@@ -1,13 +1,13 @@
 import { userService } from '@/_services';
 
 export default {
-	fetchAllUsersHeaders({ commit, dispatch }) {
+	fetchAllUsersSummary({ commit, dispatch }) {
 		commit('indicateFetchingUserList');
 		return userService
-			.getListAllHeaders()
+			.getListAllSummaries()
 			.then(
-				(usersHeadersList) => {
-					commit('setHeadersList', usersHeadersList);
+				(usersSummaryList) => {
+					commit('setSummariesList', usersSummaryList);
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
@@ -43,7 +43,7 @@ export default {
 					commit('setSelectedUser', createdUser.user);
 					commit('setSelectedProgression', createdUser.progression);
 					dispatch('alert/setSuccessAlert', 'User creation sucessful', { root: true });
-					dispatch('fetchAllUsersHeaders');
+					dispatch('fetchAllUsersSummary');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
@@ -64,7 +64,7 @@ export default {
 					dispatch('alert/setSuccessAlert', 'User update sucessful', {
 						root: true,
 					});
-					dispatch('fetchAllUsersHeaders');
+					dispatch('fetchAllUsersSummary');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
@@ -85,7 +85,7 @@ export default {
 					dispatch('alert/setSuccessAlert', 'User deletion sucessful', {
 						root: true,
 					});
-					dispatch('fetchAllUsersHeaders');
+					dispatch('fetchAllUsersSummary');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
@@ -105,7 +105,7 @@ export default {
 					commit('setSelectedUser', updatedUser.user);
 					commit('setSelectedProgression', updatedUser.progression);
 					dispatch('alert/setSuccessAlert', 'Curriculum assignation sucessful', { root: true });
-					dispatch('fetchAllUsersHeaders');
+					dispatch('fetchAllUsersSummary');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
@@ -125,7 +125,7 @@ export default {
 					commit('setSelectedUser', updatedUser.user);
 					commit('setSelectedProgression', updatedUser.progression);
 					dispatch('alert/setSuccessAlert', 'Parameter update sucessful', { root: true });
-					dispatch('fetchAllUsersHeaders');
+					dispatch('fetchAllUsersSummary');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
@@ -144,7 +144,7 @@ export default {
 				(updatedProgression) => {
 					commit('setSelectedProgression', updatedProgression);
 					dispatch('alert/setSuccessAlert', 'Progression resetting successful', { root: true });
-					dispatch('fetchAllUsersHeaders');
+					dispatch('fetchAllUsersSummary');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });

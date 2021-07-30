@@ -15,7 +15,7 @@ module.exports = {
 
 async function getAll() {
     try {
-        return await User.getListAllHeaders();
+        return await User.getListAllSummaries();
     } catch (err) {
         throw err;
     }

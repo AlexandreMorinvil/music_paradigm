@@ -10,24 +10,24 @@
 					<tr>
 						<th>#</th>
 						<th>Username</th>
-						<th>Email</th>
 						<th>Full Name</th>
 						<th>Tags</th>
 						<th>Curriculum</th>
+						<th>Reached Progresion</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
 
 				<tbody>
-					<tr v-for="(header, index) in usersHeadersList" :key="header._id" :class="header._id === userSelectedId && 'selected'">
+					<tr v-for="(summary, index) in usersSummaryList" :key="summary._id" :class="summary._id === userSelectedId && 'selected'">
 						<td>{{ index + 1 }}</td>
-						<td>{{ header.username }}</td>
-						<td>{{ makeEmailDisplay(header.email) }}</td>
-						<td>{{ makeFullNameDisplay(header.firstName, header.middleName, header.lastName) }}</td>
-						<td style="white-space: pre-line">{{ makeTagsDisplay(header.tags) }}</td>
-						<td>{{ makeCurriculumTitleDisplay(header.curriculumTitle) }}</td>
+						<td>{{ summary.username }}</td>
+						<td>{{ makeFullNameDisplay(summary.firstName, summary.middleName, summary.lastName) }}</td>
+						<td style="white-space: pre-line">{{ makeTagsDisplay(summary.tags) }}</td>
+						<td>{{ makeCurriculumTitleDisplay(summary.curriculumTitle) }}</td>
+						<td>{{ makeProgressionDisplay(summary.curriculumTotalNumber, summary.progressionTotalNumber, summary.reachedExperimentTitle) }}</td>
 						<td class="widget-table-actions-buttons">
-							<button v-on:click="handleSelectUser(header._id)" class="widget-button small blue">Select</button>
+							<button v-on:click="handleSelectUser(summary._id)" class="widget-button small blue">Select</button>
 						</td>
 					</tr>
 				</tbody>
@@ -37,7 +37,6 @@
 </template>
 
 <script>
-// TODO: Display the tasks summary
 import '@/styles/widget-template.css';
 import { mapActions, mapGetters } from 'vuex';
 import LoaderCircular from '@/components/visual-helpers/loader-circular.component.vue';
@@ -50,22 +49,18 @@ export default {
 		return {};
 	},
 	computed: {
-		...mapGetters('users', ['isFetchingUserHeadersList', 'usersHeadersList', 'userSelectedId']),
+		...mapGetters('users', ['isFetchingUsersSummaryList', 'usersSummaryList', 'userSelectedId']),
 		isListLoading() {
-			return this.isFetchingUserHeadersList;
+			return this.isFetchingUsersSummaryList;
 		},
 	},
 	methods: {
-		...mapActions('users', ['fetchAllUsersHeaders', 'setSelectedUser']),
+		...mapActions('users', ['fetchAllUsersSummary', 'setSelectedUser']),
 		handleRefresh() {
-			this.fetchAllUsersHeaders();
+			this.fetchAllUsersSummary();
 		},
 		handleSelectUser(id) {
 			this.setSelectedUser(id);
-		},
-		makeEmailDisplay(email) {
-			if (!email) return '---';
-			else return email;
 		},
 		makeFullNameDisplay(firstName, middleName, lastName) {
 			if (!(firstName || middleName || lastName)) return '---';
@@ -87,9 +82,13 @@ export default {
 			if (!curriculumName) return '---';
 			else return curriculumName;
 		},
+		makeProgressionDisplay(totalNumber, reachedNumber, reachedName) {
+			if (!totalNumber) return '---';
+			else return String(reachedNumber) + '/' + totalNumber + '\n"' + reachedName + '"';
+		},
 	},
 	mounted() {
-		this.fetchAllUsersHeaders();
+		this.fetchAllUsersSummary();
 	},
 };
 </script>
@@ -105,6 +104,7 @@ export default {
 	grid-area: board;
 	display: flex;
 	justify-content: center;
+	white-space: pre-line;
 }
 
 .widget {

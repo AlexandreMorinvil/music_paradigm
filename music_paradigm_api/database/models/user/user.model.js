@@ -4,6 +4,8 @@ schema = require('./user.middleware');
 const roles = require('_helpers/role');
 const bcrypt = require('bcryptjs');
 
+const progressionAssociation = require('progression/progression-association.service.js')
+
 // Static methods
 schema.statics.authenticate = async function (username, password) {
     // Fetch user in the database
@@ -28,19 +30,53 @@ schema.statics.delete = async function (userId) {
     return await user.remove();
 };
 
-schema.statics.getListAllHeaders = async function () {
-    const usersList = await this.find({ role: roles.user }).populate({ path: 'curriculum', select: 'title' }).sort({ role: 1, username: 1 });
+/**
+ * @return {Array} [
+ *                      {
+ *                          username: String,
+ *                          email: String,
+ *                          role: String,
+ *                          tags: [String],
+ *                          firstName: String,
+ *                          middleName: String,
+ *                          lastName: String,
+ *                          curriculumTitle: String,
+ *                          reachedExperimentTitle: String,
+ *                          progressionTotalNumber: Number,
+ *                          curriculumTotalNumber: Number,
+ *                          lastLogin: Date,
+ *                          createdAt: Date,
+ *                          updatedAt: Date,
+ *                      }
+ *                  ]   
+*/
+schema.statics.getListAllSummaries = async function () {
+    const usersList = await this
+        .find({ role: roles.user })
+        .populate({ path: 'curriculum progressions' })
+        .sort({ role: 1, username: 1 });
 
     const usersHeaderList = [];
     usersList.forEach(element => {
-        const userHeader = element.toObject();
+        // Prepare the user summary object
+        const userSummary = element.toObject();
 
         // Adding the name of the current curriculum
-        if (userHeader.curriculum) userHeader.curriculumTitle = userHeader.curriculum.title;
-        else userHeader.curriculumTitle = "";
-        delete userHeader.curriculum;
+        userSummary.curriculumTitle = (userSummary.curriculum) ? userSummary.curriculum.title : "";
 
-        usersHeaderList.push(userHeader);
+        // Prepare the progression summary information
+        const progressionSummary = progressionAssociation
+            .generateProgressionToCurriculumAssociationSummary(
+                element.curriculum,
+                element.progressions[element.progressions.length - 1]
+            );
+        Object.assign(userSummary, progressionSummary);
+
+        // Remove undesirable attributes
+        delete userSummary.curriculum;
+        delete userSummary.password;
+
+        usersHeaderList.push(userSummary);
     });
 
     return usersHeaderList;
@@ -59,7 +95,7 @@ schema.statics.getCurriculumAndProgressionData = async function (userId) {
 
     const userCurriculum = curriculum ? curriculum.toObject() : null;
     const userProgression = progressions[0] ? progressions[0].toObject() : null;
-    
+
     return {
         curriculum: userCurriculum,
         progression: userProgression,
@@ -113,11 +149,11 @@ schema.methods.resetProgression = async function () {
     const lastProgression = await this.getLastProgression();
     await this.addNewProgression(curriculumInformation);
     if (lastProgression && !lastProgression.wasStarted()) await lastProgression.remove();
-    
+
     return this.getLastProgression();
 }
 
-schema.methods.getLastProgression = async function() {
+schema.methods.getLastProgression = async function () {
     const user = await model
         .findById(this._id, { progressions: { $slice: -1 } })
         .populate({ path: 'progressions' });
@@ -126,7 +162,7 @@ schema.methods.getLastProgression = async function() {
     return lastProgression;
 }
 
-schema.methods.addNewProgression = async function(curriculum, parameters) {
+schema.methods.addNewProgression = async function (curriculum, parameters) {
     const Progression = require('database/models/progression/progression.model');
     const newProgression = new Progression({
         userReference: this._id,
