@@ -35,7 +35,6 @@ schema.statics.delete = async function (userId) {
  *                      {
  *                          username: String,
  *                          email: String,
- *                          password: String,
  *                          role: String,
  *                          tags: [String],
  *                          firstName: String,
@@ -51,7 +50,7 @@ schema.statics.delete = async function (userId) {
  *                      }
  *                  ]   
 */
-schema.statics.getListAllHeaders = async function () {
+schema.statics.getListAllSummaries = async function () {
     const usersList = await this
         .find({ role: roles.user })
         .populate({ path: 'curriculum progressions' })
@@ -60,21 +59,24 @@ schema.statics.getListAllHeaders = async function () {
     const usersHeaderList = [];
     usersList.forEach(element => {
         // Prepare the user summary object
-        const userHeader = element.toObject();
+        const userSummary = element.toObject();
+
+        // Adding the name of the current curriculum
+        userSummary.curriculumTitle = (userSummary.curriculum) ? userSummary.curriculum.title : "";
 
         // Prepare the progression summary information
-        userHeader.progressionSummary = progressionAssociation
+        const progressionSummary = progressionAssociation
             .generateProgressionToCurriculumAssociationSummary(
                 element.curriculum,
                 element.progressions[element.progressions.length - 1]
             );
+        Object.assign(userSummary, progressionSummary);
 
-        // Adding the name of the current curriculum
-        if (userHeader.curriculum) userHeader.curriculumTitle = userHeader.curriculum.title;
-        else userHeader.curriculumTitle = "";
-        delete userHeader.curriculum;
+        // Remove undesirable attributes
+        delete userSummary.curriculum;
+        delete userSummary.password;
 
-        usersHeaderList.push(userHeader);
+        usersHeaderList.push(userSummary);
     });
 
     return usersHeaderList;
