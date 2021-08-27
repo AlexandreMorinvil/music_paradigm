@@ -104,6 +104,8 @@ function validateExperiment(experiment) {
 
 		'withProgressionBar',
 		'logLabel',
+
+		'cueWaitForClick',
 	];
 	Object.keys(experiment).forEach((key) => {
 		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the general parameters is not allowed`);
@@ -196,6 +198,7 @@ function validateBlock(block, index = null) {
 		'checkpoint',
 		'strictPlay',
 		'considerExperimentFinished',
+		'skipIfNotMetSuccessGoal',
 
 		'resetVariableValue',
 		'incrementVariable',
@@ -259,6 +262,7 @@ function validateAttributeType(key, value) {
 		case 'relativeRhythmImportance':
 		case 'rhythmErrorMarginInMilliseconds':
 		case 'rhythmRelativeErrorMarginInFloat':
+		case 'skipIfNotMetSuccessGoal':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
@@ -279,6 +283,7 @@ function validateAttributeType(key, value) {
 		case 'strictPlay':
 		case 'withProgressionBar':
 		case 'considerExperimentFinished':
+		case 'cueWaitForClick':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

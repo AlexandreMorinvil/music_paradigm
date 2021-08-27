@@ -47,6 +47,7 @@ const DEFAULT_RHYTHM_ERROR_MARGIN_IN_MILLISECONDS = 0;
 const DEFAULT_RHYTHM_RELATIVE_ERROR_MARGIN_IN_FLOAT = 0;
 const DEFAULT_WITH_PROGRESSION_BAR = true;
 const DEFAULT_LOG_LABEL = 'default';
+const DEFAULT_CUE_WAIT_FOR_CLICK = false;
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
 	return {
@@ -117,7 +118,8 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		relativeRhythmImportance: DEFAULT_RELATIVE_RHYTHM_IMPORTANCE,						// Indicate wether the relative rhythm accuracy is computed with the IOI (false) or relative IOI (true)
 		rhythmErrorMarginInMilliseconds: DEFAULT_RHYTHM_ERROR_MARGIN_IN_MILLISECONDS,		// Error margin allowed in the rhythm accuracy calculation
 		rhythmRelativeErrorMarginInFloat: DEFAULT_RHYTHM_RELATIVE_ERROR_MARGIN_IN_FLOAT, 	// Relative error margin allowed in the rhythm accuracy calculation (overwrites the absolute value's error margin)
-		withProgressionBar: DEFAULT_WITH_PROGRESSION_BAR,									// Indicate wether ther must be a progrssion bar displayed in the experiment
+		withProgressionBar: DEFAULT_WITH_PROGRESSION_BAR,									// Indicate wether there must be a progrssion bar displayed in the experiment
+		cueWaitForClick: DEFAULT_CUE_WAIT_FOR_CLICK,										// Indicate whether the cue must wait for a space bar click before playing
 	};
 }
 
@@ -185,6 +187,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			failureFeedbackMessage: '', 											// Additional message displayed upon feedback with at least one failed critera
 			melodyRepetition: 1,													// Number of times a melody is repeated in a block
 			successesForSkip: DEFAULT_SUCCESSES_FOR_SKIP,							// Block specific "successesForSkip" superseding the general setting
+			skipIfNotMetSuccessGoal: 0,												// Indicate the minimum number of successes required to avoid having to skip
 			startSignal: 0,															// Signal countdown (if is 0, there is no signal countdown)
 			feedbackNumerical: false,												// Indicator of whether the feedback must be given in its numerical form instead of with range bars
 			interactivePianoFirstOctave: DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE,	// Block specific "interactivePianoFirstOctave" superseding the general setting
@@ -201,6 +204,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			logLabel: DEFAULT_LOG_LABEL,											// Active label that will be associated to the logs
 			sucesses: 0, 															// Number of successes recorded
 			successesInLoop: 0, 													// Number of successes recorded in the loop
+			previousSucessesInLoop: 0,												// Number of sucesses in loop from the previous group of states
 			isSuccess: false, 														// Indicate whether the current step was a success
 			isWaitingReadyStartSignal: false, 										// Indicate whether a 'Ready Start' signal is being awaited
 			considerExperimentFinished: false,										// Signal that indicates whether at the current position in experiment, the sesion can be considered completed (it is set as a record since it must be considered even when skipping steps)

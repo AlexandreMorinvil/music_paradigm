@@ -189,10 +189,10 @@ export default {
 }
 
 .completed-available {
-	background-color: rgb(40, 40, 40);
-	border-color: rgb(35, 35, 35);
-	color: rgb(80, 80, 80);
-	fill: rgb(20, 20, 20);
+	background-color: rgb(200, 180, 0);
+	border-color: rgb(195, 175, 0);
+	color: rgb(250, 250, 250);
+	fill: rgb(100, 100, 60);
 }
 
 .completed {

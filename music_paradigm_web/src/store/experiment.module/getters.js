@@ -306,6 +306,10 @@ export default {
 		return state.state.record.logLabel;
 	},
 
+	cueWaitForClick: (state) => {
+		return state.settings.cueWaitForClick;
+	},
+
 	// Getters used for the content disposition on the screen
 	hasFootnote: (state) => {
 		let hasFootNote = defaultState.DEFAULT_FOOTNOTE;

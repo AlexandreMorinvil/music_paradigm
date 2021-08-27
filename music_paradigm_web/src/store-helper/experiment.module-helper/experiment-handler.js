@@ -80,6 +80,7 @@ function setExperimentGeneralSettings(state, experiment) {
 		rhythmErrorMarginInMilliseconds,
 		rhythmRelativeErrorMarginInFloat,
 		withProgressionBar,
+		cueWaitForClick,
 	} = experiment;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -104,6 +105,7 @@ function setExperimentGeneralSettings(state, experiment) {
 		rhythmErrorMarginInMilliseconds: 	typeof rhythmErrorMarginInMilliseconds == 'number' 	? rhythmErrorMarginInMilliseconds : defaultSettings.rhythmErrorMarginInMilliseconds,
 		rhythmRelativeErrorMarginInFloat:	typeof rhythmRelativeErrorMarginInFloat == 'number' ? rhythmRelativeErrorMarginInFloat : defaultSettings.rhythmRelativeErrorMarginInFloat,
 		withProgressionBar:					typeof withProgressionBar === 'boolean' 			? withProgressionBar : defaultSettings.withProgressionBar,
+		cueWaitForClick: 					typeof cueWaitForClick === 'boolean'				? cueWaitForClick : defaultSettings.cueWaitForClick,
 	};
 }
 

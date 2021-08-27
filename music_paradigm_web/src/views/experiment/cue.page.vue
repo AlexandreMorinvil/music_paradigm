@@ -31,17 +31,24 @@ export default {
 				return '';
 			},
 		},
+		isSpaceBarPressed: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
 	},
 	data() {
 		return {
 			errorAutomaticTransitionSeconds: 5,
 			playbackDelayInSeconds: 1,
+			isSpacebarPressRecorded: false,
 		};
 	},
 	computed: {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['isMidiFileLoaded']),
-		...mapGetters('experiment', ['midiName']),
+		...mapGetters('experiment', ['midiName', 'cueWaitForClick']),
 	},
 	methods: {
 		...mapActions('piano', ['playMidiFile', 'addPlayerEndOfFileAction', 'removePlayerEndOfFileAction']),
@@ -49,7 +56,8 @@ export default {
 			let footnoteMessage = '';
 			const secondsLeft = this.errorAutomaticTransitionSeconds;
 			if (!this.midiName) footnoteMessage = this.$tc('views.experiment.cue.footnote-no-melody', secondsLeft, { second: secondsLeft });
-			else footnoteMessage = this.$t('views.experiment.cue.footnote-after-melody');
+			else if (!this.cueWaitForClick) footnoteMessage = this.$t('views.experiment.cue.footnote-after-melody');
+			else footnoteMessage = this.$t('views.experiment.cue.footnote-after-wait-click');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		handleEndOfMidiFile() {
@@ -72,9 +80,15 @@ export default {
 		isMidiFileLoaded: {
 			immediate: true,
 			handler: function (isReady) {
-				if (isReady) setTimeout(() => this.playMidiFile(), this.playbackDelayInSeconds * 1000);
+				if (!this.cueWaitForClick && isReady) setTimeout(() => this.playMidiFile(), this.playbackDelayInSeconds * 1000);
 				else if (this.midiName === '') setTimeout(() => this.manageHavingNoMidiFile(), this.errorAutomaticTransitionSeconds * 1000);
 			},
+		},
+		isSpaceBarPressed(isPressed) {
+			if (this.cueWaitForClick && this.isMidiFileLoaded && isPressed && !this.isSpacebarPressRecorded) {
+				this.playMidiFile();
+				this.isSpacebarPressRecorded = true;
+			}
 		},
 	},
 };

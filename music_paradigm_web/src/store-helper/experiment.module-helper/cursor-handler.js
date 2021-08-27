@@ -55,10 +55,23 @@ function skip(state, flow, cursor, isInitialized) {
 
 // Inner cursor move manipulations
 function moveCursorSpecialCases(state, flow, cursor, isInitialized) {
+	// Successes for skipping loop was attained
+	// We skip until we are out of the block group
 	if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop) {
 		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
 		return true;
-	} else if (blockHandler.getCurrentBlock(flow, cursor).skipLoopOnLastRepetition && cursor.current.numberRepetition <= 1) {
+	}
+
+	// Successes to not skip the "skip if minimal goal is not met" was not met :
+	// We skip until we reach a block that does not have the "skipIfNotMetSuccessGoal"
+	else if (state.record.previousSucessesInLoop < blockHandler.getCurrentBlock(flow, cursor).skipIfNotMetSuccessGoal) {
+		moveCursorNotMetSuccessGoal(state, flow, cursor, isInitialized);
+		return true;
+	}
+
+	// A skip on last repetition block is encountered
+	// If we are at the last repetition, we skip the block
+	else if (blockHandler.getCurrentBlock(flow, cursor).skipLoopOnLastRepetition && cursor.current.numberRepetition <= 1) {
 		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
 		return true;
 	} else return false;
@@ -81,6 +94,17 @@ function moveCursorSkipRepetions(state, flow, cursor, isInitialized) {
 		moveCursorNext(flow, cursor, isInitialized);
 		stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
 	} while (!cursor.flag.needsResetLoopParameters && !cursor.flag.isBeyondEnd);
+}
+
+function moveCursorNotMetSuccessGoal(state, flow, cursor, isInitialized) {
+	let sucesses = 0;
+	let minimalSucessGoal = 0;
+	do {
+		moveCursorNext(flow, cursor, isInitialized);
+		stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
+		sucesses = state.record.previousSucessesInLoop;
+		minimalSucessGoal = blockHandler.getCurrentBlock(flow, cursor).skipIfNotMetSuccessGoal;
+	} while (sucesses < minimalSucessGoal && !cursor.flag.isBeyondEnd);
 }
 
 function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
