@@ -62,7 +62,10 @@ function updateRecords(currentState, targetState, cursor, isInitialized) {
 
 	// If the cursor indicate that we have reached a new iteration of a loop through its 'needsResetLoopParameters' flag,
 	// we reset the amount of successes that was accumulated in the loop so far
-	if (cursor.flag.needsResetLoopParameters) currentState.record.successesInLoop = 0;
+	if (cursor.flag.needsResetLoopParameters) {
+		currentState.record.previousSucessesInLoop = currentState.record.successesInLoop;
+		currentState.record.successesInLoop = 0;
+	}
 
 	Object.assign(isInitialized, { record: true });
 }
@@ -97,6 +100,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		goBackButtonMessage,
 		checkpoint,
 		strictPlay,
+		skipIfNotMetSuccessGoal,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -127,6 +131,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		goBackButtonMessage: 			typeof goBackButtonMessage === 'string' 		? goBackButtonMessage : '',
 		checkpoint: 					typeof checkpoint === 'string' 					? checkpoint : false,
 		strictPlay: 					typeof strictPlay === 'boolean' 				? strictPlay : false,
+		skipIfNotMetSuccessGoal:		typeof skipIfNotMetSuccessGoal === 'number' 	? skipIfNotMetSuccessGoal : 0
 	};
 
 	// Indicate that the state (current block's settings) was already initialized

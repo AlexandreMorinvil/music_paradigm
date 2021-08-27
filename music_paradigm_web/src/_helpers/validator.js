@@ -196,6 +196,7 @@ function validateBlock(block, index = null) {
 		'checkpoint',
 		'strictPlay',
 		'considerExperimentFinished',
+		'skipIfNotMetSuccessGoal',
 
 		'resetVariableValue',
 		'incrementVariable',
@@ -259,6 +260,7 @@ function validateAttributeType(key, value) {
 		case 'relativeRhythmImportance':
 		case 'rhythmErrorMarginInMilliseconds':
 		case 'rhythmRelativeErrorMarginInFloat':
+		case 'skipIfNotMetSuccessGoal':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
