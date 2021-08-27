@@ -93,6 +93,9 @@ const schema = new Schema({
 
     withProgressionBar: { type: Boolean, default: true },
     logLabel: {type: String, default: 'default' },
+
+    cueWaitForClick: { type: Boolean, default: false },
+
     prelude: {
         default: [],
         type: [stateSchema],

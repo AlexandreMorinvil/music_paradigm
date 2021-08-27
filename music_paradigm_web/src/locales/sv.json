@@ -158,7 +158,8 @@
       },
       "cue": {
         "footnote-no-melody": "Det finns ingen melodi att spela,\nsessionen kommer automatiskt gå vidare till nästa moment om {second} sekund | Det finns ingen melodi att spela,\nsessionen kommer automatiskt gå vidare till nästa moment om {second} sekunder",
-        "footnote-after-melody": "REMOVE"
+        "footnote-after-melody": "REMOVE",
+        "footnote-after-wait-click": "Tryck på mellanslagstangenten och lyssna på melodin"
       },
       "end": {
         "footnote-press-any-key": "Tryck på valfri piano- eller datortangent för att avsluta sessionen.",

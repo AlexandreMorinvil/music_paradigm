@@ -161,7 +161,8 @@
       },
       "cue": {
         "footnote-no-melody": "There is no melody to be played, the session will automatically go to the next step in {second} second | There is no melody to be played, the session will automatically go to the next step in {second} seconds",
-        "footnote-after-melody": "The session will automatically go to the next step after the muscial cue"
+        "footnote-after-melody": "The session will automatically go to the next step after the muscial cue",
+        "footnote-after-wait-click": "Press the space bar and listen to the melody"
       },
       "end": {
         "footnote-press-any-key": "Press any piano key or the space bar for ending the session",

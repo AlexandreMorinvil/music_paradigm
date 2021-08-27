@@ -47,6 +47,7 @@ const DEFAULT_RHYTHM_ERROR_MARGIN_IN_MILLISECONDS = 0;
 const DEFAULT_RHYTHM_RELATIVE_ERROR_MARGIN_IN_FLOAT = 0;
 const DEFAULT_WITH_PROGRESSION_BAR = true;
 const DEFAULT_LOG_LABEL = 'default';
+const DEFAULT_CUE_WAIT_FOR_CLICK = false;
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
 	return {
@@ -117,7 +118,8 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		relativeRhythmImportance: DEFAULT_RELATIVE_RHYTHM_IMPORTANCE,						// Indicate wether the relative rhythm accuracy is computed with the IOI (false) or relative IOI (true)
 		rhythmErrorMarginInMilliseconds: DEFAULT_RHYTHM_ERROR_MARGIN_IN_MILLISECONDS,		// Error margin allowed in the rhythm accuracy calculation
 		rhythmRelativeErrorMarginInFloat: DEFAULT_RHYTHM_RELATIVE_ERROR_MARGIN_IN_FLOAT, 	// Relative error margin allowed in the rhythm accuracy calculation (overwrites the absolute value's error margin)
-		withProgressionBar: DEFAULT_WITH_PROGRESSION_BAR,									// Indicate wether ther must be a progrssion bar displayed in the experiment
+		withProgressionBar: DEFAULT_WITH_PROGRESSION_BAR,									// Indicate wether there must be a progrssion bar displayed in the experiment
+		cueWaitForClick: DEFAULT_CUE_WAIT_FOR_CLICK,										// Indicate whether the cue must wait for a space bar click before playing
 	};
 }
 

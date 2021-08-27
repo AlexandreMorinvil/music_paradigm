@@ -104,6 +104,8 @@ function validateExperiment(experiment) {
 
 		'withProgressionBar',
 		'logLabel',
+
+		'cueWaitForClick',
 	];
 	Object.keys(experiment).forEach((key) => {
 		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the general parameters is not allowed`);
@@ -281,6 +283,7 @@ function validateAttributeType(key, value) {
 		case 'strictPlay':
 		case 'withProgressionBar':
 		case 'considerExperimentFinished':
+		case 'cueWaitForClick':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}
