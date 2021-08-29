@@ -50,7 +50,7 @@ function skip(state, flow, cursor, isInitialized) {
 	do {
 		moveCursorNext(flow, cursor, isInitialized);
 		stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
-	} while (cursor.current.isInSkipableChain);
+	} while (cursor.flag.isInSkipableChain);
 }
 
 // Inner cursor move manipulations
@@ -97,14 +97,10 @@ function moveCursorSkipRepetions(state, flow, cursor, isInitialized) {
 }
 
 function moveCursorNotMetSuccessGoal(state, flow, cursor, isInitialized) {
-	let sucesses = 0;
-	let minimalSucessGoal = 0;
 	do {
 		moveCursorNext(flow, cursor, isInitialized);
 		stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
-		sucesses = state.record.previousSucessesInLoop;
-		minimalSucessGoal = blockHandler.getCurrentBlock(flow, cursor).skipIfNotMetSuccessGoal;
-	} while (sucesses < minimalSucessGoal && !cursor.flag.isBeyondEnd);
+	} while (cursor.flag.isInSkipIfNotMetSuccessGoalChain && !cursor.flag.isBeyondEnd);
 }
 
 function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
@@ -187,10 +183,12 @@ function updateCursorNavigation(flow, cursor) {
 		numberRepetition,
 		followedBy,
 		isInSkipableChain,
+		isInSkipIfNotMetSuccessGoalChain,
 	} = currentBlock;
 
 	// Set the current index parameter
-	cursor.current.isInSkipableChain = typeof isInSkipableChain === 'boolean' ? isInSkipableChain : false;
+	cursor.flag.isInSkipableChain = typeof isInSkipableChain === 'boolean' ? isInSkipableChain : false;
+	cursor.flag.isInSkipIfNotMetSuccessGoalChain = typeof isInSkipIfNotMetSuccessGoalChain === 'boolean' ? isInSkipIfNotMetSuccessGoalChain : false;
 
 	// Set all the navigation parameters
 	setCursorInnerStepsTotal(cursor, textContent, pictureFileName);

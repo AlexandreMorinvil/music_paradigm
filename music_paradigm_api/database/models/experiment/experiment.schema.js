@@ -40,6 +40,7 @@ const stateSchema = new Schema({
     feedbackNumerical: { type: Boolean, default: undefined },
     skipLoopOnLastRepetition: { type: Boolean, default: undefined },
     skipIfNotMetSuccessGoal: { type: Number, default: undefined },
+    isInSkipIfNotMetSuccessGoalChain: { type: Boolean, default: undefined },
 
     canGoBack: { type: Boolean, default: undefined },
     isGoBackButtonInFootnote: { type: Boolean, default: undefined },

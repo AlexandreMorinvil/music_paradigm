@@ -142,9 +142,10 @@ function DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES() {
 		},
 		flag: {
 			isInPrelude: false,														// Indicator of whether or not the cursor is pointing at hte main experiment (as opposed to the prelude)
-			isInTimeUp: false, 													// Indicator of whether or not the time limit is reached
+			isInTimeUp: false, 														// Indicator of whether or not the time limit is reached
 			isBeyondEnd: false, 													// Indicator of whether the index as reached the end of the flow (is checked before moving the cursor forward)
 			isInSkipableChain: false, 												// Indicator of whether the block must be skipped upon a skip request
+			isInSkipIfNotMetSuccessGoalChain: false,								// Indicator of whether the bloc is in a chain of blocs to skip if a "skipIfNotMetSuccessGoal" situation is encountered
 			isFirstIndexPassage: true,												// Indicator of whether it is the first time the index has reached a certain value (is false whenever the cursor loops back)
 			needsResetLoopParameters: false,										// Indicator of whether he loop specific parameters need to be restarted (only when we enter a need block group)
 			isNewBlock: true,														// Indicatio of wheter a new block was entered (Thus, we are not in just another inner step)

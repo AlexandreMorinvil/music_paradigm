@@ -199,6 +199,7 @@ function validateBlock(block, index = null) {
 		'strictPlay',
 		'considerExperimentFinished',
 		'skipIfNotMetSuccessGoal',
+		'isInSkipIfNotMetSuccessGoalChain',
 
 		'resetVariableValue',
 		'incrementVariable',
@@ -284,6 +285,7 @@ function validateAttributeType(key, value) {
 		case 'withProgressionBar':
 		case 'considerExperimentFinished':
 		case 'cueWaitForClick':
+		case 'isInSkipIfNotMetSuccessGoalChain':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}
