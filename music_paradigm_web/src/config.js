@@ -1,4 +1,4 @@
-﻿const apiUrl = process.env.NODE_ENV === 'production' ? 'https://api.coffeylab.ca' : `${location.protocol}//${location.hostname}:4000`;
+const apiUrl = process.env.NODE_ENV === 'production' ? `https://paradigm-test.neuro.ki.se` : `${location.protocol}//${location.hostname}:4000`;
 
 export default {
 	apiUrl: apiUrl,
