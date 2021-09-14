@@ -3,17 +3,17 @@
 		<div class="main-area">
 			<login-prompt-component />
 		</div>
-		<!-- <application-footer-component /> -->
+		<application-footer-component />
 	</div>
 </template>
 
 <script>
-// import ApplicationFooterComponent from '@/components/application-component/application-footer.component.vue';
+import ApplicationFooterComponent from '@/components/application-component/application-footer.component.vue';
 import LoginPromptComponent from '@/components/application-component/login-prompt.component.vue';
 
 export default {
 	components: {
-		// ApplicationFooterComponent,
+		ApplicationFooterComponent,
 		LoginPromptComponent,
 	},
 };

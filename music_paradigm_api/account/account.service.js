@@ -22,7 +22,7 @@ async function authenticate({ username, password }) {
         };
     } catch (err) {
         if (!err.message)
-            throw new Error("Användarnamn eller lösenord felaktigt");
+            throw new Error("Username or password is incorrect");
         else
             throw err;
     }
