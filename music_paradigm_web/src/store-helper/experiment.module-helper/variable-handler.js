@@ -12,7 +12,7 @@ function populateVariables(block, variablesToUse = null) {
 	const blockToPopulate = JSON.parse(JSON.stringify(block));
 	for (const section in blockToPopulate) {
 		if (typeof blockToPopulate[section] === 'string')
-			for (const variable in variables) blockToPopulate[section] = blockToPopulate[section].replace(variable, variables[variable]);
+			for (const variable in variables) performVariableReplacement(blockToPopulate, section, variables, variable);
 		else if (Array.isArray(blockToPopulate[section])) blockToPopulate[section] = populateVariables(block[section], variablesToUse);
 		else if (typeof blockToPopulate[section] === 'object') blockToPopulate[section] = populateVariables(block[section], variablesToUse);
 	}
@@ -31,6 +31,10 @@ function updateVariables(flow, cursor) {
 
 	if (decrementVariable) decrementVariableValue(decrementVariable);
 	else if (experimentStoreState.state.record.isSuccess && decrementVariableOnSucces) decrementVariableValue(decrementVariableOnSucces);
+}
+
+function performVariableReplacement(blockToPopulate, section, variables, variable) {
+	blockToPopulate[section] = blockToPopulate[section].replace(variable, variables[variable]);
 }
 
 function resetVariableValue(variableName) {

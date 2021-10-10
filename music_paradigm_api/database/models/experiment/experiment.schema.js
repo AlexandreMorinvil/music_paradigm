@@ -130,6 +130,11 @@ const schema = new Schema({
                 default: undefined,
                 required: true
             },
+            randomization: {
+                type: String,
+                enum: ['none', 'random', 'balanced', 'curriculum-balanced'],
+                default: "none"
+            },
             optionValues: { 
                 type: [],
                  default: [] 
