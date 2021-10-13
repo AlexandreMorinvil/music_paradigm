@@ -79,6 +79,7 @@ function validateExperiment(experiment) {
 		'prelude',
 		'flow',
 		'variables',
+		'variablesSchedules',
 		'group',
 		'name',
 		'version',

@@ -7,6 +7,12 @@ export default {
 	wrapVariableName,
 };
 
+/**
+ * Replaces the variable names in the experiment description by their appropriate value.
+ * @param {Object} block 			Block containing experiment desciptions that need to be populated
+ * @param {Object} variablesToUse	Object containign the variables to populate
+ * @returns {Object} 				Block with the variables populated
+ */
 function populateVariables(block, variablesToUse = null) {
 	const variables = variablesToUse || getAllVariables();
 	const blockToPopulate = JSON.parse(JSON.stringify(block));
@@ -39,22 +45,22 @@ function performVariableReplacement(blockToPopulate, section, variables, variabl
 
 function resetVariableValue(variableName) {
 	variableName = wrapVariableName(variableName);
-	if (experimentStoreState.variables.value[variableName]) {
-		experimentStoreState.variables.value[variableName] = experimentStoreState.variables.initial[variableName];
+	if (experimentStoreState.variables.dynamicValue[variableName]) {
+		experimentStoreState.variables.dynamicValue[variableName] = experimentStoreState.variables.initialValue[variableName];
 	}
 }
 
 function incrementVariableValue(variableName) {
 	variableName = wrapVariableName(variableName);
-	if (experimentStoreState.variables.value[variableName]) {
-		experimentStoreState.variables.value[variableName] += 1;
+	if (experimentStoreState.variables.dynamicValue[variableName]) {
+		experimentStoreState.variables.dynamicValue[variableName] += 1;
 	}
 }
 
 function decrementVariableValue(variableName) {
 	variableName = wrapVariableName(variableName);
-	if (experimentStoreState.variables.value[variableName]) {
-		experimentStoreState.variables.value[variableName] -= 1;
+	if (experimentStoreState.variables.dynamicValue[variableName]) {
+		experimentStoreState.variables.dynamicValue[variableName] -= 1;
 	}
 }
 
@@ -67,11 +73,40 @@ function wrapStateVariableName(stateVariableName) {
 }
 
 function getAllVariables() {
-	const variables = experimentStoreState.variables.value;
+	// Get the current value of the dynamic variables
+	const variables = experimentStoreState.variables.dynamicValue;
+	const variablesWithSelectedValues = getVariablesWithValuesSelected();
 
 	const stateVariables = {};
 	stateVariables[wrapStateVariableName('REPETITIONS_CURRENT')] = experimentStoreState.cursor.navigation.totalNumberRepetitions - experimentStoreState.cursor.current.numberRepetition + 1;
 	stateVariables[wrapStateVariableName('REPETITIONS_LEFT')] = experimentStoreState.cursor.current.numberRepetition;
 	stateVariables[wrapStateVariableName('SUCCESSES_IN_LOOP')] = experimentStoreState.state.record.successesInLoop;
-	return { ...variables, ...stateVariables };
+	return { ...variables, ...stateVariables, ...variablesWithSelectedValues };
+}
+
+function getVariablesWithValuesSelected() {
+	return { ...getRandomizedVariables(), ...getScheduledVariables() };
+}
+
+function getRandomizedVariables() {
+	// Get randomized variables and their possible values
+	const variables = experimentStoreState.variables.randomizedVariables;
+	const options = experimentStoreState.variables.selectionValuesOptions;
+
+	// Select the values randomly within the optional values
+	const selectedValues = {};
+	for (const variable in variables) {
+		const choice = Math.floor(Math.random() * options[variable].length);
+		selectedValues[variable] = options[choice];
+	}
+	return selectedValues;
+}
+
+// TODO : I AM HERE!!!! I MUST CONTINUE FROM HERE!!!!!!
+function getScheduledVariables() {
+	// Get randomized variables and their possible values
+	const variables = experimentStoreState.variables.randomizedVariables;
+	const options = experimentStoreState.variables.selectionValuesOptions;
+	const schedules = experimentStoreState.variables.schedules;
+	return true;
 }

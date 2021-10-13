@@ -130,14 +130,51 @@ const schema = new Schema({
                 default: undefined,
                 required: true
             },
-            randomization: {
+            valueSelection: {
                 type: String,
-                enum: ['none', 'random', 'balanced', 'curriculum-balanced'],
-                default: "none"
+                enum: ['assigned', 'random', 'uniform', 'scheduled'],
+                default: "assigned"
+            },
+            scheduling: {
+                type: String,
+                default: undefined,
+                required: false
             },
             optionValues: { 
                 type: [],
-                 default: [] 
+                default: [] 
+            },
+        }
+    ],
+    variablesSchedules: 
+    [
+        {
+            name: {
+                type: String,
+                default: "schedule",
+                required: true
+            },
+            variantsBalancedInCurriculum: {
+                type: Number,
+                min: 0,
+                default: 0,
+                required: true,
+            },
+            scheduleType: {
+                type: String,
+                enum: ['fixed', 'random', 'permutated'],
+                required: 'fixed'
+            },
+            permutatedNumberElements: {
+                type: Number,
+                min: 1,
+                default: undefined,
+                required: false
+            },
+            schedule: {
+                type: [Number],
+                default: [],
+                required: false
             },
         }
     ]

@@ -9,6 +9,8 @@ export default {
 	setExperimentId,
 	setExperimentDescription,
 	setImposedParameterValues,
+	setVariableSelectionSchedules,
+	setExperiementVariablesWithValueSelection,
 	populateExperimentConstantVariables,
 	setExperimentDynamicVariables,
 	setExperimentGeneralSettings,
@@ -21,9 +23,9 @@ export default {
 
 /**
  * Store the ID of the experiment received from the backend.
- * @param {Object} state 			Vuex state.
- * @param {Object} experiment 		Object from the backend conntaining all information related to the experiment.
- * @param {String} experiment._id	Database ID of the experiment from the backend.
+ * @param {Object} state 						Vuex state.
+ * @param {Object} experiment 					Object from the backend conntaining all information related to the experiment.
+ * @param {String} experiment._id				Database ID of the experiment from the backend.
 */
 function setExperimentId(state, experiment) {
 	state._id = experiment._id;
@@ -181,13 +183,18 @@ function setExperimentInitialState(state, experiment) {
  * 												{ NAME_OF_PARAMETER_1 : VALUE_OF_PARAMETER_1, NAME_OF_PARAMETER_2 : VALUE_OF_PARAMETER_2, ... }
 */
 function storeParameterImposedValues(state, parameters) {
-	state.variables.imposed = parameters;
+	state.variables.imposedValue = parameters;
 }
 
 
 /**
  * Set the imposed parameter values for the experiment if the imposed values and the values allowed allowed by the experiment are compatible  
  * The imposed parameter values must first be stored with the storeParameterImposedValues() function before they can be set for the experiment.
+ * The storage is done in an object in the following format : { $NAME_OF_PARAMETER$ : VALUE }, 
+ * Here is an example of the data stored : { $ASSIGNED_TEXT_FOR_USER$ : "Good morning, you will have 2 melodies to play" }
+ * The variables that are constant are stored in an attribute called "constant", since their value is set an invariable.
+ * The variables that are dynamic are stored in an attribute called "initial", since their value could change (in which case, the new value 
+ * be stored in an attribute called value, so that the "inital" attribute always reflexes the inital value of the attribute)
  * @param {Object} state 						Vuex state
  * @param {Object} experiment					Object from the backend conntaining all information related to the experiment.
  * @param {Array<Object>} experiment.variables	List of the all the variables of the experiment.
@@ -195,7 +202,7 @@ function storeParameterImposedValues(state, parameters) {
 function setImposedParameterValues(state, experiment) {
 	// Get the variables targeted by the imposed parameters
 	const { variables } = experiment;
-	const imposedParameters = state.variables.imposed;
+	const imposedParameters = state.variables.imposedValue;
 
 	const parameterNames = Object.keys(imposedParameters);
 	const concernernedVariables = variables.filter((variable) => parameterNames.includes(variable.name));
@@ -208,9 +215,72 @@ function setImposedParameterValues(state, experiment) {
 		// If the imposed value is allowed, we set it in the assigned values (constant or dynamic)
 		if (allowedValues.has(imposedParameters[variable.name])) {
 			if (variable.assignation === 'constant')
-				state.variables.constant[variableHandler.wrapVariableName(variable.name)] = imposedParameters[variable.name];
+				state.variables.constantValue[variableHandler.wrapVariableName(variable.name)] = imposedParameters[variable.name];
 			else if (variable.assignation === 'dynamic')
-				state.variables.initial[variableHandler.wrapVariableName(variable.name)] = imposedParameters[variable.name];
+				state.variables.initialValue[variableHandler.wrapVariableName(variable.name)] = imposedParameters[variable.name];
+		}
+	}
+}
+
+
+/**
+ * Store the "variables schedules" to be used for variables that have a "scheduled" value selection.
+ * The storage is done in an object in the following format : { NAME_OF_SCHEDULE : ARRAY_OF_SCHEDULE }, 
+ * Here is an example of the data stored : { SCHEDULE_OF_FOUR_MELODIES : [2, 0, 3, 1] }
+ * @param {Object} state 								Vuex state
+ * @param {Object} experiment							Object from the backend conntaining all information related to the experiment.
+ * @param {Array<Object>} experiment.variables			List of the all the variables of the experiment.
+ * @param {Array<Object>} experiment.variablesSchedules	Array of objects containing the order of of appearance of the value for the variables. 
+ * 														The value of a substituted variable will be selected within its optional values at the
+ * 														index specified within the "variablesSchedules" attribute.
+*/
+function setVariableSelectionSchedules(state, experiment) {
+	const { variables, variablesSchedules } = experiment;
+	if (!Array.isArray(variables)) return;
+
+	// Store all the variable schedules
+	for (const scheduling in variablesSchedules) {
+		const { name, schedule } = scheduling;
+		state.variables.schedules[name] = schedule;
+	}
+}
+
+
+/**
+ * Store the option values of all varibles with a value selection status not "assigned" (random and scheduled) and initialized the 
+ * helpers in memory in charge of helping get the appropriate value for those variables.
+ * @param {Object} state 								Vuex state
+ * @param {Object} experiment							Object from the backend conntaining all information related to the experiment.
+ * @param {Array<Object>} experiment.variables			List of the all the variables of the experiment.
+*/
+function setExperiementVariablesWithValueSelection(state, experiment) {
+	const { variables } = experiment;
+	if (!Array.isArray(variables)) return;
+
+	// Store all the variable's 
+	for (const variable in variables) {
+
+		const { name, valueSelection, optionValues, scheduling, assignedValue } = variable;
+
+		// Store the variables with selection status in the appropriate category
+		let mustStoreOptionValues = true;
+		switch (valueSelection) {
+			case 'random':
+				state.variables.randomizedVariables[variableHandler.wrapVariableName(name)] = true;
+				break;
+			case 'scheduled':
+				state.variables.scheduledVariables[variableHandler.wrapVariableName(name)] = scheduling;
+				break;
+			default:
+				mustStoreOptionValues = false;
+				break;
+		}
+
+		// Store the option values from which the value of the variables will be selected from
+		if (mustStoreOptionValues) {
+			const allowedValues = new Set(optionValues);
+			allowedValues.add(assignedValue);
+			state.variables.selectionValuesOptions[name] = allowedValues;
 		}
 	}
 }
@@ -218,7 +288,11 @@ function setImposedParameterValues(state, experiment) {
 
 /**
  * Populate the flow and prelude with all the variable/parameter that are meant to be constant for the experiment. 
- * Once the constant variables/parameters are populated in the experiment, they can never be changed in the experiment for the ongoing session. 
+ * Once the constant variables/parameters are populated in the experiment, they can never be changed in the experiment for the ongoing session.
+ * 
+ * The only time in a session where the constant variables are populated is at the beginning. Afterward, any futher variable population is for
+ * dynamic variables or state variables, but not for constant variables, which is why the this fonctions also handles the puplation of the 
+ * randomized constant variables.
  * @param {Object} state 						Vuex state
  * @param {Object} experiment					Object from the backend conntaining all information related to the experiment.
  * @param {Array<Object>} experiment.variables	List of the all the variables of the experiment.
@@ -231,11 +305,13 @@ function populateExperimentConstantVariables(state, experiment) {
 	if (!Array.isArray(variables)) return;
 
 	// Get the constant variables
-	const constantVariables = { ...state.variables.constant };
+	const constantVariables = { ...state.variables.constantValue };
 	for (const variable of variables) {
+
 		const isConstant = variable.assignation === 'constant';
 		const wrappedVariableName = variableHandler.wrapVariableName(variable.name);
 		const wasAlreadyAssigned = Object.keys(constantVariables).includes(wrappedVariableName);
+
 		if (isConstant && !wasAlreadyAssigned) {
 			constantVariables[wrappedVariableName] = variable.assignedValue;
 		}
@@ -268,10 +344,10 @@ function setExperimentDynamicVariables(state, experiment) {
 	for (const variable of variables) {
 		const isDynamic = variable.assignation === 'dynamic';
 		const wrappedVariableName = variableHandler.wrapVariableName(variable.name);
-		const wasAlreadyAssigned = Object.keys(state.variables.initial).includes(wrappedVariableName);
+		const wasAlreadyAssigned = Object.keys(state.variables.initialValue).includes(wrappedVariableName);
 		if (isDynamic && !wasAlreadyAssigned) {
-			state.variables.initial[wrappedVariableName] = variable.assignedValue;
+			state.variables.initialValue[wrappedVariableName] = variable.assignedValue;
 		}
 	}
-	state.variables.value = JSON.parse(JSON.stringify(state.variables.initial));
+	state.variables.dynamicValue = JSON.parse(JSON.stringify(state.variables.initialValue));
 }

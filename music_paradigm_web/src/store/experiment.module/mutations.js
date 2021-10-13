@@ -24,6 +24,7 @@ export default {
 		experimentHandler.setExperimentGeneralSettings(state, experiment);
 		experimentHandler.setExperimentInitialState(state, experiment);
 		experimentHandler.setImposedParameterValues(state, experiment);
+		experimentHandler.setRandomizedVariableScheduling(state, experiment);
 		experimentHandler.populateExperimentConstantVariables(state, experiment);
 		experimentHandler.setExperimentDynamicVariables(state, experiment);
 	},
