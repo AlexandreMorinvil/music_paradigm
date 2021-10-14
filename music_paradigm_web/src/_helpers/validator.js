@@ -149,7 +149,7 @@ function validateBlock(block, index = null) {
 		throw new Error(`The type of the block${indexMessage} name must be a string`);
 	}
 
-	const allowedTypes = ['cue', 'end', 'feedback', 'instruction', 'playing', 'rest', 'video'];
+	const allowedTypes = ['cue', 'end', 'feedback', 'instruction', 'playing', 'rest', 'video', 'survey', 'writting'];
 	if (!allowedTypes.includes(block.type)) {
 		throw new Error(`The type '${block.type}' of the block${indexMessage} is not allowed`);
 	}
@@ -208,6 +208,13 @@ function validateBlock(block, index = null) {
 		'decrementVariableOnSucces',
 
 		'logLabel',
+
+		'surveyOptionsAreRadio',
+		'surveyAreAnswersMandatory',
+		'surveyInputOptionsValues',
+		'surveyInputOptionsText',
+		'surveyLeftSideText',
+		'surveyRightSideText',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -286,6 +293,8 @@ function validateAttributeType(key, value) {
 		case 'considerExperimentFinished':
 		case 'cueWaitForClick':
 		case 'isInSkipIfNotMetSuccessGoalChain':
+		case 'surveyOptionsAreRadio':
+		case 'surveyAreAnswersMandatory':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}
@@ -445,6 +454,10 @@ function validateAttributeType(key, value) {
 
 		// Array
 		case 'prelude':
+		case 'surveyInputOptionsValues':
+		case 'surveyInputOptionsText':
+		case 'surveyLeftSideText':
+		case 'surveyRightSideText':
 			if (!Array.isArray(value)) {
 				throw new Error(`The key '${key}' must be of type 'Array'`);
 			}

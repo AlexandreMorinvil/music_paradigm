@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { cursorHandler, defaultState } from '@/store-helper/experiment.module-helper';
 
 export default {
@@ -124,6 +125,23 @@ export default {
 
 	interactiveKeyboard: (state) => {
 		return state.state.content.interactiveKeyboard || false;
+	},
+
+	// Survey parameters
+	surveyInputOptionsValues: (state) => {
+		return state.state.content.surveyInputOptionsValues;
+	},
+
+	surveyInputOptionsText: (state) => {
+		return state.state.content.surveyInputOptionsText;
+	},
+
+	surveyLeftSideText: (state) => {
+		return state.state.content.surveyLeftSideText;
+	},
+
+	surveyRightSideText: (state) => {
+		return state.state.content.surveyRightSideText;
 	},
 
 	// Getters for the state media
@@ -308,6 +326,14 @@ export default {
 
 	cueWaitForClick: (state) => {
 		return state.settings.cueWaitForClick;
+	},
+
+	surveyOptionsAreRadio: (state) => {
+		return state.state.settings.surveyOptionsAreRadio;
+	},
+
+	surveyAreAnswersMandatory: (state) => {
+		return state.state.settings.surveyAreAnswersMandatory;
 	},
 
 	// Getters used for the content disposition on the screen

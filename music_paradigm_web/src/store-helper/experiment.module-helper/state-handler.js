@@ -101,6 +101,8 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		checkpoint,
 		strictPlay,
 		skipIfNotMetSuccessGoal,
+		surveyOptionsAreRadio,
+		surveyAreAnswersMandatory,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -131,7 +133,9 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		goBackButtonMessage: 			typeof goBackButtonMessage === 'string' 		? goBackButtonMessage : '',
 		checkpoint: 					typeof checkpoint === 'string' 					? checkpoint : false,
 		strictPlay: 					typeof strictPlay === 'boolean' 				? strictPlay : false,
-		skipIfNotMetSuccessGoal:		typeof skipIfNotMetSuccessGoal === 'number' 	? skipIfNotMetSuccessGoal : 0
+		skipIfNotMetSuccessGoal:		typeof skipIfNotMetSuccessGoal === 'number' 	? skipIfNotMetSuccessGoal : 0,
+		surveyOptionsAreRadio: 			typeof surveyOptionsAreRadio === 'boolean'		? surveyOptionsAreRadio : true,
+		surveyAreAnswersMandatory:		typeof surveyAreAnswersMandatory === 'boolean'	? surveyAreAnswersMandatory : true,
 	};
 
 	// Indicate that the state (current block's settings) was already initialized
@@ -186,6 +190,10 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 		helperImageFileName,
 		interactivePiano,
 		interactiveKeyboard,
+		surveyInputOptionsValues,
+		surveyInputOptionsText,
+		surveyLeftSideText,
+		surveyRightSideText,
 	} = currentBlock;
 
 	// Using the values that are not set in an array if there are any
@@ -213,12 +221,19 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(updatedInteractivePiano)) updatedInteractivePiano = updatedInteractivePiano[innerStepIndex];
 	if (Array.isArray(updatedInteractiveKeyboard)) updatedInteractiveKeyboard = updatedInteractiveKeyboard[innerStepIndex];
 
-	// Update the state
+	// === Update the state ===
+	// Elements which support the shorthand notation with array nesting
 	currentState.content.text = updatedTextContent || '';
 	currentState.content.pictureName = updatedPictureFileName || '';
 	currentState.content.helperImageName = updatedHelperImageFileName || '';
 	currentState.content.interactivePiano = updatedInteractivePiano || false;
 	currentState.content.interactiveKeyboard = updatedInteractiveKeyboard || false;
+	// Parsing the survey parameters (they do no support short notations through nesting)
+	currentState.content.surveyInputOptionsValues = (Array.isArray(surveyInputOptionsValues)) ? surveyInputOptionsValues : [];
+	currentState.content.surveyInputOptionsText = (Array.isArray(surveyInputOptionsText)) ? surveyInputOptionsText : [];
+	currentState.content.surveyLeftSideText = (Array.isArray(surveyLeftSideText)) ? surveyLeftSideText : [];
+	currentState.content.surveyRightSideText = (Array.isArray(surveyRightSideText)) ? surveyRightSideText : [];
+
 
 	// Indicate that the media files is initialized
 	Object.assign(isInitialized, { content: true });
