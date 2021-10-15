@@ -6,6 +6,9 @@ import { evaluation } from '@/store/evaluation.module';
 import { keyboard } from '@/store/keyboard.module';
 import { piano } from '@/store/piano.module';
 
+import { survey } from '@/store/survey.module';
+import { writting } from '@/store/writting.module';
+
 export default {
 	makeSimpleLogBlock,
 	makeThoroughLogHeader,
@@ -22,6 +25,9 @@ const gettersEvaluation = evaluation.getters;
 const gettersKeyboard = keyboard.getters;
 const gettersPiano = piano.getters;
 
+const gettersSurvey = survey.getters;
+const gettersWritting = writting.getters;
+
 // Access the states associated (where the information is stored)
 const stateAccount = account.state;
 const stateExperiment = experiment.state;
@@ -31,14 +37,17 @@ const stateEvaluation = evaluation.state;
 const stateKeyboard = keyboard.state;
 const statePiano = piano.state;
 
+const stateSurvey = survey.state;
+const stateWritting = writting.state;
+
 /**
  * Simple-Log
  * Simple-Log format is summarized as follow :
  *
- * 	Simple-Log Block 1 : [Information about performance]
- * 	Simple-Log Block 2 : [Information about performance]
- * 	Simple-Log Block 3 : [Information from survey]
- *  Simple-Log Block 4 : [Information from written input]
+ * 	Simple-Log Block 1 : { Information about performance }
+ * 	Simple-Log Block 2 : { Information about performance }
+ * 	Simple-Log Block 3 : { Information from survey }
+ *  Simple-Log Block 4 : { Information from written input }
  * 	...
  *
  * Each Simple-Log block contains the information about the session to which it is associated.
@@ -52,14 +61,20 @@ const statePiano = piano.state;
  *
  * A Simple-Log block is made of the attributes of the following Object types :
  *  - Simple_Log_Block_General_Information
- *  - Simple_Log_Block_Performance_Information
+ *  - Simple_Log_Block_Performance_Information OR Log_Block_Survey_Answers OR Log_Block_Writting_Answer
  *
  * @returns {Simple_Log_Block}
  */
 function makeSimpleLogBlock() {
+	// Block construction helper
+	const blockType = gettersExperiment.currentStateType(stateExperiment);
+
+	// Block construction
 	const block = {};
 	Object.assign(block, makeSimpleLogBlockGeneralInformation());
 	Object.assign(block, makeSimpleLogBlockPerformanceInformation());
+	if (blockType === 'survey') Object.assign(block, makeLogBlockSurveyAnswers());
+	if (blockType === 'witting') Object.assign(block, makeLogBlockWrittenAnswer());
 	return block;
 }
 
@@ -171,14 +186,22 @@ function makeThoroughLogHeader(targetLogLabel) {
  *
  * A Thorough-Log block is made of the attributes of the following Object types :
  *  - Thorough_Log_Block_General_Information
- *  - Thorough_Log_Block_Performance_Information
+ *  - Thorough_Log_Block_Performance_Information (if the control type applies)
+ *  - Log_Block_Survey_Answers (if the type was 'survey')
  *
  * @returns {Thorough_Log_Block}
  */
 function makeThoroughLogBlock() {
+	// Block construction helpers
+	const blockType = gettersExperiment.currentStateType(stateExperiment);
+	const controlType = gettersExperiment.controlType(stateExperiment);
+
+	// Block construction
 	const block = {};
 	Object.assign(block, makeThoroughLogBlockGeneralInformation());
-	Object.assign(block, makeSimpleBlockPerformanceInformation());
+	if (controlType !== 'none') Object.assign(block, makeSimpleBlockPerformanceInformation());
+	if (blockType === 'survey') Object.assign(block, makeLogBlockSurveyAnswers());
+	if (blockType === 'writting') Object.assign(block, makeLogBlockWrittenAnswer());
 	return block;
 }
 
@@ -210,9 +233,10 @@ function makeThoroughLogBlockGeneralInformation() {
  * @returns {Thorough_Log_Block_Performance_Information}
  */
 function makeSimpleBlockPerformanceInformation() {
+	const controlType = gettersExperiment.controlType(stateExperiment);
 	const performanceLog = {};
-	Object.assign(performanceLog, gettersPiano.pianoSimpleLogSummary(statePiano));
-	Object.assign(performanceLog, gettersPiano.pianoSimpleLogPreprocesed(statePiano));
+	if (controlType === 'piano') Object.assign(performanceLog, gettersPiano.pianoSimpleLogSummary(statePiano));
+	if (controlType === 'piano') Object.assign(performanceLog, gettersPiano.pianoSimpleLogPreprocesed(statePiano));
 	Object.assign(performanceLog, gettersKeyboard.keyboardSimpleLogSummary(stateKeyboard));
 	Object.assign(performanceLog, gettersKeyboard.keyboardSimpleLogPreprocesed(stateKeyboard));
 	return performanceLog;
@@ -228,4 +252,33 @@ function makeThoroughLogConclusion(isInTimeUp = false, newLogLabel) {
 		isInTimeUp: isInTimeUp,
 		nextLogLabel: newLogLabel,
 	};
+}
+
+/**
+ * Gather the information of relative to the results of a survey for a log block of Simple-Log and Thorough-Log format
+ * @returns {Log_Block_Survey_Answers}
+ */
+function makeLogBlockSurveyAnswers() {
+	const surveyAnswers = {
+		surveyAnswers: gettersSurvey.surveyAnswers(stateSurvey),
+		isSurveyRadio: gettersSurvey.isSurveyRadio(stateSurvey),
+		surveyOptions: gettersSurvey.surveyOptions(stateSurvey),
+		surveyHeader: gettersSurvey.surveyHeader(stateSurvey),
+		surveySideText: gettersSurvey.surveySideText(stateSurvey),
+	};
+	return surveyAnswers;
+}
+
+/**
+ * Gather the information of a written input from a 'writting' state for a log block of Simple-Log and Thorough-Log format
+ * @returns {Log_Block_Writting_Answer}
+ */
+function makeLogBlockWrittenAnswer() {
+	const writtenAnswer = {
+		writtenInput: gettersWritting.writtenInput(stateWritting),
+		writtingMaxCharacters: gettersWritting.writtingMaxCharacters(stateWritting),
+		writtingMinCharacters: gettersWritting.writtingMinCharacters(stateWritting),
+		writtingIsNumber: gettersWritting.writtingIsNumber(stateWritting),
+	};
+	return writtenAnswer;
 }
