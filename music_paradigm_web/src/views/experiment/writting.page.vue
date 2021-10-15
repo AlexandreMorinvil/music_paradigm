@@ -2,7 +2,7 @@
 	<div id="instruction-state" class="state-content-flex">
 		<image-area-component class="image-area state-section" />
 		<text-area-component class="text-area state-section" />
-		<writting-area-component class="survey-area state-section" ref="survey" />
+		<writting-area-component class="writting-area state-section" ref="writting" />
 		<button-area-component class="button-area state-section" :text="buttonText" ref="button" v-on:clicked="emitStateEndedSignal" />
 	</div>
 </template>
@@ -29,21 +29,21 @@ export default {
 		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('experiment', ['writtingMinCharacters']),
 		buttonText() {
-			return this.$t('views.experiment.survey.continue');
+			return this.$t('views.experiment.writting.continue');
 		},
 	},
 	methods: {
 		updateFootnote() {
 			let footnoteMessage = '';
-			if (this.surveyAreAnswersMandatory) footnoteMessage = this.$t('views.experiment.survey.footnote-answer-first');
-			else footnoteMessage = this.$t('views.experiment.survey.footnote-can-move-on');
+			if (this.surveyAreAnswersMandatory) footnoteMessage = this.$t('views.experiment.writting.footnote-answer-first');
+			else footnoteMessage = this.$t('views.experiment.writting.footnote-can-move-on');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		emitStateEndedSignal() {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 		},
 		activateButtonIfAppropriate() {
-			if (this.surveyAreAnswersMandatory && !this.$refs.survey.allAnswersAreGiven) this.$refs.button.deactivate();
+			if (this.$refs.writting.textLength < this.writtingMinCharacters) this.$refs.button.deactivate();
 			else this.$refs.button.activate();
 		},
 	},
@@ -56,7 +56,7 @@ export default {
 	},
 	mounted() {
 		this.$refs.button.setText(this.buttonText);
-		this.$watch(() => this.$refs.survey.allAnswersAreGiven, this.activateButtonIfAppropriate, { immediate: true });
+		this.$watch(() => this.$refs.writting.textLength, this.activateButtonIfAppropriate, { immediate: true });
 	},
 };
 </script>
@@ -70,7 +70,7 @@ export default {
 	flex-grow: 1;
 }
 
-.survey-area {
+.writting-area {
 	flex-grow: 1;
 }
 

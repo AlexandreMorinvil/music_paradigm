@@ -198,6 +198,11 @@
         "footnote-answer-first": "Svara på alla frågor och klicka på \"Fortsätt\" knappen för att gå till nästa steg",
         "footnote-can-move-on": "Klicka på \"Fortsätt\" knappen för att gå till nästa steg",
         "continue": "Fortsätta"
+      },
+      "writting": {
+        "footnote-answer-first": "Skriv ett svar och klicka på \"Fortsätt\" knappen för att gå till nästa steg",
+        "footnote-can-move-on": "Klicka på \"Fortsätt\" knappen för att gå till nästa steg",
+        "continue": "Fortsätta"
       }
     }
   }
