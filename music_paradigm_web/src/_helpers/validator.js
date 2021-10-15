@@ -215,6 +215,12 @@ function validateBlock(block, index = null) {
 		'surveyInputOptionsText',
 		'surveyLeftSideText',
 		'surveyRightSideText',
+
+		'writtingMaxCharacters',
+		'writtingMinCharacters',
+		'writtingIsNumber',
+		'writtingIsMultiline',
+		'writtingTextPlaceHolder',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -255,6 +261,7 @@ function validateAttributeType(key, value) {
 		case 'goBackButtonMessage':
 		case 'checkpoint':
 		case 'logLabel':
+		case 'writtingTextPlaceHolder':
 			if (!(typeof value === 'string')) {
 				throw new Error(`The key '${key}' must be of type 'String'`);
 			}
@@ -271,6 +278,8 @@ function validateAttributeType(key, value) {
 		case 'rhythmErrorMarginInMilliseconds':
 		case 'rhythmRelativeErrorMarginInFloat':
 		case 'skipIfNotMetSuccessGoal':
+		case 'writtingMaxCharacters':
+		case 'writtingMinCharacters':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
@@ -295,6 +304,8 @@ function validateAttributeType(key, value) {
 		case 'isInSkipIfNotMetSuccessGoalChain':
 		case 'surveyOptionsAreRadio':
 		case 'surveyAreAnswersMandatory':
+		case 'writtingIsNumber':
+		case 'writtingIsMultiline':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

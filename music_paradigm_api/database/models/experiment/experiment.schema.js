@@ -69,6 +69,12 @@ const stateSchema = new Schema({
     surveyInputOptionsText: { type: [], default: undefined },
     surveyLeftSideText: { type: [], default: undefined },
     surveyRightSideText: { type: [], default: undefined },
+
+    writtingMaxCharacters: { type: Number, default: undefined },
+    writtingMinCharacters: { type: Number, default: undefined },
+    writtingIsNumber: { type: Boolean, default: undefined },
+    writtingIsMultiline: { type: Boolean, default: undefined },
+    writtingTextPlaceHolder: { type: String, default: undefined },
 },
     {
         strict: true

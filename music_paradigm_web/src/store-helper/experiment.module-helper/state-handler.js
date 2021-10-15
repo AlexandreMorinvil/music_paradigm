@@ -103,6 +103,11 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		skipIfNotMetSuccessGoal,
 		surveyOptionsAreRadio,
 		surveyAreAnswersMandatory,
+		writtingMaxCharacters,
+		writtingMinCharacters,
+		writtingIsNumber,
+		writtingIsMultiline,
+		writtingTextPlaceHolder,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -136,6 +141,11 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		skipIfNotMetSuccessGoal:		typeof skipIfNotMetSuccessGoal === 'number' 	? skipIfNotMetSuccessGoal : 0,
 		surveyOptionsAreRadio: 			typeof surveyOptionsAreRadio === 'boolean'		? surveyOptionsAreRadio : true,
 		surveyAreAnswersMandatory:		typeof surveyAreAnswersMandatory === 'boolean'	? surveyAreAnswersMandatory : true,
+		writtingMaxCharacters:			typeof writtingMaxCharacters === 'number'		? writtingMaxCharacters : 0,
+		writtingMinCharacters:			typeof writtingMinCharacters === 'number'		? writtingMinCharacters : 100,
+		writtingIsNumber:				typeof writtingIsNumber === 'boolean'			? writtingIsNumber : false,
+		writtingIsMultiline:			typeof writtingIsMultiline === 'boolean'		? writtingIsMultiline : true,
+		writtingTextPlaceHolder: 		typeof writtingTextPlaceHolder === 'string'		? writtingTextPlaceHolder : '',
 	};
 
 	// Indicate that the state (current block's settings) was already initialized

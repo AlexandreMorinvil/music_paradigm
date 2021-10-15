@@ -336,6 +336,26 @@ export default {
 		return state.state.settings.surveyAreAnswersMandatory;
 	},
 
+	writtingMaxCharacters: (state) => {
+		return state.state.settings.writtingMaxCharacters;
+	},
+
+	writtingMinCharacters: (state) => {
+		return state.state.settings.writtingMinCharacters;
+	},
+
+	writtingIsNumber: (state) => {
+		return state.state.settings.writtingIsNumber;
+	},
+
+	writtingIsMultiline: (state) => {
+		return state.state.settings.writtingIsMultiline;
+	},
+
+	writtingTextPlaceHolder: (state) => {
+		return state.state.settings.writtingTextPlaceHolder;
+	},
+
 	// Getters used for the content disposition on the screen
 	hasFootnote: (state) => {
 		let hasFootNote = defaultState.DEFAULT_FOOTNOTE;
