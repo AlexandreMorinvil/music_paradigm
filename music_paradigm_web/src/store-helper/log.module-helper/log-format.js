@@ -35,9 +35,10 @@ const statePiano = piano.state;
  * Simple-Log
  * Simple-Log format is summarized as follow :
  *
- * 	Simple-Log 1 : [Information about performance]
- * 	Simple-Log 2 : [Information about performance]
- * 	Simple-Log 3 : [Information about performance]
+ * 	Simple-Log Block 1 : [Information about performance]
+ * 	Simple-Log Block 2 : [Information about performance]
+ * 	Simple-Log Block 3 : [Information from survey]
+ *  Simple-Log Block 4 : [Information from written input]
  * 	...
  *
  * Each Simple-Log block contains the information about the session to which it is associated.

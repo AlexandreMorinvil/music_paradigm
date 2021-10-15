@@ -91,6 +91,24 @@ export default {
 		isRadioOptions() {
 			return this.surveyOptionsAreRadio;
 		},
+		sideText() {
+			const sideText = [];
+			for (let i = 0; i < this.rowsCount; i++) {
+				const leftSideText = String(this.surveyLeftSideText[i] || '');
+				const rightSideText = String(this.surveyRightSideText[i] || '');
+				if (Boolean(leftSideText) || Boolean(rightSideText)) sideText.push(leftSideText + '||' + rightSideText);
+				else sideText.push('');
+			}
+			return sideText;
+		},
+		context() {
+			return {
+				isSurveyRadio: this.surveyOptionsAreRadio,
+				surveyOptions: this.surveyInputOptionsValues,
+				surveyHeader: this.surveyInputOptionsText,
+				surveySideText: this.sideText,
+			};
+		},
 		answers() {
 			return this.selectionPerRow;
 		},
