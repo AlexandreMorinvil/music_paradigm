@@ -9,7 +9,7 @@
 
 <script>
 import '@/styles/experiment-content-template.css';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
 import ButtonAreaComponent from '@/components/experiment/visual-content/button-area.component.vue';
@@ -33,13 +33,19 @@ export default {
 		},
 	},
 	methods: {
+		...mapActions('writting', ['setWittenInputContext', 'setWittenInputAnswer']),
 		updateFootnote() {
 			let footnoteMessage = '';
 			if (this.surveyAreAnswersMandatory) footnoteMessage = this.$t('views.experiment.writting.footnote-answer-first');
 			else footnoteMessage = this.$t('views.experiment.writting.footnote-can-move-on');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
+		storeWrittenInputRecords() {
+			this.setWittenInputContext(this.$refs.writting.context);
+			this.setWittenInputAnswer(this.$refs.writting.answer);
+		},
 		emitStateEndedSignal() {
+			this.storeWrittenInputRecords();
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 		},
 		activateButtonIfAppropriate() {

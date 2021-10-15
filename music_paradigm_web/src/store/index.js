@@ -18,6 +18,7 @@ import { piano } from './piano.module';
 import { session } from './session.module';
 import { survey } from './survey.module';
 import { users } from './users.module';
+import { writting } from './writting.module';
 
 Vue.use(Vuex);
 
@@ -39,5 +40,6 @@ export default new Vuex.Store({
 		session,
 		survey,
 		users,
+		writting,
 	},
 });

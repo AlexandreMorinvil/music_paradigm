@@ -26,7 +26,13 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['writtingMaxCharacters', 'writtingIsNumber', 'writtingIsMultiline', 'writtingTextPlaceHolder']),
+		...mapGetters('experiment', [
+			'writtingMaxCharacters',
+			'writtingMinCharacters',
+			'writtingIsNumber',
+			'writtingIsMultiline',
+			'writtingTextPlaceHolder',
+		]),
 		isTextInput() {
 			return !this.writtingIsNumber;
 		},
@@ -41,6 +47,13 @@ export default {
 		},
 		textLength() {
 			return this.text.length;
+		},
+		context() {
+			return {
+				writtingMaxCharacters: this.writtingMaxCharacters,
+				writtingMinCharacters: this.writtingMinCharacters,
+				writtingIsNumber: this.writtingIsNumber,
+			};
 		},
 		answer() {
 			return this.text;
