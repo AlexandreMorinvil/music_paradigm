@@ -199,7 +199,8 @@
       },
       "survey": {
         "footnote-answer-first": "Answer all questions and click on the \"Continue\" button to go to the next step",
-        "footnote-can-move-on": "Click on the \"Continue\" button to go to the next step"
+        "footnote-can-move-on": "Click on the \"Continue\" button to go to the next step",
+        "continue": "Continue"
       }
     }
   }
