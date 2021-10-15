@@ -31,8 +31,30 @@ const stateEvaluation = evaluation.state;
 const stateKeyboard = keyboard.state;
 const statePiano = piano.state;
 
-// Simple log
+/**
+ * Simple-Log
+ * Simple-Log format is summarized as follow :
+ *
+ * 	Simple-Log 1 : [Information about performance]
+ * 	Simple-Log 2 : [Information about performance]
+ * 	Simple-Log 3 : [Information about performance]
+ * 	...
+ *
+ * Each Simple-Log block contains the information about the session to which it is associated.
+ * The Simple-Log format does not provide the full story of how a session happened.
+ * Only the information about the performances or the required inputs of the user are recorded.
+ * Simple-Log blocks are (generally) only generated for "playing", "survey" and "writting" states.
+ */
 
+/**
+ * Create a block for a Simple-Log format
+ *
+ * A Simple-Log block is made of the attributes of the following Object types :
+ *  - Simple_Log_Block_General_Information
+ *  - Simple_Log_Block_Performance_Information
+ *
+ * @returns {Simple_Log_Block}
+ */
 function makeSimpleLogBlock() {
 	const block = {};
 	Object.assign(block, makeSimpleLogBlockGeneralInformation());
@@ -40,6 +62,10 @@ function makeSimpleLogBlock() {
 	return block;
 }
 
+/**
+ * Gather the information of general interest for a block fo Simple-Log format
+ * @returns {Simple_Log_Block_General_Information}
+ */
 function makeSimpleLogBlockGeneralInformation() {
 	return {
 		userId: gettersAccount.accountId(stateAccount),
@@ -70,6 +96,10 @@ function makeSimpleLogBlockGeneralInformation() {
 	};
 }
 
+/**
+ * Gather the information of relative to the performance for a block fo Simple-Log format
+ * @returns {Simple_Log_Block_Performance_Information}
+ */
 function makeSimpleLogBlockPerformanceInformation() {
 	const controlType = gettersExperiment.controlType(stateExperiment);
 	const performanceLog = {};
@@ -89,8 +119,31 @@ function makeSimpleLogBlockPerformanceInformation() {
 	return performanceLog;
 }
 
-// Thorough Log
+/**
+ * Thorough-Log
+ * Thorough-Log format is summarized as follow :
+ *
+ * 	Thorough-Log :
+ * 	{
+ * 		Header,
+ * 		Blocks : [
+ * 			Block1,
+ * 			Block2,
+ * 			Block3,
+ * 			...
+ * 		],
+ * 		Conclusion
+ * 	}
+ *
+ * The header contains the general information about the session.
+ * The blocks contain the information about each state during the session.
+ * The conclusion contain the information about when the experiment session ended.
+ */
 
+/**
+ * Gather the information for the header of a Thorough-Log
+ * @returns {Thorough_Log_Header}
+ */
 function makeThoroughLogHeader(targetLogLabel) {
 	return {
 		userId: gettersAccount.accountId(stateAccount),
@@ -112,6 +165,15 @@ function makeThoroughLogHeader(targetLogLabel) {
 	};
 }
 
+/**
+ * Create a block for a Thorough-Log
+ *
+ * A Thorough-Log block is made of the attributes of the following Object types :
+ *  - Thorough_Log_Block_General_Information
+ *  - Thorough_Log_Block_Performance_Information
+ *
+ * @returns {Thorough_Log_Block}
+ */
 function makeThoroughLogBlock() {
 	const block = {};
 	Object.assign(block, makeThoroughLogBlockGeneralInformation());
@@ -119,6 +181,10 @@ function makeThoroughLogBlock() {
 	return block;
 }
 
+/**
+ * Gather the information of relative to the performance for a block for Thorough-Log format
+ * @returns {Thorough_Log_Block_General_Information}
+ */
 function makeThoroughLogBlockGeneralInformation() {
 	return {
 		startCount: gettersSession.startCount(stateSession),
@@ -138,6 +204,10 @@ function makeThoroughLogBlockGeneralInformation() {
 	};
 }
 
+/**
+ * Gather the information of relative to the performance for a block for Thorough-Log format
+ * @returns {Thorough_Log_Block_Performance_Information}
+ */
 function makeSimpleBlockPerformanceInformation() {
 	const performanceLog = {};
 	Object.assign(performanceLog, gettersPiano.pianoSimpleLogSummary(statePiano));
@@ -147,6 +217,10 @@ function makeSimpleBlockPerformanceInformation() {
 	return performanceLog;
 }
 
+/**
+ * Gather the information for the conclusion of a Thorough-Log
+ * @returns {Thorough_Log_Conclusion}
+ */
 function makeThoroughLogConclusion(isInTimeUp = false, newLogLabel) {
 	return {
 		time: Date.now(),
