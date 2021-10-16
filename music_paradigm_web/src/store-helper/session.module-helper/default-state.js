@@ -7,7 +7,7 @@ function EMPTY_SESSION_INFORMATION() {
 		curriculumTitle: '',
 		curriculumId: '',
 		progressionId: '',
-		associativeId: '',
+		associativeId: String(Date()), // Serves as a unique identifier
 		associativeIdOrdinalNumber: 0,
 		startCount: 1,
 		completionCount: 0,

@@ -4,6 +4,5 @@ export default {
 		isAddingBlock: false,
 		isConcludingLog: false,
 	},
-
 	logId: null,
 };

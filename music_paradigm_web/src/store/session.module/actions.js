@@ -57,7 +57,7 @@ export default {
 					/* Nothing is done */
 				},
 				(error) => {
-					// TODO: Keep on memory the failed initialization in localstorage nad reattempt at every time we send log data
+					// TODO: Keep on memory the failed initialization in localstorage and reattempt at every time we send log data
 					console.log(error);
 				},
 			)
