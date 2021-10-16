@@ -1,4 +1,4 @@
-import constants from './constants';
+import { defaultState } from '@/store-helper/session.module-helper';
 
 export default {
 	status: {
@@ -8,5 +8,5 @@ export default {
 		isSavingSessionState: false,
 		isForgettingSessionState: false,
 	},
-	sessionInformation: constants.EMPTY_SESSION_INFORMATION(),
+	sessionInformation: defaultState.EMPTY_SESSION_INFORMATION(),
 };

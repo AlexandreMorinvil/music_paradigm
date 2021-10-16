@@ -29,17 +29,25 @@ const schema = new Schema(
         isInPrelude: { type: Boolean },
         timestamp: { type: Date },
 
-        referenceName: { type: String, default: null },
-        referenceKeys: { type: [], default: [] },
+        // Attributes for piano or keyboard control
+        referenceName: { type: String, default: undefined },
+        referenceKeys: { type: [], default: undefined },
         referenceTime: { type: [Number], default: undefined },
         referenceDuration: { type: [Number], default: undefined },
         referenceVelocity: { type: [Number], default: undefined },
 
-        pressedStartTime: { type: Date, default: null },
-        pressedKeys: { type: [], default: [] },
-        pressedTime: { type: [Number], default: [] },
-        pressedDuration: { type: [Number], default: [] },
+        pressedStartTime: { type: Date, default: undefined },
+        pressedKeys: { type: [], default: undefined },
+        pressedTime: { type: [Number], default: undefined },
+        pressedDuration: { type: [Number], default: undefined },
         pressedVelocity: { type: [Number], default: undefined },
+
+        // Attributes for surveys
+        surveyAnswers: { type: [], default: undefined },
+        isSurveyRadio: { type: Boolean, default: undefined },
+        surveyOptions: { type: [], default: undefined },
+        surveyHeader: { type: [], default: undefined },
+        surveySideText: { type: [], default: undefined },
     },
     {
         strict: false,

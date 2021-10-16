@@ -149,7 +149,7 @@ function validateBlock(block, index = null) {
 		throw new Error(`The type of the block${indexMessage} name must be a string`);
 	}
 
-	const allowedTypes = ['cue', 'end', 'feedback', 'instruction', 'playing', 'rest', 'video'];
+	const allowedTypes = ['cue', 'end', 'feedback', 'instruction', 'playing', 'rest', 'video', 'survey', 'writting'];
 	if (!allowedTypes.includes(block.type)) {
 		throw new Error(`The type '${block.type}' of the block${indexMessage} is not allowed`);
 	}
@@ -208,6 +208,19 @@ function validateBlock(block, index = null) {
 		'decrementVariableOnSucces',
 
 		'logLabel',
+
+		'surveyOptionsAreRadio',
+		'surveyAreAnswersMandatory',
+		'surveyInputOptionsValues',
+		'surveyInputOptionsText',
+		'surveyLeftSideText',
+		'surveyRightSideText',
+
+		'writtingMaxCharacters',
+		'writtingMinCharacters',
+		'writtingIsNumber',
+		'writtingIsMultiline',
+		'writtingTextPlaceHolder',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -248,6 +261,7 @@ function validateAttributeType(key, value) {
 		case 'goBackButtonMessage':
 		case 'checkpoint':
 		case 'logLabel':
+		case 'writtingTextPlaceHolder':
 			if (!(typeof value === 'string')) {
 				throw new Error(`The key '${key}' must be of type 'String'`);
 			}
@@ -264,6 +278,8 @@ function validateAttributeType(key, value) {
 		case 'rhythmErrorMarginInMilliseconds':
 		case 'rhythmRelativeErrorMarginInFloat':
 		case 'skipIfNotMetSuccessGoal':
+		case 'writtingMaxCharacters':
+		case 'writtingMinCharacters':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
@@ -286,6 +302,10 @@ function validateAttributeType(key, value) {
 		case 'considerExperimentFinished':
 		case 'cueWaitForClick':
 		case 'isInSkipIfNotMetSuccessGoalChain':
+		case 'surveyOptionsAreRadio':
+		case 'surveyAreAnswersMandatory':
+		case 'writtingIsNumber':
+		case 'writtingIsMultiline':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}
@@ -445,6 +465,10 @@ function validateAttributeType(key, value) {
 
 		// Array
 		case 'prelude':
+		case 'surveyInputOptionsValues':
+		case 'surveyInputOptionsText':
+		case 'surveyLeftSideText':
+		case 'surveyRightSideText':
 			if (!Array.isArray(value)) {
 				throw new Error(`The key '${key}' must be of type 'Array'`);
 			}

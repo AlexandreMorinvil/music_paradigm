@@ -47,20 +47,30 @@ const schema = new Schema(
 
                     reference: { type: Object },
 
+                    // Block context
+                    text: { type: String, default: undefined },
+                    pictureName: { type: String, default: undefined },
+                    helperImageName: { type: String, default: undefined },
+
+                    // Performance logs (piano)
                     pressedStartTime: { type: Date, default: undefined },
                     pressedKeys: { type: [], default: undefined },
                     pressedTime: { type: [Number], default: undefined },
                     pressedDuration: { type: [Number], default: undefined },
                     pressedVelocity: { type: [Number], default: undefined },
 
+                    // Performance logs (computer keyboard)
                     pressedKeyboardStartTime: { type: Date, default: undefined },
                     pressedKeyboardKeys: { type: [], default: undefined },
                     pressedKeyboardTime: { type: [Number], default: undefined },
                     pressedKeyboardDuration: { type: [Number], default: undefined },
 
-                    text: { type: String, default: undefined },
-                    pictureName: { type: String, default: undefined },
-                    helperImageName: { type: String, default: undefined },
+                    // Attributes for surveys
+                    surveyAnswers: { type: [], default: undefined },
+                    isSurveyRadio: { type: Boolean, default: undefined },
+                    surveyOptions: { type: [], default: undefined },
+                    surveyHeader: { type: [], default: undefined },
+                    surveySideText: { type: [], default: undefined },
                 }
             ],
             default: []

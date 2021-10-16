@@ -163,6 +163,10 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			helperImageName: '', 													// Name of the helper image to display
 			interactivePiano: false, 												// <Boolean|String> Directive to display the interactive piano
 			interactiveKeyboard: false, 											// <Boolean|String> Directive to display the interactive keyboard
+			surveyInputOptionsValues: [],											// List of the possible values that will be stored in memory for the input of the user in the survey (The number of options displayed is based on the length of this array)
+			surveyInputOptionsText: [],												// List of the texts that will be displayed above each option of the survey
+			surveyLeftSideText: [],													// Questions or texts to be written for the survey at the left, each value will be written in a row (the maximum length of surveyLeftSideText or surveyRightSideText will determine the number of row)
+			surveyRightSideText: [],												// Questions or texts to be written for the survey at the left, each value will be written in a row (the maximum length of surveyLeftSideText or surveyRightSideText will determine the number of row)
 		},
 		// Multimedia elements
 		mediaFile: {
@@ -199,6 +203,13 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			isGoBackButtonInFootnote: DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE,		// Block specific isGoBackButtonInFootnote superceeding the general parameter
 			checkpoint: true,														// Indicate whether the state should be saved at the current block
 			strictPlay: false,														// Indicate whether the playing state must be stopped upon a mistake
+			surveyOptionsAreRadio: true,											// Indicate if the survey questions are radio (one choice is allowed per question) or if multiple choices per questions are allowed
+			surveyAreAnswersMandatory: false,										// Indicate whether all answers are mandatory in order to be able to go to the next step when in a survey or if some questions can be left unanswered
+			writtingMaxCharacters: 100,												// Indicate the maximum amount of caracters allowed to be written in a "writting" state
+			writtingMinCharacters: 0,												// Indicate the minimum amount of characters needed in a "writting" state to be able to move to the next state
+			writtingIsNumber: false,												// Indicate whether the input writting expected should only be a numerical input
+			writtingIsMultiline: true,												// Indicate whether the input writting area should be displayed with multiple lines
+			writtingTextPlaceHolder: '',											// Indicate the text that will be written in the text input area when there is nothing written 
 		},
 		// Session specific informations
 		record: {

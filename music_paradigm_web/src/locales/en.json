@@ -165,15 +165,15 @@
         "footnote-after-wait-click": "Press the space bar and listen to the melody"
       },
       "end": {
-        "footnote-press-any-key": "Press any piano key or the space bar for ending the session",
+        "footnote-press-any-key": "Press any piano key or the space bar to end the session",
         "footnote-press-space-bar": "Press the space bar to end the session"
       },
       "feedback": {
-        "footnote-press-any-key": "Press any piano key or the space bar for going to the next step",
+        "footnote-press-any-key": "Press any piano key or the space bar to go to the next step",
         "footnote-press-space-bar": "Press the space bar to go to the next step"
       },
       "instruction": {
-        "footnote-press-any-key": "Press any piano key or the space bar for going to the next step",
+        "footnote-press-any-key": "Press any piano key or the space bar to go to the next step",
         "footnote-press-space-bar": "Press the space bar to go to the next step"
       },
       "playing": {
@@ -196,6 +196,16 @@
         "video-countdown": "The video will start in {time}",
         "minute": "{minute} minute | {minute} minutes",
         "second": "{second} second | {second} seconds"
+      },
+      "survey": {
+        "footnote-answer-first": "Answer all questions and click on the \"Continue\" button to go to the next step",
+        "footnote-can-move-on": "Click on the \"Continue\" button to go to the next step",
+        "continue": "Continue"
+      },
+      "writting": {
+        "footnote-answer-first": "Write an answer and click on the \"Continue\" button to go to the next step",
+        "footnote-can-move-on": "Click on the \"Continue\" button to go to the next step",
+        "continue": "Continue"
       }
     }
   }
