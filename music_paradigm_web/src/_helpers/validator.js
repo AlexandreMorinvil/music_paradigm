@@ -7,6 +7,19 @@ export default {
 	isExperimentValid,
 };
 
+// Allowed values
+
+/**
+ * @constant ALLOWED_ENTRIES_INTERACTIVE_HELPERS
+ * @type {Array<String>}
+ * @description combinations of ['true', 'false', 'all', 'midi', 'first'] and ['', '#']
+ * 				For example : 'true', 'true#', 'false', 'false#', 'all', 'all#', ...
+ * 				These values are allowed for the attributes :
+ * 				- interactivePiano
+ * 				- interactiveKeyboard
+ * */
+const ALLOWED_ENTRIES_INTERACTIVE_HELPERS = ['true', 'false', 'all', 'midi', 'first'].flatMap((d) => ['', '#'].map((v) => d + v));
+
 function getMinimalValidExperimentStructure() {
 	return {
 		name: '',
@@ -351,6 +364,10 @@ function validateAttributeType(key, value) {
 						if (!(typeof value === 'string' || typeof value === 'boolean')) {
 							throw new Error(`The key '${key}' must be of type 'String', 'Boolean' or 'Array'`);
 						}
+
+						if (!ALLOWED_ENTRIES_INTERACTIVE_HELPERS.includes(value)) {
+							throw new Error(`The key '${key}' cannot have the value '${value}'`);
+						}
 						break;
 
 					default:
@@ -378,8 +395,7 @@ function validateAttributeType(key, value) {
 								throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String' or boolean or array`);
 							}
 
-							const allowedEntries = ['all', 'midi', 'first'];
-							if (typeof element === 'string' && !allowedEntries.includes(element)) {
+							if (typeof element === 'string' && !ALLOWED_ENTRIES_INTERACTIVE_HELPERS.includes(element)) {
 								throw new Error(`The element number ${index + 1} in the array of the key '${key}' cannot have the value ${element}`);
 							}
 
@@ -392,7 +408,7 @@ function validateAttributeType(key, value) {
 										);
 									}
 
-									if (typeof subElement === 'string' && !allowedEntries.includes(subElement)) {
+									if (typeof subElement === 'string' && !ALLOWED_ENTRIES_INTERACTIVE_HELPERS.includes(subElement)) {
 										throw new Error(
 											// eslint-disable-next-line prettier/prettier
 											`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' cannot have the value ${subElement}`,

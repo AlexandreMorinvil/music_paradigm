@@ -97,6 +97,15 @@ export default {
 	computed: {
 		...mapGetters('experiment', ['interactivePiano', 'interactivePianoFirstOctave', 'interactiveKeyboardTextMapping']),
 		...mapGetters('piano', ['pressedKeys', 'midiFileTriggeredKeys', 'midiFileNotesMidi']),
+		mustDisplayPressedKeys() {
+			return !this.interactivePiano.includes('#');
+		},
+		mustDisplayLoadedMidiFirstNote() {
+			return this.interactivePiano.includes('first');
+		},
+		mustDisplayLoadedMidiAllNotes() {
+			return this.interactivePiano.includes('midi');
+		},
 		midiOffset() {
 			return this.interactivePianoFirstOctave * this.OFFSET_STEP;
 		},
@@ -165,7 +174,7 @@ export default {
 	watch: {
 		pressedKeys(list) {
 			for (let note = this.firstNote; note <= this.lastNote; note++) {
-				if (list.includes(note)) this.$refs[note.toString()].classList.add('user-triggered');
+				if (this.mustDisplayPressedKeys && list.includes(note)) this.$refs[note.toString()].classList.add('user-triggered');
 				else this.$refs[note.toString()].classList.remove('user-triggered');
 			}
 		},
@@ -185,8 +194,8 @@ export default {
 			immediate: true,
 			handler: function () {
 				this.clearDesignatedKeys();
-				if (this.interactivePiano === 'first') this.hintFirstNote();
-				if (this.interactivePiano === 'midi') this.hintAllNotes();
+				if (this.mustDisplayLoadedMidiFirstNote) this.hintFirstNote();
+				if (this.mustDisplayLoadedMidiAllNotes) this.hintAllNotes();
 			},
 		},
 	},
