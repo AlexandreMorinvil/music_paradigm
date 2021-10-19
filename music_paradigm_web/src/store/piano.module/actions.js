@@ -1,4 +1,4 @@
-import { ressourceService } from '../../_services';
+import { resourceService } from '../../_services';
 
 export default {
 	resetPianoState: ({ commit }) => {
@@ -82,7 +82,7 @@ export default {
 	},
 	loadMidiFile: ({ commit, dispatch }, midiFileName) => {
 		dispatch('eraseMidiFile');
-		return ressourceService.fetchMidiFile(midiFileName).then(
+		return resourceService.fetchMidiFile(midiFileName).then(
 			(response) => {
 				commit('setMidiFileName', midiFileName);
 				commit('loadMidiArrayStream', response);

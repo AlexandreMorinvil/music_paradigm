@@ -18,7 +18,7 @@ app.use(cors());
 
 // serve static
 app.use('/static', express.static('static'));
-app.use('/experiment-ressources', express.static(path.resolve(__dirname, "../experiment_ressources")));
+app.use('/experiment-resources', express.static(path.resolve(__dirname, "../experiment_resources")));
 
 // use JWT auth to secure the api
 app.use(jwt());
@@ -38,10 +38,10 @@ app.use('/users', require('users/users.controller'));
 
 // setup routes for file browser
 app.use("/storage", sdk.Router([
-    new sdk.LocalStorage(path.resolve(__dirname, "../experiment_ressources")),
+    new sdk.LocalStorage(path.resolve(__dirname, "../experiment_resources")),
     new sdk.S3Storage(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, AWS_S3_BUCKET, FILEBROWSER_AWS_ROOT_PATH)
 ], {
-    uploadPath: path.resolve(__dirname, "../experiment_ressources")
+    uploadPath: path.resolve(__dirname, "../experiment_resources")
 }));
 
 // global error handler

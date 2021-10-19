@@ -12,7 +12,7 @@
 						<th>Group</th>
 						<th>Name</th>
 						<th>Version</th>
-						<th>Ressource Folder</th>
+						<th>Resource Folder</th>
 						<th>Actions</th>
 					</tr>
 				</thead>

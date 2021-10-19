@@ -26,7 +26,7 @@ services:
     depends_on:
       - mongo
     volumes:
-      - ./experiment_ressources:/usr/src/experiment_ressources
+      - ./experiment_resources:/usr/src/experiment_resources
 
   mongo:
     container_name: claspmongo
