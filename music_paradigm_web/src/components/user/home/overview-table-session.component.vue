@@ -23,11 +23,11 @@ export default {
 	},
 	computed: {
 		state() {
-			if (this.detrmineIsUnavailable()) return 'unavailable';
+			if (this.detrmineIsCompleted()) return 'completed';
+			else if (this.detrmineIsUnavailable()) return 'unavailable';
 			else if (this.detrmineIsAlmostAvailable()) return 'almost-available';
 			else if (this.detrmineIsNewAvailable()) return 'new-available';
 			else if (this.detrmineIsCompletedvailable()) return 'completed-available';
-			else if (this.detrmineIsCompleted()) return 'completed';
 			else return 'unavailable';
 		},
 		title() {
@@ -69,6 +69,9 @@ export default {
 					associativeIdOrdinalNumber: this.session.associativeIdOrdinalNumber,
 				});
 		},
+		detrmineIsCompleted() {
+			return !this.session.isAvailable && this.session.completionCount > 0;
+		},
 		detrmineIsUnavailable() {
 			return !this.session.isAvailable && this.session.isDelayedByPreviousSequential;
 		},
@@ -80,9 +83,6 @@ export default {
 		},
 		detrmineIsCompletedvailable() {
 			return this.session.isAvailable && this.session.completionCount > 0;
-		},
-		detrmineIsCompleted() {
-			return !this.session.isAvailable && this.session.completionCount > 0;
 		},
 	},
 	watch: {
