@@ -166,14 +166,14 @@ function updateStateMediaFiles(currentState, targetState, cursor, isInitialized)
 	// Using the values that are not set in an array if there are any
 	let updatedMidiFileName = typeof midiFileName === 'string' ? midiFileName : null;
 	let updatedVideoFileName = typeof videoFileName === 'string' ? videoFileName : null;
-	let updatedReferenceKeyboardKeys = Array.isArray(referenceKeyboardKeys) ? referenceKeyboardKeys : null;
+	let updatedReferenceKeyboardKeys = (Array.isArray(referenceKeyboardKeys) && referenceKeyboardKeys.every(key => (typeof key === 'string'))) ? referenceKeyboardKeys : null;
 
 	// Update the media files. If no new value is found, the previous value is used (it is kept unchanged)
 	const mediaIndex = cursor.current.piledContentIndex;
 
 	if (Array.isArray(midiFileName)) updatedMidiFileName = midiFileName[mediaIndex];
 	if (Array.isArray(videoFileName)) updatedVideoFileName = videoFileName[mediaIndex];
-	if (updatedReferenceKeyboardKeys && Array.isArray(updatedReferenceKeyboardKeys[mediaIndex])) updatedReferenceKeyboardKeys = updatedReferenceKeyboardKeys[mediaIndex];
+	if (referenceKeyboardKeys && Array.isArray(referenceKeyboardKeys[mediaIndex])) updatedReferenceKeyboardKeys = referenceKeyboardKeys[mediaIndex];
 	const updatedInteractiveKeyboardTextMapping = Array.isArray(interactiveKeyboardTextMapping) ? interactiveKeyboardTextMapping[mediaIndex] || false : false;
 
 	// If the midifileName is specified (whether it is new or not), we also reset the virtual piano's text
