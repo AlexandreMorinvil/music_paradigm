@@ -18,7 +18,7 @@ export default {
  * 				- interactivePiano
  * 				- interactiveKeyboard
  * */
-const ALLOWED_ENTRIES_INTERACTIVE_HELPERS = ['true', 'false', 'all', 'midi', 'first'].flatMap((d) => ['', '#'].map((v) => d + v));
+const ALLOWED_ENTRIES_INTERACTIVE_HELPERS = ['true', 'false', 'all', 'midi', 'first'].flatMap((d) => ['', '#', '##'].map((v) => d + v));
 
 function getMinimalValidExperimentStructure() {
 	return {
