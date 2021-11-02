@@ -18,7 +18,7 @@ export default {
 	},
 	computed: {
 		type() {
-			return 'thorough';
+			return 'simple';
 		},
 	},
 	methods: {
