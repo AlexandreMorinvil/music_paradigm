@@ -30,6 +30,7 @@ schema.methods.getExperimentAssociated = async function (associativeId) {
 
 schema.methods.update = async function (updatedCurriculum) {
     if (updatedCurriculum.hasOwnProperty('title')) this.title = updatedCurriculum.title;
+    if (updatedCurriculum.hasOwnProperty('logType')) this.logType = updatedCurriculum.logType;
     if (updatedCurriculum.hasOwnProperty('isSequential')) this.isSequential = updatedCurriculum.isSequential;
     if (updatedCurriculum.hasOwnProperty('experiments')) this.experiments = updatedCurriculum.experiments;
 

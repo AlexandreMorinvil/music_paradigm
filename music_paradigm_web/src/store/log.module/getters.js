@@ -1,3 +1,5 @@
 export default {
-	/* No getters */
+	logType: (state) => {
+		return state.logType;
+	},
 };

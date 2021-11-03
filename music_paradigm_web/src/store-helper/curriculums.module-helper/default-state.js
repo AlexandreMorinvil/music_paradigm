@@ -8,6 +8,7 @@ function EMPTY_SELECTED_CURRICULUM() {
 	return {
 		_id: null,
 		title: '',
+		logType: '',
 		isSequential: true,
 		experiments: [],
 	};
@@ -18,6 +19,7 @@ function EMPTY_CURRICULUMS_LIST() {
 		{
 			_id: null,
 			title: '',
+			logType: '',
 			isSequential: true,
 			experimentsCount: 0,
 
