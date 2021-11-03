@@ -98,13 +98,13 @@ export default {
 		...mapGetters('experiment', ['interactivePiano', 'interactivePianoFirstOctave', 'interactiveKeyboardTextMapping']),
 		...mapGetters('piano', ['pressedKeys', 'midiFileTriggeredKeys', 'midiFileNotesMidi']),
 		mustDisplayPressedKeys() {
-			return !this.interactivePiano.includes('#');
+			return !String(this.interactivePiano).includes('#');
 		},
 		mustDisplayLoadedMidiFirstNote() {
-			return this.interactivePiano.includes('first');
+			return String(this.interactivePiano).includes('first');
 		},
 		mustDisplayLoadedMidiAllNotes() {
-			return this.interactivePiano.includes('midi');
+			return String(this.interactivePiano).includes('midi');
 		},
 		midiOffset() {
 			return this.interactivePianoFirstOctave * this.OFFSET_STEP;

@@ -39,7 +39,7 @@ schema.methods.getSessionInformation = async function (associativeId, associativ
         previousCursor: experimentMaker.cursor,
         previousTimeIndicated: experimentMaker.timeIndicated,
         assignedParameters: this.assignedParameters,
-        logFormat: curriculum.logFormat
+        logType: curriculum.logType
     };
 
     return sessionInformation;
