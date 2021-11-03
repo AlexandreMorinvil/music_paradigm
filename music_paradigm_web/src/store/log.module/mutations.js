@@ -1,3 +1,5 @@
+import defaultState from '@/store-helper/log.module-helper/default-state';
+
 export default {
 	// Status Updates
 	indicateInitializeLogRequest(state) {
@@ -24,11 +26,11 @@ export default {
 		state.status.isConcludingLog = false;
 	},
 
-	setLogId(state, logId) {
-		state.logId = logId;
+	setLogType(state, logType) {
+		state.logType = logType || defaultState.DEFAULT_LOG_TYPE();
 	},
 
-	clearLogId(state) {
-		state.logId = null;
+	clearLogType(state) {
+		state.logType = defaultState.DEFAULT_LOG_TYPE();
 	},
 };

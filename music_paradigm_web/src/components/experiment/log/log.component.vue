@@ -5,11 +5,16 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+import { log } from '@/_helpers';
+
+import LogNoneComponent from './log-none.component.vue';
 import LogSimpleComponent from './log-simple.component.vue';
 import LogThoroughComponent from './log-thorough.component.vue';
 
 export default {
 	components: {
+		none: LogNoneComponent,
 		simple: LogSimpleComponent,
 		thorough: LogThoroughComponent,
 	},
@@ -17,11 +22,13 @@ export default {
 		return {};
 	},
 	computed: {
+		...mapGetters('log', ['logType']),
 		type() {
-			return 'simple';
+			return log.returnValidLogType(this.logType);
 		},
 	},
 	methods: {
+		...mapActions('log', ['clearLogType']),
 		initialize() {
 			if (this.$refs.log.initialize) this.$refs.log.initialize();
 		},
@@ -30,6 +37,7 @@ export default {
 		},
 		conclude() {
 			if (this.$refs.log.conclude) this.$refs.log.conclude();
+			this.clearLogType();
 		},
 	},
 };

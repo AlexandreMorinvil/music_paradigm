@@ -1,3 +1,5 @@
+import { log } from '@/_helpers';
+
 export default {
 	EMPTY_SESSION_INFORMATION,
 };
@@ -19,5 +21,6 @@ function EMPTY_SESSION_INFORMATION() {
 		previousCursor: null,
 		previousTimeIndicated: 0,
 		assignedParameters: {},
+		logType: log.defaultLogType,
 	};
 }
