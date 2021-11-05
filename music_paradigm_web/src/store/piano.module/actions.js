@@ -72,6 +72,10 @@ export default {
 		commit('addReleasedNoteLog', key);
 	},
 
+	releasedAllNotesNotReleasedInLog: ({ commit }, stopTime) => {
+		commit('releasedAllNotesNotReleasedInLog', stopTime);
+	},
+
 	resetPlayedNotesLogs: ({ commit }) => {
 		commit('resetPlayedNotesLogs');
 	},
