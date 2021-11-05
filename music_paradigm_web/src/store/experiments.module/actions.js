@@ -45,17 +45,23 @@ export default {
 		commit('setImposedParameterValues', parameters);
 	},
 
+	setLogType({ commit }, logType) {
+		commit('setLogType', logType);
+	},
+
 	startSelectedExperiment({ dispatch, getters }) {
 		if (!getters.hasExperimentSelection) return;
+		dispatch('log/setLogType', getters.logType, { root: true });
 		dispatch('experiment/setParameterValues', getters.imposedParameterValues, { root: true });
 		dispatch('experiment/setExperiment', getters.experimentSelected, { root: true });
 		dispatch('experiment/setStartingPoint', null, { root: true });
 		dispatch('experiment/initExperiment', null, { root: true });
 	},
 
-	startExperimentQuick({ commit, dispatch }, id) {
+	startExperimentQuick({ commit, dispatch, getters }, id) {
 		experimentService.getDefinition(id).then(
 			(description) => {
+				dispatch('log/setLogType', getters.logType, { root: true });
 				commit('setEditedExperiment', description);
 				commit('setSelectedExperiment', description);
 				dispatch('experiment/setExperiment', description, { root: true });
