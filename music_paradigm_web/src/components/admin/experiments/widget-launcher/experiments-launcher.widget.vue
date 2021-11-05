@@ -1,6 +1,7 @@
 <template>
 	<div id="experiment-launcher" class="widget widget-bg">
-		<experiments-parameter-form-component v-show="needsParameterForm" class="editor-position inner-widget inner-widget-bg" />
+		<experiments-log-form-component class="inner-widget inner-widget-bg" />
+		<experiments-parameter-form-component v-show="needsParameterForm" class="inner-widget inner-widget-bg" />
 
 		<div class="action-buttons-position">
 			<button v-on:click="handleExperimentStart" class="widget-button green run-button" :class="isRunSelectionButtonActive || 'inactive'">
@@ -15,10 +16,12 @@ import '@/styles/widget-template.css';
 import '@/styles/form-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
+import ExperimentsLogFormComponent from './experiments-log-form.component.vue';
 import ExperimentsParameterFormComponent from './experiments-parameter-form.component.vue';
 
 export default {
 	components: {
+		ExperimentsLogFormComponent,
 		ExperimentsParameterFormComponent,
 	},
 	computed: {
