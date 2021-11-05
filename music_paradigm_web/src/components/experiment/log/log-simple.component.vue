@@ -4,6 +4,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import { log } from '@/_helpers';
 
 export default {
 	computed: {
@@ -12,7 +13,7 @@ export default {
 	methods: {
 		...mapActions('log', ['addSimmpleLogBlock']),
 		addBlock() {
-			if (this.currentStateType === 'playing') this.addSimmpleLogBlock();
+			if (log.isStateConsideredInSimpleLog(this.currentStateType)) this.addSimmpleLogBlock();
 		},
 	},
 };
