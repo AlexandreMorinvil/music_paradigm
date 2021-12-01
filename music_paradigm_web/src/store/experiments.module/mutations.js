@@ -1,4 +1,4 @@
-import { validator } from '@/_helpers';
+import { defaultState } from '@/store-helper/experiments.module-helper';
 
 export default {
 	// Status Updates
@@ -52,8 +52,7 @@ export default {
 	},
 
 	unsetSelectedExperiment(state) {
-		state.selection._id = null;
-		state.selection.content = validator.getMinimalValidExperimentStructure();
+		state.selection = defaultState.DEFAULT_EMPTY_SELECTION();
 	},
 
 	setEditedExperiment(state, experiment) {
@@ -63,7 +62,7 @@ export default {
 	},
 
 	clearCompiledExperiment(state) {
-		state.edition = validator.getMinimalValidExperimentStructure();
+		state.edition = defaultState.DEFAULT_MINIMAL_EXPERIMENT();
 	},
 
 	setHeadersList(state, experimentsHeadersLst) {
@@ -73,5 +72,9 @@ export default {
 	setImposedParameterValues(state, parameters) {
 		state.imposedParameterValues = {};
 		for (const parameter of parameters) state.imposedParameterValues[parameter.name] = parameter.assignedValue;
+	},
+
+	setLogType(state, logType) {
+		state.logType = logType;
 	},
 };

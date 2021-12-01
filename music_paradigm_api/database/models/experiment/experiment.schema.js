@@ -5,7 +5,7 @@ const stateSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ["cue", "end", "feedback", "instruction", "playing", "rest", "video"]
+        enum: ["cue", "end", "feedback", "instruction", "playing", "rest", "video", "survey", "writting"]
     },
     textContent: { type: Schema.Types.Mixed, default: undefined },
     pictureFileName: { type: Schema.Types.Mixed, default: undefined },
@@ -62,6 +62,19 @@ const stateSchema = new Schema({
     considerExperimentFinished: { type: Boolean, default: undefined },
 
     logLabel: {type: String, default: undefined },
+
+    surveyOptionsAreRadio: { type: Boolean, default: undefined },
+    surveyAreAnswersMandatory: { type: Boolean, default: undefined },
+    surveyInputOptionsValues: { type: [], default: undefined },
+    surveyInputOptionsText: { type: [], default: undefined },
+    surveyLeftSideText: { type: [], default: undefined },
+    surveyRightSideText: { type: [], default: undefined },
+
+    writtingMaxCharacters: { type: Number, default: undefined },
+    writtingMinCharacters: { type: Number, default: undefined },
+    writtingIsNumber: { type: Boolean, default: undefined },
+    writtingIsMultiline: { type: Boolean, default: undefined },
+    writtingTextPlaceHolder: { type: String, default: undefined },
 },
     {
         strict: true
@@ -96,6 +109,7 @@ const schema = new Schema({
     logLabel: {type: String, default: 'default' },
 
     cueWaitForClick: { type: Boolean, default: false },
+    instrument: {type: String, default: undefined },
 
     prelude: {
         default: [],

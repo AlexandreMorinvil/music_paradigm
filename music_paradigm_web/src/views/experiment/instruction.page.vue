@@ -39,7 +39,6 @@ export default {
 		},
 	},
 	computed: {
-		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['pressedKeys']),
 		...mapGetters('experiment', ['anyPianoKey']),
 	},

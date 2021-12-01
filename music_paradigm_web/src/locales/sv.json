@@ -193,6 +193,16 @@
         "video-countdown": "Instruktionsvideon kommer att spelas upp om {time}",
         "minute": "{minute} minut | {minute} minuter",
         "second": "{second} sekund | {second} sekunder"
+      },
+      "survey": {
+        "footnote-answer-first": "Svara på alla frågor och klicka på \"Fortsätt\" knappen för att gå till nästa steg",
+        "footnote-can-move-on": "Klicka på \"Fortsätt\" knappen för att gå till nästa steg",
+        "continue": "Nästa"
+      },
+      "writting": {
+        "footnote-answer-first": "Skriv ett svar och klicka på \"Fortsätt\" knappen för att gå till nästa steg",
+        "footnote-can-move-on": "Klicka på \"Fortsätt\" knappen för att gå till nästa steg",
+        "continue": "Nästa"
       }
     }
   }

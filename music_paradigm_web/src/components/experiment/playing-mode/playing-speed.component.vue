@@ -26,7 +26,6 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('experiment', ['timeoutInSeconds', 'melodyRepetition', 'isWaitingStartSignal']),
 		...mapGetters('piano', ['midiFileNotesMidi', 'playedNotesMidi']),
 		timeLimit() {

@@ -26,7 +26,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['urlExperimentRessource']),
+		...mapGetters(['urlExperimentResource']),
 		...mapGetters('experiment', ['timeoutInSeconds', 'melodyRepetition', 'isWaitingStartSignal']),
 		...mapGetters('keyboard', ['referenceKeyboardKeys', 'pressedKeyboardKeys']),
 		timeLimit() {

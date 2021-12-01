@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { cursorHandler, defaultState } from '@/store-helper/experiment.module-helper';
 
 export default {
@@ -82,8 +83,8 @@ export default {
 		return state.description.version || 0;
 	},
 
-	timbreFile: (state) => {
-		return state.settings.timbreFile || defaultState.DEFAULT_TIMBRE_FILE;
+	instrument: (state) => {
+		return state.settings.instrument || defaultState.DEFAULT_INSTRUMENT;
 	},
 
 	timeLimitInSeconds: (state) => {
@@ -124,6 +125,23 @@ export default {
 
 	interactiveKeyboard: (state) => {
 		return state.state.content.interactiveKeyboard || false;
+	},
+
+	// Survey parameters
+	surveyInputOptionsValues: (state) => {
+		return state.state.content.surveyInputOptionsValues;
+	},
+
+	surveyInputOptionsText: (state) => {
+		return state.state.content.surveyInputOptionsText;
+	},
+
+	surveyLeftSideText: (state) => {
+		return state.state.content.surveyLeftSideText;
+	},
+
+	surveyRightSideText: (state) => {
+		return state.state.content.surveyRightSideText;
 	},
 
 	// Getters for the state media
@@ -308,6 +326,34 @@ export default {
 
 	cueWaitForClick: (state) => {
 		return state.settings.cueWaitForClick;
+	},
+
+	surveyOptionsAreRadio: (state) => {
+		return state.state.settings.surveyOptionsAreRadio;
+	},
+
+	surveyAreAnswersMandatory: (state) => {
+		return state.state.settings.surveyAreAnswersMandatory;
+	},
+
+	writtingMaxCharacters: (state) => {
+		return state.state.settings.writtingMaxCharacters;
+	},
+
+	writtingMinCharacters: (state) => {
+		return state.state.settings.writtingMinCharacters;
+	},
+
+	writtingIsNumber: (state) => {
+		return state.state.settings.writtingIsNumber;
+	},
+
+	writtingIsMultiline: (state) => {
+		return state.state.settings.writtingIsMultiline;
+	},
+
+	writtingTextPlaceHolder: (state) => {
+		return state.state.settings.writtingTextPlaceHolder;
 	},
 
 	// Getters used for the content disposition on the screen

@@ -7,6 +7,19 @@ export default {
 	isExperimentValid,
 };
 
+// Allowed values
+
+/**
+ * @constant ALLOWED_ENTRIES_INTERACTIVE_HELPERS
+ * @type {Array<String>}
+ * @description combinations of ['true', 'false', 'all', 'midi', 'first'] and ['', '#']
+ * 				For example : 'true', 'true#', 'false', 'false#', 'all', 'all#', ...
+ * 				These values are allowed for the attributes :
+ * 				- interactivePiano
+ * 				- interactiveKeyboard
+ * */
+const ALLOWED_ENTRIES_INTERACTIVE_HELPERS = ['true', 'false', 'all', 'midi', 'first'].flatMap((d) => ['', '#', '##'].map((v) => d + v));
+
 function getMinimalValidExperimentStructure() {
 	return {
 		name: '',
@@ -107,6 +120,7 @@ function validateExperiment(experiment) {
 		'logLabel',
 
 		'cueWaitForClick',
+		'instrument',
 	];
 	Object.keys(experiment).forEach((key) => {
 		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the general parameters is not allowed`);
@@ -150,7 +164,7 @@ function validateBlock(block, index = null) {
 		throw new Error(`The type of the block${indexMessage} name must be a string`);
 	}
 
-	const allowedTypes = ['cue', 'end', 'feedback', 'instruction', 'playing', 'rest', 'video'];
+	const allowedTypes = ['cue', 'end', 'feedback', 'instruction', 'playing', 'rest', 'video', 'survey', 'writting'];
 	if (!allowedTypes.includes(block.type)) {
 		throw new Error(`The type '${block.type}' of the block${indexMessage} is not allowed`);
 	}
@@ -209,6 +223,21 @@ function validateBlock(block, index = null) {
 		'decrementVariableOnSucces',
 
 		'logLabel',
+
+		'surveyOptionsAreRadio',
+		'surveyAreAnswersMandatory',
+		'surveyInputOptionsValues',
+		'surveyInputOptionsText',
+		'surveyLeftSideText',
+		'surveyRightSideText',
+
+		'writtingMaxCharacters',
+		'writtingMinCharacters',
+		'writtingIsNumber',
+		'writtingIsMultiline',
+		'writtingTextPlaceHolder',
+
+		'instrument',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -249,6 +278,8 @@ function validateAttributeType(key, value) {
 		case 'goBackButtonMessage':
 		case 'checkpoint':
 		case 'logLabel':
+		case 'writtingTextPlaceHolder':
+		case 'instrument':
 			if (!(typeof value === 'string')) {
 				throw new Error(`The key '${key}' must be of type 'String'`);
 			}
@@ -265,6 +296,8 @@ function validateAttributeType(key, value) {
 		case 'rhythmErrorMarginInMilliseconds':
 		case 'rhythmRelativeErrorMarginInFloat':
 		case 'skipIfNotMetSuccessGoal':
+		case 'writtingMaxCharacters':
+		case 'writtingMinCharacters':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
@@ -287,6 +320,10 @@ function validateAttributeType(key, value) {
 		case 'considerExperimentFinished':
 		case 'cueWaitForClick':
 		case 'isInSkipIfNotMetSuccessGoalChain':
+		case 'surveyOptionsAreRadio':
+		case 'surveyAreAnswersMandatory':
+		case 'writtingIsNumber':
+		case 'writtingIsMultiline':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}
@@ -332,6 +369,10 @@ function validateAttributeType(key, value) {
 						if (!(typeof value === 'string' || typeof value === 'boolean')) {
 							throw new Error(`The key '${key}' must be of type 'String', 'Boolean' or 'Array'`);
 						}
+
+						if (!ALLOWED_ENTRIES_INTERACTIVE_HELPERS.includes(value)) {
+							throw new Error(`The key '${key}' cannot have the value '${value}'`);
+						}
 						break;
 
 					default:
@@ -359,8 +400,7 @@ function validateAttributeType(key, value) {
 								throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String' or boolean or array`);
 							}
 
-							const allowedEntries = ['all', 'midi', 'first'];
-							if (typeof element === 'string' && !allowedEntries.includes(element)) {
+							if (typeof element === 'string' && !ALLOWED_ENTRIES_INTERACTIVE_HELPERS.includes(element)) {
 								throw new Error(`The element number ${index + 1} in the array of the key '${key}' cannot have the value ${element}`);
 							}
 
@@ -373,7 +413,7 @@ function validateAttributeType(key, value) {
 										);
 									}
 
-									if (typeof subElement === 'string' && !allowedEntries.includes(subElement)) {
+									if (typeof subElement === 'string' && !ALLOWED_ENTRIES_INTERACTIVE_HELPERS.includes(subElement)) {
 										throw new Error(
 											// eslint-disable-next-line prettier/prettier
 											`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' cannot have the value ${subElement}`,
@@ -446,6 +486,10 @@ function validateAttributeType(key, value) {
 
 		// Array
 		case 'prelude':
+		case 'surveyInputOptionsValues':
+		case 'surveyInputOptionsText':
+		case 'surveyLeftSideText':
+		case 'surveyRightSideText':
 			if (!Array.isArray(value)) {
 				throw new Error(`The key '${key}' must be of type 'Array'`);
 			}

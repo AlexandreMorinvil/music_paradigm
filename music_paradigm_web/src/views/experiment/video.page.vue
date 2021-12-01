@@ -9,7 +9,7 @@
 			<video-player
 				v-if="hasVideo"
 				v-show="isPlaying"
-				:src="urlExperimentRessource(videoName)"
+				:src="urlExperimentResource(videoName)"
 				:dimension="videoDimensions"
 				:playBack="playBack"
 				v-on:finished-playback="handdleEndOfVideo"
@@ -73,7 +73,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['urlExperimentRessource']),
+		...mapGetters(['urlExperimentResource']),
 		...mapGetters('experiment', ['hasVideo', 'hasInteractivePiano', 'hasText', 'videoName']),
 		videoDimensions() {
 			let height = this.defaultVideoHeight;

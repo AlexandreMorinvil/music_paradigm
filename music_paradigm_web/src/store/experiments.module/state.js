@@ -1,4 +1,4 @@
-import { validator } from '@/_helpers';
+import { defaultState } from '@/store-helper/experiments.module-helper';
 
 export default {
 	status: {
@@ -8,20 +8,9 @@ export default {
 		isDeleting: false,
 		hasCompiledEdition: false,
 	},
-
-	edition: validator.getMinimalValidExperimentStructure(),
-	selection: {
-		_id: null,
-		content: validator.getMinimalValidExperimentStructure(),
-	},
-	experimentsHeadersList: [
-		{
-			_id: '',
-			group: '',
-			name: '',
-			version: 0,
-			folder: '',
-		},
-	],
-	imposedParameterValues: [],
+	edition: defaultState.DEFAULT_MINIMAL_EXPERIMENT(),
+	selection: defaultState.DEFAULT_EMPTY_SELECTION(),
+	experimentsHeadersList: defaultState.EMPTY_EXPERIMENTS_HEADERS_LIST(),
+	imposedParameterValues: defaultState.DEFAULT_IMPOSED_PARAMETERS(),
+	logType: defaultState.DEFAULT_LOG_TYPE(),
 };

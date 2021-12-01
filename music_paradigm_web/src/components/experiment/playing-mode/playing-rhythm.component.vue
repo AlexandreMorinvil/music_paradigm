@@ -21,7 +21,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['urlExperimentRessource']),
+		...mapGetters(['urlExperimentResource']),
 		...mapGetters('experiment', [
 			'timeoutInSeconds',
 			'strictPlay',

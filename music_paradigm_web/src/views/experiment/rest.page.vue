@@ -41,7 +41,6 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('experiment', ['timeoutInSeconds']),
 		timeLimitInMiliseconds() {
 			return (this.timeoutInSeconds || this.defaultTimeLimitInSeconds) * 1000;

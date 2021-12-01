@@ -87,7 +87,19 @@ export default {
 	},
 
 	addReleasedNoteLog: (state, key) => {
-		state.played.notes.duration.push(key.time - state.played.startTime - state.played.notes.time[state.played.notes.time.length - 1]);
+		const indexOfNoteReleased = state.played.notes.midi.lastIndexOf(key.note);
+
+		const pressTime = state.played.notes.time[indexOfNoteReleased];
+		const releaseTime = key.time - state.played.startTime;
+		const duration = releaseTime - pressTime;
+
+		state.played.notes.duration[indexOfNoteReleased] = duration;
+	},
+
+	releasedAllNotesNotReleasedInLog: (state, stopTime) => {
+		const releaseTime = (stopTime || new Date()) - state.played.startTime;
+		const { duration, midi, time } = state.played.notes;
+		for (let i = 0; i < midi.length; i++) if (!duration[i]) duration[i] = releaseTime - time[i];
 	},
 
 	resetPlayedNotesLogs: (state) => {

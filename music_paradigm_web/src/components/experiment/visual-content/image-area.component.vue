@@ -6,7 +6,7 @@
 		<span
 			:style="
 				'background: url(' +
-				urlExperimentRessource(pictureName) +
+				urlExperimentResource(pictureName) +
 				');' +
 				'background-size: contain !important;' +
 				'background-repeat: no-repeat !important;' +
@@ -26,7 +26,7 @@ import { mapGetters } from 'vuex';
 
 export default {
 	computed: {
-		...mapGetters(['urlExperimentRessource']),
+		...mapGetters(['urlExperimentResource']),
 		...mapGetters('experiment', ['hasPicture', 'pictureName']),
 	},
 };

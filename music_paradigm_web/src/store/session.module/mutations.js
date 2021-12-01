@@ -1,4 +1,4 @@
-import constants from './constants';
+import { defaultState } from '@/store-helper/session.module-helper';
 import { routerNavigation } from '@/_helpers';
 
 export default {
@@ -56,7 +56,7 @@ export default {
 	},
 
 	clearSessionInformation(state) {
-		state.presSessionState = constants.PRE_SESSION_STATE();
-		state.sessionInformation = constants.EMPTY_SESSION_INFORMATION();
+		state.presSessionState = defaultState.PRE_SESSION_STATE();
+		state.sessionInformation = defaultState.EMPTY_SESSION_INFORMATION();
 	},
 };

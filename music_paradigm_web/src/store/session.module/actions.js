@@ -40,6 +40,7 @@ export default {
 	// Bring the user in the experiment mode
 	startSession({ dispatch, getters }) {
 		if (!getters.hasSessionLoaded) return;
+		dispatch('log/setLogType', getters.logType, { root: true });
 		dispatch('experiment/setParameterValues', getters.assignedParameters, { root: true });
 		dispatch('experiment/setExperiment', getters.sessionExperiment, { root: true });
 		dispatch('experiment/setStartingPoint', getters.sessionCursor, { root: true });
@@ -57,7 +58,7 @@ export default {
 					/* Nothing is done */
 				},
 				(error) => {
-					// TODO: Keep on memory the failed initialization in localstorage nad reattempt at every time we send log data
+					// TODO: Keep on memory the failed initialization in localstorage and reattempt at every time we send log data
 					console.log(error);
 				},
 			)

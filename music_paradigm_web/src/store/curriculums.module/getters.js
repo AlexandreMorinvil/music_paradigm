@@ -9,6 +9,10 @@ export default {
 		return state.selection.title;
 	},
 
+	curriculumSelectedLogType: (state) => {
+		return state.selection.logType;
+	},
+
 	curriculumSelectedIsSequential: (state) => {
 		return state.selection.isSequential;
 	},

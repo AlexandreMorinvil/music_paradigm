@@ -76,6 +76,16 @@ const router = new Router({
 					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/rest.page.vue'),
 				},
 				{
+					path: 'survey',
+					name: 'experiment.survey',
+					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/survey.page.vue'),
+				},
+				{
+					path: 'writting',
+					name: 'experiment.writting',
+					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/writting.page.vue'),
+				},
+				{
 					path: 'end',
 					name: 'experiment.end',
 					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/end.page.vue'),
@@ -129,9 +139,9 @@ const router = new Router({
 					component: () => import(/* WebpackChunkName: "admin" */ './views/admin/curriculums.page.vue'),
 				},
 				{
-					path: 'ressources',
-					name: 'admin.ressources',
-					component: () => import(/* WebpackChunkName: "admin" */ './views/admin/experiment-ressources.page.vue'),
+					path: 'resources',
+					name: 'admin.resources',
+					component: () => import(/* WebpackChunkName: "admin" */ './views/admin/experiment-resources.page.vue'),
 				},
 				{
 					path: 'data',
