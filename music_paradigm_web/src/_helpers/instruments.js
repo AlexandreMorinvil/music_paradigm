@@ -53,8 +53,10 @@ function getInstrumentList() {
 function getInstrumentFile(name) {
 	let instrumentFile = INSTRUMENT_LIST[0].file; // The default instrument is the first of the list
 
-	const requestedInstrument = INSTRUMENT_LIST.filter((instrument) => instrument.name === name)[0].file;
-	if (requestedInstrument) instrumentFile = requestedInstrument;
+	const requestedInstrument = INSTRUMENT_LIST.filter((instrument) => {
+		return instrument.name === name;
+	});
+	if (requestedInstrument.length > 0) instrumentFile = requestedInstrument[0].file;
 
 	return window.location.origin + '/' + SUB_FOLDER + instrumentFile;
 }

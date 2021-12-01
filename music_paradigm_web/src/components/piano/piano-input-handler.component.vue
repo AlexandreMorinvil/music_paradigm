@@ -9,6 +9,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 import { PianoEventBus, pianoEvents } from '@/event-bus/piano-event-bus.service.js';
 import { instruments } from '@/_helpers';
+
 import MidiPlayer from '@/MidiPlayer';
 import PianoAdminInputHandlerComponent from './piano-admin-input-handler.component';
 
@@ -25,6 +26,8 @@ export default {
 			midiFilePlayingNotes: {},
 			midiAccess: null,
 			midiInputs: [],
+			MAX_VELOCITY: 127,
+			MIDI_MESSAGE_CODE_NOTE_ON: 144,
 		};
 	},
 	computed: {
@@ -56,7 +59,7 @@ export default {
 		 */
 		manageMidiNote(midiNote) {
 			const midiMessage = {
-				type: midiNote.data[0] === 144 ? 'Note On' : 'Note Off',
+				type: midiNote.data[0] === this.MIDI_MESSAGE_CODE_NOTE_ON ? 'Note On' : 'Note Off',
 				note: midiNote.data[1] + this.midiOffset,
 				velocity: midiNote.data[2],
 			};
@@ -92,7 +95,7 @@ export default {
 		playNote(note) {
 			this.playingNotes[note] = this.piano.play(note, 0, {
 				gain: (vel) => {
-					return vel / 127;
+					return vel / this.MAX_VELOCITY;
 				},
 			});
 		},
@@ -120,7 +123,7 @@ export default {
 			if (this.midiFilePlayingNotes[noteName]) return;
 			const currentTime = this.audioConctext.currentTime;
 			this.midiFilePlayingNotes[noteName] = this.piano.play(noteName, currentTime, {
-				gain: velocity / 127,
+				gain: velocity / this.MAX_VELOCITY,
 				duration: 1,
 			});
 		},
