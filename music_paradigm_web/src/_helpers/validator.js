@@ -119,6 +119,7 @@ function validateExperiment(experiment) {
 		'logLabel',
 
 		'cueWaitForClick',
+		'instrument',
 	];
 	Object.keys(experiment).forEach((key) => {
 		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the general parameters is not allowed`);
@@ -234,6 +235,8 @@ function validateBlock(block, index = null) {
 		'writtingIsNumber',
 		'writtingIsMultiline',
 		'writtingTextPlaceHolder',
+
+		'instrument',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -275,6 +278,7 @@ function validateAttributeType(key, value) {
 		case 'checkpoint':
 		case 'logLabel':
 		case 'writtingTextPlaceHolder':
+		case 'instrument':
 			if (!(typeof value === 'string')) {
 				throw new Error(`The key '${key}' must be of type 'String'`);
 			}

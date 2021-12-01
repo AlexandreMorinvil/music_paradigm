@@ -83,8 +83,8 @@ export default {
 		return state.description.version || 0;
 	},
 
-	timbreFile: (state) => {
-		return state.settings.timbreFile || defaultState.DEFAULT_TIMBRE_FILE;
+	instrument: (state) => {
+		return state.settings.instrument || defaultState.DEFAULT_INSTRUMENT;
 	},
 
 	timeLimitInSeconds: (state) => {

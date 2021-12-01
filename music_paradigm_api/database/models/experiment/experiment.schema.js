@@ -109,6 +109,7 @@ const schema = new Schema({
     logLabel: {type: String, default: 'default' },
 
     cueWaitForClick: { type: Boolean, default: false },
+    instrument: {type: String, default: undefined },
 
     prelude: {
         default: [],

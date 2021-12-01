@@ -5,7 +5,6 @@ export default {
 	DEFAULT_ANY_PIANO_KEY,
 	DEFAULT_ENABLE_SOUND_FLAG,
 	DEFAULT_PLAYING_MODE,
-	DEFAULT_TIMBRE_FILE,
 	DEFAULT_FOOTNOTE,
 	DEFAULT_TIME_LIMIT,
 	DEFAULT_LOG_FLAG,
@@ -30,7 +29,6 @@ const UNSET_INDEX = -1;
 const DEFAULT_ANY_PIANO_KEY = false;
 const DEFAULT_ENABLE_SOUND_FLAG = false;
 const DEFAULT_PLAYING_MODE = 'rhythm';
-const DEFAULT_TIMBRE_FILE = 'https://raw.githubusercontent.com/gleitz/midi-js-soundfonts/gh-pages/MusyngKite/acoustic_grand_piano-ogg.js';
 const DEFAULT_FOOTNOTE = false;
 const DEFAULT_FOOTNOTE_TYPE = 'simple';
 const DEFAULT_TIME_LIMIT = 0;
@@ -48,6 +46,7 @@ const DEFAULT_RHYTHM_RELATIVE_ERROR_MARGIN_IN_FLOAT = 0;
 const DEFAULT_WITH_PROGRESSION_BAR = true;
 const DEFAULT_LOG_LABEL = 'default';
 const DEFAULT_CUE_WAIT_FOR_CLICK = false;
+const DEFAULT_INSTRUMENT = 'piano';
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
 	return {
@@ -103,7 +102,7 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		anyPianoKey: DEFAULT_ANY_PIANO_KEY, 												// Allowing any piano key press to advance to the next page
 		enableSoundFlag: DEFAULT_ENABLE_SOUND_FLAG, 										// Whether or not the piano output is enabled by default in the session
 		playingMode: DEFAULT_PLAYING_MODE, 													// Mode of the experiment ("rhythm" or "speed")
-		timbreFile: DEFAULT_TIMBRE_FILE, 													// URL or location of the timbre file used for the piano
+		instrument: DEFAULT_INSTRUMENT,														// Musical instrument to use for the production of sounds
 		footnote: DEFAULT_FOOTNOTE, 														// Whether or not the experiment must display the inidcative foot note in each state
 		footnoteType: DEFAULT_FOOTNOTE_TYPE, 												// Whether the footnote is made of simple text or buttons
 		timeLimitInSeconds: DEFAULT_TIME_LIMIT, 											// Time limit of the experiment. If set to 0, ther is no limit and the timer will count up, otherwise the timer will count down

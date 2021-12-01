@@ -8,6 +8,7 @@
 import { mapActions, mapGetters } from 'vuex';
 
 import { PianoEventBus, pianoEvents } from '@/event-bus/piano-event-bus.service.js';
+import { instruments } from '@/_helpers';
 import MidiPlayer from '@/MidiPlayer';
 import PianoAdminInputHandlerComponent from './piano-admin-input-handler.component';
 
@@ -28,7 +29,7 @@ export default {
 	},
 	computed: {
 		...mapGetters('piano', ['isPianoInitialized', 'isPianoInitializing', 'isPianoPaused', 'pressedKeys', 'midiFileNotesName']),
-		...mapGetters('experiment', ['timbreFile', 'enableSoundFlag', 'midiOffset']),
+		...mapGetters('experiment', ['instrument', 'enableSoundFlag', 'midiOffset']),
 	},
 	methods: {
 		...mapActions('piano', [
@@ -136,8 +137,10 @@ export default {
 			this.audioConctext = new AudioContext();
 			this.player = new MidiPlayer.Player();
 			this.setPlayer(this.player);
+
 			const soundfont = require('soundfont-player');
-			soundfont.instrument(this.audioConctext, this.timbreFile).then((piano) => {
+			const instrumentFileUrl = instruments.getInstrumentFile(this.instrument);
+			soundfont.instrument(this.audioConctext, instrumentFileUrl).then((piano) => {
 				this.piano = piano;
 				this.setPiano(piano);
 

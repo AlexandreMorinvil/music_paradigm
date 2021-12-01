@@ -15,7 +15,7 @@ const logThorough = '/log-thorough/';
 const storage = '/storage/';
 
 export default {
-	// Base URL
+	// API base URL
 	baseUrl: function () {
 		return config.apiUrl;
 	},
