@@ -27,7 +27,6 @@ const INSTRUMENT_LIST = [
 	{ name: 'electric_piano_1', file: 'electric_piano_1-ogg.js' },
 	{ name: 'electric_piano_2', file: 'electric_piano_2-ogg.js' },
 	{ name: 'glockenspiel', file: 'glockenspiel-ogg.js' },
-	{ name: 'gunshot', file: 'gunshot-ogg.js' },
 	{ name: 'harpsichord', file: 'harpsichord-ogg.js' },
 	{ name: 'honkytonk_piano', file: 'honkytonk_piano-ogg.js' },
 	{ name: 'marimba', file: 'marimba-ogg.js' },

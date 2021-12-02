@@ -56,7 +56,9 @@ function generateConversionRules(variableName, variablesInformation) {
 		case 'scheduled':
 			conversions[addVariableScheduleIndex(variableReference, 0)] = variable.currentValue;
 			schedule.forEach((optionValueChoice, index) => {
-				conversions[addVariableScheduleIndex(variableReference, index + 1)] = optionValues[optionValueChoice];
+				const hasChosenOptionValue = optionValueChoice <= optionValues.length;
+				const reference = addVariableScheduleIndex(variableReference, index + 1);
+				conversions[reference] = hasChosenOptionValue ? optionValues[optionValueChoice] : variable.currentValue;
 			});
 			break;
 
