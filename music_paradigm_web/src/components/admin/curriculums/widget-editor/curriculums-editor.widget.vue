@@ -84,7 +84,6 @@ export default {
 
 .editor-position {
 	grid-area: editor;
-	max-height: 600px;
 	overflow: auto;
 }
 

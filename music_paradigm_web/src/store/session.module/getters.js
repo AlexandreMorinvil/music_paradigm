@@ -62,4 +62,8 @@ export default {
 	needsPianoSettingPreExperiment: (state) => {
 		return state.sessionInformation.experiment.controlType === 'piano';
 	},
+
+	logType: (state) => {
+		return state.sessionInformation.logType;
+	},
 };

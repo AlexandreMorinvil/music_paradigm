@@ -46,7 +46,6 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('piano', ['isMidiFileLoaded']),
 		...mapGetters('experiment', ['midiName', 'cueWaitForClick']),
 	},

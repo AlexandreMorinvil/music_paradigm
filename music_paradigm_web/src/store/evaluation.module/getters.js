@@ -8,6 +8,7 @@ export default {
 	},
 
 	hasSuccess: (state) => {
+		if (!state.grades) return false;
 		if (state.grades.length <= 0) return false;
 		for (const grade of state.grades) {
 			if (grade.mark < grade.passMark) return false;

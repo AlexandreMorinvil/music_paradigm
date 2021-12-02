@@ -5,9 +5,9 @@ db/
 *.turtle
 *.wt
 
-# Experiment ressource files
-experiment_ressources/*
-!experiment_ressources/platform_tutorial/
+# Experiment resource files
+experiment_resources/*
+!experiment_resources/platform_tutorial/
 
 # Visualcode files
 #*.vscode/*

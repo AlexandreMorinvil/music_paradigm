@@ -23,7 +23,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['urlExperimentRessource']),
+		...mapGetters(['urlExperimentResource']),
 		...mapGetters('experiment', ['timeoutInSeconds', 'melodyRepetition']),
 		...mapGetters('piano', ['midiFileNotesMidi', 'pressedKeys', 'playedNotesMidi']),
 		playProgress() {

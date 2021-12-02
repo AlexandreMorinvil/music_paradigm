@@ -3,6 +3,14 @@ import { logFormat } from '@/store-helper/log.module-helper';
 import { logService } from '@/_services';
 
 export default {
+	setLogType({ commit }, logType) {
+		commit('setLogType', logType);
+	},
+
+	clearLogType({ commit }) {
+		commit('clearLogType');
+	},
+
 	addSimmpleLogBlock({ commit }) {
 		const block = logFormat.makeSimpleLogBlock();
 		commit('indicateAddBlockRequest');

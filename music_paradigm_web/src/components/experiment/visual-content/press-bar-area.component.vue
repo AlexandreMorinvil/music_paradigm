@@ -19,7 +19,6 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('experiment', ['timeoutInSeconds']),
 		...mapGetters('piano', ['midiFileNotesMidi', 'playedNotesMidi', 'pressedKeys']),
 		playProgress() {

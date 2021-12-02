@@ -26,7 +26,6 @@ export default {
 	},
 	props: {},
 	computed: {
-		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('experiment', ['writtingMinCharacters']),
 		buttonText() {
 			return this.$t('views.experiment.writting.continue');

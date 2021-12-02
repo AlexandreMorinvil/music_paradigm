@@ -1,7 +1,7 @@
 // Import config from 'config';
 import { authHeader, url } from '@/_helpers';
 
-export const ressourceService = {
+export const resourceService = {
 	fetchMidiFile,
 };
 
@@ -11,7 +11,7 @@ function fetchMidiFile(midiFileName) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
 
-	return fetch(url.experimentRessource(midiFileName), requestOptions).then(function (response) {
+	return fetch(url.experimentResource(midiFileName), requestOptions).then(function (response) {
 		if (!response.ok) {
 			throw new Error('HTTP error, status = ' + response.status);
 		}

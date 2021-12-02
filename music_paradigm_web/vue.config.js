@@ -1,19 +1,20 @@
 ﻿module.exports = {
-    // Options...
-    configureWebpack: {
+	// Options...
+	configureWebpack: {
 		devtool: 'source-map',
 	},
 
-    devServer: {
+	devServer: {
 		disableHostCheck: true,
+		public: '0.0.0.0:8080',
 	},
 
-    pluginOptions: {
-      i18n: {
-        locale: 'en',
-        fallbackLocale: 'en',
-        localeDir: 'locales',
-        enableInSFC: false
-      }
-    }
+	pluginOptions: {
+		i18n: {
+			locale: 'en',
+			fallbackLocale: 'en',
+			localeDir: 'locales',
+			enableInSFC: false,
+		},
+	},
 };

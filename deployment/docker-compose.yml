@@ -72,7 +72,7 @@ services:
     depends_on:
       - claspmongo
     volumes:
-      - ./music_paradigm/experiment_ressources:/usr/src/experiment_ressources
+      - ./music_paradigm/experiment_resources:/usr/src/experiment_resources
 
   claspmongo:
     container_name: claspmongo

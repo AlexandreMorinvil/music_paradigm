@@ -41,7 +41,6 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('evaluation', ['hasSuccess']),
 		...mapGetters('experiment', ['hasText', 'hasFootnote', 'textContent', 'playingMode']),
 	},

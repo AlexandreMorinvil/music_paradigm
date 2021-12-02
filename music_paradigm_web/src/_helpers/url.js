@@ -1,7 +1,7 @@
 import config from '@/config';
 
 const staticDirectory = '/static/';
-const experimentRessourceDirectory = '/experiment-ressources/';
+const experimentResourceDirectory = '/experiment-resources/';
 
 const sessions = '/sessions/';
 const account = '/account/';
@@ -15,7 +15,7 @@ const logThorough = '/log-thorough/';
 const storage = '/storage/';
 
 export default {
-	// Base URL
+	// API base URL
 	baseUrl: function () {
 		return config.apiUrl;
 	},
@@ -24,8 +24,8 @@ export default {
 	static: function (directory) {
 		return config.apiUrl + staticDirectory + directory;
 	},
-	experimentRessource: function (directory) {
-		return config.apiUrl + experimentRessourceDirectory + directory;
+	experimentResource: function (directory) {
+		return config.apiUrl + experimentResourceDirectory + directory;
 	},
 
 	// API calls

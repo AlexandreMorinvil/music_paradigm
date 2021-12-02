@@ -60,7 +60,7 @@ export default {
 			'leaveExperiment',
 		]),
 		...mapActions('keyboard', ['loadReferenceKeyboardKeys', 'resetPressedKeyboardKeysLogs', 'resetKeyboardTracking']),
-		...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState']),
+		...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState', 'releasedAllNotesNotReleasedInLog']),
 		initializeControl() {
 			if (this.controlType === 'piano') PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);
 			KeyboardEventBus.$emit(keyboardEvents.EVENT_TRACKER_INIT_REQUEST);
@@ -109,6 +109,7 @@ export default {
 			this.leaveExperiment();
 		},
 		resetPresses() {
+			this.releasedAllNotesNotReleasedInLog();
 			this.$refs.log.addBlock();
 			this.resetPressedKeyboardKeysLogs();
 			this.resetPlayedNotesLogs();

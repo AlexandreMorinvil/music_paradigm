@@ -130,6 +130,18 @@ export default {
 	computed: {
 		...mapGetters('experiment', ['interactiveKeyboard', 'interactivePianoFirstOctave']),
 		...mapGetters('keyboard', ['currentlyPressedKeyboardKeys', 'referenceKeyboardKeys']),
+		mustDisplayPotentiallyCorrectKeys() {
+			return !this.interactiveKeyboard.includes('#');
+		},
+		mustDisplayWrongKeys() {
+			return !this.interactiveKeyboard.includes('##') && this.referenceKeyboardKeys.length > 0;
+		},
+		mustDisplayReferenceFirstKey() {
+			return this.interactiveKeyboard.includes('first');
+		},
+		mustDisplayReferenceAllKeys() {
+			return this.interactiveKeyboard.includes('all');
+		},
 	},
 	methods: {
 		designateKeys(keys) {
@@ -156,8 +168,10 @@ export default {
 			for (const key of this.keys) {
 				const keyString = key.toString();
 				if (list.includes(key)) {
-					if (!this.referenceKeyboardKeys.includes(key)) this.$refs[keyString].classList.add('wrong');
+					if (this.mustDisplayWrongKeys && !this.referenceKeyboardKeys.includes(key)) this.$refs[keyString].classList.add('wrong');
+					else if (this.mustDisplayPotentiallyCorrectKeys) this.$refs[keyString].classList.add('user-triggered');
 				} else {
+					this.$refs[keyString].classList.remove('user-triggered');
 					this.$refs[keyString].classList.remove('wrong');
 				}
 			}
@@ -173,8 +187,8 @@ export default {
 			immediate: true,
 			handler: function () {
 				this.clearDesignatedKeys();
-				if (this.interactiveKeyboard === 'first') this.hintFistKey();
-				if (this.interactiveKeyboard === 'all') this.hintAllKeys();
+				if (this.mustDisplayReferenceFirstKey) this.hintFistKey();
+				if (this.mustDisplayReferenceAllKeys) this.hintAllKeys();
 			},
 		},
 	},

@@ -26,7 +26,6 @@ export default {
 	},
 	props: {},
 	computed: {
-		...mapGetters(['urlExperimentRessource']),
 		...mapGetters('experiment', ['surveyAreAnswersMandatory']),
 		buttonText() {
 			return this.$t('views.experiment.survey.continue');

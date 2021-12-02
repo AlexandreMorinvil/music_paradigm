@@ -1,4 +1,4 @@
-import { ressourceService } from '../../_services';
+import { resourceService } from '../../_services';
 
 export default {
 	resetPianoState: ({ commit }) => {
@@ -72,6 +72,10 @@ export default {
 		commit('addReleasedNoteLog', key);
 	},
 
+	releasedAllNotesNotReleasedInLog: ({ commit }, stopTime) => {
+		commit('releasedAllNotesNotReleasedInLog', stopTime);
+	},
+
 	resetPlayedNotesLogs: ({ commit }) => {
 		commit('resetPlayedNotesLogs');
 	},
@@ -82,7 +86,7 @@ export default {
 	},
 	loadMidiFile: ({ commit, dispatch }, midiFileName) => {
 		dispatch('eraseMidiFile');
-		return ressourceService.fetchMidiFile(midiFileName).then(
+		return resourceService.fetchMidiFile(midiFileName).then(
 			(response) => {
 				commit('setMidiFileName', midiFileName);
 				commit('loadMidiArrayStream', response);
