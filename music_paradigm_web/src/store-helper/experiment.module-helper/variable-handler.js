@@ -19,8 +19,8 @@ function populateVariables(block, variablesToUse = null) {
 	for (const section in blockToPopulate) {
 		if (typeof blockToPopulate[section] === 'string')
 			for (const variable in variables) performVariableReplacement(blockToPopulate, section, variables, variable);
-		else if (Array.isArray(blockToPopulate[section])) blockToPopulate[section] = populateVariables(block[section], variablesToUse);
-		else if (typeof blockToPopulate[section] === 'object') blockToPopulate[section] = populateVariables(block[section], variablesToUse);
+		else if (Array.isArray(blockToPopulate[section]) || typeof blockToPopulate[section] === 'object') 	
+			blockToPopulate[section] = populateVariables(block[section], variablesToUse);
 	}
 	return blockToPopulate;
 }
@@ -84,29 +84,21 @@ function getAllVariables() {
 	return { ...variables, ...stateVariables, ...variablesWithSelectedValues };
 }
 
-function getVariablesWithValuesSelected() {
-	return { ...getRandomizedVariables(), ...getScheduledVariables() };
-}
 
-function getRandomizedVariables() {
-	// Get randomized variables and their possible values
-	const variables = experimentStoreState.variables.randomizedVariables;
-	const options = experimentStoreState.variables.selectionValuesOptions;
-
-	// Select the values randomly within the optional values
-	const selectedValues = {};
-	for (const variable in variables) {
-		const choice = Math.floor(Math.random() * options[variable].length);
-		selectedValues[variable] = options[choice];
+/**
+ * Replaces the variable names in the experiment description by their appropriate value.
+ * @param {Object} block 			Block containing experiment desciptions that need to be populated
+ * @param {Object} variablesToUse	Object containign the variables to populate
+ * @returns {Object} 				Block with the variables populated
+ */
+ function populateVariables(block, variablesToUse = null) {
+	const variables = variablesToUse || getAllVariables();
+	const blockToPopulate = JSON.parse(JSON.stringify(block));
+	for (const section in blockToPopulate) {
+		if (typeof blockToPopulate[section] === 'string')
+			for (const variable in variables) performVariableReplacement(blockToPopulate, section, variables, variable);
+		else if (Array.isArray(blockToPopulate[section])) blockToPopulate[section] = populateVariables(block[section], variablesToUse);
+		else if (typeof blockToPopulate[section] === 'object') blockToPopulate[section] = populateVariables(block[section], variablesToUse);
 	}
-	return selectedValues;
-}
-
-// TODO : I AM HERE!!!! I MUST CONTINUE FROM HERE!!!!!!
-function getScheduledVariables() {
-	// Get randomized variables and their possible values
-	const variables = experimentStoreState.variables.randomizedVariables;
-	const options = experimentStoreState.variables.selectionValuesOptions;
-	const schedules = experimentStoreState.variables.schedules;
-	return true;
+	return blockToPopulate;
 }

@@ -144,9 +144,9 @@ const schema = new Schema({
                 default: undefined,
                 required: true
             },
-            valueSelection: {
+            valueSelectionType: {
                 type: String,
-                enum: ['assigned', 'random', 'uniform', 'scheduled'],
+                enum: ['assigned', 'random', 'scheduled'],
                 default: "assigned"
             },
             scheduling: {
@@ -168,7 +168,13 @@ const schema = new Schema({
                 default: "schedule",
                 required: true
             },
-            variantsBalancedInCurriculum: {
+            numberElements: {
+                type: Number,
+                min: 1,
+                default: undefined,
+                required: false
+            },
+            numberVariantsBalancedInCurriculum: {
                 type: Number,
                 min: 0,
                 default: 0,
@@ -178,12 +184,6 @@ const schema = new Schema({
                 type: String,
                 enum: ['fixed', 'random', 'permutated'],
                 required: 'fixed'
-            },
-            permutatedNumberElements: {
-                type: Number,
-                min: 1,
-                default: undefined,
-                required: false
             },
             schedule: {
                 type: [Number],

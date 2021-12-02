@@ -78,7 +78,7 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 		state: DEFAULT_EXPERIMENT_STATE_STATE_VALUES(),
 
 		// Variables used in the experiment
-		variables: DEFAULT_EXPERIMENT_VARIABLE_VALUES(),
+		variable: DEFAULT_EXPERIMENT_VARIABLE_VALUES(),
 
 		// Initialization status of vue pages
 		isInitialized: IS_FULLY_NOT_INITIALIZED_STATUS(),
@@ -226,70 +226,29 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 
 
 /**
- * @typedef {Object} Experiment_Variable_Values
- * @property {Object} dynamicValue 				Value of the variable (used for handling dynamic variables). 
- * 												Format : { $VARIABLE_NAME_1$ : Value_1, $VARIABLE_NAME_2$ : Value_2, ... }
- * 
- * @property {Object} initialValue				Initial value assigned to the variable (used for handling dynamic variables). 
- * 												Format : { $VARIABLE_NAME_1$ : Value_1, $VARIABLE_NAME_2$ : Value_2, ... }
- * 				 
- * @property {Object} constantValue				Value of constant variables (used for handling constant variables). 
- * 												Format : { $VARIABLE_NAME_1$ : Value_1, $VARIABLE_NAME_2$ : Value_2, ... }
- * 
- * @property {Object} imposedValue				Imposed parameters to a user by an admin. 
- * 												Format : { $VARIABLE_NAME_1$ : Value_1, $VARIABLE_NAME_2$ : Value_2, ... }
- * 
- * @property {Object} randomizedVariables		Variables with a randomized selection value. 
- * 												Format : { $VARIABLE_NAME_1$ : True, $VARIABLE_NAME_2$ : True, ... }
- * 												This attribute serves a an associative array which allows to quickly verify if a variable name 
- * 												refers to a randomized selection value.
- *  
- * @property {Object} scheduledVariables 		Variables with scheduled selection values
- * 												Format : { $VARIABLE_NAME_1$ : SCHEDULE_NAME, $VARIABLE_NAME_2$ : SCHEDULE_NAME, ... }
- * 												This attribute serves a an associative array which allows to quickly verify if a variable name 
- * 												refers to a scheduled selection value. The SCHEDULE_NAME associated to each VARIABLE_NAME indicates
- * 												which schedule is to be followed. (The schedules are stored in the "schedules" attribute).
- * 
- * @property {Object} selectionValuesOptions	Value options for the variables with a values selection status set as random, uniform or scheduled
- * 												Format : { $VARIABLE_NAME_1$ : [OPTION1, OPTION2, ...], $VARIABLE_NAME_2$ : [OPTION1, OPTION2, OPTION3...], ... }												
- * 
- * @property {Object} schedules 				Schedule for of selection of the value of a variable within its optional values
- * 												Format : { SCHEDULE_NAME_1 : [0, 1, 2, 3], SCHEDULE_NAME_2 : [2, 1, 3, 0, 5, 4], ... }
- * 												In the arrays, each index represents a grouping and the value stored at each index indicates which
- * 												optional value is to be selected for the variable in the given grouping.
- * 												
- * 												For example, a variable with a scheduled value selection with the SCHEDULE_NAME_2 schedule, when
- * 												refered to in an experiment as :
- * 
- * 												$VARIABLE_NAME$@2@
- * 
- * 												The variable VARIABLE_NAME will follow the selection of the index 2 of the schedule SCHEDULE_NAME_2 and
- * 												will thus select the 3rd value of its optional values.
- * 												
- */
-
-
-/**
  * Return a Experiment_Variable_Values object with all attributes reset to their default values.
  * @returns {Experiment_Variable_Values} Experiment_Variable_Values object of with all attributes reinitialized to their default values
 */
 function DEFAULT_EXPERIMENT_VARIABLE_VALUES() {
 	return {
-		// Dynamic variable storage
-		dynamicValue: {},
-		initialValue: {},
+		// Attributes of the "variables" object have the following structure :
+		//
+		// VARIABLE_NAME: {
+		// 	initialValue: null,
+		// 	currentValue: null,
+		// 	imposedValue: null,
+		// 	isDynamic: false,
+		//  isStateVariable: false,
+		// 	optionValues: [],
+		// 	valueSelectionType: 'fixed',
+		// 	schedule: null
+		// },
+		variables: {},
 
-		// Constant variable storage
-		constantValue: {},
-
-		// Parameter imposition storage
-		imposedValue: {},
-
-		// Value selection storage
-		randomizedVariables: {},
-		scheduledVariables: {},
-		selectionValuesOptions: {},
-		schedule: {},
+		// Attributes of the "schedules" object have the following structure :
+		//
+		// SCHEDULE_NAME: [],
+		schedules: {},
 	};
 }
 
