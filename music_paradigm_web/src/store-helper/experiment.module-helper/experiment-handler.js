@@ -1,12 +1,12 @@
 /* eslint-disable max-lines-per-function */
-/* eslint-disable prettier/prettier */
 /* eslint-disable key-spacing */
 import defaultState from './default-state';
 
 import variableHandler from './variable-handler';
 
 export default {
-	setExperimentId,
+	initExperimentParsing,
+	concludeExperimentParsing,
 	setExperimentDescription,
 	populateExperimentConstantVariables,
 	setExperimentGeneralSettings,
@@ -20,29 +20,54 @@ export default {
 	setExperimentVariableSchedules,
 };
 
+
+/**
+ * Store the parameters imposed to the user by the admin account.
+ * The imposed values must be stored before the variables concerned are initialized when calling the setImposedParameterValues() function. 
+ * @param {Object} state 						Vuex state
+ * @param {Object} parameters					Object containing the list of the parameters imposed in to the user by the admin.
+ * 												The object has the shape : 
+ * 												{ NAME_OF_PARAMETER_1 : VALUE_OF_PARAMETER_1, NAME_OF_PARAMETER_2 : VALUE_OF_PARAMETER_2, ... }
+*/
+function storeParameterImposedValues(state, parameters) {
+	for (const parameter in parameters) {
+		const isVariableExisting = Boolean(state.variablesInformation.variables[parameter]);
+		if (!isVariableExisting) state.variablesInformation.variables[parameter] = {};
+		state.variablesInformation.variables[parameter].imposedValue = parameters[parameter];
+	}
+}
+
+
 /**
  * Store the ID of the experiment received from the backend.
  * @param {Object} state 						Vuex state.
- * @param {Object} experiment 					Object from the backend conntaining all information related to the experiment.
- * @param {String} experiment._id				Database ID of the experiment from the backend.
+ * @param {Object} state.experiment 			Object from the backend conntaining all information related to the experiment.
 */
-function setExperimentId(state, experiment) {
-	state._id = experiment._id;
+function initExperimentParsing(state, experiment) {
+	state.experiment = JSON.parse(JSON.stringify(experiment));
+}
+
+
+/**
+ * Store the ID of the experiment received from the backend.
+ * @param {Object} state 							Vuex state.
+*/
+function concludeExperimentParsing(state) {
+	delete state.experiment;
 }
 
 
 /**
  * Store the "folder", "group", "name" and "version" of the experiment received from the backend. 
  * @param {Object} state 						Vuex state.
- * @param {Object} experiment 					Object from the backend conntaining all information related to the experiment.
- * @param {String} experiment.folder			Directory where the ressources are stored in the backend.
- * @param {String} experiment.group				Group of the experiment.
- * @param {String} experiment.name				Name of the experiment.
- * @param {Number} experiment.version			Number indicating which version of the experiment it is.
+ * @param {Object} state.experiment 			Object from the backend conntaining all information related to the experiment.
+ * @param {String} state.experiment.folder		Directory where the ressources are stored in the backend.
+ * @param {String} state.experiment.group		Group of the experiment.
+ * @param {String} state.experiment.name		Name of the experiment.
+ * @param {Number} state.experiment.version		Number indicating which version of the experiment it is.
 */
-function setExperimentDescription(state, experiment) {
-	const { name, folder, group, version } = experiment;
-
+function setExperimentDescription(state) {
+	const { name, folder, group, version } = state.experiment;
 	state.description = {
 		name: name,
 		folder: folder,
@@ -53,96 +78,52 @@ function setExperimentDescription(state, experiment) {
 
 
 /**
- * Store the prelude flow of the experiment received from the backend. 
- * @param {Object} state 						Vuex state.
- * @param {Object} experiment 					Object from the backend conntaining all information related to the experiment.
- * @param {Array<Object>} experiment.prelude	Flow description of the "prelude" which is a set of steps that will be presented  
- * 												before the main experiment takes place.
-*/
-function setExperimentPrelude(state, experiment) {
-	// Verify if a prelude is provided
-	if (!experiment.prelude) return;
-	let { prelude } = experiment;
-
-	// Deep copying the prelude
-	prelude = Array.isArray(prelude) ? prelude : [];
-	state.prelude = JSON.parse(JSON.stringify(prelude));
-}
-
-
-/**
- * Store the main flow of the experiment received from the backend. 
- * @param {Object} state 						Vuex state.
- * @param {Object} experiment 					Object from the backend conntaining all information related to the experiment.
- * @param {Array<Object>} experiment.flow		Flow description of all the steps of the experiment.
-*/
-function setExperimentFlow(state, experiment) {
-	// Deep copying the flow
-	state.flow = JSON.parse(JSON.stringify(experiment.flow));
-}
-
-
-/**
- * Store the state to be presented when the time available is lapsed for the experiment received from the backend.
- * @param {Object} state 						Vuex state.
- * @param {Object} experiment 					Object from the backend conntaining all information related to the experiment.
- * @param {Object} experiment.timeUpState		Block of type "End" that will be presented upon a time's up for the experiment.
-*/
-function setExperimentTimeUpState(state, experiment) {
-	// Deep copying the state
-	const timeUpState = experiment.timeUpState;
-	if (!timeUpState) return;
-	state.timeUpState = JSON.parse(JSON.stringify(timeUpState));
-	state.timeUpState.type = 'end';
-}
-
-
-/**
  * Store all the variables
- * @param {Object} state 						Vuex state
- * @param {Object} experiment					Object from the backend conntaining all information related to the experiment.
- * @param {Array<Object>} experiment.variables	List of the all the variables of the experiment.
+ * @param {Object} state 								Vuex state
+ * @param {Object} state.experiment						Object from the backend conntaining all information related to the experiment.
+ * @param {Array<Object>} state.experiment.variables	List of the all the variables of the experiment.
 */
-function setExperimentVariables(state, experiment) {
-	const { variables } = experiment;
+function setExperimentVariables(state) {
+	const { variables } = state.experiment;
 	if (!Array.isArray(variables)) return;
 
 	// Get the dynamic variables
 	for (const variable of variables) {
 		// Initialize the variable
-		const parsedVariable = state.variable.variables[variable.name] || {};
-		state.variable.variables[variable.name] = parsedVariable;
+		const parsedVariable = state.variablesInformation.variables[variable.name] || {};
+		state.variablesInformation.variables[variable.name] = parsedVariable;
 
 		// Verifying if there is a valis imposed value
 		const hasImposedValue = Object.prototype.hasOwnProperty.call(parsedVariable, 'imposedValue');
 		const allowedValues = new Set(variable.optionValues);
 		allowedValues.add(variable.assignedValue);
-		const isImposedValueValid = allowedValues.has(parsedVariable[variable.name].imposedValue);
+		const isImposedValueValid = allowedValues.has(parsedVariable.imposedValue);
 
 		// Assign the attributes of the variable
 		parsedVariable.initialValue = (hasImposedValue && isImposedValueValid) ? parsedVariable.imposedValue : variable.assignedValue;
 		parsedVariable.currentValue = parsedVariable.initialValue;
-		parsedVariable.isDynamic = variable.assignation === 'dynamic';
+		parsedVariable.isConstant = variable.assignation === 'constant';
 		parsedVariable.optionValues = variable.optionValues;
 		parsedVariable.valueSelectionType = variable.valueSelectionType;
-		parsedVariable.schedule = variable.schedule;
+		parsedVariable.scheduleName = variable.scheduleName;
+		parsedVariable.isStateVariable = false;
 	}
 }
 
 /**
  * And initialize all the schedules
- * @param {Object} state 						Vuex state
- * @param {Object} experiment					Object from the backend conntaining all information related to the experiment.
- * @param {Array<Object>} experiment.schedules	List of the all the schedules of the experiment.
+ * @param {Object} state 										Vuex state
+ * @param {Object} state.experiment								Object from the backend conntaining all information related to the experiment.
+ * @param {Array<Object>} state.experiment.variablesSchedules	List of the all the schedules of the experiment.
 */
-function setExperimentVariableSchedules(state, experiment) {
-	const { variablesSchedules } = experiment;
+function setExperimentVariableSchedules(state) {
+	const { variablesSchedules } = state.experiment;
 	if (!Array.isArray(variablesSchedules)) return;
 
 	// Store all the variable schedules
 	for (const variablesSchedule in variablesSchedules) {
 		const { name, schedule } = variablesSchedule;
-		state.variable.schedules[name] = schedule;
+		state.variablesInformation.schedules[name] = schedule;
 	}
 }
 
@@ -153,24 +134,22 @@ function setExperimentVariableSchedules(state, experiment) {
  * The only time in a session where the constant variables are populated is at the beginning. Afterward, any futher variable population is for
  * dynamic variables or state variables, but not for constant variables, which is why the this fonctions also handles the puplation of the 
  * randomized constant variables.
- * @param {Object} state 						Vuex state
- * @param {Object} experiment					Object from the backend conntaining all information related to the experiment.
+ * @param {Object} state 										Vuex state
+ * @param {Object} state.experiment								Object from the backend conntaining all information related to the experiment.
 */
-function populateExperimentConstantVariables(state, experiment) {
-	// Populate the constant variables
-	for (const attribute in experiment)
-		experiment[attribute] = variableHandler.populateVariables(experiment[attribute]);
+function populateExperimentConstantVariables(state) {
+	state.experiment = variableHandler.populateVariables(state.experiment, true);
 }
 
 
 /**
  * Parse and store all the general settings of the experiment received from the backend.
  * If an expected attribute/parameter is not present in the "experiment" object, a default value is set for the attribute.
- * @param {Object} state 						Vuex state.
- * @param {Object} experiment 					Object from the backend conntaining all information related to the experiment 
- * 												including all the general settings of the experiment as attributes.
+ * @param {Object} state 										Vuex state.
+ * @param {Object} state.experiment 							Object from the backend conntaining all information related to the experiment 
+ * 																including all the general settings of the experiment as attributes.
 */
-function setExperimentGeneralSettings(state, experiment) {
+function setExperimentGeneralSettings(state) {
 	const {
 		anyPianoKey,
 		enableSoundFlag,
@@ -192,7 +171,7 @@ function setExperimentGeneralSettings(state, experiment) {
 		rhythmRelativeErrorMarginInFloat,
 		withProgressionBar,
 		cueWaitForClick,
-	} = experiment;
+	} = state.experiment;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
 	const defaultSettings = defaultState.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
@@ -226,29 +205,58 @@ function setExperimentGeneralSettings(state, experiment) {
  * If an expected attribute/parameter is not present in the "experiment" object, a default value is set for the attribute.
  * The "state records" differ from the "general settings" in that they are dynamic values that often change values as the
  * experiment progresses based on certain performances of the user or on explicit specifications in the experiment description.
- * @param {Object} state 						Vuex state.
- * @param {Object} experiment 					Object from the backend conntaining all information related to the experiment.
- * @param {String} experiment.logLabel			Initial log label of the experiment (can be changed during the completion of the experiment).
+ * @param {Object} state 								Vuex state.
+ * @param {Object} state.experiment 					Object from the backend conntaining all information related to the experiment.
+ * @param {String} state.experiment.logLabel			Initial log label of the experiment (can be changed during the completion of the experiment).
 */
-function setExperimentInitialState(state, experiment) {
-	const { logLabel } = experiment;
+function setExperimentInitialState(state) {
+	const { logLabel } = state.experiment;
 	const defaultSettings = defaultState.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
 	state.state.record.logLabel = typeof logLabel === 'string' ? logLabel : defaultSettings.logLabel;
 }
 
 
 /**
- * Store the parameters imposed to the user by the admin account.
- * The imposed values must be stored before the variables concerned are initialized when calling the setImposedParameterValues() function. 
- * @param {Object} state 						Vuex state
- * @param {Object} parameters					Object containing the list of the parameters imposed in to the user by the admin.
- * 												The object has the shape : 
- * 												{ NAME_OF_PARAMETER_1 : VALUE_OF_PARAMETER_1, NAME_OF_PARAMETER_2 : VALUE_OF_PARAMETER_2, ... }
+ * Store the prelude flow of the experiment received from the backend. 
+ * @param {Object} state 								Vuex state.
+ * @param {Object} state.experiment 					Object from the backend conntaining all information related to the experiment.
+ * @param {Array<Object>} state.experiment.prelude		Flow description of the "prelude" which is a set of steps that will be presented  
+ * 														before the main experiment takes place.
 */
-function storeParameterImposedValues(state, parameters) {
-	for (const parameter in parameters) {
-		const isVariableExisting = Boolean(state.variable.variables[parameter]);
-		if (!isVariableExisting) state.variable.variables[parameter] = {};
-		state.variable.variables[parameter].imposedValue = parameters[parameter];
-	}
+function setExperimentPrelude(state) {
+	// Verify if a prelude is provided
+	if (!state.experiment.prelude) return;
+	let { prelude } = state.experiment;
+
+	// Deep copying the prelude
+	prelude = Array.isArray(prelude) ? prelude : [];
+	state.prelude = JSON.parse(JSON.stringify(prelude));
+}
+
+
+/**
+ * Store the main flow of the experiment received from the backend. 
+ * @param {Object} state 								Vuex state.
+ * @param {Object} state.experiment 					Object from the backend conntaining all information related to the experiment.
+ * @param {Array<Object>} state.experiment.flow			Flow description of all the steps of the experiment.
+*/
+function setExperimentFlow(state) {
+	// Deep copying the flow
+	const { flow } = state.experiment;
+	state.flow = JSON.parse(JSON.stringify(flow));
+}
+
+
+/**
+ * Store the state to be presented when the time available is lapsed for the experiment received from the backend.
+ * @param {Object} state 								Vuex state.
+ * @param {Object} state.experiment 					Object from the backend conntaining all information related to the experiment.
+ * @param {Object} state.experiment.timeUpState			Block of type "End" that will be presented upon a time's up for the experiment.
+*/
+function setExperimentTimeUpState(state) {
+	// Deep copying the state
+	const { timeUpState } = state.experiment;
+	if (!timeUpState) return;
+	state.timeUpState = JSON.parse(JSON.stringify(timeUpState));
+	state.timeUpState.type = 'end';
 }

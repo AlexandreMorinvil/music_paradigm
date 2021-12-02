@@ -12,20 +12,23 @@ export default {
 
 	setExperiment(state, experiment) {
 		// Initialize the experiment's reference information
-		experimentHandler.setExperimentId(state, experiment);
-		experimentHandler.setExperimentDescription(state, experiment);
+		experimentHandler.initExperimentParsing(state, experiment);
+		experimentHandler.setExperimentDescription(state);
 
 		// Initialize the variables within the experiment's description
-		experimentHandler.setExperimentVariables(state, experiment);
-		experimentHandler.setExperimentVariableSchedules(state, experiment);
-		experimentHandler.populateExperimentConstantVariables(state, experiment);
+		experimentHandler.setExperimentVariables(state);
+		experimentHandler.setExperimentVariableSchedules(state);
+		experimentHandler.populateExperimentConstantVariables(state);
 
 		// Initialzie the experiment's content and states
-		experimentHandler.setExperimentPrelude(state, experiment);
-		experimentHandler.setExperimentFlow(state, experiment);
-		experimentHandler.setExperimentTimeUpState(state, experiment);
-		experimentHandler.setExperimentGeneralSettings(state, experiment);
-		experimentHandler.setExperimentInitialState(state, experiment);
+		experimentHandler.setExperimentPrelude(state);
+		experimentHandler.setExperimentFlow(state);
+		experimentHandler.setExperimentTimeUpState(state);
+		experimentHandler.setExperimentGeneralSettings(state);
+		experimentHandler.setExperimentInitialState(state);
+
+		// Conclude the experiment parsing
+		experimentHandler.concludeExperimentParsing(state);
 	},
 
 	initCursor(state, presetCursor = null) {

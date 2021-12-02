@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 /* eslint-disable max-lines-per-function */
 export default {
 	UNSET_INDEX,
@@ -78,7 +77,7 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 		state: DEFAULT_EXPERIMENT_STATE_STATE_VALUES(),
 
 		// Variables used in the experiment
-		variable: DEFAULT_EXPERIMENT_VARIABLE_VALUES(),
+		variablesInformation: DEFAULT_EXPERIMENT_VARIABLE_VALUES(),
 
 		// Initialization status of vue pages
 		isInitialized: IS_FULLY_NOT_INITIALIZED_STATUS(),
@@ -237,11 +236,11 @@ function DEFAULT_EXPERIMENT_VARIABLE_VALUES() {
 		// 	initialValue: null,
 		// 	currentValue: null,
 		// 	imposedValue: null,
-		// 	isDynamic: false,
+		// 	isConstant: true,
 		//  isStateVariable: false,
 		// 	optionValues: [],
 		// 	valueSelectionType: 'fixed',
-		// 	schedule: null
+		// 	scheduleName: null
 		// },
 		variables: {},
 

@@ -149,7 +149,7 @@ const schema = new Schema({
                 enum: ['assigned', 'random', 'scheduled'],
                 default: "assigned"
             },
-            scheduling: {
+            scheduleName: {
                 type: String,
                 default: undefined,
                 required: false
