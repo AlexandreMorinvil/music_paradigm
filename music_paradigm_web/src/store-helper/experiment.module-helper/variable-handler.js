@@ -78,8 +78,15 @@ function performVariableReplacement(block, conversionRules) {
 
 	// Perform the conversion
 	let stringBlock = JSON.stringify(block);
-	for (const reference in conversionRules)
-		stringBlock = stringBlock.replace(reference, conversionRules[reference]);
+	for (const reference in conversionRules) {
+
+		// Transform the special caracters so that they can properly be handled in the conversion
+		let conversionValue = conversionRules[reference];
+		if (typeof conversionValue === 'string') conversionValue = conversionValue.replaceAll('\n', '\\n');
+
+		// Replace the reference by tge conversion value
+		stringBlock = stringBlock.replaceAll(reference, conversionValue);
+	}
 
 	// Parse the converted block
 	block = JSON.parse(stringBlock);
