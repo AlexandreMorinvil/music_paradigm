@@ -5,7 +5,7 @@ const stateSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ["cue", "end", "feedback", "instruction", "playing", "rest", "video", "survey", "writting"]
+        enum: ["cue", "end", "feedback", "instruction", "playing", "rest", "video", "survey", "writting", 'question']
     },
     textContent: { type: Schema.Types.Mixed, default: undefined },
     pictureFileName: { type: Schema.Types.Mixed, default: undefined },
@@ -76,7 +76,7 @@ const stateSchema = new Schema({
     writtingIsMultiline: { type: Boolean, default: undefined },
     writtingTextPlaceHolder: { type: String, default: undefined },
 
-    questionType: { type: String, default: undefined },
+    questionType: { type: String, default: undefined, enum: ['simple', 'image', 'audio', 'midi-note'] },
     questionFileFirstPart: { type: Schema.Types.Mixed, default: undefined },
     questionFileSecondPart: { type: Schema.Types.Mixed, default: undefined },
     textAfterQuestionAsked: { type: Schema.Types.Mixed, default: undefined },
@@ -120,6 +120,8 @@ const schema = new Schema({
 
     cueWaitForClick: { type: Boolean, default: false },
     instrument: {type: String, default: undefined },
+    hasTimer: { type: Boolean, default: true },
+    hasClearBackground: { type: Boolean, default: undefined },
 
     prelude: {
         default: [],

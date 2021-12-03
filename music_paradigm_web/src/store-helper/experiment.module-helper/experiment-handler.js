@@ -172,6 +172,8 @@ function setExperimentGeneralSettings(state) {
 		rhythmRelativeErrorMarginInFloat,
 		withProgressionBar,
 		cueWaitForClick,
+		hasTimer,
+		hasClearBackground,
 	} = state.experiment;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -197,6 +199,8 @@ function setExperimentGeneralSettings(state) {
 		rhythmRelativeErrorMarginInFloat:	typeof rhythmRelativeErrorMarginInFloat == 'number' ? rhythmRelativeErrorMarginInFloat : defaultSettings.rhythmRelativeErrorMarginInFloat,
 		withProgressionBar:					typeof withProgressionBar === 'boolean' 			? withProgressionBar : defaultSettings.withProgressionBar,
 		cueWaitForClick: 					typeof cueWaitForClick === 'boolean'				? cueWaitForClick : defaultSettings.cueWaitForClick,
+		hasTimer:							typeof hasTimer === 'boolean'						? hasTimer : defaultSettings.hasTimer,
+		hasClearBackground:					typeof hasClearBackground === 'boolean'				? hasClearBackground : defaultSettings.hasClearBackground,
 	};
 }
 

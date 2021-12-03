@@ -1,7 +1,7 @@
 <template>
 	<div id="status-bar" class="status-bar-grid">
 		<div id="status-bar-header" class="status-bar-header-position">
-			<time-status-component class="status-bar-display-box status-wrapper-left" ref="timer" />
+			<time-status-component v-show="mustDisplayTime" class="status-bar-display-box status-wrapper-left" ref="timer" />
 			<piano-status-component v-if="hasPianoStatus" class="status-bar-display-box status-wrapper-right" />
 		</div>
 
@@ -23,9 +23,12 @@ export default {
 		ProgressStatusComponent,
 	},
 	computed: {
-		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType', 'withProgressionBar']),
+		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType', 'withProgressionBar', 'hasTimer']),
 		hasPianoStatus() {
 			return this.controlType === 'piano';
+		},
+		mustDisplayTime() {
+			return this.hasTimer;
 		},
 		hasProgressionBar() {
 			if (typeof this.withProgressionBar !== 'boolean') return true;

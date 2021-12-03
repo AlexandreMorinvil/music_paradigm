@@ -1,5 +1,9 @@
 // Question state parameters
 export default {
+	questionType: (state) => {
+		return state.state.settings.questionType;
+	},
+
 	textAfterQuestionAsked: (state) => {
 		return state.state.content.textAfterQuestionAsked;
 	},

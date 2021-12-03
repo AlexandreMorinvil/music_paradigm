@@ -20,6 +20,14 @@ export default {
  * */
 const ALLOWED_ENTRIES_INTERACTIVE_HELPERS = ['true', 'false', 'all', 'midi', 'first'].flatMap((d) => ['', '#', '##'].map((v) => d + v));
 
+
+/**
+ * @constant ALLOWED_STATE_TYPES
+ * @type {Array<String>}
+ * @description Allowed values for the 'type' attributes of the flow descriptions
+ * */
+const ALLOWED_STATE_TYPES = ['cue', 'end', 'feedback', 'instruction', 'playing', 'rest', 'video', 'survey', 'writting', 'question'];
+
 function getMinimalValidExperimentStructure() {
 	return {
 		name: '',
@@ -88,6 +96,8 @@ function validateExperiment(experiment) {
 
 	// Verification of the attributes
 	const allowedAttributes = [
+		'hasTimer',
+		'hasClearBackground',
 		'timeUpState',
 		'prelude',
 		'flow',
@@ -164,8 +174,7 @@ function validateBlock(block, index = null) {
 		throw new Error(`The type of the block${indexMessage} name must be a string`);
 	}
 
-	const allowedTypes = ['cue', 'end', 'feedback', 'instruction', 'playing', 'rest', 'video', 'survey', 'writting'];
-	if (!allowedTypes.includes(block.type)) {
+	if (!ALLOWED_STATE_TYPES.includes(block.type)) {
 		throw new Error(`The type '${block.type}' of the block${indexMessage} is not allowed`);
 	}
 
@@ -336,6 +345,8 @@ function validateAttributeType(key, value) {
 		case 'writtingIsNumber':
 		case 'writtingIsMultiline':
 		case 'areAnswerOptionsHorizontal':
+		case 'hasTimer':
+		case 'hasClearBackground':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}
