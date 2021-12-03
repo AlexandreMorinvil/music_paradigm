@@ -75,6 +75,16 @@ const stateSchema = new Schema({
     writtingIsNumber: { type: Boolean, default: undefined },
     writtingIsMultiline: { type: Boolean, default: undefined },
     writtingTextPlaceHolder: { type: String, default: undefined },
+
+    questionType: { type: String, default: undefined },
+    questionFileFirstPart: { type: Schema.Types.Mixed, default: undefined },
+    questionFileSecondPart: { type: Schema.Types.Mixed, default: undefined },
+    textAfterQuestionAsked: { type: Schema.Types.Mixed, default: undefined },
+    textSpecification: { type: Schema.Types.Mixed, default: undefined },
+    textReminder: { type: Schema.Types.Mixed, default: undefined },
+    areAnswerOptionsHorizontal: { type: Boolean, default: undefined },
+    answerChoices: { type: [], default: undefined },
+    rightAnswers: { type: [], default: undefined },
 },
     {
         strict: true

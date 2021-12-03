@@ -46,6 +46,7 @@ const DEFAULT_WITH_PROGRESSION_BAR = true;
 const DEFAULT_LOG_LABEL = 'default';
 const DEFAULT_CUE_WAIT_FOR_CLICK = false;
 const DEFAULT_INSTRUMENT = 'piano';
+const DEFAULT_QUESTION_TYPE = 'simple';
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
 	return {
@@ -161,17 +162,26 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			helperImageName: '', 													// Name of the helper image to display
 			interactivePiano: false, 												// <Boolean|String> Directive to display the interactive piano
 			interactiveKeyboard: false, 											// <Boolean|String> Directive to display the interactive keyboard
+
 			surveyInputOptionsValues: [],											// List of the possible values that will be stored in memory for the input of the user in the survey (The number of options displayed is based on the length of this array)
 			surveyInputOptionsText: [],												// List of the texts that will be displayed above each option of the survey
 			surveyLeftSideText: [],													// Questions or texts to be written for the survey at the left, each value will be written in a row (the maximum length of surveyLeftSideText or surveyRightSideText will determine the number of row)
 			surveyRightSideText: [],												// Questions or texts to be written for the survey at the left, each value will be written in a row (the maximum length of surveyLeftSideText or surveyRightSideText will determine the number of row)
+
+			// textAfterQuestionAsked:
+			// textSpecification:
+			// textReminder:
+			// answerChoices:
 		},
+
 		// Multimedia elements
 		mediaFile: {
 			midiName: '', 															// Name of the current midi file loaded in the player to play
 			videoName: '', 															// Name of the current video file to playback
 			referenceKeyboardKeys: [], 												// List of the reference keyboard keys meant to be pressed
 			interactiveKeyboardTextMapping: null, 									// Mapping of the text to display on the keys of the keyboard according to the order in whcih the keys are pressed
+			// questionFileFirstPart:
+			// questionFileSecondPart:
 		},
 		// Block specific settings
 		settings: {
@@ -208,6 +218,9 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			writtingIsNumber: false,												// Indicate whether the input writting expected should only be a numerical input
 			writtingIsMultiline: true,												// Indicate whether the input writting area should be displayed with multiple lines
 			writtingTextPlaceHolder: '',											// Indicate the text that will be written in the text input area when there is nothing written 
+			questionType: DEFAULT_QUESTION_TYPE,									// Indicate the question type for the 'question' states
+			// areAnswerOptionsHorizontal:
+			// rightAnswers:
 		},
 		// Session specific informations
 		record: {

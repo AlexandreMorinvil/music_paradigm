@@ -45,6 +45,7 @@ function storeParameterImposedValues(state, parameters) {
 */
 function initExperimentParsing(state, experiment) {
 	state.experiment = JSON.parse(JSON.stringify(experiment));
+	state._id = experiment._id;
 }
 
 

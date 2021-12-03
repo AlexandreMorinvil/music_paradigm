@@ -1,5 +1,4 @@
 /* eslint-disable max-lines-per-function */
-/* eslint-disable prettier/prettier */
 /* eslint-disable key-spacing */
 import blockHandler from './block-handler';
 import { routerNavigation } from '@/_helpers';
@@ -108,6 +107,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		writtingIsNumber,
 		writtingIsMultiline,
 		writtingTextPlaceHolder,
+		questionType,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -146,6 +146,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		writtingIsNumber:				typeof writtingIsNumber === 'boolean'			? writtingIsNumber : false,
 		writtingIsMultiline:			typeof writtingIsMultiline === 'boolean'		? writtingIsMultiline : true,
 		writtingTextPlaceHolder: 		typeof writtingTextPlaceHolder === 'string'		? writtingTextPlaceHolder : '',
+		questionType:					typeof questionType === 'string' 				? questionType : generalSettings.questionType,
 	};
 
 	// Indicate that the state (current block's settings) was already initialized
@@ -200,10 +201,15 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 		helperImageFileName,
 		interactivePiano,
 		interactiveKeyboard,
+
 		surveyInputOptionsValues,
 		surveyInputOptionsText,
 		surveyLeftSideText,
 		surveyRightSideText,
+
+		textAfterQuestionAsked,
+		textSpecification,
+		textReminder,
 	} = currentBlock;
 
 	// Using the values that are not set in an array if there are any
@@ -213,6 +219,10 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	let updatedInteractivePiano = typeof interactivePiano === 'string' || typeof interactivePiano === 'boolean' ? interactivePiano : null;
 	let updatedInteractiveKeyboard = typeof interactiveKeyboard === 'string' || typeof interactiveKeyboard === 'boolean' ? interactiveKeyboard : null;
 
+	let updatedTextAfterQuestionAsked = typeof textAfterQuestionAsked === 'string' ? textAfterQuestionAsked : null;
+	let updatdTextSpecification = typeof textSpecification === 'string' ? textSpecification : null;
+	let updatedTextReminder = typeof textReminder === 'string' ? textReminder : null;
+
 	// If the value is in an array
 	const piledContentIndex = cursor.current.piledContentIndex;
 
@@ -221,6 +231,10 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(helperImageFileName)) updatedHelperImageFileName = helperImageFileName[piledContentIndex] || null;
 	if (Array.isArray(interactivePiano)) updatedInteractivePiano = interactivePiano[piledContentIndex] || null;
 	if (Array.isArray(interactiveKeyboard)) updatedInteractiveKeyboard = interactiveKeyboard[piledContentIndex] || null;
+
+	if (Array.isArray(textAfterQuestionAsked)) updatedTextAfterQuestionAsked = textAfterQuestionAsked || null;
+	if (Array.isArray(textSpecification)) updatdTextSpecification = textSpecification || null;
+	if (Array.isArray(textReminder)) updatedTextReminder = textReminder || null;
 
 	// If the value is in a nested array
 	const innerStepIndex = cursor.current.innerStepIndex;
@@ -238,6 +252,11 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	currentState.content.helperImageName = updatedHelperImageFileName || '';
 	currentState.content.interactivePiano = updatedInteractivePiano || false;
 	currentState.content.interactiveKeyboard = updatedInteractiveKeyboard || false;
+
+	currentState.content.textAfterQuestionAsked = updatedTextAfterQuestionAsked || '';
+	currentState.content.textSpecification = updatdTextSpecification || '';
+	currentState.content.textReminder = updatedTextReminder || '';
+
 	// Parsing the survey parameters (they do no support short notations through nesting)
 	currentState.content.surveyInputOptionsValues = (Array.isArray(surveyInputOptionsValues)) ? surveyInputOptionsValues : [];
 	currentState.content.surveyInputOptionsText = (Array.isArray(surveyInputOptionsText)) ? surveyInputOptionsText : [];
