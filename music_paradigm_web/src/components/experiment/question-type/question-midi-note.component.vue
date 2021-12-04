@@ -46,7 +46,7 @@ export default {
 		},
 		revealQuestionTextAfterQuestion() {
 			this.postQuestionText.reveal();
-		}
+		},
 // 		handleEndOfMidiFile() {
 // 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 // 		},

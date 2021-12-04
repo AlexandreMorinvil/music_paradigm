@@ -420,8 +420,10 @@ function validateAttributeType(key, value) {
 				switch (key) {
 					// Arrays of String
 					case 'helperImageFileName':
+					case 'textReminder':
 					case 'questionFileFirstPart':
 					case 'questionFileSecondPart':
+					case 'textAfterQuestionAsked':
 					case 'rightAnswers':
 						value.forEach((element, index) => {
 							if (!(typeof element === 'string')) {
@@ -460,9 +462,7 @@ function validateAttributeType(key, value) {
 					case 'midiFileName':
 					case 'pictureFileName':
 					case 'textContent':
-					case 'textAfterQuestionAsked':
 					case 'textSpecification':
-					case 'textReminder':
 					case 'videoFileName':
 						value.forEach((element, index) => {
 							if (!(typeof element === 'string' || Array.isArray(element))) {

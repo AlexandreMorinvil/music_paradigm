@@ -199,6 +199,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 		textContent,
 		pictureFileName,
 		helperImageFileName,
+		textReminder,
 		interactivePiano,
 		interactiveKeyboard,
 
@@ -209,19 +210,18 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 
 		textAfterQuestionAsked,
 		textSpecification,
-		textReminder,
 	} = currentBlock;
 
 	// Using the values that are not set in an array if there are any
 	let updatedTextContent = typeof textContent === 'string' ? textContent : null;
 	let updatedPictureFileName = typeof pictureFileName === 'string' ? pictureFileName : null;
 	let updatedHelperImageFileName = typeof helperImageFileName === 'string' ? helperImageFileName : null;
+	let updatedTextReminder = typeof textReminder === 'string' ? textReminder : null;
 	let updatedInteractivePiano = typeof interactivePiano === 'string' || typeof interactivePiano === 'boolean' ? interactivePiano : null;
 	let updatedInteractiveKeyboard = typeof interactiveKeyboard === 'string' || typeof interactiveKeyboard === 'boolean' ? interactiveKeyboard : null;
 
 	let updatedTextAfterQuestionAsked = typeof textAfterQuestionAsked === 'string' ? textAfterQuestionAsked : null;
-	let updatdTextSpecification = typeof textSpecification === 'string' ? textSpecification : null;
-	let updatedTextReminder = typeof textReminder === 'string' ? textReminder : null;
+	let updatedTextSpecification = typeof textSpecification === 'string' ? textSpecification : null;
 
 	// If the value is in an array
 	const piledContentIndex = cursor.current.piledContentIndex;
@@ -229,12 +229,12 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(textContent)) updatedTextContent = textContent[piledContentIndex] || null;
 	if (Array.isArray(pictureFileName)) updatedPictureFileName = pictureFileName[piledContentIndex] || null;
 	if (Array.isArray(helperImageFileName)) updatedHelperImageFileName = helperImageFileName[piledContentIndex] || null;
+	if (Array.isArray(textReminder)) updatedTextReminder = textReminder || null;
 	if (Array.isArray(interactivePiano)) updatedInteractivePiano = interactivePiano[piledContentIndex] || null;
 	if (Array.isArray(interactiveKeyboard)) updatedInteractiveKeyboard = interactiveKeyboard[piledContentIndex] || null;
 
 	if (Array.isArray(textAfterQuestionAsked)) updatedTextAfterQuestionAsked = textAfterQuestionAsked || null;
-	if (Array.isArray(textSpecification)) updatdTextSpecification = textSpecification || null;
-	if (Array.isArray(textReminder)) updatedTextReminder = textReminder || null;
+	if (Array.isArray(textSpecification)) updatedTextSpecification = textSpecification || null;
 
 	// If the value is in a nested array
 	const innerStepIndex = cursor.current.innerStepIndex;
@@ -242,6 +242,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(updatedTextContent)) updatedTextContent = updatedTextContent[innerStepIndex];
 	if (Array.isArray(updatedPictureFileName)) updatedPictureFileName = updatedPictureFileName[innerStepIndex];
 	if (Array.isArray(updatedHelperImageFileName)) updatedHelperImageFileName = updatedHelperImageFileName[innerStepIndex];
+	if (Array.isArray(updatedTextReminder)) updatedTextReminder = updatedTextReminder[innerStepIndex];
 	if (Array.isArray(updatedInteractivePiano)) updatedInteractivePiano = updatedInteractivePiano[innerStepIndex];
 	if (Array.isArray(updatedInteractiveKeyboard)) updatedInteractiveKeyboard = updatedInteractiveKeyboard[innerStepIndex];
 
@@ -250,12 +251,12 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	currentState.content.text = updatedTextContent || '';
 	currentState.content.pictureName = updatedPictureFileName || '';
 	currentState.content.helperImageName = updatedHelperImageFileName || '';
+	currentState.content.textReminder = updatedTextReminder || '';
 	currentState.content.interactivePiano = updatedInteractivePiano || false;
 	currentState.content.interactiveKeyboard = updatedInteractiveKeyboard || false;
 
 	currentState.content.textAfterQuestionAsked = updatedTextAfterQuestionAsked || '';
-	currentState.content.textSpecification = updatdTextSpecification || '';
-	currentState.content.textReminder = updatedTextReminder || '';
+	currentState.content.textSpecification = updatedTextSpecification || '';
 
 	// Parsing the survey parameters (they do no support short notations through nesting)
 	currentState.content.surveyInputOptionsValues = (Array.isArray(surveyInputOptionsValues)) ? surveyInputOptionsValues : [];

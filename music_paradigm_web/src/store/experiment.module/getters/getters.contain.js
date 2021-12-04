@@ -29,6 +29,10 @@ export default {
 		return Boolean(state.state.content.helperImageName);
 	},
 
+	hasTextReminder: (state) => {
+		return Boolean(state.state.content.textReminder);
+	},
+
 	hasSkipOption: (state) => {
 		return Boolean(state.state.settings.skipStepButton);
 	},

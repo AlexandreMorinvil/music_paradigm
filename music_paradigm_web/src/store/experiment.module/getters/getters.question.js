@@ -11,8 +11,4 @@ export default {
 	textSpecification: (state) => {
 		return state.state.content.textSpecification;
 	},
-
-	textReminder: (state) => {
-		return state.state.content.textReminder;
-	},
 };

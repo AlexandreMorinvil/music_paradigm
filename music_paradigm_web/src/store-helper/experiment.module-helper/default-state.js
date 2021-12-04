@@ -165,6 +165,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			text: '',																// Text to display
 			pictureName: '', 														// Name of the current picture to display
 			helperImageName: '', 													// Name of the helper image to display
+			textReminder: '',														// Helper ext to display
 			interactivePiano: false, 												// <Boolean|String> Directive to display the interactive piano
 			interactiveKeyboard: false, 											// <Boolean|String> Directive to display the interactive keyboard
 
@@ -175,7 +176,6 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 
 			textAfterQuestionAsked: '',												// Text displayed after a question is asked in question states
 			// textSpecification:
-			// textReminder:
 			// answerChoices:
 		},
 

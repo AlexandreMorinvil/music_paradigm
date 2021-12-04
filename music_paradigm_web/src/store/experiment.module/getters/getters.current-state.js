@@ -30,6 +30,10 @@ export default {
 		else return `${state.description.folder}/${pictureName}`;
 	},
 
+	textReminder: (state) => {
+		return state.state.content.textReminder;
+	},
+
 	midiName: (state) => {
 		// Fetch the picture name
 		const midiName = state.state.mediaFile.midiName;
