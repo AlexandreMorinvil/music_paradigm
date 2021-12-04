@@ -1,6 +1,6 @@
 <template>
-	<div id="status-bar" class="status-bar-grid">
-		<div id="status-bar-header" class="status-bar-header-position" :class="{ 'status-bar-clear': isClearVersion }">
+	<div id="status-bar" class="status-bar-grid" :class="hasMainArea ? 'grid-with-main-area' : 'grid-without-main-area'">
+		<div id="status-bar-header" :v-show="hasMainArea" class="status-bar-header-position" :class="{ 'status-bar-clear': isClearVersion }">
 			<time-status-component
 				v-show="mustDisplayTime"
 				class="status-bar-display-box status-wrapper-left"
@@ -43,9 +43,12 @@ export default {
 			if (typeof this.withProgressionBar !== 'boolean') return true;
 			else return this.withProgressionBar;
 		},
+		hasMainArea() {
+			return this.hasPianoStatus || this.mustDisplayTime;
+		},
 		isClearVersion() {
 			return this.hasClearBackground;
-		}
+		},
 	},
 	methods: {
 		start() {
@@ -62,11 +65,19 @@ export default {
 .status-bar-grid {
 	display: grid;
 	grid-template-columns: auto;
+	grid-gap: 0px;
+}
+
+.grid-with-main-area {
 	grid-template-rows: 64px 10px;
 	grid-template-areas:
 		'header'
 		'progress';
-	grid-gap: 0px;
+}
+
+.grid-without-main-area {
+	grid-template-rows: 10px;
+	grid-template-areas: 'progress';
 }
 
 .status-bar-header-position {

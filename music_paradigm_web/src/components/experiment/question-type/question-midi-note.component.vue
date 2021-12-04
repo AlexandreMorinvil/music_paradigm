@@ -1,6 +1,5 @@
 <template>
 	<div id="question-type" class="state-content-flex">
-		TESTE___________________________-----------------------!!!!!!!!!!!!!!!!
 		<text-area-component class="text-area state-section" />
 	</div>
 </template>
@@ -13,9 +12,9 @@ import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-eve
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
-// 	components: {
-// 		TextAreaComponent,
-// 	},
+	components: {
+		TextAreaComponent,
+	},
 // 	props: {
 // 		isSpaceBarPressed: {
 // 			type: Boolean,

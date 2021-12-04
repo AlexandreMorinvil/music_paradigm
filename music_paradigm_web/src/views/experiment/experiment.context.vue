@@ -10,7 +10,7 @@
 
 		<div
 			id="state-content"
-			class="state-content-position"
+			class="state-content state-content-position"
 			:class="{ 'state-content-clear': isClearVersion }"
 		>
 			<experiment-content :lastPressedKey="lastPressedKey" :isSpaceBarPressed="isSpaceBarPressed" />
@@ -254,7 +254,7 @@ export default {
 }
 
 .experiment-context-clear {
-	background-color: rgb(240, 240, 240);
+	background-color: rgb(250, 250, 250);
 }
 
 .state-content-clear {

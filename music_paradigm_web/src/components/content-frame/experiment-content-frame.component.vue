@@ -6,7 +6,6 @@
 		<start-signal-timer-component v-if="isWaitingStartSignal" class="start-signal" />
 
 		<router-view
-			:class="hasFootnote ? 'content-size-limit-with-footnote' : 'content-size-limit-no-footnote'"
 			:lastPressedKey="lastPressedKey"
 			:isSpaceBarPressed="isSpaceBarPressed"
 		/>
@@ -64,15 +63,6 @@ export default {
 </script>
 
 <style scoped>
-/* Hard limits determined manually to prevent the page from expending*/
-.content-size-limit-no-footnote {
-	max-height: 81vh;
-}
-
-.content-size-limit-with-footnote {
-	max-height: 70vh;
-}
-
 .experiment-content-container {
 	overflow: hidden;
 	width: 100%;
