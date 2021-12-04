@@ -185,7 +185,7 @@
       },
       "question": {
         "midi-note": {
-          "footnote-explaination": "Select the note that differ by clicking on the sequence number"
+          "footnote-explaination": "Select the note by clicking on the sequence number"
         }
       },
       "rest": {
