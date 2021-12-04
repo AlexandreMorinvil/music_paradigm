@@ -173,7 +173,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			surveyLeftSideText: [],													// Questions or texts to be written for the survey at the left, each value will be written in a row (the maximum length of surveyLeftSideText or surveyRightSideText will determine the number of row)
 			surveyRightSideText: [],												// Questions or texts to be written for the survey at the left, each value will be written in a row (the maximum length of surveyLeftSideText or surveyRightSideText will determine the number of row)
 
-			// textAfterQuestionAsked:
+			textAfterQuestionAsked: '',												// Text displayed after a question is asked in question states
 			// textSpecification:
 			// textReminder:
 			// answerChoices:
@@ -223,6 +223,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			writtingIsNumber: false,												// Indicate whether the input writting expected should only be a numerical input
 			writtingIsMultiline: true,												// Indicate whether the input writting area should be displayed with multiple lines
 			writtingTextPlaceHolder: '',											// Indicate the text that will be written in the text input area when there is nothing written 
+
 			questionType: DEFAULT_QUESTION_TYPE,									// Indicate the question type for the 'question' states
 			// areAnswerOptionsHorizontal:
 			// rightAnswers:

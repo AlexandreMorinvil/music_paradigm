@@ -9,10 +9,6 @@ export default {
 		return hasFootNote;
 	},
 
-	hasText: (state) => {
-		return Boolean(state.state.content.text);
-	},
-
 	hasVideo: (state) => {
 		return Boolean(state.state.mediaFile.videoName);
 	},

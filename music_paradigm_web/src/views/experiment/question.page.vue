@@ -1,6 +1,12 @@
 <template>
 	<div>
-		<component :is="type" class="question-area state-section" v-on:responded="handdleResponded" ref="playingMode" />
+		<component
+			:is="type"
+			class="question-area state-section"
+			v-on:responded="handdleResponded"
+			v-on:footnote="updateFootnote"
+			ref="question"
+		/>
 	</div>
 </template>
 
@@ -36,19 +42,14 @@ export default {
 	},
 	methods: {
 		updateFootnote(footnoteMessage) {
-			// 	const footnoteMessage = this.$t('views.experiment.question.footnote-after-performance');
-			// 	ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
-			ExperimentEventBus.$emit(
-				experimentEvents.EVENT_SET_FOOTNOTE,
-				'Mark the note that differ by clicking on the sequence number or by pressing the corresponding key on the keyboard',
-			);
+			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		handdleResponded() {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 		},
 		startAsking() {
 			this.hasReceivedStartSignal = true;
-			this.$refs.playingMode.start();
+			this.$refs.question.start();
 		},
 	},
 	beforeMount() {

@@ -178,11 +178,15 @@
       },
       "playing": {
         "footnote-after-performance": "The session will go to the next step after your performance"
-        
       },
       "preparing": {
         "loading": "Loading...",
         "ready": "Ready"
+      },
+      "question": {
+        "midi-note": {
+          "footnote-explaination": "Select the note that differ by clicking on the sequence number"
+        }
       },
       "rest": {
         "footnote-after-time": "The session will go to the next step in {time}",

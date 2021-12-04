@@ -1,6 +1,6 @@
 <template>
 	<div id="status-bar" class="status-bar-grid" :class="hasMainArea ? 'grid-with-main-area' : 'grid-without-main-area'">
-		<div id="status-bar-header" :v-show="hasMainArea" class="status-bar-header-position" :class="{ 'status-bar-clear': isClearVersion }">
+		<div id="status-bar-header" v-show="hasMainArea" class="status-bar-header-position" :class="{ 'status-bar-clear': isClearVersion }">
 			<time-status-component
 				v-show="mustDisplayTime"
 				class="status-bar-display-box status-wrapper-left"
