@@ -122,7 +122,7 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		rhythmRelativeErrorMarginInFloat: DEFAULT_RHYTHM_RELATIVE_ERROR_MARGIN_IN_FLOAT, 	// Relative error margin allowed in the rhythm accuracy calculation (overwrites the absolute value's error margin)
 		withProgressionBar: DEFAULT_WITH_PROGRESSION_BAR,									// Indicate wether there must be a progrssion bar displayed in the experiment
 		cueWaitForClick: DEFAULT_CUE_WAIT_FOR_CLICK,										// Indicate whether the cue must wait for a space bar click before playing
-		hasTimer: DEFAULT_HAS_TIMER,														// Indicate whether the timer must be displayed
+		withTimer: DEFAULT_HAS_TIMER,														// Indicate whether the timer must be displayed
 		hasClearBackground: DEFAULT_HAS_CLEAR_BACKGROUND,									// Indicate whethe the experiment setting must be in white (true) or black (false)
 	};
 }

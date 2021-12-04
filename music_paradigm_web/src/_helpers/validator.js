@@ -96,7 +96,7 @@ function validateExperiment(experiment) {
 
 	// Verification of the attributes
 	const allowedAttributes = [
-		'hasTimer',
+		'withTimer',
 		'hasClearBackground',
 		'timeUpState',
 		'prelude',
@@ -345,7 +345,7 @@ function validateAttributeType(key, value) {
 		case 'writtingIsNumber':
 		case 'writtingIsMultiline':
 		case 'areAnswerOptionsHorizontal':
-		case 'hasTimer':
+		case 'withTimer':
 		case 'hasClearBackground':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);

@@ -120,7 +120,7 @@ const schema = new Schema({
 
     cueWaitForClick: { type: Boolean, default: false },
     instrument: {type: String, default: undefined },
-    hasTimer: { type: Boolean, default: true },
+    withTimer: { type: Boolean, default: true },
     hasClearBackground: { type: Boolean, default: undefined },
 
     prelude: {

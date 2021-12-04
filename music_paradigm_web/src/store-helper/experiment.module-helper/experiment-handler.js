@@ -172,7 +172,7 @@ function setExperimentGeneralSettings(state) {
 		rhythmRelativeErrorMarginInFloat,
 		withProgressionBar,
 		cueWaitForClick,
-		hasTimer,
+		withTimer,
 		hasClearBackground,
 	} = state.experiment;
 
@@ -199,7 +199,7 @@ function setExperimentGeneralSettings(state) {
 		rhythmRelativeErrorMarginInFloat:	typeof rhythmRelativeErrorMarginInFloat == 'number' ? rhythmRelativeErrorMarginInFloat : defaultSettings.rhythmRelativeErrorMarginInFloat,
 		withProgressionBar:					typeof withProgressionBar === 'boolean' 			? withProgressionBar : defaultSettings.withProgressionBar,
 		cueWaitForClick: 					typeof cueWaitForClick === 'boolean'				? cueWaitForClick : defaultSettings.cueWaitForClick,
-		hasTimer:							typeof hasTimer === 'boolean'						? hasTimer : defaultSettings.hasTimer,
+		withTimer:							typeof withTimer === 'boolean'						? withTimer : defaultSettings.withTimer,
 		hasClearBackground:					typeof hasClearBackground === 'boolean'				? hasClearBackground : defaultSettings.hasClearBackground,
 	};
 }

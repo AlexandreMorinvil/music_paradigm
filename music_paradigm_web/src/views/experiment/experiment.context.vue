@@ -1,10 +1,18 @@
 <template>
-	<div id="experiment" class="experiment-grid unselectable">
+	<div
+		id="experiment"
+		class="experiment-context experiment-grid unselectable"
+		:class="{ 'experiment-context-clear': isClearVersion }"
+	>
 		<log-component style="display: none" ref="log" />
 		<session-component style="display: none" ref="session" />
-		<status-bar-component class="status-bar-position" ref="status" />
+		<status-bar-component ref="status" class="status-bar-position" />
 
-		<div id="state-content" class="state-content-position">
+		<div
+			id="state-content"
+			class="state-content-position"
+			:class="{ 'state-content-clear': isClearVersion }"
+		>
 			<experiment-content :lastPressedKey="lastPressedKey" :isSpaceBarPressed="isSpaceBarPressed" />
 		</div>
 	</div>
@@ -38,6 +46,7 @@ export default {
 	},
 	computed: {
 		...mapGetters('experiment', [
+			'hasClearBackground',
 			'hasPrelude',
 			'isInPrelude',
 			'isBeyondEnd',
@@ -46,6 +55,9 @@ export default {
 			'controlType',
 			'considerExperimentFinished',
 		]),
+		isClearVersion() {
+			return this.hasClearBackground;
+		},
 	},
 	methods: {
 		...mapActions('experiment', [
@@ -210,9 +222,10 @@ export default {
 	user-select: none;
 }
 
-#experiment {
+.experiment-context {
 	height: 100%;
 	background-color: rgb(15, 15, 15);
+
 }
 
 .status-bar-position {
@@ -233,10 +246,23 @@ export default {
 	grid-gap: 0px;
 }
 
-#state-content {
-	box-shadow: 0 0 25px 0 rgb(0, 0, 0);
-	background-color: black;
+.state-content {
 	overflow: auto;
 	margin: 25px;
+	box-shadow: 0 0 25px 0 rgb(0, 0, 0);
+	background-color: black;
+}
+
+.experiment-context-clear {
+	background-color: rgb(240, 240, 240);
+}
+
+.state-content-clear {
+	box-shadow: 0 0 25px 0 rgb(255, 255, 255);
+	background-color: rgb(255, 255, 255);
+}
+
+.state-content-clear * {
+	color: rgb(80, 80, 80);
 }
 </style>

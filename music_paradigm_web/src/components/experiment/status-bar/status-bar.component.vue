@@ -1,8 +1,17 @@
 <template>
 	<div id="status-bar" class="status-bar-grid">
-		<div id="status-bar-header" class="status-bar-header-position">
-			<time-status-component v-show="mustDisplayTime" class="status-bar-display-box status-wrapper-left" ref="timer" />
-			<piano-status-component v-if="hasPianoStatus" class="status-bar-display-box status-wrapper-right" />
+		<div id="status-bar-header" class="status-bar-header-position" :class="{ 'status-bar-clear': isClearVersion }">
+			<time-status-component
+				v-show="mustDisplayTime"
+				class="status-bar-display-box status-wrapper-left"
+				:class="{ 'status-bar-display-box-clear': isClearVersion }"
+				ref="timer"
+			/>
+			<piano-status-component
+				v-if="hasPianoStatus"
+				class="status-bar-display-box status-wrapper-right"
+				:class="{ 'status-bar-display-box-clear': isClearVersion }"
+			/>
 		</div>
 
 		<progress-status-component v-if="hasProgressionBar" class="status-bar-progress-position" />
@@ -23,17 +32,20 @@ export default {
 		ProgressStatusComponent,
 	},
 	computed: {
-		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType', 'withProgressionBar', 'hasTimer']),
+		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType', 'withProgressionBar', 'withTimer', 'hasClearBackground']),
 		hasPianoStatus() {
 			return this.controlType === 'piano';
 		},
 		mustDisplayTime() {
-			return this.hasTimer;
+			return this.withTimer;
 		},
 		hasProgressionBar() {
 			if (typeof this.withProgressionBar !== 'boolean') return true;
 			else return this.withProgressionBar;
 		},
+		isClearVersion() {
+			return this.hasClearBackground;
+		}
 	},
 	methods: {
 		start() {
@@ -102,5 +114,15 @@ export default {
 
 	height: 100%;
 	width: 100%;
+}
+
+.status-bar-display-box-clear {
+	background-color: rgb(250, 250, 255);
+	border-color: rgb(235, 235, 235);
+	color: rgb(150, 150, 150);
+}
+
+.status-bar-clear {
+	background-color: rgb(235, 235, 235);
 }
 </style>
