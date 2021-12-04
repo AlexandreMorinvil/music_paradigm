@@ -1,6 +1,7 @@
 <template>
 	<div id="question-type" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
+		<question-midi-note-options-component class="options-area state-section" />
 		<text-after-question-area-component class="text-after-question-area state-section" ref="postQuestionText"/>
 	</div>
 </template>
@@ -10,11 +11,13 @@ import '@/styles/experiment-content-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
+import QuestionMidiNoteOptionsComponent from '@/components/experiment/visual-content/question-midi-note-options.component.vue';
 import TextAfterQuestionAreaComponent from '@/components/experiment/visual-content/text-after-question-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
+		QuestionMidiNoteOptionsComponent,
 		TextAfterQuestionAreaComponent,
 		TextAreaComponent,
 	},
@@ -77,7 +80,12 @@ export default {
 <style scoped>
 .text-area {
 	flex-grow: 1;
-	height: 30%;
+	height: 10%;
+}
+
+.options-area {
+	flex-grow: 1;
+	height: 50%;
 }
 
 .text-after-question-area {

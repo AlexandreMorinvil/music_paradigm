@@ -175,7 +175,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			surveyRightSideText: [],												// Questions or texts to be written for the survey at the left, each value will be written in a row (the maximum length of surveyLeftSideText or surveyRightSideText will determine the number of row)
 
 			textAfterQuestionAsked: '',												// Text displayed after a question is asked in question states
-			// textSpecification:
+			textSpecification: '',													// Text to add a certain specification (used in question state)
 			// answerChoices:
 		},
 
