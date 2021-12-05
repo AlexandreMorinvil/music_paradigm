@@ -15,19 +15,13 @@ export default {
 	},
 
     pictureName: (state) => {
-		// Fetch the picture name
 		const pictureName = state.state.content.pictureName;
-		if (!pictureName) return '';
-
-		// Return the picture name
-		return `${state.description.folder}/${pictureName}`;
+		return pictureName ? `${state.description.folder}/${pictureName}` : '';
 	},
 
 	helperImageName: (state) => {
-		// Fetch the helper image name
 		const pictureName = state.state.content.helperImageName;
-		if (!pictureName) return '';
-		else return `${state.description.folder}/${pictureName}`;
+		return pictureName ? `${state.description.folder}/${pictureName}` : '';
 	},
 
 	textReminder: (state) => {
@@ -35,25 +29,27 @@ export default {
 	},
 
 	midiName: (state) => {
-		// Fetch the picture name
 		const midiName = state.state.mediaFile.midiName;
-		if (!midiName) return '';
-
-		// Return the picture name
-		return `${state.description.folder}/${midiName}`;
+		return midiName ? `${state.description.folder}/${midiName}` : '';
 	},
 
 	videoName: (state) => {
-		// Fetch the video name
 		const videoName = state.state.mediaFile.videoName;
-		if (!videoName) return '';
-
-		// Return the video name
-		return `${state.description.folder}/${videoName}`;
+		return videoName ? `${state.description.folder}/${videoName}` : '';
 	},
 
 	referenceKeyboardKeys: (state) => {
 		return state.state.mediaFile.referenceKeyboardKeys;
+	},
+
+	audioFirstPart: (state) => {
+		const fileName = state.state.mediaFile.audioFirstPart;
+		return fileName ? `${state.description.folder}/${fileName}` : '';
+	},
+
+	audioSecondPart: (state) => {
+		const fileName = state.state.mediaFile.audioSecondPart;
+		return fileName ? `${state.description.folder}/${fileName}` : '';
 	},
 
 	anyPianoKey: (state) => {

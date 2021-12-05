@@ -162,11 +162,16 @@ function updateStateMediaFiles(currentState, targetState, cursor, isInitialized)
 		videoFileName,
 		referenceKeyboardKeys,
 		interactiveKeyboardTextMapping,
+		audioFirstPart,
+		audioSecondPart,
 	} = currentBlock;
 
 	// Using the values that are not set in an array if there are any
 	let updatedMidiFileName = typeof midiFileName === 'string' ? midiFileName : null;
 	let updatedVideoFileName = typeof videoFileName === 'string' ? videoFileName : null;
+	let updatedAudioFirstPart = typeof audioFirstPart === 'string' ? audioFirstPart : null;
+	let updatedAudioSecondPart = typeof audioSecondPart === 'string' ? audioSecondPart : null;
+
 	let updatedReferenceKeyboardKeys = (Array.isArray(referenceKeyboardKeys) && referenceKeyboardKeys.every(key => (typeof key === 'string'))) ? referenceKeyboardKeys : null;
 
 	// Update the media files. If no new value is found, the previous value is used (it is kept unchanged)
@@ -174,7 +179,10 @@ function updateStateMediaFiles(currentState, targetState, cursor, isInitialized)
 
 	if (Array.isArray(midiFileName)) updatedMidiFileName = midiFileName[mediaIndex];
 	if (Array.isArray(videoFileName)) updatedVideoFileName = videoFileName[mediaIndex];
+	if (Array.isArray(audioFirstPart)) updatedAudioFirstPart = audioFirstPart[mediaIndex];
+	if (Array.isArray(audioSecondPart)) updatedAudioSecondPart = audioSecondPart[mediaIndex];
 	if (referenceKeyboardKeys && Array.isArray(referenceKeyboardKeys[mediaIndex])) updatedReferenceKeyboardKeys = referenceKeyboardKeys[mediaIndex];
+
 	const updatedInteractiveKeyboardTextMapping = Array.isArray(interactiveKeyboardTextMapping) ? interactiveKeyboardTextMapping[mediaIndex] || false : false;
 
 	// If the midifileName is specified (whether it is new or not), we also reset the virtual piano's text
@@ -184,7 +192,10 @@ function updateStateMediaFiles(currentState, targetState, cursor, isInitialized)
 	// We adjust the current state and keep the previous value if no new value is provided
 	currentState.mediaFile.midiName = updatedMidiFileName || oldMediaFile.midiName;
 	currentState.mediaFile.videoName = updatedVideoFileName || oldMediaFile.videoName;
+	currentState.mediaFile.audioFirstPart = updatedAudioFirstPart || oldMediaFile.audioFirstPart;
+	currentState.mediaFile.audioSecondPart = updatedAudioSecondPart || oldMediaFile.audioSecondPart;
 	currentState.mediaFile.referenceKeyboardKeys = updatedReferenceKeyboardKeys || oldMediaFile.referenceKeyboardKeys;
+
 	currentState.mediaFile.interactiveKeyboardTextMapping = updatedInteractiveKeyboardTextMapping || oldMediaFile.interactiveKeyboardTextMapping;
 
 	// Indicate that the media files is initialized

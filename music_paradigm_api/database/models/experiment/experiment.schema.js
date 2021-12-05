@@ -77,8 +77,8 @@ const stateSchema = new Schema({
     writtingTextPlaceHolder: { type: String, default: undefined },
 
     questionType: { type: String, default: undefined, enum: ['simple', 'image', 'audio', 'midi-note'] },
-    questionAudioFirstPart: { type: Schema.Types.Mixed, default: undefined },
-    questionAudioSecondPart: { type: Schema.Types.Mixed, default: undefined },
+    audioFirstPart: { type: Schema.Types.Mixed, default: undefined },
+    audioSecondPart: { type: Schema.Types.Mixed, default: undefined },
     textAfterQuestionAsked: { type: Schema.Types.Mixed, default: undefined },
     textSpecification: { type: Schema.Types.Mixed, default: undefined },
     textReminder: { type: Schema.Types.Mixed, default: undefined },

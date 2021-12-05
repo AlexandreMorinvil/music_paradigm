@@ -6,7 +6,7 @@ export default {
 		state[assignation].fileName = fileName;
 
 		// Set extension name
-		const extension = (/(?:\.([^.]+))?$/).exec(fileName);
+		const extension = fileName.split('.').pop();
 		state[assignation].extension = extension ? extension.toLowerCase() : '';
 	},
 

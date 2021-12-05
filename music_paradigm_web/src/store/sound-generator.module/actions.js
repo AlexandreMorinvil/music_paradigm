@@ -6,7 +6,7 @@ export default {
 		dispatch('loadRessourceFile', { assignation: defaultState.FIRST_RESSOURCE_NAME, fileName: fileName });
 	},
 
-	questionAudioSecondPart: ({ dispatch }, fileName) => {
+	loadQuestionSecondAudio: ({ dispatch }, fileName) => {
 		dispatch('loadRessourceFile', { assignation: defaultState.SECOND_RESSOURCE_NAME, fileName: fileName });
 	},
 

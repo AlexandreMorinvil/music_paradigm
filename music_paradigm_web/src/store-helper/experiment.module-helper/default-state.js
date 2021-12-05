@@ -185,8 +185,8 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			videoName: '', 															// Name of the current video file to playback
 			referenceKeyboardKeys: [], 												// List of the reference keyboard keys meant to be pressed
 			interactiveKeyboardTextMapping: null, 									// Mapping of the text to display on the keys of the keyboard according to the order in whcih the keys are pressed
-			// questionAudioFirstPart:
-			// questionAudioSecondPart:
+			audioFirstPart: '',														// Audio file name
+			audioSecondPart: '',													// Second audio file (for second part of sertain states)
 		},
 		// Block specific settings
 		settings: {

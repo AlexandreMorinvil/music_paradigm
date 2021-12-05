@@ -10,11 +10,12 @@ export default {
 		return {};
 	},
 	computed: {
-		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'questionAudioFirstPart', 'questionAudioSecondPart']),
+		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'audioFirstPart', 'audioSecondPart']),
 	},
 	methods: {
-		...mapActions('keyboard', ['loadReferenceKeyboardKeys']),
 		...mapActions('piano', ['loadMidiFile']),
+		...mapActions('keyboard', ['loadReferenceKeyboardKeys']),
+		...mapActions('soundGenerator', ['loadQuestionFirstAudio', 'loadQuestionSecondAudio']),
 	},
 	watch: {
 		midiName: {
@@ -32,14 +33,14 @@ export default {
 			},
 		},
 
-		questionAudioFirstPart: {
+		audioFirstPart: {
 			immediate: true,
 			handler: function (fileName) {
 				if (fileName) this.loadQuestionFirstAudio(fileName);
 			},
 		},
 
-		questionAudioSecondPart: {
+		audioSecondPart: {
 			immediate: true,
 			handler: function (fileName) {
 				if (fileName) this.loadQuestionSecondAudio(fileName);
