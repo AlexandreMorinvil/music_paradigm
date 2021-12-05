@@ -75,6 +75,7 @@ export default {
 		]),
 		...mapActions('keyboard', ['resetPressedKeyboardKeysLogs', 'resetKeyboardTracking']),
 		...mapActions('piano', ['resetPlayedNotesLogs', 'resetPianoState', 'releasedAllNotesNotReleasedInLog']),
+		...mapActions('soundGenerator', ['initializeSoundGenerator', 'terminateSoundGenerator']),
 		initializeControl() {
 			if (this.controlType === 'piano') PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);
 			KeyboardEventBus.$emit(keyboardEvents.EVENT_TRACKER_INIT_REQUEST);
@@ -148,7 +149,7 @@ export default {
 		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_REACHED_CONCLUSION, this.concludeExperiment);
 		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_ENDED, this.leaveExperiment);
 		ExperimentEventBus.$on(experimentEvents.EVENT_TIMES_UP, this.handleTimesUp);
-
+		this.initializeSoundGenerator();
 		this.initializeControl();
 	},
 	beforeDestroy() {
@@ -165,7 +166,7 @@ export default {
 		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_REACHED_CONCLUSION, this.concludeExperiment);
 		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_ENDED, this.leaveExperiment);
 		ExperimentEventBus.$off(experimentEvents.EVENT_TIMES_UP, this.handleTimesUp);
-
+		this.terminateSoundGenerator();
 		this.resetKeyboardTracking();
 		this.resetPianoState();
 		this.clearState();

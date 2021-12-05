@@ -131,6 +131,7 @@ function validateExperiment(experiment) {
 
 		'cueWaitForClick',
 		'instrument',
+		'hasSound',
 	];
 	Object.keys(experiment).forEach((key) => {
 		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the general parameters is not allowed`);
@@ -347,6 +348,7 @@ function validateAttributeType(key, value) {
 		case 'areAnswerOptionsHorizontal':
 		case 'withTimer':
 		case 'hasClearBackground':
+		case 'hasSound':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

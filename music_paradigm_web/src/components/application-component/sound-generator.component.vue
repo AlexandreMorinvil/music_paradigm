@@ -1,95 +1,87 @@
 <template>
-	<div id="question-type" class="state-content-flex">
-		<text-area-component class="text-area state-section" />
-		<question-midi-note-options-component class="options-area state-section" />
-		<text-after-question-area-component class="text-after-question-area state-section" ref="postQuestionText"/>
-	</div>
+	<div style="display: none" />
 </template>
 
 <script>
-import '@/styles/experiment-content-template.css';
+import * as Tone from 'tone';
 import { mapActions, mapGetters } from 'vuex';
 
-import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
-import QuestionMidiNoteOptionsComponent from '@/components/experiment/visual-content/question-midi-note-options.component.vue';
-import TextAfterQuestionAreaComponent from '@/components/experiment/visual-content/text-after-question-area.component.vue';
-import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
+import { midiConversion } from '@/_helpers';
 
 export default {
-	components: {
-		QuestionMidiNoteOptionsComponent,
-		TextAfterQuestionAreaComponent,
-		TextAreaComponent,
+	data() {
+		return {
+			MAX_VELOCITY: 127,
+		};
 	},
-// 	props: {
-// 		isSpaceBarPressed: {
-// 			type: Boolean,
-// 			default() {
-// 				return false;
-// 			},
-// 		},
-// 	},
-// 	data() {
-// 		return {
-// 			errorAutomaticTransitionSeconds: 5,
-// 			playbackDelayInSeconds: 1,
-// 			isSpacebarPressRecorded: false,
-// 		};
-// 	},
-// 	computed: {
-// 		...mapGetters('piano', ['isMidiFileLoaded']),
-// 		...mapGetters('experiment', ['midiName', 'cueWaitForClick']),
-// 	},
+	computed: {
+		...mapGetters('soundGenerator', ['soundGeneratorAudioContext', 'soundGeneratorInstrument']),
+	},
 	methods: {
-// 		...mapActions('piano', ['playMidiFile', 'addPlayerEndOfFileAction', 'removePlayerEndOfFileAction']),
-		updateFootnote() {
-			let footnoteMessage = '';
-			footnoteMessage = this.$tc('views.experiment.question.midi-note.footnote-explaination');
-			this.$emit('footnote', footnoteMessage);
+		// ...mapActions('soundGenerator', ['loadQuestionFirstAudio', 'loadQuestionSecondAudio']),
+		test() {
+			const soundfont = require('soundfont-player');
+			const audioContext = new AudioContext();
+			soundfont.instrument(audioContext, 'acoustic_grand_piano').then(function (piano) {
+				piano.play('C4');
+				piano.schedule(audioContext.currentTime, [
+					{ time: 0, note: 60 },
+					{ time: 0.5, note: 61 },
+				]);
+			});
 		},
-		revealQuestionTextAfterQuestion() {
-			this.postQuestionText.reveal();
+		playMidiNotes(parsedMidiNotes, audioContext) {
+			if (!parsedMidiNotes || !parsedMidiNotes.length) return;
+			const ac = audioContext || this.soundGeneratorAudioContext || new AudioContext();
+			this.soundGeneratorInstrument.schedule(ac.currentTime, parsedMidiNotes);
 		},
-// 		handleEndOfMidiFile() {
-// 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
-// 		},
-// 		manageHavingNoMidiFile() {
-// 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
-// 		},
+		playMidiNotes2(parsedMidiNotes, audioContext) {
+			console.log('Test');
+			if (!parsedMidiNotes || !parsedMidiNotes.length) return;
+			const ac = audioContext || this.soundGeneratorAudioContext || new AudioContext();
+			const now = ac.currentTime;
+			parsedMidiNotes.forEach((note, index) => {
+				const name = note.name || midiConversion.midiNumberToName(note.midi);
+				console.log('Got here');
+				this.soundGeneratorInstrument.play(name, now + note.time, {
+					gain: (note.velocity || this.MAX_VELOCITY) / this.MAX_VELOCITY,
+					duration: note.duration,
+				});
+			});
+		},
+		// playMidiFile(parsedMidiFile) {
+		// 	this.piano.play(noteName, currentTime, {
+		// 		gain: velocity / this.MAX_VELOCITY,
+		// 		duration: 1,
+		// 	});
+		// },
+		// playMidiFile() {
+		// 	const now = Tone.now() + 0.5;
+		// 	const currentTime = this.audioConctext.currentTime + 0.5;
+
+		// 	notes.forEach((note) => {
+		// 		synth.triggerAttackRelease(note.name, note.duration, note.time + now, note.velocity);
+		// 		this.piano.play(noteName, currentTime, {
+		// 			gain: velocity / this.MAX_VELOCITY,
+		// 			duration: 1,
+		// 		});
+		// 	});
+		// },
 	},
-	beforeMount() {
-		this.updateFootnote();
+	// beforeMount() {},
+	mounted() {
+		// this.test();
+		this.playMidiNotes2([
+			{ time: 0.0, midi: 60, duration: 1 },
+			{ time: 0.5, midi: 61, duration: 1 },
+			{ time: 1.0, midi: 62, duration: 1 },
+			{ time: 1.5, midi: 63, duration: 1 },
+			{ time: 2.0, midi: 64, duration: 1 },
+			{ time: 2.5, midi: 65, duration: 1 },
+		]);
 	},
-// 	mounted() {
-// 		this.addPlayerEndOfFileAction(this.handleEndOfMidiFile);
-// 	},
-// 	beforeDestroy() {
-// 		this.removePlayerEndOfFileAction(this.handleEndOfMidiFile);
-// 	},
-// 	watch: {
-// 		isMidiFileLoaded: {
-// 			immediate: true,
-// 			handler: function (isReady) {
-// 				if (!this.cueWaitForClick && isReady) setTimeout(() => this.playMidiFile(), this.playbackDelayInSeconds * 1000);
-// 				else if (this.midiName === '') setTimeout(() => this.manageHavingNoMidiFile(), this.errorAutomaticTransitionSeconds * 1000);
-// 			},
-// 		},
+	// 	beforeDestroy() {},
 };
 </script>
 
-<style scoped>
-.text-area {
-	flex-grow: 1;
-	height: 10%;
-}
-
-.options-area {
-	flex-grow: 1;
-	height: 50%;
-}
-
-.text-after-question-area {
-	flex-grow: 1;
-	height: 10%;
-}
-</style>
+<style scoped></style>

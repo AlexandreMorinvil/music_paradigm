@@ -1,8 +1,12 @@
-const FIRST_RESSOURCE_NAME = 'question-audio-1';
-const SECOND_RESSOURCE_NAME = 'question-audio-2';
+const FIRST_AUDIO_RESSOURCE_NAME = 'audio-1';
+const SECOND_AUDIO_RESSOURCE_NAME = 'audio-2';
 
 function EMPTY_RESSOURCE_STATE() {
 	return {
+		// Loading information
+		isLoading: false,
+
+		// Content information
 		fileName: '',
 		extension: '',
 		arrayStream: null,
@@ -11,14 +15,18 @@ function EMPTY_RESSOURCE_STATE() {
 }
 
 function DEFAULT_SOUND_GENERATOR_STATE() {
-	const defaultState = {};
-	defaultState[FIRST_RESSOURCE_NAME] = EMPTY_RESSOURCE_STATE();
-	defaultState[SECOND_RESSOURCE_NAME] = EMPTY_RESSOURCE_STATE();
+	const defaultState = {
+		isInitialized: false,
+		audioContext: null,
+		instrument: null,
+	};
+	defaultState[FIRST_AUDIO_RESSOURCE_NAME] = EMPTY_RESSOURCE_STATE();
+	defaultState[SECOND_AUDIO_RESSOURCE_NAME] = EMPTY_RESSOURCE_STATE();
 	return defaultState;
 }
 
 export default {
-	FIRST_RESSOURCE_NAME,
-	SECOND_RESSOURCE_NAME,
+	FIRST_AUDIO_RESSOURCE_NAME,
+	SECOND_AUDIO_RESSOURCE_NAME,
 	DEFAULT_SOUND_GENERATOR_STATE,
 };

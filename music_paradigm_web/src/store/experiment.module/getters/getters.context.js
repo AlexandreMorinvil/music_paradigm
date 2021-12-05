@@ -35,5 +35,9 @@ export default {
 
 	hasClearBackground: (state) => {
 		return state.settings.hasClearBackground;
+	},
+
+	hasSound: (state) => {
+		return state.settings.hasSound;
 	}
 };

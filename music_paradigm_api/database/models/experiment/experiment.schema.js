@@ -122,6 +122,7 @@ const schema = new Schema({
     instrument: {type: String, default: undefined },
     withTimer: { type: Boolean, default: true },
     hasClearBackground: { type: Boolean, default: undefined },
+    hasSound: { type: Boolean, default: true },
 
     prelude: {
         default: [],
