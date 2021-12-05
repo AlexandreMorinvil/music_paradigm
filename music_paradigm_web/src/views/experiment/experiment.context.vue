@@ -4,10 +4,11 @@
 		class="experiment-context experiment-grid unselectable"
 		:class="{ 'experiment-context-clear': isClearVersion }"
 	>
+		<loaded-content-component style="display: none"/>
 		<log-component style="display: none" ref="log" />
 		<session-component style="display: none" ref="session" />
-		<status-bar-component ref="status" class="status-bar-position" />
 
+		<status-bar-component ref="status" class="status-bar-position" />
 		<div
 			id="state-content"
 			class="state-content state-content-position"
@@ -24,7 +25,9 @@ import { mapActions, mapGetters } from 'vuex';
 import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
 import { KeyboardEventBus, keyboardEvents } from '@/event-bus/keyboard-event-bus.service.js';
 import { PianoEventBus, pianoEvents } from '@/event-bus/piano-event-bus.service.js';
+
 import ExperimentContent from '@/components/content-frame/experiment-content-frame.component.vue';
+import LoadedContentComponent from '@/components/experiment/session/loaded-content.component.vue';
 import LogComponent from '@/components/experiment/log/log.component.vue';
 import SessionComponent from '@/components/experiment/session/session.component.vue';
 import StatusBarComponent from '@/components/experiment/status-bar/status-bar.component.vue';
@@ -32,6 +35,7 @@ import StatusBarComponent from '@/components/experiment/status-bar/status-bar.co
 export default {
 	components: {
 		ExperimentContent,
+		LoadedContentComponent,
 		LogComponent,
 		SessionComponent,
 		StatusBarComponent,
@@ -50,8 +54,6 @@ export default {
 			'hasPrelude',
 			'isInPrelude',
 			'isBeyondEnd',
-			'midiName',
-			'referenceKeyboardKeys',
 			'controlType',
 			'considerExperimentFinished',
 		]),
@@ -71,8 +73,8 @@ export default {
 			'endExperimentByTimeout',
 			'leaveExperiment',
 		]),
-		...mapActions('keyboard', ['loadReferenceKeyboardKeys', 'resetPressedKeyboardKeysLogs', 'resetKeyboardTracking']),
-		...mapActions('piano', ['loadMidiFile', 'resetPlayedNotesLogs', 'resetPianoState', 'releasedAllNotesNotReleasedInLog']),
+		...mapActions('keyboard', ['resetPressedKeyboardKeysLogs', 'resetKeyboardTracking']),
+		...mapActions('piano', ['resetPlayedNotesLogs', 'resetPianoState', 'releasedAllNotesNotReleasedInLog']),
 		initializeControl() {
 			if (this.controlType === 'piano') PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);
 			KeyboardEventBus.$emit(keyboardEvents.EVENT_TRACKER_INIT_REQUEST);
@@ -169,20 +171,6 @@ export default {
 		this.clearState();
 	},
 	watch: {
-		midiName: {
-			immediate: true,
-			handler: function (midiName) {
-				if (midiName !== '') this.loadMidiFile(this.midiName);
-			},
-		},
-
-		referenceKeyboardKeys: {
-			deept: true,
-			immediate: true,
-			handler: function (sequence) {
-				if (sequence) this.loadReferenceKeyboardKeys();
-			},
-		},
 		isBeyondEnd() {
 			if (this.isInPrelude) {
 				this.leavePrelude();

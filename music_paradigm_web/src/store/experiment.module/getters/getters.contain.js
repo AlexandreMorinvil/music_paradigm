@@ -13,6 +13,7 @@ export default {
 		return Boolean(state.state.mediaFile.videoName);
 	},
 
+	// TODO: Verify logic
 	hasInteractivePiano: (state) => {
 		return Boolean(state.state.content.interactivePiano);
 	},

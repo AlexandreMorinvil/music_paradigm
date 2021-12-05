@@ -249,8 +249,8 @@ function validateBlock(block, index = null) {
 		'instrument',
 
 		'questionType',
-		'questionFileFirstPart',
-		'questionFileSecondPart',
+		'questionAudioFirstPart',
+		'questionAudioSecondPart',
 		'textAfterQuestionAsked',
 		'textSpecification',
 		'textReminder',
@@ -374,8 +374,8 @@ function validateAttributeType(key, value) {
 		case 'interactiveKeyboard':
 		case 'midiFileName':
 		case 'referenceKeyboardKeys':
-		case 'questionFileFirstPart':
-		case 'questionFileSecondPart':
+		case 'questionAudioFirstPart':
+		case 'questionAudioSecondPart':
 		case 'rightAnswers':
 			// Elements of the array
 			if (!Array.isArray(value)) {
@@ -391,8 +391,8 @@ function validateAttributeType(key, value) {
 					case 'helperImageFileName':
 					case 'videoFileName':
 					case 'midiFileName':
-					case 'questionFileFirstPart':
-					case 'questionFileSecondPart':
+					case 'questionAudioFirstPart':
+					case 'questionAudioSecondPart':
 					case 'rightAnswers':
 						if (!(typeof value === 'string')) {
 							throw new Error(`The key '${key}' must be of type 'String' or 'Array'`);
@@ -421,8 +421,8 @@ function validateAttributeType(key, value) {
 					// Arrays of String
 					case 'helperImageFileName':
 					case 'textReminder':
-					case 'questionFileFirstPart':
-					case 'questionFileSecondPart':
+					case 'questionAudioFirstPart':
+					case 'questionAudioSecondPart':
 					case 'textAfterQuestionAsked':
 					case 'rightAnswers':
 						value.forEach((element, index) => {
