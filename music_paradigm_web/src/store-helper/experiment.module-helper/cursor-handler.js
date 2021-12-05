@@ -178,8 +178,8 @@ function updateCursorNavigation(flow, cursor) {
 		midiFileName,
 		videoFileName,
 		referenceKeyboardKeys,
-		audioFirstPart,
-		audioSecondPart,
+		audioFirst,
+		audioSecond,
 
 		// Cursor parameters
 		numberRepetition,
@@ -195,7 +195,7 @@ function updateCursorNavigation(flow, cursor) {
 	// Set all the navigation parameters
 	setCursorInnerStepsTotal(cursor, textContent, pictureFileName);
 	setCursorLoopStart(cursor, numberRepetition);
-	setCursorMediaDepilingStart(cursor, [midiFileName, videoFileName, textContent, pictureFileName, referenceKeyboardKeys, audioFirstPart, audioSecondPart]);
+	setCursorMediaDepilingStart(cursor, [midiFileName, videoFileName, textContent, pictureFileName, referenceKeyboardKeys, audioFirst, audioSecond]);
 	setCursorNextStep(cursor, followedBy);
 }
 

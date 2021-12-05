@@ -42,13 +42,13 @@ export default {
 		return state.state.mediaFile.referenceKeyboardKeys;
 	},
 
-	audioFirstPart: (state) => {
-		const fileName = state.state.mediaFile.audioFirstPart;
+	audioFirst: (state) => {
+		const fileName = state.state.mediaFile.audioFirst;
 		return fileName ? `${state.description.folder}/${fileName}` : '';
 	},
 
-	audioSecondPart: (state) => {
-		const fileName = state.state.mediaFile.audioSecondPart;
+	audioSecond: (state) => {
+		const fileName = state.state.mediaFile.audioSecond;
 		return fileName ? `${state.description.folder}/${fileName}` : '';
 	},
 
