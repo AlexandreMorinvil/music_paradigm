@@ -50,6 +50,7 @@ const DEFAULT_QUESTION_TYPE = 'simple';
 const DEFAULT_HAS_TIMER = true;
 const DEFAULT_HAS_CLEAR_BACKGROUND = false;
 const DEFAULT_HAS_SOUND = true;
+const DEFAULT_ANSWER_CHOICES = ['A', 'B'];
 
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
@@ -170,15 +171,19 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			textReminder: '',														// Helper ext to display
 			interactivePiano: false, 												// <Boolean|String> Directive to display the interactive piano
 			interactiveKeyboard: false, 											// <Boolean|String> Directive to display the interactive keyboard
+			textAfterQuestionAsked: '',												// Text displayed after a question is asked in question states
+			textSpecification: '',													// Text to add a certain specification (used in question state)
+		},
+
+		optionsContent: {
+			answerChoicesValue: [],													// Value stored for answer choice, it dictates how many choices are displayed in the question
+			answerChoicesText: [],													// Text to display with answer choice
+			answerChoicesImage: [],													// Image to display with an answer choice (in image questions)
 
 			surveyInputOptionsValues: [],											// List of the possible values that will be stored in memory for the input of the user in the survey (The number of options displayed is based on the length of this array)
 			surveyInputOptionsText: [],												// List of the texts that will be displayed above each option of the survey
 			surveyLeftSideText: [],													// Questions or texts to be written for the survey at the left, each value will be written in a row (the maximum length of surveyLeftSideText or surveyRightSideText will determine the number of row)
-			surveyRightSideText: [],												// Questions or texts to be written for the survey at the left, each value will be written in a row (the maximum length of surveyLeftSideText or surveyRightSideText will determine the number of row)
-
-			textAfterQuestionAsked: '',												// Text displayed after a question is asked in question states
-			textSpecification: '',													// Text to add a certain specification (used in question state)
-			// answerChoices:
+			surveyRightSideText: [],												// Questions or texts to be written for the survey at the right, each value will be written in a row (the maximum length of surveyLeftSideText or surveyRightSideText will determine the number of row)
 		},
 
 		// Multimedia elements
@@ -187,8 +192,8 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			videoName: '', 															// Name of the current video file to playback
 			referenceKeyboardKeys: [], 												// List of the reference keyboard keys meant to be pressed
 			interactiveKeyboardTextMapping: null, 									// Mapping of the text to display on the keys of the keyboard according to the order in whcih the keys are pressed
-			audioFirst: '',														// Audio file name
-			audioSecond: '',													// Second audio file (for second part of sertain states)
+			audioFirst: '',															// Audio file name
+			audioSecond: '',														// Second audio file (for second part of sertain states)
 		},
 		// Block specific settings
 		settings: {
@@ -227,6 +232,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			writtingTextPlaceHolder: '',											// Indicate the text that will be written in the text input area when there is nothing written 
 
 			questionType: DEFAULT_QUESTION_TYPE,									// Indicate the question type for the 'question' states
+
 			// areAnswerOptionsHorizontal:
 			// rightAnswers:
 		},
@@ -279,5 +285,6 @@ function IS_FULLY_NOT_INITIALIZED_STATUS() {
 		state: false,																// Flag indicating whether the state's settings need to be opdated
 		media: false,																// Flag indicating whether the state's media files need to be updated
 		content: false,																// Flag indicating whether the state's content need to be updated
+		options: false,																// Flag indicating whether the state's option content need to be updated
 	};
 }

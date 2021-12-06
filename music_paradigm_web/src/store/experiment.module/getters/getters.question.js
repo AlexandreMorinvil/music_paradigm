@@ -11,4 +11,16 @@ export default {
 	textSpecification: (state) => {
 		return state.state.content.textSpecification;
 	},
+
+	answerChoicesValue: (state) => {
+		return state.state.optionsContent.answerChoicesValue;
+	},
+
+	answerChoicesText: (state) => {
+		return state.state.optionsContent.answerChoicesText;
+	},
+
+	answerChoicesImage: (state) => {
+		return state.state.optionsContent.answerChoicesImage;
+	},
 };

@@ -25,6 +25,7 @@ export default {
 			secondAudioFlag: 'audio-2-ready',
 			isMidiPlayerReady: false,
 			isOtherPlayerReady: false,
+			lastPlayedIsMidi: false,
 		};
 	},
 	computed: {
@@ -36,6 +37,10 @@ export default {
 		isSecondAudioReady() {
 			return !this.isAudioSecondLoading;
 		},
+		isPlaying() {
+			if (this.lastPlayedIsMidi) return (this.$refs.midiPlayer) ? this.$refs.midiPlayer.isPlaying : false;
+			else return (this.$refs.otherPlayer) ? this.$refs.otherPlayer.isPlaying : false;
+		},
 		numberNotesPlayed() {
 			return  (this.$refs.midiPlayer) ? this.$refs.midiPlayer.numberNotesPlayed : 0;
 		},
@@ -44,10 +49,12 @@ export default {
 		playContent(content, isMidi = false) {
 			if (isMidi) {
 				this.$refs.otherPlayer.stop();
+				this.lastPlayedIsMidi = true;
 				this.$refs.midiPlayer.play(content);
 			}
 			else {
 				this.$refs.midiPlayer.stop();
+				this.lastPlayedIsMidi = false;
 				this.$refs.otherPlayer.play(content);
 			}
 		},
@@ -67,7 +74,7 @@ export default {
 		},
 	},
 	mounted() {
-		this.playAudioFirst();
+		this.playAudioSecond();
 	},
 	watch: {
 		isFirstAudioReady(isReady) {

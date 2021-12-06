@@ -83,7 +83,11 @@ const stateSchema = new Schema({
     textSpecification: { type: Schema.Types.Mixed, default: undefined },
     textReminder: { type: Schema.Types.Mixed, default: undefined },
     areAnswerOptionsHorizontal: { type: Boolean, default: undefined },
-    answerChoices: { type: [], default: undefined },
+
+    answerChoicesValue: { type: [], default: undefined },
+    answerChoicesText: { type: [], default: undefined },
+    answerChoicesImage: { type: [], default: undefined },
+
     rightAnswers: { type: [], default: undefined },
 },
     {

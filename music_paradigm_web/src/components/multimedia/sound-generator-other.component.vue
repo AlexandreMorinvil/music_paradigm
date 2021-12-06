@@ -10,6 +10,11 @@ export default {
 			VOLUME_LEVEL: 0.05,
 		};
 	},
+	computed: {
+		isPlaying() {
+			return false;
+		},
+	},
 	methods: {
 		play(audioFile) {
 			this.stop();

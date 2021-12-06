@@ -1,19 +1,19 @@
 // Survey parameters
 export default {
 	surveyInputOptionsValues: (state) => {
-		return state.state.content.surveyInputOptionsValues;
+		return state.state.optionsContent.surveyInputOptionsValues;
 	},
 
 	surveyInputOptionsText: (state) => {
-		return state.state.content.surveyInputOptionsText;
+		return state.state.optionsContent.surveyInputOptionsValues;
 	},
 
 	surveyLeftSideText: (state) => {
-		return state.state.content.surveyLeftSideText;
+		return state.state.optionsContent.surveyLeftSideText;
 	},
 
 	surveyRightSideText: (state) => {
-		return state.state.content.surveyRightSideText;
+		return state.state.optionsContent.surveyRightSideText;
 	},
 
 	surveyOptionsAreRadio: (state) => {

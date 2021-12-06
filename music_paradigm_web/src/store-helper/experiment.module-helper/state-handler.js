@@ -15,6 +15,7 @@ function transitionState(currentState, targetState, cursor, isInitialized, gener
 	if (!isInitialized.state) updateStateSettings(currentState, targetState, isInitialized, generalSettings);
 	if (!isInitialized.media) updateStateMediaFiles(currentState, targetState, cursor, isInitialized);
 	if (!isInitialized.content) updateStateContent(currentState, targetState, cursor, isInitialized);
+	if (!isInitialized.options) updateStateOptionsContent(currentState, targetState, isInitialized);
 }
 
 function imposeState(currentState, targetState, cursor, isInitialized, generalSettings) {
@@ -213,12 +214,6 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 		textReminder,
 		interactivePiano,
 		interactiveKeyboard,
-
-		surveyInputOptionsValues,
-		surveyInputOptionsText,
-		surveyLeftSideText,
-		surveyRightSideText,
-
 		textAfterQuestionAsked,
 		textSpecification,
 	} = currentBlock;
@@ -230,7 +225,6 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	let updatedTextReminder = typeof textReminder === 'string' ? textReminder : null;
 	let updatedInteractivePiano = typeof interactivePiano === 'string' || typeof interactivePiano === 'boolean' ? interactivePiano : null;
 	let updatedInteractiveKeyboard = typeof interactiveKeyboard === 'string' || typeof interactiveKeyboard === 'boolean' ? interactiveKeyboard : null;
-
 	let updatedTextAfterQuestionAsked = typeof textAfterQuestionAsked === 'string' ? textAfterQuestionAsked : null;
 	let updatedTextSpecification = typeof textSpecification === 'string' ? textSpecification : null;
 
@@ -243,7 +237,6 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(textReminder)) updatedTextReminder = textReminder || null;
 	if (Array.isArray(interactivePiano)) updatedInteractivePiano = interactivePiano[piledContentIndex] || null;
 	if (Array.isArray(interactiveKeyboard)) updatedInteractiveKeyboard = interactiveKeyboard[piledContentIndex] || null;
-
 	if (Array.isArray(textAfterQuestionAsked)) updatedTextAfterQuestionAsked = textAfterQuestionAsked || null;
 	if (Array.isArray(textSpecification)) updatedTextSpecification = textSpecification || null;
 
@@ -256,6 +249,8 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(updatedTextReminder)) updatedTextReminder = updatedTextReminder[innerStepIndex];
 	if (Array.isArray(updatedInteractivePiano)) updatedInteractivePiano = updatedInteractivePiano[innerStepIndex];
 	if (Array.isArray(updatedInteractiveKeyboard)) updatedInteractiveKeyboard = updatedInteractiveKeyboard[innerStepIndex];
+	if (Array.isArray(updatedTextAfterQuestionAsked)) updatedTextAfterQuestionAsked = textAfterQuestionAsked || null;
+	if (Array.isArray(updatedTextSpecification)) updatedTextSpecification = textSpecification || null;
 
 	// === Update the state ===
 	// Elements which support the shorthand notation with array nesting
@@ -265,17 +260,37 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	currentState.content.textReminder = updatedTextReminder || '';
 	currentState.content.interactivePiano = updatedInteractivePiano || false;
 	currentState.content.interactiveKeyboard = updatedInteractiveKeyboard || false;
-
 	currentState.content.textAfterQuestionAsked = updatedTextAfterQuestionAsked || '';
 	currentState.content.textSpecification = updatedTextSpecification || '';
 
-	// Parsing the survey parameters (they do no support short notations through nesting)
-	currentState.content.surveyInputOptionsValues = (Array.isArray(surveyInputOptionsValues)) ? surveyInputOptionsValues : [];
-	currentState.content.surveyInputOptionsText = (Array.isArray(surveyInputOptionsText)) ? surveyInputOptionsText : [];
-	currentState.content.surveyLeftSideText = (Array.isArray(surveyLeftSideText)) ? surveyLeftSideText : [];
-	currentState.content.surveyRightSideText = (Array.isArray(surveyRightSideText)) ? surveyRightSideText : [];
-
-
 	// Indicate that the media files is initialized
 	Object.assign(isInitialized, { content: true });
+}
+
+function updateStateOptionsContent(currentState, targetState, isInitialized) {
+	// Parsing the current block
+	const currentBlock = targetState; // Flow[cursor.current.index];
+	const {
+		surveyInputOptionsValues,
+		surveyInputOptionsText,
+		surveyLeftSideText,
+		surveyRightSideText,
+
+		answerChoicesValue,
+		answerChoicesText,
+		answerChoicesImage,
+	} = currentBlock;
+
+	// Parsing the survey parameters (they do no support short notations through nesting)
+	currentState.optionsContent.surveyInputOptionsValues = (Array.isArray(surveyInputOptionsValues)) ? surveyInputOptionsValues : [];
+	currentState.optionsContent.surveyInputOptionsValues = (Array.isArray(surveyInputOptionsText)) ? surveyInputOptionsText : [];
+	currentState.optionsContent.surveyLeftSideText = (Array.isArray(surveyLeftSideText)) ? surveyLeftSideText : [];
+	currentState.optionsContent.surveyRightSideText = (Array.isArray(surveyRightSideText)) ? surveyRightSideText : [];
+
+	currentState.optionsContent.answerChoicesValue = (Array.isArray(answerChoicesValue)) ? answerChoicesValue : [];
+	currentState.optionsContent.answerChoicesText = (Array.isArray(answerChoicesText)) ? answerChoicesText : [];
+	currentState.optionsContent.answerChoicesImage = (Array.isArray(answerChoicesImage)) ? answerChoicesImage : [];
+
+	// Indicate that the media files is initialized
+	Object.assign(isInitialized, { options: true });
 }

@@ -256,7 +256,11 @@ function validateBlock(block, index = null) {
 		'textSpecification',
 		'textReminder',
 		'areAnswerOptionsHorizontal',
-		'answerChoices',
+
+		'answerChoicesValue',
+		'answerChoicesText',
+		'answerChoicesImage',
+
 		'rightAnswers',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
@@ -521,11 +525,26 @@ function validateAttributeType(key, value) {
 		case 'surveyInputOptionsText':
 		case 'surveyLeftSideText':
 		case 'surveyRightSideText':
-		case 'answerChoices':
+		case 'answerChoicesValue':
+		case 'answerChoicesText':
+		case 'answerChoicesImage':
 			if (!Array.isArray(value)) {
 				throw new Error(`The key '${key}' must be of type 'Array'`);
 			}
-			break;
+
+			switch (key) {
+				// Arrays of String
+				case 'answerChoicesImage':
+					value.forEach((element, index) => {
+						if (!(typeof element === 'string')) {
+							throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String'`);
+						}
+					});
+					break;
+
+				default:
+					break;
+			} break;
 
 		default:
 			break;
