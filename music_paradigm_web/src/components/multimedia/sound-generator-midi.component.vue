@@ -10,16 +10,20 @@ export default {
 	data() {
 		return {
 			VOLUME_LEVEL: 0.05,
-			MAX_VELOCITY: 127,
-			totalNumberNotes: [],
-			playedMidiNotes: [],
-			audioNodes: [],
+			totalNumberNotes: 0,
+			playingMidiNotes: [],
+			audioNodes: {},
 		};
 	},
 	computed: {
 		...mapGetters('soundGenerator', ['soundGeneratorAudioContext', 'soundGeneratorInstrument']),
+		isPlaying() {
+			const hasAllNotesBeenStarted = this.playingMidiNotes.length === this.totalNumberNotes;
+			const hasAPlayingNote = this.playingMidiNotes.includes(true);
+			return !hasAllNotesBeenStarted || hasAPlayingNote;
+		},
 		numberNotesPlayed() {
-			return this.playedMidiNotes.length;
+			return this.playingMidiNotes.length;
 		}
 	},
 	methods: {
@@ -29,11 +33,12 @@ export default {
 		 * 	This is in order to be able to add further actions when each note is played
 		 */
 		play(parsedMidiNotes, audioContext) {
-			if (!parsedMidiNotes || parsedMidiNotes.length <= 0) return;
 
 			this.stop();
-			this.playedMidiNotes = [];
+			this.playingMidiNotes = [];
 			this.totalNumberNotes = parsedMidiNotes.length;
+
+			if (!parsedMidiNotes || parsedMidiNotes.length <= 0) return;
 
 			const ac = audioContext || this.soundGeneratorAudioContext || new AudioContext();
 			const now = ac.currentTime;
@@ -43,12 +48,12 @@ export default {
 				const name = note.name || midiConversion.midiNumberToName(note.midi);
 
 				// Indicate that a note is playing
-				const index = this.playedMidiNotes.length;
-				this.playedMidiNotes[index] = true;
+				const index = this.playingMidiNotes.length;
+				this.playingMidiNotes[index] = true;
 
 				// Play the note
 				const audioNode = this.soundGeneratorInstrument.play(name, now + note.time, {
-					gain: (note.velocity || this.MAX_VELOCITY) / this.MAX_VELOCITY,
+					gain: note.velocity || 1,
 					duration: note.duration || 1,
 				});
 				this.audioNodes[note.midi] = audioNode;
@@ -56,13 +61,13 @@ export default {
 				// Indicate that the note stopped playing
 				const endDelay = now + note.time + (note.duration || 1) - ac.currentTime;
 				setTimeout(() => {
-					this.playedMidiNotes[index] = false;
+					this.playingMidiNotes[index] = false;
 				}, 1000 * endDelay);
 			});
 		},
 		stop() {
 			for (const note in this.audioNodes) this.audioNodes[note].stop();
-			this.audioNodes = [];
+			this.audioNodes = {};
 		},
 	},
 	beforeDestroy() {

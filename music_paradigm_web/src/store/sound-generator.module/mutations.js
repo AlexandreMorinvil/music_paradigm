@@ -1,5 +1,6 @@
 import { Midi } from '@tonejs/midi';
 import { defaultState } from '@/store-helper/sound-generator.module-helper';
+import { ressourceName } from '@/_helpers';
 
 export default {
 	initializeSoundGenerator: async (state) => {
@@ -22,12 +23,7 @@ export default {
 	},
 
 	setRessourceName: (state, { assignation, fileName }) => {
-		// Set file name 
 		state[assignation].fileName = fileName;
-
-		// Set extension name
-		const extension = fileName.split('.').pop();
-		state[assignation].extension = extension ? extension.toLowerCase() : '';
 	},
 
 	loadRessourceArrayStream: (state, { assignation, arrayStream }) => {
@@ -36,9 +32,9 @@ export default {
 
 	processArrayStream: (state, assignation) => {
 		// If the file is a MIDI file, we parse it
-		if (!['mid', 'midi'].includes(state[assignation].extension)) return;
+		if (!ressourceName.isMidiFile(state[assignation].fileName)) return;
 		const jsonMidi = new Midi(state[assignation].arrayStream);
 		const notes = jsonMidi.tracks[0].notes;
-		state[assignation].parsedMidi = notes;
+		state[assignation].processedContent = notes;
 	},
 };

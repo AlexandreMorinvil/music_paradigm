@@ -11,6 +11,7 @@ import { mapGetters } from 'vuex';
 import EventEmitter from 'events';
 import SoundGeneratorMidiComponent from '@/components/multimedia/sound-generator-midi.component.vue';
 import SoundGeneratorOtherComponent from '@/components/multimedia/sound-generator-other.component.vue';
+import { ressourceName } from '@/_helpers';
 
 export default {
 	components: {
@@ -25,15 +26,15 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('soundGenerator', ['hasAudioFirst', 'isAudioFirstMidi', 'audioFirstContent', 'audioFirstParsed']),
-		...mapGetters('soundGenerator', ['hasAudioSecond', 'isAudioSecondMidi', 'audioSecondContent', 'audioSecondParsed']),
+		...mapGetters('soundGenerator', ['hasAudioFirst', 'audioFirstName', 'audioFirstContent', 'audioFirstParsed']),
+		...mapGetters('soundGenerator', ['hasAudioSecond', 'audioSecondName', 'audioSecondContent', 'audioSecondParsed']),
 		numberNotesPlayed() {
 			if (this.$refs.midiPlayer) return this.$refs.midiPlayer.numberNotesPlayed;
 			else return 0;
 		},
 	},
 	methods: {
-		async test() {
+		test() {
 			this.$refs.midiPlayer.play([
 				{ time: 0.0, midi: 60, duration: 1 },
 				{ time: 0.5, midi: 61, duration: 1 },
@@ -55,17 +56,21 @@ export default {
 		},
 		playAudioFirst() {
 			if (!this.hasAudioFirst) return;
-			const content = this.isAudioFirstMidi ? this.audioFirstParsed : this.audioFirstContent;
-			this.playContent(content, this.isAudioFirstMidi);
+			const isMidiFile = ressourceName.isMidiFile(this.audioFirstName);
+			const content = isMidiFile ? this.audioFirstParsed : this.audioFirstContent;
+			this.playContent(content, isMidiFile);
 		},
 		playAudioSecond() {
 			if (!this.hasAudioSecond) return;
-			const content = this.isAudioSecondMidi ? this.audioSecondParsed : this.audioSecondContent;
-			this.playContent(content, this.isAudioSecondMidi);
+			const isMidiFile = ressourceName.isMidiFile(this.audioSecondName);
+			const content = isMidiFile ? this.audioSecondParsed : this.audioSecondContent;
+			this.playContent(content, isMidiFile);
 		},
 	},
 	mounted() {
-		this.test();
+		setTimeout(() => {
+			this.playAudioFirst();
+		}, 5000);
 	}
 };
 </script>

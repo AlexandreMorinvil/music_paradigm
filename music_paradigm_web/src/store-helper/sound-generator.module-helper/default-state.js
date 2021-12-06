@@ -8,7 +8,6 @@ function EMPTY_RESSOURCE_STATE() {
 
 		// Content information
 		fileName: '',
-		extension: '',
 		duration: 0,
 		arrayStream: null,
 		processedContent: null,
