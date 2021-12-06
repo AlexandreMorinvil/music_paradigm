@@ -15,7 +15,7 @@ export default {
 	methods: {
 		...mapActions('piano', ['loadMidiFile']),
 		...mapActions('keyboard', ['loadReferenceKeyboardKeys']),
-		...mapActions('soundGenerator', ['loadQuestionFirstAudio', 'loadQuestionSecondAudio']),
+		...mapActions('soundGenerator', ['loadFirstAudio', 'loadSecondAudio']),
 	},
 	watch: {
 		midiName: {
@@ -36,14 +36,14 @@ export default {
 		audioFirst: {
 			immediate: true,
 			handler: function (fileName) {
-				if (fileName) this.loadQuestionFirstAudio(fileName);
+				if (fileName) this.loadFirstAudio(fileName);
 			},
 		},
 
 		audioSecond: {
 			immediate: true,
 			handler: function (fileName) {
-				if (fileName) this.loadQuestionSecondAudio(fileName);
+				if (fileName) this.loadSecondAudio(fileName);
 			},
 		},
 	},

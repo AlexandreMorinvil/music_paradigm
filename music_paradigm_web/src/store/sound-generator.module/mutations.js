@@ -22,11 +22,15 @@ export default {
 		state[assignation].isLoading = false;
 	},
 
-	setRessourceName: (state, { assignation, fileName }) => {
+	resetResource: (state, assignation) => {
+		state[assignation] = defaultState.EMPTY_RESSOURCE_STATE();
+	},
+
+	setResourceName: (state, { assignation, fileName }) => {
 		state[assignation].fileName = fileName;
 	},
 
-	loadRessourceArrayStream: (state, { assignation, arrayStream }) => {
+	loadResourceArrayStream: (state, { assignation, arrayStream }) => {
 		state[assignation].arrayStream = arrayStream;
 	},
 

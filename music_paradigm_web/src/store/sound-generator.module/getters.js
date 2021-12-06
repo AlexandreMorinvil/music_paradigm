@@ -16,7 +16,7 @@ export default {
 
 	// First Audio
 	hasAudioFirst: (state) => {
-		return Boolean(state[defaultState.FIRST_AUDIO_RESSOURCE_NAME].fileName) || state[defaultState.FIRST_AUDIO_RESSOURCE_NAME].isLoading;
+		return Boolean(state[defaultState.FIRST_AUDIO_RESSOURCE_NAME].arrayStream) || state[defaultState.FIRST_AUDIO_RESSOURCE_NAME].isLoading;
 	},
 
 	isAudioFirstLoading: (state) => {
@@ -37,7 +37,7 @@ export default {
 
 	// Second Audio
 	hasAudioSecond: (state) => {
-		return Boolean(state[defaultState.SECOND_AUDIO_RESSOURCE_NAME].fileName) || state[defaultState.SECOND_AUDIO_RESSOURCE_NAME].isLoading;
+		return Boolean(state[defaultState.SECOND_AUDIO_RESSOURCE_NAME].arrayStream) || state[defaultState.SECOND_AUDIO_RESSOURCE_NAME].isLoading;
 	},
 
 	isAudioSecondLoading: (state) => {

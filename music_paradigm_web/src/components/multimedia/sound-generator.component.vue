@@ -20,30 +20,27 @@ export default {
 	},
 	data() {
 		return {
-			lock: new EventEmitter(),
+			waitAudio: new EventEmitter(),
+			firstAudioFlag: 'audio-1-ready',
+			secondAudioFlag: 'audio-2-ready',
 			isMidiPlayerReady: false,
 			isOtherPlayerReady: false,
 		};
 	},
 	computed: {
-		...mapGetters('soundGenerator', ['hasAudioFirst', 'audioFirstName', 'audioFirstContent', 'audioFirstParsed']),
-		...mapGetters('soundGenerator', ['hasAudioSecond', 'audioSecondName', 'audioSecondContent', 'audioSecondParsed']),
+		...mapGetters('soundGenerator', ['hasAudioFirst', 'isAudioFirstLoading', 'audioFirstName', 'audioFirstContent', 'audioFirstParsed']),
+		...mapGetters('soundGenerator', ['hasAudioSecond', 'isAudioSecondLoading', 'audioSecondName', 'audioSecondContent', 'audioSecondParsed']),
+		isFirstAudioReady() {
+			return !this.isAudioFirstLoading;
+		},
+		isSecondAudioReady() {
+			return !this.isAudioSecondLoading;
+		},
 		numberNotesPlayed() {
-			if (this.$refs.midiPlayer) return this.$refs.midiPlayer.numberNotesPlayed;
-			else return 0;
+			return  (this.$refs.midiPlayer) ? this.$refs.midiPlayer.numberNotesPlayed : 0;
 		},
 	},
 	methods: {
-		test() {
-			this.$refs.midiPlayer.play([
-				{ time: 0.0, midi: 60, duration: 1 },
-				{ time: 0.5, midi: 61, duration: 1 },
-				{ time: 1.0, midi: 62, duration: 1 },
-				{ time: 1.5, midi: 63, duration: 1 },
-				{ time: 2.0, midi: 64, duration: 1 },
-				{ time: 2.5, midi: 65, duration: 1 },
-			]);
-		},
 		playContent(content, isMidi = false) {
 			if (isMidi) {
 				this.$refs.otherPlayer.stop();
@@ -54,23 +51,31 @@ export default {
 				this.$refs.otherPlayer.play(content);
 			}
 		},
-		playAudioFirst() {
+		async playAudioFirst() {
 			if (!this.hasAudioFirst) return;
+			if (!this.isFirstAudioReady) await new Promise(resolve => this.waitAudio.once(this.firstAudioFlag, resolve)); // Wait for the ressource to load
 			const isMidiFile = ressourceName.isMidiFile(this.audioFirstName);
 			const content = isMidiFile ? this.audioFirstParsed : this.audioFirstContent;
 			this.playContent(content, isMidiFile);
 		},
-		playAudioSecond() {
+		async playAudioSecond() {
 			if (!this.hasAudioSecond) return;
+			if (!this.isSecondAudioReady) await new Promise(resolve => this.waitAudio.once(this.secondAudioFlag, resolve)); // Wait for the ressource to load
 			const isMidiFile = ressourceName.isMidiFile(this.audioSecondName);
 			const content = isMidiFile ? this.audioSecondParsed : this.audioSecondContent;
 			this.playContent(content, isMidiFile);
 		},
 	},
 	mounted() {
-		setTimeout(() => {
-			this.playAudioFirst();
-		}, 5000);
+		this.playAudioFirst();
+	},
+	watch: {
+		isFirstAudioReady(isReady) {
+			if (isReady) this.waitAudio.emit(this.firstAudioFlag);
+		},
+		isSecondAudioReady(isReady) {
+			if (isReady) this.waitAudio.emit(this.secondAudioFlag);
+		},
 	}
 };
 </script>

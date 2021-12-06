@@ -8,7 +8,6 @@ function EMPTY_RESSOURCE_STATE() {
 
 		// Content information
 		fileName: '',
-		duration: 0,
 		arrayStream: null,
 		processedContent: null,
 	};
@@ -28,5 +27,6 @@ function DEFAULT_SOUND_GENERATOR_STATE() {
 export default {
 	FIRST_AUDIO_RESSOURCE_NAME,
 	SECOND_AUDIO_RESSOURCE_NAME,
+	EMPTY_RESSOURCE_STATE,
 	DEFAULT_SOUND_GENERATOR_STATE,
 };

@@ -10,24 +10,25 @@ export default {
 		commit('terminateSoundGenerator');
 	},
 
-	loadQuestionFirstAudio: ({ dispatch }, fileName) => {
-		dispatch('loadRessourceFile', { assignation: defaultState.FIRST_AUDIO_RESSOURCE_NAME, fileName: fileName });
+	loadFirstAudio: ({ dispatch }, fileName) => {
+		dispatch('loadResourceFile', { assignation: defaultState.FIRST_AUDIO_RESSOURCE_NAME, fileName: fileName });
 	},
 
-	loadQuestionSecondAudio: ({ dispatch }, fileName) => {
-		dispatch('loadRessourceFile', { assignation: defaultState.SECOND_AUDIO_RESSOURCE_NAME, fileName: fileName });
+	loadSecondAudio: ({ dispatch }, fileName) => {
+		dispatch('loadResourceFile', { assignation: defaultState.SECOND_AUDIO_RESSOURCE_NAME, fileName: fileName });
 	},
 
-	loadRessourceFile: ({ commit }, { assignation, fileName }) => {
+	loadResourceFile: ({ commit }, { assignation, fileName }) => {
+		commit('resetResource', assignation);
+		commit('setResourceName', { assignation: assignation, fileName: fileName });
 		commit('indicateIsLoading', assignation);
 		return resourceService.fetchMidiFile(fileName).then(
 			(arrayStream) => {
-				commit('setRessourceName', { assignation: assignation, fileName: fileName });
-				commit('loadRessourceArrayStream', { assignation: assignation, arrayStream: arrayStream });
+				commit('loadResourceArrayStream', { assignation: assignation, arrayStream: arrayStream });
 				commit('processArrayStream', assignation);
 			},
 			(error) => {
-				console.error(`Ressource loading failed:\n${error}`);
+				console.error(`Resource loading failed:\n${error}`);
 			}
 		)
 			.finally(() => {
