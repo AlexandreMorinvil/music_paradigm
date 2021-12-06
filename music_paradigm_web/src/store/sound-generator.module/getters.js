@@ -19,6 +19,10 @@ export default {
 		return Boolean(state[defaultState.FIRST_AUDIO_RESSOURCE_NAME].fileName) || state[defaultState.FIRST_AUDIO_RESSOURCE_NAME].isLoading;
 	},
 
+	isAudioFirstMidi: (state) => {
+		return ['mid', 'midi'].includes(state[defaultState.FIRST_AUDIO_RESSOURCE_NAME].extension);
+	},
+
 	isAudioFirstLoading: (state) => {
 		return state[defaultState.FIRST_AUDIO_RESSOURCE_NAME].isLoading;
 	},
@@ -38,6 +42,10 @@ export default {
 	// Second Audio
 	hasAudioSecond: (state) => {
 		return Boolean(state[defaultState.SECOND_AUDIO_RESSOURCE_NAME].fileName) || state[defaultState.SECOND_AUDIO_RESSOURCE_NAME].isLoading;
+	},
+
+	isAudioSecondMidi: (state) => {
+		return ['mid', 'midi'].includes(state[defaultState.SECOND_AUDIO_RESSOURCE_NAME].extension);
 	},
 
 	isAudioSecondLoading: (state) => {
