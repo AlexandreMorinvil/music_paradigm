@@ -12,7 +12,7 @@
 import '@/styles/experiment-content-template.css';
 import { mapGetters } from 'vuex';
 
-import SoundGeneratorComponent from '@/components/application-component/sound-generator.component.vue';
+import SoundGeneratorComponent from '@/components/multimedia/sound-generator.component.vue';
 
 export default {
 	components: {
@@ -25,6 +25,9 @@ export default {
 	},
 	computed: {
 		...mapGetters('experiment', ['textSpecification']),
+		numberBoxes() {
+			return 5;
+		},
 		hasSpecification() {
 			return Boolean(this.textSpecification);
 		},
