@@ -12,7 +12,6 @@ export default {
 	data() {
 		return {
 			VOLUME_LEVEL: 0.05,
-			ANNTICIPATION_TIME: 0.01,
 			numberNotesTriggered: 0,
 			numberNotesReleased: 0,
 			totalNumberNotes: 0,
@@ -44,6 +43,7 @@ export default {
 				const playerNow = this.soundGeneratorAudioContext.currentTime;
 
 				// Schedule the time to play each
+				Tone.Draw.anticipation *= 2;
 				parsedMidiNotes.forEach((note) => {
 					// Generate name if no name was provided
 					const noteName = note.name || midiConversion.midiNumberToName(note.midi);
@@ -59,9 +59,9 @@ export default {
 
 					// Event launcher scheduler
 					// Indicate that the note started playing
-					Tone.Draw.anticipation = this.ANNTICIPATION_TIME;
 					Tone.Draw.schedule(() => {
 						this.numberNotesTriggered += 1;
+						console.log('A la source : ', this.numberNotesTriggered);
 					}, schedulerNow + note.time);
 
 					// Indicate that the note stopped playing
@@ -79,10 +79,20 @@ export default {
 		},
 	},
 	mounted() {
-		// this.test2();
+		Tone.start();
 	},
 	beforeDestroy() {
+		Tone.Transport.stop();
 		this.stop();
+	},
+	watch: {
+		numberNotesReleased: {
+			deep: true,
+			handler: function () {
+				if (this.numberNotesReleased === 0) return;
+				else if (this.numberNotesReleased === this.totalNumberNotes) this.$emit('finished');
+			},
+		},
 	},
 };
 </script>

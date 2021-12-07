@@ -39,11 +39,8 @@ export default {
 			return !this.isAudioSecondLoading;
 		},
 		isPlaying() {
-			if (this.lastPlayedIsMidi) return (this.$refs.midiPlayer) ? this.$refs.midiPlayer.isPlaying : false;
-			else return (this.$refs.otherPlayer) ? this.$refs.otherPlayer.isPlaying : false;
-		},
-		numberNotesTriggered() {
-			return  (this.$refs.midiPlayer) ? this.$refs.midiPlayer.numberNotesTriggered : 0;
+			if (this.lastPlayedIsMidi) return this.$refs.midiPlayer ? this.$refs.midiPlayer.isPlaying : false;
+			else return this.$refs.otherPlayer ? this.$refs.otherPlayer.isPlaying : false;
 		},
 	},
 	methods: {
@@ -52,8 +49,7 @@ export default {
 				this.$refs.otherPlayer.stop();
 				this.lastPlayedIsMidi = true;
 				this.$refs.midiPlayer.play(content);
-			}
-			else {
+			} else {
 				this.$refs.midiPlayer.stop();
 				this.lastPlayedIsMidi = false;
 				this.$refs.otherPlayer.play(content);
@@ -61,28 +57,23 @@ export default {
 		},
 		async playAudioFirst() {
 			if (!this.hasAudioFirst) return;
-			if (!this.isFirstAudioReady) await new Promise(resolve => this.waitAudio.once(this.firstAudioFlag, resolve)); // Wait for the ressource to load
+			if (!this.isFirstAudioReady) await new Promise((resolve) => this.waitAudio.once(this.firstAudioFlag, resolve)); // Wait for the ressource to load
 			const isMidiFile = ressourceName.isMidiFile(this.audioFirstName);
 			const content = isMidiFile ? this.audioFirstParsed : this.audioFirstContent;
 			this.playContent(content, isMidiFile);
 		},
 		async playAudioSecond() {
 			if (!this.hasAudioSecond) return;
-			if (!this.isSecondAudioReady) await new Promise(resolve => this.waitAudio.once(this.secondAudioFlag, resolve)); // Wait for the ressource to load
+			if (!this.isSecondAudioReady) await new Promise((resolve) => this.waitAudio.once(this.secondAudioFlag, resolve)); // Wait for the ressource to load
 			const isMidiFile = ressourceName.isMidiFile(this.audioSecondName);
 			const content = isMidiFile ? this.audioSecondParsed : this.audioSecondContent;
 			this.playContent(content, isMidiFile);
 		},
-		updateTriggeredNoteCount(number) {
-			this.triggeredNoteCount = number;
-			console.log('Number updated:', number);
-			this.$emit('triggeredNoteCount', number);
-		}
 	},
 	mounted() {
 		this.$watch(
 			() => this.$refs.midiPlayer.numberNotesTriggered,
-			(number) => this.updateTriggeredNoteCount(number),
+			(number) => this.$emit('triggeredNoteCount', number),
 		);
 	},
 	watch: {
@@ -92,7 +83,7 @@ export default {
 		isSecondAudioReady(isReady) {
 			if (isReady) this.waitAudio.emit(this.secondAudioFlag);
 		},
-	}
+	},
 };
 </script>
 

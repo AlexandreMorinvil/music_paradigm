@@ -6,7 +6,7 @@
 				v-for="index in numberBoxes"
 				v-bind:key="index"
 				:class="{
-					'green-box': true,
+					'green-box': index === triggeredKeyIndex,
 				}"
 				class="midi-choice"
 			>
@@ -30,7 +30,9 @@ export default {
 	data() {
 		return {
 			mustDisplaySpecification: false,
-			DELAY_FIRST_SECOND_AUDIO: 1,
+			DELAY_INITIAL_AUDIO_MILISECONDS: 1000,
+			DELAY_SECOND_AUDIO_MILISECONDS: 1000,
+			triggeredKeyIndex: 0,
 		};
 	},
 	computed: {
@@ -61,25 +63,25 @@ export default {
 			// If there is no option values, we take the number of notes of the Midi files loaded
 			return Math.max(this.notesCountFirstAudio || 0, this.notesCountSecondAudio || 0, minBoxNumber);
 		},
-		// colorOfBox: (number) => () => {
-		// 	console.log(number);
-		// },
 	},
 	methods: {
+		playFirstAudio() {
+			this.$refs.audioManager.playAudioFirst();
+		},
+		playSecondAudio() {
+			this.$refs.audioManager.playAudioSecond();
+		},
 		getTextOfBox(index) {
 			const imposedText = this.answerChoicesText[index];
 			return imposedText || index;
 		},
-		updateTriggeredNoteIndex(index) {
-			console.log('Chiffre rendu dans les questions options: ', index);
+		updateTriggeredNoteIndex(number) {
+			console.log('Number:', number);
+			this.triggeredKeyIndex = number;
 		},
 	},
 	mounted() {
-		// this.$watch(
-		// 	() => this.$refs.audioManager.numberNotesTriggered,
-		// 	this.updateTriggeredNoteIndex
-		// );
-		this.$refs.audioManager.playAudioFirst();
+		setTimeout(() => this.playFirstAudio(), this.DELAY_INITIAL_AUDIO_MILISECONDS);
 	},
 };
 </script>
