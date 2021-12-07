@@ -6,73 +6,80 @@
 import { mapGetters } from 'vuex';
 import { midiConversion } from '@/_helpers';
 
+import * as Tone from 'tone';
+
 export default {
 	data() {
 		return {
 			VOLUME_LEVEL: 0.05,
+			ANNTICIPATION_TIME: 0.01,
 			numberNotesTriggered: 0,
+			numberNotesReleased: 0,
 			totalNumberNotes: 0,
-			playingMidiNotes: [],
 			audioNodes: {},
 		};
 	},
 	computed: {
 		...mapGetters('soundGenerator', ['soundGeneratorAudioContext', 'soundGeneratorInstrument']),
 		isPlaying() {
-			const hasAllNotesBeenStarted = this.playingMidiNotes.length === this.totalNumberNotes;
-			const hasAPlayingNote = this.playingMidiNotes.includes(true);
-			return !hasAllNotesBeenStarted || hasAPlayingNote;
+			if (this.totalNumberNotes <= 0) return false;
+			else if (this.numberNotesTriggered < this.totalNumberNotes) return true;
+			else if (this.numberNotesReleased < this.totalNumberNotes) return true;
+			else return false;
 		},
 	},
 	methods: {
-		/**
-		 *	Play the midi file and keep in memory each note played
-		 * 	'schedule(ac.currentTime, notes)' is not used
-		 * 	This is in order to be able to add further actions when each note is played
-		 */
-		play(parsedMidiNotes, audioContext) {
+		play(parsedMidiNotes) {
 			this.stop();
-			this.playingMidiNotes = [];
 			this.totalNumberNotes = parsedMidiNotes.length;
 			this.numberNotesTriggered = 0;
+			this.numberNotesReleased = 0;
 
 			if (!parsedMidiNotes || parsedMidiNotes.length <= 0) return;
 
-			const ac = audioContext || this.soundGeneratorAudioContext || new AudioContext();
-			const now = ac.currentTime;
+			Tone.Transport.schedule((schedulerNow) => {
+				// The current time of ToneJs (used for synchronizing the events with the notes) and the audio
+				// corrent time of the audio context of soundfont-player (used to play an  instrument) are not
+				// the same. Therefore, we have a separete 'schedulerNow' and 'playerNow'
+				const playerNow = this.soundGeneratorAudioContext.currentTime;
 
-			parsedMidiNotes.forEach((note) => {
-				// Generate name if no name was provided
-				const name = note.name || midiConversion.midiNumberToName(note.midi);
+				// Schedule the time to play each
+				parsedMidiNotes.forEach((note) => {
+					// Generate name if no name was provided
+					const noteName = note.name || midiConversion.midiNumberToName(note.midi);
+					const noteDuration = note.duration || 1;
+					const noteVelocity = note.velocity || 1;
 
-				// Indicate that a note is playing
-				const index = this.playingMidiNotes.length;
-				this.playingMidiNotes[index] = false;
-				const startDelay = note.time;
-				setTimeout(() => {
-					console.log('Test', index);
-					this.playingMidiNotes[index] = true;
-					this.numberNotesTriggered += 1;
-				}, 1000 * startDelay);
+					// Note playing scheduler
+					const audioNode = this.soundGeneratorInstrument.play(noteName, playerNow + note.time, {
+						gain: noteVelocity,
+						duration: noteDuration,
+					});
+					this.audioNodes[note.midi] = audioNode;
 
-				// Play the note
-				const audioNode = this.soundGeneratorInstrument.play(name, now + note.time, {
-					gain: note.velocity || 1,
-					duration: note.duration || 1,
+					// Event launcher scheduler
+					// Indicate that the note started playing
+					Tone.Draw.anticipation = this.ANNTICIPATION_TIME;
+					Tone.Draw.schedule(() => {
+						this.numberNotesTriggered += 1;
+					}, schedulerNow + note.time);
+
+					// Indicate that the note stopped playing
+					Tone.Draw.schedule(() => {
+						this.numberNotesReleased += 1;
+					}, schedulerNow + note.time + noteDuration);
 				});
-				this.audioNodes[note.midi] = audioNode;
-
-				// Indicate that the note stopped playing
-				const endDelay = now + note.time + (note.duration || 1) - ac.currentTime;
-				setTimeout(() => {
-					this.playingMidiNotes[index] = false;
-				}, 1000 * endDelay);
 			});
+
+			Tone.Transport.start();
 		},
 		stop() {
 			for (const note in this.audioNodes) this.audioNodes[note].stop();
 			this.audioNodes = {};
 		},
+	},
+	mounted() {
+		// this.test2();
 	},
 	beforeDestroy() {
 		this.stop();

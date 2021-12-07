@@ -6,7 +6,7 @@ export default {
 	initializeSoundGenerator: async (state) => {
 		const soundFont = require('soundfont-player');
 		state.audioContext = new AudioContext();
-		state.instrument = await soundFont.instrument(new AudioContext(), 'acoustic_grand_piano');
+		state.instrument = await soundFont.instrument(state.audioContext, 'acoustic_grand_piano');
 		state.isInitialized = true;
 	},
 
