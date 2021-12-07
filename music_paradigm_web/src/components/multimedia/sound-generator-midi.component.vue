@@ -10,6 +10,7 @@ export default {
 	data() {
 		return {
 			VOLUME_LEVEL: 0.05,
+			numberNotesTriggered: 0,
 			totalNumberNotes: 0,
 			playingMidiNotes: [],
 			audioNodes: {},
@@ -22,9 +23,6 @@ export default {
 			const hasAPlayingNote = this.playingMidiNotes.includes(true);
 			return !hasAllNotesBeenStarted || hasAPlayingNote;
 		},
-		numberNotesPlayed() {
-			return this.playingMidiNotes.length;
-		}
 	},
 	methods: {
 		/**
@@ -33,10 +31,10 @@ export default {
 		 * 	This is in order to be able to add further actions when each note is played
 		 */
 		play(parsedMidiNotes, audioContext) {
-
 			this.stop();
 			this.playingMidiNotes = [];
 			this.totalNumberNotes = parsedMidiNotes.length;
+			this.numberNotesTriggered = 0;
 
 			if (!parsedMidiNotes || parsedMidiNotes.length <= 0) return;
 
@@ -49,7 +47,13 @@ export default {
 
 				// Indicate that a note is playing
 				const index = this.playingMidiNotes.length;
-				this.playingMidiNotes[index] = true;
+				this.playingMidiNotes[index] = false;
+				const startDelay = note.time;
+				setTimeout(() => {
+					console.log('Test', index);
+					this.playingMidiNotes[index] = true;
+					this.numberNotesTriggered += 1;
+				}, 1000 * startDelay);
 
 				// Play the note
 				const audioNode = this.soundGeneratorInstrument.play(name, now + note.time, {

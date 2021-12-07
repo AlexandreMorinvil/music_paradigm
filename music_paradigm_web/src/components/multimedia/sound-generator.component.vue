@@ -26,6 +26,7 @@ export default {
 			isMidiPlayerReady: false,
 			isOtherPlayerReady: false,
 			lastPlayedIsMidi: false,
+			triggeredNoteCount: 0,
 		};
 	},
 	computed: {
@@ -41,8 +42,8 @@ export default {
 			if (this.lastPlayedIsMidi) return (this.$refs.midiPlayer) ? this.$refs.midiPlayer.isPlaying : false;
 			else return (this.$refs.otherPlayer) ? this.$refs.otherPlayer.isPlaying : false;
 		},
-		numberNotesPlayed() {
-			return  (this.$refs.midiPlayer) ? this.$refs.midiPlayer.numberNotesPlayed : 0;
+		numberNotesTriggered() {
+			return  (this.$refs.midiPlayer) ? this.$refs.midiPlayer.numberNotesTriggered : 0;
 		},
 	},
 	methods: {
@@ -72,9 +73,17 @@ export default {
 			const content = isMidiFile ? this.audioSecondParsed : this.audioSecondContent;
 			this.playContent(content, isMidiFile);
 		},
+		updateTriggeredNoteCount(number) {
+			this.triggeredNoteCount = number;
+			console.log('Number updated:', number);
+			this.$emit('triggeredNoteCount', number);
+		}
 	},
 	mounted() {
-		this.playAudioSecond();
+		this.$watch(
+			() => this.$refs.midiPlayer.numberNotesTriggered,
+			(number) => this.updateTriggeredNoteCount(number),
+		);
 	},
 	watch: {
 		isFirstAudioReady(isReady) {
