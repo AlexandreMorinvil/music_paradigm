@@ -33,7 +33,7 @@ export default {
 
 <style scoped>
 .text-color {
-	color:rgb(45, 245, 0);
+	color:rgb(66, 209, 34);
 }
 
 .state-section {

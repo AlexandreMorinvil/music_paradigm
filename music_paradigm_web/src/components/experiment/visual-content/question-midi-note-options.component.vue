@@ -5,10 +5,13 @@
 			<button
 				v-for="index in numberBoxes"
 				v-bind:key="index"
+				v-on:click="handleSelection(index)"
 				:class="{
+					'not-clickable': !areChoicesClickable,
 					'playing-box': index === triggeredChoiceIndex,
 					'revealed-box': index < revealedChoiceLastIndex,
 					'last-audio': reachedLastAudio,
+					'selected-box': index === selectedChoiceIndex,
 				}"
 				class="midi-choice"
 			>
@@ -35,10 +38,12 @@ export default {
 			DELAY_INITIAL: 1000,
 			DELAY_FIRST_AUDIO_MILISECONDS: 100,
 			DELAY_SECOND_AUDIO_MILISECONDS: 750,
+			DELAY_HIGHTLIGHT_THE_CHOICE: 700,
 
 			// DOM manipulation indexes
 			revealedChoiceLastIndex: 0,
 			triggeredChoiceIndex: 0,
+			selectedChoiceIndex: -1,
 
 			// Flags for the sequnce of events
 			isReadyToPlayFirstAudio: false,
@@ -66,6 +71,33 @@ export default {
 		notesCountSecondAudio() {
 			return Array.isArray(this.audioSecondParsed) ? this.audioSecondParsed.length : 0;
 		},
+		listOptionValues() {
+			// The minimum box number is 2
+			const options = [1, 2];
+
+			// If option values are specified, they dictate the number of options
+			if (this.answerChoicesValue.length > 0) {
+				for (const i in this.answerChoicesValue) options[i] = this.answerChoicesValue[i];
+			}
+
+			// If there is no option values, we take the number of notes of the Midi files loaded
+			else {
+				const choicesCount = Math.max(this.notesCountFirstAudio || 0, this.notesCountSecondAudio || 0, options.length);
+				for (let i = 0; i < choicesCount; i++) options[i] = i + 1;
+			}
+			return options;
+		},
+		listOptionText() {
+			const options = [];
+
+			// De default text is the value stored for the given value
+			for (const i in this.listOptionValues) options[i] = this.listOptionValues[i];
+
+			// If a text is specified for an index, that text is the text for a given value
+			for (const i in this.answerChoicesText) if (this.answerChoicesText[i]) options[i] = this.answerChoicesText[i];
+
+			return options;
+		},
 		numberBoxes() {
 			// The minimum box number is 2
 			const minBoxNumber = 2;
@@ -79,7 +111,13 @@ export default {
 		reachedLastAudio() {
 			const numberAudio = Number(this.hasAudioFirst) + Number(this.hasAudioSecond);
 			const numberAudioFinished = Number(this.hasPlayedFirstAudio) + Number(this.hasPlayedSecondAudio);
-			return numberAudioFinished >= (numberAudio - 1);
+			return numberAudioFinished >= numberAudio - 1;
+		},
+		isChoiceMade() {
+			return this.selectedChoiceIndex > 0;
+		},
+		areChoicesClickable() {
+			return this.isReadyToTakeAnswers && !this.isChoiceMade;
 		},
 	},
 	methods: {
@@ -90,7 +128,7 @@ export default {
 			setTimeout(() => this.$refs.audioManager.playAudioSecond(), this.DELAY_SECOND_AUDIO_MILISECONDS);
 		},
 		getTextOfBox(index) {
-			const imposedText = this.answerChoicesText[index];
+			const imposedText = this.listOptionText[index];
 			return imposedText || index;
 		},
 		updateTriggeredNoteIndex(number) {
@@ -109,6 +147,7 @@ export default {
 		},
 		handleAudioEnd() {
 			this.triggeredChoiceIndex = -1;
+			if (this.reachedLastAudio) this.$emit('questionAsked');
 			if (this.hasAudioFirst && !this.hasPlayedFirstAudio) {
 				this.hasPlayedFirstAudio = true;
 				this.isReadyToPlaySecondAudio = true;
@@ -116,6 +155,18 @@ export default {
 				this.hasPlayedSecondAudio = true;
 				this.isReadyToTakeAnswers = true;
 			}
+		},
+		bundleAnswer(answerIndex) {
+			return {
+				answerIndex: answerIndex,
+				optionsValues: this.listOptionValues,
+				optionsText: this.listOptionText,
+			};
+		},
+		handleSelection(index) {
+			if (!this.areChoicesClickable) return;
+			this.selectedChoiceIndex = index;
+			setTimeout(() => this.$emit('answered', this.bundleAnswer(this.selectedChoiceIndex)), this.DELAY_HIGHTLIGHT_THE_CHOICE);
 		},
 	},
 	mounted() {
@@ -164,15 +215,23 @@ export default {
 	margin: 20px;
 }
 
+.not-clickable {
+	cursor: pointer;
+}
+
 .revealed-box {
 	background-color: grey;
+}
+
+.playing-box {
+	opacity: 0.5;
 }
 
 .revealed-box.last-audio {
 	background-color: maroon;
 }
 
-.playing-box {
-	opacity: 0.5;
+.revealed-box.selected-box {
+	background-color: orange;
 }
 </style>

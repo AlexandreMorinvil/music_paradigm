@@ -1,7 +1,7 @@
 <template>
 	<div id="question-type" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
-		<question-midi-note-options-component class="options-area state-section" />
+		<question-midi-note-options-component v-on:answered="handleAnswer" v-on:questionAsked="handleQuestionAsked" class="options-area state-section" />
 		<text-after-question-area-component class="text-after-question-area state-section" ref="postQuestionText"/>
 	</div>
 </template>
@@ -21,14 +21,6 @@ export default {
 		TextAfterQuestionAreaComponent,
 		TextAreaComponent,
 	},
-// 	props: {
-// 		isSpaceBarPressed: {
-// 			type: Boolean,
-// 			default() {
-// 				return false;
-// 			},
-// 		},
-// 	},
 // 	data() {
 // 		return {
 // 			errorAutomaticTransitionSeconds: 5,
@@ -36,23 +28,21 @@ export default {
 // 			isSpacebarPressRecorded: false,
 // 		};
 // 	},
-// 	computed: {
-// 		...mapGetters('piano', ['isMidiFileLoaded']),
-// 		...mapGetters('experiment', ['midiName', 'cueWaitForClick']),
-// 	},
+	computed: {
+
+	},
 	methods: {
-// 		...mapActions('piano', ['playMidiFile', 'addPlayerEndOfFileAction', 'removePlayerEndOfFileAction']),
 		updateFootnote() {
 			let footnoteMessage = '';
 			footnoteMessage = this.$tc('views.experiment.question.midi-note.footnote-explaination');
 			this.$emit('footnote', footnoteMessage);
 		},
-		revealQuestionTextAfterQuestion() {
-			this.postQuestionText.reveal();
+		handleQuestionAsked() {
+			this.$refs.postQuestionText.reveal();
 		},
-// 		handleEndOfMidiFile() {
-// 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
-// 		},
+		handleAnswer() {
+			console.log('The question was answered');
+		}
 // 		manageHavingNoMidiFile() {
 // 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 // 		},
