@@ -16,6 +16,7 @@ export default {
 			numberNotesReleased: 0,
 			totalNumberNotes: 0,
 			audioNodes: {},
+			toneTransport: null,
 		};
 	},
 	computed: {
@@ -28,6 +29,12 @@ export default {
 		},
 	},
 	methods: {
+		incrementTiggeredNotesNumber() {
+			this.numberNotesTriggered += 1;
+		},
+		incrementReeasedNotesNumber() {
+			this.numberNotesReleased += 1;
+		},
 		play(parsedMidiNotes) {
 			this.stop();
 			this.totalNumberNotes = parsedMidiNotes.length;
@@ -36,14 +43,13 @@ export default {
 
 			if (!parsedMidiNotes || parsedMidiNotes.length <= 0) return;
 
-			Tone.Transport.schedule((schedulerNow) => {
+			Tone.Transport.scheduleOnce((schedulerNow) => {
 				// The current time of ToneJs (used for synchronizing the events with the notes) and the audio
 				// corrent time of the audio context of soundfont-player (used to play an  instrument) are not
 				// the same. Therefore, we have a separete 'schedulerNow' and 'playerNow'
 				const playerNow = this.soundGeneratorAudioContext.currentTime;
 
 				// Schedule the time to play each
-				Tone.Draw.anticipation *= 2;
 				parsedMidiNotes.forEach((note) => {
 					// Generate name if no name was provided
 					const noteName = note.name || midiConversion.midiNumberToName(note.midi);
@@ -57,17 +63,11 @@ export default {
 					});
 					this.audioNodes[note.midi] = audioNode;
 
-					// Event launcher scheduler
 					// Indicate that the note started playing
-					Tone.Draw.schedule(() => {
-						this.numberNotesTriggered += 1;
-						console.log('A la source : ', this.numberNotesTriggered);
-					}, schedulerNow + note.time);
+					Tone.Draw.schedule(() => this.incrementTiggeredNotesNumber(), schedulerNow + note.time);
 
 					// Indicate that the note stopped playing
-					Tone.Draw.schedule(() => {
-						this.numberNotesReleased += 1;
-					}, schedulerNow + note.time + noteDuration);
+					Tone.Draw.schedule(() => this.incrementReeasedNotesNumber(), schedulerNow + note.time + noteDuration);
 				});
 			});
 
@@ -90,7 +90,10 @@ export default {
 			deep: true,
 			handler: function () {
 				if (this.numberNotesReleased === 0) return;
-				else if (this.numberNotesReleased === this.totalNumberNotes) this.$emit('finished');
+				else if (this.numberNotesReleased === this.totalNumberNotes) {
+					Tone.Transport.stop();
+					this.$emit('finished');
+				}
 			},
 		},
 	},

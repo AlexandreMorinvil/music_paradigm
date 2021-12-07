@@ -1,6 +1,6 @@
 <template>
 	<div style="display: none">
-		<sound-generator-midi-component ref="midiPlayer" />
+		<sound-generator-midi-component v-on:finished="indicateFinished" ref="midiPlayer" />
 		<sound-generator-other-component ref="otherPlayer" />
 	</div>
 </template>
@@ -68,6 +68,9 @@ export default {
 			const isMidiFile = ressourceName.isMidiFile(this.audioSecondName);
 			const content = isMidiFile ? this.audioSecondParsed : this.audioSecondContent;
 			this.playContent(content, isMidiFile);
+		},
+		indicateFinished() {
+			this.$emit('finished');
 		},
 	},
 	mounted() {
