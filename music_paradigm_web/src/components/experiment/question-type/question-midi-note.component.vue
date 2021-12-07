@@ -10,7 +10,6 @@
 import '@/styles/experiment-content-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
-import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
 import QuestionMidiNoteOptionsComponent from '@/components/experiment/visual-content/question-midi-note-options.component.vue';
 import TextAfterQuestionAreaComponent from '@/components/experiment/visual-content/text-after-question-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
@@ -21,15 +20,10 @@ export default {
 		TextAfterQuestionAreaComponent,
 		TextAreaComponent,
 	},
-// 	data() {
-// 		return {
-// 			errorAutomaticTransitionSeconds: 5,
-// 			playbackDelayInSeconds: 1,
-// 			isSpacebarPressRecorded: false,
-// 		};
-// 	},
-	computed: {
-
+	data() {
+		return {
+			DELAY_AFTER_ANSWER: 800,
+		};
 	},
 	methods: {
 		updateFootnote() {
@@ -40,30 +34,14 @@ export default {
 		handleQuestionAsked() {
 			this.$refs.postQuestionText.reveal();
 		},
-		handleAnswer() {
-			console.log('The question was answered');
-		}
-// 		manageHavingNoMidiFile() {
-// 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
-// 		},
+		handleAnswer(answerBundle) {
+			console.log(answerBundle);
+			setTimeout(() => this.$emit('responded', answerBundle), this.DELAY_AFTER_ANSWER);
+		},
 	},
 	beforeMount() {
 		this.updateFootnote();
 	},
-// 	mounted() {
-// 		this.addPlayerEndOfFileAction(this.handleEndOfMidiFile);
-// 	},
-// 	beforeDestroy() {
-// 		this.removePlayerEndOfFileAction(this.handleEndOfMidiFile);
-// 	},
-// 	watch: {
-// 		isMidiFileLoaded: {
-// 			immediate: true,
-// 			handler: function (isReady) {
-// 				if (!this.cueWaitForClick && isReady) setTimeout(() => this.playMidiFile(), this.playbackDelayInSeconds * 1000);
-// 				else if (this.midiName === '') setTimeout(() => this.manageHavingNoMidiFile(), this.errorAutomaticTransitionSeconds * 1000);
-// 			},
-// 		},
 };
 </script>
 

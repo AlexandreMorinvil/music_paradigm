@@ -3,19 +3,19 @@
 		<sound-generator-component v-on:triggeredNoteCount="updateTriggeredNoteIndex" v-on:finished="handleAudioEnd" ref="audioManager" />
 		<div class="choices-area">
 			<button
-				v-for="index in numberBoxes"
-				v-bind:key="index"
-				v-on:click="handleSelection(index)"
+				v-for="number in numberBoxes"
+				v-bind:key="number"
+				v-on:click="handleSelection(number)"
 				:class="{
 					'not-clickable': !areChoicesClickable,
-					'playing-box': index === triggeredChoiceIndex,
-					'revealed-box': index < revealedChoiceLastIndex,
+					'playing-box': number === triggeredChoiceNumber,
+					'revealed-box': number < revealedChoiceLastNumber,
 					'last-audio': reachedLastAudio,
-					'selected-box': index === selectedChoiceIndex,
+					'selected-box': number === selectedChoiceNumber,
 				}"
 				class="midi-choice"
 			>
-				{{ getTextOfBox(index) }}
+				{{ getTextOfBox(number) }}
 			</button>
 		</div>
 		<p v-if="hasSpecification" class="specification-text">{{ textContent }}</p>
@@ -38,12 +38,11 @@ export default {
 			DELAY_INITIAL: 1000,
 			DELAY_FIRST_AUDIO_MILISECONDS: 100,
 			DELAY_SECOND_AUDIO_MILISECONDS: 750,
-			DELAY_HIGHTLIGHT_THE_CHOICE: 700,
 
 			// DOM manipulation indexes
-			revealedChoiceLastIndex: 0,
-			triggeredChoiceIndex: 0,
-			selectedChoiceIndex: -1,
+			revealedChoiceLastNumber: 0,
+			triggeredChoiceNumber: 0,
+			selectedChoiceNumber: -1,
 
 			// Flags for the sequnce of events
 			isReadyToPlayFirstAudio: false,
@@ -114,7 +113,7 @@ export default {
 			return numberAudioFinished >= numberAudio - 1;
 		},
 		isChoiceMade() {
-			return this.selectedChoiceIndex > 0;
+			return this.selectedChoiceNumber > 0;
 		},
 		areChoicesClickable() {
 			return this.isReadyToTakeAnswers && !this.isChoiceMade;
@@ -127,26 +126,27 @@ export default {
 		playSecondAudio() {
 			setTimeout(() => this.$refs.audioManager.playAudioSecond(), this.DELAY_SECOND_AUDIO_MILISECONDS);
 		},
-		getTextOfBox(index) {
+		getTextOfBox(number) {
+			const index = number - 1;
 			const imposedText = this.listOptionText[index];
 			return imposedText || index;
 		},
 		updateTriggeredNoteIndex(number) {
-			this.triggeredChoiceIndex = number;
+			this.triggeredChoiceNumber = number;
 		},
 		revealTheCoices() {
 			const stepsInMilliseconds = 70;
 			const numberSteps = this.numberBoxes + 1;
 			for (let index = 0; index < numberSteps; index++)
 				setTimeout(() => {
-					this.revealedChoiceLastIndex += 1;
+					this.revealedChoiceLastNumber += 1;
 				}, index * stepsInMilliseconds);
 			setTimeout(() => {
 				this.isReadyToPlayFirstAudio = true;
 			}, numberSteps * stepsInMilliseconds);
 		},
 		handleAudioEnd() {
-			this.triggeredChoiceIndex = -1;
+			this.triggeredChoiceNumber = -1;
 			if (this.reachedLastAudio) this.$emit('questionAsked');
 			if (this.hasAudioFirst && !this.hasPlayedFirstAudio) {
 				this.hasPlayedFirstAudio = true;
@@ -156,17 +156,17 @@ export default {
 				this.isReadyToTakeAnswers = true;
 			}
 		},
-		bundleAnswer(answerIndex) {
+		bundleAnswer(answerNumber) {
 			return {
-				answerIndex: answerIndex,
+				answerIndex: answerNumber - 1,
 				optionsValues: this.listOptionValues,
 				optionsText: this.listOptionText,
 			};
 		},
-		handleSelection(index) {
+		handleSelection(number) {
 			if (!this.areChoicesClickable) return;
-			this.selectedChoiceIndex = index;
-			setTimeout(() => this.$emit('answered', this.bundleAnswer(this.selectedChoiceIndex)), this.DELAY_HIGHTLIGHT_THE_CHOICE);
+			this.selectedChoiceNumber = number;
+			this.$emit('answered', this.bundleAnswer(this.selectedChoiceNumber));
 		},
 	},
 	mounted() {

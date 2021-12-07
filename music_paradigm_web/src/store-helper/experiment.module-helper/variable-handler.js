@@ -158,8 +158,8 @@ function setStateVariable(value) {
 function updateStateVariables() {
 	const stateVariables = experimentStoreState.variablesInformation.variables;
 	const { cursor, state } = experimentStoreState;
-	stateVariables['PILED_CONTENT_CURRENT'] = 	setStateVariable(cursor.current.piledContentIndex + 1);
-	stateVariables['PILED_CONTENT_LEFT'] = 		setStateVariable(cursor.navigation.lastPiledContentIndex - cursor.current.piledContentIndex);
+	stateVariables['PILED_CONTENT_CURRENT'] = 	setStateVariable(cursor.current.piledContentIndex);
+	stateVariables['PILED_CONTENT_LEFT'] = 		setStateVariable(cursor.navigation.lastPiledContentIndex);
 	stateVariables['REPETITIONS_CURRENT'] = 	setStateVariable(cursor.navigation.totalNumberRepetitions - cursor.current.numberRepetition + 1);
 	stateVariables['REPETITIONS_LEFT'] = 		setStateVariable(cursor.current.numberRepetition);
 	stateVariables['SUCCESSES_IN_LOOP'] = 		setStateVariable(state.record.successesInLoop);
