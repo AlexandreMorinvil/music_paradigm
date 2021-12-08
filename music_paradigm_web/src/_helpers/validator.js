@@ -260,6 +260,7 @@ function validateBlock(block, index = null) {
 		'answerChoicesValue',
 		'answerChoicesText',
 		'answerChoicesImage',
+		'answerChoicesColor',
 
 		'rightAnswers',
 	];
@@ -383,6 +384,7 @@ function validateAttributeType(key, value) {
 		case 'audioFirst':
 		case 'audioSecond':
 		case 'rightAnswers':
+		case 'answerChoicesColor':
 			// Elements of the array
 			if (!Array.isArray(value)) {
 				switch (key) {
@@ -400,6 +402,7 @@ function validateAttributeType(key, value) {
 					case 'audioFirst':
 					case 'audioSecond':
 					case 'rightAnswers':
+						// String
 						if (!(typeof value === 'string')) {
 							throw new Error(`The key '${key}' must be of type 'String' or 'Array'`);
 						}
@@ -407,6 +410,7 @@ function validateAttributeType(key, value) {
 
 					case 'interactivePiano':
 					case 'interactiveKeyboard':
+						// String or boolean
 						if (!(typeof value === 'string' || typeof value === 'boolean')) {
 							throw new Error(`The key '${key}' must be of type 'String', 'Boolean' or 'Array'`);
 						}
@@ -431,6 +435,7 @@ function validateAttributeType(key, value) {
 					case 'audioSecond':
 					case 'textAfterQuestionAsked':
 					case 'rightAnswers':
+					case 'answerChoicesColor':
 						value.forEach((element, index) => {
 							if (!(typeof element === 'string')) {
 								throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String'`);

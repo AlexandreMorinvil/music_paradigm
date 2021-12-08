@@ -178,6 +178,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 		optionsContent: {
 			answerChoicesValue: [],													// Value stored for answer choice, it dictates how many choices are displayed in the question
 			answerChoicesText: [],													// Text to display with answer choice
+			answerChoicesColor: [],													// Color associated to a choice or all choices
 			answerChoicesImage: [],													// Image to display with an answer choice (in image questions)
 
 			surveyInputOptionsValues: [],											// List of the possible values that will be stored in memory for the input of the user in the survey (The number of options displayed is based on the length of this array)

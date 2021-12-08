@@ -86,15 +86,12 @@ export default {
 		this.stop();
 	},
 	watch: {
-		numberNotesReleased: {
-			deep: true,
-			handler: function () {
-				if (this.numberNotesReleased === 0) return;
-				else if (this.numberNotesReleased === this.totalNumberNotes) {
-					Tone.Transport.stop();
-					this.$emit('finished');
-				}
-			},
+		numberNotesReleased() {
+			if (this.numberNotesReleased === 0) return;
+			else if (this.numberNotesReleased === this.totalNumberNotes) {
+				Tone.Transport.stop();
+				this.$emit('finished');
+			}
 		},
 	},
 };

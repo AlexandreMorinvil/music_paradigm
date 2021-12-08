@@ -23,4 +23,8 @@ export default {
 	answerChoicesImage: (state) => {
 		return state.state.optionsContent.answerChoicesImage;
 	},
+
+	answerChoicesColor: (state) => {
+		return state.state.optionsContent.answerChoicesColor;
+	},
 };

@@ -209,7 +209,7 @@ export default {
 }
 
 .not-clickable {
-	cursor: pointer;
+	cursor: default;
 }
 
 .revealed-box {

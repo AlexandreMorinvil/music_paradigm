@@ -6,6 +6,7 @@
 				v-for="(text, index) in listOptionText"
 				v-bind:key="index"
 				v-on:click="handleSelection(index)"
+				:style="reachedLastAudio && reachedLastAudio && !(index === selectedChoiceIndex) && 'background-color:' + listOptionColors[index]"
 				:class="{
 					'not-clickable': !areChoicesClickable,
 					'revealed-box': index <= revealedChoiceLastIndex,
@@ -52,7 +53,7 @@ export default {
 	},
 	computed: {
 		...mapGetters('soundGenerator', ['hasAudioFirst', 'hasAudioSecond']),
-		...mapGetters('experiment', ['textSpecification', 'answerChoicesValue', 'answerChoicesText']),
+		...mapGetters('experiment', ['textSpecification', 'answerChoicesValue', 'answerChoicesText', 'answerChoicesColor']),
 		hasAudio() {
 			return this.hasAudioFirst || this.hasAudioSecond;
 		},
@@ -63,24 +64,21 @@ export default {
 			return this.isReadyToTakeAnswers ? this.textSpecification : '';
 		},
 		listOptionValues() {
-			// The minimum box number is 2
 			const options = ['A', 'B'];
-
-			// If option values are specified, they dictate the number of options
-			if (this.answerChoicesValue.length > 0) for (const i in this.answerChoicesValue) options[i] = this.answerChoicesValue[i];
-
+			for (const i in this.answerChoicesValue) if (this.answerChoicesValue[i]) options[i] = this.answerChoicesValue[i];
 			return options;
 		},
 		listOptionText() {
 			const options = [];
-
-			// The default text is the value stored for the given value
 			for (const i in this.listOptionValues) options[i] = this.listOptionValues[i];
-
-			// If a text is specified for an index, that text is the text for a given value
 			for (const i in this.answerChoicesText) if (this.answerChoicesText[i]) options[i] = this.answerChoicesText[i];
-
 			return options;
+		},
+		listOptionColors() {
+			const colors = [];
+			if (typeof this.answerChoicesColor === 'string') for (const i in this.optionsValues) colors[i] = this.listOptionValues[i];
+			else if (Array.isArray(this.answerChoicesColor)) for (const i in this.answerChoicesColor) colors[i] = this.answerChoicesColor[i];
+			return colors;
 		},
 		numberOptions() {
 			return this.listOptionValues.length;
@@ -188,7 +186,7 @@ export default {
 }
 
 .not-clickable {
-	cursor: pointer;
+	cursor: default;
 }
 
 .revealed-box {

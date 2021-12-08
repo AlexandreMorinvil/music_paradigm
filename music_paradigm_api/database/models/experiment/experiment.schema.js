@@ -86,6 +86,7 @@ const stateSchema = new Schema({
 
     answerChoicesValue: { type: [], default: undefined },
     answerChoicesText: { type: [], default: undefined },
+    answerChoicesColor: { type: [], default: undefined },
     answerChoicesImage: { type: [], default: undefined },
 
     rightAnswers: { type: [], default: undefined },
