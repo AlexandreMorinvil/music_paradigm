@@ -108,7 +108,7 @@ export default {
 			return this.listOptionText[index];
 		},
 		revealTheCoices() {
-			const stepsInMilliseconds = 20;
+			const stepsInMilliseconds = 10;
 			const numberSteps = this.numberOptions;
 			for (let index = 0; index < numberSteps; index++)
 				setTimeout(() => {
@@ -142,7 +142,7 @@ export default {
 		},
 	},
 	mounted() {
-		// setTimeout(() => this.revealTheCoices(), this.DELAY_INITIAL);
+		setTimeout(() => this.revealTheCoices(), this.DELAY_INITIAL);
 	},
 	watch: {
 		isReadyToPlayFirstAudio(isReady) {

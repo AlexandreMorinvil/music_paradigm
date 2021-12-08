@@ -1,7 +1,7 @@
 <template>
 	<div style="display: none">
 		<sound-generator-midi-component v-on:finished="indicateFinished" ref="midiPlayer" />
-		<sound-generator-other-component ref="otherPlayer" />
+		<sound-generator-other-component v-on:finished="indicateFinished" ref="otherPlayer" />
 	</div>
 </template>
 
@@ -78,7 +78,6 @@ export default {
 			() => this.$refs.midiPlayer.numberNotesTriggered,
 			(number) => this.$emit('triggeredNoteCount', number),
 		);
-		this.playAudioFirst();
 	},
 	watch: {
 		isFirstAudioReady(isReady) {

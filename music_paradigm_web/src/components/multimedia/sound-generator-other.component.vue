@@ -32,7 +32,7 @@ export default {
 	},
 	mounted() {
 		this.audio.volume = this.VOLUME_LEVEL;
-		this.audio.onended = this.signalEnded();
+		this.audio.onended = this.signalEnded;
 	},
 };
 </script>
