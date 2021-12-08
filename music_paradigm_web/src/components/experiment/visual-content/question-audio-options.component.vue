@@ -1,21 +1,20 @@
 <template>
 	<div id="text-area" class="state-section">
-		<sound-generator-component v-on:triggeredNoteCount="updateTriggeredNoteIndex" v-on:finished="handleAudioEnd" ref="audioManager" />
+		<sound-generator-component v-on:finished="handleAudioEnd" ref="audioManager" />
 		<div class="choices-area">
 			<button
-				v-for="number in numberBoxes"
-				v-bind:key="number"
-				v-on:click="handleSelection(number)"
+				v-for="(text, index) in listOptionText"
+				v-bind:key="index"
+				v-on:click="handleSelection(index)"
 				:class="{
 					'not-clickable': !areChoicesClickable,
-					'playing-box': number === triggeredChoiceNumber,
-					'revealed-box': number < revealedChoiceLastNumber,
+					'revealed-box': index <= revealedChoiceLastIndex,
 					'last-audio': reachedLastAudio,
-					'selected-box': number === selectedChoiceNumber,
+					'selected-box': index === selectedChoiceIndex,
 				}"
 				class="midi-choice"
 			>
-				{{ getTextOfBox(number) }}
+				{{ text }}
 			</button>
 		</div>
 		<p v-if="hasSpecification" class="specification-text">{{ textContent }}</p>
@@ -39,21 +38,20 @@ export default {
 			DELAY_FIRST_AUDIO_MILISECONDS: 100,
 			DELAY_SECOND_AUDIO_MILISECONDS: 750,
 
-			// DOM manipulation indexes
-			revealedChoiceLastNumber: 0,
-			triggeredChoiceNumber: 0,
-			selectedChoiceNumber: -1,
-
 			// Flags for the sequnce of events
 			isReadyToPlayFirstAudio: false,
 			isReadyToPlaySecondAudio: false,
 			hasPlayedFirstAudio: false,
 			hasPlayedSecondAudio: false,
 			isReadyToTakeAnswers: false,
+
+			// Selection
+			selectedChoiceIndex: -1,
+			revealedChoiceLastIndex: -1,
 		};
 	},
 	computed: {
-		...mapGetters('soundGenerator', ['hasAudioFirst', 'hasAudioSecond', 'audioFirstParsed', 'audioSecondParsed']),
+		...mapGetters('soundGenerator', ['hasAudioFirst', 'hasAudioSecond']),
 		...mapGetters('experiment', ['textSpecification', 'answerChoicesValue', 'answerChoicesText']),
 		hasAudio() {
 			return this.hasAudioFirst || this.hasAudioSecond;
@@ -64,32 +62,19 @@ export default {
 		textContent() {
 			return this.isReadyToTakeAnswers ? this.textSpecification : '';
 		},
-		notesCountFirstAudio() {
-			return Array.isArray(this.audioFirstParsed) ? this.audioFirstParsed.length : 0;
-		},
-		notesCountSecondAudio() {
-			return Array.isArray(this.audioSecondParsed) ? this.audioSecondParsed.length : 0;
-		},
 		listOptionValues() {
 			// The minimum box number is 2
-			const options = [1, 2];
+			const options = ['A', 'B'];
 
 			// If option values are specified, they dictate the number of options
-			if (this.answerChoicesValue.length > 0) {
-				for (const i in this.answerChoicesValue) options[i] = this.answerChoicesValue[i];
-			}
+			if (this.answerChoicesValue.length > 0) for (const i in this.answerChoicesValue) options[i] = this.answerChoicesValue[i];
 
-			// If there is no option values, we take the number of notes of the Midi files loaded
-			else {
-				const choicesCount = Math.max(this.notesCountFirstAudio || 0, this.notesCountSecondAudio || 0, options.length);
-				for (let i = 0; i < choicesCount; i++) options[i] = i + 1;
-			}
 			return options;
 		},
 		listOptionText() {
 			const options = [];
 
-			// De default text is the value stored for the given value
+			// The default text is the value stored for the given value
 			for (const i in this.listOptionValues) options[i] = this.listOptionValues[i];
 
 			// If a text is specified for an index, that text is the text for a given value
@@ -97,7 +82,7 @@ export default {
 
 			return options;
 		},
-		numberBoxes() {
+		numberOptions() {
 			return this.listOptionValues.length;
 		},
 		reachedLastAudio() {
@@ -106,7 +91,7 @@ export default {
 			return numberAudioFinished >= numberAudio - 1;
 		},
 		isChoiceMade() {
-			return this.selectedChoiceNumber > 0;
+			return this.selectedChoiceIndex > 0;
 		},
 		areChoicesClickable() {
 			return this.isReadyToTakeAnswers && !this.isChoiceMade;
@@ -119,27 +104,21 @@ export default {
 		playSecondAudio() {
 			setTimeout(() => this.$refs.audioManager.playAudioSecond(), this.DELAY_SECOND_AUDIO_MILISECONDS);
 		},
-		getTextOfBox(number) {
-			const index = number - 1;
-			const imposedText = this.listOptionText[index];
-			return imposedText || index;
-		},
-		updateTriggeredNoteIndex(number) {
-			this.triggeredChoiceNumber = number;
+		getTextOfBox(index) {
+			return this.listOptionText[index];
 		},
 		revealTheCoices() {
-			const stepsInMilliseconds = 70;
-			const numberSteps = this.numberBoxes + 1;
+			const stepsInMilliseconds = 20;
+			const numberSteps = this.numberOptions;
 			for (let index = 0; index < numberSteps; index++)
 				setTimeout(() => {
-					this.revealedChoiceLastNumber += 1;
+					this.revealedChoiceLastIndex += 1;
 				}, index * stepsInMilliseconds);
 			setTimeout(() => {
 				this.isReadyToPlayFirstAudio = true;
 			}, numberSteps * stepsInMilliseconds);
 		},
 		handleAudioEnd() {
-			this.triggeredChoiceNumber = -1;
 			if (this.reachedLastAudio) this.$emit('questionAsked');
 			if (this.hasAudioFirst && !this.hasPlayedFirstAudio) {
 				this.hasPlayedFirstAudio = true;
@@ -149,17 +128,17 @@ export default {
 				this.isReadyToTakeAnswers = true;
 			}
 		},
-		bundleAnswer(answerNumber) {
+		bundleAnswer(answerIndex) {
 			return {
-				answerIndex: answerNumber - 1,
+				answerIndex: answerIndex,
 				optionsValues: this.listOptionValues,
 				optionsText: this.listOptionText,
 			};
 		},
-		handleSelection(number) {
+		handleSelection(index) {
 			if (!this.areChoicesClickable) return;
-			this.selectedChoiceNumber = number;
-			this.$emit('answered', this.bundleAnswer(this.selectedChoiceNumber));
+			this.selectedChoiceIndex = index;
+			this.$emit('answered', this.bundleAnswer(this.selectedChoiceIndex));
 		},
 	},
 	mounted() {
@@ -203,9 +182,9 @@ export default {
 	background-color: lightgray;
 	color: white;
 	border: none;
-	width: 125px;
+	width: 400px;
 	height: 125px;
-	margin: 20px;
+	margin: 40px;
 }
 
 .not-clickable {
@@ -216,12 +195,8 @@ export default {
 	background-color: grey;
 }
 
-.playing-box {
-	opacity: 0.5;
-}
-
 .revealed-box.last-audio {
-	background-color: maroon;
+	background-color: green;
 }
 
 .revealed-box.selected-box {

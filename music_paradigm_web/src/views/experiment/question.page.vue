@@ -17,19 +17,19 @@ import { mapGetters } from 'vuex';
 
 // import SimpleQuestionComponent from '@/components/experiment/question-type/playing-melody.component';
 // import ImageQuestionComponent from '@/components/experiment/question-type/playing-rhythm.component';
-// import AudioQuestionComponent  from '@/components/experiment/question-type/playing-speed.component';
+import AudioQuestionComponent  from '@/components/experiment/question-type/question-audio.component';
 import MidiNoteQuestionComponent from '@/components/experiment/question-type/question-midi-note.component';
 
 export default {
 	components: {
 		// simple: SimpleQuestionComponent,
-		// image: ImageQuestionComponent,
-		// audio: AudioQuestionComponent,
+		// 'image-choices': ImageQuestionComponent,
+		'audio-start': AudioQuestionComponent,
 		'midi-note': MidiNoteQuestionComponent,
 	},
 	data() {
 		return {
-			allowedTypes: ['simple', 'image', 'audio', 'midi-note'],
+			allowedTypes: ['simple', 'image-choices', 'audio-start', 'midi-note'],
 			hasReceivedStartSignal: false,
 		};
 	},

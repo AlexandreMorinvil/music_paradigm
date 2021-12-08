@@ -1,7 +1,7 @@
 <template>
 	<div id="question-type" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
-		<question-midi-note-options-component v-on:answered="handleAnswer" v-on:questionAsked="handleQuestionAsked" class="options-area state-section" />
+		<question-audio-options-component v-on:answered="handleAnswer" v-on:questionAsked="handleQuestionAsked" class="options-area state-section" />
 		<text-after-question-area-component class="text-after-question-area state-section" ref="postQuestionText"/>
 	</div>
 </template>
@@ -9,13 +9,13 @@
 <script>
 import '@/styles/experiment-content-template.css';
 
-import QuestionMidiNoteOptionsComponent from '@/components/experiment/visual-content/question-midi-note-options.component.vue';
+import QuestionAudioOptionsComponent from '@/components/experiment/visual-content/question-audio-options.component.vue';
 import TextAfterQuestionAreaComponent from '@/components/experiment/visual-content/text-after-question-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
-		QuestionMidiNoteOptionsComponent,
+		QuestionAudioOptionsComponent,
 		TextAfterQuestionAreaComponent,
 		TextAreaComponent,
 	},
@@ -27,7 +27,7 @@ export default {
 	methods: {
 		updateFootnote() {
 			let footnoteMessage = '';
-			footnoteMessage = this.$tc('views.experiment.question.midi-note.footnote-explaination');
+			footnoteMessage = this.$tc('views.experiment.question.audio.footnote-explaination');
 			this.$emit('footnote', footnoteMessage);
 		},
 		handleQuestionAsked() {

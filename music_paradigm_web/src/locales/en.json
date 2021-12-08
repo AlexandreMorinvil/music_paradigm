@@ -186,6 +186,9 @@
       "question": {
         "midi-note": {
           "footnote-explaination": "Select the note by clicking on the sequence number"
+        },
+        "audio": {
+          "footnote-explaination": "Listen and choose an answer"
         }
       },
       "rest": {

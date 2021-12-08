@@ -76,7 +76,7 @@ const stateSchema = new Schema({
     writtingIsMultiline: { type: Boolean, default: undefined },
     writtingTextPlaceHolder: { type: String, default: undefined },
 
-    questionType: { type: String, default: undefined, enum: ['simple', 'image', 'audio', 'midi-note'] },
+    questionType: { type: String, default: undefined, enum: ['simple', 'image-choices', 'audio-start', 'midi-note'] },
     audioFirst: { type: Schema.Types.Mixed, default: undefined },
     audioSecond: { type: Schema.Types.Mixed, default: undefined },
     textAfterQuestionAsked: { type: Schema.Types.Mixed, default: undefined },
