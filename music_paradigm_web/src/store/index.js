@@ -16,6 +16,7 @@ import { keyboard } from './keyboard.module';
 import { log } from './log.module';
 import { piano } from './piano.module';
 import { session } from './session.module';
+import { soundGenerator } from './sound-generator.module';
 import { survey } from './survey.module';
 import { users } from './users.module';
 import { writting } from './writting.module';
@@ -38,6 +39,7 @@ export default new Vuex.Store({
 		log,
 		piano,
 		session,
+		soundGenerator,
 		survey,
 		users,
 		writting,

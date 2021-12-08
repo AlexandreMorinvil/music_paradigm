@@ -20,17 +20,20 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['controlType']),
+		...mapGetters('experiment', ['controlType', 'hasSound']),
 		...mapGetters('piano', ['isPianoInitialized']),
 		...mapGetters('keyboard', ['isKeyboardInitialized']),
+		...mapGetters('soundGenerator', ['isSoundGeneratorInitialized']),
 		textToDisplay() {
 			if (!this.isReadyToStart) return this.$t('views.experiment.preparing.loading');
 			else return this.$t('views.experiment.preparing.ready');
 		},
 		isReadyToStart() {
-			if (this.controlType === 'keyboard') return this.isKeyboardInitialized;
-			if (this.controlType === 'piano') return this.isPianoInitialized;
-			else return true;
+			let isReady = true;
+			if (this.controlType === 'keyboard') isReady &= this.isKeyboardInitialized;
+			if (this.controlType === 'piano') isReady &= this.isPianoInitialized;
+			if (this.hasSound) isReady &= this.isSoundGeneratorInitialized;
+			return isReady;
 		},
 	},
 	methods: {

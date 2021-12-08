@@ -1,8 +1,17 @@
 <template>
-	<div id="status-bar" class="status-bar-grid">
-		<div id="status-bar-header" class="status-bar-header-position">
-			<time-status-component class="status-bar-display-box status-wrapper-left" ref="timer" />
-			<piano-status-component v-if="hasPianoStatus" class="status-bar-display-box status-wrapper-right" />
+	<div id="status-bar" class="status-bar-grid" :class="hasMainArea ? 'grid-with-main-area' : 'grid-without-main-area'">
+		<div id="status-bar-header" v-show="hasMainArea" class="status-bar-header-position" :class="{ 'status-bar-clear': isClearVersion }">
+			<time-status-component
+				v-show="mustDisplayTime"
+				class="status-bar-display-box status-wrapper-left"
+				:class="{ 'status-bar-display-box-clear': isClearVersion }"
+				ref="timer"
+			/>
+			<piano-status-component
+				v-if="hasPianoStatus"
+				class="status-bar-display-box status-wrapper-right"
+				:class="{ 'status-bar-display-box-clear': isClearVersion }"
+			/>
 		</div>
 
 		<progress-status-component v-if="hasProgressionBar" class="status-bar-progress-position" />
@@ -23,13 +32,22 @@ export default {
 		ProgressStatusComponent,
 	},
 	computed: {
-		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType', 'withProgressionBar']),
+		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType', 'withProgressionBar', 'withTimer', 'hasClearBackground']),
 		hasPianoStatus() {
 			return this.controlType === 'piano';
+		},
+		mustDisplayTime() {
+			return this.withTimer;
 		},
 		hasProgressionBar() {
 			if (typeof this.withProgressionBar !== 'boolean') return true;
 			else return this.withProgressionBar;
+		},
+		hasMainArea() {
+			return this.hasPianoStatus || this.mustDisplayTime;
+		},
+		isClearVersion() {
+			return this.hasClearBackground;
 		},
 	},
 	methods: {
@@ -47,11 +65,19 @@ export default {
 .status-bar-grid {
 	display: grid;
 	grid-template-columns: auto;
+	grid-gap: 0px;
+}
+
+.grid-with-main-area {
 	grid-template-rows: 64px 10px;
 	grid-template-areas:
 		'header'
 		'progress';
-	grid-gap: 0px;
+}
+
+.grid-without-main-area {
+	grid-template-rows: 10px;
+	grid-template-areas: 'progress';
 }
 
 .status-bar-header-position {
@@ -99,5 +125,15 @@ export default {
 
 	height: 100%;
 	width: 100%;
+}
+
+.status-bar-display-box-clear {
+	background-color: rgb(250, 250, 255);
+	border-color: rgb(235, 235, 235);
+	color: rgb(150, 150, 150);
+}
+
+.status-bar-clear {
+	background-color: rgb(235, 235, 235);
 }
 </style>

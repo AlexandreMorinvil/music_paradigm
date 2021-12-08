@@ -4,8 +4,8 @@
 		<keyboard-input-tracker-component />
 		<alert-component id="alert" v-if="hasAlert" />
 
-		<div id="app-header" class="app-header-position">
-			<component :is="navigationBarType" id="app-navigation-bar" />
+		<div id="app-header" class="app-header app-header-position">
+			<component :is="navigationBarType" class="navigatiobn-bar" id="app-navigation-bar" />
 		</div>
 
 		<router-view class="app-main-position" />
@@ -107,11 +107,14 @@ body {
 	grid-gap: 0px;
 }
 
-#app-header {
+.app-header {
 	width: 100%;
 	height: 56px;
 	box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0);
 	background-color: rgb(25, 25, 25);
+}
+
+.navigatiobn-bar {
 	border-bottom-color: rgb(35, 35, 35);
 	border-bottom-width: 1px;
 	border-bottom-style: solid;

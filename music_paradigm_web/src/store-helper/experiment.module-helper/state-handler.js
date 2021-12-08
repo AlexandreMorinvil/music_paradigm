@@ -1,5 +1,4 @@
 /* eslint-disable max-lines-per-function */
-/* eslint-disable prettier/prettier */
 /* eslint-disable key-spacing */
 import blockHandler from './block-handler';
 import { routerNavigation } from '@/_helpers';
@@ -16,6 +15,7 @@ function transitionState(currentState, targetState, cursor, isInitialized, gener
 	if (!isInitialized.state) updateStateSettings(currentState, targetState, isInitialized, generalSettings);
 	if (!isInitialized.media) updateStateMediaFiles(currentState, targetState, cursor, isInitialized);
 	if (!isInitialized.content) updateStateContent(currentState, targetState, cursor, isInitialized);
+	if (!isInitialized.options) updateStateOptionsContent(currentState, targetState, isInitialized);
 }
 
 function imposeState(currentState, targetState, cursor, isInitialized, generalSettings) {
@@ -108,6 +108,8 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		writtingIsNumber,
 		writtingIsMultiline,
 		writtingTextPlaceHolder,
+		questionType,
+		areAnswerOptionsVertical,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -146,6 +148,8 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		writtingIsNumber:				typeof writtingIsNumber === 'boolean'			? writtingIsNumber : false,
 		writtingIsMultiline:			typeof writtingIsMultiline === 'boolean'		? writtingIsMultiline : true,
 		writtingTextPlaceHolder: 		typeof writtingTextPlaceHolder === 'string'		? writtingTextPlaceHolder : '',
+		questionType:					typeof questionType === 'string' 				? questionType : generalSettings.questionType,
+		areAnswerOptionsVertical:		typeof areAnswerOptionsVertical === 'boolean' 	? areAnswerOptionsVertical : false,
 	};
 
 	// Indicate that the state (current block's settings) was already initialized
@@ -161,11 +165,16 @@ function updateStateMediaFiles(currentState, targetState, cursor, isInitialized)
 		videoFileName,
 		referenceKeyboardKeys,
 		interactiveKeyboardTextMapping,
+		audioFirst,
+		audioSecond,
 	} = currentBlock;
 
 	// Using the values that are not set in an array if there are any
 	let updatedMidiFileName = typeof midiFileName === 'string' ? midiFileName : null;
 	let updatedVideoFileName = typeof videoFileName === 'string' ? videoFileName : null;
+	let updatedaudioFirst = typeof audioFirst === 'string' ? audioFirst : null;
+	let updatedaudioSecond = typeof audioSecond === 'string' ? audioSecond : null;
+
 	let updatedReferenceKeyboardKeys = (Array.isArray(referenceKeyboardKeys) && referenceKeyboardKeys.every(key => (typeof key === 'string'))) ? referenceKeyboardKeys : null;
 
 	// Update the media files. If no new value is found, the previous value is used (it is kept unchanged)
@@ -173,7 +182,10 @@ function updateStateMediaFiles(currentState, targetState, cursor, isInitialized)
 
 	if (Array.isArray(midiFileName)) updatedMidiFileName = midiFileName[mediaIndex];
 	if (Array.isArray(videoFileName)) updatedVideoFileName = videoFileName[mediaIndex];
+	if (Array.isArray(audioFirst)) updatedaudioFirst = audioFirst[mediaIndex];
+	if (Array.isArray(audioSecond)) updatedaudioSecond = audioSecond[mediaIndex];
 	if (referenceKeyboardKeys && Array.isArray(referenceKeyboardKeys[mediaIndex])) updatedReferenceKeyboardKeys = referenceKeyboardKeys[mediaIndex];
+
 	const updatedInteractiveKeyboardTextMapping = Array.isArray(interactiveKeyboardTextMapping) ? interactiveKeyboardTextMapping[mediaIndex] || false : false;
 
 	// If the midifileName is specified (whether it is new or not), we also reset the virtual piano's text
@@ -183,7 +195,10 @@ function updateStateMediaFiles(currentState, targetState, cursor, isInitialized)
 	// We adjust the current state and keep the previous value if no new value is provided
 	currentState.mediaFile.midiName = updatedMidiFileName || oldMediaFile.midiName;
 	currentState.mediaFile.videoName = updatedVideoFileName || oldMediaFile.videoName;
+	currentState.mediaFile.audioFirst = updatedaudioFirst || oldMediaFile.audioFirst;
+	currentState.mediaFile.audioSecond = updatedaudioSecond || oldMediaFile.audioSecond;
 	currentState.mediaFile.referenceKeyboardKeys = updatedReferenceKeyboardKeys || oldMediaFile.referenceKeyboardKeys;
+
 	currentState.mediaFile.interactiveKeyboardTextMapping = updatedInteractiveKeyboardTextMapping || oldMediaFile.interactiveKeyboardTextMapping;
 
 	// Indicate that the media files is initialized
@@ -198,20 +213,22 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 		textContent,
 		pictureFileName,
 		helperImageFileName,
+		textReminder,
 		interactivePiano,
 		interactiveKeyboard,
-		surveyInputOptionsValues,
-		surveyInputOptionsText,
-		surveyLeftSideText,
-		surveyRightSideText,
+		textAfterQuestionAsked,
+		textSpecification,
 	} = currentBlock;
 
 	// Using the values that are not set in an array if there are any
 	let updatedTextContent = typeof textContent === 'string' ? textContent : null;
 	let updatedPictureFileName = typeof pictureFileName === 'string' ? pictureFileName : null;
 	let updatedHelperImageFileName = typeof helperImageFileName === 'string' ? helperImageFileName : null;
+	let updatedTextReminder = typeof textReminder === 'string' ? textReminder : null;
 	let updatedInteractivePiano = typeof interactivePiano === 'string' || typeof interactivePiano === 'boolean' ? interactivePiano : null;
 	let updatedInteractiveKeyboard = typeof interactiveKeyboard === 'string' || typeof interactiveKeyboard === 'boolean' ? interactiveKeyboard : null;
+	let updatedTextAfterQuestionAsked = typeof textAfterQuestionAsked === 'string' ? textAfterQuestionAsked : null;
+	let updatedTextSpecification = typeof textSpecification === 'string' ? textSpecification : null;
 
 	// If the value is in an array
 	const piledContentIndex = cursor.current.piledContentIndex;
@@ -219,8 +236,11 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(textContent)) updatedTextContent = textContent[piledContentIndex] || null;
 	if (Array.isArray(pictureFileName)) updatedPictureFileName = pictureFileName[piledContentIndex] || null;
 	if (Array.isArray(helperImageFileName)) updatedHelperImageFileName = helperImageFileName[piledContentIndex] || null;
+	if (Array.isArray(textReminder)) updatedTextReminder = textReminder || null;
 	if (Array.isArray(interactivePiano)) updatedInteractivePiano = interactivePiano[piledContentIndex] || null;
 	if (Array.isArray(interactiveKeyboard)) updatedInteractiveKeyboard = interactiveKeyboard[piledContentIndex] || null;
+	if (Array.isArray(textAfterQuestionAsked)) updatedTextAfterQuestionAsked = textAfterQuestionAsked || null;
+	if (Array.isArray(textSpecification)) updatedTextSpecification = textSpecification || null;
 
 	// If the value is in a nested array
 	const innerStepIndex = cursor.current.innerStepIndex;
@@ -228,23 +248,56 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(updatedTextContent)) updatedTextContent = updatedTextContent[innerStepIndex];
 	if (Array.isArray(updatedPictureFileName)) updatedPictureFileName = updatedPictureFileName[innerStepIndex];
 	if (Array.isArray(updatedHelperImageFileName)) updatedHelperImageFileName = updatedHelperImageFileName[innerStepIndex];
+	if (Array.isArray(updatedTextReminder)) updatedTextReminder = updatedTextReminder[innerStepIndex];
 	if (Array.isArray(updatedInteractivePiano)) updatedInteractivePiano = updatedInteractivePiano[innerStepIndex];
 	if (Array.isArray(updatedInteractiveKeyboard)) updatedInteractiveKeyboard = updatedInteractiveKeyboard[innerStepIndex];
+	if (Array.isArray(updatedTextAfterQuestionAsked)) updatedTextAfterQuestionAsked = textAfterQuestionAsked || null;
+	if (Array.isArray(updatedTextSpecification)) updatedTextSpecification = textSpecification || null;
 
 	// === Update the state ===
 	// Elements which support the shorthand notation with array nesting
 	currentState.content.text = updatedTextContent || '';
 	currentState.content.pictureName = updatedPictureFileName || '';
 	currentState.content.helperImageName = updatedHelperImageFileName || '';
+	currentState.content.textReminder = updatedTextReminder || '';
 	currentState.content.interactivePiano = updatedInteractivePiano || false;
 	currentState.content.interactiveKeyboard = updatedInteractiveKeyboard || false;
-	// Parsing the survey parameters (they do no support short notations through nesting)
-	currentState.content.surveyInputOptionsValues = (Array.isArray(surveyInputOptionsValues)) ? surveyInputOptionsValues : [];
-	currentState.content.surveyInputOptionsText = (Array.isArray(surveyInputOptionsText)) ? surveyInputOptionsText : [];
-	currentState.content.surveyLeftSideText = (Array.isArray(surveyLeftSideText)) ? surveyLeftSideText : [];
-	currentState.content.surveyRightSideText = (Array.isArray(surveyRightSideText)) ? surveyRightSideText : [];
-
+	currentState.content.textAfterQuestionAsked = updatedTextAfterQuestionAsked || '';
+	currentState.content.textSpecification = updatedTextSpecification || '';
 
 	// Indicate that the media files is initialized
 	Object.assign(isInitialized, { content: true });
+}
+
+function updateStateOptionsContent(currentState, targetState, isInitialized) {
+	// Parsing the current block
+	const currentBlock = targetState; // Flow[cursor.current.index];
+	const {
+		surveyInputOptionsValues,
+		surveyInputOptionsText,
+		surveyLeftSideText,
+		surveyRightSideText,
+
+		answerChoicesValue,
+		answerChoicesText,
+		answerChoicesColor,
+		answerChoicesImage,
+	} = currentBlock;
+
+	// Parsing the parameters that support single value input
+	const defaultAnswerChoicesColor = typeof answerChoicesColor === 'string' ? answerChoicesColor : [];
+
+	// Parsing the survey parameters (they do no support short notations through nesting)
+	currentState.optionsContent.surveyInputOptionsValues = (Array.isArray(surveyInputOptionsValues)) ? surveyInputOptionsValues : [];
+	currentState.optionsContent.surveyInputOptionsValues = (Array.isArray(surveyInputOptionsText)) ? surveyInputOptionsText : [];
+	currentState.optionsContent.surveyLeftSideText = (Array.isArray(surveyLeftSideText)) ? surveyLeftSideText : [];
+	currentState.optionsContent.surveyRightSideText = (Array.isArray(surveyRightSideText)) ? surveyRightSideText : [];
+
+	currentState.optionsContent.answerChoicesValue = (Array.isArray(answerChoicesValue)) ? answerChoicesValue : [];
+	currentState.optionsContent.answerChoicesText = (Array.isArray(answerChoicesText)) ? answerChoicesText : [];
+	currentState.optionsContent.answerChoicesColor = (Array.isArray(answerChoicesColor)) ? answerChoicesColor : defaultAnswerChoicesColor;
+	currentState.optionsContent.answerChoicesImage = (Array.isArray(answerChoicesImage)) ? answerChoicesImage : [];
+
+	// Indicate that the media files is initialized
+	Object.assign(isInitialized, { options: true });
 }

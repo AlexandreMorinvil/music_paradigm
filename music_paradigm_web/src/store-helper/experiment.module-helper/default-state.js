@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 /* eslint-disable max-lines-per-function */
 export default {
 	UNSET_INDEX,
@@ -47,6 +46,11 @@ const DEFAULT_WITH_PROGRESSION_BAR = true;
 const DEFAULT_LOG_LABEL = 'default';
 const DEFAULT_CUE_WAIT_FOR_CLICK = false;
 const DEFAULT_INSTRUMENT = 'piano';
+const DEFAULT_QUESTION_TYPE = 'simple';
+const DEFAULT_HAS_TIMER = true;
+const DEFAULT_HAS_CLEAR_BACKGROUND = false;
+const DEFAULT_HAS_SOUND = true;
+
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
 	return {
@@ -78,7 +82,7 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 		state: DEFAULT_EXPERIMENT_STATE_STATE_VALUES(),
 
 		// Variables used in the experiment
-		variables: DEFAULT_EXPERIMENT_VARIABLE_VALUES(),
+		variablesInformation: DEFAULT_EXPERIMENT_VARIABLE_VALUES(),
 
 		// Initialization status of vue pages
 		isInitialized: IS_FULLY_NOT_INITIALIZED_STATUS(),
@@ -119,6 +123,9 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		rhythmRelativeErrorMarginInFloat: DEFAULT_RHYTHM_RELATIVE_ERROR_MARGIN_IN_FLOAT, 	// Relative error margin allowed in the rhythm accuracy calculation (overwrites the absolute value's error margin)
 		withProgressionBar: DEFAULT_WITH_PROGRESSION_BAR,									// Indicate wether there must be a progrssion bar displayed in the experiment
 		cueWaitForClick: DEFAULT_CUE_WAIT_FOR_CLICK,										// Indicate whether the cue must wait for a space bar click before playing
+		withTimer: DEFAULT_HAS_TIMER,														// Indicate whether the timer must be displayed
+		hasClearBackground: DEFAULT_HAS_CLEAR_BACKGROUND,									// Indicate whethe the experiment setting must be in white (true) or black (false)
+		hasSound: DEFAULT_HAS_SOUND,														// Indicate whether the experiment has sound
 	};
 }
 
@@ -160,19 +167,33 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			text: '',																// Text to display
 			pictureName: '', 														// Name of the current picture to display
 			helperImageName: '', 													// Name of the helper image to display
+			textReminder: '',														// Helper ext to display
 			interactivePiano: false, 												// <Boolean|String> Directive to display the interactive piano
 			interactiveKeyboard: false, 											// <Boolean|String> Directive to display the interactive keyboard
+			textAfterQuestionAsked: '',												// Text displayed after a question is asked in question states
+			textSpecification: '',													// Text to add a certain specification (used in question state)
+		},
+
+		optionsContent: {
+			answerChoicesValue: [],													// Value stored for answer choice, it dictates how many choices are displayed in the question
+			answerChoicesText: [],													// Text to display with answer choice
+			answerChoicesColor: [],													// Color associated to a choice or all choices
+			answerChoicesImage: [],													// Image to display with an answer choice (in image questions)
+
 			surveyInputOptionsValues: [],											// List of the possible values that will be stored in memory for the input of the user in the survey (The number of options displayed is based on the length of this array)
 			surveyInputOptionsText: [],												// List of the texts that will be displayed above each option of the survey
 			surveyLeftSideText: [],													// Questions or texts to be written for the survey at the left, each value will be written in a row (the maximum length of surveyLeftSideText or surveyRightSideText will determine the number of row)
-			surveyRightSideText: [],												// Questions or texts to be written for the survey at the left, each value will be written in a row (the maximum length of surveyLeftSideText or surveyRightSideText will determine the number of row)
+			surveyRightSideText: [],												// Questions or texts to be written for the survey at the right, each value will be written in a row (the maximum length of surveyLeftSideText or surveyRightSideText will determine the number of row)
 		},
+
 		// Multimedia elements
 		mediaFile: {
 			midiName: '', 															// Name of the current midi file loaded in the player to play
 			videoName: '', 															// Name of the current video file to playback
 			referenceKeyboardKeys: [], 												// List of the reference keyboard keys meant to be pressed
 			interactiveKeyboardTextMapping: null, 									// Mapping of the text to display on the keys of the keyboard according to the order in whcih the keys are pressed
+			audioFirst: '',															// Audio file name
+			audioSecond: '',														// Second audio file (for second part of sertain states)
 		},
 		// Block specific settings
 		settings: {
@@ -209,6 +230,10 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			writtingIsNumber: false,												// Indicate whether the input writting expected should only be a numerical input
 			writtingIsMultiline: true,												// Indicate whether the input writting area should be displayed with multiple lines
 			writtingTextPlaceHolder: '',											// Indicate the text that will be written in the text input area when there is nothing written 
+
+			questionType: DEFAULT_QUESTION_TYPE,									// Indicate the question type for the 'question' states
+			areAnswerOptionsVertical: false,										// Disposition of the anserChoices (vertical if true, horizontal if false)
+			// rightAnswers:
 		},
 		// Session specific informations
 		record: {
@@ -224,13 +249,31 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 	};
 }
 
+
+/**
+ * Return a Experiment_Variable_Values object with all attributes reset to their default values.
+ * @returns {Experiment_Variable_Values} Experiment_Variable_Values object of with all attributes reinitialized to their default values
+*/
 function DEFAULT_EXPERIMENT_VARIABLE_VALUES() {
 	return {
-		value: {}, 																	// Value of the variable (dynamic)
-		initial: {}, 																// Initial value assigned to the variable (dynamic)
-		constant: {}, 																// Value of constant variables
+		// Attributes of the "variables" object have the following structure :
+		//
+		// VARIABLE_NAME: {
+		// 	initialValue: null,
+		// 	currentValue: null,
+		// 	imposedValue: null,
+		// 	isConstant: true,
+		//  isStateVariable: false,
+		// 	optionValues: [],
+		// 	valueSelectionType: 'fixed',
+		// 	scheduleName: null
+		// },
+		variables: {},
 
-		imposed: {}, 																// Imposed parameters
+		// Attributes of the "schedules" object have the following structure :
+		//
+		// SCHEDULE_NAME: [],
+		schedules: {},
 	};
 }
 
@@ -241,5 +284,6 @@ function IS_FULLY_NOT_INITIALIZED_STATUS() {
 		state: false,																// Flag indicating whether the state's settings need to be opdated
 		media: false,																// Flag indicating whether the state's media files need to be updated
 		content: false,																// Flag indicating whether the state's content need to be updated
+		options: false,																// Flag indicating whether the state's option content need to be updated
 	};
 }

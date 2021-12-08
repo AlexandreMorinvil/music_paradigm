@@ -5,7 +5,7 @@ const stateSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ["cue", "end", "feedback", "instruction", "playing", "rest", "video", "survey", "writting"]
+        enum: ["cue", "end", "feedback", "instruction", "playing", "rest", "video", "survey", "writting", 'question']
     },
     textContent: { type: Schema.Types.Mixed, default: undefined },
     pictureFileName: { type: Schema.Types.Mixed, default: undefined },
@@ -75,6 +75,21 @@ const stateSchema = new Schema({
     writtingIsNumber: { type: Boolean, default: undefined },
     writtingIsMultiline: { type: Boolean, default: undefined },
     writtingTextPlaceHolder: { type: String, default: undefined },
+
+    questionType: { type: String, default: undefined, enum: ['simple', 'image-choices', 'audio-start', 'midi-note'] },
+    audioFirst: { type: Schema.Types.Mixed, default: undefined },
+    audioSecond: { type: Schema.Types.Mixed, default: undefined },
+    textAfterQuestionAsked: { type: Schema.Types.Mixed, default: undefined },
+    textSpecification: { type: Schema.Types.Mixed, default: undefined },
+    textReminder: { type: Schema.Types.Mixed, default: undefined },
+    
+    areAnswerOptionsVertical: { type: Boolean, default: undefined },
+    answerChoicesValue: { type: [], default: undefined },
+    answerChoicesText: { type: [], default: undefined },
+    answerChoicesColor: { type: [], default: undefined },
+    answerChoicesImage: { type: [], default: undefined },
+
+    rightAnswers: { type: [], default: undefined },
 },
     {
         strict: true
@@ -110,6 +125,9 @@ const schema = new Schema({
 
     cueWaitForClick: { type: Boolean, default: false },
     instrument: {type: String, default: undefined },
+    withTimer: { type: Boolean, default: true },
+    hasClearBackground: { type: Boolean, default: undefined },
+    hasSound: { type: Boolean, default: true },
 
     prelude: {
         default: [],
@@ -144,9 +162,51 @@ const schema = new Schema({
                 default: undefined,
                 required: true
             },
+            valueSelectionType: {
+                type: String,
+                enum: ['assigned', 'random', 'scheduled'],
+                default: "assigned"
+            },
+            scheduleName: {
+                type: String,
+                default: undefined,
+                required: false
+            },
             optionValues: { 
                 type: [],
-                 default: [] 
+                default: [] 
+            },
+        }
+    ],
+    variablesSchedules: 
+    [
+        {
+            name: {
+                type: String,
+                default: "schedule",
+                required: true
+            },
+            numberElements: {
+                type: Number,
+                min: 1,
+                default: undefined,
+                required: false
+            },
+            numberVariantsBalancedInCurriculum: {
+                type: Number,
+                min: 0,
+                default: 0,
+                required: true,
+            },
+            scheduleType: {
+                type: String,
+                enum: ['fixed', 'random', 'permutated'],
+                required: 'fixed'
+            },
+            schedule: {
+                type: [Number],
+                default: [],
+                required: false
             },
         }
     ]

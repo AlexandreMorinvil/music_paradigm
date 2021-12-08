@@ -20,6 +20,14 @@ export default {
  * */
 const ALLOWED_ENTRIES_INTERACTIVE_HELPERS = ['true', 'false', 'all', 'midi', 'first'].flatMap((d) => ['', '#', '##'].map((v) => d + v));
 
+
+/**
+ * @constant ALLOWED_STATE_TYPES
+ * @type {Array<String>}
+ * @description Allowed values for the 'type' attributes of the flow descriptions
+ * */
+const ALLOWED_STATE_TYPES = ['cue', 'end', 'feedback', 'instruction', 'playing', 'rest', 'video', 'survey', 'writting', 'question'];
+
 function getMinimalValidExperimentStructure() {
 	return {
 		name: '',
@@ -88,10 +96,13 @@ function validateExperiment(experiment) {
 
 	// Verification of the attributes
 	const allowedAttributes = [
+		'withTimer',
+		'hasClearBackground',
 		'timeUpState',
 		'prelude',
 		'flow',
 		'variables',
+		'variablesSchedules',
 		'group',
 		'name',
 		'version',
@@ -120,6 +131,7 @@ function validateExperiment(experiment) {
 
 		'cueWaitForClick',
 		'instrument',
+		'hasSound',
 	];
 	Object.keys(experiment).forEach((key) => {
 		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the general parameters is not allowed`);
@@ -163,8 +175,7 @@ function validateBlock(block, index = null) {
 		throw new Error(`The type of the block${indexMessage} name must be a string`);
 	}
 
-	const allowedTypes = ['cue', 'end', 'feedback', 'instruction', 'playing', 'rest', 'video', 'survey', 'writting'];
-	if (!allowedTypes.includes(block.type)) {
+	if (!ALLOWED_STATE_TYPES.includes(block.type)) {
 		throw new Error(`The type '${block.type}' of the block${indexMessage} is not allowed`);
 	}
 
@@ -237,6 +248,21 @@ function validateBlock(block, index = null) {
 		'writtingTextPlaceHolder',
 
 		'instrument',
+
+		'questionType',
+		'audioFirst',
+		'audioSecond',
+		'textAfterQuestionAsked',
+		'textSpecification',
+		'textReminder',
+		'areAnswerOptionsVertical',
+
+		'answerChoicesValue',
+		'answerChoicesText',
+		'answerChoicesImage',
+		'answerChoicesColor',
+
+		'rightAnswers',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -279,6 +305,7 @@ function validateAttributeType(key, value) {
 		case 'logLabel':
 		case 'writtingTextPlaceHolder':
 		case 'instrument':
+		case 'questionType':
 			if (!(typeof value === 'string')) {
 				throw new Error(`The key '${key}' must be of type 'String'`);
 			}
@@ -323,6 +350,10 @@ function validateAttributeType(key, value) {
 		case 'surveyAreAnswersMandatory':
 		case 'writtingIsNumber':
 		case 'writtingIsMultiline':
+		case 'areAnswerOptionsVertical':
+		case 'withTimer':
+		case 'hasClearBackground':
+		case 'hasSound':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}
@@ -340,6 +371,9 @@ function validateAttributeType(key, value) {
 		// Array elements or elements taken out of their array
 		case 'interactiveKeyboardTextMapping':
 		case 'textContent':
+		case 'textAfterQuestionAsked':
+		case 'textSpecification':
+		case 'textReminder':
 		case 'pictureFileName':
 		case 'helperImageFileName':
 		case 'videoFileName':
@@ -347,6 +381,10 @@ function validateAttributeType(key, value) {
 		case 'interactiveKeyboard':
 		case 'midiFileName':
 		case 'referenceKeyboardKeys':
+		case 'audioFirst':
+		case 'audioSecond':
+		case 'rightAnswers':
+		case 'answerChoicesColor':
 			// Elements of the array
 			if (!Array.isArray(value)) {
 				switch (key) {
@@ -354,10 +392,17 @@ function validateAttributeType(key, value) {
 						throw new Error(`The key '${key}' must be of type 'Array'`);
 
 					case 'textContent':
+					case 'textAfterQuestionAsked':
+					case 'textSpecification':
+					case 'textReminder':
 					case 'pictureFileName':
 					case 'helperImageFileName':
 					case 'videoFileName':
 					case 'midiFileName':
+					case 'audioFirst':
+					case 'audioSecond':
+					case 'rightAnswers':
+						// String
 						if (!(typeof value === 'string')) {
 							throw new Error(`The key '${key}' must be of type 'String' or 'Array'`);
 						}
@@ -365,6 +410,7 @@ function validateAttributeType(key, value) {
 
 					case 'interactivePiano':
 					case 'interactiveKeyboard':
+						// String or boolean
 						if (!(typeof value === 'string' || typeof value === 'boolean')) {
 							throw new Error(`The key '${key}' must be of type 'String', 'Boolean' or 'Array'`);
 						}
@@ -384,6 +430,12 @@ function validateAttributeType(key, value) {
 				switch (key) {
 					// Arrays of String
 					case 'helperImageFileName':
+					case 'textReminder':
+					case 'audioFirst':
+					case 'audioSecond':
+					case 'textAfterQuestionAsked':
+					case 'rightAnswers':
+					case 'answerChoicesColor':
 						value.forEach((element, index) => {
 							if (!(typeof element === 'string')) {
 								throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String'`);
@@ -406,17 +458,11 @@ function validateAttributeType(key, value) {
 							if (Array.isArray(element)) {
 								element.forEach((subElement, subIndex) => {
 									if (!(typeof subElement === 'string' || typeof subElement === 'boolean')) {
-										throw new Error(
-											// eslint-disable-next-line prettier/prettier
-											`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String' or boolean`,
-										);
+										throw new Error(`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String' or boolean`);
 									}
 
 									if (typeof subElement === 'string' && !ALLOWED_ENTRIES_INTERACTIVE_HELPERS.includes(subElement)) {
-										throw new Error(
-											// eslint-disable-next-line prettier/prettier
-											`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' cannot have the value ${subElement}`,
-										);
+										throw new Error(`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' cannot have the value ${subElement}`);
 									}
 								});
 							}
@@ -427,6 +473,7 @@ function validateAttributeType(key, value) {
 					case 'midiFileName':
 					case 'pictureFileName':
 					case 'textContent':
+					case 'textSpecification':
 					case 'videoFileName':
 						value.forEach((element, index) => {
 							if (!(typeof element === 'string' || Array.isArray(element))) {
@@ -436,10 +483,7 @@ function validateAttributeType(key, value) {
 							if (Array.isArray(element)) {
 								element.forEach((subElement, subIndex) => {
 									if (!(typeof subElement === 'string')) {
-										throw new Error(
-											// eslint-disable-next-line prettier/prettier
-											`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String'`,
-										);
+										throw new Error(`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String'`);
 									}
 								});
 							}
@@ -456,10 +500,7 @@ function validateAttributeType(key, value) {
 
 								element.forEach((subElement, subIndex) => {
 									if (!(typeof subElement === 'string')) {
-										throw new Error(
-											// eslint-disable-next-line prettier/prettier
-											`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String'`,
-										);
+										throw new Error(`The subelement number ${subIndex + 1} in the subarray of the element number ${index + 1} of the key '${key}' must be of type 'String'`);
 									}
 								});
 							});
@@ -489,10 +530,26 @@ function validateAttributeType(key, value) {
 		case 'surveyInputOptionsText':
 		case 'surveyLeftSideText':
 		case 'surveyRightSideText':
+		case 'answerChoicesValue':
+		case 'answerChoicesText':
+		case 'answerChoicesImage':
 			if (!Array.isArray(value)) {
 				throw new Error(`The key '${key}' must be of type 'Array'`);
 			}
-			break;
+
+			switch (key) {
+				// Arrays of String
+				case 'answerChoicesImage':
+					value.forEach((element, index) => {
+						if (!(typeof element === 'string')) {
+							throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String'`);
+						}
+					});
+					break;
+
+				default:
+					break;
+			} break;
 
 		default:
 			break;
