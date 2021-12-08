@@ -142,7 +142,7 @@ export default {
 		},
 	},
 	mounted() {
-		setTimeout(() => this.revealTheCoices(), this.DELAY_INITIAL);
+		// setTimeout(() => this.revealTheCoices(), this.DELAY_INITIAL);
 	},
 	watch: {
 		isReadyToPlayFirstAudio(isReady) {

@@ -6,26 +6,33 @@
 export default {
 	data() {
 		return {
-			sound: null,
-			VOLUME_LEVEL: 0.05,
+			audio: new Audio(),
+			VOLUME_LEVEL: 0.8,
 		};
 	},
 	computed: {
 		isPlaying() {
-			return false;
+			return this.audio.paused;
 		},
 	},
 	methods: {
-		play(audioFile) {
+		play(audioArrayBuffer) {
 			this.stop();
-			this.sound = new Audio(audioFile); // 'beep-count.wav';
-			this.sound.volume = this.VOLUME_LEVEL;
-			this.sound.play();
+			const blob = new Blob([audioArrayBuffer]);
+			this.audio.src = URL.createObjectURL(blob);
+			this.audio.play();
 		},
 		stop() {
-			if (this.sound) this.sound.stop();
-			this.sound = null;
+			this.audio.pause();
+			this.audio.currentTime = 0;
 		},
+		signalEnded() {
+			this.$emit('finished');
+		},
+	},
+	mounted() {
+		this.audio.volume = this.VOLUME_LEVEL;
+		this.audio.onended = this.signalEnded();
 	},
 };
 </script>

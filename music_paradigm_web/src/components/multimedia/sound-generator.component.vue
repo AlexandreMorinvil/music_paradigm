@@ -78,6 +78,7 @@ export default {
 			() => this.$refs.midiPlayer.numberNotesTriggered,
 			(number) => this.$emit('triggeredNoteCount', number),
 		);
+		this.playAudioFirst();
 	},
 	watch: {
 		isFirstAudioReady(isReady) {
