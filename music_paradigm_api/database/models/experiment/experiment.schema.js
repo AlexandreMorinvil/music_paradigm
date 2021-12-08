@@ -82,8 +82,8 @@ const stateSchema = new Schema({
     textAfterQuestionAsked: { type: Schema.Types.Mixed, default: undefined },
     textSpecification: { type: Schema.Types.Mixed, default: undefined },
     textReminder: { type: Schema.Types.Mixed, default: undefined },
-    areAnswerOptionsHorizontal: { type: Boolean, default: undefined },
-
+    
+    areAnswerOptionsVertical: { type: Boolean, default: undefined },
     answerChoicesValue: { type: [], default: undefined },
     answerChoicesText: { type: [], default: undefined },
     answerChoicesColor: { type: [], default: undefined },

@@ -4,6 +4,10 @@ export default {
 		return state.state.settings.questionType;
 	},
 
+	areAnswerOptionsVertical: (state) => {
+		return state.state.settings.areAnswerOptionsVertical;
+	},
+
 	textAfterQuestionAsked: (state) => {
 		return state.state.content.textAfterQuestionAsked;
 	},
@@ -20,11 +24,11 @@ export default {
 		return state.state.optionsContent.answerChoicesText;
 	},
 
-	answerChoicesImage: (state) => {
-		return state.state.optionsContent.answerChoicesImage;
-	},
-
 	answerChoicesColor: (state) => {
 		return state.state.optionsContent.answerChoicesColor;
+	},
+
+	answerChoicesImage: (state) => {
+		return state.state.optionsContent.answerChoicesImage;
 	},
 };

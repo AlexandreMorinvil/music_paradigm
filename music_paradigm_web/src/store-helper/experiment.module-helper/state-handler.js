@@ -109,6 +109,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		writtingIsMultiline,
 		writtingTextPlaceHolder,
 		questionType,
+		areAnswerOptionsVertical,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -148,6 +149,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		writtingIsMultiline:			typeof writtingIsMultiline === 'boolean'		? writtingIsMultiline : true,
 		writtingTextPlaceHolder: 		typeof writtingTextPlaceHolder === 'string'		? writtingTextPlaceHolder : '',
 		questionType:					typeof questionType === 'string' 				? questionType : generalSettings.questionType,
+		areAnswerOptionsVertical:		typeof areAnswerOptionsVertical === 'boolean' 	? areAnswerOptionsVertical : false,
 	};
 
 	// Indicate that the state (current block's settings) was already initialized

@@ -255,7 +255,7 @@ function validateBlock(block, index = null) {
 		'textAfterQuestionAsked',
 		'textSpecification',
 		'textReminder',
-		'areAnswerOptionsHorizontal',
+		'areAnswerOptionsVertical',
 
 		'answerChoicesValue',
 		'answerChoicesText',
@@ -350,7 +350,7 @@ function validateAttributeType(key, value) {
 		case 'surveyAreAnswersMandatory':
 		case 'writtingIsNumber':
 		case 'writtingIsMultiline':
-		case 'areAnswerOptionsHorizontal':
+		case 'areAnswerOptionsVertical':
 		case 'withTimer':
 		case 'hasClearBackground':
 		case 'hasSound':

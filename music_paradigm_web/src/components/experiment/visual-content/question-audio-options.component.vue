@@ -1,12 +1,12 @@
 <template>
 	<div id="text-area" class="state-section">
 		<sound-generator-component v-on:finished="handleAudioEnd" ref="audioManager" />
-		<div class="choices-area">
+		<div class="choices-area" :class="{ 'vertical-direction': isVertical }">
 			<button
 				v-for="(text, index) in listOptionText"
 				v-bind:key="index"
 				v-on:click="handleSelection(index)"
-				:style="reachedLastAudio && reachedLastAudio && !(index === selectedChoiceIndex) && 'background-color:' + listOptionColors[index]"
+				:style="reachedLastAudio && !(index === selectedChoiceIndex) && 'background-color:' + listOptionColors[index]"
 				:class="{
 					'not-clickable': !areChoicesClickable,
 					'revealed-box': index <= revealedChoiceLastIndex,
@@ -53,7 +53,10 @@ export default {
 	},
 	computed: {
 		...mapGetters('soundGenerator', ['hasAudioFirst', 'hasAudioSecond']),
-		...mapGetters('experiment', ['textSpecification', 'answerChoicesValue', 'answerChoicesText', 'answerChoicesColor']),
+		...mapGetters('experiment', ['textSpecification', 'answerChoicesValue', 'answerChoicesText', 'answerChoicesColor', 'areAnswerOptionsVertical']),
+		isVertical() {
+			return this.areAnswerOptionsVertical;
+		},
 		hasAudio() {
 			return this.hasAudioFirst || this.hasAudioSecond;
 		},
@@ -180,9 +183,9 @@ export default {
 	background-color: lightgray;
 	color: white;
 	border: none;
-	width: 400px;
-	height: 125px;
-	margin: 40px;
+	width: 300px;
+	height: 100px;
+	margin: 20px;
 }
 
 .not-clickable {
@@ -199,5 +202,9 @@ export default {
 
 .revealed-box.selected-box {
 	background-color: orange;
+}
+
+.vertical-direction {
+	flex-direction: column;
 }
 </style>

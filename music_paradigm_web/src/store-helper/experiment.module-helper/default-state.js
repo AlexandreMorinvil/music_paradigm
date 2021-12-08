@@ -50,7 +50,6 @@ const DEFAULT_QUESTION_TYPE = 'simple';
 const DEFAULT_HAS_TIMER = true;
 const DEFAULT_HAS_CLEAR_BACKGROUND = false;
 const DEFAULT_HAS_SOUND = true;
-const DEFAULT_ANSWER_CHOICES = ['A', 'B'];
 
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
@@ -233,8 +232,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			writtingTextPlaceHolder: '',											// Indicate the text that will be written in the text input area when there is nothing written 
 
 			questionType: DEFAULT_QUESTION_TYPE,									// Indicate the question type for the 'question' states
-
-			// areAnswerOptionsHorizontal:
+			areAnswerOptionsVertical: false,										// Disposition of the anserChoices (vertical if true, horizontal if false)
 			// rightAnswers:
 		},
 		// Session specific informations

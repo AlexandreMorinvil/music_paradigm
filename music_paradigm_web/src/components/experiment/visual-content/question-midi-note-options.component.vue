@@ -1,7 +1,7 @@
 <template>
 	<div id="text-area" class="state-section">
 		<sound-generator-component v-on:triggeredNoteCount="updateTriggeredNoteIndex" v-on:finished="handleAudioEnd" ref="audioManager" />
-		<div class="choices-area">
+		<div class="choices-area" :class="{ 'vertical-direction': isVertical }">
 			<button
 				v-for="number in numberBoxes"
 				v-bind:key="number"
@@ -54,7 +54,10 @@ export default {
 	},
 	computed: {
 		...mapGetters('soundGenerator', ['hasAudioFirst', 'hasAudioSecond', 'audioFirstParsed', 'audioSecondParsed']),
-		...mapGetters('experiment', ['textSpecification', 'answerChoicesValue', 'answerChoicesText']),
+		...mapGetters('experiment', ['textSpecification', 'answerChoicesValue', 'answerChoicesText', 'areAnswerOptionsVertical']),
+		isVertical() {
+			return this.areAnswerOptionsVertical;
+		},
 		hasAudio() {
 			return this.hasAudioFirst || this.hasAudioSecond;
 		},
@@ -226,5 +229,9 @@ export default {
 
 .revealed-box.selected-box {
 	background-color: orange;
+}
+
+.vertical-direction {
+	flex-direction: column;
 }
 </style>
