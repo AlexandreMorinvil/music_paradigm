@@ -29,6 +29,8 @@ export default {
 	},
 
 	answerChoicesImage: (state) => {
-		return state.state.optionsContent.answerChoicesImage;
+		return state.state.optionsContent.answerChoicesImage.map(imageName => {
+			return imageName ? `${state.description.folder}/${imageName}` : '';
+		});
 	},
 };
