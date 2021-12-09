@@ -1,7 +1,7 @@
 <template>
 	<div id="question-type" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
-		<question-audio-options-component v-on:answered="handleAnswer" v-on:questionAsked="handleQuestionAsked" class="options-area state-section" />
+		<question-audio-first-options-component v-on:answered="handleAnswer" v-on:questionAsked="handleQuestionAsked" class="options-area state-section" />
 		<text-after-question-area-component class="text-after-question-area state-section" ref="postQuestionText"/>
 	</div>
 </template>
@@ -9,13 +9,13 @@
 <script>
 import '@/styles/experiment-content-template.css';
 
-import QuestionAudioOptionsComponent from '@/components/experiment/visual-content/question-audio-options.component.vue';
+import QuestionAudioFirstOptionsComponent from '@/components/experiment/visual-content/question-audio-first-options.component.vue';
 import TextAfterQuestionAreaComponent from '@/components/experiment/visual-content/text-after-question-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
-		QuestionAudioOptionsComponent,
+		QuestionAudioFirstOptionsComponent,
 		TextAfterQuestionAreaComponent,
 		TextAreaComponent,
 	},

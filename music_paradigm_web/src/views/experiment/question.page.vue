@@ -16,15 +16,15 @@ import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-eve
 import { mapGetters } from 'vuex';
 
 // import SimpleQuestionComponent from '@/components/experiment/question-type/playing-melody.component';
-// import ImageQuestionComponent from '@/components/experiment/question-type/playing-rhythm.component';
-import AudioQuestionComponent  from '@/components/experiment/question-type/question-audio.component';
+import AudioQuestionComponent  from '@/components/experiment/question-type/question-audio-first.component';
+import ImageQuestionComponent from '@/components/experiment/question-type/question-image-choices.component';
 import MidiNoteQuestionComponent from '@/components/experiment/question-type/question-midi-note.component';
 
 export default {
 	components: {
 		// simple: SimpleQuestionComponent,
-		// 'image-choices': ImageQuestionComponent,
 		'audio-start': AudioQuestionComponent,
+		'image-choices': ImageQuestionComponent,
 		'midi-note': MidiNoteQuestionComponent,
 	},
 	data() {
