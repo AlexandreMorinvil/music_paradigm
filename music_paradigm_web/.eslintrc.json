@@ -46,7 +46,6 @@
 		"no-warning-comments": ["error", { "terms": ["todo", "fixme", "xxx"], "location": "anywhere" }],
 		"init-declarations": ["error", "always"],
 		"no-shadow": "error",
-		"no-undefined": "error",
 		"camelcase": ["error", { "properties": "never", "ignoreDestructuring": true, "ignoreImports": true }],
 		"array-bracket-spacing": ["error", "never"],
 		"block-spacing": "error",

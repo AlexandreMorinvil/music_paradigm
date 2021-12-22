@@ -1,3 +1,4 @@
+
 <template>
 	<div id="experiments-workshop" class="widget widget-bg">
 		<div class="options-position">
@@ -13,7 +14,9 @@
 						<th>Full Name</th>
 						<th>Tags</th>
 						<th>Curriculum</th>
-						<th>Reached Progresion</th>
+						<th>Start Date</th>
+						<th>Last Advance</th>
+						<th>Reached</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -22,10 +25,12 @@
 					<tr v-for="(summary, index) in usersSummaryList" :key="summary._id" :class="summary._id === userSelectedId && 'selected'">
 						<td>{{ index + 1 }}</td>
 						<td>{{ summary.username }}</td>
-						<td>{{ makeFullNameDisplay(summary.firstName, summary.middleName, summary.lastName) }}</td>
-						<td style="white-space: pre-line">{{ makeTagsDisplay(summary.tags) }}</td>
-						<td>{{ makeCurriculumTitleDisplay(summary.curriculumTitle) }}</td>
-						<td>{{ makeProgressionDisplay(summary.curriculumTotalNumber, summary.progressionTotalNumber, summary.reachedExperimentTitle) }}</td>
+						<td>{{ makeFullNameDisplay(summary) }}</td>
+						<td style="white-space: pre-line">{{ makeTagsDisplay(summary) }}</td>
+						<td>{{ makeCurriculumTitleDisplay(summary) }}</td>
+						<td>{{ makeProgressionStartTimeDisplay(summary) }}</td>
+						<td>{{ makeProgressionLastAdvanceTimeDisplay(summary) }}</td>
+						<td>{{ makeProgressionDisplay(summary) }}</td>
 						<td class="widget-table-actions-buttons">
 							<button v-on:click="handleSelectUser(summary._id)" class="widget-button small blue">Select</button>
 						</td>
@@ -38,15 +43,19 @@
 
 <script>
 import '@/styles/widget-template.css';
+
 import { mapActions, mapGetters } from 'vuex';
 import LoaderCircular from '@/components/visual-helpers/loader-circular.component.vue';
 
+/* eslint-disable no-magic-numbers */
 export default {
 	components: {
 		loader: LoaderCircular,
 	},
 	data() {
-		return {};
+		return {
+			datesOptions: { year: 'numeric', month: 'numeric', day: 'numeric' },
+		};
 	},
 	computed: {
 		...mapGetters('users', ['isFetchingUsersSummaryList', 'usersSummaryList', 'userSelectedId']),
@@ -62,30 +71,63 @@ export default {
 		handleSelectUser(id) {
 			this.setSelectedUser(id);
 		},
-		makeFullNameDisplay(firstName, middleName, lastName) {
+		makeFullNameDisplay(summary) {
+			const { firstName, middleName, lastName } = summary;
 			if (!(firstName || middleName || lastName)) return '---';
 			return firstName + ' ' + middleName + ' ' + lastName;
 		},
-		makeTagsDisplay(tagList) {
-			if (tagList.length === 0) {
+		makeTagsDisplay(summary) {
+			const { tags } = summary;
+			if (tags.length === 0) {
 				return '---';
 			} else {
 				let display = '';
-				for (const i in tagList) {
+				for (const i in tags) {
 					if (i > 0) display += '\n';
-					display += tagList[i];
+					display += tags[i];
 				}
 				return display;
 			}
 		},
-		makeCurriculumTitleDisplay(curriculumName) {
-			if (!curriculumName) return '---';
-			else return curriculumName;
+		makeCurriculumTitleDisplay(summary) {
+			const { curriculumTitle } = summary;
+			if (!curriculumTitle) return '---';
+			else return curriculumTitle;
 		},
-		makeProgressionDisplay(totalNumber, reachedNumber, reachedName) {
-			if (!totalNumber) return '---';
-			else return String(reachedNumber) + '/' + totalNumber + '\n"' + reachedName + '"';
+		makeProgressionStartTimeDisplay(summary) {
+			const { progressionStartDate, progressionStartTime } = summary;
+			return this.makeDateTimeLapsedDisplay(progressionStartDate, progressionStartTime);
 		},
+		makeProgressionLastAdvanceTimeDisplay(summary) {
+			const { progressionLastAdvancedDate, progressionLastAdvancedTime } = summary;
+			return this.makeDateTimeLapsedDisplay(progressionLastAdvancedDate, progressionLastAdvancedTime);
+		},
+		makeProgressionDisplay(summary) {
+			const { curriculumTotalNumber, progressionTotalNumber, reachedExperimentTitle } = summary;
+			if (!curriculumTotalNumber) return '---';
+			if (curriculumTotalNumber === progressionTotalNumber) return String(progressionTotalNumber) + '/' + curriculumTotalNumber + '\n✓ COMPLETED';
+			else return String(progressionTotalNumber) + '/' + curriculumTotalNumber + '\n"' + reachedExperimentTitle + '"';
+		},
+		getDurationInWeekAndDays(durationInMilliseconds) {
+			const totalDays = Math.floor(durationInMilliseconds / (24 * 3600 * 1000));
+			return { totalDays: totalDays, days: parseInt(totalDays % 7), weeks: parseInt(totalDays / 7) };
+		},
+		makeDateTimeLapsedDisplay(startDate, durationInMilliseconds) {
+			if (!startDate) return '---';
+
+			// Display of the date
+			const date = new Date(startDate).toLocaleDateString(undefined, this.datesOptions);
+
+			// Display of the time lapsed
+			const { totalDays, days, weeks } = this.getDurationInWeekAndDays(durationInMilliseconds);
+			let timeLapsed = '';
+			if (totalDays < 1) timeLapsed = '< 24h';
+			else {
+				if (weeks > 0) timeLapsed += String(weeks) + 'w. ';
+				timeLapsed += String(days) + 'd.';
+			}
+			return String(date) + '\n' + timeLapsed;
+		}
 	},
 	mounted() {
 		this.fetchAllUsersSummary();

@@ -89,7 +89,7 @@ function generateProgressionToCurriculumAssociationSummary(curriculum, progressi
     // Otherwise, we produce a progression summary
     const association = generateProgressionToCurriculumAssociation(curriculum, progression);
     const completedExperiments = association.filter(element => element.progressionExperiment.completionCount > 0);
-    const reachedExperiment = (completedExperiments.length < association.length) ? association[completedExperiments.length].curriculumExperiment.title : "✓";
+    const reachedExperiment = (completedExperiments.length < association.length) ? association[completedExperiments.length].curriculumExperiment.title : "";
     return {
         reachedExperimentTitle: reachedExperiment,
         progressionTotalNumber: completedExperiments.length,

@@ -4,7 +4,9 @@ schema = require('./user.middleware');
 const roles = require('_helpers/role');
 const bcrypt = require('bcryptjs');
 
-const progressionAssociation = require('progression/progression-association.service.js')
+const progressionAssociation = require('progressions/progression-association.service.js');
+const progressionGetters = require('progressions/progression.getters.js');
+const curriculumGetters = require('curriculums/curriculums.getters.js');
 
 // Static methods
 schema.statics.authenticate = async function (username, password) {
@@ -40,10 +42,18 @@ schema.statics.delete = async function (userId) {
  *                          firstName: String,
  *                          middleName: String,
  *                          lastName: String,
+ * 
  *                          curriculumTitle: String,
+ * 
+ *                          progressionStartDate: Date,
+ *                          progressionStartTime: Number,
+ *                          progressionLastAdvancedDate: Date,
+ *                          progressionLastAdvancedTime: Number,
+ * 
  *                          reachedExperimentTitle: String,
  *                          progressionTotalNumber: Number,
  *                          curriculumTotalNumber: Number,
+ * 
  *                          lastLogin: Date,
  *                          createdAt: Date,
  *                          updatedAt: Date,
@@ -61,21 +71,24 @@ schema.statics.getListAllSummaries = async function () {
         // Prepare the user summary object
         const userSummary = element.toObject();
 
-        // Adding the name of the current curriculum
-        userSummary.curriculumTitle = (userSummary.curriculum) ? userSummary.curriculum.title : "";
+        // Extract the populated curriculum and last progression
+        const currentProgression = element.progressions[element.progressions.length - 1];
+        const currentCurriculum = element.curriculum;
 
-        // Prepare the progression summary information
-        const progressionSummary = progressionAssociation
-            .generateProgressionToCurriculumAssociationSummary(
-                element.curriculum,
-                element.progressions[element.progressions.length - 1]
-            );
-        Object.assign(userSummary, progressionSummary);
+        // Add information from the curriculum and the progression
+        userSummary.curriculumTitle = curriculumGetters.getTitle(currentCurriculum);
+        userSummary.progressionStartDate = progressionGetters.getAdvanceStartDate(currentProgression);
+        userSummary.progressionStartTime = progressionGetters.getAdvanceStartTime(currentProgression);
+        userSummary.progressionLastAdvancedDate = progressionGetters.getLastAdvanceDate(currentProgression);
+        userSummary.progressionLastAdvancedTime = progressionGetters.getLastAdvanceTime(currentProgression);
+        Object.assign(userSummary, progressionAssociation.generateProgressionToCurriculumAssociationSummary(currentCurriculum, currentProgression));
 
         // Remove undesirable attributes
+        delete userSummary.progressions;
         delete userSummary.curriculum;
         delete userSummary.password;
 
+        // Add the user to the list of summaries of users
         usersHeaderList.push(userSummary);
     });
 
@@ -117,7 +130,6 @@ schema.methods.updateUser = async function (updatedUser) {
     if (updatedUser.hasOwnProperty('firstName')) this.firstName = updatedUser.firstName;
     if (updatedUser.hasOwnProperty('middleName')) this.middleName = updatedUser.middleName;
     if (updatedUser.hasOwnProperty('lastName')) this.lastName = updatedUser.lastName;
-
     return this.save();
 };
 
