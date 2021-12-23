@@ -135,8 +135,8 @@ schema.methods.updateUser = async function (updatedUser) {
 
 schema.methods.initializeCurriculum = async function (curriculum, parameters) {
     // Assign curriculum
-    // if (!curriculum) return null;
-    this.curriculum = curriculum || {};
+    if (!curriculum) return null;
+    this.curriculum = curriculum;
 
     // Initialize Progression
     const lastProgression = await this.getLastProgression();

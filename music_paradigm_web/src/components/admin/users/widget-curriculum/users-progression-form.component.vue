@@ -107,8 +107,8 @@ export default {
 				timeLapsed += String(minutes) + ' min. ';
 				includesLongerDuration = true;
 			}
-			if (seconds > 0) {
-				timeLapsed += String(seconds) + ' sec. ';
+			if (!includesLongerDuration) {
+				timeLapsed = String(seconds) + ' sec. ';
 			}
 			timeLapsed += 'ago';
 			return timeLapsed;
