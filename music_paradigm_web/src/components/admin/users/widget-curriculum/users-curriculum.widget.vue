@@ -81,18 +81,19 @@ export default {
 		evaluateAllButtonsActive() {
 			const wasCurriculumModified = this.$refs.userCurriculumForm.wasCurriculumModified;
 			const wasParametersModified = this.$refs.userParametersForm.wasParametersModified;
-			this.evaluateIsRevertButtonActive(wasCurriculumModified, wasParametersModified);
+			const wasProgressionModified = this.$refs.userProgressionForm.wasProgressionModified;
+			this.evaluateIsRevertButtonActive(wasCurriculumModified, wasParametersModified, wasProgressionModified);
 			this.evaluateIsAssignButtonActive(wasCurriculumModified);
-			this.evaluateIsUpdateParametersButtonActive(wasCurriculumModified, wasParametersModified);
+			this.evaluateIsUpdateParametersButtonActive(wasCurriculumModified, wasParametersModified, wasProgressionModified);
 		},
-		evaluateIsRevertButtonActive(wasCurriculumModified, wasParametersModified) {
-			this.isRevertButtonActive = this.hasSelectedUser && (wasCurriculumModified || wasParametersModified);
+		evaluateIsRevertButtonActive(wasCurriculumModified, wasParametersModified, wasProgressionModified) {
+			this.isRevertButtonActive = this.hasSelectedUser && (wasCurriculumModified || wasParametersModified || wasProgressionModified);
 		},
 		evaluateIsAssignButtonActive(wasCurriculumModified) {
 			this.isAssignButtonActive = this.hasSelectedUser && wasCurriculumModified;
 		},
-		evaluateIsUpdateParametersButtonActive(wasCurriculumModified, wasParametersModified) {
-			this.isUpdateButtonActive = this.hasSelectedUser && wasParametersModified && !wasCurriculumModified;
+		evaluateIsUpdateParametersButtonActive(wasCurriculumModified, wasParametersModified, wasProgressionModified) {
+			this.isUpdateButtonActive = this.hasSelectedUser && (wasParametersModified || wasProgressionModified) && !wasCurriculumModified;
 		},
 	},
 	beforeMount() {
@@ -101,6 +102,7 @@ export default {
 	mounted() {
 		this.$watch(() => this.$refs.userCurriculumForm.wasCurriculumModified, this.evaluateAllButtonsActive, { immediate: true });
 		this.$watch(() => this.$refs.userParametersForm.wasParametersModified, this.evaluateAllButtonsActive, { immediate: true });
+		this.$watch(() => this.$refs.userProgressionForm.wasProgressionModified, this.evaluateAllButtonsActive, { immediate: true });
 	},
 };
 </script>

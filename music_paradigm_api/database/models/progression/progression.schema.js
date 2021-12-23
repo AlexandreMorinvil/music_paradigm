@@ -32,6 +32,11 @@ const schema = new Schema(
             default: null
         },
 
+        startTimeAdjustmentInDays: {
+            type: Number,
+            default: 0
+        },
+
         // Date of the last time the last available experiment was completed for the first time (This is used
         // to for the sequential curriculum to know if a subsequent experiment can be made available)
         lastProgressionDate: {

@@ -8,7 +8,7 @@
 					:session="session"
 					:index="Number(index)"
 					v-on:start-session="startSession"
-					v-on:click="selectSession(index)"
+					v-on:click.native="selectSession(session)"
 					class="session-button"
 				/>
 			</div>
@@ -50,8 +50,8 @@ export default {
 				associativeIdOrdinalNumber: experimentSession.associativeIdOrdinalNumber,
 			});
 		},
-		selectSession(index) {
-			this.$emit('selected', index);
+		selectSession(session) {
+			this.$emit('sessionSelected', session);
 		}
 	},
 };
