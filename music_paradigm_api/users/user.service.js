@@ -84,9 +84,11 @@ async function assignCurriculum(userId, curriculumId, assignedParameters) {
     try {
         const user = await User.findById(userId);
         const lastProgression = await user.initializeCurriculum(curriculumId, assignedParameters);
+        const progressionSummary = await progressionSummaryService.generateProgressionSummary(userId);
         return { 
             user: user, 
-            progression: lastProgression 
+            progression: lastProgression,
+            progressionSummary: progressionSummary,
         };
     } catch (err) {
         throw err;
@@ -97,9 +99,11 @@ async function assignParameters(userId, assignedParameters) {
     try {
         const user = await User.findById(userId);
         const lastProgression = await user.assignParameters(assignedParameters);
+        const progressionSummary = await progressionSummaryService.generateProgressionSummary(userId);
         return { 
             user: user, 
-            progression: lastProgression 
+            progression: lastProgression,
+            progressionSummary: progressionSummary,
         };
     } catch (err) {
         throw err;

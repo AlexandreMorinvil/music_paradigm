@@ -106,6 +106,7 @@ export default {
 				(updatedUser) => {
 					commit('setSelectedUser', updatedUser.user);
 					commit('setSelectedUserProgression', updatedUser.progression);
+					commit('setSelectedUserProgressionSummary', updatedUser.progressionSummary);
 					dispatch('alert/setSuccessAlert', 'Curriculum assignation sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},
@@ -126,6 +127,7 @@ export default {
 				(updatedUser) => {
 					commit('setSelectedUser', updatedUser.user);
 					commit('setSelectedUserProgression', updatedUser.progression);
+					commit('setSelectedUserProgressionSummary', updatedUser.progressionSummary);
 					dispatch('alert/setSuccessAlert', 'Parameter update sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},
