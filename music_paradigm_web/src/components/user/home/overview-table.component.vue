@@ -60,7 +60,7 @@ export default {
 <style scoped>
 .englobing-box {
 	display: grid;
-	grid-template-rows: /*auto*/ auto;
+	grid-template-rows: auto;
 	color: rgb(230, 230, 230);
 }
 
@@ -90,8 +90,4 @@ export default {
 .session-space {
 	text-align: center;
 }
-
-/* .overview-ttile {
-	text-align: center;
-} */
 </style>

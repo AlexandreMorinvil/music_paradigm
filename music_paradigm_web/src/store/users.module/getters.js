@@ -1,4 +1,5 @@
 export default {
+	// User values
 	userSelectedId: (state) => {
 		return state.selectedUser._id;
 	},
@@ -35,14 +36,33 @@ export default {
 		return state.selectedUser.curriculum;
 	},
 
+	// Progression parameters
 	userSelectedImposedParameters: (state) => {
 		return state.selectedUserProgression ? state.selectedUserProgression.assignedParameters : {};
 	},
 
+	userSelectedStartTime: (state) => {
+		return state.selectedUserProgression ? state.selectedUserProgression.startTime : null;
+	},
+
+	userSelectedStartTimePassed: (state) => {
+		return state.selectedUserProgression ? state.selectedUserProgression.startTimePassed : 0;
+	},
+
+	userSelectedLastProgressionDate: (state) => {
+		return state.selectedUserProgression ? state.selectedUserProgression.lastProgressionDate : null;
+	},
+
+	userSelectedLastProgressionTimePassed: (state) => {
+		return state.selectedUserProgression ? state.selectedUserProgression.lastProgessionTimePassed : 0;
+	},
+
+	// Experiments progression history of the user
 	userSelectedProgressionHistory: (state) => {
 		return state.selectedUserProgressionHistory;
 	},
 
+	// List of users
 	usersSummaryList: (state) => {
 		return state.usersSummaryList;
 	},

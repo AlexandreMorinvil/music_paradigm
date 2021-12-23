@@ -101,6 +101,15 @@ const schema = new Schema(
     }
 );
 
+// Virtual properties
+schema.virtual('startTimePassed').get(function() {
+    return (new Date()).getTime() - (new Date(this.startTime)).getTime()
+});
+
+schema.virtual('lastProgessionTimePassed').get(function() {
+    return (new Date()).getTime() - (new Date(this.lastProgressionDate)).getTime()
+});
+
 // Setter functions
 function setterAssociativeId(title) {
     if (title) return title.toLowerCase();
