@@ -36,7 +36,11 @@ export default {
 	},
 
 	userSelectedImposedParameters: (state) => {
-		return state.selectedUserProgression.assignedParameters;
+		return state.selectedUserProgression ? state.selectedUserProgression.assignedParameters : {};
+	},
+
+	userSelectedProgressionHistory: (state) => {
+		return state.selectedUserProgressionHistory;
 	},
 
 	usersSummaryList: (state) => {

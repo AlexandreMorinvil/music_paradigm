@@ -17,7 +17,11 @@ module.exports = {
 */
 
 function generateProgressionToCurriculumAssociation(curriculum, progression) {
-        
+    
+    // Verify the parameters
+    if (!curriculum) return []
+    if (!progression) progression = { experiments: [] }
+
     // This conversion table is particularily useful to handle the situations where the curriculum would be modified 
     // while a user's prgression was already well advanced. This way, it is possible to retreive the completed part 
     // of the curriculum from the progression, even though the two might not correspond 1 to 1 anymore.

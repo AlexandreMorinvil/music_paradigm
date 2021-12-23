@@ -25,8 +25,12 @@ async function updateProgression(userId) {
 }
 
 async function generateProgressionSummary(userId) {
-    const { curriculum, progression } = await User.getCurriculumAndProgressionData(userId);
+    let { curriculum, progression } = await User.getCurriculumAndProgressionData(userId);
 
+    // Verify parameters
+    if (!curriculum) return { history: [], dueExperiment: null };
+    if (!progression) progression = {};
+    
     // Generate progression to curriculum association
     const association = progressionAssociation.generateProgressionToCurriculumAssociation(curriculum, progression); 
 

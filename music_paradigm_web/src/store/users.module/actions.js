@@ -20,9 +20,10 @@ export default {
 
 	setSelectedUser({ commit, dispatch }, id) {
 		return userService.getById(id).then(
-			(response) => {
-				commit('setSelectedUser', response.user);
-				commit('setSelectedProgression', response.progression);
+			(selectedUser) => {
+				commit('setSelectedUser', selectedUser.user);
+				commit('setSelectedUserProgression', selectedUser.progression);
+				commit('setSelectedUserProgressionSummary', selectedUser.progressionSummary);
 			},
 			(error) => {
 				dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
@@ -41,7 +42,8 @@ export default {
 			.then(
 				(createdUser) => {
 					commit('setSelectedUser', createdUser.user);
-					commit('setSelectedProgression', createdUser.progression);
+					commit('setSelectedUserProgression', createdUser.progression);
+					commit('setSelectedUserProgressionSummary', createdUser.progressionSummary);
 					dispatch('alert/setSuccessAlert', 'User creation sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},
@@ -103,7 +105,7 @@ export default {
 			.then(
 				(updatedUser) => {
 					commit('setSelectedUser', updatedUser.user);
-					commit('setSelectedProgression', updatedUser.progression);
+					commit('setSelectedUserProgression', updatedUser.progression);
 					dispatch('alert/setSuccessAlert', 'Curriculum assignation sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},
@@ -123,7 +125,7 @@ export default {
 			.then(
 				(updatedUser) => {
 					commit('setSelectedUser', updatedUser.user);
-					commit('setSelectedProgression', updatedUser.progression);
+					commit('setSelectedUserProgression', updatedUser.progression);
 					dispatch('alert/setSuccessAlert', 'Parameter update sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},
@@ -142,7 +144,7 @@ export default {
 			.resetProgression(userId)
 			.then(
 				(updatedProgression) => {
-					commit('setSelectedProgression', updatedProgression);
+					commit('setSelectedUserProgression', updatedProgression);
 					dispatch('alert/setSuccessAlert', 'Progression resetting successful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},

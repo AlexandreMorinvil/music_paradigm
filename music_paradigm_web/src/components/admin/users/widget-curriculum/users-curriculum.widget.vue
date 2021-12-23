@@ -2,6 +2,7 @@
 	<div id="users-editor" class="widget widget-bg">
 		<users-curriculum-form-component class="curticulum-position inner-widget" ref="userCurriculumForm" />
 		<users-parameters-form-component class="parameters-position inner-widget" ref="userParametersForm" />
+		<users-progression-form-component class="progression-position inner-widget" ref="userProgressionForm" />
 
 		<div class="submission-buttons-position">
 			<button v-on:click="handleRevert" class="widget-button blue" :class="{ inactive: !isRevertButtonActive }">Revert</button>
@@ -21,11 +22,13 @@ import { mapActions, mapGetters } from 'vuex';
 
 import UsersCurriculumFormComponent from './users-curriculum-form.component.vue';
 import UsersParametersFormComponent from './users-parameters-form.component.vue';
+import UsersProgressionFormComponent from './users-progression-form.component.vue';
 
 export default {
 	components: {
 		UsersCurriculumFormComponent,
 		UsersParametersFormComponent,
+		UsersProgressionFormComponent,
 	},
 	data() {
 		return {
@@ -128,6 +131,10 @@ export default {
 	grid-area: parameters;
 }
 
+.progression-position {
+	grid-area: progression;
+}
+
 .submission-buttons-position {
 	grid-area: submission-btn;
 	display: grid;
@@ -140,6 +147,7 @@ export default {
 	grid-template-areas:
 		'curticulum'
 		'parameters'
+		'progression'
 		'submission-btn';
 }
 </style>

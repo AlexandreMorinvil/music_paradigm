@@ -1,4 +1,5 @@
 ﻿const db = require('database/db');
+const progressionSummaryService = require('progressions/progression-summary.service');
 const User = db.User;
 
 // Exports
@@ -25,9 +26,11 @@ async function getById(userId) {
     try {
         const user = await User.findById(userId).select('-password');
         const lastProgression = await user.getLastProgression();
+        const progressionSummary = await progressionSummaryService.generateProgressionSummary(userId);
         return {
             user: user,
             progression: lastProgression,
+            progressionSummary: progressionSummary,
         };
     } catch (err) {
         throw err;
@@ -38,9 +41,11 @@ async function createUser(user, curriculumId, assignedParameters) {
     try {
         const userCreated = await User.create(user);
         const progressionInitilized = await userCreated.initializeCurriculum(curriculumId, assignedParameters);
+        const progressionSummary = await progressionSummaryService.generateProgressionSummary(userCreated._id);
         return {
             user: userCreated, 
             progression: progressionInitilized,
+            progressionSummary: progressionSummary,
         };
     } catch (err) {
         switch (err.code) {

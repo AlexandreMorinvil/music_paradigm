@@ -60,18 +60,24 @@ export default {
 
 	// Setters
 	setSelectedUser(state, user) {
-		state.selectedUser = defaultState.EMPTY_USER();
-		Object.assign(state.selectedUser, user);
+		state.selectedUser = user;
 	},
 
-	setSelectedProgression(state, userProgression) {
-		state.selectedUserProgression = {};
-		Object.assign(state.selectedUserProgression, userProgression);
+	setSelectedUserProgression(state, userProgression) {
+		state.selectedUserProgression = userProgression;
+	},
+
+	setSelectedUserProgressionSummary(state, progressionSummary) {
+		const { dueExperiment, history } = progressionSummary;
+		state.selectedUserProgressionHistory = history;
+		state.selectedUserProgressionDueExperiment = dueExperiment;
 	},
 
 	unsetSelectedUser(state) {
 		state.selectedUser = defaultState.EMPTY_USER();
-		state.selectedUserProgression = {};
+		state.selectedUserProgression = defaultState.EMPTY_SELECTED_USER_PROGRESSION();
+		state.selectedUserProgressionHistory = defaultState.EMPTY_SELECTED_USER_PROGRESSION_HISTORY();
+		state.selectedUserProgressionDueExperiment = defaultState.EMPTY_SELECTED_USER_PROGRESSION_DUE_EXPERIMENT();
 	},
 
 	setSummariesList(state, usersSummaryList) {

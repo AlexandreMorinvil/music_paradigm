@@ -1,16 +1,14 @@
 <template>
 	<div class="englobing-box">
-		<!-- <div class="overview-ttile">
-			<h2 class="title-area">Program</h2>
-		</div> -->
 		<div class="table-context">
 			<div class="table-inside-context content-flex">
 				<overview-table-session
-					v-for="(session, index) in progressionSummary"
+					v-for="(session, index) in progressionHistory"
 					:key="index"
 					:session="session"
-					:index="index"
+					:index="Number(index)"
 					v-on:start-session="startSession"
+					v-on:click="selectSession(index)"
 					class="session-button"
 				/>
 			</div>
@@ -24,20 +22,37 @@ import { mapActions, mapGetters } from 'vuex';
 import OverviewTableSession from '@/components/user/home/overview-table-session.component.vue';
 
 export default {
+	props: {
+		overWrittingProgressionHistory: {
+			default() {
+				return null;
+			},
+		},
+	},
 	components: {
 		OverviewTableSession,
 	},
 	computed: {
 		...mapGetters('account', ['progressionSummary']),
+		progressionHistory() {
+			return this.overWrittingProgressionHistory || this.progressionSummary;
+		},
+		isRealUser() {
+			return !this.overWrittingProgressionHistory;
+		},
 	},
 	methods: {
 		...mapActions('session', ['fetchSpecificExperimentSession']),
 		startSession(experimentSession) {
+			if (!this.isRealUser) return;
 			this.fetchSpecificExperimentSession({
 				associativeId: experimentSession.associativeId,
 				associativeIdOrdinalNumber: experimentSession.associativeIdOrdinalNumber,
 			});
 		},
+		selectSession(index) {
+			this.$emit('selected', index);
+		}
 	},
 };
 </script>
@@ -48,17 +63,6 @@ export default {
 	grid-template-rows: /*auto*/ auto;
 	color: rgb(230, 230, 230);
 }
-
-/* .title-area {
-	width: 50%;
-	padding: 10px;
-	margin: auto;
-	box-shadow: 5px 5px 8px black;
-	background-color: rgb(0, 40, 120);
-	border: 5px rgb(0, 35, 115) solid;
-	border-bottom-style: none;
-	border-radius: 10px 10px 0 0;
-} */
 
 .table-context {
 	padding: 20px;
