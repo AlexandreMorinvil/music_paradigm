@@ -122,7 +122,7 @@ export default {
 	updateParameters({ commit, dispatch }, { userId, assignedParameters }) {
 		commit('indicateUpdateParametersRequest');
 		return userService
-			.assignParametersAndAdjustments(userId, assignedParameters)
+			.assignParameters(userId, assignedParameters)
 			.then(
 				(updatedUser) => {
 					commit('setSelectedUserProgression', updatedUser.progression);

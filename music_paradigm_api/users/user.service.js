@@ -10,7 +10,8 @@ module.exports = {
     updateUser,
     deleteUser,
     assignCurriculum,
-    assignParametersAndAdjustments,
+    assignParameters,
+    assignAdjustments,
     resetProgression,
 };
 
@@ -95,10 +96,24 @@ async function assignCurriculum(userId, curriculumId, assignedParameters) {
     }
 }
 
-async function assignParametersAndAdjustments(userId, assignedParameters) {
+async function assignParameters(userId, assignedParameters) {
     try {
         const lastProgression = await User.getLastProgression(userId);
-        await lastProgression.assignParametersAndAdjustments(assignedParameters);
+        await lastProgression.assignParameters(assignedParameters);
+        const progressionSummary = await progressionSummaryService.generateProgressionSummary(userId);
+        return {
+            progression: lastProgression,
+            progressionSummary: progressionSummary,
+        };
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function assignAdjustments(userId, assignedAdjustments) {
+    try {
+        const lastProgression = await User.getLastProgression(userId);
+        await lastProgression.assignAdjustments(assignedAdjustments);
         const progressionSummary = await progressionSummaryService.generateProgressionSummary(userId);
         return {
             progression: lastProgression,

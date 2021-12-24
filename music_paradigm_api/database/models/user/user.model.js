@@ -143,9 +143,8 @@ schema.methods.initializeProgression = async function (curriculum, parameters, a
     let lastProgression = await this.getLastProgression();
     if (lastProgression) {
 
-        // Update the parameters if the last progression is for the current curriculum
-        if (lastProgression.isForCurriculum(this.curriculum))
-            await lastProgression.assignParametersAndAdjustments(parameters, adjustments);
+        // Put back the last progression as is if the last progression is for the current curriculum
+        if (lastProgression.isForCurriculum(this.curriculum)) { /* Do nothing */ }
 
         // Add a new progression if the last one is associated to another curriculum and was started
         else if (lastProgression.wasStarted())
@@ -157,9 +156,8 @@ schema.methods.initializeProgression = async function (curriculum, parameters, a
             await lastProgression.remove();
             lastProgression = await this.getLastProgression();
 
-            // If the new last progression is for the current curriculum, we update it's parameters
-            if (lastProgression && lastProgression.isForCurriculum(this.curriculum))
-                await lastProgression.assignParametersAndAdjustments(parameters, adjustments);
+            // Put back the last progression as is if the new last progression is for the current curriculum
+            if (lastProgression && lastProgression.isForCurriculum(this.curriculum)) { /* Do nothing */ }
 
             // If the mew last progression is for another curriculum, we add a new progression 
             else await this.addNewProgression(curriculum, parameters, adjustments);
