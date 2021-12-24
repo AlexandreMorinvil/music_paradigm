@@ -84,6 +84,27 @@ const schema = new Schema(
                         min: 0
                     },
 
+                    // Adjustments
+                    adjustmentDelayInDays: {
+                        type: Number,
+                        default: 0,
+                    },
+
+                    adjustmentConsiderCompleted: {
+                        type: Boolean,
+                        default: false,
+                    },
+
+                    adjustmentAdditionalCompletionsRequired: {
+                        type: Number,
+                        default: 0,
+                    },
+
+                    adjustmentPreponeAvailability: {
+                        type: Boolean,
+                        default: false,
+                    },
+
                     // Title of the experiment within the curriculum
                     experimentReference: {
                         type: Schema.Types.ObjectId,
