@@ -10,7 +10,7 @@ module.exports = {
 };
 
 async function updateProgression(userId) {
-    const { curriculum, progression } = await User.getCurriculumAndProgressionData(userId);
+    const { curriculum, progression } = await User.getCurriculumAndProgressionObject(userId);
 
     // Do not generate a progression if no curriculum is associated to the user
     if (!curriculum) return;
@@ -25,7 +25,7 @@ async function updateProgression(userId) {
 }
 
 async function generateProgressionSummary(userId) {
-    let { curriculum, progression } = await User.getCurriculumAndProgressionData(userId);
+    let { curriculum, progression } = await User.getCurriculumAndProgressionObject(userId);
 
     // Verify parameters
     if (!curriculum) return { history: [], dueExperiment: null };
@@ -40,7 +40,7 @@ async function generateProgressionSummary(userId) {
 
     const timeElapsedInDays = (progression.isSequential) ?
         timeHandler.calculateDaysElapsed(progression.lastProgressionDate) :
-        adjustStartTime(timeHandler.calculateDaysElapsed(progression.startTime), progression.startTimeAdjustmentInDays);
+        adjustStartTime(timeHandler.calculateDaysElapsed(progression.startTime), progression.adjustmentStartTimeInDays);
 
 
     let hasBlockingIncompleteInSequence = false;

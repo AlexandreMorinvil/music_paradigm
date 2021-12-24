@@ -32,7 +32,7 @@ const schema = new Schema(
             default: null
         },
 
-        startTimeAdjustmentInDays: {
+        adjustmentStartTimeInDays: {
             type: Number,
             default: 0
         },

@@ -41,8 +41,8 @@ export default {
 		return state.selectedUserProgression ? state.selectedUserProgression.assignedParameters : {};
 	},
 
-	userSelectedStartTimeAdjustmentInDays: (state) => {
-		return state.selectedUserProgression ? state.selectedUserProgression.startTimeAdjustmentInDays : 0;
+	userSelectedAdjustmentStartTimeInDays: (state) => {
+		return state.selectedUserProgression ? state.selectedUserProgression.adjustmentStartTimeInDays : 0;
 	},
 
 	userSelectedStartTime: (state) => {

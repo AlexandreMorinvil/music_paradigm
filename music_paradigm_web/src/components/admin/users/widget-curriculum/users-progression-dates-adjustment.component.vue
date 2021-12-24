@@ -43,10 +43,10 @@ export default {
 			'userSelectedStartTimePassed',
 			'userSelectedLastProgressionDate',
 			'userSelectedLastProgressionTimePassed',
-			'userSelectedStartTimeAdjustmentInDays',
+			'userSelectedAdjustmentStartTimeInDays',
 		]),
 		wasAdjustmentModified() {
-			return Number(this.timeSinceStartAdjustment) !== Number(this.userSelectedStartTimeAdjustmentInDays);
+			return Number(this.timeSinceStartAdjustment) !== Number(this.userSelectedAdjustmentStartTimeInDays);
 		},
 		startTime() {
 			if (!this.userSelectedStartTime) return 'Never';
@@ -106,7 +106,7 @@ export default {
 		},
 	},
 	watch: {
-		userSelectedStartTimeAdjustmentInDays: {
+		userSelectedAdjustmentStartTimeInDays: {
 			immediate: true,
 			handler: function(value) {
 				this.timeSinceStartAdjustment = value;

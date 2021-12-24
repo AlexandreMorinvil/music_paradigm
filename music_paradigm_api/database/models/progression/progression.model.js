@@ -1,16 +1,39 @@
 const mongoose = require('mongoose');
 schema = require('./progression.middleware');
 
+const progressionSetters = require('progressions/progression.setters.js');
+const progressionGetters = require('progressions/progression.getters.js');
+
 schema.set('toJSON', { virtuals: true });
 
-// Instance methods
+
+// Static methods
+schema.statics.create = async function (userId, curriculumId, parameters = null, adjustments = null) {
+    const newProgression = new this({ userReference: userId, curriculumReference: curriculumId });
+    progressionSetters.setParameters(newProgression, parameters);
+    progressionSetters.setAdjustements(newProgression, adjustments);
+    return newProgression.save();
+};
+
+// Instance 
+schema.methods.assignParametersAndAdjustments = async function (parameters = null, adjustments = null) {
+    if (adjustments) progressionSetters.setAdjustements(this, adjustments);
+    if (parameters) progressionSetters.setParameters(this, parameters);
+    return this.save();
+};
+
+schema.methods.assignAdjustments = async function (adjustments) {
+    if (adjustments) progressionSetters.setAdjustements(this, adjustments);
+    return this.save();
+};
+
+schema.methods.assignParameters = async function (parameters) {
+    if (parameters) progressionSetters.setParameters(this, parameters);
+    return this.save();
+};
+
 schema.methods.getExperimentAssociated = function (associativeId, associativeIdOrdinalNumber) {
-    const nestedExperimentArray = this.experiments.filter(experiment => {
-        return (experiment.associativeId === associativeId) &&
-            (experiment.associativeIdOrdinalNumber === associativeIdOrdinalNumber);
-    });
-    const experimentInProgression = nestedExperimentArray[0];
-    return experimentInProgression;
+    return progressionGetters.getExperimentAssociated(this, associativeId, associativeIdOrdinalNumber);
 };
 
 schema.methods.getSessionInformation = async function (associativeId, associativeIdOrdinalNumber) {
@@ -116,7 +139,7 @@ schema.methods.concludeExperiment = async function (associativeId, associativeId
 
 schema.methods.saveSessionState = async function (associativeId, cursor, state, timeIndicated) {
     const ExperimentMarker = require('./experiment-marker/experiment-marker.model');
-    
+
     // Update or create the marker
     const experimentMarker = await ExperimentMarker.findMarker(this._id, associativeId);
     if (experimentMarker) experimentMarker.updateMaker(cursor, state, timeIndicated);
@@ -130,7 +153,7 @@ schema.methods.forgetSessionState = async function (associativeId) {
 };
 
 schema.methods.isForCurriculum = function (curriculumId) {
-    return this.curriculumReference === curriculumId;
+    return String(this.curriculumReference) === String(curriculumId);
 }
 
 schema.methods.wasStarted = function () {
