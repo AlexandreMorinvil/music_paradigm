@@ -8,6 +8,7 @@ export default {
 		isDeleting: false,
 		isAssigningCurriculum: false,
 		isUpdatingParameters: false,
+		isUpdatingAdjustments: false,
 		isResetingProgression: false,
 	},
 

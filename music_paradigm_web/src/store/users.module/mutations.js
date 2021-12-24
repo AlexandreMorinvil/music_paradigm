@@ -50,6 +50,14 @@ export default {
 		state.status.isUpdatingParameters = false;
 	},
 
+	indicateUpdateAdjustmentsRequest(state) {
+		state.status.isUpdatingAdjustments = true;
+	},
+
+	indicateUpdateAdjustmentsRequestEnd(state) {
+		state.status.isUpdatingAdjustments = false;
+	},
+
 	indicateResetProgressionRequest(state) {
 		state.status.isResetingProgression = true;
 	},

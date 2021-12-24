@@ -139,6 +139,26 @@ export default {
 			});
 	},
 
+	updateAdjustments({ commit, dispatch }, { userId, assignedAdjustments }) {
+		commit('indicateUpdateAdjustmentsRequest');
+		return userService
+			.assignAdjustments(userId, assignedAdjustments)
+			.then(
+				(updatedUser) => {
+					commit('setSelectedUserProgression', updatedUser.progression);
+					commit('setSelectedUserProgressionSummary', updatedUser.progressionSummary);
+					dispatch('alert/setSuccessAlert', 'Adjustments update sucessful', { root: true });
+					dispatch('fetchAllUsersSummary');
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateUpdateAdjustmentsRequestEnd');
+			});
+	},
+
 	resetProgression({ commit, dispatch }, { userId }) {
 		commit('indicateResetProgressionRequest');
 		return userService

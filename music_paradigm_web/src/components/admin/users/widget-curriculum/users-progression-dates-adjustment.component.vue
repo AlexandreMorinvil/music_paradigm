@@ -64,6 +64,9 @@ export default {
 		},
 	},
 	methods: {
+		bundleAdjustments() {
+			return { adjustmentStartTimeInDays: this.timeSinceStartAdjustment };
+		},
 		getParsedDuration(durationInMilliseconds) {
 			let durationLeft = durationInMilliseconds;
 			const weeks = Math.floor(durationLeft / (1000 * 60 * 60 * 24 * 7));

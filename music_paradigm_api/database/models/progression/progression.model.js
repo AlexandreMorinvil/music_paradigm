@@ -160,11 +160,6 @@ schema.methods.wasStarted = function () {
     return Boolean(this.experiments.length > 0);
 };
 
-schema.methods.getAssignedParameters = function () {
-    return this.assignedParameters;
-};
-
-
 // Creating the model
 const model = mongoose.model('Progression', schema);
 

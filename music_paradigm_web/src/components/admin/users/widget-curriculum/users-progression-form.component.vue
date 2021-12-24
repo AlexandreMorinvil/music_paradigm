@@ -29,6 +29,11 @@ export default {
 		},
 	},
 	methods: {
+		bundleProgressionAdjustments() {
+			return {
+				...this.$refs.progressionDates.bundleAdjustments(),
+			};
+		},
 		updateWasModifiedStatus() {
 			const wasStartTimeAdjustmentModified = this.$refs.progressionDates.wasAdjustmentModified;
 			const wasProgressionHistoryAdjustmentModified = this.$refs.progressionHistory.wasAdjustmentModified;

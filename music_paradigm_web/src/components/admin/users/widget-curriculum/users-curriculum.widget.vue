@@ -6,11 +6,15 @@
 
 		<div class="submission-buttons-position">
 			<button v-on:click="handleRevert" class="widget-button blue" :class="{ inactive: !isRevertButtonActive }">Revert</button>
-			<button v-on:click="submitCurriculumToAssign" class="widget-button green" :class="{ inactive: !isAssignButtonActive }">
+			<button v-on:click="submitCurriculumToAssign" class="widget-button green" :class="{ inactive: !isCurriculumAssignmentButtonActive }">
 				Assign Curriculum
 			</button>
-			<button v-on:click="submitParametersToUpdate" class="widget-button blue" :class="{ inactive: !isUpdateButtonActive }">Update Parameters</button>
-			<button v-on:click="submitProgressionToReset" class="widget-button red" :class="{ inactive: !isResetButtonActive }">Reset Progression</button>
+			<button v-on:click="submitParametersToUpdate" class="widget-button blue" :class="{ inactive: !isParametersUpdateButtonActive }">
+				Update Parameters
+			</button>
+			<button v-on:click="submitAdjustmentsToUpdate" class="widget-button blue" :class="{ inactive: !isAdjustmentsUpdateButtonActive }">
+				Update Adjustments
+			</button>
 		</div>
 	</div>
 </template>
@@ -33,19 +37,17 @@ export default {
 	data() {
 		return {
 			isRevertButtonActive: false,
-			isAssignButtonActive: false,
-			isUpdateButtonActive: false,
+			isCurriculumAssignmentButtonActive: false,
+			isParametersUpdateButtonActive: false,
+			isAdjustmentsUpdateButtonActive: false,
 		};
 	},
 	computed: {
 		...mapGetters('users', ['hasSelectedUser', 'userSelectedId', 'hasCurriculumToSelectedUser']),
-		isResetButtonActive() {
-			return false; // this.hasSelectedUser && this.hasCurriculumToSelectedUser;
-		},
 	},
 	methods: {
 		...mapActions('curriculums', ['fetchAllCurriculumHeaders']),
-		...mapActions('users', ['assignCurriculum', 'updateParameters', 'resetProgression']),
+		...mapActions('users', ['assignCurriculum', 'updateParameters', 'updateAdjustments']),
 		bundleUserCurriculumInformation() {
 			return {
 				...this.$refs.userCurriculumForm.bundleCurriculumForm(),
@@ -58,42 +60,40 @@ export default {
 			this.$refs.userParametersForm.assignSelectedToForm();
 		},
 		submitCurriculumToAssign() {
-			if (!this.isAssignButtonActive) return;
+			if (!this.isCurriculumAssignmentButtonActive) return;
 			const curriculumParameters = this.bundleUserCurriculumInformation();
 			this.assignCurriculum({ userId: this.userSelectedId, curriculumParameters: curriculumParameters });
 		},
 		submitParametersToUpdate() {
-			if (!this.isUpdateButtonActive) return;
+			if (!this.isParametersUpdateButtonActive) return;
 			const parameters = this.$refs.userParametersForm.bundleParametersForm();
 			this.updateParameters({ userId: this.userSelectedId, assignedParameters: parameters });
 		},
-		submitProgressionToReset() {
-			const answer = window.confirm('Are your sure you want to reset the progression of the selected user(s)?');
-			if (answer) this.resetProgression(this.userSelectedId);
+		submitAdjustmentsToUpdate() {
+			if (!this.isAdjustmentsUpdateButtonActive) return;
+			const adjustments = this.$refs.userProgressionForm.bundleProgressionAdjustments();
+			this.updateAdjustments({ userId: this.userSelectedId, assignedAdjustments: adjustments });
 		},
-		// submitProgressionToReset() {
-		// 	const answer = window.confirm('Are your sure you want to reset the progression of this user?');
-		// 	// if (answer) this.deleteUser(this.userSelectedId);
-		// },
-		// handleUnselection() {
-		// 	this.unsetSelectedUser();
-		// },
 		evaluateAllButtonsActive() {
 			const wasCurriculumModified = this.$refs.userCurriculumForm.wasCurriculumModified;
 			const wasParametersModified = this.$refs.userParametersForm.wasParametersModified;
 			const wasProgressionModified = this.$refs.userProgressionForm.wasProgressionModified;
 			this.evaluateIsRevertButtonActive(wasCurriculumModified, wasParametersModified, wasProgressionModified);
-			this.evaluateIsAssignButtonActive(wasCurriculumModified);
-			this.evaluateIsUpdateParametersButtonActive(wasCurriculumModified, wasParametersModified, wasProgressionModified);
+			this.evaluateIsAssignCurriculumButtonActive(wasCurriculumModified);
+			this.evaluateIsParametersUpdateButtonActive(wasCurriculumModified, wasParametersModified);
+			this.evaluateIsAdjustmentsUpdateButtonActive(wasCurriculumModified, wasProgressionModified);
 		},
 		evaluateIsRevertButtonActive(wasCurriculumModified, wasParametersModified, wasProgressionModified) {
 			this.isRevertButtonActive = this.hasSelectedUser && (wasCurriculumModified || wasParametersModified || wasProgressionModified);
 		},
-		evaluateIsAssignButtonActive(wasCurriculumModified) {
-			this.isAssignButtonActive = this.hasSelectedUser && wasCurriculumModified;
+		evaluateIsAssignCurriculumButtonActive(wasCurriculumModified) {
+			this.isCurriculumAssignmentButtonActive = this.hasSelectedUser && wasCurriculumModified;
 		},
-		evaluateIsUpdateParametersButtonActive(wasCurriculumModified, wasParametersModified, wasProgressionModified) {
-			this.isUpdateButtonActive = this.hasSelectedUser && (wasParametersModified || wasProgressionModified) && !wasCurriculumModified;
+		evaluateIsParametersUpdateButtonActive(wasCurriculumModified, wasParametersModified) {
+			this.isParametersUpdateButtonActive = this.hasSelectedUser && wasParametersModified && !wasCurriculumModified;
+		},
+		evaluateIsAdjustmentsUpdateButtonActive(wasCurriculumModified, wasProgressionModified) {
+			this.isAdjustmentsUpdateButtonActive = this.hasSelectedUser && wasProgressionModified && !wasCurriculumModified;
 		},
 	},
 	beforeMount() {

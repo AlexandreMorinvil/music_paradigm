@@ -9,6 +9,7 @@ export const userService = {
 	delete: _delete,
 	assignCurriculum,
 	assignParameters,
+	assignAdjustments,
 	resetProgression,
 };
 
@@ -70,6 +71,15 @@ function assignParameters(userId, parameters) {
 		body: JSON.stringify(parameters),
 	};
 	return fetch(url.users('assign-parameters/' + userId), requestOptions).then(handleResponse);
+}
+
+function assignAdjustments(userId, adjustments) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(adjustments),
+	};
+	return fetch(url.users('assign-adjustments/' + userId), requestOptions).then(handleResponse);
 }
 
 function resetProgression(userId) {
