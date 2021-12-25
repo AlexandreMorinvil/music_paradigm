@@ -119,7 +119,7 @@ async function generateProgression(userId) {
 }
 
 function adjustStartTime(daysElapsed, adjustmentInDays = 0) {
-    return Math.max(0, daysElapsed + adjustmentInDays);
+    return daysElapsed + adjustmentInDays;
 }
 
 function adjustDelayInDays(delayInDays, adjustment = 0) {

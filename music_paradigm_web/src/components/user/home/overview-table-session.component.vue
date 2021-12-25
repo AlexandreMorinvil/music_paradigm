@@ -52,7 +52,7 @@ export default {
 			const isDelayedByPreviousUniqueInDay = this.session.isDelayedByPreviousUniqueInDay;
 			if (delayInDays > 0) {
 				if (delayInDays === 1) return this.$t('user.progression-board.tomorrow');
-				else return this.$tc('progression-board.in-x-days', delayInDays, { number: delayInDays });
+				else return this.$tc('user.progression-board.in-x-days', delayInDays, { number: delayInDays });
 			} else if (delayInHours !== '00:00') return this.$tc('user.progression-board.in-x-hours', { time: delayInHours });
 			else if (isDelayedByPreviousUniqueInDay) return this.$t('user.progression-board.tomorrow');
 			else return this.$t('user.progression-board.undetermined'); // This shsould never happen

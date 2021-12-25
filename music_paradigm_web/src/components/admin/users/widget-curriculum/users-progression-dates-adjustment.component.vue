@@ -13,7 +13,7 @@
 					autocomplete="new-start-time-adjustment"
 					class="start-time-adjustment-input"
 				/>
-				day(s) adjustment)
+				day(s) adjustment {{ adjustedStartDate }})
 			</td>
 		</tr>
 		<tr>
@@ -62,27 +62,34 @@ export default {
 		lastProgressionTimePassed() {
 			return this.makeDateTimeLapsedDisplay(this.userSelectedLastProgressionDate, this.userSelectedLastProgressionTimePassed);
 		},
+		adjustedStartDate() {
+			if (Number(this.timeSinceStartAdjustment) === 0 || !this.userSelectedStartTime) return '';
+			const daysOffsetInMilliseconds = this.timeSinceStartAdjustment * (1000 * 60 * 60 * 24);
+			const adjustedTimePassed = this.userSelectedStartTimePassed + daysOffsetInMilliseconds;
+			return ' = ' + this.makeDateTimeLapsedDisplay(true, adjustedTimePassed);
+		},
 	},
 	methods: {
 		bundleAdjustments() {
 			return { adjustmentStartTimeInDays: this.timeSinceStartAdjustment };
 		},
 		getParsedDuration(durationInMilliseconds) {
+			const isPositive = durationInMilliseconds >= 0;
 			let durationLeft = durationInMilliseconds;
-			const weeks = Math.floor(durationLeft / (1000 * 60 * 60 * 24 * 7));
+			const weeks = Math.floor(Math.abs(durationLeft / (1000 * 60 * 60 * 24 * 7)));
 			durationLeft %= 1000 * 60 * 60 * 24 * 7;
-			const days = Math.floor(durationLeft / (1000 * 60 * 60 * 24));
+			const days = Math.floor(Math.abs(durationLeft / (1000 * 60 * 60 * 24)));
 			durationLeft %= 1000 * 60 * 60 * 24;
-			const hours = Math.floor(durationLeft / (1000 * 60 * 60));
+			const hours = Math.floor(Math.abs(durationLeft / (1000 * 60 * 60)));
 			durationLeft %= 1000 * 60 * 60;
-			const minutes = Math.floor(durationLeft / (1000 * 60));
+			const minutes = Math.floor(Math.abs(durationLeft / (1000 * 60)));
 			durationLeft %= 1000 * 60;
-			const seconds = Math.floor(durationLeft / 1000);
-			return { weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds };
+			const seconds = Math.floor(Math.abs(durationLeft / 1000));
+			return { isPositive: isPositive,  weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds };
 		},
 		makeDateTimeLapsedDisplay(referenceDate, durationInMilliseconds) {
 			if (!referenceDate) return '---';
-			const { weeks, days, hours, minutes, seconds } = this.getParsedDuration(durationInMilliseconds);
+			const { isPositive, weeks, days, hours, minutes, seconds } = this.getParsedDuration(durationInMilliseconds);
 			let timeLapsed = '';
 			let includesLongerDuration = false;
 			if (weeks > 0) {
@@ -104,18 +111,19 @@ export default {
 			if (!includesLongerDuration) {
 				timeLapsed = String(seconds) + ' sec. ';
 			}
-			timeLapsed += 'ago';
+			if (isPositive) timeLapsed += 'ago';
+			else timeLapsed = 'in ' + timeLapsed;
 			return timeLapsed;
 		},
 	},
 	watch: {
 		userSelectedAdjustmentStartTimeInDays: {
 			immediate: true,
-			handler: function(value) {
+			handler: function (value) {
 				this.timeSinceStartAdjustment = value;
-			}
-		}
-	}
+			},
+		},
+	},
 };
 </script>
 
