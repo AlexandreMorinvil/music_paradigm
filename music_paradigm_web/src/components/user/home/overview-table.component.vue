@@ -2,15 +2,20 @@
 	<div class="englobing-box">
 		<div class="table-context">
 			<div class="table-inside-context content-flex">
-				<overview-table-session
-					v-for="(session, index) in progressionHistory"
-					:key="index"
-					:session="session"
-					:index="Number(index)"
-					v-on:start-session="startSession"
-					v-on:click.native="selectSession(session)"
-					class="session-button"
-				/>
+				<div v-for="(session, index) in progressionHistory" :key="index">
+					<overview-table-session-component
+						:session="session"
+						:index="Number(index)"
+						v-on:start-session="startSession"
+						v-on:click.native="selectSession(session)"
+					/>
+					<overview-table-session-admin-details-component
+						v-if="!isRealUser"
+						:session="session"
+						:index="Number(index)"
+						v-on:click.native="selectSession(session)"
+					/>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -19,7 +24,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import OverviewTableSession from '@/components/user/home/overview-table-session.component.vue';
+import OverviewTableSessionAdminDetailsComponent from '@/components/admin/users/widget-curriculum/overview-table-session-admin-details.component.vue';
+import OverviewTableSessionComponent from '@/components/user/home/overview-table-session.component.vue';
 
 export default {
 	props: {
@@ -30,7 +36,8 @@ export default {
 		},
 	},
 	components: {
-		OverviewTableSession,
+		OverviewTableSessionComponent,
+		OverviewTableSessionAdminDetailsComponent,
 	},
 	computed: {
 		...mapGetters('account', ['progressionSummary']),
@@ -52,7 +59,7 @@ export default {
 		},
 		selectSession(session) {
 			this.$emit('sessionSelected', session);
-		}
+		},
 	},
 };
 </script>

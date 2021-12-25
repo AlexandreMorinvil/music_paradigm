@@ -97,10 +97,21 @@ const schema = new Schema(
 
                     adjustmentAdditionalCompletionsRequired: {
                         type: Number,
+                        min: 0,
                         default: 0,
                     },
 
                     adjustmentPreponeAvailability: {
+                        type: Boolean,
+                        default: false,
+                    },
+
+                    adjustmentOverlookUniqueInDays: {
+                        type: Boolean,
+                        default: false,
+                    },
+
+                    adjustmentImposeReadyToBeDone: {
                         type: Boolean,
                         default: false,
                     },
