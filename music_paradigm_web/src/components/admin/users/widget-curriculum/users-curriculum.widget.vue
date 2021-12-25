@@ -58,6 +58,7 @@ export default {
 			if (!this.isRevertButtonActive) return;
 			this.$refs.userCurriculumForm.assignSelectedToForm();
 			this.$refs.userParametersForm.assignSelectedToForm();
+			this.$refs.userProgressionForm.revert();
 		},
 		submitCurriculumToAssign() {
 			if (!this.isCurriculumAssignmentButtonActive) return;

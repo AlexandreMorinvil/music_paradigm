@@ -73,6 +73,9 @@ export default {
 		bundleAdjustments() {
 			return { adjustmentStartTimeInDays: this.timeSinceStartAdjustment };
 		},
+		revert() {
+			this.timeSinceStartAdjustment = this.userSelectedAdjustmentStartTimeInDays;
+		},
 		getParsedDuration(durationInMilliseconds) {
 			const isPositive = durationInMilliseconds >= 0;
 			let durationLeft = durationInMilliseconds;

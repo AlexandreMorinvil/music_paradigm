@@ -103,6 +103,10 @@ export default {
 </script>
 
 <style scoped>
+td {
+	padding: 0 5px;
+}
+
 .details-container {
 	width: 180px;
 	height: auto;

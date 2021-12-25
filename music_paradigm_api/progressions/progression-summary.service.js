@@ -71,11 +71,15 @@ async function generateProgressionSummary(userId) {
         elements.adjustmentConsiderCompleted = progressionExperiment.adjustmentConsiderCompleted || false;
         elements.adjustmentAdditionalCompletionsRequired = progressionExperiment.adjustmentAdditionalCompletionsRequired || 0;
         elements.adjustmentPreponeAvailability = progressionExperiment.adjustmentPreponeAvailability || false;
+        elements.adjustmentOverlookUniqueInDays = progressionExperiment.adjustmentOverlookUniqueInDays || false;
+        elements.adjustmentImposeReadyToBeDone = progressionExperiment.adjustmentImposeReadyToBeDone || false;
 
         // Consider adjustments
         const adjustedDelayInDays = adjustDelayInDays(curriculumExperiment.delayInDays, elements.adjustmentDelayInDays);
         const adjustedCompletionCount = adjustCompletionCount(elements.completionCount, elements.adjustmentAdditionalCompletionsRequired, elements.adjustmentConsiderCompleted);
-        const mustPreponeAvailability = adjustMustPreponeAvailability(elements.adjustmentPreponeAvailability);
+        const mustPreponeAvailability = adjustMustPreponeAvailability(elements.adjustmentPreponeAvailability, elements.adjustmentImposeReadyToBeDone);
+        const mustIgnoreBlockingUniqueInDay = adjustMustIgnoreBlockingUniqueInDay(elements.adjustmentOverlookUniqueInDays);
+        const mustIgnoreBlockingSequence = adjustMustIgnoreBlockingSequence(elements.adjustmentImposeReadyToBeDone);
 
         // Computer the status of the experiment in the progression
         elements.delayPreAvailabilityInDays = getDelayInDaysLeft(adjustedDelayInDays, timeElapsedInDays);
@@ -85,8 +89,8 @@ async function generateProgressionSummary(userId) {
 
         // Attributes that are relative to the previous experiments of the chain
         elements.isDelayedByPreviousSequential = hasBlockingIncompleteInSequence;
-        elements.isDelayedByPreviousUniqueInDay = hasBlockingUniqueInDayDoneToday;
-        elements.isAvailable = getIsAvailableStatus(elements.wouldBeFree, hasBlockingIncompleteInSequence, hasBlockingUniqueInDayDoneToday);
+        elements.isDelayedByPreviousUniqueInDay = !mustIgnoreBlockingUniqueInDay || hasBlockingUniqueInDayDoneToday;
+        elements.isAvailable = getIsAvailableStatus(elements.wouldBeFree, hasBlockingIncompleteInSequence, hasBlockingUniqueInDayDoneToday, mustIgnoreBlockingSequence);
         progressionSummary.push(elements);
 
         // Update the experiment due today
@@ -130,8 +134,16 @@ function adjustCompletionCount(completionCount, adjustmentAdditionalCompletionsR
     return adjustmentConsiderCompleted ? 1 : Math.max(0, completionCount - adjustmentAdditionalCompletionsRequired);
 }
 
-function adjustMustPreponeAvailability(adjustmentPreponeAvailability = false) {
-    return adjustmentPreponeAvailability ? Boolean(adjustmentPreponeAvailability) : false;
+function adjustMustPreponeAvailability(adjustmentPreponeAvailability = false, adjustmentImposeReadyToBeDone = false) {
+    return Boolean(adjustmentPreponeAvailability) || Boolean(adjustmentImposeReadyToBeDone);
+}
+
+function adjustMustIgnoreBlockingUniqueInDay(adjustmentOverlookUniqueInDays = false) {
+    return Boolean(adjustmentOverlookUniqueInDays);
+}
+
+function adjustMustIgnoreBlockingSequence(adjustmentImposeReadyToBeDone = false) {
+    return Boolean(adjustmentImposeReadyToBeDone);
 }
 
 function getDelayInDaysLeft(delayInDaysBeforeAvailability, timeElapsedInDays) {
@@ -156,8 +168,9 @@ function getWouldBeFreeStatus(delayInDays, delayInHours, isLockedByCompletionLim
     else return true
 }
 
-function getIsAvailableStatus(wouldBeFree, hasBlockingIncompleteInSequence, hasBlockingUniqueInDayDoneToday) {
-    return wouldBeFree && !hasBlockingIncompleteInSequence && !hasBlockingUniqueInDayDoneToday;
+function getIsAvailableStatus(wouldBeFree, hasBlockingIncompleteInSequence, hasBlockingUniqueInDayDoneToday, mustIgnoreBlockingSequence = false) {
+    if (mustIgnoreBlockingSequence && wouldBeFree) return true;
+    else return !hasBlockingIncompleteInSequence && !hasBlockingUniqueInDayDoneToday && wouldBeFree;
 }
 
 function updateDueExperiment(currentDueExperiment, candidateIsAvailable, candidateCompletionCount, candidateAssociativeId, candidateAssociativeIdOrdinalNumber) {
