@@ -18,7 +18,13 @@
 		</div>
 		<div>
 			<div>
-				<input class="number" v-model="currentAdjustments.adjustmentAdditionalCompletionsRequired" name="adjustmentAdditionalCompletionsRequired" min=0 type="number" />
+				<input
+					class="number"
+					v-model="currentAdjustments.adjustmentAdditionalCompletionsRequired"
+					name="adjustmentAdditionalCompletionsRequired"
+					min="0"
+					type="number"
+				/>
 				<label for="adjustmentAdditionalCompletionsRequired"> Additional completions needed </label>
 			</div>
 
@@ -44,6 +50,8 @@ import '@/styles/form-template.css';
 export default {
 	data() {
 		return {
+			associativeId: null,
+			associativeIdOrdinalNumber: null,
 			initialAdjustments: {},
 			currentAdjustments: {
 				adjustmentDelayInDays: null,
@@ -57,7 +65,11 @@ export default {
 	},
 	computed: {
 		wasAdjustmentModified() {
-			for (const adjustment in this.currentAdjustments) if (this.initialAdjustments[adjustment] != this.currentAdjustments[adjustment]) return true;
+			for (const adjustment in this.currentAdjustments) {
+				if (this.initialAdjustments[adjustment] != this.currentAdjustments[adjustment]) {
+					return true;
+				}
+			}
 			return false;
 		},
 		adjustmentDelayInDays() {
@@ -85,8 +97,21 @@ export default {
 				this.currentAdjustments[adjustment] = this.initialAdjustments[adjustment];
 			}
 		},
+		bundleAdjustments() {
+			return {
+				sessionAdjustments: [
+					{
+						associativeId: this.associativeId,
+						associativeIdOrdinalNumber: this.associativeIdOrdinalNumber,
+						...this.currentAdjustments,
+					},
+				],
+			};
+		},
 		unsetAdjustments() {
 			this.hasSelectedSession = false;
+			this.associativeId = null;
+			this.associativeIdOrdinalNumber = null;
 			for (const adjustment in this.currentAdjustments) {
 				this.currentAdjustments[adjustment] = null;
 				this.initialAdjustments[adjustment] = null;
@@ -94,6 +119,8 @@ export default {
 		},
 		takeCurrentAdjustments(session) {
 			if (!session.associativeId) return;
+			this.associativeId = session.associativeId;
+			this.associativeIdOrdinalNumber = session.associativeIdOrdinalNumber;
 			for (const adjustment in this.currentAdjustments) {
 				this.initialAdjustments[adjustment] = session[adjustment];
 				this.currentAdjustments[adjustment] = session[adjustment];

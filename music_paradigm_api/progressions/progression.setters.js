@@ -25,7 +25,7 @@ function setParameters(progression, parameters = {}) {
  *                      
 */
 function setAdjustements(progression, allAdjustments = {}) {
-    if(!allAdjustments) return progression;
+    if (!allAdjustments) return progression;
     progression = setGlobalAdjustements(progression, allAdjustments);
     progression = setSessionAdjustements(progression, allAdjustments.sessionAdjustments);
     return progression;
@@ -39,7 +39,7 @@ function setAdjustements(progression, allAdjustments = {}) {
  *                      
 */
 function setGlobalAdjustements(progression, globalAjustments = {}) {
-    if(!globalAjustments) return progression;
+    if (!globalAjustments) return progression;
     if (globalAjustments.hasOwnProperty('adjustmentStartTimeInDays')) progression.adjustmentStartTimeInDays = globalAjustments.adjustmentStartTimeInDays;
     return progression;
 }
@@ -53,23 +53,50 @@ function setGlobalAdjustements(progression, globalAjustments = {}) {
  *                      
 */
 function setSessionAdjustements(progression, sessionsAjustments = []) {
-    if(!sessionsAjustments) return progression;
+    if (!sessionsAjustments) return progression;
     sessionsAjustments.forEach(adjustments => {
 
-        // Retreive the experiments that have the associated with the session adjustments
-        experiment = progression.find(experiment => {
-            return experiment.associativeId === adjustments.associativeId
-                && experiment.associativeIdOrdinalNumber === adjustments.associativeIdOrdinalNumber
+        // Ensure that there exists an experiemnt entry for the association IDs in question 
+        const { associativeId, associativeIdOrdinalNumber } = adjustments;
+        progression = ensureProgressionHasExperimentEntry(progression, associativeId, associativeIdOrdinalNumber)
+
+        // Retreive the experiment associated with the session adjustments
+        experiment = progression.experiments.find(value => {
+            return value.associativeId === associativeId
+                && value.associativeIdOrdinalNumber === associativeIdOrdinalNumber
         })
-        
+
         // Apply the adjustments to the experiment
-        if (!experiment) return;
         if (adjustments.hasOwnProperty('adjustmentDelayInDays')) experiment.adjustmentDelayInDays = adjustments.adjustmentDelayInDays;
         if (adjustments.hasOwnProperty('adjustmentConsiderCompleted')) experiment.adjustmentConsiderCompleted = adjustments.adjustmentConsiderCompleted;
         if (adjustments.hasOwnProperty('adjustmentConsiderCompleted')) experiment.adjustmentAdditionalCompletionsRequired = adjustments.adjustmentAdditionalCompletionsRequired;
         if (adjustments.hasOwnProperty('adjustmentPreponeAvailability')) experiment.adjustmentPreponeAvailability = adjustments.adjustmentPreponeAvailability;
-
+        if (adjustments.hasOwnProperty('adjustmentOverlookUniqueInDays')) experiment.adjustmentOverlookUniqueInDays = adjustments.adjustmentOverlookUniqueInDays;
+        if (adjustments.hasOwnProperty('adjustmentImposeReadyToBeDone')) experiment.adjustmentImposeReadyToBeDone = adjustments.adjustmentImposeReadyToBeDone;
     });
+
+    return progression;
+}
+
+/**
+ * Add the experiment to the experiments list of the progression if it was not present yet
+ * @param  {Object}         progression                         Progression
+ * @param  {Array<Object>}  progression.experiments             List of the experiments in the progression
+ * @param  {String}         associativeId                       List of the experiments in the progression
+ * @param  {Number}         associativeIdOrdinalNumber          Array containging the adjustments to apply to some specific experiments
+ * @return {Object}                                             The progression with the exoeriment entry guarranteed to be present 
+ *                      
+*/
+function ensureProgressionHasExperimentEntry(progression, associativeId, associativeIdOrdinalNumber) {
+    const experiemntFound = progression.experiments.find((experiemnt) => {
+        return experiemnt.associativeId == associativeId
+            && experiemnt.associativeIdOrdinalNumber == associativeIdOrdinalNumber
+    })
+
+    if (!experiemntFound) progression.experiments.push({
+        associativeId: associativeId,
+        associativeIdOrdinalNumber: associativeIdOrdinalNumber
+    })
 
     return progression;
 }

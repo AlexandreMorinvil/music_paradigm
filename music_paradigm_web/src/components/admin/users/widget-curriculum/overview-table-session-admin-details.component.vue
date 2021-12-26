@@ -2,7 +2,7 @@
 	<div
 		v-if="session.associativeId"
 		class="details-container details-container-color details-text"
-		:class="{ 'details-container-color': hasAdjustment }"
+		:class="{ 'adjusted-container-color': hasAdjustment }"
 	>
 		<tbody>
 			<tr>
@@ -13,11 +13,11 @@
 				<td><b>Completions :</b></td>
 				<td>{{ completions }}</td>
 			</tr>
-			<tr v-if="hasAdjustment">
-				<td><b>Adjustments :</b></td>
-				<td>{{ adjustmentsText }}</td>
-			</tr>
 		</tbody>
+		<div v-if="hasAdjustment">
+			<b>Adjustments :</b>
+			<p v-for="(text, index) in adjustmentsTexts" v-bind:key="index"> {{ text }}</p>
+		</div>
 	</div>
 </template>
 
@@ -46,16 +46,16 @@ export default {
 			if (this.session.adjustmentImposeReadyToBeDone) return true;
 			else return false;
 		},
-		adjustmentsText() {
-			let text = '';
-			if (!this.hasAdjustment) return text;
-			if (this.session.adjustmentDelayInDays) text += this.adjustmentDelayInDays + '\n';
-			if (this.session.adjustmentConsiderCompleted) text += this.adjustmentConsiderCompleted + '\n';
-			if (this.session.adjustmentAdditionalCompletionsRequired) text += this.adjustmentAdditionalCompletionsRequired + '\n';
-			if (this.session.adjustmentPreponeAvailability) text += this.adjustmentPreponeAvailability + '\n';
-			if (this.session.adjustmentOverlookUniqueInDays) text += this.adjustmentOverlookUniqueInDays + '\n';
-			if (this.session.adjustmentImposeReadyToBeDone) text += this.adjustmentImposeReadyToBeDone + '\n';
-			return text.slice(0, -1);
+		adjustmentsTexts() {
+			const texts = [];
+			if (!this.hasAdjustment) return texts;
+			if (this.adjustmentDelayInDays) texts.push(this.adjustmentDelayInDays);
+			if (this.adjustmentConsiderCompleted) texts.push(this.adjustmentConsiderCompleted);
+			if (this.adjustmentAdditionalCompletionsRequired) texts.push(this.adjustmentAdditionalCompletionsRequired);
+			if (this.adjustmentPreponeAvailability) texts.push(this.adjustmentPreponeAvailability);
+			if (this.adjustmentOverlookUniqueInDays) texts.push(this.adjustmentOverlookUniqueInDays);
+			if (this.adjustmentImposeReadyToBeDone) texts.push(this.adjustmentImposeReadyToBeDone);
+			return texts;
 		},
 		isImposedReady() {
 			return this.session.adjustmentImposeReadyToBeDone || false;

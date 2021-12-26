@@ -21,7 +21,7 @@ schema.statics.getListAllHeaders = async function () {
 };
 
 // Instance methods
-schema.methods.getExperimentAssociated = async function (associativeId) {
+schema.methods.getExperimentAssociated = function (associativeId) {
     const experimentArrayCurriculum = this.experiments
         .filter(experiment => { return experiment.associativeId === associativeId; });
     const experimentInCurriculum = experimentArrayCurriculum[0];

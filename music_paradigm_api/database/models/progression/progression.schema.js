@@ -73,8 +73,8 @@ const schema = new Schema(
                     // Number of times the experiment was started from the start (an experiment can only be start one time more than it was completed)
                     startCount: {
                         type: Number,
-                        default: 1,
-                        min: 1
+                        default: 0,
+                        min: 0
                     },
 
                     // Number of times the experiment was completed (an experiment can not be completed more times than it was started)
@@ -120,7 +120,6 @@ const schema = new Schema(
                     experimentReference: {
                         type: Schema.Types.ObjectId,
                         ref: 'Experiment',
-                        required: [true, curriculumRequiredMessage],
                     },
                 }
             ],

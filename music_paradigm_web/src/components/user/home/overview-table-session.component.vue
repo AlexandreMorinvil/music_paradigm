@@ -60,6 +60,9 @@ export default {
 		hasCaption() {
 			return Boolean(this.caption);
 		},
+		wasCompleted() {
+			return this.session.completionCount > 0 || this.session.adjustmentConsiderCompleted;
+		}
 	},
 	methods: {
 		startSession() {
@@ -70,19 +73,19 @@ export default {
 				});
 		},
 		detrmineIsCompleted() {
-			return !this.session.isAvailable && this.session.completionCount > 0;
+			return !this.session.isAvailable && this.wasCompleted;
 		},
 		detrmineIsUnavailable() {
 			return !this.session.isAvailable && this.session.isDelayedByPreviousSequential;
 		},
 		detrmineIsAlmostAvailable() {
-			return !this.session.isAvailable && this.session.completionCount <= 0;
+			return !this.session.isAvailable && !this.wasCompleted;
 		},
 		detrmineIsNewAvailable() {
-			return this.session.isAvailable && this.session.completionCount <= 0;
+			return this.session.isAvailable && !this.wasCompleted;
 		},
 		detrmineIsCompletedvailable() {
-			return this.session.isAvailable && this.session.completionCount > 0;
+			return this.session.isAvailable && this.wasCompleted;
 		},
 	},
 	watch: {

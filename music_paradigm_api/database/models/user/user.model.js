@@ -74,6 +74,7 @@ schema.statics.getCurriculumAndProgressionObject = async function (userId) {
  *         progressionLastAdvancedDate: Date,
  *         progressionLastAdvancedTime: Number,
  *         
+ *         wasProgressionTotalNumberAdjusted: Boolean,
  *         reachedExperimentTitle: String,
  *         progressionTotalNumber: Number,
  *         curriculumTotalNumber: Number,

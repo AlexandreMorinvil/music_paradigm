@@ -83,8 +83,10 @@ function generateProgressionToCurriculumAssociation(curriculum, progression) {
  *                      
 */
 function generateProgressionToCurriculumAssociationSummary(curriculum, progression) {
+
     // If the user doesn't have a curriculum assigned or a progression started, we return an unstarted progression summary
     if (!(curriculum && progression)) return {
+        wasProgressionTotalNumberAdjusted: false,
         reachedExperimentTitle: "---",
         progressionTotalNumber: 0,
         curriculumTotalNumber: 0,
@@ -92,9 +94,33 @@ function generateProgressionToCurriculumAssociationSummary(curriculum, progressi
 
     // Otherwise, we produce a progression summary
     const association = generateProgressionToCurriculumAssociation(curriculum, progression);
-    const completedExperiments = association.filter(element => element.progressionExperiment.completionCount > 0);
+
+    // Used to keep track of whether an experiment was completed while previosu ones are not 
+    // (this can only happen if an experiment is forced available thorugh an adjustment)
+    let hasReachedEndOfProgress = false;
+
+    // Indicate whether the count was altered through an ajustment. This could either be that
+    // a session is adjusted to be considered adjusted while it wasn't or this could be that
+    // a session supposed to be available later was completed before it's turn was reached,
+    // which can also only happen through an adjustment.
+    let wasProgressionTotalNumberAdjusted = false;
+
+    const completedExperiments = association.filter(element => {
+        if (element.progressionExperiment.completionCount > 0) {
+            if (hasReachedEndOfProgress) wasProgressionTotalNumberAdjusted = true;
+            return true;
+        } else if (element.progressionExperiment.adjustmentConsiderCompleted) {
+            wasProgressionTotalNumberAdjusted = true;
+            return true;
+        }
+        else {
+            hasReachedEndOfProgress = true;
+            return false;
+        }
+    });
     const reachedExperiment = (completedExperiments.length < association.length) ? association[completedExperiments.length].curriculumExperiment.title : "";
     return {
+        wasProgressionTotalNumberAdjusted: wasProgressionTotalNumberAdjusted,
         reachedExperimentTitle: reachedExperiment,
         progressionTotalNumber: completedExperiments.length,
         curriculumTotalNumber: association.length

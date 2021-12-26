@@ -4,7 +4,7 @@
 		<progression-dates-adjustment-component ref="progressionDates" />
 		<overview-table-component :overWrittingProgressionHistory="history" v-on:sessionSelected="setSession" />
 		<div class="inner-inner-widget" v-show="hasSelectedSession">
-			<h4> {{ sessionTitle }} </h4>
+			<h4>{{ sessionTitle }}</h4>
 			<progression-session-adjustment-component ref="sessionAdjustments" />
 		</div>
 	</div>
@@ -38,16 +38,17 @@ export default {
 			return this.userSelectedProgressionHistory;
 		},
 		hasSelectedSession() {
-			return Boolean(this.session.associativeId);
+			return Boolean(this.session && this.session.associativeId);
 		},
 		sessionTitle() {
 			return this.session ? this.session.title : '';
-		}
+		},
 	},
 	methods: {
 		bundleProgressionAdjustments() {
 			return {
 				...this.$refs.progressionDates.bundleAdjustments(),
+				...this.$refs.sessionAdjustments.bundleAdjustments(),
 			};
 		},
 		updateWasModifiedStatus() {
@@ -59,14 +60,20 @@ export default {
 			this.session = {};
 			this.$refs.sessionAdjustments.unsetAdjustments();
 		},
+		reFetchSession() {
+			if (!this.hasSelectedSession) return;
+			this.session = this.history.find((session) => {
+				return session.associativeId == this.session.associativeId && session.associativeIdOrdinalNumber == this.session.associativeIdOrdinalNumber;
+			});
+		},
 		setSession(session) {
-			this.session = session;
-			this.$refs.sessionAdjustments.takeCurrentAdjustments(session);
+			this.session = session || {};
+			this.$refs.sessionAdjustments.takeCurrentAdjustments(session || {});
 		},
 		revert() {
 			this.$refs.sessionAdjustments.revert();
 			this.$refs.progressionDates.revert();
-		}
+		},
 	},
 	mounted() {
 		this.$watch(() => this.$refs.progressionDates.wasAdjustmentModified, this.updateWasModifiedStatus, { immediate: true });
@@ -81,7 +88,7 @@ export default {
 		history: {
 			deep: true,
 			handler: function () {
-				this.unsetSession();
+				this.reFetchSession();
 			},
 		},
 	},

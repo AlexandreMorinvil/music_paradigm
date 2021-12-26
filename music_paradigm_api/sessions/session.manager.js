@@ -1,51 +1,37 @@
-const mongoose = require('mongoose');
-schema = require('./progression.middleware');
-
-const progressionSetters = require('progressions/progression.setters.js');
-const progressionGetters = require('progressions/progression.getters.js');
-const progressionAssociation = require('progressions/progression-association.service.js');
-
-schema.set('toJSON', { virtuals: true });
-
-
-// Static methods
-schema.statics.create = async function (userId, curriculumId, parameters = null, adjustments = null) {
-    const newProgression = new this({ userReference: userId, curriculumReference: curriculumId });
-    progressionSetters.setParameters(newProgression, parameters);
-    progressionSetters.setAdjustements(newProgression, adjustments);
-    return newProgression.save();
+module.exports = {
+    getAdvanceStartDate,
+    getAdvanceStartTime,
+    getLastAdvanceDate,
+    getLastAdvanceTime,
+    getExperimentAssociated
 };
 
-// Instance methods
-schema.methods.assignParameters = async function (parameters) {
-    if (parameters) progressionSetters.setParameters(this, parameters);
-    return this.save();
-};
-
-schema.methods.assignAdjustments = async function (adjustments) {
-    if (adjustments) progressionSetters.setAdjustements(this, adjustments);
-    return this.save();
-};
-
-schema.methods.getExperimentAssociated = function (associativeId, associativeIdOrdinalNumber) {
-    return progressionGetters.getExperimentAssociated(this, associativeId, associativeIdOrdinalNumber);
-};
-
-schema.methods.getSessionInformation = async function (associativeId, associativeIdOrdinalNumber) {
+/**
+ * Returns the date of where the progression officially started counting time
+ * @param  {Object} userId                      Progression from which the information will be fetched 
+ * @param  {Object} associativeId               Progression from which the information will be fetched 
+ * @param  {Object} associativeIdOrdinalNumber  Progression from which the information will be fetched 
+ * @return {Object}                             The date where the progression was started
+ *                      
+*/
+async function getSessionInformation (userId, associativeId, associativeIdOrdinalNumber) {
+    const User = require('database/models/user/user.model');
     const Curriculum = require('database/models/curriculum/curriculum.model');
+    const Progression = require('database/models/progression/progression.model');
     const Experiment = require('database/models/experiment/experiment.model');
     const ExperimentMaker = require('./experiment-marker/experiment-marker.model');
 
-    const curriculum = await Curriculum.findById(this.curriculumReference);
-    const curriculumPlannedExperiment = await curriculum.getExperimentAssociated(associativeId);
+    const progression = await User.getLastProgression(userId);
+    const curriculum = await Curriculum.findById(progression.curriculumReference);
+    const experimentInProgression = progression.getExperimentAssociated(associativeId, associativeIdOrdinalNumber) || {};
+    const curriculumPlannedExperiment = curriculum.getExperimentAssociated(associativeId);
     const experimentDefinition = await Experiment.findById(curriculumPlannedExperiment.experimentReference);
-    const experimentInProgression = this.getExperimentAssociated(associativeId, associativeIdOrdinalNumber) || {};
-    const experimentMaker = await ExperimentMaker.findMarker(this._id, associativeId) || {};
+    const experimentMaker = await ExperimentMaker.findMarker(progression._id, associativeId) || {};
 
     const sessionInformation = {
         curriculumTitle: curriculum.title,
         curriculumId: curriculum._id,
-        progressionId: this._id,
+        progressionId: progression._id,
         associativeId: associativeId,
         associativeIdOrdinalNumber: associativeIdOrdinalNumber,
         startCount: (experimentInProgression.startCount || 0) + 1,
@@ -56,7 +42,7 @@ schema.methods.getSessionInformation = async function (associativeId, associativ
         previousState: experimentMaker.state,
         previousCursor: experimentMaker.cursor,
         previousTimeIndicated: experimentMaker.timeIndicated,
-        assignedParameters: this.assignedParameters,
+        assignedParameters: progression.assignedParameters,
         logType: curriculum.logType
     };
 
@@ -65,6 +51,7 @@ schema.methods.getSessionInformation = async function (associativeId, associativ
 
 schema.methods.initializeExperiment = async function (associativeId, associativeIdOrdinalNumber) {
     const Curriculum = require('database/models/curriculum/curriculum.model');
+    const Progression = require('database/models/progression/progression.model');
 
     const curriculum = await Curriculum.findById(this.curriculumReference);
     const curriculumPlannedExperiment = await curriculum.getExperimentAssociated(associativeId);
@@ -98,6 +85,7 @@ schema.methods.initializeExperiment = async function (associativeId, associative
 
 schema.methods.concludeExperiment = async function (associativeId, associativeIdOrdinalNumber, isInTimeUp) {
     const Curriculum = require('database/models/curriculum/curriculum.model');
+    const Progression = require('database/models/progression/progression.model');
 
     const curriculum = await Curriculum.findById(this.curriculumReference);
     const curriculumPlannedExperiment = await curriculum.getExperimentAssociated(associativeId);
@@ -136,6 +124,7 @@ schema.methods.concludeExperiment = async function (associativeId, associativeId
 };
 
 schema.methods.saveSessionState = async function (associativeId, cursor, state, timeIndicated) {
+    const Progression = require('database/models/progression/progression.model');
     const ExperimentMarker = require('./experiment-marker/experiment-marker.model');
 
     // Update or create the marker
@@ -145,20 +134,3 @@ schema.methods.saveSessionState = async function (associativeId, cursor, state, 
 
     return this.save();
 };
-
-schema.methods.forgetSessionState = async function (associativeId) {
-    return await ExperimentMarker.deleteMarker(this._id, associativeId);
-};
-
-schema.methods.isForCurriculum = function (curriculumId) {
-    return String(this.curriculumReference) === String(curriculumId);
-}
-
-schema.methods.wasStarted = function () {
-    return Boolean(this.experiments.length > 0);
-};
-
-// Creating the model
-const model = mongoose.model('Progression', schema);
-
-module.exports = model;

@@ -1,4 +1,3 @@
-
 <template>
 	<div id="experiments-workshop" class="widget widget-bg">
 		<div class="options-position">
@@ -103,10 +102,13 @@ export default {
 			return this.makeDateTimeLapsedDisplay(progressionLastAdvancedDate, progressionLastAdvancedTime);
 		},
 		makeProgressionDisplay(summary) {
-			const { curriculumTotalNumber, progressionTotalNumber, reachedExperimentTitle } = summary;
+			const { curriculumTotalNumber, progressionTotalNumber, reachedExperimentTitle, wasProgressionTotalNumberAdjusted } = summary;
 			if (!curriculumTotalNumber) return '---';
-			if (curriculumTotalNumber === progressionTotalNumber) return String(progressionTotalNumber) + '/' + curriculumTotalNumber + '\n✓ COMPLETED';
-			else return String(progressionTotalNumber) + '/' + curriculumTotalNumber + '\n"' + reachedExperimentTitle + '"';
+
+			const adjustmentSign = wasProgressionTotalNumberAdjusted ? ' adjusted' : '';
+			if (curriculumTotalNumber === progressionTotalNumber)
+				return String(progressionTotalNumber) + '/' + curriculumTotalNumber + adjustmentSign + '\n✓ COMPLETED';
+			else return String(progressionTotalNumber) + '/' + curriculumTotalNumber + adjustmentSign + '\n"' + reachedExperimentTitle + '"';
 		},
 		getDurationInWeekAndDays(durationInMilliseconds) {
 			const totalDays = Math.floor(durationInMilliseconds / (24 * 3600 * 1000));
@@ -127,7 +129,7 @@ export default {
 				timeLapsed += String(days) + 'd.';
 			}
 			return String(date) + '\n' + timeLapsed;
-		}
+		},
 	},
 	mounted() {
 		this.fetchAllUsersSummary();
