@@ -9,6 +9,10 @@ schema.statics.addBlock = async function (block) {
     return createdBlock.save();
 }
 
+schema.statics.makeSummaryList = async function (query) {
+    return this.find(query, '-blocks');
+}
+
 // Creating the model
 const model = mongoose.model('Log-Simple', schema);
 const adminModel = mongoose.model('Admin-Log-Simple', schema);

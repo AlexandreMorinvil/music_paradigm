@@ -11,23 +11,21 @@
 						<th>#</th>
 						<th>Title</th>
 						<th>Sequential</th>
+						<th>Log Type</th>
 						<th>Experiment Count</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 
 				<tbody>
-					<tr
-						v-for="(header, index) in curriculumsList"
-						:key="header._id"
-						:class="header._id === curriculumSelectedId && 'selected'"
-					>
+					<tr v-for="(curriculum, index) in curriculumsList" :key="curriculum._id" :class="curriculum._id === curriculumSelectedId && 'selected'">
 						<td>{{ index + 1 }}</td>
-						<td>{{ header.title }}</td>
-						<td>{{ header.isSequential }}</td>
-						<td>{{ header.experimentsCount }}</td>
+						<td>{{ makeTitleDisplay(curriculum) }}</td>
+						<td>{{ makeIsSequentialDisplay(curriculum) }}</td>
+						<td>{{ makeLogTypeDisplay(curriculum) }}</td>
+						<td>{{ makeExperimentsCountDisplay(curriculum) }}</td>
 						<td class="widget-table-actions-buttons">
-							<button v-on:click="handleSelection(header._id)" class="widget-button small blue">Select</button>
+							<button v-on:click="handleSelection(curriculum._id)" class="widget-button small blue">Select</button>
 						</td>
 					</tr>
 				</tbody>
@@ -49,11 +47,7 @@ export default {
 		return {};
 	},
 	computed: {
-		...mapGetters('curriculums', [
-			'isFetchingCurriculumsList',
-			'curriculumsList',
-			'curriculumSelectedId',
-		]),
+		...mapGetters('curriculums', ['isFetchingCurriculumsList', 'curriculumsList', 'curriculumSelectedId']),
 		isListLoading() {
 			return this.isFetchingUsersSummaryList;
 		},
@@ -66,24 +60,17 @@ export default {
 		handleSelection(id) {
 			this.setSelectedCurriculum(id);
 		},
-		makeEmailDisplay(email) {
-			if (!email) return 'None';
-			else return email;
+		makeTitleDisplay(curriculum) {
+			return curriculum.title;
 		},
-		makeFullNameDisplay(firstName, middleName, lastName) {
-			return firstName + ' ' + middleName + ' ' + lastName;
+		makeIsSequentialDisplay(curriculum) {
+			return curriculum.isSequential;
 		},
-		makeGroupsDisplay(groupList) {
-			if (groupList.length === 0) {
-				return 'None';
-			} else {
-				let display = '';
-				for (const i in groupList) {
-					if (i > 1) display += '\n';
-					display += groupList[i];
-				}
-				return display;
-			}
+		makeLogTypeDisplay(curriculum) {
+			return curriculum.logType;
+		},
+		makeExperimentsCountDisplay(curriculum) {
+			return curriculum.experiments.length;
 		},
 	},
 	mounted() {

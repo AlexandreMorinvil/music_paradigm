@@ -27,7 +27,7 @@ async function generateProgressionSummary(userId) {
 
     let hasBlockingIncompleteInSequence = false;
     let hasBlockingUniqueInDayDoneToday = false;
-    const progressionSummary = [];
+    const progressionHistory = [];
 
     for (i in curriculum.experiments) {
         // We retrieve the history of the experients completed
@@ -71,9 +71,16 @@ async function generateProgressionSummary(userId) {
 
         // Attributes that are relative to the previous experiments of the chain
         elements.isDelayedByPreviousSequential = hasBlockingIncompleteInSequence;
-        elements.isDelayedByPreviousUniqueInDay = !mustIgnoreBlockingUniqueInDay || hasBlockingUniqueInDayDoneToday;
-        elements.isAvailable = getIsAvailableStatus(elements.wouldBeFree, hasBlockingIncompleteInSequence, hasBlockingUniqueInDayDoneToday, mustIgnoreBlockingSequence);
-        progressionSummary.push(elements);
+        elements.isDelayedByPreviousUniqueInDay = !mustIgnoreBlockingUniqueInDay && hasBlockingUniqueInDayDoneToday;
+        elements.isAvailable = getIsAvailableStatus(
+            elements.wouldBeFree, 
+            elements.isDelayedByPreviousSequential, 
+            elements.isDelayedByPreviousUniqueInDay, 
+            mustIgnoreBlockingSequence
+        );
+        
+        // Add element to the history
+        progressionHistory.push(elements);
 
         // Update the experiment due today
         dueExperiment = updateDueExperiment(dueExperiment, elements.isAvailable, adjustedCompletionCount, elements.associativeId, elements.associativeIdOrdinalNumber);
@@ -90,7 +97,7 @@ async function generateProgressionSummary(userId) {
             wasTodayCompleted
         );
     }
-    return { history: progressionSummary, dueExperiment: dueExperiment };
+    return { history: progressionHistory, dueExperiment: dueExperiment };
 }
 
 function adjustStartTime(daysElapsed, adjustmentInDays = 0) {

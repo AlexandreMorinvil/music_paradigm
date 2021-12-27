@@ -64,7 +64,7 @@ function makeUserLogCsv(req, res, next) {
 
     const query = req.body;
 
-    service.makeLogCsv(query)
+    service.makeUserLogCsv(query)
         .then((csv) => {
             res.setHeader('Content-disposition', 'attachment; filename=data.csv');
             res.set('Content-Type', 'text/csv');
