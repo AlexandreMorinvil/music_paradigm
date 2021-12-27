@@ -1,5 +1,7 @@
 ﻿const express = require('express');
 const router = express.Router();
+const jwtAuthorize = require('jwt/jwt.authorization');
+const role = require('_helpers/role');
 const service = require('./log.service');
 
 // routes
@@ -7,9 +9,15 @@ router.post('/initialize-log', initializeLog);
 router.patch('/add-log-block', addLogBlock);
 router.patch('/conclude-log', concludeLog);
 
+router.get('/user-summary-list/:userId/:progressionId?/:associativeId?', jwtAuthorize(role.admin), getUserLogSummaryList);
+
+router.post('/admin-log-csv', jwtAuthorize(role.admin), makeAdminLogCsv);
+router.post('/user-log-csv', jwtAuthorize(role.admin), makeUserLogCsv);
+
 module.exports = router;
 
 function initializeLog(req, res, next) {
+
     const userId = req.user.sub;
     const logHeader = req.body.logHeader;
 
@@ -20,6 +28,7 @@ function initializeLog(req, res, next) {
 
 
 function addLogBlock(req, res, next) {
+
     const userId = req.user.sub;
     const logHeader = req.body.logHeader;
     const block = req.body.block;
@@ -30,11 +39,49 @@ function addLogBlock(req, res, next) {
 }
 
 function concludeLog(req, res, next) {
+
     const userId = req.user.sub;
     const logHeader = req.body.logHeader;
     const logConclusion = req.body.logConclusion;
 
     service.concludeLog(userId, logHeader, logConclusion)
         .then((logId) => res.status(200).json(logId))
+        .catch(err => next(err));
+}
+
+function getUserLogSummaryList(req, res, next) {
+
+    const userId = req.params.userId;
+    const progressionId = req.params.progressionId;
+    const associativeId = req.params.associativeId;
+
+    service.getUserLogSummaryList(userId, progressionId, associativeId)
+        .then((list) => res.status(200).json(list))
+        .catch(err => next(err));
+}
+
+function makeUserLogCsv(req, res, next) {
+
+    const query = req.body;
+
+    service.makeLogCsv(query)
+        .then((csv) => {
+            res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+            res.set('Content-Type', 'text/csv');
+            res.status(200).send(csv);
+        })
+        .catch(err => next(err));
+}
+
+function makeAdminLogCsv(req, res, next) {
+
+    const query = req.body;
+
+    service.makeAdminLogCsv(query)
+        .then((csv) => {
+            res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+            res.set('Content-Type', 'text/csv');
+            res.status(200).send(csv);
+        })
         .catch(err => next(err));
 }

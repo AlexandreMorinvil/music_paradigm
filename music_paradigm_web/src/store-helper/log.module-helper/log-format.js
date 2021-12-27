@@ -167,7 +167,6 @@ function makeThoroughLogHeader(targetLogLabel) {
 		curriculumId: gettersSession.curriculumId(stateSession) || null,
 		progressionId: gettersSession.progressionId(stateSession) || null,
 		associativeId: gettersSession.associativeId(stateSession) || null,
-		associativeIdOrdinalNumber: gettersSession.associativeIdOrdinalNumber(stateSession) || 0,
 		logLabel: targetLogLabel || gettersExperiment.logLabel(stateExperiment),
 
 		completionCount: gettersSession.completionCount(stateSession),
@@ -211,6 +210,8 @@ function makeThoroughLogBlock() {
  */
 function makeThoroughLogBlockGeneralInformation() {
 	return {
+		associativeIdOrdinalNumber: gettersSession.associativeIdOrdinalNumber(stateSession) || 0,
+
 		startCount: gettersSession.startCount(stateSession),
 
 		blockType: gettersExperiment.currentStateType(stateExperiment),

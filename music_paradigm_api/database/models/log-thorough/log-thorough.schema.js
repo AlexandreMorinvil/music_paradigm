@@ -15,7 +15,6 @@ const schema = new Schema(
         progressionId: { type: Schema.Types.ObjectId, default: null },
         curriculumId: { type: Schema.Types.ObjectId, default: null },
         associativeId: { type: String, default: undefined },
-        associativeIdOrdinalNumber: { type: Number, default: undefined },
         logLabel: { type: String, default: 'default' },
 
         completionCount: { type: Number, default: 0 },
@@ -33,6 +32,8 @@ const schema = new Schema(
         blocks: {
             type: [
                 {
+                    associativeIdOrdinalNumber: { type: Number, default: undefined },
+
                     timestamp: { type: Date },
 
                     startCount: { type: Number, default: 1 },

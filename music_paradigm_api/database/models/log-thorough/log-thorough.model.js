@@ -28,6 +28,10 @@ schema.statics.findOrCreate = async function (logHeader) {
     return thoroughLog;
 }
 
+schema.statics.makeSummaryList = async function (query) {
+    return this.find(query, '-blocks');
+}
+
 // Helper functions
 function makeLogReference(logHeader) {
     const {

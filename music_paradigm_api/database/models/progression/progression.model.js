@@ -10,8 +10,8 @@ schema.set('toJSON', { virtuals: true });
 // Static methods
 schema.statics.create = async function (userId, curriculumId, parameters = null, adjustments = null) {
     const newProgression = new this({ userReference: userId, curriculumReference: curriculumId });
-    progressionSetters.setParameters(newProgression, parameters);
-    progressionSetters.setAdjustements(newProgression, adjustments);
+    if (parameters) progressionSetters.setParameters(newProgression, parameters);
+    if (adjustments) progressionSetters.setAdjustements(newProgression, adjustments);
     return newProgression.save();
 };
 

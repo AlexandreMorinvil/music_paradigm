@@ -1,13 +1,20 @@
-﻿const db = require('database/db');
+﻿const csvConverter = require('_helpers/csv-converter');
+
+const db = require('database/db');
 const AdminLogThorough = db.AdminLogThorough;
 const LogThorough = db.LogThorough;
 const User = db.User;
+
+
 
 // Exports
 module.exports = {
     initializeLog,
     addLogBlock,
-    concludeLog
+    concludeLog,
+    getUserLogSummaryList,
+    makeUserLogCsv,
+    makeAdminLogCsv,
 };
 
 async function initializeLog(userId, logHeader) {
@@ -40,4 +47,32 @@ async function concludeLog(userId, logHeader, logConclusion) {
     }
 }
 
+async function getUserLogSummaryList(userId, progressionId, associativeId) {
+    try {
+        const query = { userId: userId };
+        if (progressionId) query.progressionId = progressionId;
+        if (associativeId) query.associativeId = associativeId;
+        if (await User.isAdmin(userId)) return await AdminLogThorough.makeSummaryList(query);
+        else return await LogThorough.makeSummaryList(query);
+    } catch (err) {
+        throw err;
+    }
+}
 
+async function makeUserLogCsv(query) {
+    try {
+        let data = await LogThorough.find(query);
+        return csvConverter.makeCsv(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function makeAdminLogCsv(query) {
+    try {
+        let data = await AdminLogThorough.find(query);
+        return csvConverter.makeCsv(data);
+    } catch (err) {
+        throw err;
+    }
+}
