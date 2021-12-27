@@ -111,25 +111,6 @@ export default {
 			});
 	},
 
-	// Send a signal to the back-end to indicate that the session can be considered as completed
-	forgetSessionState({ commit, getters }) {
-		commit('setIsForgettingSessionState');
-		return sessionService
-			.forgetSessionState(getters.associativeId)
-			.then(
-				() => {
-					/* Nothing is done */
-				},
-				(error) => {
-					// TODO : Keep in memory the failed completion in localstorage to make sure on the next login we handle it
-					console.log(error);
-				},
-			)
-			.finally(() => {
-				commit('setIsForgettingSessionStateEnd');
-			});
-	},
-
 	abortPresession({ commit, dispatch }) {
 		dispatch('clearSessionInformation', null, { root: true });
 		commit('leavePreSession');

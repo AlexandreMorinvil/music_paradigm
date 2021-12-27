@@ -1,6 +1,8 @@
 ﻿const db = require('database/db');
 const jwt = require('jwt/jwt');
-const progressionService = require('progressions/progression-summary.service');
+const progressionSummaryService = require('progressions/progressions-summary.service');
+const progressionValidatorService = require('progressions/progressions-validator.service');
+const sessionManager = require('sessions/session.manager');
 const User = db.User;
 
 module.exports = {
@@ -13,9 +15,7 @@ module.exports = {
 async function authenticate({ username, password }) {
     try {
         const userWithoutPassword = await User.authenticate(username, password);
-        await progressionService.updateProgression(userWithoutPassword._id.toString());
         const token = jwt.generateToken(userWithoutPassword);
-
         return {
             ...userWithoutPassword,
             token
@@ -30,7 +30,7 @@ async function authenticate({ username, password }) {
 
 async function getProgressionSummary(userId) {
     try {
-        return await progressionService.generateProgressionSummary(userId);
+        return await progressionSummaryService.generateProgressionSummary(userId);
     } catch (err) {
         throw err;
     }
@@ -38,14 +38,11 @@ async function getProgressionSummary(userId) {
 
 async function getTodayExperiment(userId) {
     try {
-        const { dueExperiment } = await progressionService.generateProgressionSummary(userId);
+        const { dueExperiment } = await progressionSummaryService.generateProgressionSummary(userId);
         const { associativeId, associativeIdOrdinalNumber } = dueExperiment;
-
         if (!associativeId) throw new Error('There is no due experiment');
-        const progression = await User.getLastProgression(userId);
-        const sessionInformation = await progression.getSessionInformation(associativeId, associativeIdOrdinalNumber);
 
-        return sessionInformation
+        return await sessionManager.getSessionInformation(userId, associativeId, associativeIdOrdinalNumber);
     } catch (err) {
         throw err;
     }
@@ -53,20 +50,11 @@ async function getTodayExperiment(userId) {
 
 async function getSpecificExperiment(userId, associativeId, associativeIdOrdinalNumber) {
     try {
-        const progressionSummary = await progressionService.generateProgressionSummary(userId);
-        const history = progressionSummary.history;
-        const isExperimentAvailable = history.some(value => {
-            return (
-                value.associativeId === associativeId) &&
-                (value.associativeIdOrdinalNumber === associativeIdOrdinalNumber) &&
-                (value.isAvailable)
-        });
-
+        const { history } = await progressionSummaryService.generateProgressionSummary(userId, associativeId, associativeIdOrdinalNumber);
+        const isExperimentAvailable = progressionValidatorService.isExperimentAvailable(history, associativeId, associativeIdOrdinalNumber)
         if (!isExperimentAvailable) throw new Error('There experiment requested is not available');
-        const progression = await User.getLastProgression(userId);
-        const sessionInformation = await progression.getSessionInformation(associativeId, associativeIdOrdinalNumber);
 
-        return sessionInformation
+        return await sessionManager.getSessionInformation(userId, associativeId, associativeIdOrdinalNumber);
     } catch (err) {
         throw err;
     }

@@ -5,7 +5,6 @@ export const sessionService = {
 	initializeSession,
 	concludeSession,
 	saveSessionState,
-	forgetSessionState,
 };
 
 function initializeSession(associativeId, associativeIdOrdinalNumber) {
@@ -32,14 +31,6 @@ function saveSessionState(associativeId, cursor, state, timeIndicated) {
 		body: JSON.stringify({ cursor: cursor, state: state, timeIndicated: timeIndicated }),
 	};
 	return fetch(url.sessions('save-session-state/' + associativeId), requestOptions).then(handleResponse);
-}
-
-function forgetSessionState(associativeId) {
-	const requestOptions = {
-		method: 'POST',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-	};
-	return fetch(url.sessions('forget-session-state/' + associativeId), requestOptions).then(handleResponse);
 }
 
 function handleResponse(reponse) {

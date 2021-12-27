@@ -9,7 +9,7 @@ module.exports = {
 async function createDefaultAdmin() {
     // Verifying the existence of an administrator
     const adminFoundArray = (await timeout.dbQuery(users.find({ role: role.admin })));
-    const adminExists = (adminFoundArray.length > 0) ? true : false;
+    const adminExists = adminFoundArray.length > 0;
 
     // Creating a default admin if none exists
     if (!adminExists) {

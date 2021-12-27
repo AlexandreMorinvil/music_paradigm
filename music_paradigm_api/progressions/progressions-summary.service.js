@@ -1,28 +1,10 @@
 const timeHandler = require('_helpers/timeHandler')
-
-const progressionAssociation = require('./progression-association.service');
-const Progression = require('database/db').Progression;
+const progressionAssociation = require('./progressions-association.service');
 const User = require('database/db').User;
 
 module.exports = {
-    updateProgression,
     generateProgressionSummary,
 };
-
-async function updateProgression(userId) {
-    const { curriculum, progression } = await User.getCurriculumAndProgressionObject(userId);
-
-    // Do not generate a progression if no curriculum is associated to the user
-    if (!curriculum) return;
-
-    // Generate a progression if there is a curriculum but no progression registered
-    if (!progression) return await generateProgression(userId);
-
-    // Generate a progression if the last registered progression is not for the current curriculum
-    const curriculumId = curriculum._id.toString();
-    const curriculumIdLastProgression = progression.curriculumReference.toString();
-    if (curriculumId !== curriculumIdLastProgression) return await generateProgression(userId)
-}
 
 async function generateProgressionSummary(userId) {
     let { curriculum, progression } = await User.getCurriculumAndProgressionObject(userId);
@@ -109,17 +91,6 @@ async function generateProgressionSummary(userId) {
         );
     }
     return { history: progressionSummary, dueExperiment: dueExperiment };
-}
-
-async function generateProgression(userId) {
-    const user = await User.findById(userId);
-    const progression = new Progression({
-        userReference: user._id,
-        curriculumReference: user.curriculum
-    });
-    user.progressions.push(progression);
-    progression.save();
-    user.save();
 }
 
 function adjustStartTime(daysElapsed, adjustmentInDays = 0) {

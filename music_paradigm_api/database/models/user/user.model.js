@@ -1,14 +1,13 @@
 const mongoose = require('mongoose');
 schema = require('./user.middleware');
 
+const curriculumGetters = require('curriculums/curriculums.getters');
+const progressionGetters = require('progressions/progressions.getters');
+const progressionAssociation = require('progressions/progressions-association.service');
+
 const roles = require('_helpers/role');
 const bcrypt = require('bcryptjs');
 
-const progressionAssociation = require('progressions/progression-association.service.js');
-const progressionGetters = require('progressions/progression.getters.js');
-const curriculumGetters = require('curriculums/curriculums.getters.js');
-
-// Static methods
 schema.statics.authenticate = async function (username, password) {
     // Fetch user in the database
     const user = await this.findOne({ username });
@@ -38,6 +37,7 @@ schema.statics.isAdmin = async function (userId) {
     return user.role === roles.admin;
 };
 
+
 schema.statics.getLastProgression = async function (userId) {
     const user = await this.findOne({ _id: userId });
     if (user) return user.getLastProgression();
@@ -54,6 +54,7 @@ schema.statics.getCurriculumAndProgressionObject = async function (userId) {
         progression: progressions[0] ? progressions[0].toObject() : null,
     }
 };
+
 
 /**
  * @return {Array} 
@@ -135,55 +136,12 @@ schema.methods.updateProfile = async function (attributesToUpdate) {
     return this.save();
 };
 
-schema.methods.initializeProgression = async function (curriculum, parameters, adjustments) {
-    // Assign curriculum
-    if (!curriculum) return null;
-    this.curriculum = curriculum;
-
-    // Initialize Progression
-    let lastProgression = await this.getLastProgression();
-    if (lastProgression) {
-
-        // Put back the last progression as is if the last progression is for the current curriculum
-        if (lastProgression.isForCurriculum(this.curriculum)) { /* Do nothing */ }
-
-        // Add a new progression if the last one is associated to another curriculum and was started
-        else if (lastProgression.wasStarted())
-            await this.addNewProgression(curriculum, parameters, adjustments);
-
-        // Remove the progression if it was not started
-        else {
-            await model.findOneAndUpdate({ _id: this._id }, { $pull: { progressions: lastProgression._id } })
-            await lastProgression.remove();
-            lastProgression = await this.getLastProgression();
-
-            // Put back the last progression as is if the new last progression is for the current curriculum
-            if (lastProgression && lastProgression.isForCurriculum(this.curriculum)) { /* Do nothing */ }
-
-            // If the mew last progression is for another curriculum, we add a new progression 
-            else await this.addNewProgression(curriculum, parameters, adjustments);
-        }
-    }
-    // If there were no previous progressions, we add one
-    else await this.addNewProgression(curriculum, parameters, adjustments);
-
-    await this.save();
-    return this.getLastProgression();
-}
-
 schema.methods.getLastProgression = async function () {
     const user = await model
         .findById(this._id, { progressions: { $slice: -1 } })
         .populate({ path: 'progressions' });
     const lastProgression = user.progressions[0];
     return lastProgression;
-}
-
-schema.methods.addNewProgression = async function (curriculumId, parameters = null, adjustments = null) {
-    const Progression = require('database/models/progression/progression.model');
-    const newProgression = await Progression.create(this._id, curriculumId, parameters, adjustments)
-    this.progressions.push(newProgression);
-    return this.save();
 }
 
 // Creating the model

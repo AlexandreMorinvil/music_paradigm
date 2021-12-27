@@ -15,10 +15,6 @@ mongoose.connection.on('connected', handleConnection);
 mongoose.connection.on('disconnected', handleDisconnection);
 mongoose.connection.on('error', handleError);
 
-// Configure the mongoose instance
-mongoose.set('toJSON', { virtuals: true });
-mongoose.set('toObject', { virtuals: true });
-
 // Exporting the Schemas
 module.exports = {
     Experiment: require('./models/experiment/experiment.model'),

@@ -4,7 +4,7 @@ const schema = require('./progression.schema');
 schema.pre('remove', function (next) {
     
     // Delete any experiment marker related to this progression
-    const ExperimentMarker = require('./experiment-marker/experiment-marker.model');
+    const ExperimentMarker = require('database/models/experiment-marker/experiment-marker.model');
     ExperimentMarker
     .deleteMany({ progressionReference: this._id })
         .exec();
