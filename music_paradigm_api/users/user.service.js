@@ -112,7 +112,7 @@ async function assignParameters(userId, assignedParameters) {
 
 async function assignAdjustments(userId, assignedAdjustments) {
     try {
-        const lastProgression = await userProgressionService.updateParameters(userId, assignedAdjustments);
+        const lastProgression = await userProgressionService.updateAdjustments(userId, assignedAdjustments);
         const progressionSummary = await progressionSummaryService.generateProgressionSummary(userId);
         return {
             progression: lastProgression,
