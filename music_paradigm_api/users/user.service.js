@@ -84,9 +84,11 @@ async function deleteUser(userId) {
 
 async function assignCurriculum(userId, curriculumId, assignedParameters) {
     try {
-        const lastProgression = await userProgressionService.findAndInitializeProgression(userId, curriculumId, assignedParameters);
+        const user = await User.findById(userId);
+        const lastProgression = await userProgressionService.initializeProgression(user, curriculumId, assignedParameters);
         const progressionSummary = await progressionSummaryService.generateProgressionSummary(userId);
         return {
+            user: user,
             progression: lastProgression,
             progressionSummary: progressionSummary,
         };

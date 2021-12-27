@@ -70,7 +70,9 @@ async function initializeSession(userId, associativeId, associativeIdOrdinalNumb
         experimentDoneInProgression = {
             associativeId: associativeId,
             associativeIdOrdinalNumber: associativeIdOrdinalNumber,
-            experimentReference: experimentPlanedInCurriculum.experimentReference
+            experimentReference: experimentPlanedInCurriculum.experimentReference,
+            startDates: [new Date()],
+            startCount: 1,
         };
 
         // Add the record in the progression
@@ -78,10 +80,9 @@ async function initializeSession(userId, associativeId, associativeIdOrdinalNumb
 
     } else {
         experimentDoneInProgression.experimentReference = experimentPlanedInCurriculum.experimentReference;
+        experimentDoneInProgression.startDates.push(new Date());
+        experimentDoneInProgression.startCount += 1;
     }
-
-    // Increment the number of times the experiment was started
-    experimentDoneInProgression.startCount += 1;
 
     // If the start time is not set, this is the first time we do an experiment and we are this starting the curriculum now
     if (!progression.startTime) progression.startTime = Date.now();
@@ -102,18 +103,20 @@ async function concludeSession(userId, associativeId, associativeIdOrdinalNumber
 
         // create the experiment in the progression
         experimentDoneInProgression = {
-            experimentReference: experimentPlanedInCurriculum.experimentReference,
             associativeId: associativeId,
             associativeIdOrdinalNumber: associativeIdOrdinalNumber,
-            completionCount: 1
+            experimentReference: experimentPlanedInCurriculum.experimentReference,
+            startDates: [new Date()],
+            startCount: 1,
+            completionDates: [new Date()],
+            completionCount: 1,
         };
 
         // Add the record in the progression
         progression.experiments.push(experimentDoneInProgression);
-
-    }
-    // Increase completion count
-    else {
+    } else {
+        // Increase completion count
+        experimentDoneInProgression.completionDates.push(new Date());
         experimentDoneInProgression.completionCount += 1;
     }
 

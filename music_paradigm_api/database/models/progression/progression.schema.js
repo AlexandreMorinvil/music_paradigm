@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const ProgressionExperiment = require('./progression-experiment/progression-experiment.schema');
 
 const Schema = mongoose.Schema;
 
@@ -52,77 +53,7 @@ const schema = new Schema(
 
         // List of the experiments composing the curriculum
         experiments: {
-            type: [
-                {
-                    // Id associated to the experiment within the curriculum
-                    associativeId: {
-                        type: String,
-                        default: "",
-                        sparse: true,
-                        trim: true,
-                        set: setterAssociativeId
-                    },
-
-                    // Ordinal number indicating the number of times the associative ID was encountered in the curriculum before this one
-                    associativeIdOrdinalNumber: {
-                        type: Number,
-                        default: 0,
-                        min: 0
-                    },
-
-                    // Number of times the experiment was started from the start (an experiment can only be start one time more than it was completed)
-                    startCount: {
-                        type: Number,
-                        default: 0,
-                        min: 0
-                    },
-
-                    // Number of times the experiment was completed (an experiment can not be completed more times than it was started)
-                    completionCount: {
-                        type: Number,
-                        default: 0,
-                        min: 0
-                    },
-
-                    // Adjustments
-                    adjustmentDelayInDays: {
-                        type: Number,
-                        default: 0,
-                    },
-
-                    adjustmentConsiderCompleted: {
-                        type: Boolean,
-                        default: false,
-                    },
-
-                    adjustmentAdditionalCompletionsRequired: {
-                        type: Number,
-                        min: 0,
-                        default: 0,
-                    },
-
-                    adjustmentPreponeAvailability: {
-                        type: Boolean,
-                        default: false,
-                    },
-
-                    adjustmentOverlookUniqueInDays: {
-                        type: Boolean,
-                        default: false,
-                    },
-
-                    adjustmentImposeReadyToBeDone: {
-                        type: Boolean,
-                        default: false,
-                    },
-
-                    // Title of the experiment within the curriculum
-                    experimentReference: {
-                        type: Schema.Types.ObjectId,
-                        ref: 'Experiment',
-                    },
-                }
-            ],
+            type: [ProgressionExperiment],
             default: []
         }
 
@@ -145,12 +76,6 @@ schema.virtual('startTimePassed').get(function() {
 schema.virtual('lastProgessionTimePassed').get(function() {
     return (new Date()).getTime() - (new Date(this.lastProgressionDate)).getTime()
 });
-
-// Setter functions
-function setterAssociativeId(title) {
-    if (title) return title.toLowerCase();
-    else return undefined;
-}
 
 schema.set('toJSON', { virtuals: true });
 

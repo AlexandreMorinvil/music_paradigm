@@ -104,6 +104,7 @@ export default {
 			.assignCurriculum(userId, curriculumParameters)
 			.then(
 				(updatedUser) => {
+					commit('setSelectedUser', updatedUser.user);
 					commit('setSelectedUserProgression', updatedUser.progression);
 					commit('setSelectedUserProgressionSummary', updatedUser.progressionSummary);
 					dispatch('alert/setSuccessAlert', 'Curriculum assignation sucessful', { root: true });
