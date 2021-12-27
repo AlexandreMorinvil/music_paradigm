@@ -60,8 +60,11 @@ export default {
 		hasCaption() {
 			return Boolean(this.caption);
 		},
+		completionsNeeded() {
+			return 1 + this.session.adjustmentAdditionalCompletionsRequired;
+		},
 		wasCompleted() {
-			return this.session.completionCount > 0 || this.session.adjustmentConsiderCompleted;
+			return this.session.completionCount >= this.completionsNeeded || this.session.adjustmentConsiderCompleted;
 		}
 	},
 	methods: {
