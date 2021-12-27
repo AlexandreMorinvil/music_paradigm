@@ -70,7 +70,7 @@ export default {
 			return curriculum.logType;
 		},
 		makeExperimentsCountDisplay(curriculum) {
-			return curriculum.experiments.length;
+			return curriculum.experiments ? curriculum.experiments.length : 0;
 		},
 	},
 	mounted() {

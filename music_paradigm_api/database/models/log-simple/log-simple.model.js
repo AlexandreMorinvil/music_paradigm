@@ -10,7 +10,33 @@ schema.statics.addBlock = async function (block) {
 }
 
 schema.statics.makeSummaryList = async function (query) {
-    return this.find(query, '-blocks');
+    const fieldsToKeep = [
+        'userId',
+        'experimentId',
+        'progressionId',
+        'curriculumId',
+        'associativeId',
+        'associativeIdOrdinalNumber',
+        'logLabel',
+
+        'startCount',
+        'completionCount',
+
+        'username',
+        'curriculumTitle',
+        'experimentGroup',
+        'experimentName',
+        'experimentVersion',
+
+        'blockType',
+        'blockSubType',
+        'index',
+        'innerIndex',
+        'repetition',
+        'isInPrelude',
+        'timestamp',
+    ];
+    return this.find(query, [, '']);
 }
 
 // Creating the model

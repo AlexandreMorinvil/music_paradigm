@@ -29,7 +29,10 @@ schema.statics.findOrCreate = async function (logHeader) {
 }
 
 schema.statics.makeSummaryList = async function (query) {
-    return this.find(query, '-blocks');
+    const fieldToRemove = [
+        '-blocks'
+    ];
+    return this.find(query, fieldToRemove);
 }
 
 // Helper functions
