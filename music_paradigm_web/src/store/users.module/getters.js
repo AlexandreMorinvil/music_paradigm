@@ -80,6 +80,10 @@ export default {
 		return Boolean(state.selectedUser.curriculum);
 	},
 
+	hasProgressionHistory: (state) => {
+		return Boolean(state.selectedUserProgressionHistory.length);
+	},
+
 	isFetchingUsersSummaryList: (state) => {
 		return state.status.isFetchingUsersSummaryList;
 	},

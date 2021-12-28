@@ -2,7 +2,7 @@
 	<div id="users-editor" class="widget widget-bg">
 		<users-curriculum-form-component class="curticulum-position inner-widget" ref="userCurriculumForm" />
 		<users-parameters-form-component class="parameters-position inner-widget" ref="userParametersForm" />
-		<users-progression-form-component class="progression-position inner-widget" ref="userProgressionForm" />
+		<users-progression-form-component v-show="hasProgressionHistory" class="progression-position inner-widget" ref="userProgressionForm" />
 
 		<div class="submission-buttons-position">
 			<button v-on:click="handleRevert" class="widget-button blue" :class="{ inactive: !isRevertButtonActive }">Revert</button>
@@ -43,7 +43,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('users', ['hasSelectedUser', 'userSelectedId', 'hasCurriculumToSelectedUser']),
+		...mapGetters('users', ['hasSelectedUser', 'userSelectedId', 'hasCurriculumToSelectedUser', 'hasProgressionHistory']),
 	},
 	methods: {
 		...mapActions('curriculums', ['fetchAllCurriculumHeaders']),

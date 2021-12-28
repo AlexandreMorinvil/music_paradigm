@@ -2,7 +2,7 @@
 	<div class="form-grid" @submit.prevent>
 		<h3>Progression :</h3>
 		<progression-dates-adjustment-component ref="progressionDates" />
-		<overview-table-component :overWrittingProgressionHistory="history" v-on:sessionSelected="setSession" />
+		<overview-table-component v-show="hasHistory" :overWrittingProgressionHistory="history" v-on:sessionSelected="setSession" />
 		<div class="inner-inner-widget" v-show="hasSelectedSession">
 			<h4 class="session-title">{{ sessionTitle }}</h4>
 			<progression-session-adjustment-component ref="sessionAdjustments" />
@@ -33,12 +33,15 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('users', ['userSelectedId', 'userSelectedProgressionHistory']),
+		...mapGetters('users', ['userSelectedId', 'userSelectedProgressionHistory', 'hasProgressionHistory']),
+		hasHistory() {
+			return this.hasProgressionHistory;
+		},
 		history() {
 			return this.userSelectedProgressionHistory;
 		},
 		hasSelectedSession() {
-			return Boolean(this.session && this.session.associativeId);
+			return this.hasHistory && Boolean(this.session && this.session.associativeId);
 		},
 		sessionTitle() {
 			const title = this.session ? String(this.session.title) : '';
