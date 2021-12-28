@@ -1,6 +1,6 @@
 <template>
+		<!-- v-if="session.associativeId" -->
 	<div
-		v-if="session.associativeId"
 		class="details-container details-container-color details-text"
 		:class="{ 'adjusted-container-color': hasAdjustment }"
 	>
@@ -40,7 +40,12 @@ export default {
 	},
 	props: {
 		index: { type: Number, default: -1 },
-		session: { type: Object, default: null },
+		session: {
+			type: Object,
+			default() {
+				return {};
+			},
+		},
 	},
 	computed: {
 		hasStartedAtLeastOnce() {

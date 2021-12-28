@@ -2,19 +2,18 @@
 	<div class="englobing-box">
 		<div class="table-context">
 			<div class="table-inside-context content-flex">
-				<div v-for="(session, index) in progressionHistory" :key="index" :class="{ 'highlighted-session': mustHighlight(session) }">
+				<div
+					v-for="(session, index) in progressionHistory"
+					:key="index"
+					v-on:click="selectSession(session)"
+					:class="{ 'highlighted-session': mustHighlight(session) }"
+				>
 					<overview-table-session-component
 						:session="session"
 						:index="Number(index)"
 						v-on:start-session="startSession"
-						v-on:click.native="selectSession(session)"
 					/>
-					<overview-table-session-admin-details-component
-						v-if="!isRealUser"
-						:session="session"
-						:index="Number(index)"
-						v-on:click.native="selectSession(session)"
-					/>
+					<slot :session="session" :index="Number(index)"> </slot>
 				</div>
 			</div>
 		</div>
@@ -24,7 +23,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import OverviewTableSessionAdminDetailsComponent from '@/components/admin/users/widget-curriculum/progression/overview-table-session-admin-details.component.vue';
 import OverviewTableSessionComponent from '@/components/user/home/overview-table-session.component.vue';
 
 export default {
@@ -42,7 +40,6 @@ export default {
 	},
 	components: {
 		OverviewTableSessionComponent,
-		OverviewTableSessionAdminDetailsComponent,
 	},
 	computed: {
 		...mapGetters('account', ['progressionSummary']),
@@ -117,6 +114,6 @@ export default {
 }
 
 .highlighted-session > * {
-	box-shadow: none;
+	box-shadow: none !important;
 }
 </style>
