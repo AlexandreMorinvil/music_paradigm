@@ -25,9 +25,9 @@ import '@/styles/form-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
 import { AdminUsersEventBus, adminUsersEvents } from '@/event-bus/admin-users.event-bus.js';
-import UsersCurriculumFormComponent from './users-curriculum-form.component.vue';
-import UsersParametersFormComponent from './users-parameters-form.component.vue';
-import UsersProgressionFormComponent from './users-progression-form.component.vue';
+import UsersCurriculumFormComponent from './curriculum/users-curriculum-form.component.vue';
+import UsersParametersFormComponent from './parameters/users-parameters-form.component.vue';
+import UsersProgressionFormComponent from './progression/users-progression-form.component.vue';
 
 export default {
 	components: {

@@ -24,7 +24,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import OverviewTableSessionAdminDetailsComponent from '@/components/admin/users/widget-curriculum/overview-table-session-admin-details.component.vue';
+import OverviewTableSessionAdminDetailsComponent from '@/components/admin/users/widget-curriculum/progression/overview-table-session-admin-details.component.vue';
 import OverviewTableSessionComponent from '@/components/user/home/overview-table-session.component.vue';
 
 export default {
@@ -114,5 +114,9 @@ export default {
 	background-color: rgba(100, 200, 50, 0.25);
 	box-shadow: 0 0px 10px rgba(100, 200, 50, 0.5);
 	border-radius: 10px;
+}
+
+.highlighted-session > * {
+	box-shadow: none;
 }
 </style>
