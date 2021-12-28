@@ -21,17 +21,19 @@
 				</thead>
 
 				<tbody>
-					<tr v-for="(summary, index) in usersSummaryList" :key="summary._id" :class="summary._id === userSelectedId && 'selected'">
+					<tr v-for="(user, index) in usersSummaryList" :key="user._id" :class="{ selected: isSelectedUser(user) }">
 						<td>{{ index + 1 }}</td>
-						<td>{{ summary.username }}</td>
-						<td>{{ makeFullNameDisplay(summary) }}</td>
-						<td style="white-space: pre-line">{{ makeTagsDisplay(summary) }}</td>
-						<td>{{ makeCurriculumTitleDisplay(summary) }}</td>
-						<td>{{ makeProgressionStartTimeDisplay(summary) }}</td>
-						<td>{{ makeProgressionLastAdvanceTimeDisplay(summary) }}</td>
-						<td>{{ makeProgressionDisplay(summary) }}</td>
+						<td>{{ makeUsernameDisplay(user) }}</td>
+						<td>{{ makeFullNameDisplay(user) }}</td>
+						<td style="white-space: pre-line">{{ makeTagsDisplay(user) }}</td>
+						<td>{{ makeCurriculumTitleDisplay(user) }}</td>
+						<td>{{ makeProgressionStartTimeDisplay(user) }}</td>
+						<td>{{ makeProgressionLastAdvanceTimeDisplay(user) }}</td>
+						<td>{{ makeProgressionDisplay(user) }}</td>
 						<td class="widget-table-actions-buttons">
-							<button v-on:click="handleSelectUser(summary._id)" class="widget-button small blue">Select</button>
+							<button v-on:click="handleSelectUser(user._id)" class="widget-button button small" :class="isSelectedUser(user) ? 'orange' : 'blue'">
+								{{ makeSelectButtonText(user) }}
+							</button>
 						</td>
 					</tr>
 				</tbody>
@@ -63,20 +65,24 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('users', ['fetchAllUsersSummary', 'setSelectedUser']),
+		...mapActions('users', ['fetchAllUsersSummary', 'setSelectedUser', 'unsetSelectedUser']),
 		handleRefresh() {
 			this.fetchAllUsersSummary();
 		},
 		handleSelectUser(id) {
-			this.setSelectedUser(id);
+			if (this.userSelectedId === id) this.unsetSelectedUser();
+			else this.setSelectedUser(id);
 		},
-		makeFullNameDisplay(summary) {
-			const { firstName, middleName, lastName } = summary;
+		makeUsernameDisplay(user) {
+			return user ? user.username : '';
+		},
+		makeFullNameDisplay(user) {
+			const { firstName, middleName, lastName } = user;
 			if (!(firstName || middleName || lastName)) return '---';
 			return firstName + ' ' + middleName + ' ' + lastName;
 		},
-		makeTagsDisplay(summary) {
-			const { tags } = summary;
+		makeTagsDisplay(user) {
+			const { tags } = user;
 			if (tags.length === 0) {
 				return '---';
 			} else {
@@ -88,21 +94,21 @@ export default {
 				return display;
 			}
 		},
-		makeCurriculumTitleDisplay(summary) {
-			const { curriculumTitle } = summary;
+		makeCurriculumTitleDisplay(user) {
+			const { curriculumTitle } = user;
 			if (!curriculumTitle) return '---';
 			else return curriculumTitle;
 		},
-		makeProgressionStartTimeDisplay(summary) {
-			const { progressionStartDate, progressionStartTime } = summary;
+		makeProgressionStartTimeDisplay(user) {
+			const { progressionStartDate, progressionStartTime } = user;
 			return this.makeDateTimeLapsedDisplay(progressionStartDate, progressionStartTime);
 		},
-		makeProgressionLastAdvanceTimeDisplay(summary) {
-			const { progressionLastAdvancedDate, progressionLastAdvancedTime } = summary;
+		makeProgressionLastAdvanceTimeDisplay(user) {
+			const { progressionLastAdvancedDate, progressionLastAdvancedTime } = user;
 			return this.makeDateTimeLapsedDisplay(progressionLastAdvancedDate, progressionLastAdvancedTime);
 		},
-		makeProgressionDisplay(summary) {
-			const { curriculumTotalNumber, progressionTotalNumber, reachedExperimentTitle, wasProgressionTotalNumberAdjusted } = summary;
+		makeProgressionDisplay(user) {
+			const { curriculumTotalNumber, progressionTotalNumber, reachedExperimentTitle, wasProgressionTotalNumberAdjusted } = user;
 			if (!curriculumTotalNumber) return '---';
 
 			const adjustmentSign = wasProgressionTotalNumberAdjusted ? ' adjusted' : '';
@@ -129,6 +135,12 @@ export default {
 				timeLapsed += String(days) + 'd.';
 			}
 			return String(date) + '\n' + timeLapsed;
+		},
+		makeSelectButtonText(user) {
+			return this.isSelectedUser(user) ? 'Unselect' : 'Select';
+		},
+		isSelectedUser(user) {
+			return user && user._id === this.userSelectedId;
 		},
 	},
 	mounted() {
@@ -160,5 +172,9 @@ export default {
 .loader {
 	width: 500px;
 	height: 500px;
+}
+
+.button {
+	white-space: nowrap;
 }
 </style>
