@@ -3,7 +3,12 @@
 		<button v-on:click="handleRefresh" class="widget-button blue refresh-button">{{ refreshButtonText }}</button>
 		<h3>Progression :</h3>
 		<progression-dates-adjustment-component ref="progressionDates" />
-		<overview-table-component v-show="hasHistory" :overWrittingProgressionHistory="history" v-on:sessionSelected="handleSessionSelection" />
+		<overview-table-component
+			v-show="hasHistory"
+			:overWrittingProgressionHistory="history"
+			:sessionToHightlight="session"
+			v-on:sessionSelected="handleSessionSelection"
+		/>
 		<div class="inner-inner-widget" v-show="hasSelectedSession">
 			<h4 class="session-title">{{ sessionTitle }}</h4>
 			<progression-session-adjustment-component ref="sessionAdjustments" />
@@ -58,6 +63,7 @@ export default {
 		handleRefresh() {
 			this.isRefreshing = true;
 			this.refreshSelectedUserProgression().finally(() => {
+				this.reFetchSession();
 				this.isRefreshing = false;
 			});
 		},

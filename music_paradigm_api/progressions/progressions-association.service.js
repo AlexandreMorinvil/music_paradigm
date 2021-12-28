@@ -36,8 +36,8 @@ function generateProgressionToCurriculumAssociation(curriculum, progression) {
         // Initialize the counter for the numnber of times the associative ID is encountered (to avoid having 2 experiments 
         // considered as exactly the same if they have the same associative ID). Everytime an associative ID is encountered, 
         // we increment the ordinal number of the associative ID.
-        if (!encounteredAssociativeId[associativeId]) encounteredAssociativeId[associativeId] = 0;
-        encounteredAssociativeId[associativeId] += 1;
+        if (typeof encounteredAssociativeId[associativeId] !== 'number') encounteredAssociativeId[associativeId] = 0;
+        else encounteredAssociativeId[associativeId] += 1;
         const associativeIdOrdinalNumber = encounteredAssociativeId[associativeId];
 
         // If there exists an entry in the progression for the experiment, we add it to the association

@@ -2,7 +2,7 @@
 	<div class="englobing-box">
 		<div class="table-context">
 			<div class="table-inside-context content-flex">
-				<div v-for="(session, index) in progressionHistory" :key="index">
+				<div v-for="(session, index) in progressionHistory" :key="index" :class="{ 'highlighted-session': mustHighlight(session) }">
 					<overview-table-session-component
 						:session="session"
 						:index="Number(index)"
@@ -34,6 +34,11 @@ export default {
 				return null;
 			},
 		},
+		sessionToHightlight: {
+			default() {
+				return null;
+			},
+		},
 	},
 	components: {
 		OverviewTableSessionComponent,
@@ -59,6 +64,13 @@ export default {
 		},
 		selectSession(session) {
 			this.$emit('sessionSelected', session);
+		},
+		mustHighlight(session) {
+			return (
+				!this.isRealUser &&
+				this.sessionToHightlight.associativeId === session.associativeId &&
+				this.sessionToHightlight.associativeIdOrdinalNumber === session.associativeIdOrdinalNumber
+			);
 		},
 	},
 };
@@ -96,5 +108,11 @@ export default {
 
 .session-space {
 	text-align: center;
+}
+
+.highlighted-session {
+	background-color: rgba(100, 200, 50, 0.25);
+	box-shadow: 0 0px 10px rgba(100, 200, 50, 0.5);
+	border-radius: 10px;
 }
 </style>
