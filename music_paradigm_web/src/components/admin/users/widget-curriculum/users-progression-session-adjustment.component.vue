@@ -1,42 +1,87 @@
 <template>
 	<div class="adjustments-grid">
-		<div>
-			<div class="input-tag-grid">
-				<input class="input-area number" v-model="currentAdjustments.adjustmentDelayInDays" name="adjustmentDelayInDays" type="number" />
-				<label for="adjustmentDelayInDays"> Days adjustment to delay </label>
-			</div>
+		<div class="centering">
+			<table>
+				<tr class="input-tag-grid">
+					<td class="centering">
+						<input class="input-area number" v-model="currentAdjustments.adjustmentDelayInDays" name="adjustmentDelayInDays" type="number" />
+					</td>
+					<td>
+						<label for="adjustmentDelayInDays"> Days adjustment to delay </label>
+					</td>
+				</tr>
 
-			<div class="input-tag-grid">
-				<input class="input-area checkbox" v-model="currentAdjustments.adjustmentConsiderCompleted" name="adjustmentConsiderCompleted" type="checkbox" />
-				<label for="adjustmentConsiderCompleted"> Consider completed </label>
-			</div>
+				<tr class="input-tag-grid">
+					<td class="centering">
+						<input
+							class="input-area checkbox"
+							v-model="currentAdjustments.adjustmentConsiderCompleted"
+							name="adjustmentConsiderCompleted"
+							type="checkbox"
+						/>
+					</td>
+					<td>
+						<label for="adjustmentConsiderCompleted"> Consider completed </label>
+					</td>
+				</tr>
 
-			<div class="input-tag-grid">
-				<input class="input-area checkbox" v-model="currentAdjustments.adjustmentPreponeAvailability" name="adjustmentPreponeAvailability" type="checkbox" />
-				<label for="adjustmentPreponeAvailability"> Remove the delays </label>
-			</div>
+				<tr class="input-tag-grid">
+					<td class="centering">
+						<input
+							class="input-area checkbox"
+							v-model="currentAdjustments.adjustmentPreponeAvailability"
+							name="adjustmentPreponeAvailability"
+							type="checkbox"
+						/>
+					</td>
+					<td>
+						<label for="adjustmentPreponeAvailability"> Remove the delays </label>
+					</td>
+				</tr>
+			</table>
 		</div>
-		<div>
-			<div class="input-tag-grid">
-				<input
-					class="input-area number"
-					v-model="currentAdjustments.adjustmentAdditionalCompletionsRequired"
-					name="adjustmentAdditionalCompletionsRequired"
-					min="0"
-					type="number"
-				/>
-				<label for="adjustmentAdditionalCompletionsRequired"> Additional completions needed </label>
-			</div>
 
-			<div class="input-tag-grid">
-				<input class="input-area checkbox" v-model="currentAdjustments.adjustmentImposeReadyToBeDone" name="adjustmentImposeReadyToBeDone" type="checkbox" />
-				<label for="adjustmentImposeReadyToBeDone"> Make it ready now </label>
-			</div>
+		<div class="centering">
+			<table>
+				<tr class="input-tag-grid">
+					<td class="centering">
+						<input
+							class="input-area number"
+							v-model="currentAdjustments.adjustmentAdditionalCompletionsRequired"
+							name="adjustmentAdditionalCompletionsRequired"
+							min="0"
+							type="number"
+						/>
+					</td>
+					<td><label for="adjustmentAdditionalCompletionsRequired"> Additional completions needed </label></td>
+				</tr>
 
-			<div class="input-tag-grid">
-				<input class="input-area checkbox" v-model="currentAdjustments.adjustmentOverlookUniqueInDays" name="adjustmentOverlookUniqueInDays" type="checkbox" />
-				<label for="adjustmentOverlookUniqueInDays"> Allow doing same day </label>
-			</div>
+				<tr class="input-tag-grid">
+					<td class="centering">
+						<input
+							class="input-area checkbox"
+							v-model="currentAdjustments.adjustmentImposeReadyToBeDone"
+							name="adjustmentImposeReadyToBeDone"
+							type="checkbox"
+						/>
+					</td>
+					<td>
+						<label for="adjustmentImposeReadyToBeDone"> Make it ready now </label>
+					</td>
+				</tr>
+
+				<tr class="input-tag-grid">
+					<td class="centering">
+						<input
+							class="input-area checkbox"
+							v-model="currentAdjustments.adjustmentOverlookUniqueInDays"
+							name="adjustmentOverlookUniqueInDays"
+							type="checkbox"
+						/>
+					</td>
+					<td><label for="adjustmentOverlookUniqueInDays"> Allow doing same day </label></td>
+				</tr>
+			</table>
 		</div>
 	</div>
 </template>
@@ -48,6 +93,7 @@ import '@/styles/form-template.css';
 export default {
 	data() {
 		return {
+			wasAdjustmentModified: false,
 			associativeId: null,
 			associativeIdOrdinalNumber: null,
 			initialAdjustments: {},
@@ -62,14 +108,6 @@ export default {
 		};
 	},
 	computed: {
-		wasAdjustmentModified() {
-			for (const adjustment in this.currentAdjustments) {
-				if (this.initialAdjustments[adjustment] != this.currentAdjustments[adjustment]) {
-					return true;
-				}
-			}
-			return false;
-		},
 		adjustmentDelayInDays() {
 			return this.currentAdjustments.adjustmentDelayInDays;
 		},
@@ -97,15 +135,16 @@ export default {
 		},
 		bundleAdjustments() {
 			if (!this.hasSelectedSession) return {};
-			else return {
-				sessionAdjustments: [
-					{
-						associativeId: this.associativeId,
-						associativeIdOrdinalNumber: this.associativeIdOrdinalNumber,
-						...this.currentAdjustments,
-					},
-				],
-			};
+			else
+				return {
+					sessionAdjustments: [
+						{
+							associativeId: this.associativeId,
+							associativeIdOrdinalNumber: this.associativeIdOrdinalNumber,
+							...this.currentAdjustments,
+						},
+					],
+				};
 		},
 		unsetAdjustments() {
 			this.hasSelectedSession = false;
@@ -126,9 +165,36 @@ export default {
 			}
 			this.hasSelectedSession = true;
 		},
+		verifyWasAdjustmentModified() {
+			let wasAdjustmentModified = false;
+			for (const adjustment in this.currentAdjustments) {
+				if (this.initialAdjustments[adjustment] != this.currentAdjustments[adjustment]) {
+					wasAdjustmentModified = true;
+					break;
+				}
+			}
+			this.wasAdjustmentModified = wasAdjustmentModified;
+			return this.wasAdjustmentModified;
+		},
 	},
 	beforeMount() {
 		this.unsetAdjustments();
+	},
+	watch: {
+		currentAdjustments: {
+			deep: true,
+			immediate: true,
+			handler: function () {
+				this.verifyWasAdjustmentModified();
+			},
+		},
+		initialAdjustments: {
+			deep: true,
+			immediate: true,
+			handler: function () {
+				this.verifyWasAdjustmentModified();
+			},
+		},
 	},
 };
 </script>
@@ -139,6 +205,11 @@ export default {
 	grid-template-columns: 1fr 1fr;
 }
 
+.centering {
+	display: flex;
+	justify-content: center;
+}
+
 .number {
 	width: 50px;
 	text-align: center;
@@ -146,7 +217,7 @@ export default {
 
 .input-tag-grid {
 	display: grid;
-	grid-template-columns: 75px 1fr;
+	grid-template-columns: 75px auto;
 }
 
 .input-area {
