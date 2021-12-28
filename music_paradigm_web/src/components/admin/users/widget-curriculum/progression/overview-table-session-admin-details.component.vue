@@ -27,6 +27,15 @@
 
 <script>
 export default {
+	props: {
+		index: { type: Number, default: -1 },
+		session: {
+			type: Object,
+			default() {
+				return {};
+			},
+		},
+	},
 	data() {
 		return {
 			datesOptions: {
@@ -37,15 +46,6 @@ export default {
 				minute: 'numeric',
 			},
 		};
-	},
-	props: {
-		index: { type: Number, default: -1 },
-		session: {
-			type: Object,
-			default() {
-				return {};
-			},
-		},
 	},
 	computed: {
 		hasStartedAtLeastOnce() {

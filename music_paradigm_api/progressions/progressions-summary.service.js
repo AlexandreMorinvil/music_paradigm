@@ -40,6 +40,7 @@ async function generateProgressionSummary(userId) {
         const elements = {};
         elements.associativeId = associativeId;
         elements.associativeIdOrdinalNumber = associativeIdOrdinalNumber;
+        
         elements.title = curriculumExperiment.title;
         elements.text = curriculumExperiment.text;
         elements.releaseTime = curriculumExperiment.releaseTime;
@@ -48,8 +49,10 @@ async function generateProgressionSummary(userId) {
 
         elements.startCount = progressionExperiment.startCount || 0;
         elements.initialStartDate = progressionExperiment.initialStartDate || null;
+        elements.startDates = progressionExperiment.startDates || [];
         elements.completionCount = progressionExperiment.completionCount || 0;
         elements.advanceCompeletionDate = progressionExperiment.advanceCompeletionDate || null;
+        elements.completionDates = progressionExperiment.completionDates || [];
 
         elements.adjustmentDelayInDays = progressionExperiment.adjustmentDelayInDays || 0;
         elements.adjustmentConsiderCompleted = progressionExperiment.adjustmentConsiderCompleted || false;

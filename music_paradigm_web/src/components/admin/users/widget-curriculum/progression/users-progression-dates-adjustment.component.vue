@@ -35,6 +35,7 @@ export default {
 		return {
 			datesOptions: { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' },
 			timeSinceStartAdjustment: 0,
+			MAX_ELEMENTS_TO_DURATION: 3,
 		};
 	},
 	computed: {
@@ -94,25 +95,32 @@ export default {
 			if (!referenceDate) return '---';
 			const { isPositive, weeks, days, hours, minutes, seconds } = this.getParsedDuration(durationInMilliseconds);
 			let timeLapsed = '';
+			let elementsCount = 0;
+			const maxElements = this.MAX_ELEMENTS_TO_DURATION;
 			let includesLongerDuration = false;
-			if (weeks > 0) {
+			if ((weeks > 0) && (elementsCount < maxElements)) {
 				timeLapsed += String(weeks) + (weeks === 1 ? ' week ' : ' weeks ');
 				includesLongerDuration = true;
+				elementsCount += 1;
 			}
-			if (includesLongerDuration || days > 0) {
+			if ((includesLongerDuration || days > 0) && (elementsCount < maxElements)) {
 				timeLapsed += String(days) + (days === 1 ? ' day ' : ' days ');
 				includesLongerDuration = true;
+				elementsCount += 1;
 			}
-			if (includesLongerDuration || hours > 0) {
+			if ((includesLongerDuration || hours > 0) && (elementsCount < maxElements)) {
 				timeLapsed += String(hours) + ' h. ';
 				includesLongerDuration = true;
+				elementsCount += 1;
 			}
-			if (includesLongerDuration || minutes > 0) {
+			if ((includesLongerDuration || minutes > 0) && (elementsCount < maxElements)) {
 				timeLapsed += String(minutes) + ' min. ';
 				includesLongerDuration = true;
+				elementsCount += 1;
 			}
-			if (!includesLongerDuration) {
-				timeLapsed = String(seconds) + ' sec. ';
+			if ((includesLongerDuration || seconds > 0) && (elementsCount < maxElements)) {
+				timeLapsed += String(seconds) + ' sec. ';
+				elementsCount += 1;
 			}
 			if (isPositive) timeLapsed += 'ago';
 			else timeLapsed = 'in ' + timeLapsed;

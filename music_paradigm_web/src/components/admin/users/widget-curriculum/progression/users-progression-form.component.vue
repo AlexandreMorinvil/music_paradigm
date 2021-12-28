@@ -1,5 +1,6 @@
 <template>
 	<div class="form-grid" @submit.prevent>
+		<!-- Global display of the session -->
 		<button v-on:click="handleRefresh" class="widget-button blue refresh-button">{{ refreshButtonText }}</button>
 		<h3>Progression :</h3>
 		<progression-dates-adjustment-component ref="progressionDates" />
@@ -13,9 +14,14 @@
 				<overview-table-session-admin-details-component :session="session" :index="index" />
 			</template>
 		</overview-table-component>
+
+		<!-- Display of the selected session -->
 		<div class="inner-inner-widget" v-show="hasSelectedSession">
+			<button v-on:click="unsetSession" class="widget-button turquoise refresh-button">Unselect</button>
+			<button v-on:click="handleRefresh" class="widget-button blue refresh-button">{{ refreshButtonText }}</button>
 			<h4 class="session-title">{{ sessionTitle }}</h4>
 			<progression-session-adjustment-component ref="sessionAdjustments" />
+			<progression-session-dates-component ref="sessionDates" />
 		</div>
 	</div>
 </template>
@@ -30,13 +36,15 @@ import OverviewTableComponent from '@/components/user/home/overview-table.compon
 import OverviewTableSessionAdminDetailsComponent from './overview-table-session-admin-details.component.vue';
 import ProgressionDatesAdjustmentComponent from './users-progression-dates-adjustment.component.vue';
 import ProgressionSessionAdjustmentComponent from './users-progression-session-adjustment.component.vue';
+import ProgressionSessionDatesComponent from './users-progression-session-dates.component.vue';
 
 export default {
 	components: {
 		OverviewTableComponent,
+		OverviewTableSessionAdminDetailsComponent,
 		ProgressionSessionAdjustmentComponent,
 		ProgressionDatesAdjustmentComponent,
-		OverviewTableSessionAdminDetailsComponent,
+		ProgressionSessionDatesComponent,
 	},
 	data() {
 		return {
@@ -90,12 +98,14 @@ export default {
 		},
 		setSession(session) {
 			this.session = session || {};
-			this.$refs.sessionAdjustments.takeCurrentAdjustments(session || {});
+			this.$refs.sessionAdjustments.takeCurrentAdjustments(this.session);
+			this.$refs.sessionDates.takeSession(this.session);
 			this.updateWasModifiedStatus();
 		},
 		unsetSession() {
 			this.session = {};
 			this.$refs.sessionAdjustments.unsetAdjustments();
+			this.$refs.sessionDates.unsetSession();
 			this.updateWasModifiedStatus();
 		},
 		reFetchSession() {
@@ -111,7 +121,7 @@ export default {
 		},
 		isAlreadySelectedSession(session) {
 			if (!session) return false;
-			if (!this.session || !this.session.associativeId || !this.session.associativeIdOrdinalNumber) return false;
+			if (!this.session) return false;
 			return this.session.associativeId === session.associativeId && this.session.associativeIdOrdinalNumber === session.associativeIdOrdinalNumber;
 		},
 	},

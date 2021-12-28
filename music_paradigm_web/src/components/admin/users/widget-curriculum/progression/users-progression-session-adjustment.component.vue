@@ -107,26 +107,6 @@ export default {
 			},
 		};
 	},
-	computed: {
-		adjustmentDelayInDays() {
-			return this.currentAdjustments.adjustmentDelayInDays;
-		},
-		adjustmentConsiderCompleted() {
-			return this.currentAdjustments.adjustmentConsiderCompleted;
-		},
-		adjustmentAdditionalCompletionsRequired() {
-			return this.currentAdjustments.adjustmentAdditionalCompletionsRequired;
-		},
-		adjustmentPreponeAvailability() {
-			return this.currentAdjustments.adjustmentPreponeAvailability;
-		},
-		adjustmentOverlookUniqueInDays() {
-			return this.currentAdjustments.adjustmentOverlookUniqueInDays;
-		},
-		adjustmentImposeReadyToBeDone() {
-			return this.currentAdjustments.adjustmentImposeReadyToBeDone;
-		},
-	},
 	methods: {
 		revert() {
 			for (const adjustment in this.currentAdjustments) {
