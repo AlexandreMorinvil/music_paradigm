@@ -36,8 +36,8 @@ export default {
 			return Object.assign({}, this.parameterDefaultValues, this.userSelectedImposedParameters);
 		},
 		selectedCurriculum() {
-			const filteredCurriculum = this.curriculumsList.filter((curriculum) => curriculum._id === this.curriculumId);
-			return filteredCurriculum[0];
+			const filteredCurriculum = this.curriculumsList.find((curriculum) => curriculum._id === this.curriculumId);
+			return filteredCurriculum;
 		},
 		parameterDefaultValues() {
 			return this.selectedCurriculum ? this.selectedCurriculum.defaultVariableAssignation : {};

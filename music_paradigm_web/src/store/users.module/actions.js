@@ -31,6 +31,18 @@ export default {
 		);
 	},
 
+	refreshSelectedUserProgression({ commit, dispatch, getters }) {
+		return userService.getById(getters.userSelectedId).then(
+			(selectedUser) => {
+				commit('setSelectedUserProgression', selectedUser.progression);
+				commit('setSelectedUserProgressionSummary', selectedUser.progressionSummary);
+			},
+			(error) => {
+				dispatch('alert/setErrorAlert', `User progression refreshing failed : ${error.message}`, { root: true });
+			},
+		);
+	},
+
 	unsetSelectedUser({ commit }) {
 		commit('unsetSelectedUser');
 	},

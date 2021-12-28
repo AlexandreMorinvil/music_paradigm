@@ -218,6 +218,7 @@ export default {
 .input-tag-grid {
 	display: grid;
 	grid-template-columns: 75px auto;
+	min-width: 400px;
 }
 
 .input-area {

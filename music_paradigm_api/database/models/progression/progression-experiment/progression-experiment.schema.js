@@ -94,6 +94,10 @@ const schema = new Schema(
 
 // Virtual properties
 
+schema.virtual('completionsNeeded').get(function () {
+    return 1 + this.adjustmentAdditionalCompletionsRequired;
+});
+
 // This is not used for backward compatibility. Moreover, changes to those two attributes would require serious
 // testing to ensure that all logs, user progressions and admin displays continue working as they should
 // schema.virtual('startCount').get(function() {
@@ -108,10 +112,11 @@ schema.virtual('initialStartDate').get(function () {
 });
 
 schema.virtual('advanceCompeletionDate').get(function () {
-    const completionsNeeded = 1 + this.adjustmentAdditionalCompletionsRequired;
-    const advanceCompeletionDate = this.completionDates[completionsNeeded - 1];
+    const advanceCompeletionDate = this.completionDates[this.completionsNeeded - 1];
     return advanceCompeletionDate ? advanceCompeletionDate : this.completionDates[this.completionDates.length - 1];
 });
+
+
 
 // Setter functions
 function setterAssociativeId(title) {

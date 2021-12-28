@@ -1,5 +1,6 @@
 <template>
 	<div class="form-grid" @submit.prevent>
+		<button v-on:click="handleRefresh" class="widget-button blue refresh-button">{{ refreshButtonText }}</button>
 		<h3>Progression :</h3>
 		<progression-dates-adjustment-component ref="progressionDates" />
 		<overview-table-component v-show="hasHistory" :overWrittingProgressionHistory="history" v-on:sessionSelected="handleSessionSelection" />
@@ -14,7 +15,7 @@
 import '@/styles/widget-template.css';
 import '@/styles/form-template.css';
 
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 import OverviewTableComponent from '@/components/user/home/overview-table.component.vue';
 import ProgressionDatesAdjustmentComponent from './users-progression-dates-adjustment.component.vue';
@@ -28,6 +29,7 @@ export default {
 	},
 	data() {
 		return {
+			isRefreshing: false,
 			wasProgressionModified: false,
 			session: {},
 		};
@@ -47,8 +49,18 @@ export default {
 			const title = this.session ? String(this.session.title) : '';
 			return title.toUpperCase();
 		},
+		refreshButtonText() {
+			return this.isRefreshing ? 'Refreshing...' : 'Refresh';
+		},
 	},
 	methods: {
+		...mapActions('users', ['refreshSelectedUserProgression']),
+		handleRefresh() {
+			this.isRefreshing = true;
+			this.refreshSelectedUserProgression().finally(() => {
+				this.isRefreshing = false;
+			});
+		},
 		bundleProgressionAdjustments() {
 			return {
 				...this.$refs.progressionDates.bundleAdjustments(),
@@ -112,6 +124,10 @@ export default {
 </script>
 
 <style scoped>
+.refresh-button {
+	float: right;
+}
+
 .session-title {
 	text-align: center;
 	margin-bottom: 20px;
