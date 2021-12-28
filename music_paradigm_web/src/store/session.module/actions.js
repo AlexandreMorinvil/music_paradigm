@@ -58,7 +58,6 @@ export default {
 					/* Nothing is done */
 				},
 				(error) => {
-					// TODO: Keep on memory the failed initialization in localstorage and reattempt at every time we send log data
 					console.log(error);
 				},
 			)
@@ -77,7 +76,6 @@ export default {
 					/* Nothing is done */
 				},
 				(error) => {
-					// TODO : Keep in memory the failed completion in localstorage to make sure on the next login we handle it
 					console.log(error);
 				},
 			)
@@ -92,7 +90,7 @@ export default {
 		commit('setIsSavingSessionState');
 		return sessionService
 			.saveSessionState(
-				getters.associativeId, 
+				getters.associativeId,
 				rootGetters['experiment/cursor'],
 				rootGetters['experiment/state'],
 				rootGetters['experiment/timeIndicated'],
@@ -102,7 +100,6 @@ export default {
 					/* Nothing is done */
 				},
 				(error) => {
-					// TODO: Keep on memory the failed state to save in localstorage and reattempt at every time we send log data
 					console.log(error);
 				},
 			)

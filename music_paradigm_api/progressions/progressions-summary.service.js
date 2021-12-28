@@ -47,7 +47,9 @@ async function generateProgressionSummary(userId) {
         elements.isCompletionLimited = curriculumExperiment.isCompletionLimited;
 
         elements.startCount = progressionExperiment.startCount || 0;
+        elements.initialStartDate = progressionExperiment.initialStartDate || null;
         elements.completionCount = progressionExperiment.completionCount || 0;
+        elements.advanceCompeletionDate = progressionExperiment.advanceCompeletionDate || null;
 
         elements.adjustmentDelayInDays = progressionExperiment.adjustmentDelayInDays || 0;
         elements.adjustmentConsiderCompleted = progressionExperiment.adjustmentConsiderCompleted || false;

@@ -103,6 +103,16 @@ const schema = new Schema(
 //     return this.completionDates.length;
 // });
 
+schema.virtual('initialStartDate').get(function () {
+    return this.startDates[0] || null;
+});
+
+schema.virtual('advanceCompeletionDate').get(function () {
+    const completionsNeeded = 1 + this.adjustmentAdditionalCompletionsRequired;
+    const advanceCompeletionDate = this.completionDates[completionsNeeded - 1];
+    return advanceCompeletionDate ? advanceCompeletionDate : this.completionDates[this.completionDates.length - 1];
+});
+
 // Setter functions
 function setterAssociativeId(title) {
     if (title) return title.toLowerCase();
@@ -110,5 +120,6 @@ function setterAssociativeId(title) {
 }
 
 schema.set('toJSON', { virtuals: true });
+schema.set('toObject', { virtuals: true });
 
 module.exports = schema;

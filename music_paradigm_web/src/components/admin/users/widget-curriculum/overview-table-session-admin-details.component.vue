@@ -4,19 +4,23 @@
 		class="details-container details-container-color details-text"
 		:class="{ 'adjusted-container-color': hasAdjustment }"
 	>
-		<tbody>
-			<tr>
-				<td><b>Starts :</b></td>
-				<td>{{ starts }}</td>
-			</tr>
-			<tr>
-				<td><b>Completions :</b></td>
-				<td>{{ completions }}</td>
-			</tr>
-		</tbody>
+		<div>
+			<b class="center-align">Started:</b>
+			<p class="center-align">
+				<span> {{ startCount }} </span>
+				<span v-if="initialStartDate">{{ initialStartDate }} </span>
+			</p>
+		</div>
+		<div v-if="hasStartedAtLeastOnce">
+			<b class="center-align">Completed:</b>
+			<p class="center-align">
+				<span> {{ completionCount }} </span>
+				<span v-if="advanceCompeletionDate">{{ advanceCompeletionDate }} </span>
+			</p>
+		</div>
 		<div v-if="hasAdjustment">
-			<b>Adjustments :</b>
-			<p v-for="(text, index) in adjustmentsTexts" v-bind:key="index"> {{ text }}</p>
+			<b class="center-align">Adjustments :</b>
+			<p class="center-align" v-for="(text, index) in adjustmentsTexts" v-bind:key="index">{{ text }}</p>
 		</div>
 	</div>
 </template>
@@ -24,18 +28,37 @@
 <script>
 export default {
 	data() {
-		return {};
+		return {
+			datesOptions: {
+				year: 'numeric',
+				month: 'numeric',
+				day: 'numeric',
+				hour: 'numeric',
+				minute: 'numeric',
+			},
+		};
 	},
 	props: {
 		index: { type: Number, default: -1 },
 		session: { type: Object, default: null },
 	},
 	computed: {
-		starts() {
-			return this.session.startCount || 'Never';
+		hasStartedAtLeastOnce() {
+			return Number(this.session.startCount) > 0;
 		},
-		completions() {
-			return this.session.completionCount || 'Never';
+		startCount() {
+			return this.makeCountDisplay(this.session.startCount);
+		},
+		initialStartDate() {
+			if (!this.session.initialStartDate) return '';
+			else return this.makeDateDisplay(this.session.initialStartDate);
+		},
+		completionCount() {
+			return this.makeCountDisplay(this.session.completionCount);
+		},
+		advanceCompeletionDate() {
+			if (!this.session.advanceCompeletionDate) return '';
+			else return this.makeDateDisplay(this.session.advanceCompeletionDate);
 		},
 		hasAdjustment() {
 			if (this.session.adjustmentDelayInDays) return true;
@@ -71,7 +94,7 @@ export default {
 			const adjustmentConsiderCompleted = this.session.adjustmentConsiderCompleted || false;
 			const wasCompleted = this.session.completionCount > 0;
 			if (!adjustmentConsiderCompleted) return '';
-			if (!wasCompleted) return 'Allowed to skip (considered completed)';
+			if (!wasCompleted) return 'Considered completed';
 			else return 'Allowed to skip';
 		},
 		adjustmentAdditionalCompletionsRequired() {
@@ -97,14 +120,33 @@ export default {
 			else return 'Imposed ready';
 		},
 	},
-	methods: {},
+	methods: {
+		makeCountDisplay(count) {
+			if (!count) return 'Never';
+			if (count == 1) return '1 time';
+			if (count > 1) return `${count} times`;
+			else return 'Error';
+		},
+		makeDateDisplay(date) {
+			return new Date(date).toLocaleDateString(undefined, this.datesOptions);
+		},
+	},
 	watch: {},
 };
 </script>
 
 <style scoped>
-td {
-	padding: 0 5px;
+.center-title {
+	justify-content: center;
+}
+
+.center-align {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+	align-content: center;
+	text-align: center;
 }
 
 .details-container {
