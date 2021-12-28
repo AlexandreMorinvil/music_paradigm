@@ -2,7 +2,7 @@
 	<div id="users-editor" class="widget widget-bg">
 		<users-curriculum-form-component class="curticulum-position inner-widget" ref="userCurriculumForm" />
 		<users-parameters-form-component class="parameters-position inner-widget" ref="userParametersForm" />
-		<users-progression-form-component v-show="hasProgressionHistory" class="progression-position inner-widget" ref="userProgressionForm" />
+		<users-progression-form-component v-show="mustDisplayProgression" class="progression-position inner-widget" ref="userProgressionForm" />
 
 		<div class="submission-buttons-position">
 			<button v-on:click="handleRevert" class="widget-button blue" :class="{ inactive: !isRevertButtonActive }">Revert</button>
@@ -24,6 +24,7 @@ import '@/styles/widget-template.css';
 import '@/styles/form-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
+import { AdminUsersEventBus, adminUsersEvents } from '@/event-bus/admin-users.event-bus.js';
 import UsersCurriculumFormComponent from './users-curriculum-form.component.vue';
 import UsersParametersFormComponent from './users-parameters-form.component.vue';
 import UsersProgressionFormComponent from './users-progression-form.component.vue';
@@ -36,6 +37,7 @@ export default {
 	},
 	data() {
 		return {
+			curriculum: null,
 			isRevertButtonActive: false,
 			isCurriculumAssignmentButtonActive: false,
 			isParametersUpdateButtonActive: false,
@@ -43,7 +45,13 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('users', ['hasSelectedUser', 'userSelectedId', 'hasCurriculumToSelectedUser', 'hasProgressionHistory']),
+		...mapGetters('users', ['hasSelectedUser', 'userSelectedId', 'userSelectedCurriculum', 'hasCurriculumToSelectedUser', 'hasProgressionHistory']),
+		isCurrentCurriculumAssigned() {
+			return this.userSelectedCurriculum === this.curriculum;
+		},
+		mustDisplayProgression() {
+			return this.hasProgressionHistory && this.isCurrentCurriculumAssigned;
+		},
 	},
 	methods: {
 		...mapActions('curriculums', ['fetchAllCurriculumHeaders']),
@@ -96,6 +104,9 @@ export default {
 		evaluateIsAdjustmentsUpdateButtonActive(wasCurriculumModified, wasProgressionModified) {
 			this.isAdjustmentsUpdateButtonActive = this.hasSelectedUser && wasProgressionModified && !wasCurriculumModified;
 		},
+		changeCurriculum(curriculum) {
+			this.curriculum = curriculum;
+		},
 	},
 	beforeMount() {
 		this.fetchAllCurriculumHeaders();
@@ -104,6 +115,10 @@ export default {
 		this.$watch(() => this.$refs.userCurriculumForm.wasCurriculumModified, this.evaluateAllButtonsActive, { immediate: true });
 		this.$watch(() => this.$refs.userParametersForm.wasParametersModified, this.evaluateAllButtonsActive, { immediate: true });
 		this.$watch(() => this.$refs.userProgressionForm.wasProgressionModified, this.evaluateAllButtonsActive, { immediate: true });
+		AdminUsersEventBus.$on(adminUsersEvents.SELECTED_USER_CURRICULUM_CHANGED, this.changeCurriculum);
+	},
+	beforeDestroy() {
+		AdminUsersEventBus.$off(adminUsersEvents.SELECTED_USER_CURRICULUM_CHANGED, this.changeCurriculum);
 	},
 };
 </script>
