@@ -67,6 +67,7 @@ function setSessionAdjustements(progression, sessionsAjustments = []) {
         })
 
         // Apply the adjustments to the experiment
+        if (!experiment) return;
         if (adjustments.hasOwnProperty('adjustmentDelayInDays')) experiment.adjustmentDelayInDays = adjustments.adjustmentDelayInDays;
         if (adjustments.hasOwnProperty('adjustmentConsiderCompleted')) experiment.adjustmentConsiderCompleted = adjustments.adjustmentConsiderCompleted;
         if (adjustments.hasOwnProperty('adjustmentAdditionalCompletionsRequired')) experiment.adjustmentAdditionalCompletionsRequired = adjustments.adjustmentAdditionalCompletionsRequired;

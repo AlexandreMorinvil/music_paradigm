@@ -4,7 +4,7 @@
 		<progression-dates-adjustment-component ref="progressionDates" />
 		<overview-table-component :overWrittingProgressionHistory="history" v-on:sessionSelected="setSession" />
 		<div class="inner-inner-widget" v-show="hasSelectedSession">
-			<h4>{{ sessionTitle }}</h4>
+			<h4 class="session-title">{{ sessionTitle }}</h4>
 			<progression-session-adjustment-component ref="sessionAdjustments" />
 		</div>
 	</div>
@@ -41,7 +41,8 @@ export default {
 			return Boolean(this.session && this.session.associativeId);
 		},
 		sessionTitle() {
-			return this.session ? this.session.title : '';
+			const title = this.session ? String(this.session.title) : '';
+			return title.toUpperCase();
 		},
 	},
 	methods: {
@@ -95,4 +96,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.session-title {
+	text-align: center;
+	margin-bottom: 20px;
+}
+</style>
