@@ -1,8 +1,10 @@
 <template>
 	<div class="form-grid" @submit.prevent>
 		<!-- Global display of the session -->
-		<button v-on:click="handleRefresh" class="widget-button blue refresh-button">{{ refreshButtonText }}</button>
-		<h3>Progression :</h3>
+		<div class="progression-header">
+			<h3>Progression :</h3>
+			<button v-on:click="handleRefresh" class="widget-button blue refresh-button">{{ refreshButtonText }}</button>
+		</div>
 		<progression-dates-adjustment-component ref="progressionDates" />
 		<overview-table-component
 			v-show="hasHistory"
@@ -17,9 +19,11 @@
 
 		<!-- Display of the selected session -->
 		<div class="inner-inner-widget" v-show="hasSelectedSession">
-			<button v-on:click="unsetSession" class="widget-button turquoise refresh-button">Unselect</button>
-			<button v-on:click="handleRefresh" class="widget-button blue refresh-button">{{ refreshButtonText }}</button>
-			<h4 class="session-title">{{ sessionTitle }}</h4>
+			<div class="session-header">
+				<h4 class="session-title">{{ sessionTitle }}</h4>
+				<button v-on:click="handleRefresh" class="widget-button blue refresh-button">{{ refreshButtonText }}</button>
+				<button v-on:click="unsetSession" class="widget-button turquoise">Unselect</button>
+			</div>
 			<progression-session-adjustment-component ref="sessionAdjustments" />
 			<progression-session-dates-component ref="sessionDates" />
 		</div>
@@ -147,11 +151,25 @@ export default {
 
 <style scoped>
 .refresh-button {
-	float: right;
+	margin-left: auto;
+	margin-right: 20px;
 }
 
 .session-title {
 	text-align: center;
 	margin-bottom: 20px;
+	position: absolute;
+}
+
+.progression-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.session-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
 }
 </style>
