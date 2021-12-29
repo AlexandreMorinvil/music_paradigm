@@ -1,7 +1,7 @@
-const User = require('database/models/user/user.model');
-const Curriculum = require('database/models/curriculum/curriculum.model');
-const Experiment = require('database/models/experiment/experiment.model');
-const ExperimentMarker = require('database/models/experiment-marker/experiment-marker.model');
+const User = require('database/db').User;
+const Curriculum = require('database/db').Curriculum;
+const Experiment = require('database/db').Experiment;
+const ExperimentMarker = require('database/db').ExperimentMarker;
 
 module.exports = {
     getSessionInformation,
@@ -140,8 +140,8 @@ async function saveSessionState(userId, associativeId, cursor, state, timeIndica
     const experimentMarker = await ExperimentMarker.findMarker(progression._id, associativeId);
 
     // Assign the state of the session to the marker
-    if (experimentMarker) experimentMarker.updateMaker(cursor, state, timeIndicated);
-    else ExperimentMarker.createMaker(progression._id, associativeId, cursor, state, timeIndicated);
+    if (experimentMarker) await experimentMarker.updateMarker(cursor, state, timeIndicated);
+    else await ExperimentMarker.createMaker(progression._id, associativeId, cursor, state, timeIndicated);
 
     // Save changes
     return progression.save();

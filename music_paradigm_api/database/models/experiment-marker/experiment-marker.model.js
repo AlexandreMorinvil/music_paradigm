@@ -16,22 +16,28 @@ schema.statics.createMaker = async function (progressionReference, associativeId
     this.create(marker);
 }
 
+schema.statics.findMarkers = async function (progressionReference) {
+    return this.find({
+        progressionReference: progressionReference,
+    });
+}
+
 schema.statics.findMarker = async function (progressionReference, associativeId) {
-    return await this.findOne({
+    return this.findOne({
         progressionReference: progressionReference,
         associativeId: associativeId
     });
 }
 
 schema.statics.deleteMarker = async function (progressionReference, associativeId) {
-    return await this.deleteOne({
+    return this.deleteOne({
         progressionReference: progressionReference,
         associativeId: associativeId
     });
 };
 
 schema.statics.forgetTimeLeft = async function (progressionReference, associativeId) {
-    return await this.updateOne({
+    return this.updateOne({
         progressionReference: progressionReference,
         associativeId: associativeId
     }, {
@@ -43,7 +49,7 @@ schema.statics.forgetTimeLeft = async function (progressionReference, associativ
 // Instance methods
 
 // We set the cursor and the current state
-schema.methods.updateMaker = async function (cursor, state, timeIndicated) {
+schema.methods.updateMarker = async function (cursor, state, timeIndicated) {
     this.cursor = cursor;
     this.state = state;
     this.timeIndicated = timeIndicated;

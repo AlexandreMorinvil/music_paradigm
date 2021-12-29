@@ -1,5 +1,6 @@
 module.exports = {
     generateProgressionToCurriculumAssociation,
+    indicateExperimentMakersInProgressionAssociation,
     generateProgressionToCurriculumAssociationSummary,
 };
 
@@ -58,8 +59,30 @@ function generateProgressionToCurriculumAssociation(curriculum, progression) {
 }
 
 /**
- * @param  {[type]} curriculum  
- * @param  {[type]} progression 
+ * @param  {Array<Object>}  associations  
+ * @param  {Array<Object>}  experimentMakers 
+ * @return {Array<Object>}  The associations with a 'hasExperimentMarker' boolean field indicating if
+ *                          it has an experiment marker.
+ *                      
+*/
+function indicateExperimentMakersInProgressionAssociation(associations, experimentMakers) {
+
+    // Verify the parameters
+    if (!associations || associations.length < 1) return []
+    if (!experimentMakers || !experimentMakers.length < 1) return associations;
+
+    // We indicate it if the experiment has a marker
+    associations.forEach(association => {
+        const { associativeId } = associations;
+        const marker = experimentMakers.find((marker) => marker.associativeId === associativeId);
+        association.hasExperimentMarker = Boolean(marker);
+    });
+    return associations;
+}
+
+/**
+ * @param  {Object} curriculum  
+ * @param  {Object} progression 
  * @return {Object} Summary of the progression of the user considering his curriculum :
  *  {
  *      reachedExperimentTitle: String,

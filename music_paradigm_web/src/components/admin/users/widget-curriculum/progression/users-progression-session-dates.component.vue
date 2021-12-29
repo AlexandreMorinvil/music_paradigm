@@ -42,7 +42,7 @@ export default {
 			startDates: [],
 			completionDates: [],
 			completionStartAssociation: {},
-			datesOptions: { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' },
+			datesOptions: { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' },
 		};
 	},
 	computed: {

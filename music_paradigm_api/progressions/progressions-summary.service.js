@@ -1,6 +1,7 @@
-const timeHandler = require('_helpers/timeHandler')
+const timeHandler = require('_helpers/time-handler')
 const progressionAssociation = require('./progressions-association.service');
 const User = require('database/db').User;
+const ExperimentMarker = require('database/db').ExperimentMarker;
 
 module.exports = {
     generateProgressionSummary,
@@ -8,13 +9,18 @@ module.exports = {
 
 async function generateProgressionSummary(userId) {
     let { curriculum, progression } = await User.getCurriculumAndProgressionObject(userId);
+    let experimentMakers = [];
 
     // Verify parameters
     if (!curriculum) return { history: [], dueExperiment: null };
     if (!progression) progression = {};
 
+    // Retrieve experiment markers
+    else experimentMakers = await ExperimentMarker.findMarkers(progression._id);
+
     // Generate progression to curriculum association
-    const association = progressionAssociation.generateProgressionToCurriculumAssociation(curriculum, progression);
+    let association = progressionAssociation.generateProgressionToCurriculumAssociation(curriculum, progression);
+    association = progressionAssociation.indicateExperimentMakersInProgressionAssociation(association, experimentMakers);
 
     // Generate the progression summary
     let dueExperiment = null;
@@ -40,7 +46,7 @@ async function generateProgressionSummary(userId) {
         const elements = {};
         elements.associativeId = associativeId;
         elements.associativeIdOrdinalNumber = associativeIdOrdinalNumber;
-        
+
         elements.title = curriculumExperiment.title;
         elements.text = curriculumExperiment.text;
         elements.releaseTime = curriculumExperiment.releaseTime;
@@ -102,7 +108,7 @@ async function generateProgressionSummary(userId) {
             wasTodayCompleted
         );
     }
-    return { history: progressionHistory, dueExperiment: dueExperiment };
+    return { history: progressionHistory, makers: experimentMakers, dueExperiment: dueExperiment };
 }
 
 function adjustStartTime(daysElapsed, adjustmentInDays = 0) {
