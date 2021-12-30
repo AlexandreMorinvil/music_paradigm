@@ -60,8 +60,8 @@ async function initializeSession(userId, associativeId, associativeIdOrdinalNumb
 
     const progression = await User.getLastProgression(userId);
     const curriculum = await Curriculum.findById(progression.curriculumReference);
-    let experimentDoneInProgression = progression.getExperimentAssociated(associativeId, associativeIdOrdinalNumber);
     const experimentPlanedInCurriculum = await curriculum.getExperimentAssociated(associativeId);
+    let experimentDoneInProgression = progression.getExperimentAssociated(associativeId, associativeIdOrdinalNumber);
 
     // Create a nexted associated experiment to put in the progression if it doesn't exist
     if (!experimentDoneInProgression) {

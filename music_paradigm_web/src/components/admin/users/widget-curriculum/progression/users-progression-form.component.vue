@@ -13,7 +13,7 @@
 			v-on:sessionSelected="handleSessionSelection"
 		>
 			<template slot-scope="{ session, index }">
-				<overview-table-session-admin-details-component :session="session" :index="index" />
+				<overview-table-session-details-component :session="session" :index="index" />
 			</template>
 		</overview-table-component>
 
@@ -37,7 +37,7 @@ import '@/styles/form-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
 import OverviewTableComponent from '@/components/user/home/overview-table.component.vue';
-import OverviewTableSessionAdminDetailsComponent from './overview-table-session-admin-details.component.vue';
+import OverviewTableSessionDetailsComponent from './overview-table-session-details.component.vue';
 import ProgressionDatesAdjustmentComponent from './users-progression-dates-adjustment.component.vue';
 import ProgressionSessionAdjustmentComponent from './users-progression-session-adjustment.component.vue';
 import ProgressionSessionDatesComponent from './users-progression-session-dates.component.vue';
@@ -45,7 +45,7 @@ import ProgressionSessionDatesComponent from './users-progression-session-dates.
 export default {
 	components: {
 		OverviewTableComponent,
-		OverviewTableSessionAdminDetailsComponent,
+		OverviewTableSessionDetailsComponent,
 		ProgressionSessionAdjustmentComponent,
 		ProgressionDatesAdjustmentComponent,
 		ProgressionSessionDatesComponent,

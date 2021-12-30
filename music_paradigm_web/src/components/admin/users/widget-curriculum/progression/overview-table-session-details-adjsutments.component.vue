@@ -1,34 +1,13 @@
 <template>
-		<!-- v-if="session.associativeId" -->
-	<div
-		class="details-container details-container-color details-text"
-		:class="{ 'adjusted-container-color': hasAdjustment }"
-	>
-		<div>
-			<b class="center-align">Started:</b>
-			<p class="center-align">
-				<span> {{ startCount }} </span>
-				<span v-if="initialStartDate">{{ initialStartDate }} </span>
-			</p>
-		</div>
-		<div v-if="hasStartedAtLeastOnce">
-			<b class="center-align">Completed:</b>
-			<p class="center-align">
-				<span> {{ completionCount }} </span>
-				<span v-if="advanceCompeletionDate">{{ advanceCompeletionDate }} </span>
-			</p>
-		</div>
-		<div v-if="hasAdjustment">
-			<b class="center-align">Adjustments :</b>
-			<p class="center-align" v-for="(text, index) in adjustmentsTexts" v-bind:key="index">{{ text }}</p>
-		</div>
+	<div v-show="hasAdjustment">
+		<b class="center-align">Adjustments :</b>
+		<p class="center-align" v-for="(text, index) in adjustmentsTexts" v-bind:key="index">{{ text }}</p>
 	</div>
 </template>
 
 <script>
 export default {
 	props: {
-		index: { type: Number, default: -1 },
 		session: {
 			type: Object,
 			default() {
@@ -37,34 +16,9 @@ export default {
 		},
 	},
 	data() {
-		return {
-			datesOptions: {
-				year: 'numeric',
-				month: 'numeric',
-				day: 'numeric',
-				hour: 'numeric',
-				minute: 'numeric',
-			},
-		};
+		return {};
 	},
 	computed: {
-		hasStartedAtLeastOnce() {
-			return Number(this.session.startCount) > 0;
-		},
-		startCount() {
-			return this.makeCountDisplay(this.session.startCount);
-		},
-		initialStartDate() {
-			if (!this.session.initialStartDate) return '';
-			else return this.makeDateDisplay(this.session.initialStartDate);
-		},
-		completionCount() {
-			return this.makeCountDisplay(this.session.completionCount);
-		},
-		advanceCompeletionDate() {
-			if (!this.session.advanceCompeletionDate) return '';
-			else return this.makeDateDisplay(this.session.advanceCompeletionDate);
-		},
 		hasAdjustment() {
 			if (this.session.adjustmentDelayInDays) return true;
 			if (this.session.adjustmentConsiderCompleted) return true;
@@ -139,17 +93,6 @@ export default {
 			else return 'No completion limit';
 		},
 	},
-	methods: {
-		makeCountDisplay(count) {
-			if (!count) return 'Never';
-			if (count == 1) return '1 time';
-			if (count > 1) return `${count} times`;
-			else return 'Error';
-		},
-		makeDateDisplay(date) {
-			return new Date(date).toLocaleDateString(undefined, this.datesOptions);
-		},
-	},
 	watch: {},
 };
 </script>
@@ -166,30 +109,5 @@ export default {
 	justify-content: space-around;
 	align-content: center;
 	text-align: center;
-}
-
-.details-container {
-	width: 180px;
-	height: auto;
-	margin: 10px;
-	border-style: solid;
-	border-radius: 1px;
-	border-width: 4px;
-	padding: 5px;
-}
-
-.details-container-color {
-	background-color: rgb(45, 45, 145);
-	border-color: rgb(50, 50, 150);
-	box-shadow: 5px 5px 5px rgb(15, 15, 15);
-}
-
-.adjusted-container-color {
-	background-color: rgb(170, 110, 0);
-	border-color: rgb(165, 105, 0);
-}
-
-.details-text {
-	font-size: 0.6em;
 }
 </style>

@@ -69,11 +69,11 @@ function indicateExperimentMakersInProgressionAssociation(associations, experime
 
     // Verify the parameters
     if (!associations || associations.length < 1) return []
-    if (!experimentMakers || !experimentMakers.length < 1) return associations;
+    if (!experimentMakers || experimentMakers.length < 1) return associations;
 
     // We indicate it if the experiment has a marker
     associations.forEach(association => {
-        const { associativeId } = associations;
+        const { associativeId } = association;
         const marker = experimentMakers.find((marker) => marker.associativeId === associativeId);
         association.hasExperimentMarker = Boolean(marker);
     });

@@ -37,15 +37,20 @@ async function generateProgressionSummary(userId) {
 
     for (i in curriculum.experiments) {
         // We retrieve the history of the experients completed
-        const curriculumExperiment = association[i].curriculumExperiment;
-        const progressionExperiment = association[i].progressionExperiment;
-        const associativeId = association[i].associativeId;
-        const associativeIdOrdinalNumber = association[i].associativeIdOrdinalNumber;
+        const {
+            curriculumExperiment,
+            progressionExperiment,
+            associativeId,
+            associativeIdOrdinalNumber,
+            hasExperimentMarker,
+        } = association[i];
 
         // Attributes that are relative to the current experiment
         const elements = {};
         elements.associativeId = associativeId;
         elements.associativeIdOrdinalNumber = associativeIdOrdinalNumber;
+
+        elements.hasExperimentMarker = hasExperimentMarker;
 
         elements.title = curriculumExperiment.title;
         elements.text = curriculumExperiment.text;
@@ -140,11 +145,11 @@ function adjustMustIgnoreBlockingSequence(adjustmentImposeReadyToBeDone = false)
     return Boolean(adjustmentImposeReadyToBeDone);
 }
 
-function adjustMustBlockAvailability(adjustmentBlockAvailability = false){
+function adjustMustBlockAvailability(adjustmentBlockAvailability = false) {
     return Boolean(adjustmentBlockAvailability);
 }
 
-function adjustMustRemoveCompletionLimit(adjustmentRemoveCompletionLimit = false){
+function adjustMustRemoveCompletionLimit(adjustmentRemoveCompletionLimit = false) {
     return Boolean(adjustmentRemoveCompletionLimit);
 }
 
