@@ -74,6 +74,8 @@ function setSessionAdjustements(progression, sessionsAjustments = []) {
         if (adjustments.hasOwnProperty('adjustmentPreponeAvailability')) experiment.adjustmentPreponeAvailability = adjustments.adjustmentPreponeAvailability;
         if (adjustments.hasOwnProperty('adjustmentOverlookUniqueInDays')) experiment.adjustmentOverlookUniqueInDays = adjustments.adjustmentOverlookUniqueInDays;
         if (adjustments.hasOwnProperty('adjustmentImposeReadyToBeDone')) experiment.adjustmentImposeReadyToBeDone = adjustments.adjustmentImposeReadyToBeDone;
+        if (adjustments.hasOwnProperty('adjustmentBlockAvailability')) experiment.adjustmentBlockAvailability = adjustments.adjustmentBlockAvailability;
+        if (adjustments.hasOwnProperty('adjustmentRemoveCompletionLimit')) experiment.adjustmentRemoveCompletionLimit = adjustments.adjustmentRemoveCompletionLimit;
     });
 
     return progression;

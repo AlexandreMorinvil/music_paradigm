@@ -66,6 +66,8 @@ async function generateProgressionSummary(userId) {
         elements.adjustmentPreponeAvailability = progressionExperiment.adjustmentPreponeAvailability || false;
         elements.adjustmentOverlookUniqueInDays = progressionExperiment.adjustmentOverlookUniqueInDays || false;
         elements.adjustmentImposeReadyToBeDone = progressionExperiment.adjustmentImposeReadyToBeDone || false;
+        elements.adjustmentBlockAvailability = progressionExperiment.adjustmentBlockAvailability || false;
+        elements.adjustmentRemoveCompletionLimit = progressionExperiment.adjustmentRemoveCompletionLimit || false;
 
         // Consider adjustments
         const adjustedDelayInDays = adjustDelayInDays(curriculumExperiment.delayInDays, elements.adjustmentDelayInDays);
@@ -73,23 +75,26 @@ async function generateProgressionSummary(userId) {
         const mustPreponeAvailability = adjustMustPreponeAvailability(elements.adjustmentPreponeAvailability, elements.adjustmentImposeReadyToBeDone);
         const mustIgnoreBlockingUniqueInDay = adjustMustIgnoreBlockingUniqueInDay(elements.adjustmentOverlookUniqueInDays);
         const mustIgnoreBlockingSequence = adjustMustIgnoreBlockingSequence(elements.adjustmentImposeReadyToBeDone);
+        const mustBeBlocked = adjustMustBlockAvailability(elements.adjustmentBlockAvailability);
+        const mustRemoveCompletionLimits = adjustMustRemoveCompletionLimit(elements.adjustmentRemoveCompletionLimit);
 
         // Computer the status of the experiment in the progression
         elements.delayPreAvailabilityInDays = getDelayInDaysLeft(adjustedDelayInDays, timeElapsedInDays);
         elements.delayPreAvailabilityInHours = getDelayInHoursLeft(elements.delayPreAvailabilityInDays, curriculumExperiment.releaseTime);
-        elements.isLockedByCompletionLimit = getIsLockedByCompletionLimit(curriculumExperiment.isCompletionLimited, adjustedCompletionCount);
+        elements.isLockedByCompletionLimit = getIsLockedByCompletionLimit(curriculumExperiment.isCompletionLimited, adjustedCompletionCount, mustRemoveCompletionLimits);
         elements.wouldBeFree = getWouldBeFreeStatus(elements.delayPreAvailabilityInDays, elements.delayPreAvailabilityInHours, elements.isLockedByCompletionLimit, mustPreponeAvailability);
 
         // Attributes that are relative to the previous experiments of the chain
         elements.isDelayedByPreviousSequential = hasBlockingIncompleteInSequence;
         elements.isDelayedByPreviousUniqueInDay = !mustIgnoreBlockingUniqueInDay && hasBlockingUniqueInDayDoneToday;
         elements.isAvailable = getIsAvailableStatus(
-            elements.wouldBeFree, 
-            elements.isDelayedByPreviousSequential, 
-            elements.isDelayedByPreviousUniqueInDay, 
-            mustIgnoreBlockingSequence
+            elements.wouldBeFree,
+            elements.isDelayedByPreviousSequential,
+            elements.isDelayedByPreviousUniqueInDay,
+            mustIgnoreBlockingSequence,
+            mustBeBlocked,
         );
-        
+
         // Add element to the history
         progressionHistory.push(elements);
 
@@ -135,6 +140,14 @@ function adjustMustIgnoreBlockingSequence(adjustmentImposeReadyToBeDone = false)
     return Boolean(adjustmentImposeReadyToBeDone);
 }
 
+function adjustMustBlockAvailability(adjustmentBlockAvailability = false){
+    return Boolean(adjustmentBlockAvailability);
+}
+
+function adjustMustRemoveCompletionLimit(adjustmentRemoveCompletionLimit = false){
+    return Boolean(adjustmentRemoveCompletionLimit);
+}
+
 function getDelayInDaysLeft(delayInDaysBeforeAvailability, timeElapsedInDays) {
     return Math.max(0, delayInDaysBeforeAvailability - timeElapsedInDays);
 }
@@ -144,7 +157,8 @@ function getDelayInHoursLeft(delayPreAvailabilityInDays, releaseTimeInHours) {
     return releaseTimeInHours;
 }
 
-function getIsLockedByCompletionLimit(isCompletionLimited, completionsDone = 0) {
+function getIsLockedByCompletionLimit(isCompletionLimited, completionsDone = 0, mustRemoveCompletionLimits = false) {
+    if (mustRemoveCompletionLimits) return false;
     if (isCompletionLimited) return completionsDone > 0;
     else return false;
 }
@@ -157,7 +171,8 @@ function getWouldBeFreeStatus(delayInDays, delayInHours, isLockedByCompletionLim
     else return true
 }
 
-function getIsAvailableStatus(wouldBeFree, hasBlockingIncompleteInSequence, hasBlockingUniqueInDayDoneToday, mustIgnoreBlockingSequence = false) {
+function getIsAvailableStatus(wouldBeFree, hasBlockingIncompleteInSequence, hasBlockingUniqueInDayDoneToday, mustIgnoreBlockingSequence = false, mustBeBlocked = false) {
+    if (mustBeBlocked) return false;
     if (mustIgnoreBlockingSequence && wouldBeFree) return true;
     else return !hasBlockingIncompleteInSequence && !hasBlockingUniqueInDayDoneToday && wouldBeFree;
 }

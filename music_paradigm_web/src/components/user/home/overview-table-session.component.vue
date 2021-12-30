@@ -65,6 +65,9 @@ export default {
 		},
 		wasCompleted() {
 			return this.session.completionCount >= this.completionsNeeded || this.session.adjustmentConsiderCompleted;
+		},
+		isBlocked() {
+			return this.session.adjustmentBlockAvailability;
 		}
 	},
 	methods: {
@@ -82,7 +85,7 @@ export default {
 			return !this.session.isAvailable && this.session.isDelayedByPreviousSequential;
 		},
 		detrmineIsAlmostAvailable() {
-			return !this.session.isAvailable && !this.wasCompleted;
+			return !this.session.isAvailable && !this.wasCompleted && !this.isBlocked;
 		},
 		detrmineIsNewAvailable() {
 			return this.session.isAvailable && !this.wasCompleted;

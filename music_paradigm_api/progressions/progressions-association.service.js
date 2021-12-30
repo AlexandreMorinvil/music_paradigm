@@ -109,27 +109,44 @@ function generateProgressionToCurriculumAssociationSummary(curriculum, progressi
     let hasReachedEndOfProgress = false;
 
     // Indicate whether the count was altered through an ajustment. This could either be that
-    // a session is adjusted to be considered adjusted while it wasn't or this could be that
-    // a session supposed to be available later was completed before it's turn was reached,
-    // which can also only happen through an adjustment.
+    // a session is adjusted to be considered adjusted while it wasn't.
     let wasProgressionTotalNumberAdjusted = false;
 
+
+    // When a session supposed to be available later was completed before it's turn was reached,
+    // we increment the in advance count.
+    let inAdvanceCount = 0;
+
+    // Indicate whether it is no longer possible for the user to progress due to being blocked
+    // by an adjustment brought by the admins
+    let isProgressionBlocked = false;
+
     const completedExperiments = association.filter(element => {
-        if (element.progressionExperiment.completionCount > 0) {
-            if (hasReachedEndOfProgress) wasProgressionTotalNumberAdjusted = true;
+        const { progressionExperiment } = element;
+
+        // Verify if it is completed or considered completed
+        if (progressionExperiment.completionCount >= progressionExperiment.completionsNeeded) {
+            if (hasReachedEndOfProgress) inAdvanceCount += 1;
             return true;
-        } else if (element.progressionExperiment.adjustmentConsiderCompleted) {
+        } else if (progressionExperiment.adjustmentConsiderCompleted) {
             wasProgressionTotalNumberAdjusted = true;
             return true;
         }
-        else {
-            hasReachedEndOfProgress = true;
-            return false;
+
+        // If it is not completed and we reach a blocked session, we indicate that his progress is blocked
+        if (!hasReachedEndOfProgress && progressionExperiment.adjustmentBlockAvailability) {
+            isProgressionBlocked = true;
         }
+
+        // Indicate the end of the normal progress of the user
+        hasReachedEndOfProgress = true;
+        return false;
     });
     const reachedExperiment = (completedExperiments.length < association.length) ? association[completedExperiments.length].curriculumExperiment.title : "";
     return {
         wasProgressionTotalNumberAdjusted: wasProgressionTotalNumberAdjusted,
+        inAdvanceCount: inAdvanceCount,
+        isProgressionBlocked: isProgressionBlocked,
         reachedExperimentTitle: reachedExperiment,
         progressionTotalNumber: completedExperiments.length,
         curriculumTotalNumber: association.length

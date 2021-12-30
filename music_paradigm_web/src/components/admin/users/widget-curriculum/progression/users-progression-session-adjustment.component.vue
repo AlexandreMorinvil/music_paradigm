@@ -38,6 +38,20 @@
 						<label for="adjustmentPreponeAvailability"> Remove the delays </label>
 					</td>
 				</tr>
+
+				<tr class="input-tag-grid">
+					<td class="centering">
+						<input
+							class="input-area checkbox"
+							v-model="currentAdjustments.adjustmentBlockAvailability"
+							name="adjustmentBlockAvailability"
+							type="checkbox"
+						/>
+					</td>
+					<td>
+						<label for="adjustmentBlockAvailability"> Block the availability </label>
+					</td>
+				</tr>
 			</table>
 		</div>
 
@@ -81,6 +95,20 @@
 					</td>
 					<td><label for="adjustmentOverlookUniqueInDays"> Allow doing same day </label></td>
 				</tr>
+
+				<tr class="input-tag-grid">
+					<td class="centering">
+						<input
+							class="input-area checkbox"
+							v-model="currentAdjustments.adjustmentRemoveCompletionLimit"
+							name="adjustmentRemoveCompletionLimit"
+							type="checkbox"
+						/>
+					</td>
+					<td>
+						<label for="adjustmentRemoveCompletionLimit"> Remove completion limit </label>
+					</td>
+				</tr>
 			</table>
 		</div>
 	</div>
@@ -104,6 +132,8 @@ export default {
 				adjustmentPreponeAvailability: null,
 				adjustmentOverlookUniqueInDays: null,
 				adjustmentImposeReadyToBeDone: null,
+				adjustmentBlockAvailability: null,
+				adjustmentRemoveCompletionLimit: null,
 			},
 		};
 	},

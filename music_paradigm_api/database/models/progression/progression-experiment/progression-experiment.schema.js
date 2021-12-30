@@ -75,6 +75,16 @@ const schema = new Schema(
             default: false,
         },
 
+        adjustmentBlockAvailability: {
+            type: Boolean,
+            default: false,
+        },
+
+        adjustmentRemoveCompletionLimit: {
+            type: Boolean,
+            default: false,
+        },
+
         // Title of the experiment within the curriculum
         experimentReference: {
             type: Schema.Types.ObjectId,

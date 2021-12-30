@@ -108,13 +108,15 @@ export default {
 			return this.makeDateTimeLapsedDisplay(progressionLastAdvancedDate, progressionLastAdvancedTime);
 		},
 		makeProgressionDisplay(user) {
-			const { curriculumTotalNumber, progressionTotalNumber, reachedExperimentTitle, wasProgressionTotalNumberAdjusted } = user;
+			const { curriculumTotalNumber, progressionTotalNumber, reachedExperimentTitle, wasProgressionTotalNumberAdjusted, isProgressionBlocked, inAdvanceCount } = user;
 			if (!curriculumTotalNumber) return '---';
 
 			const adjustmentSign = wasProgressionTotalNumberAdjusted ? ' adjusted' : '';
-			if (curriculumTotalNumber === progressionTotalNumber)
-				return String(progressionTotalNumber) + '/' + curriculumTotalNumber + adjustmentSign + '\n✓ COMPLETED';
-			else return String(progressionTotalNumber) + '/' + curriculumTotalNumber + adjustmentSign + '\n"' + reachedExperimentTitle + '"';
+			const inAdvanceSign = inAdvanceCount > 0 ? ` (+ ${inAdvanceCount} in adv.)` : '';
+			const blockingSign = isProgressionBlocked ? ' BLOCKED' : '';
+			const experimentTitle = (curriculumTotalNumber === progressionTotalNumber) ? '✓ COMPLETED' : `"${reachedExperimentTitle}"`;
+
+			return String(progressionTotalNumber) + inAdvanceSign + '/' + curriculumTotalNumber + adjustmentSign + blockingSign + '\n' + experimentTitle;
 		},
 		getDurationInWeekAndDays(durationInMilliseconds) {
 			const totalDays = Math.floor(durationInMilliseconds / (24 * 3600 * 1000));

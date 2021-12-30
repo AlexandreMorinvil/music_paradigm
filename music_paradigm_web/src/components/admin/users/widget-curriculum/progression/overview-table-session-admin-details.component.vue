@@ -72,6 +72,8 @@ export default {
 			if (this.session.adjustmentPreponeAvailability) return true;
 			if (this.session.adjustmentOverlookUniqueInDays) return true;
 			if (this.session.adjustmentImposeReadyToBeDone) return true;
+			if (this.session.adjustmentBlockAvailability) return true;
+			if (this.session.adjustmentRemoveCompletionLimit) return true;
 			else return false;
 		},
 		adjustmentsTexts() {
@@ -83,6 +85,8 @@ export default {
 			if (this.adjustmentPreponeAvailability) texts.push(this.adjustmentPreponeAvailability);
 			if (this.adjustmentOverlookUniqueInDays) texts.push(this.adjustmentOverlookUniqueInDays);
 			if (this.adjustmentImposeReadyToBeDone) texts.push(this.adjustmentImposeReadyToBeDone);
+			if (this.adjustmentBlockAvailability) texts.push(this.adjustmentBlockAvailability);
+			if (this.adjustmentRemoveCompletionLimit) texts.push(this.adjustmentRemoveCompletionLimit);
 			return texts;
 		},
 		isImposedReady() {
@@ -123,6 +127,16 @@ export default {
 			const adjustmentImposeReadyToBeDone = this.session.adjustmentImposeReadyToBeDone;
 			if (!adjustmentImposeReadyToBeDone) return '';
 			else return 'Imposed ready';
+		},
+		adjustmentBlockAvailability() {
+			const adjustmentBlockAvailability = this.session.adjustmentBlockAvailability;
+			if (!adjustmentBlockAvailability) return '';
+			else return 'Blocked';
+		},
+		adjustmentRemoveCompletionLimit() {
+			const adjustmentRemoveCompletionLimit = this.session.adjustmentRemoveCompletionLimit;
+			if (!adjustmentRemoveCompletionLimit) return '';
+			else return 'No completion limit';
 		},
 	},
 	methods: {
