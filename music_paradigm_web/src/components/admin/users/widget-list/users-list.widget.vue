@@ -31,7 +31,7 @@
 						<td>{{ makeProgressionLastAdvanceTimeDisplay(user) }}</td>
 						<td>{{ makeProgressionDisplay(user) }}</td>
 						<td class="widget-table-actions-buttons">
-							<button v-on:click="handleSelectUser(user._id)" class="widget-button button small" :class="isSelectedUser(user) ? 'orange' : 'blue'">
+							<button v-on:click="handleSelectUser(user._id)" class="widget-button button small" :class="isSelectedUser(user) ? 'turquoise' : 'blue'">
 								{{ makeSelectButtonText(user) }}
 							</button>
 						</td>

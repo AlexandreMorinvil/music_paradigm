@@ -66,6 +66,10 @@ export default {
 		return state.selectedUserProgressionHistory;
 	},
 
+	userSelectedExperimentMarkers: (state) => {
+		return state.selectedUserExperimentMarkers;
+	},
+
 	// List of users
 	usersSummaryList: (state) => {
 		return state.usersSummaryList;

@@ -120,7 +120,7 @@ async function generateProgressionSummary(userId) {
             wasTodayCompleted
         );
     }
-    return { history: progressionHistory, makers: experimentMakers, dueExperiment: dueExperiment };
+    return { history: progressionHistory, markers: experimentMakers, dueExperiment: dueExperiment };
 }
 
 function adjustStartTime(daysElapsed, adjustmentInDays = 0) {

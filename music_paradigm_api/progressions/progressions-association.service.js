@@ -132,8 +132,13 @@ function generateProgressionToCurriculumAssociationSummary(curriculum, progressi
 
         // Verify if it is completed or considered completed
         if (progressionExperiment.completionCount >= progressionExperiment.completionsNeeded) {
-            if (hasReachedEndOfProgress) inAdvanceCount += 1;
-            return true;
+            if (hasReachedEndOfProgress) {
+                inAdvanceCount += 1;
+                return false;
+            }
+            else {
+                return true;
+            }
         } else if (progressionExperiment.adjustmentConsiderCompleted) {
             wasProgressionTotalNumberAdjusted = true;
             return true;

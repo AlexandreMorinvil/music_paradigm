@@ -7,9 +7,9 @@
 			'experiment-marker-container-color': hasExperimentMaker,
 		}"
 	>
+		<overview-table-session-details-marker-component :session="sessionContent" ref="marker" />
 		<overview-table-session-details-completions-component :session="sessionContent" ref="adjustments" />
 		<overview-table-session-details-adjsutments-component :session="sessionContent" ref="adjustments" />
-		<overview-table-session-details-marker-component :session="sessionContent" ref="marker" />
 	</div>
 </template>
 

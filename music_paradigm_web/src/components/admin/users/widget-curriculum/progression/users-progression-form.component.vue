@@ -25,6 +25,7 @@
 				<button v-on:click="unsetSession" class="widget-button turquoise">Unselect</button>
 			</div>
 			<progression-session-adjustment-component ref="sessionAdjustments" />
+			<progression-session-progress-component ref="sessionProgress" />
 			<progression-session-dates-component ref="sessionDates" />
 		</div>
 	</div>
@@ -41,6 +42,7 @@ import OverviewTableSessionDetailsComponent from './overview-table-session-detai
 import ProgressionDatesAdjustmentComponent from './users-progression-dates-adjustment.component.vue';
 import ProgressionSessionAdjustmentComponent from './users-progression-session-adjustment.component.vue';
 import ProgressionSessionDatesComponent from './users-progression-session-dates.component.vue';
+import ProgressionSessionProgressComponent from './users-progression-session-progress.component.vue';
 
 export default {
 	components: {
@@ -48,6 +50,7 @@ export default {
 		OverviewTableSessionDetailsComponent,
 		ProgressionSessionAdjustmentComponent,
 		ProgressionDatesAdjustmentComponent,
+		ProgressionSessionProgressComponent,
 		ProgressionSessionDatesComponent,
 	},
 	data() {
@@ -103,12 +106,14 @@ export default {
 		setSession(session) {
 			this.session = session || {};
 			this.$refs.sessionAdjustments.takeCurrentAdjustments(this.session);
+			this.$refs.sessionProgress.takeSession(this.session);
 			this.$refs.sessionDates.takeSession(this.session);
 			this.updateWasModifiedStatus();
 		},
 		unsetSession() {
 			this.session = {};
 			this.$refs.sessionAdjustments.unsetAdjustments();
+			this.$refs.sessionProgress.unsetSession();
 			this.$refs.sessionDates.unsetSession();
 			this.updateWasModifiedStatus();
 		},

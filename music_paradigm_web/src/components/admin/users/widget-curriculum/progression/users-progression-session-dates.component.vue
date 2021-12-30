@@ -13,7 +13,7 @@
 				<tr v-for="(startDate, subIndex) in startDates" v-bind:key="subIndex">
 					<td v-if="subIndex == 0" :rowspan="startDates.length">{{ index + 1 }}</td>
 					<td>{{ makeDateDisplay(startDate) }}</td>
-					<td v-if="subIndex == 0" :rowspan="startDates.length">{{ makeDateDisplay(completionDate) }}</td>
+					<td v-if="subIndex == 0" :rowspan="startDates.length" class="completion-date">{{ makeDateDisplay(completionDate) }}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -97,5 +97,9 @@ export default {
 <style scoped>
 .dates-table {
 	padding: 25px 25px 0;
+}
+
+.completion-date {
+	vertical-align: bottom;
 }
 </style>

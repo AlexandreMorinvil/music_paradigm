@@ -76,7 +76,8 @@ export default {
 	},
 
 	setSelectedUserProgressionSummary(state, progressionSummary) {
-		const { dueExperiment, history } = progressionSummary;
+		const { dueExperiment, history, markers } = progressionSummary;
+		state.selectedUserExperimentMarkers = markers;
 		state.selectedUserProgressionHistory = history;
 		state.selectedUserProgressionDueExperiment = dueExperiment;
 	},
@@ -84,6 +85,7 @@ export default {
 	unsetSelectedUser(state) {
 		state.selectedUser = defaultState.EMPTY_USER();
 		state.selectedUserProgression = defaultState.EMPTY_SELECTED_USER_PROGRESSION();
+		state.selectedUserExperimentMarkers = defaultState.EMPTY_SELECTED_USER_EXPERIMENT_MARKERS();
 		state.selectedUserProgressionHistory = defaultState.EMPTY_SELECTED_USER_PROGRESSION_HISTORY();
 		state.selectedUserProgressionDueExperiment = defaultState.EMPTY_SELECTED_USER_PROGRESSION_DUE_EXPERIMENT();
 	},
