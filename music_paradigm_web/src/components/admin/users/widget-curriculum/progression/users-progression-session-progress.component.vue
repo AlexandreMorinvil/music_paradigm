@@ -18,7 +18,7 @@
 							{{ session.title }}
 						</div>
 					</td>
-					<td />
+					<td v-if="hasExperimentMarker" />
 				</tr>
 				<tr v-show="hasExperimentMarker">
 					<td>Progress Percentage</td>
@@ -52,9 +52,7 @@ export default {
 			associativeIdOrdinalNumber: 0,
 			experimentMarker: {},
 			timeIndicated: null,
-			timeIndicatedDisplay: '',
 			progressRatio: 0,
-			progressPercentageDisplay: '',
 		};
 	},
 	computed: {
@@ -72,6 +70,23 @@ export default {
 		},
 		hasExperimentMarker() {
 			return Boolean(this.experimentMarker.associativeId);
+		},
+		timeIndicatedDisplay() {
+			const { seconds, minutes, hours, days } = this.parseTimeIndicated(Number(this.timeIndicated));
+
+			if (seconds <= 0 && seconds <= 0 && seconds <= 0 && seconds <= 0) return 'Time reset';
+
+			let display = `${minutes}:${seconds}`;
+			if (hours > 0 || days > 0) display = `:${hours}:${display}`;
+			if (days > 0) display = `:${days}:${display}`;
+
+			return display;
+		},
+		progressPercentageDisplay() {
+			const progressRatio = this.progressRatio;
+			if (!progressRatio) return 'Unknown';
+			const progressPercentage = (progressRatio * 100).toFixed(1);
+			return progressPercentage + '%';
 		},
 	},
 	methods: {
@@ -96,7 +111,7 @@ export default {
 		handleTimeReset() {
 			console.log('Here');
 			const answer = window.confirm('Are you sure you want to reset the time for this session?\nThis cannot be cancelled.');
-			if (answer) this.resetSessionTimeIndicated(this.associativeId).then(this.fetchMakersDetails);
+			if (answer) this.resetSessionTimeIndicated(this.associativeId);
 		},
 		handleForgetProgress() {
 			let answer = window.confirm('Are you - really - sure you want to restart the progress for this session?\nThis cannot be cancelled.');
@@ -111,7 +126,7 @@ export default {
 				answer = window.confirm(`This will affect the sessions:\n${linkedSessionsTitles}This cannot be cancelled.\n\nAre you still sure?`);
 			}
 			if (answer) answer = window.confirm('One last time, are you really sure?');
-			if (answer) this.resetSessionProgressKept(this.associativeId).then(this.fetchMakersDetails);
+			if (answer) this.resetSessionProgressKept(this.associativeId);
 		},
 		parseTimeIndicated(milliseconds = 0) {
 			const seconds = Math.floor((milliseconds / 1000) % 60);
@@ -125,40 +140,6 @@ export default {
 				hours: hours.toLocaleString('en-US', numberFormattingOptions),
 				days: days.toLocaleString('en-US', numberFormattingOptions),
 			};
-		},
-		updateTimeIndicatedDisplay() {
-			const { seconds, minutes, hours, days } = this.parseTimeIndicated(Number(this.timeIndicated));
-
-			if (seconds <= 0 && seconds <= 0 && seconds <= 0 && seconds <= 0) {
-				this.timeIndicatedDisplay = 'Time reset';
-				return;
-			}
-
-			let display = `${minutes}:${seconds}`;
-			if (hours > 0 || days > 0) display = `:${hours}:${display}`;
-			if (days > 0) display = `:${days}:${display}`;
-
-			this.timeIndicatedDisplay = display;
-		},
-		updateProgressPercentageDisplay() {
-			const progressRatio = this.progressRatio;
-			if (!progressRatio) this.progressPercentageDisplay = 'Unknown';
-			const progressPercentage = (progressRatio * 100).toFixed(1);
-			this.progressPercentageDisplay = progressPercentage + '%';
-		},
-	},
-	watch: {
-		timeIndicated: {
-			immediate: true,
-			handler: function () {
-				this.updateTimeIndicatedDisplay();
-			},
-		},
-		progressRatio: {
-			immediate: true,
-			handler: function () {
-				this.updateProgressPercentageDisplay();
-			},
 		},
 	},
 };
