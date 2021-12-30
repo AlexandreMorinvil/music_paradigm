@@ -119,14 +119,14 @@ async function concludeSession(userId, associativeId, associativeIdOrdinalNumber
         experimentDoneInProgression.completionDates.push(new Date());
         experimentDoneInProgression.completionCount += 1;
     }
+    
+    // If the experiment was completed for a first, it is a progression in the curriculum, therrefore, we update the last progression time
+    if (experimentDoneInProgression.completionCount === experimentDoneInProgression.completionsNeeded)
+        progression.lastProgressionDate = Date.now();
 
     // Remove the experiment marker if the experiment was completely finished (keep it if it was ended through a timeout)
     if (!isInTimeUp) await ExperimentMarker.deleteMarker(progression._id, associativeId);
     else await ExperimentMarker.forgetTimeLeft(progression._id, associativeId);
-
-
-    // If the experiment was completed for a first, it is a progression in the curriculum, therrefore, we update the last progression time
-    if (experimentDoneInProgression.completionCount === 1) progression.lastProgressionDate = Date.now();
 
     // Save changes
     return progression.save();
