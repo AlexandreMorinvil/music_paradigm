@@ -37,6 +37,10 @@ export default {
 	},
 
 	// Progression parameters
+	userSelectedProgressionId: (state) => {
+		return state.selectedUserProgression ? state.selectedUserProgression._id : null;
+	},
+
 	userSelectedImposedParameters: (state) => {
 		return state.selectedUserProgression ? state.selectedUserProgression.assignedParameters : {};
 	},

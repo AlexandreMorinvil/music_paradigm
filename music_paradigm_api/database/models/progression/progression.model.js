@@ -15,6 +15,20 @@ schema.statics.create = async function (userId, curriculumId, parameters = null,
     return newProgression.save();
 };
 
+schema.statics.getWithCurriculumById = async function (progressionId) {
+
+    // Fetch the progression and the curriculum    
+    const progression = await this.findById(progressionId)
+        .populate({ path: 'curriculumReference' });
+    const { curriculumReference } = progression;
+    const curriculum = curriculumReference;
+    progression.curriculumReference = curriculum._id; 
+    return {
+        curriculum: curriculum ? curriculum.toObject() : null,
+        progression: progression ? progression.toObject() : null,
+    }
+};
+
 // Instance methods
 schema.methods.assignParameters = async function (parameters) {
     if (parameters) progressionSetters.setParameters(this, parameters);

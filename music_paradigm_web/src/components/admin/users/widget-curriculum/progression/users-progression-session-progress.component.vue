@@ -1,31 +1,38 @@
 <template>
 	<div class="widget-table-context progress-table">
 		<table class="widget-table">
-			<thead v-if="hasLinkedSessions || hasExperimentMarker">
+			<thead v-show="hasLinkedSessions || hasExperimentMarker">
 				<tr>
-					<th colspan="2">Progress Kept in Memory</th>
+					<th colspan="3">Progress Kept in Memory</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-if="hasLinkedSessions">
+				<tr v-show="hasLinkedSessions">
 					<td>Linked Sessions ({{ linkedSessionsCount }})</td>
 					<td>
 						<div
-							v-for="(title, index) in linkedSessionsTitles"
+							v-for="(session, index) in linkedSessions"
 							v-bind:key="index"
-							:class="{ 'selected-element-text': title === selectedSessionTitle }"
+							:class="{ 'selected-element-text': session.associativeIdOrdinalNumber === associativeIdOrdinalNumber }"
 						>
-							{{ title }}
+							{{ session.title }}
 						</div>
 					</td>
+					<td />
 				</tr>
-				<tr v-if="hasExperimentMarker">
-					<td>Time Indicated Now</td>
-					<td>{{ timeIndicated }}</td>
-				</tr>
-				<tr v-if="hasExperimentMarker">
+				<tr v-show="hasExperimentMarker">
 					<td>Progress Percentage</td>
-					<td>{{ progressPercentage }}</td>
+					<td>{{ progressPercentageDisplay }}</td>
+					<td class="button-case">
+						<button v-on:click="handleForgetProgress()" class="widget-button button small red">Restart Session</button>
+					</td>
+				</tr>
+				<tr v-show="hasExperimentMarker">
+					<td>Time Indicated Now</td>
+					<td>{{ timeIndicatedDisplay }}</td>
+					<td class="button-case">
+						<button v-on:click="handleTimeReset()" class="widget-button button small red">Reset Time</button>
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -36,59 +43,75 @@
 import '@/styles/widget-template.css';
 import '@/styles/form-template.css';
 
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
 	data() {
 		return {
 			associativeId: null,
-			selectedSessionTitle: '',
+			associativeIdOrdinalNumber: 0,
 			experimentMarker: {},
+			timeIndicated: null,
+			timeIndicatedDisplay: '',
+			progressRatio: 0,
+			progressPercentageDisplay: '',
 		};
 	},
 	computed: {
 		...mapGetters('users', ['userSelectedExperimentMarkers', 'userSelectedProgressionHistory']),
 		hasLinkedSessions() {
-			return this.linkedSessionsTitles.length > 1;
+			return this.linkedSessionsCount > 1;
 		},
-		linkedSessionsTitles() {
-			const linkedSessions = this.userSelectedProgressionHistory.filter((session) => {
+		linkedSessions() {
+			return this.userSelectedProgressionHistory.filter((session) => {
 				return session.associativeId == this.associativeId;
 			});
-			return linkedSessions.map((session) => session.title);
 		},
 		linkedSessionsCount() {
-			return this.linkedSessionsTitles.length;
+			return this.linkedSessions.length;
 		},
 		hasExperimentMarker() {
 			return Boolean(this.experimentMarker.associativeId);
 		},
-		timeIndicated() {
-			const { seconds, minutes, hours, days } = this.parseTimeIndicated(Number(this.experimentMarker.timeIndicated));
-
-			let display = `${minutes}:${seconds}`;
-			if (hours > 0 || days > 0) display = `:${hours}:${display}`;
-			if (days > 0) display = `:${days}:${display}`;
-
-			return display;
-		},
-		progressPercentage() {
-			const progressRatio = this.experimentMarker.progressRatio;
-			if (!progressRatio) return 'Unknown';
-			const progressPercentage = (progressRatio * 100).toFixed(1);
-			return progressPercentage + '%';
-		},
 	},
 	methods: {
+		...mapActions('users', ['resetSessionTimeIndicated', 'resetSessionProgressKept']),
 		takeSession(session) {
 			this.associativeId = session.associativeId;
-			this.selectedSessionTitle = session.title;
-			this.experimentMarker = this.userSelectedExperimentMarkers.find((marker) => marker.associativeId == this.associativeId) || {};
+			this.associativeIdOrdinalNumber = session.associativeIdOrdinalNumber;
+			this.fetchMakersDetails();
 		},
 		unsetSession() {
 			this.associativeId = null;
-			this.selectedSessionTitle = '';
+			this.associativeIdOrdinalNumber = 0;
 			this.experimentMarker = {};
+			this.timeIndicated = null;
+			this.progressRatio = 0;
+		},
+		fetchMakersDetails() {
+			this.experimentMarker = this.userSelectedExperimentMarkers.find((marker) => marker.associativeId == this.associativeId) || {};
+			this.timeIndicated = this.experimentMarker.timeIndicated;
+			this.progressRatio = this.experimentMarker.progressRatio;
+		},
+		handleTimeReset() {
+			console.log('Here');
+			const answer = window.confirm('Are you sure you want to reset the time for this session?\nThis cannot be cancelled.');
+			if (answer) this.resetSessionTimeIndicated(this.associativeId).then(this.fetchMakersDetails);
+		},
+		handleForgetProgress() {
+			let answer = window.confirm('Are you - really - sure you want to restart the progress for this session?\nThis cannot be cancelled.');
+			if (!answer) return;
+
+			if (this.hasLinkedSessions) {
+				const linkedSessionsTitles = this.linkedSessions
+					.map((session) => {
+						return '   - ' + session.title;
+					})
+					.join('\n');
+				answer = window.confirm(`This will affect the sessions:\n${linkedSessionsTitles}This cannot be cancelled.\n\nAre you still sure?`);
+			}
+			if (answer) answer = window.confirm('One last time, are you really sure?');
+			if (answer) this.resetSessionProgressKept(this.associativeId).then(this.fetchMakersDetails);
 		},
 		parseTimeIndicated(milliseconds = 0) {
 			const seconds = Math.floor((milliseconds / 1000) % 60);
@@ -103,11 +126,53 @@ export default {
 				days: days.toLocaleString('en-US', numberFormattingOptions),
 			};
 		},
+		updateTimeIndicatedDisplay() {
+			const { seconds, minutes, hours, days } = this.parseTimeIndicated(Number(this.timeIndicated));
+
+			if (seconds <= 0 && seconds <= 0 && seconds <= 0 && seconds <= 0) {
+				this.timeIndicatedDisplay = 'Time reset';
+				return;
+			}
+
+			let display = `${minutes}:${seconds}`;
+			if (hours > 0 || days > 0) display = `:${hours}:${display}`;
+			if (days > 0) display = `:${days}:${display}`;
+
+			this.timeIndicatedDisplay = display;
+		},
+		updateProgressPercentageDisplay() {
+			const progressRatio = this.progressRatio;
+			if (!progressRatio) this.progressPercentageDisplay = 'Unknown';
+			const progressPercentage = (progressRatio * 100).toFixed(1);
+			this.progressPercentageDisplay = progressPercentage + '%';
+		},
+	},
+	watch: {
+		timeIndicated: {
+			immediate: true,
+			handler: function () {
+				this.updateTimeIndicatedDisplay();
+			},
+		},
+		progressRatio: {
+			immediate: true,
+			handler: function () {
+				this.updateProgressPercentageDisplay();
+			},
+		},
 	},
 };
 </script>
 
 <style scoped>
+button {
+	width: 125px;
+}
+
+.button-case {
+	width: 150px;
+}
+
 .progress-table {
 	padding: 25px 25px 0;
 }

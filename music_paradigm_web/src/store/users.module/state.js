@@ -10,11 +10,13 @@ export default {
 		isUpdatingParameters: false,
 		isUpdatingAdjustments: false,
 		isResetingProgression: false,
+		isChangingExperimentMarker: false,
 	},
 
 	// Selected user information
 	selectedUser: defaultState.EMPTY_USER(),
 	selectedUserProgression: defaultState.EMPTY_SELECTED_USER_PROGRESSION(),
+	selectedUserExperimentMarkers: defaultState.EMPTY_SELECTED_USER_EXPERIMENT_MARKERS(),
 	selectedUserProgressionHistory: defaultState.EMPTY_SELECTED_USER_PROGRESSION_HISTORY(),
 	selectedUserProgressionDueExperiment: defaultState.EMPTY_SELECTED_USER_PROGRESSION_DUE_EXPERIMENT(),
 

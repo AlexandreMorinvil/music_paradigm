@@ -30,7 +30,7 @@ async function authenticate({ username, password }) {
 
 async function getProgressionSummary(userId) {
     try {
-        return await progressionSummaryService.generateProgressionSummary(userId);
+        return await progressionSummaryService.generateProgressionSummaryForUserId(userId);
     } catch (err) {
         throw err;
     }
@@ -38,7 +38,7 @@ async function getProgressionSummary(userId) {
 
 async function getTodayExperiment(userId) {
     try {
-        const { dueExperiment } = await progressionSummaryService.generateProgressionSummary(userId);
+        const { dueExperiment } = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
         const { associativeId, associativeIdOrdinalNumber } = dueExperiment;
         if (!associativeId) throw new Error('There is no due experiment');
 
@@ -50,7 +50,7 @@ async function getTodayExperiment(userId) {
 
 async function getSpecificExperiment(userId, associativeId, associativeIdOrdinalNumber) {
     try {
-        const { history } = await progressionSummaryService.generateProgressionSummary(userId, associativeId, associativeIdOrdinalNumber);
+        const { history } = await progressionSummaryService.generateProgressionSummaryForUserId(userId, associativeId, associativeIdOrdinalNumber);
         const isExperimentAvailable = progressionValidatorService.isExperimentAvailable(history, associativeId, associativeIdOrdinalNumber)
         if (!isExperimentAvailable) throw new Error('There experiment requested is not available');
 

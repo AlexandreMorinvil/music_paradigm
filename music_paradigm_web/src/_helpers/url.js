@@ -8,6 +8,7 @@ const account = '/account/';
 const experiments = '/experiments/';
 const curriculums = '/curriculums/';
 const users = '/users/';
+const experimentMarkers = '/experiment-markers/';
 
 const logSimple = '/log-simple/';
 const logThorough = '/log-thorough/';
@@ -43,6 +44,9 @@ export default {
 	},
 	users: function (parameters) {
 		return config.apiUrl + users + parameters;
+	},
+	experimentMarkers: function (parameters) {
+		return config.apiUrl + experimentMarkers + parameters;
 	},
 	logSimple: function (parameters) {
 		return config.apiUrl + logSimple + parameters;

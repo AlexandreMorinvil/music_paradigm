@@ -1,4 +1,4 @@
-import { userService } from '@/_services';
+import { experimentMarkersService, userService } from '@/_services';
 
 export default {
 	fetchAllUsersSummary({ commit, dispatch }) {
@@ -171,14 +171,14 @@ export default {
 			});
 	},
 
-	resetProgression({ commit, dispatch }, { userId }) {
-		commit('indicateResetProgressionRequest');
-		return userService
-			.resetProgression(userId)
+	resetSessionTimeIndicated({ commit, dispatch, getters }, associativeId) {
+		commit('indicateExperimentMarkerChangeRequest');
+		return experimentMarkersService
+			.resetTimeIndicated(getters.userSelectedProgressionId, associativeId)
 			.then(
-				(updatedProgression) => {
-					commit('setSelectedUserProgression', updatedProgression);
-					dispatch('alert/setSuccessAlert', 'Progression resetting successful', { root: true });
+				(progressionSummary) => {
+					commit('setSelectedUserProgressionSummary', progressionSummary);
+					dispatch('alert/setSuccessAlert', 'Session progress time indicated reset successful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},
 				(error) => {
@@ -186,7 +186,26 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateResetProgressionRequestEnd');
+				commit('indicateExperimentMarkerChangeRequestEnd');
+			});
+	},
+
+	resetSessionProgressKept({ commit, dispatch, getters }, associativeId) {
+		commit('indicateExperimentMarkerChangeRequest');
+		return experimentMarkersService
+			.delete(getters.userSelectedProgressionId, associativeId)
+			.then(
+				(progressionSummary) => {
+					commit('setSelectedUserProgressionSummary', progressionSummary);
+					dispatch('alert/setSuccessAlert', 'Session progress reset successful', { root: true });
+					dispatch('fetchAllUsersSummary');
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateExperimentMarkerChangeRequestEnd');
 			});
 	},
 };

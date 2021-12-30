@@ -1,7 +1,6 @@
-﻿const db = require('database/db');
+﻿const User = require('database/db').User;
 const progressionSummaryService = require('progressions/progressions-summary.service');
 const userProgressionService = require('users/user-progression.service');
-const User = db.User;
 
 // Exports
 module.exports = {
@@ -28,7 +27,7 @@ async function getById(userId) {
     try {
         const user = await User.findById(userId).select('-password');
         const lastProgression = await user.getLastProgression();
-        const progressionSummary = await progressionSummaryService.generateProgressionSummary(userId);
+        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
         return {
             user: user,
             progression: lastProgression,
@@ -43,7 +42,7 @@ async function createUser(user, curriculumId, assignedParameters) {
     try {
         const userCreated = await User.create(user);
         const progressionInitilized = await userProgressionService.initializeProgression(userCreated, curriculumId, assignedParameters);
-        const progressionSummary = await progressionSummaryService.generateProgressionSummary(userCreated._id);
+        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userCreated._id);
         return {
             user: userCreated,
             progression: progressionInitilized,
@@ -86,7 +85,7 @@ async function assignCurriculum(userId, curriculumId, assignedParameters) {
     try {
         const user = await User.findById(userId);
         const lastProgression = await userProgressionService.initializeProgression(user, curriculumId, assignedParameters);
-        const progressionSummary = await progressionSummaryService.generateProgressionSummary(userId);
+        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
         return {
             user: user,
             progression: lastProgression,
@@ -100,7 +99,7 @@ async function assignCurriculum(userId, curriculumId, assignedParameters) {
 async function assignParameters(userId, assignedParameters) {
     try {
         const lastProgression = await userProgressionService.updateParameters(userId, assignedParameters);
-        const progressionSummary = await progressionSummaryService.generateProgressionSummary(userId);
+        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
         return {
             progression: lastProgression,
             progressionSummary: progressionSummary,
@@ -113,7 +112,7 @@ async function assignParameters(userId, assignedParameters) {
 async function assignAdjustments(userId, assignedAdjustments) {
     try {
         const lastProgression = await userProgressionService.updateAdjustments(userId, assignedAdjustments);
-        const progressionSummary = await progressionSummaryService.generateProgressionSummary(userId);
+        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
         return {
             progression: lastProgression,
             progressionSummary: progressionSummary,

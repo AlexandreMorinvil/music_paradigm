@@ -66,6 +66,14 @@ export default {
 		state.status.isResetingProgression = false;
 	},
 
+	indicateExperimentMarkerChangeRequest(state) {
+		state.status.isChangingExperimentMarker = true;
+	},
+
+	indicateExperimentMarkerChangeRequestEnd(state) {
+		state.status.isChangingExperimentMarker = false;
+	},
+
 	// Setters
 	setSelectedUser(state, user) {
 		state.selectedUser = user;
