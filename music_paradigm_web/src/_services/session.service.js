@@ -24,11 +24,16 @@ function concludeSession(associativeId, associativeIdOrdinalNumber, isInTimeUp =
 	return fetch(url.sessions('conclude-session/' + associativeId + '/' + associativeIdOrdinalNumber), requestOptions).then(handleResponse);
 }
 
-function saveSessionState(associativeId, cursor, state, timeIndicated) {
+function saveSessionState(associativeId, cursor, state, timeIndicated, progressRatio) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify({ cursor: cursor, state: state, timeIndicated: timeIndicated }),
+		body: JSON.stringify({
+			cursor: cursor,
+			state: state,
+			timeIndicated: timeIndicated,
+			progressRatio: progressRatio
+		}),
 	};
 	return fetch(url.sessions('save-session-state/' + associativeId), requestOptions).then(handleResponse);
 }

@@ -10,13 +10,13 @@ const experimentAssociativeIdRequiredMessage = "An associative ID must be specif
 const schema = new Schema(
     {
         // Composed Primary key
-        progressionReference : {
+        progressionReference: {
             type: Schema.Types.ObjectId,
             ref: 'Progression',
             required: [true, progressionReferenceRequiredMessage]
         },
 
-        associativeId : {
+        associativeId: {
             type: String,
             required: [true, experimentAssociativeIdRequiredMessage]
         },
@@ -36,8 +36,13 @@ const schema = new Schema(
 
         timeIndicated: {
             type: Number,
-            default: null 
+            default: null
         },
+
+        progressRatio: {
+            type: Number,
+            default: undefined,
+        }
     },
     {
         strict: false,

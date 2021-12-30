@@ -19,9 +19,18 @@ export default {
 			return Boolean(this.session && this.session.hasExperimentMarker);
 		},
 		text() {
-			const percentage = this.session.experimentMarkerProgressPercentage || 0;
-			if (this.hasExperimentMarker) return `Progress Saved at ${percentage}%`;
-			else return '';
+			if (!this.hasExperimentMarker) return '';
+			return this.progressWasSavedText + this.progressPercentageText;
+		},
+		progressWasSavedText() {
+			if (this.session.startCount > 0) return 'Progress saved';
+			else return 'Already advanced';
+		},
+		progressPercentageText() {
+			const ratio = this.session.experimentMarkerProgressRatio;
+			if (typeof ratio !== 'number') return '';
+			const percentage = Math.floor(ratio * 100);
+			return ` at ${percentage}%`;
 		},
 	},
 };

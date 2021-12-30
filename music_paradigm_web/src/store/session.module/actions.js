@@ -94,6 +94,7 @@ export default {
 				rootGetters['experiment/cursor'],
 				rootGetters['experiment/state'],
 				rootGetters['experiment/timeIndicated'],
+				rootGetters['experiment/progressRatio'],
 			)
 			.then(
 				() => {

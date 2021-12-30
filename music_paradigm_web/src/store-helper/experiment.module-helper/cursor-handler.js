@@ -5,12 +5,17 @@ import stateHandler from './state-handler';
 import variableHandler from './variable-handler';
 
 export default {
+	stepsCompletionRatio,
 	countStepsLeft,
 	assignCursor,
 	advance,
 	goBack,
 	skip,
 };
+
+function stepsCompletionRatio(flow, startPointCursor) {
+	return 1 - countStepsLeft(flow, startPointCursor) / countStepsLeft(flow);
+}
 
 function countStepsLeft(flow, startPointCursor) {
 	// Deep copy the cursor (or initialize the cursor at the start by default)

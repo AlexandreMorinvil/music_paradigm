@@ -43,6 +43,7 @@ async function generateProgressionSummary(userId) {
             associativeId,
             associativeIdOrdinalNumber,
             hasExperimentMarker,
+            experimentMarkerProgressRatio,
         } = association[i];
 
         // Attributes that are relative to the current experiment
@@ -51,6 +52,7 @@ async function generateProgressionSummary(userId) {
         elements.associativeIdOrdinalNumber = associativeIdOrdinalNumber;
 
         elements.hasExperimentMarker = hasExperimentMarker;
+        elements.experimentMarkerProgressRatio = experimentMarkerProgressRatio;
 
         elements.title = curriculumExperiment.title;
         elements.text = curriculumExperiment.text;

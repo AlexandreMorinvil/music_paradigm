@@ -24,9 +24,9 @@ async function concludeSession(userId, associativeId, associativeIdOrdinalNumber
     }
 }
 
-async function saveSessionState(userId, associativeId, cursor, state, timeIndicated) {
+async function saveSessionState(userId, associativeId, cursor, state, timeIndicated, progressRatio) {
     try {
-        await sessionManager.saveSessionState(userId, associativeId, cursor, state, timeIndicated);
+        await sessionManager.saveSessionState(userId, associativeId, cursor, state, timeIndicated, progressRatio);
         return;
     } catch (err) {
         throw err;

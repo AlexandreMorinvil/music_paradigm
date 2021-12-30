@@ -74,8 +74,14 @@ function indicateExperimentMakersInProgressionAssociation(associations, experime
     // We indicate it if the experiment has a marker
     associations.forEach(association => {
         const { associativeId } = association;
+
+        // Idicate if there is an experiment marker
         const marker = experimentMakers.find((marker) => marker.associativeId === associativeId);
         association.hasExperimentMarker = Boolean(marker);
+
+        // Indicate the progression ratio
+        if (association.hasExperimentMarker) association.experimentMarkerProgressRatio = marker.progressRatio || 0;
+        else association.experimentMarkerProgressRatio = 0;
     });
     return associations;
 }
