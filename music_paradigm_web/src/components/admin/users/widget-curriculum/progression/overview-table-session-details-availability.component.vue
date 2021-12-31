@@ -32,30 +32,28 @@ export default {
 			return !this.isAvailable && !this.isLockedByCompletionLimit;
 		},
 		isAvailable() {
-			return (this.session && this.session.isAvailable) || false;
+			return this.session.isAvailable || false;
 		},
 		delayPreAvailabilityInDays() {
-			return (this.session && this.session.delayPreAvailabilityInDays) || 0;
+			return this.session.delayPreAvailabilityInDays || 0;
 		},
 		delayPreAvailabilityInHours() {
-			return (this.session && this.session.delayPreAvailabilityInHours) || '00:00';
+			return this.session.delayPreAvailabilityInHours || '00:00';
 		},
 		isLockedByCompletionLimit() {
-			return (this.session && this.session.isLockedByCompletionLimit) || false;
+			return this.session.isLockedByCompletionLimit || false;
 		},
 		isDelayedByPreviousSequential() {
-			return (this.session && this.session.isDelayedByPreviousSequential) || false;
+			return this.session.isDelayedByPreviousSequential || false;
 		},
 		isDelayedByPreviousUniqueInDay() {
-			return (this.session && this.session.isDelayedByPreviousUniqueInDay) || false;
+			return this.session.isDelayedByPreviousUniqueInDay || false;
 		},
-
-		// Used to construct delays justification
 		isInSequentialCurriculum() {
-			return (this.session && this.session.isInSequentialCurriculum) || undefined;
+			return this.session.isInSequentialCurriculum || undefined;
 		},
 		delayInDays() {
-			return (this.session && this.session.delayInDays) || '?';
+			return this.session.delayInDays || '?';
 		},
 	},
 	methods: {
