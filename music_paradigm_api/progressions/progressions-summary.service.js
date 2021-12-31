@@ -37,7 +37,7 @@ async function generateProgressionSummary(curriculum, progression) {
     let dueExperiment = null;
     const wasTodayCompleted = timeHandler.isToday(progression.lastProgressionDate);
 
-    const timeElapsedInDays = (progression.isSequential) ?
+    const timeElapsedInDays = (curriculum.isSequential) ?
         timeHandler.calculateDaysElapsed(progression.lastProgressionDate) :
         adjustStartTime(timeHandler.calculateDaysElapsed(progression.startTime), progression.adjustmentStartTimeInDays);
 
@@ -64,9 +64,12 @@ async function generateProgressionSummary(curriculum, progression) {
 
         elements.hasExperimentMarker = hasExperimentMarker;
         elements.experimentMarkerProgressRatio = experimentMarkerProgressRatio;
+        
+        elements.isInSequentialCurriculum = curriculum.isSequential;
 
         elements.title = curriculumExperiment.title;
         elements.text = curriculumExperiment.text;
+        elements.delayInDays = curriculumExperiment.delayInDays;
         elements.releaseTime = curriculumExperiment.releaseTime;
         elements.isUniqueIndDay = curriculumExperiment.isUniqueIndDay;
         elements.isCompletionLimited = curriculumExperiment.isCompletionLimited;

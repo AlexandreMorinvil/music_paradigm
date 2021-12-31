@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div>
+		<div v-if="isAvailable || hasStartedAtLeastOnce">
 			<b class="center-align">Started:</b>
 			<p class="center-align">
 				<span> {{ startCount }} </span>
@@ -39,6 +39,9 @@ export default {
 		};
 	},
 	computed: {
+		isAvailable() {
+			return this.session.isAvailable;
+		},
 		hasStartedAtLeastOnce() {
 			return Number(this.session.startCount) > 0;
 		},

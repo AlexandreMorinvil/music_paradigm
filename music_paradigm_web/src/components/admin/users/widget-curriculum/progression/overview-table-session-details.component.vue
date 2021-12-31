@@ -7,6 +7,7 @@
 			'experiment-marker-container-color': hasExperimentMaker,
 		}"
 	>
+		<overview-table-session-details-availability-component :session="sessionContent" ref="availability" />
 		<overview-table-session-details-marker-component :session="sessionContent" ref="marker" />
 		<overview-table-session-details-completions-component :session="sessionContent" ref="adjustments" />
 		<overview-table-session-details-adjsutments-component :session="sessionContent" ref="adjustments" />
@@ -15,11 +16,13 @@
 
 <script>
 import OverviewTableSessionDetailsAdjsutmentsComponent from './overview-table-session-details-adjsutments.component.vue';
+import OverviewTableSessionDetailsAvailabilityComponent from './overview-table-session-details-availability.component.vue';
 import OverviewTableSessionDetailsCompletionsComponent from './overview-table-session-details-completions.component.vue';
 import OverviewTableSessionDetailsMarkerComponent from './overview-table-session-details-marker.component.vue';
 
 export default {
 	components: {
+		OverviewTableSessionDetailsAvailabilityComponent,
 		OverviewTableSessionDetailsCompletionsComponent,
 		OverviewTableSessionDetailsAdjsutmentsComponent,
 		OverviewTableSessionDetailsMarkerComponent,
