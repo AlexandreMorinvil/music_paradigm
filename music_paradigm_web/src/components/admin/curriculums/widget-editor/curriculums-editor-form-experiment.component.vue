@@ -1,5 +1,5 @@
 <template>
-	<div class="experiment-input">
+	<div :id="anchorId" class="experiment-input">
 		<div class="delete-area centered-input">
 			<button v-on:click="removeExperiment(index)" class="widget-button red">Remove #{{ index + 1 }}</button>
 		</div>
@@ -93,6 +93,14 @@
 			</label>
 			<textarea v-model="experimentData.text" v-on:change="updateExperiment" name="text" row="1" placeholder="Insert a text to display to the user" />
 		</div>
+
+		<div class="up-area centered-input">
+			<button v-if="hasUpButton" v-on:click="handleMoveUp(index)" class="widget-button turquoise move-button">UP</button>
+		</div>
+
+		<div class="down-area centered-input">
+			<button v-if="hasDownButton" v-on:click="handleMoveDown(index)" class="widget-button turquoise move-button">DOWN</button>
+		</div>
 	</div>
 </template>
 
@@ -104,6 +112,7 @@ import { mapGetters } from 'vuex';
 export default {
 	props: {
 		index: Number,
+		lastIndex: Number,
 		experiment: Object,
 	},
 	data() {
@@ -114,6 +123,12 @@ export default {
 	computed: {
 		...mapGetters('experiments', ['experimentsHeadersList']),
 		...mapGetters('curriculums', ['getBlankCurriculumExperiment', 'curriculumSelectedExperimentAtIndex']),
+		hasUpButton() {
+			return this.index !== 0;
+		},
+		hasDownButton() {
+			return this.index !== this.lastIndex;
+		},
 		experimentsReferences() {
 			const fullReference = [];
 			this.experimentsHeadersList.forEach((element) => {
@@ -124,6 +139,9 @@ export default {
 			});
 			return fullReference;
 		},
+		anchorId() {
+			return 'curriculum-experiment-' + this.index;
+		}
 	},
 	methods: {
 		getExperimentFullNameFromList(id) {
@@ -139,6 +157,12 @@ export default {
 		},
 		removeExperiment(index) {
 			this.$emit('remove-experiment', index);
+		},
+		handleMoveUp(index) {
+			this.$emit('move-up', index);
+		},
+		handleMoveDown(index) {
+			this.$emit('move-down', index);
 		},
 		updateExperiment() {
 			this.$emit('change-experiment', { index: this.index, experiment: this.experimentData });
@@ -158,11 +182,12 @@ export default {
 	display: grid;
 	grid-template-columns: auto 1fr 1fr;
 	grid-template-areas:
-		'delete experiment title'
-		'delete delay time'
-		'id unique limit'
-		'id text text';
+		'delete experiment title up'
+		'delete delay      time  up'
+		'id     unique     limit down'
+		'id     text       text  down';
 	grid-gap: 15px;
+	padding: 40px;
 }
 
 .delete-area {
@@ -201,6 +226,14 @@ export default {
 	grid-area: text;
 }
 
+.up-area {
+	grid-area: up;
+}
+
+.down-area {
+	grid-area: down;
+}
+
 .input {
 	display: grid;
 	grid-template-rows: 1fr 1fr;
@@ -227,5 +260,9 @@ export default {
 .text-area > textarea {
 	display: block;
 	width: 100%;
+}
+
+.move-button {
+	width: 100px;
 }
 </style>

@@ -36,9 +36,16 @@
 				:key="index"
 				:experiment="experiment"
 				:index="index"
+				:lastIndex="lastIndex"
 				v-on:remove-experiment="removeExperiment"
 				v-on:change-experiment="updateExperiment"
+				v-on:move-up="moveUp"
+				v-on:move-down="moveDown"
 			/>
+			<div>
+				<button v-on:click="addExperiment()" class="widget-button small blue">Add</button>
+				<label style="display: inline"> Experiment(s) </label>
+			</div>
 		</div>
 	</div>
 </template>
@@ -88,6 +95,9 @@ export default {
 		curriculumSelectedIsSequentialDisplay() {
 			return this.hasSelectedCurriculum ? this.curriculumSelectedIsSequential : '';
 		},
+		lastIndex() {
+			return Math.max(0, this.experiments.length - 1);
+		},
 	},
 	methods: {
 		...mapActions('experiments', ['fetchAllExperimentsHeaders']),
@@ -108,6 +118,51 @@ export default {
 		},
 		updateExperiment(mutation) {
 			this.experiments[mutation.index] = mutation.experiment;
+		},
+		moveUp(index) {
+			const elementMovedUp = this.experiments[index];
+			const elementMovedDown = this.experiments[index - 1];
+
+			this.experiments.splice(index - 1, 2);
+
+			const elementsAfter = [];
+			const countRestElements = this.experiments.length;
+			for (let i = index - 1; i < countRestElements; i++) elementsAfter.push(this.experiments.pop());
+
+			setTimeout(() => {
+				this.experiments.push(elementMovedUp);
+				this.experiments.push(elementMovedDown);
+				for (const elementAfter of elementsAfter) this.experiments.push(elementAfter);
+			}, 0);
+
+			setTimeout(this.jumpToExperiment(index - 1), 0);
+		},
+		moveDown(index) {
+			// This (more complicated) approach is used to ensure the Vue rendering is reactive
+			// The use of 'push', 'pop' and 'setTimemout' forces reactivity
+			const elementMovedUp = this.experiments[index + 1];
+			const elementMovedDown = this.experiments[index];
+
+			this.experiments.splice(index, 2);
+
+			const elementsAfter = [];
+			const countRestElements = this.experiments.length;
+			for (let i = index; i < countRestElements; i++) elementsAfter.push(this.experiments.pop());
+
+			setTimeout(() => {
+				this.experiments.push(elementMovedUp);
+				this.experiments.push(elementMovedDown);
+				for (const elementAfter of elementsAfter) this.experiments.push(elementAfter);
+			}, 0);
+
+			setTimeout(this.jumpToExperiment(index + 1), 0);
+		},
+		insetAndReplaceExpriments(index, elementMovedUp, elementMovedDown) {},
+		jumpToExperiment(index) {
+			const anchorId = 'curriculum-experiment-' + index;
+			const offset = 80;
+			const top = document.getElementById(anchorId).offsetTop - offset;
+			window.scrollTo(0, top);
 		},
 		assignFormId(id) {
 			this.id = id;
