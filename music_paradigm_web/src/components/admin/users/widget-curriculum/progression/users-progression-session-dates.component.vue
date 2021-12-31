@@ -9,11 +9,11 @@
 					<th>Completion Date</th>
 				</tr>
 			</thead>
-			<tbody v-for="(startDates, completionDate, index) in completionStartAssociation" v-bind:key="index">
-				<tr v-for="(startDate, subIndex) in startDates" v-bind:key="subIndex">
-					<td v-if="subIndex == 0" :rowspan="startDates.length">{{ index + 1 }}</td>
-					<td>{{ makeDateDisplay(startDate) }}</td>
-					<td v-if="subIndex == 0" :rowspan="startDates.length" class="completion-date">{{ makeDateDisplay(completionDate) }}</td>
+			<tbody >
+				<tr v-for="(startDates, completionDate, index) in completionStartAssociation" v-bind:key="index">
+					<td>{{ index + 1 }}</td>
+					<td><div v-for="(startDate, subIndex) in startDates" v-bind:key="subIndex"> {{ makeDateDisplay(startDate) }} </div></td>
+					<td class="completion-date">{{ makeDateDisplay(completionDate) }}</td>
 				</tr>
 			</tbody>
 		</table>
