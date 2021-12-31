@@ -42,7 +42,7 @@
 				v-on:move-up="moveUp"
 				v-on:move-down="moveDown"
 			/>
-			<div>
+			<div v-if="hasManyExperiments">
 				<button v-on:click="addExperiment()" class="widget-button small blue">Add</button>
 				<label style="display: inline"> Experiment(s) </label>
 			</div>
@@ -98,6 +98,9 @@ export default {
 		lastIndex() {
 			return Math.max(0, this.experiments.length - 1);
 		},
+		hasManyExperiments() {
+			return this.experiments.length;
+		},
 	},
 	methods: {
 		...mapActions('experiments', ['fetchAllExperimentsHeaders']),
@@ -113,11 +116,16 @@ export default {
 				experiments: this.experiments,
 			};
 		},
-		addExperiment() {
-			this.experiments.push(this.getBlankCurriculumExperiment(this.experiments.length));
-		},
 		updateExperiment(mutation) {
 			this.experiments[mutation.index] = mutation.experiment;
+		},
+		addExperiment() {
+			this.experiments.push(this.getBlankCurriculumExperiment(this.experiments.length));
+			this.jumpToExperiment(this.lastIndex);
+		},
+		removeExperiment(index) {
+			this.experiments.splice(index, 1);
+			if (this.hasManyExperiments) this.jumpToExperiment(index - 1);
 		},
 		moveUp(index) {
 			const elementMovedUp = this.experiments[index];
@@ -134,8 +142,7 @@ export default {
 				this.experiments.push(elementMovedDown);
 				for (const elementAfter of elementsAfter) this.experiments.push(elementAfter);
 			}, 0);
-
-			setTimeout(this.jumpToExperiment(index - 1), 0);
+			this.jumpToExperiment(index - 1);
 		},
 		moveDown(index) {
 			// This (more complicated) approach is used to ensure the Vue rendering is reactive
@@ -154,15 +161,15 @@ export default {
 				this.experiments.push(elementMovedDown);
 				for (const elementAfter of elementsAfter) this.experiments.push(elementAfter);
 			}, 0);
-
-			setTimeout(this.jumpToExperiment(index + 1), 0);
+			this.jumpToExperiment(index + 1);
 		},
-		insetAndReplaceExpriments(index, elementMovedUp, elementMovedDown) {},
 		jumpToExperiment(index) {
-			const anchorId = 'curriculum-experiment-' + index;
-			const offset = 80;
-			const top = document.getElementById(anchorId).offsetTop - offset;
-			window.scrollTo(0, top);
+			setTimeout(() => {
+				const anchorId = 'curriculum-experiment-' + index;
+				const offset = 80;
+				const top = document.getElementById(anchorId).offsetTop - offset;
+				window.scrollTo(0, top);
+			}, 0);
 		},
 		assignFormId(id) {
 			this.id = id;
@@ -185,9 +192,6 @@ export default {
 			this.assignFormLogType(this.curriculumSelectedLogType);
 			this.assignFormIsSequential(this.curriculumSelectedIsSequential);
 			this.assignFormExperiments(this.curriculumSelectedExperiments);
-		},
-		removeExperiment(index) {
-			this.experiments.splice(index, 1);
 		},
 		clearForm() {
 			this.assignFormId('');
