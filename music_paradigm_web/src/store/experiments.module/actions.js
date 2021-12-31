@@ -1,4 +1,4 @@
-import { experimentService } from '@/_services';
+import { experimentService } from '@/api';
 
 export default {
 	fetchAllExperimentsHeaders({ commit, dispatch }) {

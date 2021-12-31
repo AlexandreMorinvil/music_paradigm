@@ -109,7 +109,6 @@ export default {
 			this.progressRatio = this.experimentMarker.progressRatio;
 		},
 		handleTimeReset() {
-			console.log('Here');
 			const answer = window.confirm('Are you sure you want to reset the time for this session?\nThis cannot be cancelled.');
 			if (answer) this.resetSessionTimeIndicated(this.associativeId);
 		},

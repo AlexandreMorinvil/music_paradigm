@@ -1,4 +1,4 @@
-import { accountService, sessionService } from '@/_services';
+import { accountService, sessionService } from '@/api';
 
 export default {
 	fetchDueExperimentSession({ commit, dispatch }) {

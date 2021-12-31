@@ -1,4 +1,4 @@
-import { accountService } from '@/_services';
+import { accountService } from '@/api';
 
 export default {
 	resumeLoginStatus({ commit }) {

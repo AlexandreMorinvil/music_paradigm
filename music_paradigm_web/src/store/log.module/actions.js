@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import { logFormat } from '@/store-helper/log.module-helper';
-import { logService } from '@/_services';
+import { logService } from '@/api';
 
 export default {
 	setLogType({ commit }, logType) {

@@ -1,5 +1,5 @@
 import { defaultState } from '@/store-helper/sound-generator.module-helper';
-import { resourceService } from '@/_services';
+import { resourceService } from '@/api';
 
 export default {
 	initializeSoundGenerator: ({ commit }, instrument) => {

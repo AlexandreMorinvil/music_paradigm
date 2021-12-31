@@ -1,4 +1,4 @@
-import { resourceService } from '@/_services';
+import { resourceService } from '@/api';
 
 export default {
 	resetPianoState: ({ commit }) => {

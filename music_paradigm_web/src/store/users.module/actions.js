@@ -1,4 +1,4 @@
-import { experimentMarkersService, userService } from '@/_services';
+import { experimentMarkersService, userService } from '@/api';
 
 export default {
 	fetchAllUsersSummary({ commit, dispatch }) {
