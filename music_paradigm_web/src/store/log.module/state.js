@@ -1,4 +1,4 @@
-import defaultState from '@/store-helper/log.module-helper/default-state';
+import { defaultState } from '@/store-helper/log.module-helper';
 
 export default {
 	status: {
