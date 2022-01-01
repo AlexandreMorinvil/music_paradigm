@@ -3,33 +3,46 @@ import defaultResponseHandler from './defaultResponseHandler';
 
 export const logsApi = {
 	getUserSimpleLogSummaryList,
-	getUserThoroughLogSummaryList
+	getUserThoroughLogSummaryList,
+	getAdminSimpleLogSummaryList,
+	getAdminThoroughLogSummaryList,
 };
 
-function getUserSimpleLogSummaryList({ userId, progressionId, associativeId }) {
+function getUserSimpleLogSummaryList(criterias) {
 	const requestOptions = {
-		method: 'GET',
+		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(criterias),
 	};
-	return fetch(url.logSimple(['user-summary-list', userId, progressionId, associativeId]), requestOptions).then(handleResponse);
+	return fetch(url.logSimple('user-summary-list'), requestOptions).then(handleResponse);
 }
 
-function getUserThoroughLogSummaryList({ userId, progressionId, associativeId }) {
+function getUserThoroughLogSummaryList(criterias) {
 	const requestOptions = {
-		method: 'GET',
+		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(criterias),
 	};
-	return fetch(url.logThorough(['user-summary-list', userId, progressionId, associativeId]), requestOptions).then(handleResponse);
+	return fetch(url.logThorough('user-summary-list'), requestOptions).then(handleResponse);
 }
 
-// function addSimpleLogBlock(simpleLog) {
-// 	const requestOptions = {
-// 		method: 'POST',
-// 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-// 		body: JSON.stringify(simpleLog),
-// 	};
-// 	return fetch(url.logSimple('add-block'), requestOptions).then(handleResponse);
-// }
+function getAdminSimpleLogSummaryList(criterias) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(criterias),
+	};
+	return fetch(url.logSimple('admin-summary-list'), requestOptions).then(handleResponse);
+}
+
+function getAdminThoroughLogSummaryList(criterias) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(criterias),
+	};
+	return fetch(url.logThorough('admin-summary-list'), requestOptions).then(handleResponse);
+}
 
 function handleResponse(reponse) {
 	return defaultResponseHandler(reponse);

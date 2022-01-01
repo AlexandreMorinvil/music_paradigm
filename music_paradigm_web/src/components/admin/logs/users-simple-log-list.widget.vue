@@ -9,7 +9,7 @@
 			</thead>
 
 			<tbody>
-				<tr v-for="(user, index) in usersSummaryList" :key="user._id" :class="{ selected: isSelectedUser(user) }">
+				<tr v-for="(user, index) in usersSummaryList" :key="user._id" >
 					<td>{{ index + 1 }}</td>
 				</tr>
 			</tbody>
@@ -44,31 +44,8 @@ export default {
 </script>
 
 <style scoped>
-.options-position {
-	grid-area: options;
-	display: flex;
-	justify-content: space-between;
-}
-
-.board-position {
-	grid-area: board;
-	display: flex;
-	justify-content: center;
-	white-space: pre-line;
-}
-
-.widget {
-	grid-template-areas:
-		'options'
-		'board';
-}
-
 .loader {
-	width: 500px;
-	height: 500px;
-}
-
-.button {
-	white-space: nowrap;
+	width: 100px;
+	height: 100px;
 }
 </style>
