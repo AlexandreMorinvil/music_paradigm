@@ -7,9 +7,10 @@ const service = require('./log.service');
 // routes
 router.post('/initialize-log', initializeLog);
 router.patch('/add-log-block', addLogBlock);
-router.patch('/conclude-log', concludeLog);
+router.patch('/conclude-log',  concludeLog);
 
-router.get('/user-summary-list/:userId/:progressionId?/:associativeId?', jwtAuthorize(role.admin), getUserLogSummaryList);
+router.get('/user-summary-list/:userId/:progressionId?/:associativeId?',  jwtAuthorize(role.admin), getUserLogSummaryList);
+router.get('/admin-summary-list/:userId/:progressionId?/:associativeId?', jwtAuthorize(role.admin), getAdminLogSummaryList);
 
 router.post('/admin-log-csv', jwtAuthorize(role.admin), makeAdminLogCsv);
 router.post('/user-log-csv', jwtAuthorize(role.admin), makeUserLogCsv);
@@ -51,20 +52,27 @@ function concludeLog(req, res, next) {
 
 function getUserLogSummaryList(req, res, next) {
 
-    const userId = req.params.userId;
-    const progressionId = req.params.progressionId;
-    const associativeId = req.params.associativeId;
+    const criterias = req.body;
 
-    service.getUserLogSummaryList(userId, progressionId, associativeId)
+    service.getUserLogSummaryList(criterias)
+        .then((list) => res.status(200).json(list))
+        .catch(err => next(err));
+}
+
+function getAdminLogSummaryList(req, res, next) {
+
+    const criterias = req.body;
+
+    service.getAdminLogSummaryList(criterias)
         .then((list) => res.status(200).json(list))
         .catch(err => next(err));
 }
 
 function makeUserLogCsv(req, res, next) {
 
-    const query = req.body;
+    const criterias = req.body;
 
-    service.makeUserLogCsv(query)
+    service.makeUserLogCsv(criterias)
         .then((csv) => {
             res.setHeader('Content-disposition', 'attachment; filename=data.csv');
             res.set('Content-Type', 'text/csv');
@@ -75,9 +83,9 @@ function makeUserLogCsv(req, res, next) {
 
 function makeAdminLogCsv(req, res, next) {
 
-    const query = req.body;
+    const criterias = req.body;
 
-    service.makeAdminLogCsv(query)
+    service.makeAdminLogCsv(criterias)
         .then((csv) => {
             res.setHeader('Content-disposition', 'attachment; filename=data.csv');
             res.set('Content-Type', 'text/csv');

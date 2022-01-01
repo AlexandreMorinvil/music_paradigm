@@ -36,7 +36,7 @@ schema.statics.makeSummaryList = async function (query) {
         'isInPrelude',
         'timestamp',
     ];
-    return this.find(query, [, '']);
+    return this.find(query, fieldsToKeep);
 }
 
 // Creating the model

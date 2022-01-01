@@ -1,10 +1,9 @@
-﻿const csvConverter = require('_helpers/csv-converter');
+﻿const AdminLogThorough = require('database/db').AdminLogThorough;
+const LogThorough = require('database/db').LogThorough;
+const User = require('database/db').User;
 
-const db = require('database/db');
-const AdminLogThorough = db.AdminLogThorough;
-const LogThorough = db.LogThorough;
-const User = db.User;
-
+const csvConverter = require('_helpers/csv-converter');
+const { makeMongooseLogQuery } = require('log/log-query-maker.service')
 
 
 // Exports
@@ -13,6 +12,7 @@ module.exports = {
     addLogBlock,
     concludeLog,
     getUserLogSummaryList,
+    getAdminLogSummaryList,
     makeUserLogCsv,
     makeAdminLogCsv,
 };
@@ -47,20 +47,27 @@ async function concludeLog(userId, logHeader, logConclusion) {
     }
 }
 
-async function getUserLogSummaryList(userId, progressionId, associativeId) {
+async function getUserLogSummaryList(criterias) {
     try {
-        const query = { userId: userId };
-        if (progressionId) query.progressionId = progressionId;
-        if (associativeId) query.associativeId = associativeId;
-        if (await User.isAdmin(userId)) return await AdminLogThorough.makeSummaryList(query);
-        else return await LogThorough.makeSummaryList(query);
+        const query = makeMongooseLogQuery(criterias);
+        return await LogThorough.makeSummaryList(query);
     } catch (err) {
         throw err;
     }
 }
 
-async function makeUserLogCsv(query) {
+async function getAdminLogSummaryList(criterias) {
     try {
+        const query = makeMongooseLogQuery(criterias);
+        return await AdminLogThorough.makeSummaryList(query);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function makeUserLogCsv(criterias) {
+    try {
+        const query = makeMongooseLogQuery(criterias);
         let data = await LogThorough.find(query);
         return csvConverter.makeCsv(data);
     } catch (err) {
@@ -68,8 +75,9 @@ async function makeUserLogCsv(query) {
     }
 }
 
-async function makeAdminLogCsv(query) {
+async function makeAdminLogCsv(criterias) {
     try {
+        const query = makeMongooseLogQuery(criterias);
         let data = await AdminLogThorough.find(query);
         return csvConverter.makeCsv(data);
     } catch (err) {

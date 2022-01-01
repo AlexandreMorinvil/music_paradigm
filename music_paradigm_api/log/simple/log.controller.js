@@ -4,13 +4,14 @@ const jwtAuthorize = require('jwt/jwt.authorization');
 const role = require('_helpers/role');
 const service = require('./log.service');
 
-router.get('/user-summary-list/:userId/:progressionId?/:associativeId?', jwtAuthorize(role.admin), getUserLogSummaryList);
-
-router.post('/admin-log-csv', jwtAuthorize(role.admin), makeAdminLogCsv);
-router.post('/user-log-csv', jwtAuthorize(role.admin), makeUserLogCsv);
-
 // routes
 router.post('/add-block', addBlock);
+
+router.post('/admin-summary-list',  jwtAuthorize(role.admin), getAdminLogSummaryList);
+router.post('/user-summary-list',   jwtAuthorize(role.admin), getUserLogSummaryList);
+
+router.post('/admin-log-csv',       jwtAuthorize(role.admin), makeAdminLogCsv);
+router.post('/user-log-csv',        jwtAuthorize(role.admin), makeUserLogCsv);
 
 module.exports = router;
 
@@ -24,13 +25,31 @@ function addBlock(req, res, next) {
         .catch(err => next(err));
 }
 
-function getUserLogSummaryList(req, res, next) {
+function getAdminLogSummaryList(req, res, next) {
 
     const userId = req.params.userId;
     const progressionId = req.params.progressionId;
     const associativeId = req.params.associativeId;
 
     service.getUserLogSummaryList(userId, progressionId, associativeId)
+        .then((list) => res.status(200).json(list))
+        .catch(err => next(err));
+}
+
+function getUserLogSummaryList(req, res, next) {
+
+    const criterias = req.body;
+
+    service.getUserLogSummaryList(criterias)
+        .then((list) => res.status(200).json(list))
+        .catch(err => next(err));
+}
+
+function getAdminLogSummaryList(req, res, next) {
+
+    const criterias = req.body;
+
+    service.getAdminLogSummaryList(criterias)
         .then((list) => res.status(200).json(list))
         .catch(err => next(err));
 }

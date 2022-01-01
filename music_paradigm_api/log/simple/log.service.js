@@ -1,12 +1,15 @@
-﻿const db = require('database/db');
-const AdminLogSimple = db.AdminLogSimple;
-const LogSimple = db.LogSimple;
-const User = db.User;
+﻿const AdminLogSimple = require('database/db').AdminLogSimple;
+const LogSimple = require('database/db').LogSimple;
+const User = require('database/db').User;
+
+const csvConverter = require('_helpers/csv-converter');
+const { makeMongooseLogQuery } = require('log/log-query-maker.service')
 
 // Exports
 module.exports = {
     addBlock,
     getUserLogSummaryList,
+    getAdminLogSummaryList,
     makeUserLogCsv,
     makeAdminLogCsv,
 };
@@ -25,20 +28,28 @@ async function addBlock(userId, block) {
     }
 }
 
-async function getUserLogSummaryList(userId, progressionId, associativeId) {
+
+async function getUserLogSummaryList(criterias) {
     try {
-        const query = { userId: userId };
-        if (progressionId) query.progressionId = progressionId;
-        if (associativeId) query.associativeId = associativeId;
-        if (await User.isAdmin(userId)) return await AdminLogThorough.makeSummaryList(query);
-        else return await LogThorough.makeSummaryList(query);
+        const query = makeMongooseLogQuery(criterias);
+        return await LogThorough.makeSummaryList(query);
     } catch (err) {
         throw err;
     }
 }
 
-async function makeUserLogCsv(query) {
+async function getAdminLogSummaryList(criterias) {
     try {
+        const query = makeMongooseLogQuery(criterias);
+        return await AdminLogThorough.makeSummaryList(query);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function makeUserLogCsv(criterias) {
+    try {
+        const query = makeMongooseLogQuery(criterias);
         let data = await LogThorough.find(query);
         return csvConverter.makeCsv(data);
     } catch (err) {
@@ -46,8 +57,9 @@ async function makeUserLogCsv(query) {
     }
 }
 
-async function makeAdminLogCsv(query) {
+async function makeAdminLogCsv(criterias) {
     try {
+        const query = makeMongooseLogQuery(criterias);
         let data = await AdminLogThorough.find(query);
         return csvConverter.makeCsv(data);
     } catch (err) {
