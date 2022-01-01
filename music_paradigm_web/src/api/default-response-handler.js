@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-empty-function
 export default function (response, handleErrorStatus = () => {}) {
 	return response.text().then((text) => {
 		const data = text && JSON.parse(text);

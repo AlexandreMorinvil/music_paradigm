@@ -1,7 +1,7 @@
 import { authHeader, routerNavigation, url } from '@/_helpers';
-import defaultResponseHandler from './defaultResponseHandler';
+import defaultResponseHandler from './default-response-handler';
 
-export const accountService = {
+export const accountApi = {
 	resumeLogin,
 	login,
 	logout,

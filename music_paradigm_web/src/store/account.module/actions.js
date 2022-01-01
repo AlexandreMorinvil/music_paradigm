@@ -1,8 +1,8 @@
-import { accountService } from '@/api';
+import { accountApi } from '@/api';
 
 export default {
 	resumeLoginStatus({ commit }) {
-		accountService.resumeLogin().then((user) => {
+		accountApi.resumeLogin().then((user) => {
 			if (user) commit('loginSuccess', user);
 			else commit('loginFailure');
 		});
@@ -10,7 +10,7 @@ export default {
 
 	login({ dispatch, commit }, { username, password }) {
 		commit('loginRequest', { username });
-		accountService.login(username, password).then(
+		accountApi.login(username, password).then(
 			(user) => {
 				commit('loginSuccess', user);
 			},
@@ -22,13 +22,13 @@ export default {
 	},
 
 	logout({ commit }) {
-		accountService.logout();
+		accountApi.logout();
 		commit('logout');
 	},
 
 	fetchProgressionSummary({ commit, dispatch }) {
 		commit('indicateFetchingProgressionSummary');
-		return accountService
+		return accountApi
 			.fetchProgressionSummary()
 			.then(
 				(progressionSummary) => {

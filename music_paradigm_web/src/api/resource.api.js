@@ -1,7 +1,7 @@
 // Import config from 'config';
 import { authHeader, url } from '@/_helpers';
 
-export const resourceService = {
+export const resourceApi = {
 	fetchMidiFile,
 };
 

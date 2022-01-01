@@ -1,9 +1,9 @@
-import { accountService, sessionService } from '@/api';
+import { accountApi, sessionApi } from '@/api';
 
 export default {
 	fetchDueExperimentSession({ commit, dispatch }) {
 		commit('isFetchingSession');
-		return accountService
+		return accountApi
 			.fetchDueExperimentSession()
 			.then(
 				(sessionInformation) => {
@@ -21,7 +21,7 @@ export default {
 
 	fetchSpecificExperimentSession({ commit, dispatch }, { associativeId, associativeIdOrdinalNumber }) {
 		commit('isFetchingSession');
-		return accountService
+		return accountApi
 			.fetchSpecificExperimentSession(associativeId, associativeIdOrdinalNumber)
 			.then(
 				(sessionInformation) => {
@@ -51,7 +51,7 @@ export default {
 	// Send a signal to the back-end to indicate that the session can be considered as started
 	initializeSession({ commit, getters }) {
 		commit('setIsInitializingSession');
-		return sessionService
+		return sessionApi
 			.initializeSession(getters.associativeId, getters.associativeIdOrdinalNumber)
 			.then(
 				() => {
@@ -69,7 +69,7 @@ export default {
 	// Send a signal to the back-end to indicate that the session can be considered as completed
 	concludeSession({ commit, dispatch, getters }, isInTimeUp) {
 		commit('setIsConcludingSession');
-		return sessionService
+		return sessionApi
 			.concludeSession(getters.associativeId, getters.associativeIdOrdinalNumber, isInTimeUp)
 			.then(
 				() => {
@@ -88,7 +88,7 @@ export default {
 	// Send a signal to the back-end to indicate that the session can be considered as started
 	saveSessionState({ commit, getters, rootGetters }) {
 		commit('setIsSavingSessionState');
-		return sessionService
+		return sessionApi
 			.saveSessionState(
 				getters.associativeId,
 				rootGetters['experiment/cursor'],

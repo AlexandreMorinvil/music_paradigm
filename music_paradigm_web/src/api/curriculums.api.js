@@ -1,7 +1,7 @@
 import { authHeader, url } from '@/_helpers';
-import defaultResponseHandler from './defaultResponseHandler';
+import defaultResponseHandler from './default-response-handler';
 
-export const curriculumService = {
+export const curriculumsApi = {
 	create,
 	getListAllHeaders,
 	getById,

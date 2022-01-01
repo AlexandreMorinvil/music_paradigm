@@ -1,7 +1,7 @@
 import { authHeader, url, validator } from '@/_helpers';
-import defaultResponseHandler from './defaultResponseHandler';
+import defaultResponseHandler from './default-response-handler';
 
-export const experimentService = {
+export const experimentsApi = {
 	validateExperiment,
 	getListAllHeaders,
 	getDefinition,

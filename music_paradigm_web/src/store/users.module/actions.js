@@ -1,9 +1,9 @@
-import { experimentMarkersService, userService } from '@/api';
+import { experimentMarkersApi, usersApi } from '@/api';
 
 export default {
 	fetchAllUsersSummary({ commit, dispatch }) {
 		commit('indicateFetchingUserList');
-		return userService
+		return usersApi
 			.getListAllSummaries()
 			.then(
 				(usersSummaryList) => {
@@ -19,7 +19,7 @@ export default {
 	},
 
 	setSelectedUser({ commit, dispatch }, id) {
-		return userService.getById(id).then(
+		return usersApi.getById(id).then(
 			(selectedUser) => {
 				commit('setSelectedUser', selectedUser.user);
 				commit('setSelectedUserProgression', selectedUser.progression);
@@ -32,7 +32,7 @@ export default {
 	},
 
 	refreshSelectedUserProgression({ commit, dispatch, getters }) {
-		return userService.getById(getters.userSelectedId).then(
+		return usersApi.getById(getters.userSelectedId).then(
 			(selectedUser) => {
 				commit('setSelectedUserProgression', selectedUser.progression);
 				commit('setSelectedUserProgressionSummary', selectedUser.progressionSummary);
@@ -49,7 +49,7 @@ export default {
 
 	createUser({ commit, dispatch }, user) {
 		commit('indicateCreateRequest');
-		return userService
+		return usersApi
 			.register(user)
 			.then(
 				(createdUser) => {
@@ -70,7 +70,7 @@ export default {
 
 	updateUser({ commit, dispatch }, { id, user }) {
 		commit('indicateUpdateRequest');
-		return userService
+		return usersApi
 			.update(id, user)
 			.then(
 				(updatedUser) => {
@@ -91,7 +91,7 @@ export default {
 
 	deleteUser({ commit, dispatch }, id) {
 		commit('indicateDeleteRequest');
-		return userService
+		return usersApi
 			.delete(id)
 			.then(
 				() => {
@@ -112,7 +112,7 @@ export default {
 
 	assignCurriculum({ commit, dispatch }, { userId, curriculumParameters }) {
 		commit('indicateAssignCurriculumRequest');
-		return userService
+		return usersApi
 			.assignCurriculum(userId, curriculumParameters)
 			.then(
 				(updatedUser) => {
@@ -133,7 +133,7 @@ export default {
 
 	updateParameters({ commit, dispatch }, { userId, assignedParameters }) {
 		commit('indicateUpdateParametersRequest');
-		return userService
+		return usersApi
 			.assignParameters(userId, assignedParameters)
 			.then(
 				(updatedUser) => {
@@ -153,7 +153,7 @@ export default {
 
 	updateAdjustments({ commit, dispatch }, { userId, assignedAdjustments }) {
 		commit('indicateUpdateAdjustmentsRequest');
-		return userService
+		return usersApi
 			.assignAdjustments(userId, assignedAdjustments)
 			.then(
 				(updatedUser) => {
@@ -173,7 +173,7 @@ export default {
 
 	resetSessionTimeIndicated({ commit, dispatch, getters }, associativeId) {
 		commit('indicateExperimentMarkerChangeRequest');
-		return experimentMarkersService
+		return experimentMarkersApi
 			.resetTimeIndicated(getters.userSelectedProgressionId, associativeId)
 			.then(
 				(progressionSummary) => {
@@ -192,7 +192,7 @@ export default {
 
 	resetSessionProgressKept({ commit, dispatch, getters }, associativeId) {
 		commit('indicateExperimentMarkerChangeRequest');
-		return experimentMarkersService
+		return experimentMarkersApi
 			.delete(getters.userSelectedProgressionId, associativeId)
 			.then(
 				(progressionSummary) => {

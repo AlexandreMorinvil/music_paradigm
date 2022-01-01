@@ -1,23 +1,21 @@
-import { accountService } from './account.api';
-import { curriculumService } from './curriculums.api';
-import { experimentMarkersService } from './experiment-markers.api';
-import { experimentService } from './experiments.api';
-import { logService } from './log.api';
+import { accountApi } from './account.api';
+import { curriculumsApi } from './curriculums.api';
+import { experimentMarkersApi } from './experiment-markers.api';
+import { experimentsApi } from './experiments.api';
+import { logApi } from './log.api';
 import { logsApi } from './logs.api';
-import { resourceService } from './resource.api';
-import { resultService } from './result.api';
-import { sessionService } from './session.api';
-import { userService } from './user.api';
+import { resourceApi } from './resource.api';
+import { sessionApi } from './session.api';
+import { usersApi } from './user.api';
 
 export {
-    accountService,
-    experimentService,
-    experimentMarkersService,
-    curriculumService,
-    logService,
+    accountApi,
+    experimentsApi,
+    experimentMarkersApi,
+    curriculumsApi,
+    logApi,
     logsApi,
-    userService,
-    resultService,
-    sessionService,
-    resourceService,
+    usersApi,
+    sessionApi,
+    resourceApi,
 };

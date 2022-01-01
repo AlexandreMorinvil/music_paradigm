@@ -1,7 +1,7 @@
 import { authHeader, url } from '@/_helpers';
-import defaultResponseHandler from './defaultResponseHandler';
+import defaultResponseHandler from './default-response-handler';
 
-export const experimentMarkersService = {
+export const experimentMarkersApi = {
 	resetTimeIndicated,
 	delete: _delete,
 };
