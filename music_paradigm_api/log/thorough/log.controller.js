@@ -9,11 +9,12 @@ router.post('/initialize-log', initializeLog);
 router.patch('/add-log-block', addLogBlock);
 router.patch('/conclude-log',  concludeLog);
 
-router.get('/user-summary-list/:userId/:progressionId?/:associativeId?',  jwtAuthorize(role.admin), getUserLogSummaryList);
-router.get('/admin-summary-list/:userId/:progressionId?/:associativeId?', jwtAuthorize(role.admin), getAdminLogSummaryList);
+// Those queries are defined as POST instead of GET as GET request doesn't usually have a 'body'
+router.post('/user-summary-list',   jwtAuthorize(role.admin), getUserLogSummaryList);
+router.post('/admin-summary-list',  jwtAuthorize(role.admin), getAdminLogSummaryList);
 
-router.post('/admin-log-csv', jwtAuthorize(role.admin), makeAdminLogCsv);
-router.post('/user-log-csv', jwtAuthorize(role.admin), makeUserLogCsv);
+router.post('/admin-log-csv',       jwtAuthorize(role.admin), makeAdminLogCsv);
+router.post('/user-log-csv',        jwtAuthorize(role.admin), makeUserLogCsv);
 
 module.exports = router;
 

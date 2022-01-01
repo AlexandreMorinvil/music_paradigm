@@ -7,6 +7,7 @@ const service = require('./log.service');
 // routes
 router.post('/add-block', addBlock);
 
+// Those queries are defined as POST instead of GET as GET request doesn't usually have a 'body' 
 router.post('/admin-summary-list',  jwtAuthorize(role.admin), getAdminLogSummaryList);
 router.post('/user-summary-list',   jwtAuthorize(role.admin), getUserLogSummaryList);
 
