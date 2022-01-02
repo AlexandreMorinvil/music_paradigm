@@ -107,18 +107,18 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('logs', ['getUserSimpleLogSummaryList', 'clearUserSimpleLogSummaryList', 'downloadUserSimpleLogCSV']),
+		...mapActions('logs', ['getUserSimpleLogSummaryList', 'clearUserSimpleLogSummaryList', 'downloadUserSimpleLogCSV', 'downloadUserSimpleLogJson']),
 		refresh() {
 			if (this.isDownloading) return;
 			this.getUserSimpleLogSummaryList(this.rules);
 		},
 		handleCsvDownload() {
 			if (this.isDownloading) return;
-			this.downloadUserSimpleLogCSV();
+			this.downloadUserSimpleLogCSV(this.rules);
 		},
 		handleJsonDownload() {
 			if (this.isDownloading) return;
-			console.log('Json download');
+			this.downloadUserSimpleLogJson(this.rules);
 		},
 		handleExclusionsSelection() {
 			if (this.isDownloading) return;

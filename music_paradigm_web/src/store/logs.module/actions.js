@@ -110,4 +110,22 @@ export default {
 				commit('indicateIsDownloadingEnd');
 			});
 	},
+
+	downloadUserSimpleLogJson({ commit, dispatch }, rules) {
+		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+		commit('indicateIsDownloading');
+		return logsApi
+			.getUserSimpleLogJson(criterias)
+			.then(
+				() => {
+					dispatch('alert/setInformationAlert', 'JSON file generated and retreived sucessfully', { root: true });
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `User simple logs csv download failed : ${error.message}`, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateIsDownloadingEnd');
+			});
+	},
 };

@@ -3,15 +3,18 @@ const LogSimple = require('database/db').LogSimple;
 const User = require('database/db').User;
 
 const csvConverter = require('_helpers/csv-converter');
+const jsonConverter = require('_helpers/json-converter');
 const { makeMongooseLogQuery } = require('log/log-query-maker.service')
 
 // Exports
 module.exports = {
     addBlock,
-    getUserLogSummaryList,
     getAdminLogSummaryList,
-    makeUserLogCsv,
+    getUserLogSummaryList,
     makeAdminLogCsv,
+    makeUserLogCsv,
+    makeAdminLogJson,
+    makeUserLogJson,
 };
 
 async function addBlock(userId, block) {
@@ -25,6 +28,14 @@ async function addBlock(userId, block) {
     }
 }
 
+async function getAdminLogSummaryList(criterias) {
+    try {
+        const query = makeMongooseLogQuery(criterias);
+        return await AdminLogSimple.makeSummaryList(query);
+    } catch (err) {
+        throw err;
+    }
+}
 
 async function getUserLogSummaryList(criterias) {
     try {
@@ -35,10 +46,11 @@ async function getUserLogSummaryList(criterias) {
     }
 }
 
-async function getAdminLogSummaryList(criterias) {
+async function makeAdminLogCsv(criterias) {
     try {
         const query = makeMongooseLogQuery(criterias);
-        return await AdminLogSimple.makeSummaryList(query);
+        let data = await AdminLogSimple.getFileRelevantData(query);
+        return csvConverter.makeCsv(data);
     } catch (err) {
         throw err;
     }
@@ -54,11 +66,21 @@ async function makeUserLogCsv(criterias) {
     }
 }
 
-async function makeAdminLogCsv(criterias) {
+async function makeAdminLogJson(criterias) {
     try {
         const query = makeMongooseLogQuery(criterias);
         let data = await AdminLogSimple.getFileRelevantData(query);
-        return csvConverter.makeCsv(data);
+        return jsonConverter.makeJson(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function makeUserLogJson(criterias) {
+    try {
+        const query = makeMongooseLogQuery(criterias);
+        let data = await LogSimple.getFileRelevantData(query);
+        return jsonConverter.makeJson(data);
     } catch (err) {
         throw err;
     }

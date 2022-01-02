@@ -8,11 +8,14 @@ const service = require('./log.service');
 router.post('/add-block', addBlock);
 
 // Those queries are defined as POST instead of GET as GET request doesn't usually have a 'body' 
-router.post('/admin-summary-list',  jwtAuthorize(role.admin), getAdminLogSummaryList);
 router.post('/user-summary-list',   jwtAuthorize(role.admin), getUserLogSummaryList);
+router.post('/admin-summary-list',  jwtAuthorize(role.admin), getAdminLogSummaryList);
 
-router.post('/admin-csv',       jwtAuthorize(role.admin), makeAdminLogCsv);
 router.post('/user-csv',        jwtAuthorize(role.admin), makeUserLogCsv);
+router.post('/admin-csv',       jwtAuthorize(role.admin), makeAdminLogCsv);
+
+router.post('/user-json',        jwtAuthorize(role.admin), makeUserLogJson);
+router.post('/admin-json',       jwtAuthorize(role.admin), makeAdminLogJson);
 
 module.exports = router;
 
@@ -23,17 +26,6 @@ function addBlock(req, res, next) {
 
     service.addBlock(userId, block)
         .then(() => res.json({}))
-        .catch(err => next(err));
-}
-
-function getAdminLogSummaryList(req, res, next) {
-
-    const userId = req.params.userId;
-    const progressionId = req.params.progressionId;
-    const associativeId = req.params.associativeId;
-
-    service.getUserLogSummaryList(userId, progressionId, associativeId)
-        .then((list) => res.status(200).json(list))
         .catch(err => next(err));
 }
 
@@ -62,6 +54,7 @@ function makeUserLogCsv(req, res, next) {
     service.makeUserLogCsv(query)
         .then((csv) => {
             res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+            res.set('Access-Control-Expose-Headers', 'Content-Disposition');
             res.set('Content-Type', 'text/csv');
             res.status(200).send(csv);
         })
@@ -75,8 +68,37 @@ function makeAdminLogCsv(req, res, next) {
     service.makeAdminLogCsv(query)
         .then((csv) => {
             res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+            res.set('Access-Control-Expose-Headers', 'Content-Disposition');
             res.set('Content-Type', 'text/csv');
             res.status(200).send(csv);
+        })
+        .catch(err => next(err));
+}
+
+function makeUserLogJson(req, res, next) {
+
+    const query = req.body;
+
+    service.makeUserLogJson(query)
+        .then((json) => {
+            res.setHeader('Content-disposition', 'attachment; filename=data.json');
+            res.set('Access-Control-Expose-Headers', 'Content-Disposition');
+            res.set('Content-Type', 'text/json');
+            res.status(200).send(json);
+        })
+        .catch(err => next(err));
+}
+
+function makeAdminLogJson(req, res, next) {
+
+    const query = req.body;
+    
+    service.makeAdminLogJson(query)
+        .then((json) => {
+            res.setHeader('Content-disposition', 'attachment; filename=data.json');
+            res.set('Access-Control-Expose-Headers', 'Content-Disposition');
+            res.set('Content-Type', 'text/json');
+            res.status(200).send(json);
         })
         .catch(err => next(err));
 }

@@ -1,5 +1,5 @@
 import { authHeader, url } from '@/_helpers';
-import { csvFileResponseHandler, defaultResponseHandler } from './default-response-handler';
+import { csvFileResponseHandler, defaultResponseHandler, jsonFileResponseHandler } from './default-response-handler';
 
 export const logsApi = {
 	getUserSimpleLogSummaryList,
@@ -10,6 +10,10 @@ export const logsApi = {
 	getUserThoroughLogCsv,
 	getAdminSimpleLogCsv,
 	getAdminThoroughLogCsv,
+	getUserSimpleLogJson,
+	getUserThoroughLogJson,
+	getAdminSimpleLogJson,
+	getAdminThoroughLogJson,
 
 };
 
@@ -85,4 +89,40 @@ function getAdminThoroughLogCsv(criterias, mustSave = true) {
 		body: JSON.stringify(criterias),
 	};
 	return fetch(url.logThorough('admin-csv'), requestOptions).then(csvFileResponseHandler.bind(null, mustSave));
+}
+
+function getUserSimpleLogJson(criterias, mustSave = true) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(criterias),
+	};
+	return fetch(url.logSimple('user-json'), requestOptions).then(jsonFileResponseHandler.bind(null, mustSave));
+}
+
+function getUserThoroughLogJson(criterias, mustSave = true) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(criterias),
+	};
+	return fetch(url.logThorough('user-json'), requestOptions).then(jsonFileResponseHandler.bind(null, mustSave));
+}
+
+function getAdminSimpleLogJson(criterias, mustSave = true) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(criterias),
+	};
+	return fetch(url.logSimple('admin-json'), requestOptions).then(jsonFileResponseHandler.bind(null, mustSave));
+}
+
+function getAdminThoroughLogJson(criterias, mustSave = true) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(criterias),
+	};
+	return fetch(url.logThorough('admin-json'), requestOptions).then(jsonFileResponseHandler.bind(null, mustSave));
 }

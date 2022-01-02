@@ -7,14 +7,18 @@ const service = require('./log.service');
 // routes
 router.post('/initialize-log', initializeLog);
 router.patch('/add-log-block', addLogBlock);
-router.patch('/conclude-log',  concludeLog);
+router.patch('/conclude-log', concludeLog);
 
 // Those queries are defined as POST instead of GET as GET request doesn't usually have a 'body'
-router.post('/user-summary-list',   jwtAuthorize(role.admin), getUserLogSummaryList);
-router.post('/admin-summary-list',  jwtAuthorize(role.admin), getAdminLogSummaryList);
+router.post('/user-summary-list', jwtAuthorize(role.admin), getUserLogSummaryList);
+router.post('/admin-summary-list', jwtAuthorize(role.admin), getAdminLogSummaryList);
 
-router.post('/admin-csv',       jwtAuthorize(role.admin), makeAdminLogCsv);
-router.post('/user-csv',        jwtAuthorize(role.admin), makeUserLogCsv);
+router.post('/user-csv', jwtAuthorize(role.admin), makeUserLogCsv);
+router.post('/admin-csv', jwtAuthorize(role.admin), makeAdminLogCsv);
+
+router.post('/user-csv', jwtAuthorize(role.admin), makeUserLogJson);
+router.post('/admin-csv', jwtAuthorize(role.admin), makeAdminLogJson);
+
 
 module.exports = router;
 
@@ -76,6 +80,7 @@ function makeUserLogCsv(req, res, next) {
     service.makeUserLogCsv(criterias)
         .then((csv) => {
             res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+            res.set('Access-Control-Expose-Headers', 'Content-Disposition');
             res.set('Content-Type', 'text/csv');
             res.status(200).send(csv);
         })
@@ -89,7 +94,36 @@ function makeAdminLogCsv(req, res, next) {
     service.makeAdminLogCsv(criterias)
         .then((csv) => {
             res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+            res.set('Access-Control-Expose-Headers', 'Content-Disposition');
             res.set('Content-Type', 'text/csv');
+            res.status(200).send(csv);
+        })
+        .catch(err => next(err));
+}
+
+function makeUserLogJson(req, res, next) {
+
+    const criterias = req.body;
+
+    service.makeUserLogJson(criterias)
+        .then((csv) => {
+            res.setHeader('Content-disposition', 'attachment; filename=data.json');
+            res.set('Access-Control-Expose-Headers', 'Content-Disposition');
+            res.set('Content-Type', 'application/json');
+            res.status(200).send(csv);
+        })
+        .catch(err => next(err));
+}
+
+function makeAdminLogJson(req, res, next) {
+
+    const criterias = req.body;
+
+    service.makeAdminLogJson(criterias)
+        .then((csv) => {
+            res.setHeader('Content-disposition', 'attachment; filename=data.json');
+            res.set('Access-Control-Expose-Headers', 'Content-Disposition');
+            res.set('Content-Type', 'application/json');
             res.status(200).send(csv);
         })
         .catch(err => next(err));

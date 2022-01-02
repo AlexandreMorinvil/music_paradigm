@@ -3,6 +3,7 @@ const LogThorough = require('database/db').LogThorough;
 const User = require('database/db').User;
 
 const csvConverter = require('_helpers/csv-converter');
+const jsonConverter = require('_helpers/json-converter');
 const { makeMongooseLogQuery } = require('log/log-query-maker.service')
 
 
@@ -11,10 +12,12 @@ module.exports = {
     initializeLog,
     addLogBlock,
     concludeLog,
-    getUserLogSummaryList,
     getAdminLogSummaryList,
-    makeUserLogCsv,
+    getUserLogSummaryList,
     makeAdminLogCsv,
+    makeUserLogCsv,
+    makeAdminLogJson,
+    makeUserLogJson,
 };
 
 async function initializeLog(userId, logHeader) {
@@ -80,6 +83,26 @@ async function makeAdminLogCsv(criterias) {
         const query = makeMongooseLogQuery(criterias);
         let data = await AdminLogThorough.getFileRelevantData(query);
         return csvConverter.makeCsv(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function makeUserLogJson(criterias) {
+    try {
+        const query = makeMongooseLogQuery(criterias);
+        let data = await LogThorough.getFileRelevantData(query);
+        return jsonConverter.makeJson(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function makeAdminLogJson(criterias) {
+    try {
+        const query = makeMongooseLogQuery(criterias);
+        let data = await AdminLogThorough.getFileRelevantData(query);
+        return jsonConverter.makeJson(data);
     } catch (err) {
         throw err;
     }
