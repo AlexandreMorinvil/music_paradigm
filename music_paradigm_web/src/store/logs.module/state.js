@@ -6,6 +6,7 @@ export default {
 		isLoadingUserThoroughLogList: false,
 		isLoadingAdminSimpleLogList: false,
 		isLoadingAdminThoroughLogList: false,
+		isDownloading: false,
 	},
 	userSimpleLogList: defaultState.EMPTY_SIMPLE_LOG_LIST(),
 	userThoroughLogList: defaultState.EMPTY_THOROUGH_LOG_LIST(),

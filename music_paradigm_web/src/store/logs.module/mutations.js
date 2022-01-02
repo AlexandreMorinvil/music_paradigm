@@ -34,6 +34,14 @@ export default {
 		state.status.isLoadingAdminThoroughLogList = false;
 	},
 
+	indicateIsDownloading(state) {
+		state.status.isDownloading = true;
+	},
+
+	indicateIsDownloadingEnd(state) {
+		state.status.isDownloading = false;
+	},
+
 	setUserSimpleLogList(state, userSimpleLogList) {
 		state.userSimpleLogList = userSimpleLogList;
 	},

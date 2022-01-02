@@ -5,10 +5,10 @@
 			<thead>
 				<tr v-if="hasElements" class="logtype-header">
 					<th colspan="9">
-						<span>SIMPLE LOGS</span>
-						<button class="widget-button small green right-align">Download CSV</button>
-						<button class="widget-button small turquoise right-align">Download JSON</button>
-						<button class="widget-button small orange right-align">Select Exclusions</button>
+						<span>SIMPLE LOGS ({{ totalNumberElements }})</span>
+						<button class="widget-button small green right-align" v-on:click="handleCsvDownload">Download CSV</button>
+						<button class="widget-button small turquoise right-align" v-on:click="handleJsonDownload">Download JSON</button>
+						<button class="widget-button small orange right-align" v-on:click="handleExclusionsSelection">Select Exclusions</button>
 					</th>
 				</tr>
 				<tr v-else class="logtype-header">
@@ -94,24 +94,26 @@ export default {
 		logSummaryList() {
 			return this.userSimpleLogList || [];
 		},
+		totalNumberElements() {
+			return this.userSimpleLogList.length;
+		},
 		hasElements() {
 			return this.logSummaryList.length;
 		},
-		firstButtonDisplay() {
-			return this.areExclusionsActivated ? '' : 'Download JSON';
-		},
-		secondButtonDisplay() {
-			return this.areExclusionsActivated ? '' : 'Download JSON';
-		},
-		thirdButtonDisplay() {
-			return this.areExclusionsActivated ? 'Deactivate Actions' : 'Activate Exclusions';
-		},
 	},
 	methods: {
-		...mapActions('logs', ['getUserSimpleLogSummaryList', 'clearUserSimpleLogSummaryList']),
+		...mapActions('logs', ['getUserSimpleLogSummaryList', 'clearUserSimpleLogSummaryList', 'downloadUserSimpleLogCSV']),
 		refresh() {
-			console.log('Here');
 			this.getUserSimpleLogSummaryList(this.rules);
+		},
+		handleCsvDownload() {
+			this.downloadUserSimpleLogCSV();
+		},
+		handleJsonDownload() {
+			console.log('Json download');
+		},
+		handleExclusionsSelection() {
+			console.log('Exclusions selection');
 		},
 		makeUsernameDisplay(logSummary) {
 			return logSummary.username;

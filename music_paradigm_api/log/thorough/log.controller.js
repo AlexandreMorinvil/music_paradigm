@@ -13,8 +13,8 @@ router.patch('/conclude-log',  concludeLog);
 router.post('/user-summary-list',   jwtAuthorize(role.admin), getUserLogSummaryList);
 router.post('/admin-summary-list',  jwtAuthorize(role.admin), getAdminLogSummaryList);
 
-router.post('/admin-log-csv',       jwtAuthorize(role.admin), makeAdminLogCsv);
-router.post('/user-log-csv',        jwtAuthorize(role.admin), makeUserLogCsv);
+router.post('/admin-csv',       jwtAuthorize(role.admin), makeAdminLogCsv);
+router.post('/user-csv',        jwtAuthorize(role.admin), makeUserLogCsv);
 
 module.exports = router;
 

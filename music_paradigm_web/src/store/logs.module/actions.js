@@ -2,6 +2,7 @@ import { logsApi } from '@/api';
 import { logsQuery } from '@/_helpers';
 
 export default {
+	// Clearing
 	clearUserSimpleLogSummaryList({ commit }) {
 		commit('clearUserSimpleLogs');
 	},
@@ -18,6 +19,7 @@ export default {
 		commit('clearAdminThoroughLogs');
 	},
 
+	// Summary lists
 	getUserSimpleLogSummaryList({ commit, dispatch }, rules) {
 		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
 		commit('indicateLoadingUserSimpleLogList');
@@ -87,6 +89,25 @@ export default {
 			)
 			.finally(() => {
 				commit('indicateLoadingAdminThoroughLogListEnd');
+			});
+	},
+
+	// CSV fetching
+	downloadUserSimpleLogCSV({ commit, dispatch }, rules) {
+		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+		commit('indicateIsDownloading');
+		return logsApi
+			.getUserSimpleLogCsv(criterias)
+			.then(
+				(csv) => {
+					console.log(csv);
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `User simple logs csv download failed : ${error.message}`, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateIsDownloadingEnd');
 			});
 	},
 };
