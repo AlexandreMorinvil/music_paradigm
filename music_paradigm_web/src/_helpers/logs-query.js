@@ -4,7 +4,8 @@ export default {
 };
 
 
-function makeLogQueryCriteriaList(rules) {
+function makeLogQueryCriteriaList(rules = null) {
+	if (!rules) return {};
 	const {
 		userIdList,
 		progressionIdList,
@@ -39,7 +40,7 @@ function makeUserCriterias(userIdList = null) {
 	if (Array.isArray(userIdList))
 		Object.assign(criterias, { ids: userIdList });
 
-	return criterias;
+	return  { userCriterias: criterias };
 }
 
 function makeProgressionCriterias(progressionIdList = null) {
@@ -50,7 +51,7 @@ function makeProgressionCriterias(progressionIdList = null) {
 	if (Array.isArray(progressionIdList))
 		Object.assign(criterias, { ids: progressionIdList });
 
-	return criterias;
+	return { progressionCriterias: criterias };
 }
 
 function makeAssociativeIdCriterias(associativeIdList = null) {
@@ -61,7 +62,7 @@ function makeAssociativeIdCriterias(associativeIdList = null) {
 	if (Array.isArray(associativeIdList))
 		Object.assign(criterias, { values: associativeIdList });
 
-	return criterias;
+	return { associativeIdCriterias: criterias };
 }
 
 function makeLogLabelCriterias(logLabelList = null) {
@@ -72,7 +73,7 @@ function makeLogLabelCriterias(logLabelList = null) {
 	if (Array.isArray(logLabelList))
 		Object.assign(criterias, { values: logLabelList });
 
-	return criterias;
+	return { logLabelCriterias: criterias };
 }
 
 function makeCompletionCountCriterias(minCompletionCount = null, maxCompletionCount = null) {
@@ -86,7 +87,7 @@ function makeCompletionCountCriterias(minCompletionCount = null, maxCompletionCo
 	if (typeof maxCompletionCount === 'number')
 		Object.assign(criterias, { max: maxCompletionCount });
 
-	return criterias;
+	return { completionCountCriterias: criterias };
 }
 
 function makeCurriculumCriterias(curriculumIdList = null) {
@@ -97,7 +98,7 @@ function makeCurriculumCriterias(curriculumIdList = null) {
 	if (Array.isArray(curriculumIdList))
 		Object.assign(criterias, { ids: curriculumIdList });
 
-	return criterias;
+	return { curriculumCriterias: criterias };
 }
 
 function makeExperimentCriterias(experimentIdList = null) {
@@ -108,7 +109,7 @@ function makeExperimentCriterias(experimentIdList = null) {
 	if (Array.isArray(experimentIdList))
 		Object.assign(criterias, { ids: experimentIdList });
 
-	return criterias;
+	return { experimentCriterias: criterias };
 }
 
 function makeDatesMongooseFilters(minDate = null, maxDate = null) {
@@ -122,5 +123,5 @@ function makeDatesMongooseFilters(minDate = null, maxDate = null) {
 	if (maxDate)
 		Object.assign(criterias, { max: new Date(maxDate) });
 
-	return criterias;
+	return { datesCriterias: criterias };
 }

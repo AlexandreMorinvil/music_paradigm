@@ -35,6 +35,8 @@ schema.statics.makeSummaryList = async function (query) {
         'repetition',
         'isInPrelude',
         'timestamp',
+        
+        'createdAt',
     ];
     return this.find(query, fieldsToKeep);
 }

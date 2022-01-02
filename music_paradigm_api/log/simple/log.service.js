@@ -29,7 +29,7 @@ async function addBlock(userId, block) {
 async function getUserLogSummaryList(criterias) {
     try {
         const query = makeMongooseLogQuery(criterias);
-        return await LogThorough.makeSummaryList(query);
+        return await LogSimple.makeSummaryList(query);
     } catch (err) {
         throw err;
     }
@@ -38,7 +38,7 @@ async function getUserLogSummaryList(criterias) {
 async function getAdminLogSummaryList(criterias) {
     try {
         const query = makeMongooseLogQuery(criterias);
-        return await AdminLogThorough.makeSummaryList(query);
+        return await AdminLogSimple.makeSummaryList(query);
     } catch (err) {
         throw err;
     }
@@ -47,7 +47,7 @@ async function getAdminLogSummaryList(criterias) {
 async function makeUserLogCsv(criterias) {
     try {
         const query = makeMongooseLogQuery(criterias);
-        let data = await LogThorough.find(query);
+        let data = await LogSimple.find(query);
         return csvConverter.makeCsv(data);
     } catch (err) {
         throw err;
@@ -57,7 +57,7 @@ async function makeUserLogCsv(criterias) {
 async function makeAdminLogCsv(criterias) {
     try {
         const query = makeMongooseLogQuery(criterias);
-        let data = await AdminLogThorough.find(query);
+        let data = await AdminLogSimple.find(query);
         return csvConverter.makeCsv(data);
     } catch (err) {
         throw err;

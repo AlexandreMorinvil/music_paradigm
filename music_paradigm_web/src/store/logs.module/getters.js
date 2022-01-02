@@ -15,11 +15,19 @@ export default {
 		return state.status.isLoadingAdminThoroughLogList || false;
 	},
 
-	simpleLogList: (state) => {
-		return state.simpleLogList;
+	userSimpleLogList: (state) => {
+		return state.userSimpleLogList;
 	},
 
-	thoroughLogList: (state) => {
-		return state.thoroughLogList;
+	userThoroughLogList: (state) => {
+		return state.userThoroughLogList;
+	},
+
+	adminSimpleLogList: (state) => {
+		return state.userSimpleLogList;
+	},
+
+	adminThoroughLogList: (state) => {
+		return state.userThoroughLogList;
 	},
 };

@@ -2,11 +2,6 @@ import { logsApi } from '@/api';
 import { logsQuery } from '@/_helpers';
 
 export default {
-	clearUserLogSummaryList({ dispatch }) {
-		dispatch('clearUserSimpleLogSummaryList');
-		dispatch('clearUserThoroughLogSummaryList');
-	},
-
 	clearUserSimpleLogSummaryList({ commit }) {
 		commit('clearUserSimpleLogs');
 	},
@@ -15,22 +10,12 @@ export default {
 		commit('clearUserThoroughLogs');
 	},
 
-	clearAdminLogSummaryList({ dispatch }) {
-		dispatch('clearAdminSimpleLogSummaryList');
-		dispatch('clearAdminThoroughLogSummaryList');
-	},
-
 	clearAdminSimpleLogSummaryList({ commit }) {
 		commit('clearAdminSimpleLogs');
 	},
 
 	clearAdminThoroughLogSummaryList({ commit }) {
 		commit('clearAdminThoroughLogs');
-	},
-
-	getUserLogSummaryList({ dispatch }) {
-		dispatch('getUserSimpleLogSummaryList');
-		dispatch('getUserThoroughLogSummaryList');
 	},
 
 	getUserSimpleLogSummaryList({ commit, dispatch }, rules) {
@@ -67,11 +52,6 @@ export default {
 			.finally(() => {
 				commit('indicateLoadingUserThoroughLogListEnd');
 			});
-	},
-
-	getAdminLogSummaryList({ dispatch }) {
-		dispatch('getAdminSimpleLogSummaryList');
-		dispatch('getAdminThoroughLogSummaryList');
 	},
 
 	getAdminSimpleLogSummaryList({ commit, dispatch }, rules) {
