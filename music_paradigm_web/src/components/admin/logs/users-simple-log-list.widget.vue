@@ -2,8 +2,19 @@
 	<div class="board-position widget-table-context">
 		<loader-circular-component v-if="isLoadingUserSimpleLogList" class="loader" />
 		<table v-else class="widget-table log-table">
-			<thead v-if="hasElements">
-				<tr>
+			<thead>
+				<tr v-if="hasElements" class="logtype-header">
+					<th colspan="9">
+						<span>SIMPLE LOGS</span>
+						<button class="widget-button small green right-align">Download CSV</button>
+						<button class="widget-button small turquoise right-align">Download JSON</button>
+						<button class="widget-button small orange right-align">Select Exclusions</button>
+					</th>
+				</tr>
+				<tr v-else class="logtype-header">
+					<th>No SIMPLE LOGS corresponding</th>
+				</tr>
+				<tr v-if="hasElements" class="log-identifier-header">
 					<th>#</th>
 					<th>username</th>
 					<th>curriculum</th>
@@ -15,12 +26,8 @@
 					<th>Date</th>
 				</tr>
 			</thead>
-			<thead v-else>
-				<tr>
-					<th>No "simple" log corresponding</th>
-				</tr>
-			</thead>
-			<tbody>
+
+			<tbody v-if="hasElements">
 				<tr v-for="(logSummary, index) in logSummaryList" :key="logSummary._id">
 					<td>{{ index + 1 }}</td>
 					<td>{{ makeUsernameDisplay(logSummary) }}</td>
@@ -75,6 +82,7 @@ export default {
 	},
 	data() {
 		return {
+			areExclusionsActivated: false,
 			datesOptions: { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' },
 		};
 	},
@@ -88,6 +96,15 @@ export default {
 		},
 		hasElements() {
 			return this.logSummaryList.length;
+		},
+		firstButtonDisplay() {
+			return this.areExclusionsActivated ? '' : 'Download JSON';
+		},
+		secondButtonDisplay() {
+			return this.areExclusionsActivated ? '' : 'Download JSON';
+		},
+		thirdButtonDisplay() {
+			return this.areExclusionsActivated ? 'Deactivate Actions' : 'Activate Exclusions';
 		},
 	},
 	methods: {
@@ -150,5 +167,25 @@ export default {
 .loader {
 	width: 100px;
 	height: 100px;
+}
+
+.right-align {
+	float: right;
+}
+
+.widget-button {
+	border-radius: 0;
+	margin: 0;
+}
+
+.logtype-header {
+	position: sticky;
+	height: 50px;
+	top: 0;
+}
+
+.log-identifier-header {
+	position: sticky;
+	top: 49px;
 }
 </style>
