@@ -12,16 +12,18 @@ export function defaultResponseHandler(response, handleErrorStatus = () => { }) 
 	});
 }
 
-export function csvFileResponseHandler(response, handleErrorStatus = () => { }) {
+export function csvFileResponseHandler(mustSave, response, handleErrorStatus = () => { }) {
 	return response.text().then((text) => {
 		if (!response.ok) {
 			handleErrorStatus(response.status);
 			const error = response.statusText;
 			return Promise.reject(new Error(error));
 		}
-		const csvContent = 'data:text/csv;charset=utf-8,' + text;
-		const encodedUri = encodeURI(csvContent);
-		window.open(encodedUri);
-		return csvContent;
+		if (mustSave) {
+			const csvContent = 'data:text/csv;charset=utf-8,' + text;
+			const encodedUri = encodeURI(csvContent);
+			window.open(encodedUri);
+		}
+		return text;
 	});
 }

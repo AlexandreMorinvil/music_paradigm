@@ -99,8 +99,8 @@ export default {
 		return logsApi
 			.getUserSimpleLogCsv(criterias)
 			.then(
-				(csv) => {
-					console.log(csv);
+				() => {
+					dispatch('alert/setInformationAlert', 'CSV file generated and retreived sucessfully', { root: true });
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', `User simple logs csv download failed : ${error.message}`, { root: true });

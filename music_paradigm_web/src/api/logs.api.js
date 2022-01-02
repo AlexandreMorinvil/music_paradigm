@@ -51,38 +51,38 @@ function getAdminThoroughLogSummaryList(criterias) {
 }
 
 // CSV
-function getUserSimpleLogCsv(criterias) {
+function getUserSimpleLogCsv(criterias, mustSave = true) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(criterias),
 	};
-	return fetch(url.logSimple('user-csv'), requestOptions).then(csvFileResponseHandler);
+	return fetch(url.logSimple('user-csv'), requestOptions).then(csvFileResponseHandler.bind(null, mustSave));
 }
 
-function getUserThoroughLogCsv(criterias) {
+function getUserThoroughLogCsv(criterias, mustSave = true) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(criterias),
 	};
-	return fetch(url.logThorough('user-csv'), requestOptions).then(csvFileResponseHandler);
+	return fetch(url.logThorough('user-csv'), requestOptions).then(csvFileResponseHandler.bind(null, mustSave));
 }
 
-function getAdminSimpleLogCsv(criterias) {
+function getAdminSimpleLogCsv(criterias, mustSave = true) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(criterias),
 	};
-	return fetch(url.logSimple('admin-csv'), requestOptions).then(csvFileResponseHandler);
+	return fetch(url.logSimple('admin-csv'), requestOptions).then(csvFileResponseHandler.bind(null, mustSave));
 }
 
-function getAdminThoroughLogCsv(criterias) {
+function getAdminThoroughLogCsv(criterias, mustSave = true) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(criterias),
 	};
-	return fetch(url.logThorough('admin-csv'), requestOptions).then(csvFileResponseHandler);
+	return fetch(url.logThorough('admin-csv'), requestOptions).then(csvFileResponseHandler.bind(null, mustSave));
 }
