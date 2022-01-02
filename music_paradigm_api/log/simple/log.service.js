@@ -47,7 +47,7 @@ async function getAdminLogSummaryList(criterias) {
 async function makeUserLogCsv(criterias) {
     try {
         const query = makeMongooseLogQuery(criterias);
-        let data = await LogSimple.find(query);
+        let data = await LogSimple.getFileRelevantData(query);
         return csvConverter.makeCsv(data);
     } catch (err) {
         throw err;
@@ -57,7 +57,7 @@ async function makeUserLogCsv(criterias) {
 async function makeAdminLogCsv(criterias) {
     try {
         const query = makeMongooseLogQuery(criterias);
-        let data = await AdminLogSimple.find(query);
+        let data = await AdminLogSimple.getFileRelevantData(query);
         return csvConverter.makeCsv(data);
     } catch (err) {
         throw err;

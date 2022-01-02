@@ -35,6 +35,19 @@ schema.statics.makeSummaryList = async function (query) {
     return this.find(query, fieldToRemove);
 }
 
+schema.statics.getFileRelevantData = async function (query) {
+    const fieldsToKeep = [
+        '-__v',
+        '-_id',
+        '-id',
+        '-userId',
+        '-experimentId',
+        '-progressionId',
+        '-curriculumId',
+    ];
+    return this.find(query, fieldsToKeep);
+}
+
 // Helper functions
 function makeLogReference(logHeader) {
     const {

@@ -1,11 +1,13 @@
 <template>
-	<div class="board-position widget-table-context">
+	<div class="board-position widget-table-context" :class="isDownloading && 'downloading-filter'">
 		<loader-circular-component v-if="isLoadingUserSimpleLogList" class="loader" />
 		<table v-else class="widget-table log-table">
 			<thead>
 				<tr v-if="hasElements" class="logtype-header">
 					<th colspan="9">
-						<span>SIMPLE LOGS ({{ totalNumberElements }})</span>
+						<span
+							>SIMPLE LOGS ({{ totalNumberElements }}) <span v-if="isDownloading" class="generating-message">...GENERATING LOG FILE...</span></span
+						>
 						<button class="widget-button small green right-align" v-on:click="handleCsvDownload">Download CSV</button>
 						<button class="widget-button small turquoise right-align" v-on:click="handleJsonDownload">Download JSON</button>
 						<button class="widget-button small orange right-align" v-on:click="handleExclusionsSelection">Select Exclusions</button>
@@ -87,9 +89,9 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('logs', ['isLoadingUserSimpleLogList', 'userSimpleLogList']),
+		...mapGetters('logs', ['isLoadingUserSimpleLogList', 'userSimpleLogList', 'isDownloadingLogs']),
 		isListLoading() {
-			return false;
+			return this.isLoadingUserSimpleLogList;
 		},
 		logSummaryList() {
 			return this.userSimpleLogList || [];
@@ -100,19 +102,26 @@ export default {
 		hasElements() {
 			return this.logSummaryList.length;
 		},
+		isDownloading() {
+			return this.isDownloadingLogs;
+		},
 	},
 	methods: {
 		...mapActions('logs', ['getUserSimpleLogSummaryList', 'clearUserSimpleLogSummaryList', 'downloadUserSimpleLogCSV']),
 		refresh() {
+			if (this.isDownloading) return;
 			this.getUserSimpleLogSummaryList(this.rules);
 		},
 		handleCsvDownload() {
+			if (this.isDownloading) return;
 			this.downloadUserSimpleLogCSV();
 		},
 		handleJsonDownload() {
+			if (this.isDownloading) return;
 			console.log('Json download');
 		},
 		handleExclusionsSelection() {
+			if (this.isDownloading) return;
 			console.log('Exclusions selection');
 		},
 		makeUsernameDisplay(logSummary) {
@@ -162,6 +171,19 @@ export default {
 </script>
 
 <style scoped>
+.widget-table-context {
+	position: relative;
+}
+
+.generating-message {
+	color: yellow;
+}
+
+.downloading-filter {
+	filter: brightness(50%);
+	cursor: default;
+}
+
 .log-table {
 	white-space: pre-line;
 }

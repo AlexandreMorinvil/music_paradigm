@@ -15,6 +15,10 @@ export default {
 		return state.status.isLoadingAdminThoroughLogList || false;
 	},
 
+	isDownloadingLogs: (state) => {
+		return state.status.isDownloading || false;
+	},
+
 	userSimpleLogList: (state) => {
 		return state.userSimpleLogList;
 	},
