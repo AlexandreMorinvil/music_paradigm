@@ -1,5 +1,5 @@
 import { authHeader, url } from '@/_helpers';
-import defaultResponseHandler from './default-response-handler';
+import { defaultResponseHandler } from './default-response-handler';
 
 export const curriculumsApi = {
 	create,
@@ -15,7 +15,7 @@ function create(curriculum) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(curriculum),
 	};
-	return fetch(url.curriculums(''), requestOptions).then(handleResponse);
+	return fetch(url.curriculums(''), requestOptions).then(defaultResponseHandler);
 }
 
 function getListAllHeaders() {
@@ -23,7 +23,7 @@ function getListAllHeaders() {
 		method: 'GET',
 		headers: authHeader(),
 	};
-	return fetch(url.curriculums(''), requestOptions).then(handleResponse);
+	return fetch(url.curriculums(''), requestOptions).then(defaultResponseHandler);
 }
 
 function getById(id) {
@@ -31,7 +31,7 @@ function getById(id) {
 		method: 'GET',
 		headers: authHeader(),
 	};
-	return fetch(url.curriculums(id), requestOptions).then(handleResponse);
+	return fetch(url.curriculums(id), requestOptions).then(defaultResponseHandler);
 }
 
 function update(id, curriculum) {
@@ -40,7 +40,7 @@ function update(id, curriculum) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(curriculum),
 	};
-	return fetch(url.curriculums(id), requestOptions).then(handleResponse);
+	return fetch(url.curriculums(id), requestOptions).then(defaultResponseHandler);
 }
 
 function _delete(id) {
@@ -48,9 +48,5 @@ function _delete(id) {
 		method: 'DELETE',
 		headers: authHeader(),
 	};
-	return fetch(url.curriculums(id), requestOptions).then(handleResponse);
-}
-
-function handleResponse(reponse) {
-	return defaultResponseHandler(reponse);
+	return fetch(url.curriculums(id), requestOptions).then(defaultResponseHandler);
 }

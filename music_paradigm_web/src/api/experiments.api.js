@@ -1,5 +1,5 @@
 import { authHeader, url, validator } from '@/_helpers';
-import defaultResponseHandler from './default-response-handler';
+import { defaultResponseHandler } from './default-response-handler';
 
 export const experimentsApi = {
 	validateExperiment,
@@ -22,7 +22,7 @@ function getListAllHeaders() {
 		method: 'GET',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
-	return fetch(url.experiments(''), requestOptions).then(handleResponse);
+	return fetch(url.experiments(''), requestOptions).then(defaultResponseHandler);
 }
 
 function getDefinition(id) {
@@ -30,7 +30,7 @@ function getDefinition(id) {
 		method: 'GET',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
-	return fetch(url.experiments(`/description/${id}`), requestOptions).then(handleResponse);
+	return fetch(url.experiments(`/description/${id}`), requestOptions).then(defaultResponseHandler);
 }
 
 function create(experiment) {
@@ -39,7 +39,7 @@ function create(experiment) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(experiment),
 	};
-	return fetch(url.experiments(''), requestOptions).then(handleResponse);
+	return fetch(url.experiments(''), requestOptions).then(defaultResponseHandler);
 }
 
 function update(id, experiment) {
@@ -48,7 +48,7 @@ function update(id, experiment) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(experiment),
 	};
-	return fetch(url.experiments(id), requestOptions).then(handleResponse);
+	return fetch(url.experiments(id), requestOptions).then(defaultResponseHandler);
 }
 
 function _delete(id) {
@@ -56,9 +56,5 @@ function _delete(id) {
 		method: 'DELETE',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
-	return fetch(url.experiments(id), requestOptions).then(handleResponse);
-}
-
-function handleResponse(reponse) {
-	return defaultResponseHandler(reponse);
+	return fetch(url.experiments(id), requestOptions).then(defaultResponseHandler);
 }

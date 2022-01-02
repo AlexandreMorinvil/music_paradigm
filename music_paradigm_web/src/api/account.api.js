@@ -1,5 +1,5 @@
 import { authHeader, routerNavigation, url } from '@/_helpers';
-import defaultResponseHandler from './default-response-handler';
+import { defaultResponseHandler } from './default-response-handler';
 
 export const accountApi = {
 	resumeLogin,
@@ -38,12 +38,6 @@ function login(username, password) {
 		});
 }
 
-function logout() {
-	// Remove user from local storage to log user out
-	localStorage.removeItem('user');
-	routerNavigation.goToRootPage();
-}
-
 function fetchProgressionSummary() {
 	const requestOptions = {
 		method: 'GET',
@@ -68,10 +62,17 @@ function fetchSpecificExperimentSession(associativeId, associativeIdOrdinalNumbe
 	return fetch(url.account('specific-experiment' + '/' + associativeId + '/' + associativeIdOrdinalNumber), requestOptions).then(handleResponse);
 }
 
+function logout() {
+	// Remove user from local storage to log user out
+	localStorage.removeItem('user');
+	routerNavigation.goToRootPage();
+}
+
 function handleResponse(reponse) {
 	return defaultResponseHandler(reponse, (status) => {
 		switch (status) {
 			// Auto logout and reload page if 401 response returned from api
+			// eslint-disable-next-line no-magic-numbers
 			case 401:
 				logout();
 				location.reload(true);

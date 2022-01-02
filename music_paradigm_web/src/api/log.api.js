@@ -1,5 +1,5 @@
 import { authHeader, url } from '@/_helpers';
-import defaultResponseHandler from './default-response-handler';
+import { defaultResponseHandler } from './default-response-handler';
 
 export const logApi = {
 	addSimpleLogBlock,
@@ -14,7 +14,7 @@ function addSimpleLogBlock(simpleLog) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(simpleLog),
 	};
-	return fetch(url.logSimple('add-block'), requestOptions).then(handleResponse);
+	return fetch(url.logSimple('add-block'), requestOptions).then(defaultResponseHandler);
 }
 
 function initializeThoroughLog(logHeader) {
@@ -23,7 +23,7 @@ function initializeThoroughLog(logHeader) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ logHeader: logHeader }),
 	};
-	return fetch(url.logThorough('initialize-log'), requestOptions).then(handleResponse);
+	return fetch(url.logThorough('initialize-log'), requestOptions).then(defaultResponseHandler);
 }
 
 function addThoroughLogBlock(logHeader, block) {
@@ -32,7 +32,7 @@ function addThoroughLogBlock(logHeader, block) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ logHeader: logHeader, block: block }),
 	};
-	return fetch(url.logThorough('add-log-block'), requestOptions).then(handleResponse);
+	return fetch(url.logThorough('add-log-block'), requestOptions).then(defaultResponseHandler);
 }
 
 function concludeThoroughLog(logHeader, logConclusion) {
@@ -41,9 +41,5 @@ function concludeThoroughLog(logHeader, logConclusion) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ logHeader: logHeader, logConclusion: logConclusion }),
 	};
-	return fetch(url.logThorough('conclude-log'), requestOptions).then(handleResponse);
-}
-
-function handleResponse(reponse) {
-	return defaultResponseHandler(reponse);
+	return fetch(url.logThorough('conclude-log'), requestOptions).then(defaultResponseHandler);
 }

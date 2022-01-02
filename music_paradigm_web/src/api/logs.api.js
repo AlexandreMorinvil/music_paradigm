@@ -1,5 +1,5 @@
 import { authHeader, url } from '@/_helpers';
-import defaultResponseHandler from './default-response-handler';
+import { csvFileResponseHandler, defaultResponseHandler } from './default-response-handler';
 
 export const logsApi = {
 	getUserSimpleLogSummaryList,
@@ -20,7 +20,7 @@ function getUserSimpleLogSummaryList(criterias) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(criterias),
 	};
-	return fetch(url.logSimple('user-summary-list'), requestOptions).then(handleResponse);
+	return fetch(url.logSimple('user-summary-list'), requestOptions).then(defaultResponseHandler);
 }
 
 function getUserThoroughLogSummaryList(criterias) {
@@ -29,7 +29,7 @@ function getUserThoroughLogSummaryList(criterias) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(criterias),
 	};
-	return fetch(url.logThorough('user-summary-list'), requestOptions).then(handleResponse);
+	return fetch(url.logThorough('user-summary-list'), requestOptions).then(defaultResponseHandler);
 }
 
 function getAdminSimpleLogSummaryList(criterias) {
@@ -38,7 +38,7 @@ function getAdminSimpleLogSummaryList(criterias) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(criterias),
 	};
-	return fetch(url.logSimple('admin-summary-list'), requestOptions).then(handleResponse);
+	return fetch(url.logSimple('admin-summary-list'), requestOptions).then(defaultResponseHandler);
 }
 
 function getAdminThoroughLogSummaryList(criterias) {
@@ -47,7 +47,7 @@ function getAdminThoroughLogSummaryList(criterias) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(criterias),
 	};
-	return fetch(url.logThorough('admin-summary-list'), requestOptions).then(handleResponse);
+	return fetch(url.logThorough('admin-summary-list'), requestOptions).then(defaultResponseHandler);
 }
 
 // CSV
@@ -57,7 +57,7 @@ function getUserSimpleLogCsv(criterias) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(criterias),
 	};
-	return fetch(url.logSimple('user-csv'), requestOptions).then(handleResponse);
+	return fetch(url.logSimple('user-csv'), requestOptions).then(csvFileResponseHandler);
 }
 
 function getUserThoroughLogCsv(criterias) {
@@ -66,7 +66,7 @@ function getUserThoroughLogCsv(criterias) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(criterias),
 	};
-	return fetch(url.logThorough('user-csv'), requestOptions).then(handleResponse);
+	return fetch(url.logThorough('user-csv'), requestOptions).then(csvFileResponseHandler);
 }
 
 function getAdminSimpleLogCsv(criterias) {
@@ -75,7 +75,7 @@ function getAdminSimpleLogCsv(criterias) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(criterias),
 	};
-	return fetch(url.logSimple('admin-csv'), requestOptions).then(handleResponse);
+	return fetch(url.logSimple('admin-csv'), requestOptions).then(csvFileResponseHandler);
 }
 
 function getAdminThoroughLogCsv(criterias) {
@@ -84,9 +84,5 @@ function getAdminThoroughLogCsv(criterias) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(criterias),
 	};
-	return fetch(url.logThorough('admin-csv'), requestOptions).then(handleResponse);
-}
-
-function handleResponse(reponse) {
-	return defaultResponseHandler(reponse);
+	return fetch(url.logThorough('admin-csv'), requestOptions).then(csvFileResponseHandler);
 }

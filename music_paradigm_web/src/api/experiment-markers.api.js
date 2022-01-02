@@ -1,5 +1,5 @@
 import { authHeader, url } from '@/_helpers';
-import defaultResponseHandler from './default-response-handler';
+import { defaultResponseHandler } from './default-response-handler';
 
 export const experimentMarkersApi = {
 	resetTimeIndicated,
@@ -11,7 +11,7 @@ function resetTimeIndicated(progressionId, associativeId) {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
-	return fetch(url.experimentMarkers(progressionId + '/' + associativeId), requestOptions).then(handleResponse);
+	return fetch(url.experimentMarkers(progressionId + '/' + associativeId), requestOptions).then(defaultResponseHandler);
 }
 
 function _delete(progressionId, associativeId) {
@@ -19,9 +19,5 @@ function _delete(progressionId, associativeId) {
 		method: 'DELETE',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
-	return fetch(url.experimentMarkers(progressionId + '/' + associativeId), requestOptions).then(handleResponse);
-}
-
-function handleResponse(reponse) {
-	return defaultResponseHandler(reponse);
+	return fetch(url.experimentMarkers(progressionId + '/' + associativeId), requestOptions).then(defaultResponseHandler);
 }

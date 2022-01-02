@@ -1,5 +1,5 @@
 import { authHeader, url } from '@/_helpers';
-import defaultResponseHandler from './default-response-handler';
+import { defaultResponseHandler } from './default-response-handler';
 
 export const usersApi = {
 	register,
@@ -19,7 +19,7 @@ function register(user) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(user),
 	};
-	return fetch(url.users('register'), requestOptions).then(handleResponse);
+	return fetch(url.users('register'), requestOptions).then(defaultResponseHandler);
 }
 
 function getListAllSummaries() {
@@ -27,7 +27,7 @@ function getListAllSummaries() {
 		method: 'GET',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
-	return fetch(url.users(''), requestOptions).then(handleResponse);
+	return fetch(url.users(''), requestOptions).then(defaultResponseHandler);
 }
 
 function getById(id) {
@@ -35,7 +35,7 @@ function getById(id) {
 		method: 'GET',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
-	return fetch(url.users(id), requestOptions).then(handleResponse);
+	return fetch(url.users(id), requestOptions).then(defaultResponseHandler);
 }
 
 function update(id, user) {
@@ -44,7 +44,7 @@ function update(id, user) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(user),
 	};
-	return fetch(url.users(id), requestOptions).then(handleResponse);
+	return fetch(url.users(id), requestOptions).then(defaultResponseHandler);
 }
 
 function _delete(id) {
@@ -52,7 +52,7 @@ function _delete(id) {
 		method: 'DELETE',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
-	return fetch(url.users(id), requestOptions).then(handleResponse);
+	return fetch(url.users(id), requestOptions).then(defaultResponseHandler);
 }
 
 function assignCurriculum(userId, curriculumInformation) {
@@ -61,7 +61,7 @@ function assignCurriculum(userId, curriculumInformation) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(curriculumInformation),
 	};
-	return fetch(url.users('assign-curriculum/' + userId), requestOptions).then(handleResponse);
+	return fetch(url.users('assign-curriculum/' + userId), requestOptions).then(defaultResponseHandler);
 }
 
 function assignParameters(userId, parameters) {
@@ -70,7 +70,7 @@ function assignParameters(userId, parameters) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(parameters),
 	};
-	return fetch(url.users('assign-parameters/' + userId), requestOptions).then(handleResponse);
+	return fetch(url.users('assign-parameters/' + userId), requestOptions).then(defaultResponseHandler);
 }
 
 function assignAdjustments(userId, adjustments) {
@@ -79,7 +79,7 @@ function assignAdjustments(userId, adjustments) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(adjustments),
 	};
-	return fetch(url.users('assign-adjustments/' + userId), requestOptions).then(handleResponse);
+	return fetch(url.users('assign-adjustments/' + userId), requestOptions).then(defaultResponseHandler);
 }
 
 function resetProgression(userId) {
@@ -87,9 +87,5 @@ function resetProgression(userId) {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
-	return fetch(url.users('reset-progression/' + userId), requestOptions).then(handleResponse);
-}
-
-function handleResponse(reponse) {
-	return defaultResponseHandler(reponse);
+	return fetch(url.users('reset-progression/' + userId), requestOptions).then(defaultResponseHandler);
 }
