@@ -4,8 +4,8 @@ schema = require('./log-thorough.schema');
 schema.set('toJSON', { virtuals: true });
 
 const irrelevantFieldsForScientist = [
-    '-__v',
     '-_id',
+    '-__v',
     '-id',
     '-userId',
     '-experimentId',
@@ -47,6 +47,11 @@ schema.statics.makeSummaryList = async function (query) {
 
 schema.statics.getFileRelevantData = async function (query) {
     return this.find(query, irrelevantFieldsForScientist);
+}
+
+schema.statics.getOneLogFromId = async function (logId) {
+    const irrelevantFieldsForScientistKeepingTheId = irrelevantFieldsForScientist.splice(0, 1);
+    return this.findById(logId, irrelevantFieldsForScientistKeepingTheId);
 }
 
 // Helper functions

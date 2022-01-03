@@ -7,15 +7,18 @@ const service = require('./log.service');
 // routes
 router.post('/add-block', addBlock);
 
+router.get('/user-select-by-id/:logId',    jwtAuthorize(role.admin), getOneUserLogFromId);
+router.get('/admin-select-by-id/:logId',   jwtAuthorize(role.admin), getOneAdminLogFromId);
+
 // Those queries are defined as POST instead of GET as GET request doesn't usually have a 'body' 
 router.post('/user-summary-list',   jwtAuthorize(role.admin), getUserLogSummaryList);
 router.post('/admin-summary-list',  jwtAuthorize(role.admin), getAdminLogSummaryList);
 
-router.post('/user-csv',        jwtAuthorize(role.admin), makeUserLogCsv);
-router.post('/admin-csv',       jwtAuthorize(role.admin), makeAdminLogCsv);
+router.post('/user-csv',            jwtAuthorize(role.admin), makeUserLogCsv);
+router.post('/admin-csv',           jwtAuthorize(role.admin), makeAdminLogCsv);
 
-router.post('/user-json',        jwtAuthorize(role.admin), makeUserLogJson);
-router.post('/admin-json',       jwtAuthorize(role.admin), makeAdminLogJson);
+router.post('/user-json',           jwtAuthorize(role.admin), makeUserLogJson);
+router.post('/admin-json',          jwtAuthorize(role.admin), makeAdminLogJson);
 
 module.exports = router;
 
@@ -29,12 +32,30 @@ function addBlock(req, res, next) {
         .catch(err => next(err));
 }
 
+function getOneUserLogFromId(req, res, next) {
+
+    const logId = req.params.logId;
+
+    service.getOneUserLogFromId(logId)
+        .then((list) => res.status(200).json(list))
+        .catch(err => next(err));
+}
+
+function getOneAdminLogFromId(req, res, next) {
+
+    const logId = req.params.logId;
+
+    service.getOneAdminLogFromId(logId)
+        .then((log) => res.status(200).json(log))
+        .catch(err => next(err));
+}
+
 function getUserLogSummaryList(req, res, next) {
 
     const criterias = req.body;
 
     service.getUserLogSummaryList(criterias)
-        .then((list) => res.status(200).json(list))
+        .then((log) => res.status(200).json(log))
         .catch(err => next(err));
 }
 

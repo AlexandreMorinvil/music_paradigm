@@ -9,12 +9,14 @@ const { makeMongooseLogQuery } = require('log/log-query-maker.service')
 // Exports
 module.exports = {
     addBlock,
-    getAdminLogSummaryList,
+    getOneUserLogFromId,
+    getOneAdminLogFromId,
     getUserLogSummaryList,
-    makeAdminLogCsv,
+    getAdminLogSummaryList,
     makeUserLogCsv,
-    makeAdminLogJson,
+    makeAdminLogCsv,
     makeUserLogJson,
+    makeAdminLogJson,
 };
 
 async function addBlock(userId, block) {
@@ -28,10 +30,19 @@ async function addBlock(userId, block) {
     }
 }
 
-async function getAdminLogSummaryList(criterias) {
+async function getOneUserLogFromId(logId) {
     try {
-        const query = makeMongooseLogQuery(criterias);
-        return await AdminLogSimple.makeSummaryList(query);
+        let data = await LogSimple.getOneLogFromId(logId);
+        return jsonConverter.makeJson(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function getOneAdminLogFromId(logId) {
+    try {
+        let data = await AdminLogSimple.getOneLogFromId(logId);
+        return jsonConverter.makeJson(data);
     } catch (err) {
         throw err;
     }
@@ -46,11 +57,10 @@ async function getUserLogSummaryList(criterias) {
     }
 }
 
-async function makeAdminLogCsv(criterias) {
+async function getAdminLogSummaryList(criterias) {
     try {
         const query = makeMongooseLogQuery(criterias);
-        let data = await AdminLogSimple.getFileRelevantData(query);
-        return csvConverter.makeCsv(data);
+        return await AdminLogSimple.makeSummaryList(query);
     } catch (err) {
         throw err;
     }
@@ -66,11 +76,11 @@ async function makeUserLogCsv(criterias) {
     }
 }
 
-async function makeAdminLogJson(criterias) {
+async function makeAdminLogCsv(criterias) {
     try {
         const query = makeMongooseLogQuery(criterias);
         let data = await AdminLogSimple.getFileRelevantData(query);
-        return jsonConverter.makeJson(data);
+        return csvConverter.makeCsv(data);
     } catch (err) {
         throw err;
     }
@@ -80,6 +90,16 @@ async function makeUserLogJson(criterias) {
     try {
         const query = makeMongooseLogQuery(criterias);
         let data = await LogSimple.getFileRelevantData(query);
+        return jsonConverter.makeJson(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function makeAdminLogJson(criterias) {
+    try {
+        const query = makeMongooseLogQuery(criterias);
+        let data = await AdminLogSimple.getFileRelevantData(query);
         return jsonConverter.makeJson(data);
     } catch (err) {
         throw err;

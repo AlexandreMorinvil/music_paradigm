@@ -19,6 +19,36 @@ export default {
 		commit('clearAdminThoroughLogs');
 	},
 
+	clearSelectedUserSimpleLog({ commit }) {
+		commit('clearSelectedUserSimpleLog');
+	},
+
+	clearSelectedUserThoroughLog({ commit }) {
+		commit('clearSelectedUserThoroughLog');
+	},
+
+	clearSelectedAdminSimpleLog({ commit }) {
+		commit('clearSelectedAdminSimpleLog');
+	},
+
+	clearSelectedAdminThoroughLog({ commit }) {
+		commit('clearSelectedAdminThoroughLog');
+	},
+
+	// Log selection
+	getSpecificUserSimpleLog({ commit, dispatch }, logId) {
+		return logsApi
+			.getSpecificUserSimpleLog(logId)
+			.then(
+				(log) => {
+					commit('setSelectedUserSimpleLog', log);
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `User simple log fetch failed : ${error.message}`, { root: true });
+				}
+			);
+	},
+
 	// Summary lists
 	getUserSimpleLogSummaryList({ commit, dispatch }, rules) {
 		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
@@ -111,6 +141,7 @@ export default {
 			});
 	},
 
+	// JSON fetching
 	downloadUserSimpleLogJson({ commit, dispatch }, rules) {
 		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
 		commit('indicateIsDownloading');

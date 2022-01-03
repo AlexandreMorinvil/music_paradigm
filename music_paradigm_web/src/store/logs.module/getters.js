@@ -34,4 +34,21 @@ export default {
 	adminThoroughLogList: (state) => {
 		return state.userThoroughLogList;
 	},
+
+	selectedUserSimpleLog: (state) => {
+		return state.selectedUserSimpleLog;
+	},
+
+	selectedUserThoroughLog: (state) => {
+		return state.selectedUserThoroughLog;
+	},
+
+	selectedAdminSimpleLog: (state) => {
+		return state.selectedAdminSimpleLog;
+	},
+
+	selectedAdminThoroughLog: (state) => {
+		return state.selectedAdminThoroughLog;
+	},
+
 };

@@ -4,8 +4,8 @@ schema = require('./log-simple.schema');
 schema.set('toJSON', { virtuals: true });
 
 const irrelevantFieldsForScientist = [
-    '-__v',
     '-_id',
+    '-__v',
     '-id',
     '-userId',
     '-experimentId',
@@ -55,6 +55,9 @@ schema.statics.getFileRelevantData = async function (query) {
     return this.find(query, irrelevantFieldsForScientist);
 }
 
+schema.statics.getOneLogFromId = async function (logId) {
+    return this.findById(logId, irrelevantFieldsForScientist);
+}
 
 // Creating the model
 const model = mongoose.model('Log-Simple', schema);

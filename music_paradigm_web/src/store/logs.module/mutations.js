@@ -73,4 +73,36 @@ export default {
 	clearAdminThoroughLogs(state) {
 		state.adminThoroughLogList = defaultState.EMPTY_THOROUGH_LOG_LIST();
 	},
+
+	setSelectedUserSimpleLog(state, log) {
+		state.selectedUserSimpleLog = log;
+	},
+
+	setSelectedUserThoroughLog(state, log) {
+		state.selectedUserThoroughLog = log;
+	},
+
+	setSelectedAdminSimpleLog(state, log) {
+		state.selectedAdminSimpleLog = log;
+	},
+
+	setSelectedAdminThoroughLog(state, log) {
+		state.selectedAdminThoroughLog = log;
+	},
+
+	clearSelectedUserSimpleLog(state) {
+		state.selectedUserSimpleLog = defaultState.EMPTY_SIMPLE_LOG();
+	},
+
+	clearSelectedUserThoroughLog(state) {
+		state.selectedUserThoroughLog = defaultState.EMPTY_THOROUGH_LOG();
+	},
+
+	clearSelectedAdminSimpleLog(state) {
+		state.selectedAdminSimpleLog = defaultState.EMPTY_SIMPLE_LOG();
+	},
+
+	clearSelectedAdminThoroughLog(state) {
+		state.selectedAdminThoroughLog = defaultState.EMPTY_THOROUGH_LOG();
+	},
 };

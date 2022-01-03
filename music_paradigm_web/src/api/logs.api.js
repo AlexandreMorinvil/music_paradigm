@@ -2,6 +2,10 @@ import { authHeader, url } from '@/_helpers';
 import { csvFileResponseHandler, defaultResponseHandler, jsonFileResponseHandler } from './default-response-handler';
 
 export const logsApi = {
+	getSpecificUserSimpleLog,
+	getSpecificUserThoroughLogLog,
+	getSpecificAdminSimpleLogLog,
+	getSpecificAdminThoroughLogLog,
 	getUserSimpleLogSummaryList,
 	getUserThoroughLogSummaryList,
 	getAdminSimpleLogSummaryList,
@@ -14,8 +18,41 @@ export const logsApi = {
 	getUserThoroughLogJson,
 	getAdminSimpleLogJson,
 	getAdminThoroughLogJson,
-
 };
+
+
+// Log selection
+function getSpecificUserSimpleLog(logId) {
+	const requestOptions = {
+		method: 'GET',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+	};
+	return fetch(url.logSimple(['user-select-by-id', logId]), requestOptions).then(defaultResponseHandler);
+}
+
+function getSpecificUserThoroughLogLog(logId) {
+	const requestOptions = {
+		method: 'GET',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+	};
+	return fetch(url.logThorough(['user-select-by-id', logId]), requestOptions).then(defaultResponseHandler);
+}
+
+function getSpecificAdminSimpleLogLog(logId) {
+	const requestOptions = {
+		method: 'GET',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+	};
+	return fetch(url.logSimple(['admin-select-by-id', logId]), requestOptions).then(defaultResponseHandler);
+}
+
+function getSpecificAdminThoroughLogLog(logId) {
+	const requestOptions = {
+		method: 'GET',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+	};
+	return fetch(url.logThorough(['admin-select-by-id', logId]), requestOptions).then(defaultResponseHandler);
+}
 
 // Summary list
 function getUserSimpleLogSummaryList(criterias) {
@@ -91,6 +128,7 @@ function getAdminThoroughLogCsv(criterias, mustSave = true) {
 	return fetch(url.logThorough('admin-csv'), requestOptions).then(csvFileResponseHandler.bind(null, mustSave));
 }
 
+// JSON
 function getUserSimpleLogJson(criterias, mustSave = true) {
 	const requestOptions = {
 		method: 'POST',

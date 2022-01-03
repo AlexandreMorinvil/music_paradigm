@@ -12,4 +12,9 @@ export default {
 	userThoroughLogList: defaultState.EMPTY_THOROUGH_LOG_LIST(),
 	adminSimpleLogList: defaultState.EMPTY_SIMPLE_LOG_LIST(),
 	adminThoroughLogList: defaultState.EMPTY_THOROUGH_LOG_LIST(),
+
+	selectedUserSimpleLog: defaultState.EMPTY_SIMPLE_LOG(),
+	selectedUserThoroughLog: defaultState.EMPTY_THOROUGH_LOG(),
+	selectedAdminSimpleLog: defaultState.EMPTY_SIMPLE_LOG(),
+	selectedAdminThoroughLog: defaultState.EMPTY_THOROUGH_LOG(),
 };

@@ -12,6 +12,8 @@ module.exports = {
     initializeLog,
     addLogBlock,
     concludeLog,
+    getOneUserLogFromId,
+    getOneAdminLogFromId,
     getAdminLogSummaryList,
     getUserLogSummaryList,
     makeAdminLogCsv,
@@ -45,6 +47,24 @@ async function concludeLog(userId, logHeader, logConclusion) {
         if (await User.isAdmin(userId)) await AdminLogThorough.concludeLog(logHeader, logConclusion);
         else await LogThorough.concludeLog(logHeader, logConclusion);
         return;
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function getOneUserLogFromId(logId) {
+    try {
+        let data = await LogSimple.getOneLogFromId(logId);
+        return jsonConverter.makeJson(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function getOneAdminLogFromId(logId) {
+    try {
+        let data = await AdminLogSimple.getOneLogFromId(logId);
+        return jsonConverter.makeJson(data);
     } catch (err) {
         throw err;
     }

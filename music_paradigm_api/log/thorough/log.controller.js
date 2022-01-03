@@ -9,15 +9,18 @@ router.post('/initialize-log', initializeLog);
 router.patch('/add-log-block', addLogBlock);
 router.patch('/conclude-log', concludeLog);
 
+router.get('/user-select-by-id/:logId',    jwtAuthorize(role.admin), getOneUserLogFromId);
+router.get('/admin-select-by-id/:logId',   jwtAuthorize(role.admin), getOneAdminLogFromId);
+
 // Those queries are defined as POST instead of GET as GET request doesn't usually have a 'body'
-router.post('/user-summary-list', jwtAuthorize(role.admin), getUserLogSummaryList);
-router.post('/admin-summary-list', jwtAuthorize(role.admin), getAdminLogSummaryList);
+router.post('/user-summary-list',   jwtAuthorize(role.admin), getUserLogSummaryList);
+router.post('/admin-summary-list',  jwtAuthorize(role.admin), getAdminLogSummaryList);
 
-router.post('/user-csv', jwtAuthorize(role.admin), makeUserLogCsv);
-router.post('/admin-csv', jwtAuthorize(role.admin), makeAdminLogCsv);
+router.post('/user-csv',            jwtAuthorize(role.admin), makeUserLogCsv);
+router.post('/admin-csv',           jwtAuthorize(role.admin), makeAdminLogCsv);
 
-router.post('/user-csv', jwtAuthorize(role.admin), makeUserLogJson);
-router.post('/admin-csv', jwtAuthorize(role.admin), makeAdminLogJson);
+router.post('/user-csv',            jwtAuthorize(role.admin), makeUserLogJson);
+router.post('/admin-csv',           jwtAuthorize(role.admin), makeAdminLogJson);
 
 
 module.exports = router;
@@ -52,6 +55,24 @@ function concludeLog(req, res, next) {
 
     service.concludeLog(userId, logHeader, logConclusion)
         .then((logId) => res.status(200).json(logId))
+        .catch(err => next(err));
+}
+
+function getOneUserLogFromId(req, res, next) {
+
+    const logId = req.params.logId;
+
+    service.getOneUserLogFromId(logId)
+        .then((log) => res.status(200).json(log))
+        .catch(err => next(err));
+}
+
+function getOneAdminLogFromId(req, res, next) {
+
+    const logId = req.params.logId;
+
+    service.getOneAdminLogFromId(logId)
+        .then((log) => res.status(200).json(log))
         .catch(err => next(err));
 }
 
