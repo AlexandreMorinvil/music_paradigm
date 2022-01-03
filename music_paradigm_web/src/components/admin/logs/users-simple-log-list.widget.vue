@@ -1,22 +1,26 @@
 <template>
 	<div class="board-position widget-table-context" :class="isDownloading && 'downloading-filter'">
 		<loader-circular-component v-if="isLoadingUserSimpleLogList" class="loader" />
-		<table v-else class="widget-table log-table">
+		<table v-else class="widget-table">
 			<thead>
 				<tr v-if="hasElements" class="logtype-header">
 					<th colspan="9">
 						<span
-							>SIMPLE LOGS ({{ totalNumberElements }}) <span v-if="isDownloading" class="generating-message">...GENERATING LOG FILE...</span></span
-						>
+							>SIMPLE LOGS ({{ totalThatWillBeKept }}{{ totalNumberElements }})
+							<span v-if="isDownloading" class="generating-message">...GENERATING LOG FILE...</span>
+							<span v-if="isSelectionModeActivated" class="generating-message">Select the logs wanted</span>
+							<span v-if="isExclusionModeActivated" class="generating-message">Select log to exclude it</span>
+						</span>
 						<button class="widget-button small green right-align" v-on:click="handleCsvDownload">Download CSV</button>
 						<button class="widget-button small turquoise right-align" v-on:click="handleJsonDownload">Download JSON</button>
-						<button class="widget-button small orange right-align" v-on:click="handleExclusionsSelection">Select Exclusions</button>
+						<button class="widget-button small blue right-align" v-on:click="toggleSelectionMode">{{ selectionModeButtonText }}</button>
+						<button class="widget-button small orange right-align" v-on:click="toggleExclusionMode">{{ exclusionModeButtonText }}</button>
 					</th>
 				</tr>
 				<tr v-else class="logtype-header">
 					<th>No SIMPLE LOGS corresponding</th>
 				</tr>
-				<tr v-if="hasElements" class="log-identifier-header">
+				<tr v-if="hasElements" class="log-identifier-header include-backlines">
 					<th>#</th>
 					<th>username</th>
 					<th>curriculum</th>
@@ -24,13 +28,18 @@
 					<th>Experiment</th>
 					<th>Log Label</th>
 					<th>State</th>
-					<th>Start |<br />Completion</th>
+					<th style=": ">Start |<br />Completion</th>
 					<th>Date</th>
 				</tr>
 			</thead>
 
-			<tbody v-if="hasElements">
-				<tr v-for="(logSummary, index) in logSummaryList" :key="logSummary._id">
+			<tbody v-if="hasElements" class="include-backlines">
+				<tr
+					v-for="(logSummary, index) in logSummaryList"
+					:key="logSummary._id"
+					v-on:click="handleLogClick(logSummary._id)"
+					:class="{ selected: selectedLogIds.includes(logSummary._id), wrong: excludedLogIds.includes(logSummary._id) }"
+				>
 					<td>{{ index + 1 }}</td>
 					<td>{{ makeUsernameDisplay(logSummary) }}</td>
 					<td>{{ makeCurriculumDisplay(logSummary) }}</td>
@@ -84,8 +93,11 @@ export default {
 	},
 	data() {
 		return {
-			areExclusionsActivated: false,
 			datesOptions: { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' },
+			isSelectionModeActivated: false,
+			isExclusionModeActivated: false,
+			selectedLogIds: [],
+			excludedLogIds: [],
 		};
 	},
 	computed: {
@@ -96,6 +108,13 @@ export default {
 		logSummaryList() {
 			return this.userSimpleLogList || [];
 		},
+		totalThatWillBeKept() {
+			const selectedCount = this.selectedLogIds.length;
+			if (selectedCount > 0) return `${selectedCount}/`;
+			const excludedCount = this.excludedLogIds.length;
+			if (excludedCount > 0) return `${this.totalNumberElements - excludedCount}/`;
+			return '';
+		},
 		totalNumberElements() {
 			return this.userSimpleLogList.length;
 		},
@@ -105,24 +124,64 @@ export default {
 		isDownloading() {
 			return this.isDownloadingLogs;
 		},
+		selectionModeButtonText() {
+			return this.isSelectionModeActivated ? 'Cancel' : 'Select Specific';
+		},
+		exclusionModeButtonText() {
+			return this.isExclusionModeActivated ? 'Cancel' : 'Select Exclusions';
+		},
+		completeRules() {
+			const rules = {};
+			Object.assign(rules, this.rules);
+			Object.assign(rules, { selectedLogIds: this.selectedLogIds });
+			Object.assign(rules, { excludedLogIds: this.excludedLogIds });
+			return rules;
+		},
 	},
 	methods: {
 		...mapActions('logs', ['getUserSimpleLogSummaryList', 'clearUserSimpleLogSummaryList', 'downloadUserSimpleLogCSV', 'downloadUserSimpleLogJson']),
 		refresh() {
-			if (this.isDownloading) return;
 			this.getUserSimpleLogSummaryList(this.rules);
+			this.isSelectionModeActivated = false;
+			this.isExclusionModeActivated = false;
+			this.emptySpecificLogsRules();
 		},
 		handleCsvDownload() {
 			if (this.isDownloading) return;
-			this.downloadUserSimpleLogCSV(this.rules);
+			this.downloadUserSimpleLogCSV(this.completeRules);
 		},
 		handleJsonDownload() {
 			if (this.isDownloading) return;
-			this.downloadUserSimpleLogJson(this.rules);
+			this.downloadUserSimpleLogJson(this.completeRules);
 		},
-		handleExclusionsSelection() {
+		handleLogClick(logId) {
 			if (this.isDownloading) return;
-			console.log('Exclusions selection');
+			if (this.isSelectionModeActivated) {
+				const index = this.selectedLogIds.indexOf(logId);
+				index === -1 ? this.selectedLogIds.push(logId) : this.selectedLogIds.splice(index, 1);
+			}
+			if (this.isExclusionModeActivated) {
+				const index = this.excludedLogIds.indexOf(logId);
+				index === -1 ? this.excludedLogIds.push(logId) : this.excludedLogIds.splice(index, 1);
+			} else {
+				console.log('select specific log');
+			}
+		},
+		toggleExclusionMode() {
+			if (this.isDownloading) return;
+			this.isExclusionModeActivated = !this.isExclusionModeActivated;
+			if (this.isExclusionModeActivated) this.isSelectionModeActivated = false;
+			this.emptySpecificLogsRules();
+		},
+		toggleSelectionMode() {
+			if (this.isDownloading) return;
+			this.isSelectionModeActivated = !this.isSelectionModeActivated;
+			if (this.isSelectionModeActivated) this.isExclusionModeActivated = false;
+			this.emptySpecificLogsRules();
+		},
+		emptySpecificLogsRules() {
+			this.selectedLogIds = [];
+			this.excludedLogIds = [];
 		},
 		makeUsernameDisplay(logSummary) {
 			return logSummary.username;
@@ -184,7 +243,7 @@ export default {
 	cursor: default;
 }
 
-.log-table {
+.include-backlines {
 	white-space: pre-line;
 }
 
@@ -198,6 +257,7 @@ export default {
 }
 
 .widget-button {
+	width: 150px;
 	border-radius: 0;
 	margin: 0;
 }

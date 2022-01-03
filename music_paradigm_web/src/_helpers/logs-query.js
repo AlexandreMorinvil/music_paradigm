@@ -17,6 +17,8 @@ function makeLogQueryCriteriaList(rules = null) {
 		maxCompletionCount,
 		minDate,
 		maxDate,
+		selectedLogIds,
+		excludedLogIds,
 	} = rules;
 
 	const logCriterias = {};
@@ -27,7 +29,8 @@ function makeLogQueryCriteriaList(rules = null) {
 	Object.assign(logCriterias, makeCurriculumCriterias(curriculumIdList));
 	Object.assign(logCriterias, makeExperimentCriterias(experimentIdList));
 	Object.assign(logCriterias, makeCompletionCountCriterias(minCompletionCount, maxCompletionCount));
-	Object.assign(logCriterias, makeDatesMongooseFilters(minDate, maxDate));
+	Object.assign(logCriterias, makeDatesCriterias(minDate, maxDate));
+	Object.assign(logCriterias, makeLogsSpecificCriterias(selectedLogIds, excludedLogIds));
 
 	return logCriterias;
 }
@@ -40,7 +43,7 @@ function makeUserCriterias(userIdList = null) {
 	if (Array.isArray(userIdList))
 		Object.assign(criterias, { ids: userIdList });
 
-	return  { userCriterias: criterias };
+	return { userCriterias: criterias };
 }
 
 function makeProgressionCriterias(progressionIdList = null) {
@@ -112,7 +115,7 @@ function makeExperimentCriterias(experimentIdList = null) {
 	return { experimentCriterias: criterias };
 }
 
-function makeDatesMongooseFilters(minDate = null, maxDate = null) {
+function makeDatesCriterias(minDate = null, maxDate = null) {
 	if (!minDate && !maxDate) return {};
 	const criterias = {};
 
@@ -124,4 +127,18 @@ function makeDatesMongooseFilters(minDate = null, maxDate = null) {
 		Object.assign(criterias, { max: new Date(maxDate) });
 
 	return { datesCriterias: criterias };
+}
+
+function makeLogsSpecificCriterias(ids = null, excludedIds = null) {
+	if (!ids && !excludedIds) return {};
+	const criterias = {};
+
+	// Parse the criterias
+	if (Array.isArray(ids))
+		Object.assign(criterias, { ids: ids });
+
+	if (Array.isArray(excludedIds))
+		Object.assign(criterias, { excludedIds: excludedIds });
+
+	return { specificChoiceCriterias: criterias };
 }

@@ -3,6 +3,16 @@ schema = require('./log-thorough.schema');
 
 schema.set('toJSON', { virtuals: true });
 
+const irrelevantFieldsForScientist = [
+    '-__v',
+    '-_id',
+    '-id',
+    '-userId',
+    '-experimentId',
+    '-progressionId',
+    '-curriculumId',
+];
+
 // Static methods
 schema.statics.initializeLog = async function (logHeader) {
     const thoroughLog = await this.findOrCreate(logHeader);
@@ -36,16 +46,7 @@ schema.statics.makeSummaryList = async function (query) {
 }
 
 schema.statics.getFileRelevantData = async function (query) {
-    const fieldsToKeep = [
-        '-__v',
-        '-_id',
-        '-id',
-        '-userId',
-        '-experimentId',
-        '-progressionId',
-        '-curriculumId',
-    ];
-    return this.find(query, fieldsToKeep);
+    return this.find(query, irrelevantFieldsForScientist);
 }
 
 // Helper functions

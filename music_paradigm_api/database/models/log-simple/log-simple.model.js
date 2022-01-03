@@ -3,6 +3,16 @@ schema = require('./log-simple.schema');
 
 schema.set('toJSON', { virtuals: true });
 
+const irrelevantFieldsForScientist = [
+    '-__v',
+    '-_id',
+    '-id',
+    '-userId',
+    '-experimentId',
+    '-progressionId',
+    '-curriculumId',
+];
+
 // Static methods
 schema.statics.addBlock = async function (block) {
     const createdBlock = new this(block);
@@ -42,16 +52,7 @@ schema.statics.makeSummaryList = async function (query) {
 }
 
 schema.statics.getFileRelevantData = async function (query) {
-    const fieldsToKeep = [
-        '-__v',
-        '-_id',
-        '-id',
-        '-userId',
-        '-experimentId',
-        '-progressionId',
-        '-curriculumId',
-    ];
-    return this.find(query, fieldsToKeep);
+    return this.find(query, irrelevantFieldsForScientist);
 }
 
 

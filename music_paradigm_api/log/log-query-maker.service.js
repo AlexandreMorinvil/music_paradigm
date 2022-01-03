@@ -13,6 +13,7 @@ function makeMongooseLogQuery(criterias) {
         curriculumCriterias,
         experimentCriterias,
         datesCriterias,
+        specificChoiceCriterias,
     } = criterias;
 
     const filters = {};
@@ -24,7 +25,8 @@ function makeMongooseLogQuery(criterias) {
     Object.assign(filters, makeExperimentMongooseFilters(experimentCriterias));
     Object.assign(filters, makeCompletionCountMongooseFilters(completionCountCriterias));
     Object.assign(filters, makeDatesMongooseFilters(datesCriterias));
-    
+    Object.assign(filters, makeLogsSpecificChoiceMongooseFilters(specificChoiceCriterias));
+
     return filters;
 }
 
@@ -84,20 +86,20 @@ function makeCurriculumMongooseFilters(curriculumCriterias = null) {
     // Parse the criterias
     const { ids } = curriculumCriterias;
     if (Array.isArray(ids) && ids.length > 0)
-    Object.assign(filters, { completionCount: { $in: ids } });
-    
+        Object.assign(filters, { completionCount: { $in: ids } });
+
     return filters;
 }
 
 function makeExperimentMongooseFilters(experimentCriterias = null) {
     if (!experimentCriterias) return {};
     const filters = {};
-    
+
     // Parse the criterias
     const { ids } = experimentCriterias;
     if (Array.isArray(ids) && ids.length > 0)
-    Object.assign(filters, { experimentId: { $in: ids } })
-    
+        Object.assign(filters, { experimentId: { $in: ids } })
+
     return filters;
 }
 
@@ -127,6 +129,21 @@ function makeDatesMongooseFilters(datesCriterias = null) {
 
     if (minDate)
         Object.assign(filters, { $or: [{ createdAt: { $gte: Date(minDate) } }, { updatedAt: { $gte: Date(minDate) } }] })
+
+    return filters;
+}
+
+function makeLogsSpecificChoiceMongooseFilters(specificChoiceCriterias = null) {
+    if (!specificChoiceCriterias) return {};
+    const filters = {};
+
+    // Parse the criterias
+    const { ids, excludedIds } = specificChoiceCriterias;
+    if (Array.isArray(ids) && ids.length > 0)
+        Object.assign(filters, { _id: { $in: ids } });
+
+    if (Array.isArray(excludedIds) && excludedIds.length > 0)
+        Object.assign(filters, { _id: { $nin: excludedIds } });
 
     return filters;
 }
