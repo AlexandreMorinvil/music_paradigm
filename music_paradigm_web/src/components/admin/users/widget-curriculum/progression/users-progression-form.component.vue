@@ -57,12 +57,19 @@ export default {
 		return {
 			isRefreshing: false,
 			wasProgressionModified: false,
-			session: {},
 		};
 	},
 	computed: {
 		...mapGetters('users', ['userSelectedId']),
-		...mapGetters('users/progressions', ['hasProgressionHistory', 'userSelectedProgressionHistory']),
+		...mapGetters('users/progressions', [
+			'hasProgressionHistory',
+			'userSelectedProgressionHistory',
+			'hasSelectedProgressionSession',
+			'selectedSession',
+		]),
+		session() {
+			return this.selectedSession;
+		},
 		hasHistory() {
 			return this.hasProgressionHistory;
 		},
@@ -70,7 +77,7 @@ export default {
 			return this.userSelectedProgressionHistory;
 		},
 		hasSelectedSession() {
-			return this.hasHistory && Boolean(this.session && this.session.associativeId);
+			return this.hasSelectedProgressionSession;
 		},
 		sessionTitle() {
 			const title = this.session ? String(this.session.title) : '';
@@ -81,7 +88,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('users/progressions', ['refreshSelectedUserProgression']),
+		...mapActions('users/progressions', ['refreshSelectedUserProgression', 'setSelectedSession', 'unsetSelectedSession']),
 		handleRefresh() {
 			this.isRefreshing = true;
 			this.refreshSelectedUserProgression().finally(() => {
@@ -105,14 +112,14 @@ export default {
 			else this.setSession(session);
 		},
 		setSession(session) {
-			this.session = session || {};
+			this.setSelectedSession(session);
 			this.$refs.sessionAdjustments.takeCurrentAdjustments(this.session);
 			this.$refs.sessionProgress.takeSession(this.session);
 			this.$refs.sessionDates.takeSession(this.session);
 			this.updateWasModifiedStatus();
 		},
 		unsetSession() {
-			this.session = {};
+			this.unsetSelectedSession();
 			this.$refs.sessionAdjustments.unsetAdjustments();
 			this.$refs.sessionProgress.unsetSession();
 			this.$refs.sessionDates.unsetSession();

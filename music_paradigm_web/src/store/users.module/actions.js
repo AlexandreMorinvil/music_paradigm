@@ -6,12 +6,12 @@ export default {
 		dispatch('progressions/unsetSelectedProgression');
 	},
 
-	setSelectedUser({ commit, dispatch }, id) {
-		return usersApi.getById(id).then(
-			(selectedUser) => {
-				commit('setSelectedUser', selectedUser.user);
-				commit('progressions/setSelectedUserProgression', selectedUser.progression);
-				commit('progressions/setSelectedUserProgressionSummary', selectedUser.progressionSummary);
+	setSelectedUser({ commit, dispatch }, userId) {
+		return usersApi.getById(userId).then(
+			(selectedUserDetails) => {
+				const { user, ...progressionDetails } = selectedUserDetails;
+				commit('setSelectedUser', user);
+				dispatch('progressions/setSelectedUserProgression', progressionDetails);
 			},
 			(error) => {
 				dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
@@ -19,15 +19,15 @@ export default {
 		);
 	},
 
-	createUser({ commit, dispatch }, user) {
+	createUser({ commit, dispatch }, userToCreate) {
 		commit('indicateCreateRequest');
 		return usersApi
-			.register(user)
+			.register(userToCreate)
 			.then(
-				(createdUser) => {
-					commit('setSelectedUser', createdUser.user);
-					commit('progressions/setSelectedUserProgression', createdUser.progression);
-					commit('progressions/setSelectedUserProgressionSummary', createdUser.progressionSummary);
+				(selectedUserDetails) => {
+					const { user, ...progressionDetails } = selectedUserDetails;
+					commit('setSelectedUser', user);
+					dispatch('progressions/setSelectedUserProgression', progressionDetails);
 					dispatch('alert/setSuccessAlert', 'User creation sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},
@@ -45,8 +45,8 @@ export default {
 		return usersApi
 			.update(id, user)
 			.then(
-				(updatedUser) => {
-					commit('setSelectedUser', updatedUser);
+				(updatedUserProfile) => {
+					commit('setSelectedUser', updatedUserProfile);
 					dispatch('alert/setSuccessAlert', 'User update sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},
@@ -83,10 +83,10 @@ export default {
 		return usersApi
 			.assignCurriculum(userId, curriculumParameters)
 			.then(
-				(updatedUser) => {
-					commit('setSelectedUser', updatedUser.user);
-					commit('progressions/setSelectedUserProgression', updatedUser.progression);
-					commit('progressions/setSelectedUserProgressionSummary', updatedUser.progressionSummary);
+				(updatedUserDetails) => {
+					const { user, ...progressionDetails } = updatedUserDetails;
+					commit('setSelectedUser', user);
+					dispatch('progressions/setSelectedUserProgression', progressionDetails);
 					dispatch('alert/setSuccessAlert', 'Curriculum assignation sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},

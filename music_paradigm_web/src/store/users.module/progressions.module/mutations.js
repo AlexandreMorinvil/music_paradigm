@@ -38,6 +38,17 @@ export default {
 		state.selectedUserProgressionDueExperiment = dueExperiment;
 	},
 
+	setSelectedSession(state, session) {
+		const { associativeId, associativeIdOrdinalNumber } = session;
+		state.selectedSessionAssociativeId = associativeId;
+		state.selectedSessionAssociativeIdOrdinalNumber = associativeIdOrdinalNumber;
+	},
+
+	setSelectedSessionCompletionCount(state, completionCount) {
+		state.selectedCompletionCount = completionCount;
+	},
+
+	// Mutations to unset mutations
 	unsetSelectedUserProgression(state) {
 		state.selectedUserProgression = defaultState.EMPTY_SELECTED_USER_PROGRESSION();
 		state.selectedUserExperimentMarkers = defaultState.EMPTY_SELECTED_USER_EXPERIMENT_MARKERS();
@@ -45,7 +56,12 @@ export default {
 		state.selectedUserProgressionDueExperiment = defaultState.EMPTY_SELECTED_USER_PROGRESSION_DUE_EXPERIMENT();
 	},
 
-	setSummariesList(state, usersSummaryList) {
-		state.usersSummaryList = usersSummaryList;
+	unsetSelectedSession(state) {
+		state.selectedSessionAssociativeId = null;
+		state.selectedSessionAssociativeIdOrdinalNumber = null;
+	},
+
+	unsetSelectedSessionCompletionCount(state) {
+		state.selectedCompletionCount = null;
 	},
 };

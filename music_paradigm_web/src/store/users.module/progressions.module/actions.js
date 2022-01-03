@@ -1,15 +1,43 @@
 import { experimentMarkersApi, usersApi } from '@/api';
 
 export default {
-	unsetSelectedProgression({ commit }) {
-		commit('unsetSelectedUserProgression');
+	// Setters
+	setSelectedUserProgression({ commit, dispatch }, progressionDetails) {
+		commit('setSelectedUserProgression', progressionDetails.progression);
+		commit('setSelectedUserProgressionSummary', progressionDetails.progressionSummary);
+		dispatch('unsetSelectedSession');
 	},
 
+	setSelectedSession({ commit, dispatch }, session) {
+		commit('setSelectedSession', session);
+		dispatch('unsetSelectedSessionCompletionCount');
+	},
+
+	setSelectedSessionCompletionCount({ commit }, completionCount) {
+		commit('setSelectedSession', completionCount);
+	},
+
+	// Actions to unset values
+	unsetSelectedProgression({ commit, dispatch }) {
+		commit('unsetSelectedUserProgression');
+		dispatch('unsetSelectedSession');
+	},
+
+	unsetSelectedSession({ commit, dispatch }) {
+		commit('unsetSelectedSession');
+		dispatch('unsetSelectedSessionCompletionCount');
+	},
+
+	unsetSelectedSessionCompletionCount({ commit }) {
+		commit('unsetSelectedSessionCompletionCount');
+	},
+
+	// API actions
 	refreshSelectedUserProgression({ commit, dispatch, rootGetters }) {
 		return usersApi.getById(rootGetters['users/userSelectedId']).then(
-			(selectedUser) => {
-				commit('setSelectedUserProgression', selectedUser.progression);
-				commit('setSelectedUserProgressionSummary', selectedUser.progressionSummary);
+			(selectedUserDetails) => {
+				commit('setSelectedUserProgression', selectedUserDetails.progression);
+				commit('setSelectedUserProgressionSummary', selectedUserDetails.progressionSummary);
 			},
 			(error) => {
 				dispatch('alert/setErrorAlert', `User progression refreshing failed : ${error.message}`, { root: true });
@@ -22,9 +50,9 @@ export default {
 		return usersApi
 			.assignParameters(userId, assignedParameters)
 			.then(
-				(updatedUser) => {
-					commit('setSelectedUserProgression', updatedUser.progression);
-					commit('setSelectedUserProgressionSummary', updatedUser.progressionSummary);
+				(updatedUserDetails) => {
+					commit('setSelectedUserProgression', updatedUserDetails.progression);
+					commit('setSelectedUserProgressionSummary', updatedUserDetails.progressionSummary);
 					dispatch('alert/setSuccessAlert', 'Parameter update sucessful', { root: true });
 					dispatch('users/fetchAllUsersSummary', null, { root: true });
 				},
@@ -42,9 +70,9 @@ export default {
 		return usersApi
 			.assignAdjustments(userId, assignedAdjustments)
 			.then(
-				(updatedUser) => {
-					commit('setSelectedUserProgression', updatedUser.progression);
-					commit('setSelectedUserProgressionSummary', updatedUser.progressionSummary);
+				(updatedUserDetails) => {
+					commit('setSelectedUserProgression', updatedUserDetails.progression);
+					commit('setSelectedUserProgressionSummary', updatedUserDetails.progressionSummary);
 					dispatch('alert/setSuccessAlert', 'Adjustments update sucessful', { root: true });
 					dispatch('users/fetchAllUsersSummary', null, { root: true });
 				},
