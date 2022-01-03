@@ -1,13 +1,13 @@
 <template>
 	<div :id="tableContextDomId" class="board-position widget-table-context" :class="isDownloading && 'downloading-filter'">
 		<code-editor-component v-show="hasSelectedLog" :readOnly="true" ref="codeEditor" />
-		<loader-circular-component v-if="isLoadingUserSimpleLogList" class="loader" />
+		<loader-circular-component v-if="isLoadingUserThoroughLogList" class="loader" />
 		<table v-else class="widget-table">
 			<thead>
 				<tr v-if="hasElements" class="logtype-header">
 					<th colspan="9">
 						<span>
-							<span> SIMPLE LOGS ({{ totalThatWillBeKept }}{{ totalNumberElements }})</span>
+							<span> THOROUGH LOGS ({{ totalThatWillBeKept }}{{ totalNumberElements }})</span>
 							<span v-if="isFetchingSpecificLog" class="generating-message include-white-space"> ...FETCHING A LOG... </span>
 							<span v-if="isDownloading" class="generating-message include-white-space"> ...GENERATING LOG FILE... </span>
 							<span v-if="isSelectionModeActivated" class="generating-message include-white-space"> - Select the logs to keep</span>
@@ -21,7 +21,7 @@
 					</th>
 				</tr>
 				<tr v-else class="logtype-header">
-					<th>No SIMPLE LOGS corresponding</th>
+					<th>No THOROUGH LOGS corresponding</th>
 				</tr>
 				<tr v-if="hasElements" class="log-identifier-header include-white-space">
 					<th>#</th>
@@ -30,14 +30,13 @@
 					<th>Associative ID</th>
 					<th>Experiment</th>
 					<th>Log Label</th>
-					<th>State</th>
-					<th style=": ">Start |<br />Completion</th>
-					<th>Date</th>
+					<th>Completion</th>
+					<th>Start Date</th>
+					<th>Last Date</th>
 				</tr>
 			</thead>
 
 			<tbody v-if="hasElements" class="include-white-space">
-				<!-- usl stands for 'user simple logs' -->
 				<tr
 					:id="logEntryDomIdAbreviation + logSummary._id"
 					v-for="(logSummary, index) in logSummaryList"
@@ -54,9 +53,9 @@
 					<td>{{ makeAssociativeIdDisplay(logSummary) }}</td>
 					<td>{{ makeExperimentDisplay(logSummary) }}</td>
 					<td>{{ makeLogLabelDisplay(logSummary) }}</td>
-					<td>{{ makeStateDisplay(logSummary) }}</td>
-					<td>{{ makeStartCompletionCountDisplay(logSummary) }}</td>
-					<td>{{ makeDateDisplay(logSummary) }}</td>
+					<td>{{ makeCompletionCountDisplay(logSummary) }}</td>
+					<td>{{ makeStartDateDisplay(logSummary) }}</td>
+					<td>{{ makeLastDateDisplay(logSummary) }}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -103,7 +102,7 @@ export default {
 	},
 	data() {
 		return {
-			tableContextDomId: 'user-simple-logs-list',
+			tableContextDomId: 'user-thorough-logs-list',
 			logEntryDomIdAbreviation: 'utl-', // "utl" stands for 'user thorough logs'
 			datesOptions: { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' },
 			isFetchingSpecificLog: false,
@@ -114,12 +113,12 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('logs', ['isLoadingUserSimpleLogList', 'userSimpleLogList', 'isDownloadingLogs', 'selectedUserSimpleLog']),
+		...mapGetters('logs', ['isLoadingUserThoroughLogList', 'userThoroughLogList', 'isDownloadingLogs', 'selectedUserThoroughLog']),
 		isListLoading() {
-			return this.isLoadingUserSimpleLogList;
+			return this.isLoadingUserThoroughLogList;
 		},
 		logSummaryList() {
-			return this.userSimpleLogList || [];
+			return this.userThoroughLogList || [];
 		},
 		totalThatWillBeKept() {
 			const selectedCount = this.selectedLogIds.length;
@@ -129,7 +128,7 @@ export default {
 			return '';
 		},
 		totalNumberElements() {
-			return this.userSimpleLogList.length;
+			return this.userThoroughLogList.length;
 		},
 		hasElements() {
 			return this.logSummaryList.length > 0;
@@ -147,7 +146,7 @@ export default {
 			return this.hasSelectedLog ? 'Unselect Log' : 'Refresh';
 		},
 		selectedLogId() {
-			return this.selectedUserSimpleLog._id || null;
+			return this.selectedUserThoroughLog._id || null;
 		},
 		hasSelectedLog() {
 			return Boolean(this.selectedLogId);
@@ -162,26 +161,26 @@ export default {
 	},
 	methods: {
 		...mapActions('logs', [
-			'getSpecificUserSimpleLog',
-			'getUserSimpleLogSummaryList',
-			'clearUserSimpleLogSummaryList',
-			'clearSelectedUserSimpleLog',
-			'downloadUserSimpleLogCSV',
-			'downloadUserSimpleLogJson',
+			'getSpecificUserThoroughLog',
+			'getUserThoroughLogSummaryList',
+			'clearUserThoroughLogSummaryList',
+			'clearSelectedUserThoroughLog',
+			'downloadUserThoroughLogCSV',
+			'downloadUserThoroughLogJson',
 		]),
 		refresh() {
-			this.getUserSimpleLogSummaryList(this.rules);
+			this.getUserThoroughLogSummaryList(this.rules);
 			this.isSelectionModeActivated = false;
 			this.isExclusionModeActivated = false;
 			this.emptySpecificLogsRules();
 		},
 		handleCsvDownload() {
 			if (this.isDownloading) return;
-			this.downloadUserSimpleLogCSV(this.completeRules);
+			this.downloadUserThoroughLogCSV(this.completeRules);
 		},
 		handleJsonDownload() {
 			if (this.isDownloading) return;
-			this.downloadUserSimpleLogJson(this.completeRules);
+			this.downloadUserThoroughLogJson(this.completeRules);
 		},
 		handleLogClick(logId) {
 			if (this.isDownloading) return;
@@ -194,7 +193,7 @@ export default {
 			} else this.selectLog(logId);
 		},
 		handleRefresh() {
-			if (this.hasSelectedLog) this.clearSelectedUserSimpleLog();
+			if (this.hasSelectedLog) this.clearSelectedUserThoroughLog();
 			else this.refresh();
 		},
 		toggleExclusionMode() {
@@ -218,9 +217,9 @@ export default {
 		selectLog(logId) {
 			const codeEditor = this.$refs.codeEditor;
 			this.isFetchingSpecificLog = true;
-			this.getSpecificUserSimpleLog(logId)
+			this.getSpecificUserThoroughLog(logId)
 				.then(() => {
-					const content = this.selectedUserSimpleLog;
+					const content = this.selectedUserThoroughLog;
 					const formatedContent = JSON.stringify(content, null, '\t');
 					codeEditor.setValue(formatedContent);
 					codeEditor.setFullScreenMode();
@@ -231,11 +230,11 @@ export default {
 				});
 		},
 		unselectLog() {
-			this.clearSelectedUserSimpleLog();
+			this.clearSelectedUserThoroughLog();
 		},
 		cleanUp() {
-			this.clearUserSimpleLogSummaryList();
-			this.clearSelectedUserSimpleLog();
+			this.clearUserThoroughLogSummaryList();
+			this.clearSelectedUserThoroughLog();
 		},
 		goToLog(logId) {
 			// The timeout is an adjustment to ensure that the scrolling is done after any
@@ -244,7 +243,7 @@ export default {
 				const anchorId = this.logEntryDomIdAbreviation + logId;
 				const logElement = document.getElementById(anchorId);
 				const topPosition = logElement.offsetTop;
-				const logList = document.getElementById(this.tableContextDomId);
+				const logList = document.getElementById(this.logEntryDomIdAbreviation);
 				logList.scrollTop = topPosition;
 			}, 0);
 		},
@@ -255,8 +254,7 @@ export default {
 			return logSummary.curriculumTitle;
 		},
 		makeAssociativeIdDisplay(logSummary) {
-			const { associativeId, associativeIdOrdinalNumber } = logSummary;
-			return `${associativeId} / ${associativeIdOrdinalNumber}`;
+			return logSummary.associativeId;
 		},
 		makeExperimentDisplay(logSummary) {
 			const { experimentGroup, experimentName, experimentVersion } = logSummary;
@@ -265,19 +263,14 @@ export default {
 		makeLogLabelDisplay(logSummary) {
 			return logSummary.logLabel;
 		},
-		makeStateDisplay(logSummary) {
-			const { isInPrelude, blockType, blockSubType, index, repetition } = logSummary;
-			const sectionDisplay = isInPrelude ? '(prelude)\n' : '';
-			const subTypeDisplay = `${blockType}` + (blockSubType ? `/${blockSubType}` : '');
-			const indexDisplay = `\nindex: ${index}, rep.: ${repetition}`;
-			return sectionDisplay + subTypeDisplay + indexDisplay;
+		makeCompletionCountDisplay(logSummary) {
+			return logSummary.completionCount;
 		},
-		makeStartCompletionCountDisplay(logSummary) {
-			const { startCount, completionCount } = logSummary;
-			return `${startCount} | ${completionCount}`;
-		},
-		makeDateDisplay(logSummary) {
+		makeStartDateDisplay(logSummary) {
 			return new Date(logSummary.createdAt).toLocaleDateString(undefined, this.datesOptions);
+		},
+		makeLastDateDisplay(logSummary) {
+			return new Date(logSummary.updatedAt).toLocaleDateString(undefined, this.datesOptions);
 		},
 	},
 	beforeMount() {

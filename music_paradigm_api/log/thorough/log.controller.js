@@ -19,8 +19,8 @@ router.post('/admin-summary-list',  jwtAuthorize(role.admin), getAdminLogSummary
 router.post('/user-csv',            jwtAuthorize(role.admin), makeUserLogCsv);
 router.post('/admin-csv',           jwtAuthorize(role.admin), makeAdminLogCsv);
 
-router.post('/user-csv',            jwtAuthorize(role.admin), makeUserLogJson);
-router.post('/admin-csv',           jwtAuthorize(role.admin), makeAdminLogJson);
+router.post('/user-json',            jwtAuthorize(role.admin), makeUserLogJson);
+router.post('/admin-json',           jwtAuthorize(role.admin), makeAdminLogJson);
 
 
 module.exports = router;
@@ -127,11 +127,11 @@ function makeUserLogJson(req, res, next) {
     const criterias = req.body;
 
     service.makeUserLogJson(criterias)
-        .then((csv) => {
+        .then((json) => {
             res.setHeader('Content-disposition', 'attachment; filename=data.json');
             res.set('Access-Control-Expose-Headers', 'Content-Disposition');
             res.set('Content-Type', 'application/json');
-            res.status(200).send(csv);
+            res.status(200).send(json);
         })
         .catch(err => next(err));
 }
@@ -141,11 +141,11 @@ function makeAdminLogJson(req, res, next) {
     const criterias = req.body;
 
     service.makeAdminLogJson(criterias)
-        .then((csv) => {
+        .then((json) => {
             res.setHeader('Content-disposition', 'attachment; filename=data.json');
             res.set('Access-Control-Expose-Headers', 'Content-Disposition');
             res.set('Content-Type', 'application/json');
-            res.status(200).send(csv);
+            res.status(200).send(json);
         })
         .catch(err => next(err));
 }

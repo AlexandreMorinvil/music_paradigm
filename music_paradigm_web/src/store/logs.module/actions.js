@@ -49,6 +49,19 @@ export default {
 			);
 	},
 
+	getSpecificUserThoroughLog({ commit, dispatch }, logId) {
+		return logsApi
+			.getSpecificUserThoroughLog(logId)
+			.then(
+				(log) => {
+					commit('setSelectedUserThoroughLog', log);
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `User thorough log fetch failed : ${error.message}`, { root: true });
+				}
+			);
+	},
+
 	// Summary lists
 	getUserSimpleLogSummaryList({ commit, dispatch }, rules) {
 		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
@@ -130,10 +143,28 @@ export default {
 			.getUserSimpleLogCsv(criterias)
 			.then(
 				() => {
-					dispatch('alert/setInformationAlert', 'CSV file generated and retreived sucessfully', { root: true });
+					dispatch('alert/setInformationAlert', 'Simple log CSV file generated and retreived sucessfully', { root: true });
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', `User simple logs csv download failed : ${error.message}`, { root: true });
+					dispatch('alert/setErrorAlert', `User simple logs CSV download failed : ${error.message}`, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateIsDownloadingEnd');
+			});
+	},
+
+	downloadUserThoroughLogCSV({ commit, dispatch }, rules) {
+		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+		commit('indicateIsDownloading');
+		return logsApi
+			.getUserThoroughLogCsv(criterias)
+			.then(
+				() => {
+					dispatch('alert/setInformationAlert', 'Thorough log CSV file generated and retreived sucessfully', { root: true });
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `User thorough logs CSV download failed : ${error.message}`, { root: true });
 				},
 			)
 			.finally(() => {
@@ -149,10 +180,28 @@ export default {
 			.getUserSimpleLogJson(criterias)
 			.then(
 				() => {
-					dispatch('alert/setInformationAlert', 'JSON file generated and retreived sucessfully', { root: true });
+					dispatch('alert/setInformationAlert', 'Simple log JSON file generated and retreived sucessfully', { root: true });
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', `User simple logs csv download failed : ${error.message}`, { root: true });
+					dispatch('alert/setErrorAlert', `User simple logs JSON download failed : ${error.message}`, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateIsDownloadingEnd');
+			});
+	},
+
+	downloadUserThoroughLogJson({ commit, dispatch }, rules) {
+		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+		commit('indicateIsDownloading');
+		return logsApi
+			.getUserThoroughLogJson(criterias)
+			.then(
+				() => {
+					dispatch('alert/setInformationAlert', 'Thorough log JSON file generated and retreived sucessfully', { root: true });
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `User simple logs JSON download failed : ${error.message}`, { root: true });
 				},
 			)
 			.finally(() => {

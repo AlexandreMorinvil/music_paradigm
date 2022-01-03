@@ -3,9 +3,9 @@ import { csvFileResponseHandler, defaultResponseHandler, jsonFileResponseHandler
 
 export const logsApi = {
 	getSpecificUserSimpleLog,
-	getSpecificUserThoroughLogLog,
-	getSpecificAdminSimpleLogLog,
-	getSpecificAdminThoroughLogLog,
+	getSpecificUserThoroughLog,
+	getSpecificAdminSimpleLog,
+	getSpecificAdminThoroughLog,
 	getUserSimpleLogSummaryList,
 	getUserThoroughLogSummaryList,
 	getAdminSimpleLogSummaryList,
@@ -30,7 +30,7 @@ function getSpecificUserSimpleLog(logId) {
 	return fetch(url.logSimple(['user-select-by-id', logId]), requestOptions).then(defaultResponseHandler);
 }
 
-function getSpecificUserThoroughLogLog(logId) {
+function getSpecificUserThoroughLog(logId) {
 	const requestOptions = {
 		method: 'GET',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -38,7 +38,7 @@ function getSpecificUserThoroughLogLog(logId) {
 	return fetch(url.logThorough(['user-select-by-id', logId]), requestOptions).then(defaultResponseHandler);
 }
 
-function getSpecificAdminSimpleLogLog(logId) {
+function getSpecificAdminSimpleLog(logId) {
 	const requestOptions = {
 		method: 'GET',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -46,7 +46,7 @@ function getSpecificAdminSimpleLogLog(logId) {
 	return fetch(url.logSimple(['admin-select-by-id', logId]), requestOptions).then(defaultResponseHandler);
 }
 
-function getSpecificAdminThoroughLogLog(logId) {
+function getSpecificAdminThoroughLog(logId) {
 	const requestOptions = {
 		method: 'GET',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },

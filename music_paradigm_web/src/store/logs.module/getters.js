@@ -1,4 +1,5 @@
 export default {
+	// Status Getters
 	isLoadingUserSimpleLogList: (state) => {
 		return state.status.isLoadingUserSimpleLogList || false;
 	},
@@ -19,6 +20,7 @@ export default {
 		return state.status.isDownloading || false;
 	},
 
+	// Log summary lists
 	userSimpleLogList: (state) => {
 		return state.userSimpleLogList;
 	},
@@ -35,6 +37,7 @@ export default {
 		return state.userThoroughLogList;
 	},
 
+	// Selected log
 	selectedUserSimpleLog: (state) => {
 		return state.selectedUserSimpleLog;
 	},
@@ -50,5 +53,4 @@ export default {
 	selectedAdminThoroughLog: (state) => {
 		return state.selectedAdminThoroughLog;
 	},
-
 };

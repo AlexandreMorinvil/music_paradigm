@@ -1,6 +1,7 @@
 <template>
 	<div id="users-logs" class="widget widget-bg">
 		<users-simple-log-list-component :rules="rules" ref="simpleLogsList" />
+		<users-thorough-log-list-component :rules="rules" ref="thoroughLogsList" />
 	</div>
 </template>
 
@@ -10,11 +11,13 @@ import '@/styles/form-template.css';
 // import { mapActions, mapGetters } from 'vuex';
 
 import UsersSimpleLogListComponent from '@/components/admin/logs/users-simple-log-list.widget.vue';
+import UsersThoroughLogListComponent from '@/components/admin/logs/users-thorough-log-list.widget.vue';
 import { mapGetters } from 'vuex';
 
 export default {
 	components: {
 		UsersSimpleLogListComponent,
+		UsersThoroughLogListComponent,
 	},
 	data() {
 		return {};

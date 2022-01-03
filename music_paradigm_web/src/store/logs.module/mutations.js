@@ -42,20 +42,20 @@ export default {
 		state.status.isDownloading = false;
 	},
 
-	setUserSimpleLogList(state, userSimpleLogList) {
-		state.userSimpleLogList = userSimpleLogList;
+	setUserSimpleLogList(state, logSummaryList) {
+		state.userSimpleLogList = logSummaryList;
 	},
 
-	setUserThoroughLogList(state, userThoroughLogList) {
-		state.userThoroughLogList = userThoroughLogList;
+	setUserThoroughLogList(state, logSummaryList) {
+		state.userThoroughLogList = logSummaryList;
 	},
 
-	setAdminSimpleLogList(state, adminSimpleLogList) {
-		state.adminSimpleLogList = adminSimpleLogList;
+	setAdminSimpleLogList(state, logSummaryList) {
+		state.adminSimpleLogList = logSummaryList;
 	},
 
-	setAdminThoroughLogList(state, adminThoroughLogList) {
-		state.adminThoroughLogList = adminThoroughLogList;
+	setAdminThoroughLogList(state, logSummaryList) {
+		state.adminThoroughLogList = logSummaryList;
 	},
 
 	clearUserSimpleLogs(state) {

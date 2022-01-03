@@ -54,7 +54,7 @@ async function concludeLog(userId, logHeader, logConclusion) {
 
 async function getOneUserLogFromId(logId) {
     try {
-        let data = await LogSimple.getOneLogFromId(logId);
+        let data = await LogThorough.getOneLogFromId(logId);
         return jsonConverter.makeJson(data);
     } catch (err) {
         throw err;
@@ -63,7 +63,7 @@ async function getOneUserLogFromId(logId) {
 
 async function getOneAdminLogFromId(logId) {
     try {
-        let data = await AdminLogSimple.getOneLogFromId(logId);
+        let data = await AdminLogThorough.getOneLogFromId(logId);
         return jsonConverter.makeJson(data);
     } catch (err) {
         throw err;
