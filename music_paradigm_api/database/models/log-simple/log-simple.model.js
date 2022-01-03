@@ -4,13 +4,14 @@ schema = require('./log-simple.schema');
 schema.set('toJSON', { virtuals: true });
 
 const irrelevantFieldsForScientist = [
-    '-_id',
-    '-__v',
     '-id',
-    '-userId',
-    '-experimentId',
-    '-progressionId',
-    '-curriculumId',
+    '-__v',
+    '-updatedAt',
+    // '-_id',
+    // '-userId',
+    // '-experimentId',
+    // '-progressionId',
+    // '-curriculumId',
 ];
 
 // Static methods

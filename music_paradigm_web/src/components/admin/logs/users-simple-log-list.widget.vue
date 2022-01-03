@@ -1,6 +1,6 @@
 <template>
 	<div class="board-position widget-table-context" :class="isDownloading && 'downloading-filter'">
-		<code-editor-component v-if="hasSelectedLog" :readOnly="true" ref="codeEditor" />
+		<code-editor-component v-show="hasSelectedLog" :readOnly="true" ref="codeEditor" />
 		<loader-circular-component v-if="isLoadingUserSimpleLogList" class="loader" />
 		<table v-else class="widget-table">
 			<thead>
@@ -126,7 +126,7 @@ export default {
 			return this.userSimpleLogList.length;
 		},
 		hasElements() {
-			return this.logSummaryList.length;
+			return this.logSummaryList.length > 0;
 		},
 		isDownloading() {
 			return this.isDownloadingLogs;
@@ -182,8 +182,7 @@ export default {
 			if (this.isSelectionModeActivated) {
 				const index = this.selectedLogIds.indexOf(logId);
 				index === -1 ? this.selectedLogIds.push(logId) : this.selectedLogIds.splice(index, 1);
-			}
-			if (this.isExclusionModeActivated) {
+			} else if (this.isExclusionModeActivated) {
 				const index = this.excludedLogIds.indexOf(logId);
 				index === -1 ? this.excludedLogIds.push(logId) : this.excludedLogIds.splice(index, 1);
 			} else this.selectLog(logId);
@@ -194,12 +193,14 @@ export default {
 		},
 		toggleExclusionMode() {
 			if (this.isDownloading) return;
+			this.unselectLog();
 			this.isExclusionModeActivated = !this.isExclusionModeActivated;
 			if (this.isExclusionModeActivated) this.isSelectionModeActivated = false;
 			this.emptySpecificLogsRules();
 		},
 		toggleSelectionMode() {
 			if (this.isDownloading) return;
+			this.unselectLog();
 			this.isSelectionModeActivated = !this.isSelectionModeActivated;
 			if (this.isSelectionModeActivated) this.isExclusionModeActivated = false;
 			this.emptySpecificLogsRules();
@@ -209,12 +210,13 @@ export default {
 			this.excludedLogIds = [];
 		},
 		selectLog(logId) {
+			const codeEditor = this.$refs.codeEditor;
 			this.getSpecificUserSimpleLog(logId).then(() => {
 				// eslint-disable-next-line no-unused-vars
-				const { _id, ...relevantContent } = this.selectedUserSimpleLog;
-				const formatedContent = JSON.stringify(relevantContent, null, '\t');
-				this.$refs.codeEditor.setValue(formatedContent);
-				this.$refs.codeEditor.setFullScreenMode();
+				const content = this.selectedUserSimpleLog;
+				const formatedContent = JSON.stringify(content, null, '\t');
+				codeEditor.setValue(formatedContent);
+				codeEditor.setFullScreenMode();
 			});
 		},
 		unselectLog() {
