@@ -3,15 +3,10 @@ schema = require('./log-simple.schema');
 
 schema.set('toJSON', { virtuals: true });
 
-const irrelevantFieldsForScientist = [
+const irrelevantFields = [
     '-id',
     '-__v',
     '-updatedAt',
-    // '-_id',
-    // '-userId',
-    // '-experimentId',
-    // '-progressionId',
-    // '-curriculumId',
 ];
 
 // Static methods
@@ -53,11 +48,11 @@ schema.statics.makeSummaryList = async function (query) {
 }
 
 schema.statics.getFileRelevantData = async function (query) {
-    return this.find(query, irrelevantFieldsForScientist);
+    return this.find(query, irrelevantFields);
 }
 
 schema.statics.getOneLogFromId = async function (logId) {
-    return this.findById(logId, irrelevantFieldsForScientist);
+    return this.findById(logId, irrelevantFields);
 }
 
 // Creating the model

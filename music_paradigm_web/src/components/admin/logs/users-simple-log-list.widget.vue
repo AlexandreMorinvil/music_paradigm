@@ -8,7 +8,7 @@
 					<th colspan="9">
 						<span>
 							<span> SIMPLE LOGS ({{ totalThatWillBeKept }}{{ totalNumberElements }})</span>
-							<span v-if="isFetchingSpecificLog" class="generating-message include-white-space"> ...FETCHING A LOG... </span>
+							<span v-if="isFetchingSpecificLog" class="generating-message include-white-space"> ...FORMATING THE LOG... </span>
 							<span v-if="isDownloading" class="generating-message include-white-space"> ...GENERATING LOG FILE... </span>
 							<span v-if="isSelectionModeActivated" class="generating-message include-white-space"> - Select the logs to keep</span>
 							<span v-if="isExclusionModeActivated" class="generating-message include-white-space"> - Select the logs to exclude</span>
@@ -170,6 +170,7 @@ export default {
 			'downloadUserSimpleLogJson',
 		]),
 		refresh() {
+			this.clearSelectedUserSimpleLog();
 			this.getUserSimpleLogSummaryList(this.rules);
 			this.isSelectionModeActivated = false;
 			this.isExclusionModeActivated = false;
