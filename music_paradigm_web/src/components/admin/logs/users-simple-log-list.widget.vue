@@ -1,5 +1,5 @@
 <template>
-	<div class="board-position widget-table-context" :class="isDownloading && 'downloading-filter'">
+	<div id="user-simple-logs-list" class="board-position widget-table-context" :class="isDownloading && 'downloading-filter'">
 		<code-editor-component v-show="hasSelectedLog" :readOnly="true" ref="codeEditor" />
 		<loader-circular-component v-if="isLoadingUserSimpleLogList" class="loader" />
 		<table v-else class="widget-table">
@@ -36,7 +36,9 @@
 			</thead>
 
 			<tbody v-if="hasElements" class="include-white-space">
+				<!-- usl stands for 'user simple logs' -->
 				<tr
+					:id="'usl-' + logSummary._id"
 					v-for="(logSummary, index) in logSummaryList"
 					:key="logSummary._id"
 					v-on:click="handleLogClick(logSummary._id)"
@@ -212,11 +214,11 @@ export default {
 		selectLog(logId) {
 			const codeEditor = this.$refs.codeEditor;
 			this.getSpecificUserSimpleLog(logId).then(() => {
-				// eslint-disable-next-line no-unused-vars
 				const content = this.selectedUserSimpleLog;
 				const formatedContent = JSON.stringify(content, null, '\t');
 				codeEditor.setValue(formatedContent);
 				codeEditor.setFullScreenMode();
+				this.goToLog(logId);
 			});
 		},
 		unselectLog() {
@@ -225,6 +227,17 @@ export default {
 		cleanUp() {
 			this.clearUserSimpleLogSummaryList();
 			this.clearSelectedUserSimpleLog();
+		},
+		goToLog(logId) {
+			// The timeout is an adjustment to ensure that the scrolling is done after any
+			// DOM change that may happen when the code editor is rendered
+			setTimeout(() => {
+				const anchorId = 'usl-' + logId;
+				const logElement = document.getElementById(anchorId);
+				const topPosition = logElement.offsetTop;
+				const logList = document.getElementById('user-simple-logs-list');
+				logList.scrollTop = topPosition;
+			}, 0);
 		},
 		makeUsernameDisplay(logSummary) {
 			return logSummary.username;
