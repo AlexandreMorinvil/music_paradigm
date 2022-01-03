@@ -56,7 +56,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('users', ['userSelectedExperimentMarkers', 'userSelectedProgressionHistory']),
+		...mapGetters('users/progressions', ['userSelectedExperimentMarkers', 'userSelectedProgressionHistory']),
 		hasLinkedSessions() {
 			return this.linkedSessionsCount > 1;
 		},
@@ -90,7 +90,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('users', ['resetSessionTimeIndicated', 'resetSessionProgressKept']),
+		...mapActions('users/progressions', ['resetSessionTimeIndicated', 'resetSessionProgressKept']),
 		takeSession(session) {
 			this.associativeId = session.associativeId;
 			this.associativeIdOrdinalNumber = session.associativeIdOrdinalNumber;

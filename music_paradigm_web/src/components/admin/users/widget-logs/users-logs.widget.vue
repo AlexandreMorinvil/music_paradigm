@@ -23,6 +23,7 @@ export default {
 	},
 	computed: {
 		...mapGetters('users', ['userSelectedId', 'userSelectedProgressionId']),
+		...mapGetters('users/progressions', ['userSelectedProgressionId']),
 		user() {
 			return [this.userSelectedId];
 		},

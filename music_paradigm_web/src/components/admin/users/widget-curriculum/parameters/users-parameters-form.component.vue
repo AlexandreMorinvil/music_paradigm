@@ -30,7 +30,8 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('users', ['userSelectedId', 'userSelectedImposedParameters']),
+		...mapGetters('users', ['userSelectedId']),
+		...mapGetters('users/progressions', ['userSelectedImposedParameters']),
 		...mapGetters('curriculums', ['curriculumsList']),
 		currentlyAssignedValues() {
 			return Object.assign({}, this.parameterDefaultValues, this.userSelectedImposedParameters);

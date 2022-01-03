@@ -37,7 +37,6 @@
 			</thead>
 
 			<tbody v-if="hasElements" class="include-white-space">
-				<!-- usl stands for 'user simple logs' -->
 				<tr
 					:id="logEntryDomIdAbreviation + logSummary._id"
 					v-for="(logSummary, index) in logSummaryList"

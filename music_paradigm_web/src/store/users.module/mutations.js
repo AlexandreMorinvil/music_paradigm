@@ -42,60 +42,13 @@ export default {
 		state.status.isAssigningCurriculum = false;
 	},
 
-	indicateUpdateParametersRequest(state) {
-		state.status.isUpdatingParameters = true;
-	},
-
-	indicateUpdateParametersRequestEnd(state) {
-		state.status.isUpdatingParameters = false;
-	},
-
-	indicateUpdateAdjustmentsRequest(state) {
-		state.status.isUpdatingAdjustments = true;
-	},
-
-	indicateUpdateAdjustmentsRequestEnd(state) {
-		state.status.isUpdatingAdjustments = false;
-	},
-
-	indicateResetProgressionRequest(state) {
-		state.status.isResetingProgression = true;
-	},
-
-	indicateResetProgressionRequestEnd(state) {
-		state.status.isResetingProgression = false;
-	},
-
-	indicateExperimentMarkerChangeRequest(state) {
-		state.status.isChangingExperimentMarker = true;
-	},
-
-	indicateExperimentMarkerChangeRequestEnd(state) {
-		state.status.isChangingExperimentMarker = false;
-	},
-
 	// Setters
 	setSelectedUser(state, user) {
 		state.selectedUser = user;
 	},
 
-	setSelectedUserProgression(state, userProgression) {
-		state.selectedUserProgression = userProgression;
-	},
-
-	setSelectedUserProgressionSummary(state, progressionSummary) {
-		const { dueExperiment, history, markers } = progressionSummary;
-		state.selectedUserExperimentMarkers = markers;
-		state.selectedUserProgressionHistory = history;
-		state.selectedUserProgressionDueExperiment = dueExperiment;
-	},
-
 	unsetSelectedUser(state) {
 		state.selectedUser = defaultState.EMPTY_USER();
-		state.selectedUserProgression = defaultState.EMPTY_SELECTED_USER_PROGRESSION();
-		state.selectedUserExperimentMarkers = defaultState.EMPTY_SELECTED_USER_EXPERIMENT_MARKERS();
-		state.selectedUserProgressionHistory = defaultState.EMPTY_SELECTED_USER_PROGRESSION_HISTORY();
-		state.selectedUserProgressionDueExperiment = defaultState.EMPTY_SELECTED_USER_PROGRESSION_DUE_EXPERIMENT();
 	},
 
 	setSummariesList(state, usersSummaryList) {
