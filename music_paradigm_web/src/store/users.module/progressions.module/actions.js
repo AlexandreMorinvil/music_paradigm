@@ -88,7 +88,7 @@ export default {
 	resetSessionTimeIndicated({ commit, dispatch, getters }, associativeId) {
 		commit('indicateExperimentMarkerChangeRequest');
 		return experimentMarkersApi
-			.resetTimeIndicated(getters.userSelectedProgressionId, associativeId)
+			.resetTimeIndicated(getters.progressionSelectedId, associativeId)
 			.then(
 				(progressionSummary) => {
 					commit('setSelectedUserProgressionSummary', progressionSummary);
@@ -107,7 +107,7 @@ export default {
 	resetSessionProgressKept({ commit, dispatch, getters }, associativeId) {
 		commit('indicateExperimentMarkerChangeRequest');
 		return experimentMarkersApi
-			.delete(getters.userSelectedProgressionId, associativeId)
+			.delete(getters.progressionSelectedId, associativeId)
 			.then(
 				(progressionSummary) => {
 					commit('setSelectedUserProgressionSummary', progressionSummary);

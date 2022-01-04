@@ -31,10 +31,10 @@ export default {
 	},
 	computed: {
 		...mapGetters('users', ['userSelectedId']),
-		...mapGetters('users/progressions', ['userSelectedImposedParameters']),
+		...mapGetters('users/progressions', ['progressionSelectedImposedParameters']),
 		...mapGetters('curriculums', ['curriculumsList']),
 		currentlyAssignedValues() {
-			return Object.assign({}, this.parameterDefaultValues, this.userSelectedImposedParameters);
+			return Object.assign({}, this.parameterDefaultValues, this.progressionSelectedImposedParameters);
 		},
 		selectedCurriculum() {
 			const filteredCurriculum = this.curriculumsList.find((curriculum) => curriculum._id === this.curriculumId);

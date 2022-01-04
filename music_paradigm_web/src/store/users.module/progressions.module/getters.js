@@ -1,57 +1,57 @@
 export default {
 	// Progression parameters
-	userSelectedProgressionId: (state) => {
+	progressionSelectedId: (state) => {
 		return state.selectedUserProgression ? state.selectedUserProgression._id : null;
 	},
 
-	userSelectedImposedParameters: (state) => {
+	progressionSelectedImposedParameters: (state) => {
 		return state.selectedUserProgression ? state.selectedUserProgression.assignedParameters : {};
 	},
 
-	userSelectedAdjustmentStartTimeInDays: (state) => {
+	progressionSelectedAdjustmentStartTimeInDays: (state) => {
 		return state.selectedUserProgression ? state.selectedUserProgression.adjustmentStartTimeInDays : 0;
 	},
 
-	userSelectedStartTime: (state) => {
+	progressionSelectedStartTime: (state) => {
 		return state.selectedUserProgression ? state.selectedUserProgression.startTime : null;
 	},
 
-	userSelectedStartTimePassed: (state) => {
+	progressionSelectedStartTimePassed: (state) => {
 		return state.selectedUserProgression ? state.selectedUserProgression.startTimePassed : 0;
 	},
 
-	userSelectedLastProgressionDate: (state) => {
+	progressionSelectedLastProgressionDate: (state) => {
 		return state.selectedUserProgression ? state.selectedUserProgression.lastProgressionDate : null;
 	},
 
-	userSelectedLastProgressionTimePassed: (state) => {
+	progressionSelectedLastProgressionTimePassed: (state) => {
 		return state.selectedUserProgression ? state.selectedUserProgression.lastProgessionTimePassed : 0;
 	},
 
 	// Selected session
-	selectedSessionAssociativeId: (state) => {
+	sessionSelectedAssociativeId: (state) => {
 		return state.selectedSessionAssociativeId || null;
 	},
 
-	selectedSessionAssociativeIdOrdinalNumber: (state) => {
+	sessionSelectedAssociativeIdOrdinalNumber: (state) => {
 		return state.selectedSessionAssociativeIdOrdinalNumber || null;
 	},
 
-	selectedSession: (state) => {
+	sessionSelected: (state) => {
 		return state.selectedUserProgressionHistory.find((session) => state.selectedSessionAssociativeId == session.associativeId
 			&& state.selectedSessionAssociativeIdOrdinalNumber == session.associativeIdOrdinalNumber) || {};
 	},
 
-	selectedCompletionCount: (state) => {
+	sessionCompletionCountSelected: (state) => {
 		return state.selectedCompletionCount || null;
 	},
 
 	// Experiments progression history of the user
-	userSelectedProgressionHistory: (state) => {
+	progressionSelectedHistory: (state) => {
 		return state.selectedUserProgressionHistory;
 	},
 
-	userSelectedExperimentMarkers: (state) => {
+	progressionSelectedExperimentMarkers: (state) => {
 		return state.selectedUserExperimentMarkers;
 	},
 

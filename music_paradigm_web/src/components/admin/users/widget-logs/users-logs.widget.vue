@@ -22,13 +22,13 @@ export default {
 		return {};
 	},
 	computed: {
-		...mapGetters('users', ['userSelectedId', 'userSelectedProgressionId']),
-		...mapGetters('users/progressions', ['userSelectedProgressionId']),
+		...mapGetters('users', ['userSelectedId', 'progressionSelectedId']),
+		...mapGetters('users/progressions', ['progressionSelectedId']),
 		user() {
 			return [this.userSelectedId];
 		},
 		progresion() {
-			return [this.userSelectedProgressionId];
+			return [this.progressionSelectedId];
 		},
 		associativeId() {
 			return null; // this.associativeIdList

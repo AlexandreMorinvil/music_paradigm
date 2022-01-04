@@ -56,12 +56,12 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('users/progressions', ['userSelectedExperimentMarkers', 'userSelectedProgressionHistory']),
+		...mapGetters('users/progressions', ['progressionSelectedExperimentMarkers', 'progressionSelectedHistory']),
 		hasLinkedSessions() {
 			return this.linkedSessionsCount > 1;
 		},
 		linkedSessions() {
-			return this.userSelectedProgressionHistory.filter((session) => {
+			return this.progressionSelectedHistory.filter((session) => {
 				return session.associativeId == this.associativeId;
 			});
 		},
@@ -104,7 +104,7 @@ export default {
 			this.progressRatio = 0;
 		},
 		fetchMakersDetails() {
-			this.experimentMarker = this.userSelectedExperimentMarkers.find((marker) => marker.associativeId == this.associativeId) || {};
+			this.experimentMarker = this.progressionSelectedExperimentMarkers.find((marker) => marker.associativeId == this.associativeId) || {};
 			this.timeIndicated = this.experimentMarker.timeIndicated;
 			this.progressRatio = this.experimentMarker.progressRatio;
 		},

@@ -40,33 +40,33 @@ export default {
 	},
 	computed: {
 		...mapGetters('users/progressions', [
-			'userSelectedStartTime',
-			'userSelectedStartTimePassed',
-			'userSelectedLastProgressionDate',
-			'userSelectedLastProgressionTimePassed',
-			'userSelectedAdjustmentStartTimeInDays',
+			'progressionSelectedStartTime',
+			'progressionSelectedStartTimePassed',
+			'progressionSelectedLastProgressionDate',
+			'progressionSelectedLastProgressionTimePassed',
+			'progressionSelectedAdjustmentStartTimeInDays',
 		]),
 		wasAdjustmentModified() {
-			return Number(this.timeSinceStartAdjustment) !== Number(this.userSelectedAdjustmentStartTimeInDays);
+			return Number(this.timeSinceStartAdjustment) !== Number(this.progressionSelectedAdjustmentStartTimeInDays);
 		},
 		startTime() {
-			if (!this.userSelectedStartTime) return 'Never';
-			else return new Date(this.userSelectedStartTime).toLocaleDateString(undefined, this.datesOptions);
+			if (!this.progressionSelectedStartTime) return 'Never';
+			else return new Date(this.progressionSelectedStartTime).toLocaleDateString(undefined, this.datesOptions);
 		},
 		startTimePassed() {
-			return this.makeDateTimeLapsedDisplay(this.userSelectedStartTime, this.userSelectedStartTimePassed);
+			return this.makeDateTimeLapsedDisplay(this.progressionSelectedStartTime, this.progressionSelectedStartTimePassed);
 		},
 		lastProgressionDate() {
-			if (!this.userSelectedLastProgressionDate) return 'Never';
-			else return new Date(this.userSelectedLastProgressionDate).toLocaleDateString(undefined, this.datesOptions);
+			if (!this.progressionSelectedLastProgressionDate) return 'Never';
+			else return new Date(this.progressionSelectedLastProgressionDate).toLocaleDateString(undefined, this.datesOptions);
 		},
 		lastProgressionTimePassed() {
-			return this.makeDateTimeLapsedDisplay(this.userSelectedLastProgressionDate, this.userSelectedLastProgressionTimePassed);
+			return this.makeDateTimeLapsedDisplay(this.progressionSelectedLastProgressionDate, this.progressionSelectedLastProgressionTimePassed);
 		},
 		adjustedStartDate() {
-			if (Number(this.timeSinceStartAdjustment) === 0 || !this.userSelectedStartTime) return '';
+			if (Number(this.timeSinceStartAdjustment) === 0 || !this.progressionSelectedStartTime) return '';
 			const daysOffsetInMilliseconds = this.timeSinceStartAdjustment * (1000 * 60 * 60 * 24);
-			const adjustedTimePassed = this.userSelectedStartTimePassed + daysOffsetInMilliseconds;
+			const adjustedTimePassed = this.progressionSelectedStartTimePassed + daysOffsetInMilliseconds;
 			return ' = ' + this.makeDateTimeLapsedDisplay(true, adjustedTimePassed);
 		},
 	},
@@ -75,7 +75,7 @@ export default {
 			return { adjustmentStartTimeInDays: this.timeSinceStartAdjustment };
 		},
 		revert() {
-			this.timeSinceStartAdjustment = this.userSelectedAdjustmentStartTimeInDays;
+			this.timeSinceStartAdjustment = this.progressionSelectedAdjustmentStartTimeInDays;
 		},
 		getParsedDuration(durationInMilliseconds) {
 			const isPositive = durationInMilliseconds >= 0;
@@ -128,7 +128,7 @@ export default {
 		},
 	},
 	watch: {
-		userSelectedAdjustmentStartTimeInDays: {
+		progressionSelectedAdjustmentStartTimeInDays: {
 			immediate: true,
 			handler: function (value) {
 				this.timeSinceStartAdjustment = value;

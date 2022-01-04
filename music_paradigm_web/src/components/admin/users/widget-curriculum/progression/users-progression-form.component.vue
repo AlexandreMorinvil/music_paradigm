@@ -63,18 +63,18 @@ export default {
 		...mapGetters('users', ['userSelectedId']),
 		...mapGetters('users/progressions', [
 			'hasProgressionHistory',
-			'userSelectedProgressionHistory',
+			'progressionSelectedHistory',
 			'hasSelectedProgressionSession',
-			'selectedSession',
+			'sessionSelected',
 		]),
 		session() {
-			return this.selectedSession;
+			return this.sessionSelected;
 		},
 		hasHistory() {
 			return this.hasProgressionHistory;
 		},
 		history() {
-			return this.userSelectedProgressionHistory;
+			return this.progressionSelectedHistory;
 		},
 		hasSelectedSession() {
 			return this.hasSelectedProgressionSession;
