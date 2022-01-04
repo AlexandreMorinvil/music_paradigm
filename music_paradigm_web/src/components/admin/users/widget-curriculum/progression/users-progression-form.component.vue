@@ -20,7 +20,7 @@
 		<!-- Display of the selected session -->
 		<div class="inner-inner-widget" v-show="hasSelectedSession">
 			<div class="session-header">
-				<h4 class="session-title">{{ sessionTitle }}</h4>
+				<h4 class="session-title">({{ completeAssociativeId }}) - {{ sessionTitle }}</h4>
 				<button v-on:click="handleRefresh" class="widget-button blue refresh-button">{{ refreshButtonText }}</button>
 				<button v-on:click="unsetSession" class="widget-button turquoise">Unselect</button>
 			</div>
@@ -85,6 +85,9 @@ export default {
 		},
 		refreshButtonText() {
 			return this.isRefreshing ? 'Refreshing...' : 'Refresh';
+		},
+		completeAssociativeId() {
+			return `${this.session.associativeId} / ${this.session.associativeIdOrdinalNumber}`;
 		},
 	},
 	methods: {

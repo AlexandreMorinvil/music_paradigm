@@ -23,7 +23,7 @@
 				<tr v-else class="logtype-header">
 					<th>
 						<span>No SIMPLE LOGS corresponding</span>
-						<button class="widget-button small blue right-align" v-on:click="handleRefresh">REFRESH</button>
+						<button class="widget-button small blue right-align" v-on:click="handleRefresh">Refresh</button>
 					</th>
 				</tr>
 				<tr v-if="hasElements" class="log-identifier-header include-white-space">

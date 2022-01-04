@@ -7,6 +7,7 @@
 			'experiment-marker-container-color': hasExperimentMaker,
 		}"
 	>
+		<div class="associative-id-contanier-box"><b>Ass. ID:</b> {{ completeAssociativeId }}</div>
 		<overview-table-session-details-availability-component :session="sessionContent" ref="availability" />
 		<overview-table-session-details-marker-component :session="sessionContent" ref="marker" />
 		<overview-table-session-details-completions-component :session="sessionContent" ref="adjustments" />
@@ -46,6 +47,9 @@ export default {
 		sessionContent() {
 			return this.session;
 		},
+		completeAssociativeId() {
+			return `${this.session.associativeId} / ${this.session.associativeIdOrdinalNumber}`;
+		},
 	},
 	methods: {
 		updateHasAdjustment(value) {
@@ -77,6 +81,7 @@ export default {
 }
 
 .details-container {
+	position: relative;
 	width: 180px;
 	height: auto;
 	margin: 10px;
@@ -84,6 +89,19 @@ export default {
 	border-radius: 1px;
 	border-width: 4px;
 	padding: 5px;
+}
+
+.associative-id-contanier-box {
+	position: absolute;
+	display: inline;
+	padding: 1px;
+	width: auto;
+	top: -25px;
+	left: -10px;
+	border-width: 3px;
+	border-style: solid;
+	background-color: rgb(80, 80, 80);
+	border-color: rgb(75, 75, 75);
 }
 
 .details-container-color {
