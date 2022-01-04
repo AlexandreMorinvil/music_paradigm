@@ -96,12 +96,13 @@ export default {
 	display: inline;
 	padding: 1px;
 	width: auto;
-	top: -25px;
+	top: -22px;
 	left: -10px;
 	border-width: 3px;
 	border-style: solid;
-	background-color: rgb(80, 80, 80);
-	border-color: rgb(75, 75, 75);
+	background-color: rgb(25, 115, 0);
+	border-color: rgb(20, 110, 0);
+	color: rgba(255, 255, 255, 0.85)
 }
 
 .details-container-color {

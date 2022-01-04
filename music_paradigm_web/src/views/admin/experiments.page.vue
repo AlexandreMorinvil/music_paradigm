@@ -12,8 +12,8 @@
 			<experiments-launcher-widget />
 		</widget-content-frame>
 
-		<widget-content-frame title="Overview Table">
-			<experiments-table />
+		<widget-content-frame title="List">
+			<experiments-list-widget />
 		</widget-content-frame>
 	</admin-page-content-frame>
 </template>
@@ -22,18 +22,18 @@
 import AdminPageContentFrame from '@/components/content-frame/admin-page-content-frame.component.vue';
 import ExperimentsEditor from '@/components/admin/experiments/ExperimentsEditorWidget.vue';
 import ExperimentsLauncherWidget from '@/components/admin/experiments/widget-launcher/experiments-launcher.widget.vue';
-import ExperimentsTable from '@/components/admin/experiments/ExperimentsTableWidget.vue';
+import ExperimentsListWidget from '@/components/admin/experiments/widget-list/experiments-list.widget.vue';
 // import ExperimentsViewer from '@/components/admin/experiments/ExperimentsViewerWidget.vue';
 import WidgetContentFrame from '@/components/content-frame/widget-content-frame.component.vue';
 
 export default {
 	components: {
-		AdminPageContentFrame: AdminPageContentFrame,
-		ExperimentsLauncherWidget,
+		AdminPageContentFrame,
 		WidgetContentFrame: WidgetContentFrame,
 		// experimentsViewer: ExperimentsViewer,
 		experimentsEditor: ExperimentsEditor,
-		ExperimentsTable: ExperimentsTable,
+		ExperimentsLauncherWidget,
+		ExperimentsListWidget,
 	},
 };
 </script>
