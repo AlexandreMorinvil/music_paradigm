@@ -2,7 +2,7 @@
 	<!-- This structure was used instead of using a standard <img /> element due to issues with the size restrictions
 	on the standard image HTML elements. By using this structure, we can easily guarrantee that the image will never
 	overflow or expend its contant as it is merely the "contained" and non-repeated background of a <span> element -->
-	<div id="image-area" v-if="hasPicture">
+	<div id="image-area" class="image-area" v-if="hasPicture">
 		<span
 			:style="
 				'background: url(' +
@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style scoped>
-#image-area {
+.image-area {
 	height: 100%;
 	width: 100%;
 	min-height: auto;

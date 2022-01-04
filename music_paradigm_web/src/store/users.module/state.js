@@ -7,11 +7,11 @@ export default {
 		isUpdating: false,
 		isDeleting: false,
 		isAssigningCurriculum: false,
-		isUpdatingParameters: false,
-		isResetingProgression: false,
 	},
 
+	// Selected user information
 	selectedUser: defaultState.EMPTY_USER(),
-	selectedUserProgression: defaultState.EMPTY_SELECTED_USER_PROGRESSION(),
+
+	// Users list
 	usersSummaryList: defaultState.EMPTY_USERS_HEADERS_LIST(),
 };

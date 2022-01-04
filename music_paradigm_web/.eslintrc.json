@@ -4,14 +4,13 @@
 		"es2021": true,
 		"node": true
 	},
-	"extends": ["eslint:recommended", "plugin:vue/essential", "prettier"],
+	"extends": ["eslint:recommended", "plugin:vue/essential"],
 	"parserOptions": {
 		"ecmaVersion": 12,
 		"sourceType": "module"
 	},
-	"plugins": ["vue", "prettier"],
+	"plugins": ["vue"],
 	"rules": {
-		"prettier/prettier": ["error"],
 		"linebreak-style": ["error", "unix"],
 		"quotes": ["error", "single"],
 		"semi": ["error", "always"],
@@ -31,7 +30,7 @@
 		"no-invalid-this": "error",
 		"no-lone-blocks": "error",
 		"no-loop-func": "error",
-		"no-magic-numbers": ["error", { "ignore": [-1, 0, 1, 2, 10, 60, 100, 1000], "enforceConst": true }],
+		"no-magic-numbers": ["error", { "ignore": [-1, 0, 1, 2, 7, 10, 24, 60, 100, 1000], "enforceConst": true }],
 		"no-multi-str": "error",
 		"no-new": "error",
 		"no-new-func": "error",
@@ -47,7 +46,6 @@
 		"no-warning-comments": ["error", { "terms": ["todo", "fixme", "xxx"], "location": "anywhere" }],
 		"init-declarations": ["error", "always"],
 		"no-shadow": "error",
-		"no-undefined": "error",
 		"camelcase": ["error", { "properties": "never", "ignoreDestructuring": true, "ignoreImports": true }],
 		"array-bracket-spacing": ["error", "never"],
 		"block-spacing": "error",

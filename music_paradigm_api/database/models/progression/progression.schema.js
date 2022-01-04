@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const ProgressionExperiment = require('./progression-experiment/progression-experiment.schema');
 
 const Schema = mongoose.Schema;
 
@@ -32,6 +33,11 @@ const schema = new Schema(
             default: null
         },
 
+        adjustmentStartTimeInDays: {
+            type: Number,
+            default: 0
+        },
+
         // Date of the last time the last available experiment was completed for the first time (This is used
         // to for the sequential curriculum to know if a subsequent experiment can be made available)
         lastProgressionDate: {
@@ -47,46 +53,7 @@ const schema = new Schema(
 
         // List of the experiments composing the curriculum
         experiments: {
-            type: [
-                {
-                    // Id associated to the experiment within the curriculum
-                    associativeId: {
-                        type: String,
-                        default: "",
-                        sparse: true,
-                        trim: true,
-                        set: setterAssociativeId
-                    },
-
-                    // Ordinal number indicating the number of times the associative ID was encountered in the curriculum before this one
-                    associativeIdOrdinalNumber: {
-                        type: Number,
-                        default: 0,
-                        min: 0
-                    },
-
-                    // Number of times the experiment was started from the start (an experiment can only be start one time more than it was completed)
-                    startCount: {
-                        type: Number,
-                        default: 1,
-                        min: 1
-                    },
-
-                    // Number of times the experiment was completed (an experiment can not be completed more times than it was started)
-                    completionCount: {
-                        type: Number,
-                        default: 0,
-                        min: 0
-                    },
-
-                    // Title of the experiment within the curriculum
-                    experimentReference: {
-                        type: Schema.Types.ObjectId,
-                        ref: 'Experiment',
-                        required: [true, curriculumRequiredMessage],
-                    },
-                }
-            ],
+            type: [ProgressionExperiment],
             default: []
         }
 
@@ -101,11 +68,14 @@ const schema = new Schema(
     }
 );
 
-// Setter functions
-function setterAssociativeId(title) {
-    if (title) return title.toLowerCase();
-    else return undefined;
-}
+// Virtual properties
+schema.virtual('startTimePassed').get(function() {
+    return (new Date()).getTime() - (new Date(this.startTime)).getTime()
+});
+
+schema.virtual('lastProgessionTimePassed').get(function() {
+    return (new Date()).getTime() - (new Date(this.lastProgressionDate)).getTime()
+});
 
 schema.set('toJSON', { virtuals: true });
 

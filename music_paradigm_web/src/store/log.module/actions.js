@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import { logFormat } from '@/store-helper/log.module-helper';
-import { logService } from '@/_services';
+import { logApi } from '@/api';
 
 export default {
 	setLogType({ commit }, logType) {
@@ -14,7 +14,7 @@ export default {
 	addSimmpleLogBlock({ commit }) {
 		const block = logFormat.makeSimpleLogBlock();
 		commit('indicateAddBlockRequest');
-		return logService
+		return logApi
 			.addSimpleLogBlock(block)
 			.then(
 				() => {
@@ -30,7 +30,7 @@ export default {
 	initializeThoroughLog({ commit }) {
 		const logHeader = logFormat.makeThoroughLogHeader();
 		commit('indicateInitializeLogRequest');
-		return logService
+		return logApi
 			.initializeThoroughLog(logHeader)
 			.then(
 				() => {
@@ -49,7 +49,7 @@ export default {
 		const logHeader = logFormat.makeThoroughLogHeader();
 		const block = logFormat.makeThoroughLogBlock();
 		commit('indicateAddBlockRequest');
-		return logService
+		return logApi
 			.addThoroughLogBlock(logHeader, block)
 			.then(
 				() => {
@@ -66,7 +66,7 @@ export default {
 		const logHeader = logFormat.makeThoroughLogHeader(oldLogLabel);
 		const logConclusion = logFormat.makeThoroughLogConclusion(isInTimeUp, newLogLabel);
 		commit('indicateConcludeLogRequest');
-		return logService
+		return logApi
 			.concludeThoroughLog(logHeader, logConclusion)
 			.then(
 				() => {

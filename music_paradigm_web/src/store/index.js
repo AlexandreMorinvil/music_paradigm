@@ -14,8 +14,10 @@ import { experiment } from './experiment.module';
 import { experiments } from './experiments.module';
 import { keyboard } from './keyboard.module';
 import { log } from './log.module';
+import { logs } from './logs.module';
 import { piano } from './piano.module';
 import { session } from './session.module';
+import { soundGenerator } from './sound-generator.module';
 import { survey } from './survey.module';
 import { users } from './users.module';
 import { writting } from './writting.module';
@@ -36,8 +38,10 @@ export default new Vuex.Store({
 		experiments,
 		keyboard,
 		log,
+		logs,
 		piano,
 		session,
+		soundGenerator,
 		survey,
 		users,
 		writting,

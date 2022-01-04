@@ -36,9 +36,16 @@
 				:key="index"
 				:experiment="experiment"
 				:index="index"
+				:lastIndex="lastIndex"
 				v-on:remove-experiment="removeExperiment"
 				v-on:change-experiment="updateExperiment"
+				v-on:move-up="moveUp"
+				v-on:move-down="moveDown"
 			/>
+			<div v-if="hasManyExperiments">
+				<button v-on:click="addExperiment()" class="widget-button small blue">Add</button>
+				<label style="display: inline"> Experiment(s) </label>
+			</div>
 		</div>
 	</div>
 </template>
@@ -88,6 +95,12 @@ export default {
 		curriculumSelectedIsSequentialDisplay() {
 			return this.hasSelectedCurriculum ? this.curriculumSelectedIsSequential : '';
 		},
+		lastIndex() {
+			return Math.max(0, this.experiments.length - 1);
+		},
+		hasManyExperiments() {
+			return this.experiments.length;
+		},
 	},
 	methods: {
 		...mapActions('experiments', ['fetchAllExperimentsHeaders']),
@@ -103,11 +116,60 @@ export default {
 				experiments: this.experiments,
 			};
 		},
-		addExperiment() {
-			this.experiments.push(this.getBlankCurriculumExperiment(this.experiments.length));
-		},
 		updateExperiment(mutation) {
 			this.experiments[mutation.index] = mutation.experiment;
+		},
+		addExperiment() {
+			this.experiments.push(this.getBlankCurriculumExperiment(this.experiments.length));
+			this.jumpToExperiment(this.lastIndex);
+		},
+		removeExperiment(index) {
+			this.experiments.splice(index, 1);
+			if (this.hasManyExperiments) this.jumpToExperiment(index - 1);
+		},
+		moveUp(index) {
+			const elementMovedUp = this.experiments[index];
+			const elementMovedDown = this.experiments[index - 1];
+
+			this.experiments.splice(index - 1, 2);
+
+			const elementsAfter = [];
+			const countRestElements = this.experiments.length;
+			for (let i = index - 1; i < countRestElements; i++) elementsAfter.push(this.experiments.pop());
+
+			setTimeout(() => {
+				this.experiments.push(elementMovedUp);
+				this.experiments.push(elementMovedDown);
+				for (const elementAfter of elementsAfter) this.experiments.push(elementAfter);
+			}, 0);
+			this.jumpToExperiment(index - 1);
+		},
+		moveDown(index) {
+			// This (more complicated) approach is used to ensure the Vue rendering is reactive
+			// The use of 'push', 'pop' and 'setTimemout' forces reactivity
+			const elementMovedUp = this.experiments[index + 1];
+			const elementMovedDown = this.experiments[index];
+
+			this.experiments.splice(index, 2);
+
+			const elementsAfter = [];
+			const countRestElements = this.experiments.length;
+			for (let i = index; i < countRestElements; i++) elementsAfter.push(this.experiments.pop());
+
+			setTimeout(() => {
+				this.experiments.push(elementMovedUp);
+				this.experiments.push(elementMovedDown);
+				for (const elementAfter of elementsAfter) this.experiments.push(elementAfter);
+			}, 0);
+			this.jumpToExperiment(index + 1);
+		},
+		jumpToExperiment(index) {
+			setTimeout(() => {
+				const anchorId = 'curriculum-experiment-' + index;
+				const offset = 80;
+				const top = document.getElementById(anchorId).offsetTop - offset;
+				window.scrollTo(0, top);
+			}, 0);
 		},
 		assignFormId(id) {
 			this.id = id;
@@ -130,9 +192,6 @@ export default {
 			this.assignFormLogType(this.curriculumSelectedLogType);
 			this.assignFormIsSequential(this.curriculumSelectedIsSequential);
 			this.assignFormExperiments(this.curriculumSelectedExperiments);
-		},
-		removeExperiment(index) {
-			this.experiments.splice(index, 1);
 		},
 		clearForm() {
 			this.assignFormId('');

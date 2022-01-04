@@ -11,21 +11,24 @@ export default {
 	},
 
 	setExperiment(state, experiment) {
-		// Verify the minimal required properties
-		if (!Object.prototype.hasOwnProperty.call(experiment, 'name')) throw new Error('No name was found in the experiment');
-		if (!Object.prototype.hasOwnProperty.call(experiment, 'folder')) throw new Error('No folder was found in the experiment');
-		if (!Object.prototype.hasOwnProperty.call(experiment, 'flow')) throw new Error('No flow was found in the experiment');
+		// Initialize the experiment's reference information
+		experimentHandler.initExperimentParsing(state, experiment);
+		experimentHandler.setExperimentDescription(state);
 
-		experimentHandler.setExperimentId(state, experiment);
-		experimentHandler.setExperimentDescription(state, experiment);
-		experimentHandler.setExperimentPrelude(state, experiment);
-		experimentHandler.setExperimentFlow(state, experiment);
-		experimentHandler.setExperimentTimeUpState(state, experiment);
-		experimentHandler.setExperimentGeneralSettings(state, experiment);
-		experimentHandler.setExperimentInitialState(state, experiment);
-		experimentHandler.setImposedParameterValues(state, experiment);
-		experimentHandler.populateExperimentConstantVariables(state, experiment);
-		experimentHandler.setExperimentDynamicVariables(state, experiment);
+		// Initialize the variables within the experiment's description
+		experimentHandler.setExperimentVariables(state);
+		experimentHandler.setExperimentVariableSchedules(state);
+		experimentHandler.populateExperimentConstantVariables(state);
+
+		// Initialzie the experiment's content and states
+		experimentHandler.setExperimentPrelude(state);
+		experimentHandler.setExperimentFlow(state);
+		experimentHandler.setExperimentTimeUpState(state);
+		experimentHandler.setExperimentGeneralSettings(state);
+		experimentHandler.setExperimentInitialState(state);
+
+		// Conclude the experiment parsing
+		experimentHandler.concludeExperimentParsing(state);
 	},
 
 	initCursor(state, presetCursor = null) {

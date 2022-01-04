@@ -1,28 +1,17 @@
-import { userService } from '@/_services';
+import { usersApi } from '@/api';
 
 export default {
-	fetchAllUsersSummary({ commit, dispatch }) {
-		commit('indicateFetchingUserList');
-		return userService
-			.getListAllSummaries()
-			.then(
-				(usersSummaryList) => {
-					commit('setSummariesList', usersSummaryList);
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { root: true });
-				},
-			)
-			.finally(() => {
-				commit('indicateFetchingUserListEnd');
-			});
+	unsetSelectedUser({ commit, dispatch }) {
+		commit('unsetSelectedUser');
+		dispatch('progressions/unsetSelectedProgression');
 	},
 
-	setSelectedUser({ commit, dispatch }, id) {
-		return userService.getById(id).then(
-			(response) => {
-				commit('setSelectedUser', response.user);
-				commit('setSelectedProgression', response.progression);
+	setSelectedUser({ commit, dispatch }, userId) {
+		return usersApi.getById(userId).then(
+			(selectedUserDetails) => {
+				const { user, ...progressionDetails } = selectedUserDetails;
+				commit('setSelectedUser', user);
+				dispatch('progressions/setSelectedUserProgression', progressionDetails);
 			},
 			(error) => {
 				dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
@@ -30,18 +19,15 @@ export default {
 		);
 	},
 
-	unsetSelectedUser({ commit }) {
-		commit('unsetSelectedUser');
-	},
-
-	createUser({ commit, dispatch }, user) {
+	createUser({ commit, dispatch }, userToCreate) {
 		commit('indicateCreateRequest');
-		return userService
-			.register(user)
+		return usersApi
+			.register(userToCreate)
 			.then(
-				(createdUser) => {
-					commit('setSelectedUser', createdUser.user);
-					commit('setSelectedProgression', createdUser.progression);
+				(selectedUserDetails) => {
+					const { user, ...progressionDetails } = selectedUserDetails;
+					commit('setSelectedUser', user);
+					dispatch('progressions/setSelectedUserProgression', progressionDetails);
 					dispatch('alert/setSuccessAlert', 'User creation sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},
@@ -56,14 +42,12 @@ export default {
 
 	updateUser({ commit, dispatch }, { id, user }) {
 		commit('indicateUpdateRequest');
-		return userService
+		return usersApi
 			.update(id, user)
 			.then(
-				(updatedUser) => {
-					commit('setSelectedUser', updatedUser);
-					dispatch('alert/setSuccessAlert', 'User update sucessful', {
-						root: true,
-					});
+				(updatedUserProfile) => {
+					commit('setSelectedUser', updatedUserProfile);
+					dispatch('alert/setSuccessAlert', 'User update sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},
 				(error) => {
@@ -75,16 +59,14 @@ export default {
 			});
 	},
 
-	deleteUser({ commit, dispatch }, id) {
+	deleteUser({ commit, dispatch }, userId) {
 		commit('indicateDeleteRequest');
-		return userService
-			.delete(id)
+		return usersApi
+			.delete(userId)
 			.then(
 				() => {
 					commit('unsetSelectedUser');
-					dispatch('alert/setSuccessAlert', 'User deletion sucessful', {
-						root: true,
-					});
+					dispatch('alert/setSuccessAlert', 'User deletion sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},
 				(error) => {
@@ -98,12 +80,13 @@ export default {
 
 	assignCurriculum({ commit, dispatch }, { userId, curriculumParameters }) {
 		commit('indicateAssignCurriculumRequest');
-		return userService
+		return usersApi
 			.assignCurriculum(userId, curriculumParameters)
 			.then(
-				(updatedUser) => {
-					commit('setSelectedUser', updatedUser.user);
-					commit('setSelectedProgression', updatedUser.progression);
+				(updatedUserDetails) => {
+					const { user, ...progressionDetails } = updatedUserDetails;
+					commit('setSelectedUser', user);
+					dispatch('progressions/setSelectedUserProgression', progressionDetails);
 					dispatch('alert/setSuccessAlert', 'Curriculum assignation sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},
@@ -116,42 +99,20 @@ export default {
 			});
 	},
 
-	updateParameters({ commit, dispatch }, { userId, assignedParameters }) {
-		commit('indicateUpdateParametersRequest');
-		return userService
-			.assignParameters(userId, assignedParameters)
+	fetchAllUsersSummary({ commit, dispatch }) {
+		commit('indicateFetchingUserList');
+		return usersApi
+			.getListAllSummaries()
 			.then(
-				(updatedUser) => {
-					commit('setSelectedUser', updatedUser.user);
-					commit('setSelectedProgression', updatedUser.progression);
-					dispatch('alert/setSuccessAlert', 'Parameter update sucessful', { root: true });
-					dispatch('fetchAllUsersSummary');
+				(usersSummaryList) => {
+					commit('setSummariesList', usersSummaryList);
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
 				},
 			)
 			.finally(() => {
-				commit('indicateUpdateParametersRequestEnd');
-			});
-	},
-
-	resetProgression({ commit, dispatch }, { userId }) {
-		commit('indicateResetProgressionRequest');
-		return userService
-			.resetProgression(userId)
-			.then(
-				(updatedProgression) => {
-					commit('setSelectedProgression', updatedProgression);
-					dispatch('alert/setSuccessAlert', 'Progression resetting successful', { root: true });
-					dispatch('fetchAllUsersSummary');
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { root: true });
-				},
-			)
-			.finally(() => {
-				commit('indicateResetProgressionRequestEnd');
+				commit('indicateFetchingUserListEnd');
 			});
 	},
 };

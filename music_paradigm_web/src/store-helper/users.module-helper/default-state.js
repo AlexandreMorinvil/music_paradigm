@@ -1,6 +1,5 @@
 export default {
 	EMPTY_USER,
-	EMPTY_SELECTED_USER_PROGRESSION,
 	EMPTY_USERS_HEADERS_LIST,
 };
 
@@ -16,16 +15,6 @@ function EMPTY_USER() {
 		middleName: '',
 		lastName: '',
 		curriculum: null,
-	};
-}
-
-function EMPTY_SELECTED_USER_PROGRESSION() {
-	return {
-		userReference: '',
-		curriculumReference: '',
-		startTime: null,
-		lastProgressionDate: null,
-		assignedParameters: [],
 	};
 }
 

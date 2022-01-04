@@ -208,6 +208,11 @@
   color: black;
 }
 
+.widget-table-context tbody > tr.wrong {
+  background-color: rgb(200, 100, 50);
+  color: black;
+}
+
 .widget-table-context thead > tr {
   background-color: inherit;
 }

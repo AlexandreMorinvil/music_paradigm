@@ -24,7 +24,7 @@ export default {
 	computed: {
 		...mapGetters('experiments', ['experimentSelectedParameters']),
 		parameters() {
-			return this.experimentSelectedParameters;
+			return JSON.parse(JSON.stringify(this.experimentSelectedParameters));
 		},
 	},
 	methods: {

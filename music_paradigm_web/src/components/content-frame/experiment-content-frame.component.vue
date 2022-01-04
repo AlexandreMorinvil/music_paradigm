@@ -1,12 +1,12 @@
 <template>
 	<div id="content-frame" class="experiment-content-container experiment-content-grid">
-		<helper-image-component v-if="hasHelperImage" class="helper" />
+		<helper-image-component v-if="hasHelperImage" class="helper-image" />
+		<text-reminder-component v-if="hasTextReminder" class="text-reminder" />
 		<go-back-button-component v-if="hasGoBackOption && !isGoBackButtonInFootnote" class="go-back-button" />
 		<skip-button-component v-if="hasSkipOption && !isSkipButtonInFootnote" class="skip-button" />
 		<start-signal-timer-component v-if="isWaitingStartSignal" class="start-signal" />
 
 		<router-view
-			:class="hasFootnote ? 'content-size-limit-with-footnote' : 'content-size-limit-no-footnote'"
 			:lastPressedKey="lastPressedKey"
 			:isSpaceBarPressed="isSpaceBarPressed"
 		/>
@@ -22,12 +22,14 @@ import GoBackButtonComponent from '@/components/experiment/element/go-back-butto
 import HelperImageComponent from '@/components/experiment/element/helper-image.component.vue';
 import SkipButtonComponent from '@/components/experiment/element/skip-button.component.vue';
 import StartSignalTimerComponent from '@/components/experiment/element/start-signal-timer.component.vue';
+import TextReminderComponent from '@/components/experiment/element/text-reminder.component.vue';
 
 import { mapGetters } from 'vuex';
 
 export default {
 	components: {
 		HelperImageComponent,
+		TextReminderComponent,
 		GoBackButtonComponent,
 		SkipButtonComponent,
 		StartSignalTimerComponent,
@@ -53,6 +55,7 @@ export default {
 		...mapGetters('experiment', [
 			'hasFootnote',
 			'hasHelperImage',
+			'hasTextReminder',
 			'hasSkipOption',
 			'hasGoBackOption',
 			'isWaitingStartSignal',
@@ -64,15 +67,6 @@ export default {
 </script>
 
 <style scoped>
-/* Hard limits determined manually to prevent the page from expending*/
-.content-size-limit-no-footnote {
-	max-height: 81vh;
-}
-
-.content-size-limit-with-footnote {
-	max-height: 70vh;
-}
-
 .experiment-content-container {
 	overflow: hidden;
 	width: 100%;
@@ -91,9 +85,15 @@ export default {
 	grid-row-gap: 2.5%;
 }
 
-.helper {
+.helper-image {
 	position: absolute;
 	right: 0;
+	width: 9%;
+}
+
+.text-reminder {
+	position: absolute;
+	left: 0;
 	width: 9%;
 }
 

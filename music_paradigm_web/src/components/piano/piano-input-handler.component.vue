@@ -8,6 +8,8 @@
 import { mapActions, mapGetters } from 'vuex';
 
 import { PianoEventBus, pianoEvents } from '@/event-bus/piano-event-bus.service.js';
+import { instruments } from '@/_helpers';
+
 import MidiPlayer from '@/MidiPlayer';
 import PianoAdminInputHandlerComponent from './piano-admin-input-handler.component';
 
@@ -24,11 +26,13 @@ export default {
 			midiFilePlayingNotes: {},
 			midiAccess: null,
 			midiInputs: [],
+			MAX_VELOCITY: 127,
+			MIDI_MESSAGE_CODE_NOTE_ON: 144,
 		};
 	},
 	computed: {
 		...mapGetters('piano', ['isPianoInitialized', 'isPianoInitializing', 'isPianoPaused', 'pressedKeys', 'midiFileNotesName']),
-		...mapGetters('experiment', ['timbreFile', 'enableSoundFlag', 'midiOffset']),
+		...mapGetters('experiment', ['instrument', 'enableSoundFlag', 'midiOffset']),
 	},
 	methods: {
 		...mapActions('piano', [
@@ -55,7 +59,7 @@ export default {
 		 */
 		manageMidiNote(midiNote) {
 			const midiMessage = {
-				type: midiNote.data[0] === 144 ? 'Note On' : 'Note Off',
+				type: midiNote.data[0] === this.MIDI_MESSAGE_CODE_NOTE_ON ? 'Note On' : 'Note Off',
 				note: midiNote.data[1] + this.midiOffset,
 				velocity: midiNote.data[2],
 			};
@@ -91,7 +95,7 @@ export default {
 		playNote(note) {
 			this.playingNotes[note] = this.piano.play(note, 0, {
 				gain: (vel) => {
-					return vel / 127;
+					return vel / this.MAX_VELOCITY;
 				},
 			});
 		},
@@ -119,7 +123,7 @@ export default {
 			if (this.midiFilePlayingNotes[noteName]) return;
 			const currentTime = this.audioConctext.currentTime;
 			this.midiFilePlayingNotes[noteName] = this.piano.play(noteName, currentTime, {
-				gain: velocity / 127,
+				gain: velocity / this.MAX_VELOCITY,
 				duration: 1,
 			});
 		},
@@ -136,8 +140,10 @@ export default {
 			this.audioConctext = new AudioContext();
 			this.player = new MidiPlayer.Player();
 			this.setPlayer(this.player);
+
 			const soundfont = require('soundfont-player');
-			soundfont.instrument(this.audioConctext, this.timbreFile).then((piano) => {
+			const instrumentFileUrl = instruments.getInstrumentFile(this.instrument);
+			soundfont.instrument(this.audioConctext, instrumentFileUrl).then((piano) => {
 				this.piano = piano;
 				this.setPiano(piano);
 

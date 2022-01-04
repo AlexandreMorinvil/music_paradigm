@@ -1,9 +1,9 @@
-import { curriculumService } from '@/_services';
+import { curriculumsApi } from '@/api';
 
 export default {
 	fetchAllCurriculumHeaders({ commit, dispatch }) {
 		commit('indicateFetchingCurriculumList');
-		return curriculumService
+		return curriculumsApi
 			.getListAllHeaders()
 			.then(
 				(curriculumsList) => {
@@ -19,7 +19,7 @@ export default {
 	},
 
 	setSelectedCurriculum({ commit, dispatch }, id) {
-		return curriculumService.getById(id).then(
+		return curriculumsApi.getById(id).then(
 			(user) => {
 				commit('setSelectedCurriculum', user);
 			},
@@ -35,7 +35,7 @@ export default {
 
 	createCurriculum({ commit, dispatch }, curriculum) {
 		commit('indicateCreateRequest');
-		return curriculumService
+		return curriculumsApi
 			.create(curriculum)
 			.then(
 				(createdCurriculum) => {
@@ -56,7 +56,7 @@ export default {
 
 	updateCurriculum({ commit, dispatch }, { id, curriculum }) {
 		commit('indicateUpdateRequest');
-		return curriculumService
+		return curriculumsApi
 			.update(id, curriculum)
 			.then(
 				(updatedCurriculum) => {
@@ -77,7 +77,7 @@ export default {
 
 	deleteCurriculum({ commit, dispatch }, id) {
 		commit('indicateDeleteRequest');
-		return curriculumService
+		return curriculumsApi
 			.delete(id)
 			.then(
 				() => {

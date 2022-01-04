@@ -42,7 +42,7 @@ export default {
 	},
 	computed: {
 		...mapGetters('evaluation', ['hasSuccess']),
-		...mapGetters('experiment', ['hasText', 'hasFootnote', 'textContent', 'playingMode']),
+		...mapGetters('experiment', ['playingMode']),
 	},
 	methods: {
 		...mapActions('experiment', ['addSuccess']),

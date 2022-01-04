@@ -1,6 +1,6 @@
 const schema = require('./user.schema');
 
-const ExperimentMarker = require('database/models/progression/experiment-marker/experiment-marker.model');
+const ExperimentMarker = require('database/models/experiment-marker/experiment-marker.model');
 const Progression = require('database/models/progression/progression.model');
 const LogSimple = require('database/models/log-simple/log-simple.model').model;
 const LogThorough = require('database/models/log-thorough/log-thorough.model').model;

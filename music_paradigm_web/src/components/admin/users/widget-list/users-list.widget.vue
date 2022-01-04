@@ -13,21 +13,27 @@
 						<th>Full Name</th>
 						<th>Tags</th>
 						<th>Curriculum</th>
-						<th>Reached Progresion</th>
+						<th>Start Date</th>
+						<th>Last Advance</th>
+						<th>Reached</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
 
 				<tbody>
-					<tr v-for="(summary, index) in usersSummaryList" :key="summary._id" :class="summary._id === userSelectedId && 'selected'">
+					<tr v-for="(user, index) in usersSummaryList" :key="user._id" :class="{ selected: isSelectedUser(user) }">
 						<td>{{ index + 1 }}</td>
-						<td>{{ summary.username }}</td>
-						<td>{{ makeFullNameDisplay(summary.firstName, summary.middleName, summary.lastName) }}</td>
-						<td style="white-space: pre-line">{{ makeTagsDisplay(summary.tags) }}</td>
-						<td>{{ makeCurriculumTitleDisplay(summary.curriculumTitle) }}</td>
-						<td>{{ makeProgressionDisplay(summary.curriculumTotalNumber, summary.progressionTotalNumber, summary.reachedExperimentTitle) }}</td>
+						<td>{{ makeUsernameDisplay(user) }}</td>
+						<td>{{ makeFullNameDisplay(user) }}</td>
+						<td style="white-space: pre-line">{{ makeTagsDisplay(user) }}</td>
+						<td>{{ makeCurriculumTitleDisplay(user) }}</td>
+						<td>{{ makeProgressionStartTimeDisplay(user) }}</td>
+						<td>{{ makeProgressionLastAdvanceTimeDisplay(user) }}</td>
+						<td>{{ makeProgressionDisplay(user) }}</td>
 						<td class="widget-table-actions-buttons">
-							<button v-on:click="handleSelectUser(summary._id)" class="widget-button small blue">Select</button>
+							<button v-on:click="handleSelectUser(user._id)" class="widget-button button small" :class="isSelectedUser(user) ? 'turquoise' : 'blue'">
+								{{ makeSelectButtonText(user) }}
+							</button>
 						</td>
 					</tr>
 				</tbody>
@@ -38,15 +44,19 @@
 
 <script>
 import '@/styles/widget-template.css';
+
 import { mapActions, mapGetters } from 'vuex';
 import LoaderCircular from '@/components/visual-helpers/loader-circular.component.vue';
 
+/* eslint-disable no-magic-numbers */
 export default {
 	components: {
 		loader: LoaderCircular,
 	},
 	data() {
-		return {};
+		return {
+			datesOptions: { year: 'numeric', month: 'numeric', day: 'numeric' },
+		};
 	},
 	computed: {
 		...mapGetters('users', ['isFetchingUsersSummaryList', 'usersSummaryList', 'userSelectedId']),
@@ -55,36 +65,84 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('users', ['fetchAllUsersSummary', 'setSelectedUser']),
+		...mapActions('users', ['fetchAllUsersSummary', 'setSelectedUser', 'unsetSelectedUser']),
 		handleRefresh() {
 			this.fetchAllUsersSummary();
 		},
 		handleSelectUser(id) {
-			this.setSelectedUser(id);
+			if (this.userSelectedId === id) this.unsetSelectedUser();
+			else this.setSelectedUser(id);
 		},
-		makeFullNameDisplay(firstName, middleName, lastName) {
+		makeUsernameDisplay(user) {
+			return user ? user.username : '';
+		},
+		makeFullNameDisplay(user) {
+			const { firstName, middleName, lastName } = user;
 			if (!(firstName || middleName || lastName)) return '---';
 			return firstName + ' ' + middleName + ' ' + lastName;
 		},
-		makeTagsDisplay(tagList) {
-			if (tagList.length === 0) {
+		makeTagsDisplay(user) {
+			const { tags } = user;
+			if (tags.length === 0) {
 				return '---';
 			} else {
 				let display = '';
-				for (const i in tagList) {
+				for (const i in tags) {
 					if (i > 0) display += '\n';
-					display += tagList[i];
+					display += tags[i];
 				}
 				return display;
 			}
 		},
-		makeCurriculumTitleDisplay(curriculumName) {
-			if (!curriculumName) return '---';
-			else return curriculumName;
+		makeCurriculumTitleDisplay(user) {
+			const { curriculumTitle } = user;
+			if (!curriculumTitle) return '---';
+			else return curriculumTitle;
 		},
-		makeProgressionDisplay(totalNumber, reachedNumber, reachedName) {
-			if (!totalNumber) return '---';
-			else return String(reachedNumber) + '/' + totalNumber + '\n"' + reachedName + '"';
+		makeProgressionStartTimeDisplay(user) {
+			const { progressionStartDate, progressionStartTime } = user;
+			return this.makeDateTimeLapsedDisplay(progressionStartDate, progressionStartTime);
+		},
+		makeProgressionLastAdvanceTimeDisplay(user) {
+			const { progressionLastAdvancedDate, progressionLastAdvancedTime } = user;
+			return this.makeDateTimeLapsedDisplay(progressionLastAdvancedDate, progressionLastAdvancedTime);
+		},
+		makeProgressionDisplay(user) {
+			const { curriculumTotalNumber, progressionTotalNumber, reachedExperimentTitle, wasProgressionTotalNumberAdjusted, isProgressionBlocked, inAdvanceCount } = user;
+			if (!curriculumTotalNumber) return '---';
+
+			const adjustmentSign = wasProgressionTotalNumberAdjusted ? ' adjusted' : '';
+			const inAdvanceSign = inAdvanceCount > 0 ? ` (+ ${inAdvanceCount} in adv.)` : '';
+			const blockingSign = isProgressionBlocked ? ' BLOCKED' : '';
+			const experimentTitle = (curriculumTotalNumber === progressionTotalNumber) ? '✓ COMPLETED' : `"${reachedExperimentTitle}"`;
+
+			return String(progressionTotalNumber) + inAdvanceSign + '/' + curriculumTotalNumber + adjustmentSign + blockingSign + '\n' + experimentTitle;
+		},
+		getDurationInWeekAndDays(durationInMilliseconds) {
+			const totalDays = Math.floor(durationInMilliseconds / (24 * 3600 * 1000));
+			return { totalDays: totalDays, days: parseInt(totalDays % 7), weeks: parseInt(totalDays / 7) };
+		},
+		makeDateTimeLapsedDisplay(startDate, durationInMilliseconds) {
+			if (!startDate) return '---';
+
+			// Display of the date
+			const date = new Date(startDate).toLocaleDateString(undefined, this.datesOptions);
+
+			// Display of the time lapsed
+			const { totalDays, days, weeks } = this.getDurationInWeekAndDays(durationInMilliseconds);
+			let timeLapsed = '';
+			if (totalDays < 1) timeLapsed = '< 24h';
+			else {
+				if (weeks > 0) timeLapsed += String(weeks) + 'w. ';
+				timeLapsed += String(days) + 'd.';
+			}
+			return String(date) + '\n' + timeLapsed;
+		},
+		makeSelectButtonText(user) {
+			return this.isSelectedUser(user) ? 'Unselect' : 'Select';
+		},
+		isSelectedUser(user) {
+			return user && user._id === this.userSelectedId;
 		},
 	},
 	mounted() {
@@ -116,5 +174,9 @@ export default {
 .loader {
 	width: 500px;
 	height: 500px;
+}
+
+.button {
+	white-space: nowrap;
 }
 </style>

@@ -1,9 +1,9 @@
-import { experimentService } from '@/_services';
+import { experimentsApi } from '@/api';
 
 export default {
 	fetchAllExperimentsHeaders({ commit, dispatch }) {
 		commit('indicateFetchingExperimentList');
-		experimentService
+		experimentsApi
 			.getListAllHeaders()
 			.then(
 				(experimentHeadersList) => {
@@ -19,7 +19,7 @@ export default {
 	},
 
 	setEditorExperiment({ commit, dispatch }, id) {
-		experimentService.getDefinition(id).then(
+		experimentsApi.getDefinition(id).then(
 			(description) => {
 				commit('setEditedExperiment', description);
 				commit('setSelectedExperiment', description);
@@ -31,7 +31,7 @@ export default {
 	},
 
 	setSelectionExperiment({ commit, dispatch }, id) {
-		experimentService.getDefinition(id).then(
+		experimentsApi.getDefinition(id).then(
 			(description) => {
 				commit('setSelectedExperiment', description);
 			},
@@ -59,7 +59,7 @@ export default {
 	},
 
 	startExperimentQuick({ commit, dispatch, getters }, id) {
-		experimentService.getDefinition(id).then(
+		experimentsApi.getDefinition(id).then(
 			(description) => {
 				dispatch('log/setLogType', getters.logType, { root: true });
 				commit('setEditedExperiment', description);
@@ -83,7 +83,7 @@ export default {
 	},
 
 	compileExperiment({ commit, dispatch }, experiment) {
-		experimentService.validateExperiment(experiment).then(
+		experimentsApi.validateExperiment(experiment).then(
 			() => {
 				commit('setEditedExperiment', experiment);
 				dispatch('alert/setInformationAlert', 'The experiment was compiled', {
@@ -98,7 +98,7 @@ export default {
 
 	// This action is the same as as compileExperiment, exception that on an errror, the alert is softer
 	attemptExperimentCompilation({ commit, dispatch }, experiment) {
-		experimentService.validateExperiment(experiment).then(
+		experimentsApi.validateExperiment(experiment).then(
 			() => {
 				commit('setEditedExperiment', experiment);
 				dispatch('alert/setInformationAlert', 'The experiment is valid and was compiled', { root: true });
@@ -115,7 +115,7 @@ export default {
 
 	createExperiment({ commit, dispatch }, experiment) {
 		commit('indicateCreateRequest');
-		experimentService
+		experimentsApi
 			.create(experiment)
 			.then(
 				(experimentCreated) => {
@@ -137,7 +137,7 @@ export default {
 
 	updateExperiment({ commit, dispatch }, { id, experiment }) {
 		commit('indicateUpdateRequest');
-		experimentService
+		experimentsApi
 			.update(id, experiment)
 			.then(
 				(experimentUpdated) => {
@@ -159,7 +159,7 @@ export default {
 
 	deleteExperiment({ commit, dispatch }, id) {
 		commit('indicateDeleteRequest');
-		experimentService
+		experimentsApi
 			.delete(id)
 			.then(
 				() => {

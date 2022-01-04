@@ -74,7 +74,7 @@ export default {
 	},
 	computed: {
 		...mapGetters(['urlExperimentResource']),
-		...mapGetters('experiment', ['hasVideo', 'hasInteractivePiano', 'hasText', 'videoName']),
+		...mapGetters('experiment', ['hasVideo', 'hasInteractivePiano', 'videoName']),
 		videoDimensions() {
 			let height = this.defaultVideoHeight;
 			let width = this.defaultVideoWidth;

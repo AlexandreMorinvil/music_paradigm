@@ -5,12 +5,17 @@ import stateHandler from './state-handler';
 import variableHandler from './variable-handler';
 
 export default {
+	stepsCompletionRatio,
 	countStepsLeft,
 	assignCursor,
 	advance,
 	goBack,
 	skip,
 };
+
+function stepsCompletionRatio(flow, startPointCursor) {
+	return 1 - countStepsLeft(flow, startPointCursor) / countStepsLeft(flow);
+}
 
 function countStepsLeft(flow, startPointCursor) {
 	// Deep copy the cursor (or initialize the cursor at the start by default)
@@ -178,6 +183,8 @@ function updateCursorNavigation(flow, cursor) {
 		midiFileName,
 		videoFileName,
 		referenceKeyboardKeys,
+		audioFirst,
+		audioSecond,
 
 		// Cursor parameters
 		numberRepetition,
@@ -193,7 +200,7 @@ function updateCursorNavigation(flow, cursor) {
 	// Set all the navigation parameters
 	setCursorInnerStepsTotal(cursor, textContent, pictureFileName);
 	setCursorLoopStart(cursor, numberRepetition);
-	setCursorMediaDepilingStart(cursor, midiFileName, videoFileName, textContent, pictureFileName, referenceKeyboardKeys);
+	setCursorMediaDepilingStart(cursor, [midiFileName, videoFileName, textContent, pictureFileName, referenceKeyboardKeys, audioFirst, audioSecond]);
 	setCursorNextStep(cursor, followedBy);
 }
 
@@ -253,15 +260,14 @@ function setCursorLoopStart(cursor, numberRepetition) {
 //
 //  The execution order would be :
 //  A[0] - B[0] - C[0] - A[1] - B[1] - C[1] - D[0] - D[1] - D[2]
-function setCursorMediaDepilingStart(cursor, midiFileName, videoFileName, textContent, pictureFileName, referenceKeyboardKeys) {
-	// Count the number of piled media elements of each type and detemine the maximum number of piled content.
-	const numberMidiFiles = Array.isArray(midiFileName) ? midiFileName.length : 0;
-	const numberVideoFiles = Array.isArray(videoFileName) ? videoFileName.length : 0;
-	const numberTextContent = Array.isArray(textContent) ? textContent.length : 0;
-	const numberPictureFile = Array.isArray(pictureFileName) ? pictureFileName.length : 0;
-	const numberReferenceKeyboardKeys = Array.isArray(referenceKeyboardKeys) ? referenceKeyboardKeys.length : 0;
+function setCursorMediaDepilingStart(cursor, listOfArrays) {
 
-	const maxNumberContentElement = Math.max(numberMidiFiles, numberVideoFiles, numberTextContent, numberPictureFile, numberReferenceKeyboardKeys);
+	// Count the number of piled media elements of each type and detemine the maximum number of piled content.
+	let maxNumberElementsPiled = 0;
+	for (const array of listOfArrays) {
+		const numberElementsPiled = Array.isArray(array) ? array.length : 0;
+		maxNumberElementsPiled = Math.max(numberElementsPiled, maxNumberElementsPiled);
+	}
 
 	// Initialize the number of piled media content (playable media pile index & number of medias) if :
 	// 1. There is more than one media content element (midi/video) (so the total index > 1),
@@ -269,13 +275,13 @@ function setCursorMediaDepilingStart(cursor, midiFileName, videoFileName, textCo
 	// 3. The current index is not the start index of a previous pile (to avoid depiling a pile twice)
 	// 4. The current index is beyond the loop end (in order to not start a loop of depilement within a group of blocks)
 	if (
-		maxNumberContentElement > 1 &&
+		maxNumberElementsPiled > 1 &&
 		cursor.navigation.lastPiledContentIndex <= 1 &&
 		cursor.current.index !== cursor.navigation.indexPileStart &&
 		cursor.current.index > cursor.navigation.indexGroupEnd
 	) {
 		cursor.navigation.indexPileStart = cursor.current.index;
-		cursor.navigation.lastPiledContentIndex = maxNumberContentElement;
+		cursor.navigation.lastPiledContentIndex = maxNumberElementsPiled;
 	}
 }
 

@@ -10,7 +10,10 @@ import { mapGetters } from 'vuex';
 
 export default {
 	computed: {
-		...mapGetters('experiment', ['hasText', 'textContent']),
+		...mapGetters('experiment', ['textContent']),
+		hasText() {
+			return Boolean(this.textContent);
+		},
 	},
 };
 </script>

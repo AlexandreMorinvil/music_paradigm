@@ -3,6 +3,11 @@ schema = require('./log-thorough.schema');
 
 schema.set('toJSON', { virtuals: true });
 
+const irrelevantFields = [
+    '-id',
+    '-__v',
+];
+
 // Static methods
 schema.statics.initializeLog = async function (logHeader) {
     const thoroughLog = await this.findOrCreate(logHeader);
@@ -26,6 +31,21 @@ schema.statics.findOrCreate = async function (logHeader) {
     let thoroughLog = await this.findOne(logReference)
     if (!thoroughLog) thoroughLog = new this(logHeader);
     return thoroughLog;
+}
+
+schema.statics.makeSummaryList = async function (query) {
+    const fieldToRemove = [
+        '-blocks'
+    ];
+    return this.find(query, fieldToRemove);
+}
+
+schema.statics.getFileRelevantData = async function (query) {
+    return this.find(query, irrelevantFields);
+}
+
+schema.statics.getOneLogFromId = async function (logId) {
+    return this.findById(logId, irrelevantFields);
 }
 
 // Helper functions
