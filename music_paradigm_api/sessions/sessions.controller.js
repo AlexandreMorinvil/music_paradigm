@@ -7,7 +7,6 @@ router.post('/initialize-session/:associativeId/:associativeIdOrdinalNumber', in
 router.post('/conclude-session/:associativeId/:associativeIdOrdinalNumber', concludeSession);
 
 router.post('/save-session-state/:associativeId', saveSessionState);
-router.post('/forget-session-state/:associativeId', forgetSessionState);
 
 module.exports = router;
 
@@ -35,23 +34,15 @@ function concludeSession(req, res, next) {
 }
 
 function saveSessionState(req, res, next) {
+    
     const userId = req.user.sub;
     const associativeId = req.params.associativeId;
     const cursor = req.body.cursor;
     const state = req.body.state;
     const timeIndicated = req.body.timeIndicated;
+    const progressRatio = req.body.progressRatio;
 
-    service.saveSessionState(userId, associativeId, cursor, state, timeIndicated)
-        .then(result => res.status(200).json(result))
-        .catch(error => res.status(400).json({ message: error.message }))
-        .finally(() => next());
-}
-
-function forgetSessionState(req, res, next) {
-    const userId = req.user.sub;
-    const associativeId = req.params.associativeId;
-
-    service.forgetSessionState(userId, associativeId)
+    service.saveSessionState(userId, associativeId, cursor, state, timeIndicated, progressRatio)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());

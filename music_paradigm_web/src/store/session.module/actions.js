@@ -1,9 +1,9 @@
-import { accountService, sessionService } from '@/_services';
+import { accountApi, sessionApi } from '@/api';
 
 export default {
 	fetchDueExperimentSession({ commit, dispatch }) {
 		commit('isFetchingSession');
-		return accountService
+		return accountApi
 			.fetchDueExperimentSession()
 			.then(
 				(sessionInformation) => {
@@ -21,7 +21,7 @@ export default {
 
 	fetchSpecificExperimentSession({ commit, dispatch }, { associativeId, associativeIdOrdinalNumber }) {
 		commit('isFetchingSession');
-		return accountService
+		return accountApi
 			.fetchSpecificExperimentSession(associativeId, associativeIdOrdinalNumber)
 			.then(
 				(sessionInformation) => {
@@ -51,14 +51,13 @@ export default {
 	// Send a signal to the back-end to indicate that the session can be considered as started
 	initializeSession({ commit, getters }) {
 		commit('setIsInitializingSession');
-		return sessionService
+		return sessionApi
 			.initializeSession(getters.associativeId, getters.associativeIdOrdinalNumber)
 			.then(
 				() => {
 					/* Nothing is done */
 				},
 				(error) => {
-					// TODO: Keep on memory the failed initialization in localstorage and reattempt at every time we send log data
 					console.log(error);
 				},
 			)
@@ -70,14 +69,13 @@ export default {
 	// Send a signal to the back-end to indicate that the session can be considered as completed
 	concludeSession({ commit, dispatch, getters }, isInTimeUp) {
 		commit('setIsConcludingSession');
-		return sessionService
+		return sessionApi
 			.concludeSession(getters.associativeId, getters.associativeIdOrdinalNumber, isInTimeUp)
 			.then(
 				() => {
 					/* Nothing is done */
 				},
 				(error) => {
-					// TODO : Keep in memory the failed completion in localstorage to make sure on the next login we handle it
 					console.log(error);
 				},
 			)
@@ -90,43 +88,24 @@ export default {
 	// Send a signal to the back-end to indicate that the session can be considered as started
 	saveSessionState({ commit, getters, rootGetters }) {
 		commit('setIsSavingSessionState');
-		return sessionService
+		return sessionApi
 			.saveSessionState(
-				getters.associativeId, 
+				getters.associativeId,
 				rootGetters['experiment/cursor'],
 				rootGetters['experiment/state'],
 				rootGetters['experiment/timeIndicated'],
+				rootGetters['experiment/progressRatio'],
 			)
 			.then(
 				() => {
 					/* Nothing is done */
 				},
 				(error) => {
-					// TODO: Keep on memory the failed state to save in localstorage and reattempt at every time we send log data
 					console.log(error);
 				},
 			)
 			.finally(() => {
 				commit('setIsSavingSessionStateEnd');
-			});
-	},
-
-	// Send a signal to the back-end to indicate that the session can be considered as completed
-	forgetSessionState({ commit, getters }) {
-		commit('setIsForgettingSessionState');
-		return sessionService
-			.forgetSessionState(getters.associativeId)
-			.then(
-				() => {
-					/* Nothing is done */
-				},
-				(error) => {
-					// TODO : Keep in memory the failed completion in localstorage to make sure on the next login we handle it
-					console.log(error);
-				},
-			)
-			.finally(() => {
-				commit('setIsForgettingSessionStateEnd');
 			});
 	},
 

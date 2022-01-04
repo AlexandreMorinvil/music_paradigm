@@ -1,13 +1,25 @@
-﻿const db = require('database/db');
-const AdminLogThorough = db.AdminLogThorough;
-const LogThorough = db.LogThorough;
-const User = db.User;
+﻿const AdminLogThorough = require('database/db').AdminLogThorough;
+const LogThorough = require('database/db').LogThorough;
+const User = require('database/db').User;
+
+const csvConverter = require('_helpers/csv-converter');
+const jsonConverter = require('_helpers/json-converter');
+const { makeMongooseLogQuery } = require('log/log-query-maker.service')
+
 
 // Exports
 module.exports = {
     initializeLog,
     addLogBlock,
-    concludeLog
+    concludeLog,
+    getOneUserLogFromId,
+    getOneAdminLogFromId,
+    getAdminLogSummaryList,
+    getUserLogSummaryList,
+    makeAdminLogCsv,
+    makeUserLogCsv,
+    makeAdminLogJson,
+    makeUserLogJson,
 };
 
 async function initializeLog(userId, logHeader) {
@@ -40,4 +52,78 @@ async function concludeLog(userId, logHeader, logConclusion) {
     }
 }
 
+async function getOneUserLogFromId(logId) {
+    try {
+        let data = await LogThorough.getOneLogFromId(logId);
+        return jsonConverter.makeJson(data);
+    } catch (err) {
+        throw err;
+    }
+}
 
+async function getOneAdminLogFromId(logId) {
+    try {
+        let data = await AdminLogThorough.getOneLogFromId(logId);
+        return jsonConverter.makeJson(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function getUserLogSummaryList(criterias) {
+    try {
+        const query = makeMongooseLogQuery(criterias);
+        return await LogThorough.makeSummaryList(query);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function getAdminLogSummaryList(criterias) {
+    try {
+        const query = makeMongooseLogQuery(criterias);
+        return await AdminLogThorough.makeSummaryList(query);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function makeUserLogCsv(criterias) {
+    try {
+        const query = makeMongooseLogQuery(criterias);
+        let data = await LogThorough.getFileRelevantData(query);
+        return csvConverter.makeCsv(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function makeAdminLogCsv(criterias) {
+    try {
+        const query = makeMongooseLogQuery(criterias);
+        let data = await AdminLogThorough.getFileRelevantData(query);
+        return csvConverter.makeCsv(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function makeUserLogJson(criterias) {
+    try {
+        const query = makeMongooseLogQuery(criterias);
+        let data = await LogThorough.getFileRelevantData(query);
+        return jsonConverter.makeJson(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function makeAdminLogJson(criterias) {
+    try {
+        const query = makeMongooseLogQuery(criterias);
+        let data = await AdminLogThorough.getFileRelevantData(query);
+        return jsonConverter.makeJson(data);
+    } catch (err) {
+        throw err;
+    }
+}

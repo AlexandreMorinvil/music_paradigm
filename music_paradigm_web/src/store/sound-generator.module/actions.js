@@ -1,5 +1,5 @@
 import { defaultState } from '@/store-helper/sound-generator.module-helper';
-import { resourceService } from '@/_services';
+import { resourceApi } from '@/api';
 
 export default {
 	initializeSoundGenerator: ({ commit }, instrument) => {
@@ -22,7 +22,7 @@ export default {
 		commit('resetResource', assignation);
 		commit('setResourceName', { assignation: assignation, fileName: fileName });
 		commit('indicateIsLoading', assignation);
-		return resourceService.fetchMidiFile(fileName).then(
+		return resourceApi.fetchMidiFile(fileName).then(
 			(arrayStream) => {
 				commit('loadResourceArrayStream', { assignation: assignation, arrayStream: arrayStream });
 				commit('processArrayStream', assignation);

@@ -52,7 +52,7 @@ export default {
 			const isDelayedByPreviousUniqueInDay = this.session.isDelayedByPreviousUniqueInDay;
 			if (delayInDays > 0) {
 				if (delayInDays === 1) return this.$t('user.progression-board.tomorrow');
-				else return this.$tc('progression-board.in-x-days', delayInDays, { number: delayInDays });
+				else return this.$tc('user.progression-board.in-x-days', delayInDays, { number: delayInDays });
 			} else if (delayInHours !== '00:00') return this.$tc('user.progression-board.in-x-hours', { time: delayInHours });
 			else if (isDelayedByPreviousUniqueInDay) return this.$t('user.progression-board.tomorrow');
 			else return this.$t('user.progression-board.undetermined'); // This shsould never happen
@@ -60,6 +60,15 @@ export default {
 		hasCaption() {
 			return Boolean(this.caption);
 		},
+		completionsNeeded() {
+			return 1 + this.session.adjustmentAdditionalCompletionsRequired;
+		},
+		wasCompleted() {
+			return this.session.completionCount >= this.completionsNeeded || this.session.adjustmentConsiderCompleted;
+		},
+		isBlocked() {
+			return this.session.adjustmentBlockAvailability;
+		}
 	},
 	methods: {
 		startSession() {
@@ -70,19 +79,19 @@ export default {
 				});
 		},
 		detrmineIsCompleted() {
-			return !this.session.isAvailable && this.session.completionCount > 0;
+			return !this.session.isAvailable && this.wasCompleted;
 		},
 		detrmineIsUnavailable() {
 			return !this.session.isAvailable && this.session.isDelayedByPreviousSequential;
 		},
 		detrmineIsAlmostAvailable() {
-			return !this.session.isAvailable && this.session.completionCount <= 0;
+			return !this.session.isAvailable && !this.wasCompleted && !this.isBlocked;
 		},
 		detrmineIsNewAvailable() {
-			return this.session.isAvailable && this.session.completionCount <= 0;
+			return this.session.isAvailable && !this.wasCompleted;
 		},
 		detrmineIsCompletedvailable() {
-			return this.session.isAvailable && this.session.completionCount > 0;
+			return this.session.isAvailable && this.wasCompleted;
 		},
 	},
 	watch: {

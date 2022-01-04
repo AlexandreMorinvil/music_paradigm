@@ -6,15 +6,15 @@
 			</template>
 		</widget-content-frame> -->
 
-		<widget-content-frame title="Editor Tool">
+		<widget-content-frame title="Editor">
 			<template>
 				<curriculums-editor-widget />
 			</template>
 		</widget-content-frame>
 
-		<widget-content-frame title="Overview Table">
+		<widget-content-frame title="List">
 			<template>
-				<curriculums-table />
+				<curriculums-list-widget />
 			</template>
 		</widget-content-frame>
 	</admin-page-content-frame>
@@ -23,7 +23,7 @@
 <script>
 import AdminPageContentFrame from '@/components/content-frame/admin-page-content-frame.component.vue';
 import CurriculumsEditorWidget from '@/components/admin/curriculums/widget-editor/curriculums-editor.widget.vue';
-import CurriculumsTable from '@/components/admin/curriculums/CurriculumsTableWidget.vue';
+import CurriculumsListWidget from '@/components/admin/curriculums/widget-list/curriculums-list.widget.vue';
 // import CurriculumsViewer from '@/components/admin/curriculums/CurriculumsViewerWidget.vue';
 import WidgetContentFrame from '@/components/content-frame/widget-content-frame.component.vue';
 
@@ -33,7 +33,7 @@ export default {
 		WidgetContentFrame: WidgetContentFrame,
 		// CurriculumsViewer: CurriculumsViewer,
 		CurriculumsEditorWidget,
-		CurriculumsTable: CurriculumsTable,
+		CurriculumsListWidget,
 	},
 };
 </script>

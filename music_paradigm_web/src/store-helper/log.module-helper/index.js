@@ -1,3 +1,4 @@
+import defaultState from './default-state';
 import logFormat from './log-format';
 
-export { logFormat };
+export { defaultState, logFormat };

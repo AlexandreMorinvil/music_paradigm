@@ -415,7 +415,7 @@ function validateAttributeType(key, value) {
 							throw new Error(`The key '${key}' must be of type 'String', 'Boolean' or 'Array'`);
 						}
 
-						if (!ALLOWED_ENTRIES_INTERACTIVE_HELPERS.includes(value)) {
+						if (typeof value === 'string' && !ALLOWED_ENTRIES_INTERACTIVE_HELPERS.includes(value)) {
 							throw new Error(`The key '${key}' cannot have the value '${value}'`);
 						}
 						break;

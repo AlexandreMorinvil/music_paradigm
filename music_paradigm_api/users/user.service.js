@@ -1,15 +1,17 @@
-﻿const db = require('database/db');
-const User = db.User;
+﻿const User = require('database/db').User;
+const progressionSummaryService = require('progressions/progressions-summary.service');
+const userProgressionService = require('users/user-progression.service');
 
 // Exports
 module.exports = {
     getAll,
     getById,
     createUser,
-    updateUser,
+    updateUserProfile,
     deleteUser,
     assignCurriculum,
     assignParameters,
+    assignAdjustments,
     resetProgression,
 };
 
@@ -25,9 +27,11 @@ async function getById(userId) {
     try {
         const user = await User.findById(userId).select('-password');
         const lastProgression = await user.getLastProgression();
+        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
         return {
             user: user,
             progression: lastProgression,
+            progressionSummary: progressionSummary,
         };
     } catch (err) {
         throw err;
@@ -37,10 +41,12 @@ async function getById(userId) {
 async function createUser(user, curriculumId, assignedParameters) {
     try {
         const userCreated = await User.create(user);
-        const progressionInitilized = await userCreated.initializeCurriculum(curriculumId, assignedParameters);
+        const progressionInitilized = await userProgressionService.initializeProgression(userCreated, curriculumId, assignedParameters);
+        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userCreated._id);
         return {
-            user: userCreated, 
+            user: userCreated,
             progression: progressionInitilized,
+            progressionSummary: progressionSummary,
         };
     } catch (err) {
         switch (err.code) {
@@ -52,10 +58,10 @@ async function createUser(user, curriculumId, assignedParameters) {
     }
 }
 
-async function updateUser(userId, userParameters) {
+async function updateUserProfile(userId, userUpdate) {
     try {
         const user = await User.findById(userId);
-        return await user.updateUser(userParameters);
+        return await user.updateProfile(userUpdate);
     } catch (err) {
         switch (err.code) {
             case 11000:
@@ -78,10 +84,12 @@ async function deleteUser(userId) {
 async function assignCurriculum(userId, curriculumId, assignedParameters) {
     try {
         const user = await User.findById(userId);
-        const lastProgression = await user.initializeCurriculum(curriculumId, assignedParameters);
-        return { 
-            user: user, 
-            progression: lastProgression 
+        const lastProgression = await userProgressionService.initializeProgression(user, curriculumId, assignedParameters);
+        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
+        return {
+            user: user,
+            progression: lastProgression,
+            progressionSummary: progressionSummary,
         };
     } catch (err) {
         throw err;
@@ -90,11 +98,24 @@ async function assignCurriculum(userId, curriculumId, assignedParameters) {
 
 async function assignParameters(userId, assignedParameters) {
     try {
-        const user = await User.findById(userId);
-        const lastProgression = await user.assignParameters(assignedParameters);
-        return { 
-            user: user, 
-            progression: lastProgression 
+        const lastProgression = await userProgressionService.updateParameters(userId, assignedParameters);
+        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
+        return {
+            progression: lastProgression,
+            progressionSummary: progressionSummary,
+        };
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function assignAdjustments(userId, assignedAdjustments) {
+    try {
+        const lastProgression = await userProgressionService.updateAdjustments(userId, assignedAdjustments);
+        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
+        return {
+            progression: lastProgression,
+            progressionSummary: progressionSummary,
         };
     } catch (err) {
         throw err;

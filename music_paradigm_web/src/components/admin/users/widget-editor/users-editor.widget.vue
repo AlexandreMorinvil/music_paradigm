@@ -2,7 +2,7 @@
 	<div id="users-editor" class="widget widget-bg">
 		<div class="edition-buttons-position">
 			<button v-on:click="handleRevert" class="widget-button blue" :class="{ inactive: !isRevertButtonActive }">Revert</button>
-			<button v-on:click="handleUnselection" class="widget-button blue" :class="{ inactive: !isUnselectButtonActive }">Unselect</button>
+			<button v-on:click="handleUnselection" class="widget-button turquoise" :class="{ inactive: !isUnselectButtonActive }">Unselect</button>
 		</div>
 
 		<users-editor-form-component class="editor-position inner-widget" ref="editorForm" />

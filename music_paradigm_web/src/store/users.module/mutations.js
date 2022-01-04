@@ -42,36 +42,13 @@ export default {
 		state.status.isAssigningCurriculum = false;
 	},
 
-	indicateUpdateParametersRequest(state) {
-		state.status.isUpdatingParameters = true;
-	},
-
-	indicateUpdateParametersRequestEnd(state) {
-		state.status.isUpdatingParameters = false;
-	},
-
-	indicateResetProgressionRequest(state) {
-		state.status.isResetingProgression = true;
-	},
-
-	indicateResetProgressionRequestEnd(state) {
-		state.status.isResetingProgression = false;
-	},
-
 	// Setters
 	setSelectedUser(state, user) {
-		state.selectedUser = defaultState.EMPTY_USER();
-		Object.assign(state.selectedUser, user);
-	},
-
-	setSelectedProgression(state, userProgression) {
-		state.selectedUserProgression = {};
-		Object.assign(state.selectedUserProgression, userProgression);
+		state.selectedUser = user;
 	},
 
 	unsetSelectedUser(state) {
 		state.selectedUser = defaultState.EMPTY_USER();
-		state.selectedUserProgression = {};
 	},
 
 	setSummariesList(state, usersSummaryList) {

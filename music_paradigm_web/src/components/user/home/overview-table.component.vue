@@ -1,18 +1,20 @@
 <template>
 	<div class="englobing-box">
-		<!-- <div class="overview-ttile">
-			<h2 class="title-area">Program</h2>
-		</div> -->
 		<div class="table-context">
 			<div class="table-inside-context content-flex">
-				<overview-table-session
-					v-for="(session, index) in progressionSummary"
+				<div
+					v-for="(session, index) in progressionHistory"
 					:key="index"
-					:session="session"
-					:index="index"
-					v-on:start-session="startSession"
-					class="session-button"
-				/>
+					v-on:click="selectSession(session)"
+					:class="{ 'highlighted-session': mustHighlight(session) }"
+				>
+					<overview-table-session-component
+						:session="session"
+						:index="Number(index)"
+						v-on:start-session="startSession"
+					/>
+					<slot :session="session" :index="Number(index)"> </slot>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -21,22 +23,51 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import OverviewTableSession from '@/components/user/home/overview-table-session.component.vue';
+import OverviewTableSessionComponent from '@/components/user/home/overview-table-session.component.vue';
 
 export default {
+	props: {
+		overWrittingProgressionHistory: {
+			default() {
+				return null;
+			},
+		},
+		sessionToHightlight: {
+			default() {
+				return null;
+			},
+		},
+	},
 	components: {
-		OverviewTableSession,
+		OverviewTableSessionComponent,
 	},
 	computed: {
 		...mapGetters('account', ['progressionSummary']),
+		progressionHistory() {
+			return this.overWrittingProgressionHistory || this.progressionSummary;
+		},
+		isRealUser() {
+			return !this.overWrittingProgressionHistory;
+		},
 	},
 	methods: {
 		...mapActions('session', ['fetchSpecificExperimentSession']),
 		startSession(experimentSession) {
+			if (!this.isRealUser) return;
 			this.fetchSpecificExperimentSession({
 				associativeId: experimentSession.associativeId,
 				associativeIdOrdinalNumber: experimentSession.associativeIdOrdinalNumber,
 			});
+		},
+		selectSession(session) {
+			this.$emit('sessionSelected', session);
+		},
+		mustHighlight(session) {
+			return (
+				!this.isRealUser &&
+				this.sessionToHightlight.associativeId === session.associativeId &&
+				this.sessionToHightlight.associativeIdOrdinalNumber === session.associativeIdOrdinalNumber
+			);
 		},
 	},
 };
@@ -45,20 +76,9 @@ export default {
 <style scoped>
 .englobing-box {
 	display: grid;
-	grid-template-rows: /*auto*/ auto;
+	grid-template-rows: auto;
 	color: rgb(230, 230, 230);
 }
-
-/* .title-area {
-	width: 50%;
-	padding: 10px;
-	margin: auto;
-	box-shadow: 5px 5px 8px black;
-	background-color: rgb(0, 40, 120);
-	border: 5px rgb(0, 35, 115) solid;
-	border-bottom-style: none;
-	border-radius: 10px 10px 0 0;
-} */
 
 .table-context {
 	padding: 20px;
@@ -87,7 +107,13 @@ export default {
 	text-align: center;
 }
 
-/* .overview-ttile {
-	text-align: center;
-} */
+.highlighted-session {
+	background-color: rgba(100, 200, 50, 0.25);
+	box-shadow: 0 0px 10px rgba(100, 200, 50, 0.5);
+	border-radius: 10px;
+}
+
+.highlighted-session > * {
+	box-shadow: none !important;
+}
 </style>

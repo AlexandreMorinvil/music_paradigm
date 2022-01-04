@@ -1,4 +1,5 @@
 export default {
+	// User values
 	userSelectedId: (state) => {
 		return state.selectedUser._id;
 	},
@@ -35,10 +36,7 @@ export default {
 		return state.selectedUser.curriculum;
 	},
 
-	userSelectedImposedParameters: (state) => {
-		return state.selectedUserProgression.assignedParameters;
-	},
-
+	// List of users
 	usersSummaryList: (state) => {
 		return state.usersSummaryList;
 	},

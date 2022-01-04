@@ -1,6 +1,4 @@
 ﻿const db = require('database/db');
-const timeout = require('_helpers/timeout');
-const e = require('express');
 const Experiment = db.Experiment;
 
 module.exports = {

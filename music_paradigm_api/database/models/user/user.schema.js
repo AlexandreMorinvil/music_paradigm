@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const bcrypt = require('bcryptjs');
 const roles = require('_helpers/role');
-const stringHandler = require('_helpers/stringHandler');
+const stringHandler = require('_helpers/string-handler');
 
 // Error messages
 const usernameMinLengthMessage = "The username must have at least one character";
