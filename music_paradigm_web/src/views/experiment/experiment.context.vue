@@ -1,19 +1,11 @@
 <template>
-	<div
-		id="experiment"
-		class="experiment-context experiment-grid unselectable"
-		:class="{ 'experiment-context-clear': isClearVersion }"
-	>
-		<loaded-content-component style="display: none"/>
+	<div id="experiment" class="experiment-context experiment-grid unselectable" :class="{ 'experiment-context-clear': isClearVersion }">
+		<loaded-content-component style="display: none" />
 		<log-component style="display: none" ref="log" />
 		<session-component style="display: none" ref="session" />
 
 		<status-bar-component ref="status" class="status-bar-position" />
-		<div
-			id="state-content"
-			class="state-content state-content-position"
-			:class="{ 'state-content-clear': isClearVersion }"
-		>
+		<div id="state-content" class="state-content state-content-position" :class="{ 'state-content-clear': isClearVersion }">
 			<experiment-content :lastPressedKey="lastPressedKey" :isSpaceBarPressed="isSpaceBarPressed" />
 		</div>
 	</div>
@@ -49,14 +41,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', [
-			'hasClearBackground',
-			'hasPrelude',
-			'isInPrelude',
-			'isBeyondEnd',
-			'controlType',
-			'considerExperimentFinished',
-		]),
+		...mapGetters('experiment', ['hasClearBackground', 'hasPrelude', 'isInPrelude', 'isBeyondEnd', 'controlType', 'considerExperimentFinished']),
 		isClearVersion() {
 			return this.hasClearBackground;
 		},
@@ -90,8 +75,9 @@ export default {
 		startExperiement() {
 			this.$refs.session.initialize();
 			this.$refs.log.initialize();
-			if (this.hasPrelude) this.initializePrelude();
-			else this.displayFirstStep();
+			if (this.hasPrelude) {
+				this.initializePrelude();
+			} else this.displayFirstStep();
 		},
 		displayFirstStep() {
 			this.updateState();
@@ -214,7 +200,6 @@ export default {
 .experiment-context {
 	height: 100%;
 	background-color: rgb(15, 15, 15);
-
 }
 
 .status-bar-position {

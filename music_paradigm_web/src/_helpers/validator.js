@@ -98,8 +98,9 @@ function validateExperiment(experiment) {
 	const allowedAttributes = [
 		'withTimer',
 		'hasClearBackground',
-		'timeUpState',
-		'prelude',
+		'timeUpState', // TODO: Remove that
+		'timeUpFlow',
+		'flowPrelude',
 		'flow',
 		'variables',
 		'variablesSchedules',
@@ -146,8 +147,8 @@ function validateExperiment(experiment) {
 		validateBlock(element, index);
 	});
 
-	if (experiment.prelude)
-		experiment.prelude.forEach((element, index) => {
+	if (experiment.flowPrelude)
+		experiment.flowPrelude.forEach((element, index) => {
 			validateBlock(element, index);
 		});
 
@@ -360,7 +361,7 @@ function validateAttributeType(key, value) {
 			break;
 
 		// Object
-		case 'timeUpState':
+		case 'timeUpState': // TODO : Remove that
 		case 'lastRepetitionVersion':
 		case 'succeeededForSkipLoopVersion':
 			if (!(typeof value === 'object') || Array.isArray(value)) {
@@ -525,7 +526,8 @@ function validateAttributeType(key, value) {
 			break;
 
 		// Array
-		case 'prelude':
+		case 'flowPrelude': // TODO: Remove that
+		case 'timeUpFlow':
 		case 'surveyInputOptionsValues':
 		case 'surveyInputOptionsText':
 		case 'surveyLeftSideText':

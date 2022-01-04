@@ -11,7 +11,7 @@ export default {
 	populateExperimentConstantVariables,
 	setExperimentGeneralSettings,
 	setExperimentInitialState,
-	setExperimentPrelude,
+	setExperimentPreludeFlow,
 	setExperimentFlow,
 	setExperimentTimeUpState,
 	storeParameterImposedValues,
@@ -129,7 +129,7 @@ function setExperimentVariableSchedules(state) {
 }
 
 /**
- * Populate the flow and prelude with all the variable/parameter that are meant to be constant for the experiment. 
+ * Populate the flow and prelude flow with all the variable/parameter that are meant to be constant for the experiment. 
  * Once the constant variables/parameters are populated in the experiment, they can never be changed in the experiment for the ongoing session.
  * 
  * The only time in a session where the constant variables are populated is at the beginning. Afterward, any futher variable population is for
@@ -227,17 +227,17 @@ function setExperimentInitialState(state) {
  * Store the prelude flow of the experiment received from the backend. 
  * @param {Object} state 								Vuex state.
  * @param {Object} state.experiment 					Object from the backend conntaining all information related to the experiment.
- * @param {Array<Object>} state.experiment.prelude		Flow description of the "prelude" which is a set of steps that will be presented  
+ * @param {Array<Object>} state.experiment.flowPrelude	Flow description of the "prelude" which is a set of steps that will be presented  
  * 														before the main experiment takes place.
 */
-function setExperimentPrelude(state) {
-	// Verify if a prelude is provided
-	if (!state.experiment.prelude) return;
-	let { prelude } = state.experiment;
+function setExperimentPreludeFlow(state) {
+	// Verify if a prelude flow is provided
+	if (!state.experiment.flowPrelude) return;
+	let { flowPrelude } = state.experiment;
 
 	// Deep copying the prelude
-	prelude = Array.isArray(prelude) ? prelude : [];
-	state.prelude = JSON.parse(JSON.stringify(prelude));
+	flowPrelude = Array.isArray(flowPrelude) ? flowPrelude : [];
+	state.flowPrelude = JSON.parse(JSON.stringify(flowPrelude));
 }
 
 

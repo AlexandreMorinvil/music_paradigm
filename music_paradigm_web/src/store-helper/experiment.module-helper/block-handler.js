@@ -32,7 +32,7 @@ function getCurrentBlock(flow, cursor) {
 }
 
 function getTimeUpBlock() {
-	const timeoutState = experimentStoreState.timeUpState;
+	const timeoutState = experimentStoreState.timeUpState; // TODO : Adjust that
 	if (timeoutState) return timeoutState;
 	else return defaultState.DEFAULT_TIME_UP();
 }

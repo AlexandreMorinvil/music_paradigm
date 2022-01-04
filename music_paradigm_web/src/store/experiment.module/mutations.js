@@ -1,4 +1,4 @@
-import { blockHandler, cursorHandler, defaultState, experimentHandler, stateHandler } from '@/store-helper/experiment.module-helper';
+import { blockHandler, cursorHandler, defaultState, experimentHandler, flowSwitcher, stateHandler } from '@/store-helper/experiment.module-helper';
 import { routerNavigation } from '@/_helpers';
 
 export default {
@@ -21,9 +21,9 @@ export default {
 		experimentHandler.populateExperimentConstantVariables(state);
 
 		// Initialzie the experiment's content and states
-		experimentHandler.setExperimentPrelude(state);
+		experimentHandler.setExperimentPreludeFlow(state);
 		experimentHandler.setExperimentFlow(state);
-		experimentHandler.setExperimentTimeUpState(state);
+		experimentHandler.setExperimentTimeUpState(state); // TODO : Adjust that to Time Up Flow
 		experimentHandler.setExperimentGeneralSettings(state);
 		experimentHandler.setExperimentInitialState(state);
 
@@ -42,7 +42,7 @@ export default {
 
 	initExperiment: (state, initialState) => {
 		routerNavigation.moveToExperimentPreparation();
-		state.state = initialState || defaultState.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
+		stateHandler.initializeStartState(state.state, initialState);
 		state.initialTimeIndicated = state.state.record.timeIndicated;
 	},
 
@@ -57,30 +57,25 @@ export default {
 
 	// Prelude initialization functions
 	initializePrelude: (state) => {
-		// Moving the experiment flow, state and curdsor in a temporary memory to run the prelude
+		flowSwitcher.moveToPreludeFlow(state);
+	},
+
+	leavePrelude: (state) => {
+		flowSwitcher.leavePreludeFlow(state);
+	},
+
+	// Prelude initialization functions
+	initializeTimeout: (state) => {
+		// Moving the experiment flow, state and curdsor in a temporary memory to run the timeout flow
 		state.tempMemory.flow = JSON.parse(JSON.stringify(state.flow));
 		state.tempMemory.state = JSON.parse(JSON.stringify(state.state));
 		state.tempMemory.cursor = JSON.parse(JSON.stringify(state.cursor));
 
-		// Set the prelude as the experiment to run
-		state.flow = state.prelude;
+		// Set the prelude flow as the experiment to run
+		state.flow = state.timeoutFlow;
 		state.state = defaultState.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
 		state.cursor = cursorHandler.assignCursor(state.flow);
-		state.cursor.flag.isInPrelude = true;
-
-		state.isInitialized = defaultState.IS_FULLY_NOT_INITIALIZED_STATUS();
-	},
-
-	leavePrelude: (state) => {
-		// Set the real experiment as the experiment to run
-		state.flow = JSON.parse(JSON.stringify(state.tempMemory.flow));
-		state.state = JSON.parse(JSON.stringify(state.tempMemory.state));
-		state.cursor = JSON.parse(JSON.stringify(state.tempMemory.cursor));
-
-		// Delete the prelude data
-		delete state.tempMemory.flow;
-		delete state.tempMemory.state;
-		delete state.tempMemory.cursor;
+		state.cursor.flag.isInTimeout = true;
 
 		state.isInitialized = defaultState.IS_FULLY_NOT_INITIALIZED_STATUS();
 	},

@@ -129,7 +129,7 @@ const schema = new Schema({
     hasClearBackground: { type: Boolean, default: undefined },
     hasSound: { type: Boolean, default: true },
 
-    prelude: {
+    flowPrelude: {
         default: [],
         type: [stateSchema],
         required: false,

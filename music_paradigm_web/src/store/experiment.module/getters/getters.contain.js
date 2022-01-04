@@ -63,6 +63,6 @@ export default {
 	},
 
 	hasPrelude: (state) => {
-		return Array.isArray(state.prelude) && state.prelude.length > 0;
+		return Array.isArray(state.flowPrelude) && state.flowPrelude.length > 0;
 	},
 };

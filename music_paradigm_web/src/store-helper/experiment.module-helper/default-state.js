@@ -58,7 +58,7 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 		_id: null, // Id of the experiment
 
 		// The prelude sequence of the experiment
-		prelude: [], // Description of the different steps of the prelude
+		flowPrelude: [], // Description of the different steps of the prelude
 
 		// The sequence of the experiment
 		flow: [], // Description of the different steps of the experiment
@@ -147,7 +147,7 @@ function DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES() {
 			lastPiledContentIndex: 0, 												// Last index of media content piled at the index pile start
 		},
 		flag: {
-			isInPrelude: false,														// Indicator of whether or not the cursor is pointing at hte main experiment (as opposed to the prelude)
+			isInPrelude: false,														// Indicator of whether or not the cursor is pointing at the main experiment (as opposed to the prelude flow)
 			isInTimeUp: false, 														// Indicator of whether or not the time limit is reached
 			isBeyondEnd: false, 													// Indicator of whether the index as reached the end of the flow (is checked before moving the cursor forward)
 			isInSkipableChain: false, 												// Indicator of whether the block must be skipped upon a skip request
