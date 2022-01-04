@@ -108,12 +108,17 @@ function makeCompletionCountMongooseFilters(completionCountCriterias = null) {
     const filters = {};
 
     // Parse the criterias
-    const { min, max } = completionCountCriterias;
-    if (typeof min === 'number')
-        Object.assign(filters, { completionCount: { $gte: min } })
+    const { min, max, values } = completionCountCriterias;
+    if (Array.isArray(values) && values.length > 0) {
+        Object.assign(filters, { completionCount: { $in: values } });
+    }
+    else {
+        if (typeof min === 'number')
+            Object.assign(filters, { completionCount: { $gte: min } })
 
-    if (typeof max === 'number')
-        Object.assign(filters, { completionCount: { $lte: min } })
+        if (typeof max === 'number')
+            Object.assign(filters, { completionCount: { $lte: min } })
+    }
 
     return filters;
 }

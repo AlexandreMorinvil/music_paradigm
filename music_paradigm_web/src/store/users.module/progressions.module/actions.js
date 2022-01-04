@@ -14,7 +14,7 @@ export default {
 	},
 
 	setSelectedSessionCompletionCount({ commit }, completionCount) {
-		commit('setSelectedSession', completionCount);
+		commit('setSelectedSessionCompletionCount', completionCount);
 	},
 
 	// Actions to unset values

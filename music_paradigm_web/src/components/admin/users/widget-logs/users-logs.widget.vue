@@ -1,5 +1,17 @@
 <template>
 	<div id="users-logs" class="widget widget-bg">
+		<h3 style="text-align: center">
+			<span v-if="hasSelectedUser"
+				>USERNAME=<span class="selected-element-text"> {{ userRuleDisplay }} </span>
+			</span>
+			<span v-if="hasSelectedProgressionSession"
+				>/ASSOCIATIVE ID=<span class="selected-element-text"> {{ associativeIdRuleDisplay }} </span>
+			</span>
+			<span v-if="hasSelectedSessionCompletionCount"
+				>/COMPLETIONS=<span class="selected-element-text"> {{ completionCountRuleDisplay }}</span
+				>
+			</span>
+		</h3>
 		<users-simple-log-list-component :rules="rules" ref="simpleLogsList" />
 		<users-thorough-log-list-component :rules="rules" ref="thoroughLogsList" />
 	</div>
@@ -22,27 +34,38 @@ export default {
 		return {};
 	},
 	computed: {
-		...mapGetters('users', ['userSelectedId', 'progressionSelectedId']),
-		...mapGetters('users/progressions', ['progressionSelectedId']),
-		user() {
+		...mapGetters('users', ['userSelectedId', 'userSelectedUsername', 'hasSelectedUser']),
+		...mapGetters('users/progressions', [
+			'progressionSelectedId',
+			'sessionSelectedAssociativeId',
+			'sessionCompletionCountSelected',
+			'hasSelectedProgressionSession',
+			'hasSelectedSessionCompletionCount',
+		]),
+		userRuleDisplay() {
+			return this.userSelectedUsername;
+		},
+		associativeIdRuleDisplay() {
+			return this.sessionSelectedAssociativeId;
+		},
+		completionCountRuleDisplay() {
+			return this.sessionCompletionCountSelected;
+		},
+		userRule() {
 			return [this.userSelectedId];
 		},
-		progresion() {
-			return [this.progressionSelectedId];
+		associativeIdRule() {
+			return this.sessionSelectedAssociativeId ? [this.sessionSelectedAssociativeId] : null;
 		},
-		associativeId() {
-			return null; // this.associativeIdList
-		},
-		completionCount() {
-			return null;
+		completionCountRule() {
+			return typeof this.sessionCompletionCountSelected === 'number' ? [this.sessionCompletionCountSelected] : null;
 		},
 		rules() {
 			return {
-				userIdList: this.user,
-				progressionIdList: this.progresion,
-				associativeIdList: this.associativeId,
-				minCompletionCount: this.completionCount,
-				maxCompletionCount: this.completionCount,
+				userIdList: this.userRule,
+				associativeIdList: this.associativeIdRule,
+				minCompletionCount: this.associativeIdRule,
+				completionCountList: this.completionCountRule,
 			};
 		},
 	},

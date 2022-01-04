@@ -21,7 +21,10 @@
 					</th>
 				</tr>
 				<tr v-else class="logtype-header">
-					<th>No SIMPLE LOGS corresponding</th>
+					<th>
+						<span>No SIMPLE LOGS corresponding</span>
+						<button class="widget-button small blue right-align" v-on:click="handleRefresh">REFRESH</button>
+					</th>
 				</tr>
 				<tr v-if="hasElements" class="log-identifier-header include-white-space">
 					<th>#</th>
@@ -92,6 +95,7 @@ export default {
 					logLabelList: null,
 					curriculumIdList: null,
 					experimentIdList: null,
+					completionCountList: null,
 					minCompletionCount: null,
 					maxCompletionCount: null,
 					minDate: null,

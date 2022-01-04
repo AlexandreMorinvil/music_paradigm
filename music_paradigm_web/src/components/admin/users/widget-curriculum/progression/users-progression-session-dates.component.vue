@@ -4,16 +4,21 @@
 		<table v-if="hasDatesToShow" class="widget-table">
 			<thead>
 				<tr>
-					<th>#</th>
 					<th>Start Date</th>
 					<th>Completion Date</th>
 				</tr>
 			</thead>
-			<tbody >
-				<tr v-for="(startDates, completionDate, index) in completionStartAssociation" v-bind:key="index">
-					<td>{{ index + 1 }}</td>
-					<td><div v-for="(startDate, subIndex) in startDates" v-bind:key="subIndex"> {{ makeDateDisplay(startDate) }} </div></td>
-					<td class="completion-date">{{ makeDateDisplay(completionDate) }}</td>
+			<tbody>
+				<tr
+					v-for="(startDatesDetails, completionDate, completionCount) in completionStartAssociation"
+					v-bind:key="completionCount"
+					:class="{ selected: isSelectedCompletionCount(completionCount) }"
+					v-on:click="handleCompletionCountSelection(completionCount)"
+				>
+					<td>
+						<div v-for="(startDateDetails, subIndex) in startDatesDetails" v-bind:key="subIndex">{{ makeStartDateDisplay(startDateDetails) }}</div>
+					</td>
+					<td class="completion-date">{{ makeCompletionDateDisplay(completionDate, completionCount) }}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -32,6 +37,7 @@
 <script>
 import '@/styles/widget-template.css';
 import '@/styles/form-template.css';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
 	data() {
@@ -46,11 +52,16 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters('users/progressions', ['sessionCompletionCountSelected']),
+		selectedCompletionCount() {
+			return this.sessionCompletionCountSelected;
+		},
 		hasDatesToShow() {
 			return this.startDates.length > 0 || this.completionDates.length > 0;
 		},
 	},
 	methods: {
+		...mapActions('users/progressions', ['setSelectedSessionCompletionCount', 'unsetSelectedSessionCompletionCount']),
 		takeSession(session) {
 			if (!session || !session.associativeId) {
 				this.unsetSession();
@@ -72,22 +83,40 @@ export default {
 		generateEndStartCoupleStructure() {
 			// Initialize an object where each attribute is a completion date
 			this.completionStartAssociation = {};
+			let startCounter = 0;
 			for (const completionDate of this.completionDates) this.completionStartAssociation[String(completionDate)] = [];
 			this.completionStartAssociation[this.NO_COMPLETION_DATE] = [];
 
 			// Fit the start dates to their associated completion date
 			for (const startDate of this.startDates) {
+				startCounter += 1;
 				const foundCompletionDate = this.completionDates.find((completionDate) => startDate < completionDate);
 				const associatedCompletionDate = foundCompletionDate || this.NO_COMPLETION_DATE;
-				this.completionStartAssociation[String(associatedCompletionDate)].push(startDate);
+				this.completionStartAssociation[String(associatedCompletionDate)].push({ startDate: startDate, startCount: startCounter });
 			}
 
 			// If there is no start date without a completion date, we remove the 'no completion date' entry
 			if (this.completionStartAssociation[this.NO_COMPLETION_DATE].length < 1) delete this.completionStartAssociation[this.NO_COMPLETION_DATE];
 		},
+		makeStartDateDisplay(startDateDetails) {
+			const { startDate, startCount } = startDateDetails;
+			return `(${startCount}) ${this.makeDateDisplay(startDate)}`;
+		},
+		makeCompletionDateDisplay(completionDate, count) {
+			const dateDisplay = this.makeDateDisplay(completionDate);
+			return `(${count}) ${dateDisplay}`;
+		},
 		makeDateDisplay(date) {
 			if (date === this.NO_COMPLETION_DATE) return this.NO_COMPLETION_DATE;
 			else return new Date(date).toLocaleDateString(undefined, this.datesOptions);
+		},
+		handleCompletionCountSelection(count) {
+			console.log('It gets here');
+			if (this.isSelectedCompletionCount(count)) this.unsetSelectedSessionCompletionCount();
+			else this.setSelectedSessionCompletionCount(count);
+		},
+		isSelectedCompletionCount(count) {
+			return count === this.selectedCompletionCount;
 		},
 	},
 	watch: {},

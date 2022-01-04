@@ -13,6 +13,7 @@ function makeLogQueryCriteriaList(rules = null) {
 		logLabelList,
 		curriculumIdList,
 		experimentIdList,
+		completionCountList,
 		minCompletionCount,
 		maxCompletionCount,
 		minDate,
@@ -28,7 +29,7 @@ function makeLogQueryCriteriaList(rules = null) {
 	Object.assign(logCriterias, makeLogLabelCriterias(logLabelList));
 	Object.assign(logCriterias, makeCurriculumCriterias(curriculumIdList));
 	Object.assign(logCriterias, makeExperimentCriterias(experimentIdList));
-	Object.assign(logCriterias, makeCompletionCountCriterias(minCompletionCount, maxCompletionCount));
+	Object.assign(logCriterias, makeCompletionCountCriterias(completionCountList, minCompletionCount, maxCompletionCount));
 	Object.assign(logCriterias, makeDatesCriterias(minDate, maxDate));
 	Object.assign(logCriterias, makeLogsSpecificCriterias(selectedLogIds, excludedLogIds));
 
@@ -79,11 +80,15 @@ function makeLogLabelCriterias(logLabelList = null) {
 	return { logLabelCriterias: criterias };
 }
 
-function makeCompletionCountCriterias(minCompletionCount = null, maxCompletionCount = null) {
-	if (!minCompletionCount && !maxCompletionCount) return {};
+function makeCompletionCountCriterias(completionCountList = null, minCompletionCount = null, maxCompletionCount = null) {
+	if (!completionCountList && !minCompletionCount && !maxCompletionCount) return {};
 	const criterias = {};
 
 	// Assign the criterias
+
+	if (Array.isArray(completionCountList))
+		Object.assign(criterias, { values: completionCountList });
+
 	if (typeof minCompletionCount === 'number')
 		Object.assign(criterias, { min: minCompletionCount });
 

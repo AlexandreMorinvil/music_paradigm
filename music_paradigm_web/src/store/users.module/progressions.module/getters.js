@@ -30,11 +30,11 @@ export default {
 
 	// Selected session
 	sessionSelectedAssociativeId: (state) => {
-		return state.selectedSessionAssociativeId || null;
+		return state.selectedSessionAssociativeId;
 	},
 
 	sessionSelectedAssociativeIdOrdinalNumber: (state) => {
-		return state.selectedSessionAssociativeIdOrdinalNumber || null;
+		return state.selectedSessionAssociativeIdOrdinalNumber;
 	},
 
 	sessionSelected: (state) => {
@@ -43,7 +43,7 @@ export default {
 	},
 
 	sessionCompletionCountSelected: (state) => {
-		return state.selectedCompletionCount || null;
+		return state.selectedCompletionCount;
 	},
 
 	// Experiments progression history of the user
