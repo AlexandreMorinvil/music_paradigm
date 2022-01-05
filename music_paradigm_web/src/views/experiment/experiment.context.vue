@@ -34,6 +34,7 @@ export default {
 	},
 	data() {
 		return {
+			isTimerAllowedToCount: false,
 			hasConlcluded: false,
 			isSpaceBarPressed: false,
 			needsConfirmationToLeave: true,
@@ -41,21 +42,23 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['hasClearBackground', 'hasPrelude', 'isInPrelude', 'isBeyondEnd', 'controlType', 'considerExperimentFinished']),
+		...mapGetters('experiment', ['hasClearBackground', 'hasPrelude', 'isInMainFlow', 'controlType', 'considerExperimentFinished']),
 		isClearVersion() {
 			return this.hasClearBackground;
+		},
+		isTimerRunning() {
+			return this.isInMainFlow && this.isTimerAllowedToCount;
 		},
 	},
 	methods: {
 		...mapActions('experiment', [
 			'initializePrelude',
-			'leavePrelude',
 			'updateState',
 			'goNextStep',
 			'goPreviousInnerStep',
 			'goStepPostSkip',
 			'clearState',
-			'endExperimentByTimeout',
+			'endExperimentByTimeUp',
 			'leaveExperiment',
 		]),
 		...mapActions('keyboard', ['resetPressedKeyboardKeysLogs', 'resetKeyboardTracking']),
@@ -70,18 +73,15 @@ export default {
 			KeyboardEventBus.$emit(keyboardEvents.EVENT_TRACKER_TERMINATE_REQUEST);
 		},
 		handleTimesUp() {
-			this.endExperimentByTimeout();
+			this.endExperimentByTimeUp();
 		},
 		startExperiement() {
 			this.$refs.session.initialize();
 			this.$refs.log.initialize();
 			if (this.hasPrelude) {
 				this.initializePrelude();
-			} else this.displayFirstStep();
-		},
-		displayFirstStep() {
-			this.updateState();
-			this.$refs.status.start();
+			} else this.updateState();
+			this.isTimerAllowedToCount = true;
 		},
 		navigateExperiment() {
 			this.$refs.status.recordTime();
@@ -158,11 +158,11 @@ export default {
 		this.clearState();
 	},
 	watch: {
-		isBeyondEnd() {
-			if (this.isInPrelude) {
-				this.leavePrelude();
-				this.displayFirstStep();
-			}
+		isTimerRunning: {
+			handler: function (shouldBeActive) {
+				if (shouldBeActive) this.$refs.status.start();
+				else this.$refs.status.stop();
+			},
 		},
 		considerExperimentFinished: {
 			immediate: true,

@@ -270,11 +270,12 @@ export default {
 			return logSummary.logLabel;
 		},
 		makeStateDisplay(logSummary) {
-			const { isInPrelude, blockType, blockSubType, index, repetition } = logSummary;
-			const sectionDisplay = isInPrelude ? '(prelude)\n' : '';
+			const { isInPrelude, isInConclusion, blockType, blockSubType, index, repetition } = logSummary;
+			const preludeSectionDisplay = isInPrelude ? '(prelude)\n' : '';
+			const conclusionSectionDisplay = isInConclusion ? '(conclusion)\n' : '';
 			const subTypeDisplay = `${blockType}` + (blockSubType ? `/${blockSubType}` : '');
 			const indexDisplay = `\nindex: ${index}, rep.: ${repetition}`;
-			return sectionDisplay + subTypeDisplay + indexDisplay;
+			return preludeSectionDisplay + conclusionSectionDisplay + subTypeDisplay + indexDisplay;
 		},
 		makeStartCompletionCountDisplay(logSummary) {
 			const { startCount, completionCount } = logSummary;

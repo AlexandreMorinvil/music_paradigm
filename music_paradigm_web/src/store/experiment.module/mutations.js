@@ -1,4 +1,4 @@
-import { blockHandler, cursorHandler, defaultState, experimentHandler, flowSwitcher, stateHandler } from '@/store-helper/experiment.module-helper';
+import { cursorHandler, defaultState, experimentHandler, flowHandler, stateHandler } from '@/store-helper/experiment.module-helper';
 import { routerNavigation } from '@/_helpers';
 
 export default {
@@ -21,11 +21,9 @@ export default {
 		experimentHandler.populateExperimentConstantVariables(state);
 
 		// Initialzie the experiment's content and states
-		experimentHandler.setExperimentPreludeFlow(state);
 		experimentHandler.setExperimentFlow(state);
-		experimentHandler.setExperimentTimeUpState(state); // TODO : Adjust that to Time Up Flow
 		experimentHandler.setExperimentGeneralSettings(state);
-		experimentHandler.setExperimentInitialState(state);
+		experimentHandler.setExperimentInitialRecord(state);
 
 		// Conclude the experiment parsing
 		experimentHandler.concludeExperimentParsing(state);
@@ -55,59 +53,40 @@ export default {
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
-	// Prelude initialization functions
+	// Prelude flow initialization functions
 	initializePrelude: (state) => {
-		flowSwitcher.moveToPreludeFlow(state);
+		flowHandler.moveToPreludeFlow(state);
+		const { flow, cursor, isInitialized, settings } = state;
+		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
-	leavePrelude: (state) => {
-		flowSwitcher.leavePreludeFlow(state);
-	},
-
-	// Prelude initialization functions
-	initializeTimeout: (state) => {
-		// Moving the experiment flow, state and curdsor in a temporary memory to run the timeout flow
-		state.tempMemory.flow = JSON.parse(JSON.stringify(state.flow));
-		state.tempMemory.state = JSON.parse(JSON.stringify(state.state));
-		state.tempMemory.cursor = JSON.parse(JSON.stringify(state.cursor));
-
-		// Set the prelude flow as the experiment to run
-		state.flow = state.timeoutFlow;
-		state.state = defaultState.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
-		state.cursor = cursorHandler.assignCursor(state.flow);
-		state.cursor.flag.isInTimeout = true;
-
-		state.isInitialized = defaultState.IS_FULLY_NOT_INITIALIZED_STATUS();
+	// Conclusion flow initialization functions
+	endExperimentByTimeUp: (state) => {
+		flowHandler.moveToTimesUpConclusionFlow(state);
+		const { flow, cursor, isInitialized, settings } = state;
+		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
 	// Cursor handling
 	moveNextStep: (state) => {
-		const { flow, cursor, isInitialized, settings } = state;
+		let { flow, cursor, isInitialized, settings } = state;
 		cursorHandler.advance(state.state, flow, cursor, isInitialized);
+		({ flow, cursor, isInitialized, settings } = flowHandler.changeFlowIfNeeded(state));
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
 	movePreviousInnerStep: (state) => {
-		const { flow, cursor, isInitialized, settings } = state;
+		let { flow, cursor, isInitialized, settings } = state;
 		cursorHandler.goBack(flow, cursor, isInitialized);
+		({ flow, cursor, isInitialized, settings } = flowHandler.changeFlowIfNeeded(state));
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
 	movePostSkip: (state) => {
-		const { flow, cursor, isInitialized, settings } = state;
+		let { flow, cursor, isInitialized, settings } = state;
 		cursorHandler.skip(state.state, flow, cursor, isInitialized);
+		({ flow, cursor, isInitialized, settings } = flowHandler.changeFlowIfNeeded(state));
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
-	},
-
-	// End functions
-	endExperimentByTimeout: (state) => {
-		if (state.state.type === 'end') return;
-		state.cursor.flag.isInTimeUp = true;
-		const { cursor, settings } = state;
-		const timeoutBlock = blockHandler.getTimeUpBlock();
-		const isInitialized = defaultState.IS_FULLY_NOT_INITIALIZED_STATUS();
-		stateHandler.imposeState(state.state, timeoutBlock, cursor, isInitialized, settings);
-		state.state.record.timeIndicated = 0;
 	},
 
 	leaveExperiment: () => {

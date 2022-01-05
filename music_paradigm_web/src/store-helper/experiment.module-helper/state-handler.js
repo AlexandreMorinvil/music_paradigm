@@ -6,7 +6,6 @@ import { routerNavigation } from '@/_helpers';
 
 export default {
 	initializeStartState,
-	imposeState,
 	updateState,
 	updateStateOnSkip,
 };
@@ -21,14 +20,9 @@ function initializeStartState(stateToInitialize, initialState = null) {
 	}
 }
 
-function imposeState(currentState, targetState, cursor, isInitialized, generalSettings) {
-	transitionState(currentState, targetState, cursor, isInitialized, generalSettings);
-}
-
 function updateState(currentState, flow, cursor, isInitialized, generalSettings) {
 	// Get the target state and if no block is specified, we abort the operation
 	const targetState = blockHandler.getCurrentBlock(flow, cursor);
-	if (!targetState) return;
 	transitionState(currentState, targetState, cursor, isInitialized, generalSettings);
 }
 
@@ -48,7 +42,6 @@ function transitionState(currentState, targetState, cursor, isInitialized, gener
 	if (!isInitialized.content) updateStateContent(currentState, targetState, cursor, isInitialized);
 	if (!isInitialized.options) updateStateOptionsContent(currentState, targetState, isInitialized);
 }
-
 
 // Functions to perform the state transition
 function updateRoute(currentState, targetState, isInitialized) {
@@ -127,42 +120,42 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
 	currentState.settings = {
-		anyPianoKey: typeof anyPianoKey === 'boolean' ? anyPianoKey : generalSettings.anyPianoKey,
-		enableSoundFlag: typeof enableSoundFlag === 'boolean' ? enableSoundFlag : generalSettings.enableSoundFlag,
-		playingMode: typeof playingMode === 'string' ? playingMode : generalSettings.playingMode,
-		timeoutInSeconds: typeof timeoutInSeconds === 'number' ? timeoutInSeconds : 0,
-		footnote: typeof footnote === 'boolean' ? footnote : generalSettings.footnote,
-		footnoteType: typeof footnoteType === 'string' ? footnoteType : generalSettings.footnoteType,
-		logFlag: typeof logFlag === 'boolean' ? logFlag : generalSettings.logFlag,
-		hideFeedbackSmiley: typeof hideFeedbackSmiley === 'boolean' ? hideFeedbackSmiley : generalSettings.hideFeedbackSmiley,
-		skipStepButton: typeof skipStepButton === 'string' ? skipStepButton : '',
-		skipStepButtonMessage: typeof skipStepButtonMessage === 'string' ? skipStepButtonMessage : '',
-		successFeedbackMessage: typeof successFeedbackMessage === 'string' ? successFeedbackMessage : '',
-		failureFeedbackMessage: typeof failureFeedbackMessage === 'string' ? failureFeedbackMessage : '',
-		footnoteMessage: typeof footnoteMessage === 'string' ? footnoteMessage : '',
-		melodyRepetition: typeof melodyRepetition === 'number' ? melodyRepetition : 1,
-		successesForSkipLoop: typeof successesForSkipLoop === 'number' ? successesForSkipLoop : generalSettings.successesForSkipLoop,
-		isSkipStepButtonInFootnote: typeof isSkipStepButtonInFootnote === 'boolean' ? isSkipStepButtonInFootnote : generalSettings.isSkipStepButtonInFootnote,
-		isGoBackButtonInFootnote: typeof isGoBackButtonInFootnote === 'boolean' ? isGoBackButtonInFootnote : generalSettings.isGoBackButtonInFootnote,
-		startSignal: typeof startSignal === 'number' ? startSignal : 0,
-		feedbackNumerical: typeof feedbackNumerical === 'boolean' ? feedbackNumerical : false,
-		interactivePianoFirstOctave: typeof interactivePianoFirstOctave === 'number' ? interactivePianoFirstOctave : generalSettings.interactivePianoFirstOctave,
-		skipLoopOnLastRepetition: typeof skipLoopOnLastRepetition === 'boolean' ? skipLoopOnLastRepetition : false,
-		canGoBack: typeof canGoBack === 'boolean' ? canGoBack : false,
-		goBackStepButton: typeof goBackStepButton === 'string' ? goBackStepButton : '',
-		goBackButtonMessage: typeof goBackButtonMessage === 'string' ? goBackButtonMessage : '',
-		checkpoint: typeof checkpoint === 'string' ? checkpoint : false,
-		strictPlay: typeof strictPlay === 'boolean' ? strictPlay : false,
-		skipIfNotMetSuccessGoal: typeof skipIfNotMetSuccessGoal === 'number' ? skipIfNotMetSuccessGoal : 0,
-		surveyOptionsAreRadio: typeof surveyOptionsAreRadio === 'boolean' ? surveyOptionsAreRadio : true,
-		surveyAreAnswersMandatory: typeof surveyAreAnswersMandatory === 'boolean' ? surveyAreAnswersMandatory : true,
-		writtingMaxCharacters: typeof writtingMaxCharacters === 'number' ? writtingMaxCharacters : 0,
-		writtingMinCharacters: typeof writtingMinCharacters === 'number' ? writtingMinCharacters : 100,
-		writtingIsNumber: typeof writtingIsNumber === 'boolean' ? writtingIsNumber : false,
-		writtingIsMultiline: typeof writtingIsMultiline === 'boolean' ? writtingIsMultiline : true,
-		writtingTextPlaceHolder: typeof writtingTextPlaceHolder === 'string' ? writtingTextPlaceHolder : '',
-		questionType: typeof questionType === 'string' ? questionType : generalSettings.questionType,
-		areAnswerOptionsVertical: typeof areAnswerOptionsVertical === 'boolean' ? areAnswerOptionsVertical : false,
+		anyPianoKey: 					typeof anyPianoKey === 'boolean' 				? anyPianoKey : generalSettings.anyPianoKey,
+		enableSoundFlag: 				typeof enableSoundFlag === 'boolean' 			? enableSoundFlag : generalSettings.enableSoundFlag,
+		playingMode: 					typeof playingMode === 'string' 				? playingMode : generalSettings.playingMode,
+		timeoutInSeconds: 				typeof timeoutInSeconds === 'number' 			? timeoutInSeconds : 0,
+		footnote: 						typeof footnote === 'boolean' 					? footnote : generalSettings.footnote,
+		footnoteType: 					typeof footnoteType === 'string' 				? footnoteType : generalSettings.footnoteType,
+		logFlag: 						typeof logFlag === 'boolean' 					? logFlag : generalSettings.logFlag,
+		hideFeedbackSmiley: 			typeof hideFeedbackSmiley === 'boolean' 		? hideFeedbackSmiley : generalSettings.hideFeedbackSmiley,
+		skipStepButton: 				typeof skipStepButton === 'string' 				? skipStepButton : '',
+		skipStepButtonMessage: 			typeof skipStepButtonMessage === 'string' 		? skipStepButtonMessage : '',
+		successFeedbackMessage: 		typeof successFeedbackMessage === 'string' 		? successFeedbackMessage : '',
+		failureFeedbackMessage: 		typeof failureFeedbackMessage === 'string' 		? failureFeedbackMessage : '',
+		footnoteMessage: 				typeof footnoteMessage === 'string' 			? footnoteMessage : '',
+		melodyRepetition: 				typeof melodyRepetition === 'number' 			? melodyRepetition : 1,
+		successesForSkipLoop: 			typeof successesForSkipLoop === 'number' 		? successesForSkipLoop : generalSettings.successesForSkipLoop,
+		isSkipStepButtonInFootnote: 	typeof isSkipStepButtonInFootnote === 'boolean' ? isSkipStepButtonInFootnote : generalSettings.isSkipStepButtonInFootnote,
+		isGoBackButtonInFootnote: 		typeof isGoBackButtonInFootnote === 'boolean' 	? isGoBackButtonInFootnote : generalSettings.isGoBackButtonInFootnote,
+		startSignal: 					typeof startSignal === 'number' 				? startSignal : 0,
+		feedbackNumerical: 				typeof feedbackNumerical === 'boolean' 			? feedbackNumerical : false,
+		interactivePianoFirstOctave: 	typeof interactivePianoFirstOctave === 'number' ? interactivePianoFirstOctave : generalSettings.interactivePianoFirstOctave,
+		skipLoopOnLastRepetition: 		typeof skipLoopOnLastRepetition === 'boolean' 	? skipLoopOnLastRepetition : false,
+		canGoBack: 						typeof canGoBack === 'boolean' 					? canGoBack : false,
+		goBackStepButton: 				typeof goBackStepButton === 'string' 			? goBackStepButton : '',
+		goBackButtonMessage: 			typeof goBackButtonMessage === 'string' 		? goBackButtonMessage : '',
+		checkpoint: 					typeof checkpoint === 'string' 					? checkpoint : false,
+		strictPlay: 					typeof strictPlay === 'boolean' 				? strictPlay : false,
+		skipIfNotMetSuccessGoal: 		typeof skipIfNotMetSuccessGoal === 'number' 	? skipIfNotMetSuccessGoal : 0,
+		surveyOptionsAreRadio: 			typeof surveyOptionsAreRadio === 'boolean' 		? surveyOptionsAreRadio : true,
+		surveyAreAnswersMandatory: 		typeof surveyAreAnswersMandatory === 'boolean' 	? surveyAreAnswersMandatory : true,
+		writtingMaxCharacters: 			typeof writtingMaxCharacters === 'number' 		? writtingMaxCharacters : 0,
+		writtingMinCharacters: 			typeof writtingMinCharacters === 'number' 		? writtingMinCharacters : 100,
+		writtingIsNumber: 				typeof writtingIsNumber === 'boolean' 			? writtingIsNumber : false,
+		writtingIsMultiline: 			typeof writtingIsMultiline === 'boolean' 		? writtingIsMultiline : true,
+		writtingTextPlaceHolder: 		typeof writtingTextPlaceHolder === 'string' 	? writtingTextPlaceHolder : '',
+		questionType: 					typeof questionType === 'string' 				? questionType : generalSettings.questionType,
+		areAnswerOptionsVertical: 		typeof areAnswerOptionsVertical === 'boolean' 	? areAnswerOptionsVertical : false,
 	};
 
 	// Indicate that the state (current block's settings) was already initialized

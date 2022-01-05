@@ -108,6 +108,7 @@ function makeSimpleLogBlockGeneralInformation() {
 		innerStepIndex: gettersExperiment.currentInnerStepIndex(stateExperiment),
 		repetition: gettersExperiment.currentRepetition(stateExperiment),
 		isInPrelude: gettersExperiment.isInPrelude(stateExperiment),
+		isInConclusion: gettersExperiment.isInConclusion(stateExperiment),
 		timestamp: Date.now(),
 	};
 }
@@ -221,6 +222,7 @@ function makeThoroughLogBlockGeneralInformation() {
 		innerStepIndex: gettersExperiment.currentInnerStepIndex(stateExperiment),
 		repetition: gettersExperiment.currentRepetition(stateExperiment),
 		isInPrelude: gettersExperiment.isInPrelude(stateExperiment),
+		isInConclusion: gettersExperiment.isInConclusion(stateExperiment),
 		timestamp: Date.now(),
 
 		textContent: gettersExperiment.textContent(stateExperiment),

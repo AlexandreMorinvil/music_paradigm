@@ -129,20 +129,25 @@ const schema = new Schema({
     hasClearBackground: { type: Boolean, default: undefined },
     hasSound: { type: Boolean, default: true },
 
+    flow: {
+        default: [],
+        type: [stateSchema],
+        required: true
+    },
     flowPrelude: {
         default: [],
         type: [stateSchema],
         required: false,
     },
+    flowConclusion: {
+        default: [],
+        type: [stateSchema],
+        required: false
+    },
     timeUpState: {
         default: undefined,
         type: stateSchema,
         required: false
-    },
-    flow: {
-        default: [],
-        type: [stateSchema],
-        required: true
     },
     variables: [
         {
