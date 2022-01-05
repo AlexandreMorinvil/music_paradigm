@@ -152,7 +152,6 @@ function DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES() {
 		flag: {
 			isInPrelude: false,														// Indicator of whether or not the cursor is pointing at the prelude flow
 			isInConclusion: false,													// Indicator of whether or not the cursor is pointing at the conclusion flow
-			isInTimeUp: false, 														// Indicator of whether or not the time limit is reached
 			isBeyondEnd: false, 													// Indicator of whether the index as reached the end of the flow (is checked before moving the cursor forward)
 			isInSkipableChain: false, 												// Indicator of whether the block must be skipped upon a skip request
 			isInSkipIfNotMetSuccessGoalChain: false,								// Indicator of whether the bloc is in a chain of blocs to skip if a "skipIfNotMetSuccessGoal" situation is encountered
@@ -242,6 +241,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 		// Session specific informations
 		record: {
 			logLabel: DEFAULT_LOG_LABEL,											// Active label that will be associated to the logs
+			isInTimeUp: false, 														// Indicator of whether or not the time limit is reached
 			sucesses: 0, 															// Number of successes recorded
 			successesInLoop: 0, 													// Number of successes recorded in the loop
 			previousSucessesInLoop: 0,												// Number of sucesses in loop from the previous group of states

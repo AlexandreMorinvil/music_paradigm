@@ -2,10 +2,6 @@ import { cursorHandler } from '@/store-helper/experiment.module-helper';
 
 // Getters for the experiment flow's information
 export default {
-	isInTimeUp: (state) => {
-		return state.cursor.flag.isInTimeUp;
-	},
-
 	isInMainFlow: (state) => {
 		return !state.cursor.flag.isInPrelude && !state.cursor.flag.isInConclusion;
 	},

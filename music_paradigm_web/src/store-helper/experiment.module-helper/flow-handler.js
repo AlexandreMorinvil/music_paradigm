@@ -101,7 +101,7 @@ function moveToConclusionFlow(state) {
 function moveToTimesUpConclusionFlow(state) {
 
 	// Get the "time's up" block
-	state.cursor.flag.isInTimeUp = true;
+	state.state.record.isInTimeUp = true;
 	state.state.record.timeIndicated = 0;
 	const hasBlocksAfterTimeoutBlock = state.flowConclusion.length > 0;
 	const timeUpBlock = blockHandler.getTimeUpBlock(hasBlocksAfterTimeoutBlock);
