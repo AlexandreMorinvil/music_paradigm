@@ -172,6 +172,24 @@ export default {
 			});
 	},
 
+	downloadUserThoroughLogUnwoundCSV({ commit, dispatch }, rules) {
+		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+		commit('indicateIsDownloading');
+		return logsApi
+			.getUserThoroughLogUnwoundCsv(criterias)
+			.then(
+				() => {
+					dispatch('alert/setInformationAlert', 'Thorough log unwound CSV file generated and retreived sucessfully', { root: true });
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `User thorough logs unwound CSV download failed : ${error.message}`, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateIsDownloadingEnd');
+			});
+	},
+
 	// JSON fetching
 	downloadUserSimpleLogJson({ commit, dispatch }, rules) {
 		const criterias = logsQuery.makeLogQueryCriteriaList(rules);

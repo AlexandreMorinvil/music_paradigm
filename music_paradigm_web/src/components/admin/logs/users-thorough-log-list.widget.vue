@@ -13,7 +13,8 @@
 							<span v-if="isSelectionModeActivated" class="generating-message include-white-space"> - Select the logs to keep</span>
 							<span v-if="isExclusionModeActivated" class="generating-message include-white-space"> - Select the logs to exclude</span>
 						</span>
-						<button class="widget-button small blue right-align" v-on:click="handleCsvDownload">Download CSV</button>
+						<button class="widget-button small green right-align" v-on:click="handleUnwoudCsvDownload">Download Unwound CSV</button>
+						<button class="widget-button small blue right-align" v-on:click="handleCsvDownload">Download Normal CSV</button>
 						<button class="widget-button small turquoise right-align" v-on:click="handleJsonDownload">Download JSON</button>
 						<button class="widget-button small green right-align" v-on:click="toggleSelectionMode">{{ selectionModeButtonText }}</button>
 						<button class="widget-button small orange right-align" v-on:click="toggleExclusionMode">{{ exclusionModeButtonText }}</button>
@@ -169,8 +170,9 @@ export default {
 			'getUserThoroughLogSummaryList',
 			'clearUserThoroughLogSummaryList',
 			'clearSelectedUserThoroughLog',
-			'downloadUserThoroughLogCSV',
 			'downloadUserThoroughLogJson',
+			'downloadUserThoroughLogCSV',
+			'downloadUserThoroughLogUnwoundCSV',
 		]),
 		refresh() {
 			this.clearSelectedUserThoroughLog();
@@ -178,6 +180,10 @@ export default {
 			this.isSelectionModeActivated = false;
 			this.isExclusionModeActivated = false;
 			this.emptySpecificLogsRules();
+		},
+		handleUnwoudCsvDownload() {
+			if (this.isDownloading) return;
+			this.downloadUserThoroughLogUnwoundCSV(this.completeRules);
 		},
 		handleCsvDownload() {
 			if (this.isDownloading) return;
@@ -323,7 +329,8 @@ export default {
 }
 
 .widget-button {
-	width: 130px;
+	width: 108px;
+	height: 80px;
 	border-radius: 0;
 	margin: 0;
 }

@@ -366,7 +366,7 @@ function validateAttributeType(key, value) {
 			break;
 
 		// Object
-		case 'timeUpState': // TODO : Remove that
+		case 'timeUpState':
 		case 'lastRepetitionVersion':
 		case 'succeeededForSkipLoopVersion':
 			if (!(typeof value === 'object') || Array.isArray(value)) {
