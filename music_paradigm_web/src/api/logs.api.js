@@ -1,5 +1,5 @@
 import { authHeader, url } from '@/_helpers';
-import { csvFileResponseHandler, defaultResponseHandler, jsonFileResponseHandler } from './default-response-handler';
+import { csvFileResponseHandler, defaultResponseHandler, jsonFileResponseHandler } from './response-handler';
 
 export const logsApi = {
 	getSpecificUserSimpleLog,

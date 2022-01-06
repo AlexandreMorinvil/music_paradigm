@@ -102,7 +102,8 @@ export default {
 	border-style: solid;
 	background-color: rgb(25, 115, 0);
 	border-color: rgb(20, 110, 0);
-	color: rgba(255, 255, 255, 0.85)
+	color: rgba(255, 255, 255, 0.85);
+	box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1);
 }
 
 .details-container-color {
