@@ -69,12 +69,6 @@ const schema = new Schema(
 );
 
 // Virtual properties
-schema.virtual('isCompleted').get(function () {
-    let isCompleted = true;
-    this.experiments.forEach(experiment => { isCompleted &= experiment.isCompleted });
-    return isCompleted
-});
-
 schema.virtual('startTimePassed').get(function () {
     return (new Date()).getTime() - (new Date(this.startTime)).getTime()
 });

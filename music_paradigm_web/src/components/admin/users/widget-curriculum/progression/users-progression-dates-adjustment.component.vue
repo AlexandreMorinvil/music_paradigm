@@ -2,12 +2,6 @@
 	<div class="inner-inner-widget">
 		<tbody>
 			<tr>
-				<td>Progression Duration :</td>
-				<td>{{ isCompletedDisplay }}</td>
-				<td>{{ duration }}</td>
-				<td> {{ adjustedDuration }} </td>
-			</tr>
-			<tr>
 				<td>Start Date :</td>
 				<td>{{ startTime }}</td>
 				<td>{{ startTimePassed }}</td>
@@ -22,6 +16,12 @@
 					/>
 					day(s) adjustment {{ adjustedStartDate }})
 				</td>
+			</tr>
+			<tr>
+				<td>Progression Duration :</td>
+				<td></td>
+				<td>{{ duration }}</td>
+				<td>{{ adjustedDuration }}</td>
 			</tr>
 			<tr>
 				<td>Last Progression Date :</td>
@@ -54,7 +54,6 @@ export default {
 			'progressionSelectedLastProgressionTimePassed',
 			'progressionSelectedAdjustmentStartTimeInDays',
 			'progressionSelectedDuration',
-			'progressionSelectedIsCompleted',
 		]),
 		wasAdjustmentModified() {
 			return Number(this.timeSinceStartAdjustment) !== Number(this.progressionSelectedAdjustmentStartTimeInDays);
@@ -78,10 +77,6 @@ export default {
 		duration() {
 			return this.makeDateTimeLapsedDisplay(this.progressionSelectedDuration, false);
 		},
-		isCompletedDisplay() {
-			if (this.progressionSelectedIsCompleted) return 'COMPLETE';
-			else return 'CONTINUING';
-		},
 		hasTimeSinceStartAdjustment() {
 			return Number(this.timeSinceStartAdjustment) !== 0;
 		},
@@ -95,7 +90,9 @@ export default {
 			if (!this.hasTimeSinceStartAdjustment || !this.progressionSelectedDuration) return '';
 			const daysOffsetInMilliseconds = this.timeSinceStartAdjustment * (1000 * 60 * 60 * 24);
 			const adjustedDuration = this.progressionSelectedDuration + daysOffsetInMilliseconds;
-			return `(${this.makeDateTimeLapsedDisplay(adjustedDuration, false)} with adjustment)`;
+			const durationDisplay = this.makeDateTimeLapsedDisplay(adjustedDuration, false);
+			if (adjustedDuration < 0) return `(negative ${durationDisplay} with adjustment)`;
+			return `(${durationDisplay} with adjustment)`;
 		},
 	},
 	methods: {

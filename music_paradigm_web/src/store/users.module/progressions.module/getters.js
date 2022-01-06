@@ -32,10 +32,6 @@ export default {
 		return state.selectedUserProgression ? state.selectedUserProgression.duration : 0;
 	},
 
-	progressionSelectedIsCompleted: (state) => {
-		return state.selectedUserProgression ? state.selectedUserProgression.isCompleted : false;
-	},
-
 	// Selected session
 	sessionSelectedAssociativeId: (state) => {
 		return state.selectedSessionAssociativeId;
