@@ -1,28 +1,36 @@
 <template>
-	<tbody>
-		<tr>
-			<td>Start Date :</td>
-			<td>{{ startTime }}</td>
-			<td>{{ startTimePassed }}</td>
-			<td>
-				(+
-				<input
-					type="number"
-					v-model="timeSinceStartAdjustment"
-					name="start-time-adjustment"
-					autocomplete="new-start-time-adjustment"
-					class="start-time-adjustment-input"
-				/>
-				day(s) adjustment {{ adjustedStartDate }})
-			</td>
-		</tr>
-		<tr>
-			<td>Last Progression Date :</td>
-			<td>{{ lastProgressionDate }}</td>
-			<td>{{ lastProgressionTimePassed }}</td>
-			<td></td>
-		</tr>
-	</tbody>
+	<div class="inner-inner-widget">
+		<tbody>
+			<tr>
+				<td>Duration :</td>
+				<td>{{ isCompletedDisplay }}</td>
+				<td>{{ duration }}</td>
+				<td> {{ adjustedDuration }} </td>
+			</tr>
+			<tr>
+				<td>Start Date :</td>
+				<td>{{ startTime }}</td>
+				<td>{{ startTimePassed }}</td>
+				<td>
+					(+
+					<input
+						type="number"
+						v-model="timeSinceStartAdjustment"
+						name="start-time-adjustment"
+						autocomplete="new-start-time-adjustment"
+						class="start-time-adjustment-input"
+					/>
+					day(s) adjustment {{ adjustedStartDate }})
+				</td>
+			</tr>
+			<tr>
+				<td>Last Progression Date :</td>
+				<td>{{ lastProgressionDate }}</td>
+				<td>{{ lastProgressionTimePassed }}</td>
+				<td></td>
+			</tr>
+		</tbody>
+	</div>
 </template>
 
 <script>
@@ -45,6 +53,8 @@ export default {
 			'progressionSelectedLastProgressionDate',
 			'progressionSelectedLastProgressionTimePassed',
 			'progressionSelectedAdjustmentStartTimeInDays',
+			'progressionSelectedDuration',
+			'progressionSelectedIsCompleted',
 		]),
 		wasAdjustmentModified() {
 			return Number(this.timeSinceStartAdjustment) !== Number(this.progressionSelectedAdjustmentStartTimeInDays);
@@ -54,20 +64,38 @@ export default {
 			else return new Date(this.progressionSelectedStartTime).toLocaleDateString(undefined, this.datesOptions);
 		},
 		startTimePassed() {
-			return this.makeDateTimeLapsedDisplay(this.progressionSelectedStartTime, this.progressionSelectedStartTimePassed);
+			if (!this.progressionSelectedStartTime) return '---';
+			return this.makeDateTimeLapsedDisplay(this.progressionSelectedStartTimePassed);
 		},
 		lastProgressionDate() {
 			if (!this.progressionSelectedLastProgressionDate) return 'Never';
 			else return new Date(this.progressionSelectedLastProgressionDate).toLocaleDateString(undefined, this.datesOptions);
 		},
 		lastProgressionTimePassed() {
-			return this.makeDateTimeLapsedDisplay(this.progressionSelectedLastProgressionDate, this.progressionSelectedLastProgressionTimePassed);
+			if (!this.progressionSelectedLastProgressionDate) return '---';
+			return this.makeDateTimeLapsedDisplay(this.progressionSelectedLastProgressionTimePassed);
+		},
+		duration() {
+			return this.makeDateTimeLapsedDisplay(this.progressionSelectedDuration, false);
+		},
+		isCompletedDisplay() {
+			if (this.progressionSelectedIsCompleted) return 'COMPLETE';
+			else return 'CONTINUING';
+		},
+		hasTimeSinceStartAdjustment() {
+			return Number(this.timeSinceStartAdjustment) !== 0;
 		},
 		adjustedStartDate() {
-			if (Number(this.timeSinceStartAdjustment) === 0 || !this.progressionSelectedStartTime) return '';
+			if (!this.hasTimeSinceStartAdjustment || !this.progressionSelectedStartTime) return '';
 			const daysOffsetInMilliseconds = this.timeSinceStartAdjustment * (1000 * 60 * 60 * 24);
 			const adjustedTimePassed = this.progressionSelectedStartTimePassed + daysOffsetInMilliseconds;
-			return ' = ' + this.makeDateTimeLapsedDisplay(true, adjustedTimePassed);
+			return ' = ' + this.makeDateTimeLapsedDisplay(adjustedTimePassed);
+		},
+		adjustedDuration() {
+			if (!this.hasTimeSinceStartAdjustment || !this.progressionSelectedDuration) return '';
+			const daysOffsetInMilliseconds = this.timeSinceStartAdjustment * (1000 * 60 * 60 * 24);
+			const adjustedDuration = this.progressionSelectedDuration + daysOffsetInMilliseconds;
+			return `(${this.makeDateTimeLapsedDisplay(adjustedDuration, false)} with adjustment)`;
 		},
 	},
 	methods: {
@@ -89,41 +117,42 @@ export default {
 			const minutes = Math.floor(Math.abs(durationLeft / (1000 * 60)));
 			durationLeft %= 1000 * 60;
 			const seconds = Math.floor(Math.abs(durationLeft / 1000));
-			return { isPositive: isPositive,  weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds };
+			return { isPositive: isPositive, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds };
 		},
-		makeDateTimeLapsedDisplay(referenceDate, durationInMilliseconds) {
-			if (!referenceDate) return '---';
+		makeDateTimeLapsedDisplay(durationInMilliseconds, mustAppendPreposition = true) {
 			const { isPositive, weeks, days, hours, minutes, seconds } = this.getParsedDuration(durationInMilliseconds);
 			let timeLapsed = '';
 			let elementsCount = 0;
 			const maxElements = this.MAX_ELEMENTS_TO_DURATION;
 			let includesLongerDuration = false;
-			if ((weeks > 0) && (elementsCount < maxElements)) {
+			if (weeks > 0 && elementsCount < maxElements) {
 				timeLapsed += String(weeks) + (weeks === 1 ? ' week ' : ' weeks ');
 				includesLongerDuration = true;
 				elementsCount += 1;
 			}
-			if ((includesLongerDuration || days > 0) && (elementsCount < maxElements)) {
+			if ((includesLongerDuration || days > 0) && elementsCount < maxElements) {
 				timeLapsed += String(days) + (days === 1 ? ' day ' : ' days ');
 				includesLongerDuration = true;
 				elementsCount += 1;
 			}
-			if ((includesLongerDuration || hours > 0) && (elementsCount < maxElements)) {
+			if ((includesLongerDuration || hours > 0) && elementsCount < maxElements) {
 				timeLapsed += String(hours) + ' h. ';
 				includesLongerDuration = true;
 				elementsCount += 1;
 			}
-			if ((includesLongerDuration || minutes > 0) && (elementsCount < maxElements)) {
+			if ((includesLongerDuration || minutes > 0) && elementsCount < maxElements) {
 				timeLapsed += String(minutes) + ' min. ';
 				includesLongerDuration = true;
 				elementsCount += 1;
 			}
-			if ((includesLongerDuration || seconds > 0) && (elementsCount < maxElements)) {
+			if ((includesLongerDuration || seconds > 0) && elementsCount < maxElements) {
 				timeLapsed += String(seconds) + ' sec. ';
 				elementsCount += 1;
 			}
-			if (isPositive) timeLapsed += 'ago';
-			else timeLapsed = 'in ' + timeLapsed;
+			if (mustAppendPreposition) {
+				if (isPositive) timeLapsed += 'ago';
+				else timeLapsed = 'in ' + timeLapsed;
+			}
 			return timeLapsed;
 		},
 	},

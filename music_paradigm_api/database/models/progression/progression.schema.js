@@ -69,12 +69,26 @@ const schema = new Schema(
 );
 
 // Virtual properties
-schema.virtual('startTimePassed').get(function() {
+schema.virtual('isCompleted').get(function () {
+    let isCompleted = true;
+    this.experiments.forEach(experiment => { isCompleted &= experiment.isCompleted });
+    return isCompleted
+});
+
+schema.virtual('startTimePassed').get(function () {
     return (new Date()).getTime() - (new Date(this.startTime)).getTime()
 });
 
-schema.virtual('lastProgessionTimePassed').get(function() {
+schema.virtual('lastProgessionTimePassed').get(function () {
     return (new Date()).getTime() - (new Date(this.lastProgressionDate)).getTime()
+});
+
+schema.virtual('duration').get(function () {
+    // If it is completed, we calculate from the start to the last progression date
+    if (this.isCompleted) return (new Date(this.lastProgressionDate)).getTime() - (new Date(this.startTime)).getTime();
+
+    // If it is not completed, we calculate from the start to now
+    else return (new Date()).getTime() - (new Date(this.startTime)).getTime();
 });
 
 schema.set('toJSON', { virtuals: true });
