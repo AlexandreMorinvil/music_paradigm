@@ -126,7 +126,6 @@ function makeSimpleLogBlockPerformanceInformation() {
 		case 'piano':
 			Object.assign(performanceLog, gettersPiano.pianoSimpleLogSummary(statePiano));
 			Object.assign(performanceLog, gettersPiano.pianoSimpleLogPreprocesed(statePiano));
-			performanceLog.grades = gettersEvaluation.grades(stateEvaluation);
 			break;
 		case 'keyboard':
 			Object.assign(performanceLog, gettersKeyboard.keyboardSimpleLogSummary(stateKeyboard));
@@ -137,7 +136,7 @@ function makeSimpleLogBlockPerformanceInformation() {
 	}
 
 	// Include the grades if it's a feedback state or a playing state
-	if (['playing', 'feedback'].includes(blockType)) Object.assign(performanceLog, gettersEvaluation.grades(stateEvaluation));
+	if (['playing', 'feedback'].includes(blockType)) performanceLog.grades = gettersEvaluation.grades(stateEvaluation);
 
 	return performanceLog;
 }
@@ -255,7 +254,7 @@ function makeSimpleBlockPerformanceInformation() {
 	Object.assign(performanceLog, gettersKeyboard.keyboardSimpleLogPreprocesed(stateKeyboard));
 
 	// Include the grades if it's a feedback state or a playing state
-	if (['playing', 'feedback'].includes(blockType)) Object.assign(performanceLog, gettersEvaluation.grades(stateEvaluation));
+	if (['playing', 'feedback'].includes(blockType)) performanceLog.grades = gettersEvaluation.grades(stateEvaluation);
 
 	return performanceLog;
 }
