@@ -118,8 +118,10 @@ function makeSimpleLogBlockGeneralInformation() {
  * @returns {Simple_Log_Block_Performance_Information}
  */
 function makeSimpleLogBlockPerformanceInformation() {
+	const blockType = gettersExperiment.currentStateType(stateExperiment);
 	const controlType = gettersExperiment.controlType(stateExperiment);
 	const performanceLog = {};
+
 	switch (controlType) {
 		case 'piano':
 			Object.assign(performanceLog, gettersPiano.pianoSimpleLogSummary(statePiano));
@@ -133,6 +135,10 @@ function makeSimpleLogBlockPerformanceInformation() {
 		default:
 			break;
 	}
+
+	// Include the grades if it's a feedback state or a playing state
+	if (['playing', 'feedback'].includes(blockType)) Object.assign(performanceLog, gettersEvaluation.grades(stateEvaluation));
+
 	return performanceLog;
 }
 
@@ -236,12 +242,21 @@ function makeThoroughLogBlockGeneralInformation() {
  * @returns {Thorough_Log_Block_Performance_Information}
  */
 function makeSimpleBlockPerformanceInformation() {
+	const blockType = gettersExperiment.currentStateType(stateExperiment);
 	const controlType = gettersExperiment.controlType(stateExperiment);
 	const performanceLog = {};
+
+	// Include the piano information if the experiment had the piano control
 	if (controlType === 'piano') Object.assign(performanceLog, gettersPiano.pianoSimpleLogSummary(statePiano));
 	if (controlType === 'piano') Object.assign(performanceLog, gettersPiano.pianoSimpleLogPreprocesed(statePiano));
+
+	// Systematically include the keyboard input
 	Object.assign(performanceLog, gettersKeyboard.keyboardSimpleLogSummary(stateKeyboard));
 	Object.assign(performanceLog, gettersKeyboard.keyboardSimpleLogPreprocesed(stateKeyboard));
+
+	// Include the grades if it's a feedback state or a playing state
+	if (['playing', 'feedback'].includes(blockType)) Object.assign(performanceLog, gettersEvaluation.grades(stateEvaluation));
+
 	return performanceLog;
 }
 

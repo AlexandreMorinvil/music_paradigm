@@ -15,9 +15,15 @@
 						</span>
 						<button class="widget-button small blue right-align" v-on:click="handleCsvDownload">Download CSV</button>
 						<button class="widget-button small turquoise right-align" v-on:click="handleJsonDownload">Download JSON</button>
-						<button class="widget-button small green right-align" v-on:click="toggleSelectionMode">{{ selectionModeButtonText }}</button>
-						<button class="widget-button small orange right-align" v-on:click="toggleExclusionMode">{{ exclusionModeButtonText }}</button>
-						<button class="widget-button small blue right-align" v-on:click="handleRefresh">{{ refreshButtonText }}</button>
+						<button class="widget-button small right-align" :class="isSelectionModeActivated ? 'red' : 'green'" v-on:click="toggleSelectionMode">
+							{{ selectionModeButtonText }}
+						</button>
+						<button class="widget-button small right-align" :class="isExclusionModeActivated ? 'red' : 'orange'" v-on:click="toggleExclusionMode">
+							{{ exclusionModeButtonText }}
+						</button>
+						<button class="widget-button small right-align" :class="hasSelectedLog ? 'turquoise' : 'blue'" v-on:click="handleRefresh">
+							{{ refreshButtonText }}
+						</button>
 					</th>
 				</tr>
 				<tr v-else class="logtype-header">
