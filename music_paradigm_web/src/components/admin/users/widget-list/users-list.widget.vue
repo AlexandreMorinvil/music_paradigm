@@ -15,7 +15,7 @@
 						<th>Curriculum</th>
 						<th>Start Date</th>
 						<th>Last Advance</th>
-						<th>Duration</th>
+						<th>Progression<br />Duration</th>
 						<th>Reached</th>
 						<th>Actions</th>
 					</tr>

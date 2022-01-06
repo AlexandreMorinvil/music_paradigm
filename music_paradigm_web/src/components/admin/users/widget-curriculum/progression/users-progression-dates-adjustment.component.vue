@@ -2,7 +2,7 @@
 	<div class="inner-inner-widget">
 		<tbody>
 			<tr>
-				<td>Duration :</td>
+				<td>Progression Duration :</td>
 				<td>{{ isCompletedDisplay }}</td>
 				<td>{{ duration }}</td>
 				<td> {{ adjustedDuration }} </td>

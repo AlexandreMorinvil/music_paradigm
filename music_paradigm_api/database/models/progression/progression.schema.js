@@ -84,11 +84,7 @@ schema.virtual('lastProgessionTimePassed').get(function () {
 });
 
 schema.virtual('duration').get(function () {
-    // If it is completed, we calculate from the start to the last progression date
-    if (this.isCompleted) return (new Date(this.lastProgressionDate)).getTime() - (new Date(this.startTime)).getTime();
-
-    // If it is not completed, we calculate from the start to now
-    else return (new Date()).getTime() - (new Date(this.startTime)).getTime();
+    return (new Date(this.lastProgressionDate)).getTime() - (new Date(this.startTime)).getTime();
 });
 
 schema.set('toJSON', { virtuals: true });
