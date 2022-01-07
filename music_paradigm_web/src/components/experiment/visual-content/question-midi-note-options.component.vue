@@ -1,22 +1,22 @@
 <template>
 	<div id="text-area" class="state-section">
 		<sound-generator-component v-on:triggeredNoteCount="updateTriggeredNoteIndex" v-on:finished="handleAudioEnd" ref="audioManager" />
-		<div class="choices-area" :class="{ 'vertical-direction': isVertical }">
+		<div v-for="row in numberRows" v-bind:key="row" class="choices-area" :class="{ 'vertical-direction': isVertical }">
 			<button
-				v-for="number in numberBoxes"
-				v-bind:key="number"
-				v-on:click="handleSelection(number)"
+				v-for="column in getNumberElementsInRow(row)"
+				v-bind:key="column"
+				v-on:click="handleSelection(getNumber(row, column))"
 				:class="{
 					'not-clickable': !areChoicesClickable,
-					'playing-box': number === triggeredChoiceNumber,
-					'revealed-box': number < revealedChoiceLastNumber,
+					'playing-box': getNumber(row, column) === triggeredChoiceNumber,
+					'revealed-box': getNumber(row, column) < revealedChoiceLastNumber,
 					'last-audio': reachedLastAudio,
-					'selected-box': number === selectedChoiceNumber,
-					'is-inactive': !isValidSelection(number),
+					'selected-box': getNumber(row, column) === selectedChoiceNumber,
+					'is-inactive': !isValidSelection(getNumber(row, column)),
 				}"
 				class="midi-choice"
 			>
-				{{ getTextOfBox(number) }}
+				{{ getTextOfBox(getNumber(row, column)) }}
 			</button>
 		</div>
 		<p v-if="hasSpecification" class="specification-text">{{ textContent }}</p>
@@ -35,6 +35,9 @@ export default {
 	},
 	data() {
 		return {
+			// DOM rules
+			NUMBER_CHOICES_PER_ROW: 10,
+
 			// Delays
 			DELAY_INITIAL: 1000,
 			DELAY_FIRST_AUDIO_MILISECONDS: 100,
@@ -125,6 +128,9 @@ export default {
 		areChoicesClickable() {
 			return this.isReadyToTakeAnswers && !this.isChoiceMade;
 		},
+		numberRows() {
+			return Math.ceil(this.numberBoxes / this.NUMBER_CHOICES_PER_ROW);
+		},
 	},
 	methods: {
 		playFirstAudio() {
@@ -179,6 +185,13 @@ export default {
 		isValidSelection(number) {
 			return number <= this.numberValidChoices;
 		},
+		getNumberElementsInRow(row) {
+			if (row < this.numberBoxes / this.NUMBER_CHOICES_PER_ROW) return this.NUMBER_CHOICES_PER_ROW;
+			else return this.numberBoxes % this.NUMBER_CHOICES_PER_ROW || this.NUMBER_CHOICES_PER_ROW;
+		},
+		getNumber(row, column) {
+			return (row - 1) * this.NUMBER_CHOICES_PER_ROW + column;
+		},
 	},
 	mounted() {
 		setTimeout(() => this.revealTheCoices(), this.DELAY_INITIAL);
@@ -206,7 +219,7 @@ export default {
 
 .choices-area {
 	display: flex;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	flex-direction: row;
 	align-content: center;
 	justify-content: center;
