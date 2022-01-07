@@ -1,21 +1,22 @@
 <template>
-	<div id="text-area" class="state-section">
-		<div class="choices-area" :class="{ 'vertical-direction': isVertical }">
-			<button
-				v-for="(text, index) in listOptionValues"
-				v-bind:key="index"
-				v-on:click="handleSelection(index)"
-				:style="'background-color:' + listOptionColors[index]"
-				:class="{
-					'not-clickable': !areChoicesClickable,
-					'revealed-box': index <= revealedChoiceLastIndex,
-					'selected-box': index === selectedChoiceIndex,
-				}"
-				class="choice"
-			>
-				<img :src="getImageOfOption(index)" alt="No image" />
-				{{ getTextOfOption(index) }}
-			</button>
+	<div id="image-options-area" class="image-options-area">
+		<div class="optionss-list">
+			<div v-for="row in numberRows" v-bind:key="row" class="choices-row" :class="{ 'vertical-direction': isVertical }">
+				<button
+					v-for="column in getNumberElementsInRow(row)"
+					v-bind:key="column"
+					v-on:click="handleSelection(getNumber(row, column))"
+					:class="{
+						'not-clickable': !areChoicesClickable,
+						'revealed-box': getNumber(row, column) <= revealedChoiceLastIndex,
+						'selected-box': getNumber(row, column) === selectedChoiceIndex,
+					}"
+					class="choice"
+				>
+					<img :src="getImageOfOption(getNumber(row, column))" alt="No image" />
+					<p>{{ getTextOfOption(getNumber(row, column)) }}</p>
+				</button>
+			</div>
 		</div>
 		<p v-if="hasSpecification" class="specification-text">{{ textContent }}</p>
 	</div>
@@ -28,6 +29,9 @@ import { mapGetters } from 'vuex';
 export default {
 	data() {
 		return {
+			// DOM rules
+			NUMBER_CHOICES_PER_ROW: 3,
+
 			// Delays
 			DELAY_INITIAL: 1000,
 
@@ -91,6 +95,9 @@ export default {
 		areChoicesClickable() {
 			return this.isReadyToTakeAnswers && !this.isChoiceMade;
 		},
+		numberRows() {
+			return Math.ceil(this.numberOptions / this.NUMBER_CHOICES_PER_ROW);
+		},
 	},
 	methods: {
 		getTextOfOption(index) {
@@ -124,6 +131,13 @@ export default {
 			this.selectedChoiceIndex = index;
 			this.$emit('answered', this.bundleAnswer(this.selectedChoiceIndex));
 		},
+		getNumberElementsInRow(row) {
+			if (row < this.numberOptions / this.NUMBER_CHOICES_PER_ROW) return this.NUMBER_CHOICES_PER_ROW;
+			else return this.numberOptions % this.NUMBER_CHOICES_PER_ROW || this.NUMBER_CHOICES_PER_ROW;
+		},
+		getNumber(row, column) {
+			return (row - 1) * this.NUMBER_CHOICES_PER_ROW + column;
+		},
 	},
 	mounted() {
 		setTimeout(() => this.revealTheCoices(), this.DELAY_INITIAL);
@@ -132,31 +146,41 @@ export default {
 </script>
 
 <style scoped>
-.state-section {
+.image-options-area {
 	display: flex;
-	justify-content: center;
-	align-items: center;
 	flex-direction: column;
 }
 
-.choices-area {
+.optionss-list {
 	display: flex;
-	flex-wrap: wrap;
+	flex-direction: column;
+	height: 100%;
+	flex-grow: 1;
+	background-color: rebeccapurple;
+}
+
+.choices-row {
+	display: flex;
+	flex-wrap: nowrap;
 	flex-direction: row;
 	align-content: center;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
+	flex-grow: 1;
+	align-items: stretch;
 }
 
 .specification-text {
 	margin: 20px;
 	height: 50px;
+	text-align: center;
 }
 
 .choice {
 	background-color: lightgray;
 	margin: 10px;
 	border: none;
+	flex-grow: 1;
 }
 
 .not-clickable {
@@ -173,5 +197,10 @@ export default {
 
 .vertical-direction {
 	flex-direction: column;
+}
+
+img {
+	height: 150px;
+	object-fit: contain;
 }
 </style>

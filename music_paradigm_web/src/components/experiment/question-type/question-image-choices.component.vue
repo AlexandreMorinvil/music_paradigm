@@ -2,8 +2,8 @@
 	<div id="question-type" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
 		<div class="images-area image-disposition">
-			<image-area-component class="question-image-area" />
-			<question-image-choices-options-component v-on:answered="handleAnswer" v-on:questionAsked="handleQuestionAsked" class="options-image-area" />
+			<image-area-component class="question-image-half" />
+			<question-image-choices-options-component v-on:answered="handleAnswer" v-on:questionAsked="handleQuestionAsked" class="options-image-half" />
 		</div>
 		<text-after-question-area-component class="text-after-question-area state-section" ref="postQuestionText" />
 	</div>
@@ -50,16 +50,6 @@ export default {
 </script>
 
 <style scoped>
-.text-area {
-	flex-grow: 1;
-	height: 10%;
-}
-
-.images-area {
-	flex-grow: 1;
-	height: 70%;
-}
-
 .image-disposition {
 	display: flex;
 	flex-direction: row;
@@ -68,18 +58,24 @@ export default {
 	align-items: center;
 }
 
-.questions-image-area {
-	/* flex-grow: 1; */
-	width: 30%;
+.text-area {
+	height: 10%;
 }
 
-.options-image-area {
-	flex-grow: 1;
-	width: 70%;
+.images-area {
+	height: 70%;
 }
 
 .text-after-question-area {
-	flex-grow: 1;
 	height: 10%;
+}
+
+.question-image-half {
+	width: 50%;
+}
+
+.options-image-half {
+	width: 50%;
+	height: 100%;
 }
 </style>
