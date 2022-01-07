@@ -1,7 +1,17 @@
 export default {
 	// Performance evaluation
-	evaluateRhythmType: ({ commit }, { results: results, relativeRhythmImportance: relativeRhythmImportance }) => {
-		commit('evaluateRhythmType', { results: results, relativeRhythmImportance: relativeRhythmImportance });
+	evaluateRhythmType: ({ commit }, {
+		results: results,
+		relativeRhythmImportance: relativeRhythmImportance,
+		rhythmErrorMarginInMilliseconds: rhythmErrorMarginInMilliseconds,
+		rhythmRelativeErrorMarginInFloat: rhythmRelativeErrorMarginInFloat,
+	}) => {
+		commit('evaluateRhythmType', {
+			results: results,
+			relativeRhythmImportance: relativeRhythmImportance,
+			rhythmErrorMarginInMilliseconds: rhythmErrorMarginInMilliseconds,
+			rhythmRelativeErrorMarginInFloat: rhythmRelativeErrorMarginInFloat,
+		});
 	},
 	evaluateSpeedType: ({ commit }, results) => {
 		commit('evaluateSpeedType', results);

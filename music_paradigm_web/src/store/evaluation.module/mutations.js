@@ -8,11 +8,20 @@ export default {
 		});
 	},
 
-	evaluateRhythmType: (state, { results: results, relativeRhythmImportance: relativeRhythmImportance }) => {
+	evaluateRhythmType: (state, {
+		results: results,
+		relativeRhythmImportance: relativeRhythmImportance,
+		rhythmErrorMarginInMilliseconds: rhythmErrorMarginInMilliseconds,
+		rhythmRelativeErrorMarginInFloat: rhythmRelativeErrorMarginInFloat
+	}) => {
 		state.grades = notePerformance.gradeRhythmType(
 			results,
 			{ minNoteAccuracy: config.minNoteAccuracy || 100, maxRhythmError: config.maxRhythmError || 15 },
-			relativeRhythmImportance,
+			{
+				relativeRhythmImportance: relativeRhythmImportance,
+				rhythmErrorMarginInMilliseconds: rhythmErrorMarginInMilliseconds,
+				rhythmRelativeErrorMarginInFloat: rhythmRelativeErrorMarginInFloat,
+			}
 		);
 	},
 

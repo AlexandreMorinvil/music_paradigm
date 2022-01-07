@@ -199,14 +199,15 @@ function getInterOnsetIntervalsRelativeError(refTimeArr, timeArr, errorMargin = 
 	const useRelativeError = relativeErrorMargin > 0;
 
 	let arrDiff = 0;
-	for (let i = 0; i < referenceIoi.length; i++) {
+	const notesToConsiderCount = Math.min(referenceIoi.length, experimentalIoi.length);
+	for (let i = 0; i < notesToConsiderCount; i++) {
 		const differenceOutsideErrorMargin = useRelativeError
 			? getDifferenceAdjustedWithRelativeError(refTimeArr[i], timeArr[i], relativeErrorMargin)
 			: getDifferenceAdjustedWithAbsoluteError(refTimeArr[i], timeArr[i], errorMargin);
 		arrDiff += differenceOutsideErrorMargin / referenceIoi[i];
 	}
 
-	return (arrDiff / experimentalIoi.length) * 100;
+	return (arrDiff / notesToConsiderCount) * 100;
 }
 
 function getRelativeInterOnsetIntervalsRelativeError(refTimeArr, timeArr, relativeErrorMargin = 0) {
@@ -218,6 +219,7 @@ function getRelativeInterOnsetIntervalsRelativeError(refTimeArr, timeArr, relati
 	const experimentalAvergageIOI = experimentalIoi.reduce((a, b) => a + b, 0) / experimentalIoi.length;
 
 	let arrDiff = 0;
+	const notesToConsiderCount = Math.min(referenceIoi.length, experimentalIoi.length);
 	for (let i = 0; i < referenceIoi.length; i++) {
 		const referenceRelativeIoi = referenceIoi[i] / referenceAvergageIOI;
 		const experimentalRelativeIoi = experimentalIoi[i] / experimentalAvergageIOI;
@@ -226,7 +228,7 @@ function getRelativeInterOnsetIntervalsRelativeError(refTimeArr, timeArr, relati
 		arrDiff += differenceOutsideErrorMargin / referenceRelativeIoi;
 	}
 
-	return (arrDiff / experimentalIoi.length) * 100;
+	return (arrDiff / notesToConsiderCount) * 100;
 }
 
 // Duration of the corresponding sequence of notes played (ms)

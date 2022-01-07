@@ -113,6 +113,8 @@ export default {
 			{
 				results: getters.results,
 				relativeRhythmImportance: relativeRhythmImportance,
+				rhythmErrorMarginInMilliseconds: rhythmErrorMarginInMilliseconds,
+				rhythmRelativeErrorMarginInFloat: rhythmRelativeErrorMarginInFloat,
 			},
 			{ root: true },
 		);
