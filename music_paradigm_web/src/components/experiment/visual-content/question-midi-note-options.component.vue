@@ -12,6 +12,7 @@
 					'revealed-box': number < revealedChoiceLastNumber,
 					'last-audio': reachedLastAudio,
 					'selected-box': number === selectedChoiceNumber,
+					'is-inactive': !isValidSelection(number),
 				}"
 				class="midi-choice"
 			>
@@ -107,7 +108,8 @@ export default {
 			return options;
 		},
 		numberBoxes() {
-			return this.listOptionValues.length;
+			if (this.areInactiveAnswersDisplayed) return Math.max(this.listOptionText.length, this.listOptionValues.length);
+			else return this.listOptionValues.length;
 		},
 		numberValidChoices() {
 			return this.listOptionValues.length;
@@ -141,7 +143,7 @@ export default {
 		},
 		revealTheCoices() {
 			const stepsInMilliseconds = 70;
-			const numberSteps = this.numberBoxes + 1;
+			const numberSteps = this.numberValidChoices + 1;
 			for (let index = 0; index < numberSteps; index++)
 				setTimeout(() => {
 					this.revealedChoiceLastNumber += 1;
@@ -170,8 +172,12 @@ export default {
 		},
 		handleSelection(number) {
 			if (!this.areChoicesClickable) return;
+			if (!this.isValidSelection(number)) return;
 			this.selectedChoiceNumber = number;
 			this.$emit('answered', this.bundleAnswer(this.selectedChoiceNumber));
+		},
+		isValidSelection(number) {
+			return number <= this.numberValidChoices;
 		},
 	},
 	mounted() {
@@ -243,5 +249,9 @@ export default {
 
 .vertical-direction {
 	flex-direction: column;
+}
+
+.is-inactive {
+	cursor: default;
 }
 </style>
