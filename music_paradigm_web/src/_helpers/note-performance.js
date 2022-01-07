@@ -98,7 +98,6 @@ function gradeSpeedType(evaluationResults, { minSequencePlayed }) {
 	const ADDITIONAL_SEQUENCES = 5;
 	const grades = [
 		{
-			type: 'sequence',
 			criteria: 'Sequences Played',
 			mark: evaluationResults.sequenceCount,
 			passMark: 1,
@@ -119,21 +118,19 @@ function gradeRhythmType(evaluationResults,
 	// Compute the grades
 	const grades = [
 		{
-			type: 'melody',
 			criteria: 'Melody Accuracy',
 			mark: Math.max(evaluationResults.pitchAccuracy, 0),
 			passMark: Math.min(Math.max(minNoteAccuracy, 0), 100),
 			topMark: 100,
 		},
 		{
-			type: 'inter-onset',
 			criteria: 'Rhythm Accuracy',
 			mark: rythmRelativeErrorMeasure >= 0 ? Math.max(100 - rythmRelativeErrorMeasure, 0) : 0,
 			passMark: Math.min(Math.max(100 - maxRhythmError, 0), 100),
 			topMark: 100,
-			relativeRhythmImportance: relativeRhythmImportance,
-			rhythmErrorMarginInMilliseconds: rhythmErrorMarginInMilliseconds,
-			rhythmRelativeErrorMarginInFloat: rhythmRelativeErrorMarginInFloat,
+			relativeRhythmWeight: relativeRhythmImportance,
+			errorMarginInMilliseconds: rhythmErrorMarginInMilliseconds,
+			relativeErrorMargin: rhythmRelativeErrorMarginInFloat,
 		},
 	];
 	return grades;
@@ -142,7 +139,6 @@ function gradeRhythmType(evaluationResults,
 function gradeMelodyType(evaluationResults, { minNoteAccuracy }) {
 	const grades = [
 		{
-			type: 'melody',
 			criteria: 'Melody Accuracy',
 			mark: Math.max(evaluationResults.pitchAccuracy, 0),
 			passMark: Math.min(Math.max(minNoteAccuracy, 0), 100),

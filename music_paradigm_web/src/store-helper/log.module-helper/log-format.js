@@ -221,7 +221,7 @@ function makeThoroughLogBlockGeneralInformation() {
 		startCount: gettersSession.startCount(stateSession),
 
 		blockType: gettersExperiment.currentStateType(stateExperiment),
-		blockSubType: gettersExperiment.playingMode(stateExperiment),
+		blockSubType: gettersExperiment.currentStateSubtype(stateExperiment),
 		controlType: gettersExperiment.controlType(stateExperiment),
 		index: gettersExperiment.currentIndex(stateExperiment),
 		innerStepIndex: gettersExperiment.currentInnerStepIndex(stateExperiment),
