@@ -89,7 +89,7 @@ function makeSimpleLogBlockGeneralInformation() {
 		curriculumId: gettersSession.curriculumId(stateSession) || null,
 		progressionId: gettersSession.progressionId(stateSession) || null,
 		associativeId: gettersSession.associativeId(stateSession) || null,
-		associativeIdOrdinalNumber: gettersSession.associativeIdOrdinalNumber(stateSession) || null,
+		associativeIdOrdinalNumber: gettersSession.associativeIdOrdinalNumber(stateSession) || 0,
 		logLabel: gettersExperiment.logLabel(stateExperiment),
 
 		startCount: gettersSession.startCount(stateSession),
