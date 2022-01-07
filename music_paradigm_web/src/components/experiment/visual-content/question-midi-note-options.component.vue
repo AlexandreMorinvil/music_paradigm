@@ -142,7 +142,7 @@ export default {
 		getTextOfBox(number) {
 			const index = number - 1;
 			const imposedText = this.listOptionText[index];
-			return imposedText || index;
+			return imposedText || number;
 		},
 		updateTriggeredNoteIndex(number) {
 			this.triggeredChoiceNumber = number;

@@ -3,19 +3,20 @@
 		<sound-generator-component v-on:finished="handleAudioEnd" ref="audioManager" />
 		<div class="choices-area" :class="{ 'vertical-direction': isVertical }">
 			<button
-				v-for="(text, index) in listOptionText"
-				v-bind:key="index"
-				v-on:click="handleSelection(index)"
-				:style="reachedLastAudio && !(index === selectedChoiceIndex) && 'background-color:' + listOptionColors[index]"
+				v-for="number in numberOptions"
+				v-bind:key="number"
+				v-on:click="handleSelection(number)"
+				:style="reachedLastAudio && !(number === selectedChoiceNumber) && 'background-color:' + getAnswerColor(number)"
 				:class="{
 					'not-clickable': !areChoicesClickable,
-					'revealed-box': index <= revealedChoiceLastIndex,
+					'revealed-box': number <= revealedChoiceLastNumber,
 					'last-audio': reachedLastAudio,
-					'selected-box': index === selectedChoiceIndex,
+					'selected-box': number === selectedChoiceNumber,
+					'is-inactive': !isValidSelection(number),
 				}"
 				class="midi-choice"
 			>
-				{{ text }}
+				{{ getTextOfBox(number) }}
 			</button>
 		</div>
 		<p v-if="hasSpecification" class="specification-text">{{ textContent }}</p>
@@ -47,8 +48,8 @@ export default {
 			isReadyToTakeAnswers: false,
 
 			// Selection
-			selectedChoiceIndex: -1,
-			revealedChoiceLastIndex: -1,
+			selectedChoiceNumber: -1,
+			revealedChoiceLastNumber: 0,
 		};
 	},
 	computed: {
@@ -91,6 +92,10 @@ export default {
 			return colors;
 		},
 		numberOptions() {
+			if (this.areInactiveAnswersDisplayed) return Math.max(this.listOptionText.length, this.listOptionValues.length);
+			return this.listOptionValues.length;
+		},
+		numberValidChoices() {
 			return this.listOptionValues.length;
 		},
 		reachedLastAudio() {
@@ -99,7 +104,7 @@ export default {
 			return numberAudioFinished >= numberAudio - 1;
 		},
 		isChoiceMade() {
-			return this.selectedChoiceIndex > 0;
+			return this.selectedChoiceNumber > 0;
 		},
 		areChoicesClickable() {
 			return this.isReadyToTakeAnswers && !this.isChoiceMade;
@@ -112,15 +117,18 @@ export default {
 		playSecondAudio() {
 			setTimeout(() => this.$refs.audioManager.playAudioSecond(), this.DELAY_SECOND_AUDIO_MILISECONDS);
 		},
-		getTextOfBox(index) {
-			return this.listOptionText[index];
+		getTextOfBox(number) {
+			const index = number - 1;
+			const imposedText = this.listOptionText[index];
+			return imposedText || number;
 		},
 		revealTheCoices() {
 			const stepsInMilliseconds = 10;
-			const numberSteps = this.numberOptions;
+			const numberSteps = this.numberValidChoices;
 			for (let index = 0; index < numberSteps; index++)
 				setTimeout(() => {
-					this.revealedChoiceLastIndex += 1;
+					this.revealedChoiceLastNumber += 1;
+					console.log(this.revealedChoiceLastNumber);
 				}, index * stepsInMilliseconds);
 			setTimeout(() => {
 				this.isReadyToPlayFirstAudio = true;
@@ -136,17 +144,25 @@ export default {
 				this.isReadyToTakeAnswers = true;
 			}
 		},
-		bundleAnswer(answerIndex) {
+		bundleAnswer(answerNumber) {
 			return {
-				answerIndex: answerIndex,
+				answerIndex: answerNumber,
 				optionsValues: this.listOptionValues,
 				optionsText: this.listOptionText,
 			};
 		},
-		handleSelection(index) {
+		handleSelection(number) {
 			if (!this.areChoicesClickable) return;
-			this.selectedChoiceIndex = index;
-			this.$emit('answered', this.bundleAnswer(this.selectedChoiceIndex));
+			if (!this.isValidSelection(number)) return;
+			this.selectedChoiceNumber = number;
+			this.$emit('answered', this.bundleAnswer(this.selectedChoiceNumber));
+		},
+		getAnswerColor(number) {
+			const index = number - 1;
+			return this.listOptionColors[index];
+		},
+		isValidSelection(number) {
+			return number <= this.numberValidChoices;
 		},
 	},
 	mounted() {
@@ -214,5 +230,9 @@ export default {
 
 .vertical-direction {
 	flex-direction: column;
+}
+
+.is-inactive {
+	cursor: default;
 }
 </style>
