@@ -1,21 +1,38 @@
 <template>
 	<div id="image-options-area" class="image-options-area">
-		<div class="optionss-list">
+		<div class="options-list">
 			<div v-for="row in numberRows" v-bind:key="row" class="choices-row" :class="{ 'vertical-direction': isVertical }">
-				<button
+				<div
 					v-for="column in getNumberElementsInRow(row)"
 					v-bind:key="column"
-					v-on:click="handleSelection(getNumber(row, column))"
 					:class="{
 						'not-clickable': !areChoicesClickable,
-						'revealed-box': getNumber(row, column) <= revealedChoiceLastIndex,
-						'selected-box': getNumber(row, column) === selectedChoiceIndex,
+						'not-revealed-box': !(getNumber(row, column) <= revealedChoiceLastNumber),
 					}"
 					class="choice"
 				>
-					<img :src="getImageOfOption(getNumber(row, column))" alt="No image" />
-					<p>{{ getTextOfOption(getNumber(row, column)) }}</p>
-				</button>
+					<img
+						v-if="isOptionWithImage(getNumber(row, column))"
+						v-on:click="handleSelection(getNumber(row, column))"
+						:src="getImageOfOption(getNumber(row, column))"
+						:class="{
+							'is-active': isValidSelection(getNumber(row, column)),
+							'selected-image': getNumber(row, column) === selectedChoiceNumber,
+						}"
+						alt="No image"
+					/>
+					<p>
+						<span
+							v-on:click="handleSelection(getNumber(row, column))"
+							:class="{
+								'is-active': isValidSelection(getNumber(row, column)),
+								'selected-text': getNumber(row, column) === selectedChoiceNumber,
+							}"
+						>
+							{{ getTextOfOption(getNumber(row, column)) }}
+						</span>
+					</p>
+				</div>
 			</div>
 		</div>
 		<p v-if="hasSpecification" class="specification-text">{{ textContent }}</p>
@@ -39,8 +56,8 @@ export default {
 			isReadyToTakeAnswers: false,
 
 			// Selection
-			selectedChoiceIndex: -1,
-			revealedChoiceLastIndex: -1,
+			selectedChoiceNumber: -1,
+			revealedChoiceLastNumber: 0,
 		};
 	},
 	computed: {
@@ -75,10 +92,7 @@ export default {
 			return options;
 		},
 		listOptionImage() {
-			const images = [];
-			for (const i in this.listOptionValues) images[i] = this.answerChoicesImage[i]; // TODO: Put a placeholder image
-			for (const i in this.answerChoicesImage) if (this.answerChoicesImage[i]) images[i] = this.answerChoicesImage[i];
-			return images;
+			return this.answerChoicesImage;
 		},
 		listOptionColors() {
 			const colors = [];
@@ -87,10 +101,14 @@ export default {
 			return colors;
 		},
 		numberOptions() {
+			if (this.areInactiveAnswersDisplayed) return Math.max(this.listOptionValues.length, this.listOptionText.length, this.listOptionImage.length);
+			else return this.listOptionValues.length;
+		},
+		numberValidOptions() {
 			return this.listOptionValues.length;
 		},
 		isChoiceMade() {
-			return this.selectedChoiceIndex > 0;
+			return this.selectedChoiceNumber > 0;
 		},
 		areChoicesClickable() {
 			return this.isReadyToTakeAnswers && !this.isChoiceMade;
@@ -100,10 +118,12 @@ export default {
 		},
 	},
 	methods: {
-		getTextOfOption(index) {
+		getTextOfOption(number) {
+			const index = number - 1;
 			return this.listOptionText[index];
 		},
-		getImageOfOption(index) {
+		getImageOfOption(number) {
+			const index = number - 1;
 			return this.urlExperimentResource(this.listOptionImage[index]); // this.listOptionText[index];
 		},
 		indicateReadyToTakeAnswers() {
@@ -112,10 +132,10 @@ export default {
 		},
 		revealTheCoices() {
 			const stepsInMilliseconds = 10;
-			const numberSteps = this.numberOptions;
+			const numberSteps = this.numberValidOptions;
 			for (let index = 0; index < numberSteps; index++)
 				setTimeout(() => {
-					this.revealedChoiceLastIndex += 1;
+					this.revealedChoiceLastNumber += 1;
 				}, index * stepsInMilliseconds);
 			setTimeout(() => this.indicateReadyToTakeAnswers(), numberSteps * stepsInMilliseconds);
 		},
@@ -126,10 +146,11 @@ export default {
 				optionsText: this.listOptionText,
 			};
 		},
-		handleSelection(index) {
+		handleSelection(number) {
 			if (!this.areChoicesClickable) return;
-			this.selectedChoiceIndex = index;
-			this.$emit('answered', this.bundleAnswer(this.selectedChoiceIndex));
+			if (!this.isValidSelection(number)) return;
+			this.selectedChoiceNumber = number;
+			this.$emit('answered', this.bundleAnswer(this.selectedChoiceNumber));
 		},
 		getNumberElementsInRow(row) {
 			if (row < this.numberOptions / this.NUMBER_CHOICES_PER_ROW) return this.NUMBER_CHOICES_PER_ROW;
@@ -137,6 +158,13 @@ export default {
 		},
 		getNumber(row, column) {
 			return (row - 1) * this.NUMBER_CHOICES_PER_ROW + column;
+		},
+		isValidSelection(number) {
+			return number <= this.numberValidOptions;
+		},
+		isOptionWithImage(number) {
+			const index = number - 1;
+			return Boolean(this.listOptionImage[index]);
 		},
 	},
 	mounted() {
@@ -151,7 +179,7 @@ export default {
 	flex-direction: column;
 }
 
-.optionss-list {
+.options-list {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -177,30 +205,49 @@ export default {
 }
 
 .choice {
-	background-color: lightgray;
+	background-color: rgb(183, 255, 0);
 	margin: 10px;
 	border: none;
-	flex-grow: 1;
+	display: grid;
+	grid-template-rows: 1fr auto;
+	text-align: center;
+	flex: 1 1 0px;
 }
 
 .not-clickable {
 	cursor: default;
 }
 
-.revealed-box {
-	background-color: grey;
+.not-revealed-box {
+	opacity: 0.4;
+	filter: alpha(opacity=40);
 }
 
-.revealed-box.selected-box {
-	background-color: orange;
+.selected-image {
+	box-shadow: 0 0 10px orange;
+}
+
+.selected-text {
+	color: orange;
 }
 
 .vertical-direction {
 	flex-direction: column;
 }
 
+.is-active {
+	cursor: pointer;
+}
+
 img {
-	height: 150px;
+	height: 100%;
 	object-fit: contain;
+	margin: auto;
+}
+
+p {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 </style>
