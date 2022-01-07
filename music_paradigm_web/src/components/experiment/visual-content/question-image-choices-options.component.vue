@@ -13,7 +13,7 @@
 				}"
 				class="choice"
 			>
-			<img :src="getImageOfOption(index)" alt="No image" />
+				<img :src="getImageOfOption(index)" alt="No image" />
 				{{ getTextOfOption(index) }}
 			</button>
 		</div>
@@ -48,6 +48,7 @@ export default {
 			'answerChoicesText',
 			'answerChoicesColor',
 			'areAnswerOptionsVertical',
+			'areInactiveAnswersDisplayed',
 		]),
 		isVertical() {
 			return this.areAnswerOptionsVertical;
@@ -96,7 +97,7 @@ export default {
 			return this.listOptionText[index];
 		},
 		getImageOfOption(index) {
-			return this.urlExperimentResource(this.listOptionImage[index]);// this.listOptionText[index];
+			return this.urlExperimentResource(this.listOptionImage[index]); // this.listOptionText[index];
 		},
 		indicateReadyToTakeAnswers() {
 			this.isReadyToTakeAnswers = true;
@@ -149,6 +150,7 @@ export default {
 
 .specification-text {
 	margin: 20px;
+	height: 50px;
 }
 
 .choice {

@@ -267,6 +267,7 @@ function validateBlock(block, index = null) {
 		'answerChoicesText',
 		'answerChoicesImage',
 		'answerChoicesColor',
+		'areInactiveAnswersDisplayed',
 
 		'rightAnswers',
 	];
@@ -360,6 +361,7 @@ function validateAttributeType(key, value) {
 		case 'withTimer':
 		case 'hasClearBackground':
 		case 'hasSound':
+		case 'areInactiveAnswersDisplayed':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

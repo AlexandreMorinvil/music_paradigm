@@ -53,7 +53,14 @@ export default {
 	},
 	computed: {
 		...mapGetters('soundGenerator', ['hasAudioFirst', 'hasAudioSecond']),
-		...mapGetters('experiment', ['textSpecification', 'answerChoicesValue', 'answerChoicesText', 'answerChoicesColor', 'areAnswerOptionsVertical']),
+		...mapGetters('experiment', [
+			'textSpecification',
+			'answerChoicesValue',
+			'answerChoicesText',
+			'answerChoicesColor',
+			'areAnswerOptionsVertical',
+			'areInactiveAnswersDisplayed',
+		]),
 		isVertical() {
 			return this.areAnswerOptionsVertical;
 		},
@@ -177,6 +184,7 @@ export default {
 
 .specification-text {
 	margin: 20px;
+	height: 50px;
 }
 
 .midi-choice {

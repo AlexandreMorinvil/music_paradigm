@@ -54,7 +54,13 @@ export default {
 	},
 	computed: {
 		...mapGetters('soundGenerator', ['hasAudioFirst', 'hasAudioSecond', 'audioFirstParsed', 'audioSecondParsed']),
-		...mapGetters('experiment', ['textSpecification', 'answerChoicesValue', 'answerChoicesText', 'areAnswerOptionsVertical']),
+		...mapGetters('experiment', [
+			'textSpecification',
+			'answerChoicesValue',
+			'answerChoicesText',
+			'areAnswerOptionsVertical',
+			'areInactiveAnswersDisplayed',
+		]),
 		isVertical() {
 			return this.areAnswerOptionsVertical;
 		},
@@ -101,6 +107,9 @@ export default {
 			return options;
 		},
 		numberBoxes() {
+			return this.listOptionValues.length;
+		},
+		numberValidChoices() {
 			return this.listOptionValues.length;
 		},
 		reachedLastAudio() {
@@ -200,6 +209,7 @@ export default {
 
 .specification-text {
 	margin: 20px;
+	height: 50px;
 }
 
 .midi-choice {

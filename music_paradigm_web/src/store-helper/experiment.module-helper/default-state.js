@@ -236,6 +236,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 
 			questionType: DEFAULT_QUESTION_TYPE,									// Indicate the question type for the 'question' states
 			areAnswerOptionsVertical: false,										// Disposition of the anserChoices (vertical if true, horizontal if false)
+			areInactiveAnswersDisplayed: false,										// Indicate if answers with a text but no value must be displayed (as incactive choices)
 			// rightAnswers:
 		},
 		// Session specific informations
