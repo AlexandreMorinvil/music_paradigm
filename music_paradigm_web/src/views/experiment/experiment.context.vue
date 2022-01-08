@@ -175,7 +175,7 @@ export default {
 		// We need to verify that the route departure is not a redirection, otherwise
 		// a confirmation will be prompted twice (Once before and after the redirection)
 		if (this.needsConfirmationToLeave && !Object.prototype.hasOwnProperty.call(to, 'redirectedFrom')) {
-			const answer = window.confirm('views.experiment.context.confirm-leave');
+			const answer = window.confirm(this.$t('views.experiment.context.confirm-leave'));
 			if (answer) {
 				if (this.considerExperimentFinished) this.concludeExperiment();
 				next();
