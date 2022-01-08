@@ -50,7 +50,7 @@ export default {
 		},
 		retreiveAnswers(answerBundle) {
 			this.answers = answerBundle.answerIndex;
-		}
+		},
 	},
 	beforeMount() {
 		this.updateFootnote();
