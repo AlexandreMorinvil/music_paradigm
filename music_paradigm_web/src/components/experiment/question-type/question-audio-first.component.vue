@@ -27,7 +27,7 @@ export default {
 	methods: {
 		updateFootnote() {
 			let footnoteMessage = '';
-			footnoteMessage = this.$tc('views.experiment.question.audio.footnote-explaination');
+			footnoteMessage = this.$tc('views.experiment.question.audio-first.footnote-explaination');
 			this.$emit('footnote', footnoteMessage);
 		},
 		handleQuestionAsked() {

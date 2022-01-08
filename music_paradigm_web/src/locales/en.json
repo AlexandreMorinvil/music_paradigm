@@ -30,7 +30,7 @@
   },
   "user": {
     "home": {
-      "run-today-session": "Run Today’s Session",
+      "run-today-session": "Run Today's Session",
       "today-session-unavailable": "No new session available"
     },
     "progression-board": {
@@ -187,8 +187,14 @@
         "midi-note": {
           "footnote-explaination": "Select the note by clicking on the sequence number"
         },
-        "audio": {
+        "audio-first": {
           "footnote-explaination": "Listen and choose an answer"
+        },
+        "image-choices": {
+          "footnote-explaination": "Select your answer"
+        },
+        "simple": {
+          "footnote-explaination": "Select your answer"
         }
       },
       "rest": {

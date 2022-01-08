@@ -15,14 +15,14 @@ import '@/styles/experiment-content-template.css';
 import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
 import { mapGetters } from 'vuex';
 
-// import SimpleQuestionComponent from '@/components/experiment/question-type/playing-melody.component';
 import AudioQuestionComponent  from '@/components/experiment/question-type/question-audio-first.component';
 import ImageQuestionComponent from '@/components/experiment/question-type/question-image-choices.component';
 import MidiNoteQuestionComponent from '@/components/experiment/question-type/question-midi-note.component';
+import SimpleQuestionComponent from '@/components/experiment/question-type/question-simple.component';
 
 export default {
 	components: {
-		// simple: SimpleQuestionComponent,
+		simple: SimpleQuestionComponent,
 		'audio-start': AudioQuestionComponent,
 		'image-choices': ImageQuestionComponent,
 		'midi-note': MidiNoteQuestionComponent,

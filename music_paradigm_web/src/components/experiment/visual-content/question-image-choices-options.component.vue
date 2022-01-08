@@ -184,7 +184,6 @@ export default {
 	flex-direction: column;
 	height: 100%;
 	flex-grow: 1;
-	background-color: rebeccapurple;
 }
 
 .choices-row {
@@ -205,7 +204,6 @@ export default {
 }
 
 .choice {
-	background-color: rgb(183, 255, 0);
 	margin: 10px;
 	border: none;
 	display: grid;
