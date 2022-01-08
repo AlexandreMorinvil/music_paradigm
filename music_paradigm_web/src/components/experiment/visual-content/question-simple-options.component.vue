@@ -1,20 +1,18 @@
 <template>
 	<div id="text-area" class="state-section">
-		<sound-generator-component v-on:finished="handleAudioEnd" ref="audioManager" />
 		<div class="choices-area" :class="{ 'vertical-direction': isVertical }">
 			<button
-				v-for="number in numberOptions"
+				v-for="number in numberChoices"
 				v-bind:key="number"
 				v-on:click="handleSelection(number)"
-				:style="reachedLastAudio && !(number === selectedChoiceNumber) && 'background-color:' + getAnswerColor(number)"
+				:style="!(number === selectedChoiceNumber) && 'background-color:' + getAnswerColor(number)"
 				:class="{
 					'not-clickable': !areChoicesClickable,
 					'revealed-box': number <= revealedChoiceLastNumber,
-					'last-audio': reachedLastAudio,
 					'selected-box': number === selectedChoiceNumber,
 					'is-inactive': !isValidSelection(number),
 				}"
-				class="midi-choice"
+				class="answer-option"
 			>
 				{{ getTextOfBox(number) }}
 			</button>
@@ -27,24 +25,13 @@
 import '@/styles/experiment-content-template.css';
 import { mapGetters } from 'vuex';
 
-import SoundGeneratorComponent from '@/components/multimedia/sound-generator.component.vue';
-
 export default {
-	components: {
-		SoundGeneratorComponent,
-	},
 	data() {
 		return {
 			// Delays
 			DELAY_INITIAL: 1000,
-			DELAY_FIRST_AUDIO_MILISECONDS: 100,
-			DELAY_SECOND_AUDIO_MILISECONDS: 750,
 
 			// Flags for the sequnce of events
-			isReadyToPlayFirstAudio: false,
-			isReadyToPlaySecondAudio: false,
-			hasPlayedFirstAudio: false,
-			hasPlayedSecondAudio: false,
 			isReadyToTakeAnswers: false,
 
 			// Selection
@@ -53,7 +40,6 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('soundGenerator', ['hasAudioFirst', 'hasAudioSecond']),
 		...mapGetters('experiment', [
 			'textSpecification',
 			'answerChoicesValue',
@@ -64,9 +50,6 @@ export default {
 		]),
 		isVertical() {
 			return this.areAnswerOptionsVertical;
-		},
-		hasAudio() {
-			return this.hasAudioFirst || this.hasAudioSecond;
 		},
 		hasSpecification() {
 			return Boolean(this.textSpecification);
@@ -91,17 +74,12 @@ export default {
 			else if (Array.isArray(this.answerChoicesColor)) for (const i in this.answerChoicesColor) colors[i] = this.answerChoicesColor[i];
 			return colors;
 		},
-		numberOptions() {
+		numberChoices() {
 			if (this.areInactiveAnswersDisplayed) return Math.max(this.listOptionText.length, this.listOptionValues.length);
 			return this.listOptionValues.length;
 		},
 		numberValidChoices() {
 			return this.listOptionValues.length;
-		},
-		reachedLastAudio() {
-			const numberAudio = Number(this.hasAudioFirst) + Number(this.hasAudioSecond);
-			const numberAudioFinished = Number(this.hasPlayedFirstAudio) + Number(this.hasPlayedSecondAudio);
-			return numberAudioFinished >= numberAudio - 1;
 		},
 		isChoiceMade() {
 			return this.selectedChoiceNumber > 0;
@@ -111,16 +89,13 @@ export default {
 		},
 	},
 	methods: {
-		playFirstAudio() {
-			setTimeout(() => this.$refs.audioManager.playAudioFirst(), this.DELAY_FIRST_AUDIO_MILISECONDS);
-		},
-		playSecondAudio() {
-			setTimeout(() => this.$refs.audioManager.playAudioSecond(), this.DELAY_SECOND_AUDIO_MILISECONDS);
-		},
 		getTextOfBox(number) {
 			const index = number - 1;
-			const imposedText = this.listOptionText[index];
-			return imposedText || number;
+			return this.listOptionText[index];
+		},
+		indicateReadyToTakeAnswers() {
+			this.isReadyToTakeAnswers = true;
+			this.$emit('questionAsked');
 		},
 		revealTheCoices() {
 			const stepsInMilliseconds = 10;
@@ -129,19 +104,7 @@ export default {
 				setTimeout(() => {
 					this.revealedChoiceLastNumber += 1;
 				}, index * stepsInMilliseconds);
-			setTimeout(() => {
-				this.isReadyToPlayFirstAudio = true;
-			}, numberSteps * stepsInMilliseconds);
-		},
-		handleAudioEnd() {
-			if (this.reachedLastAudio) this.$emit('questionAsked');
-			if (this.hasAudioFirst && !this.hasPlayedFirstAudio) {
-				this.hasPlayedFirstAudio = true;
-				this.isReadyToPlaySecondAudio = true;
-			} else if (this.hasAudioSecond && !this.hasPlayedSecondAudio) {
-				this.hasPlayedSecondAudio = true;
-				this.isReadyToTakeAnswers = true;
-			}
+			setTimeout(() => this.indicateReadyToTakeAnswers(), numberSteps * stepsInMilliseconds);
 		},
 		bundleAnswer(answerNumber) {
 			return {
@@ -166,16 +129,6 @@ export default {
 	},
 	mounted() {
 		setTimeout(() => this.revealTheCoices(), this.DELAY_INITIAL);
-	},
-	watch: {
-		isReadyToPlayFirstAudio(isReady) {
-			if (isReady && this.hasAudioFirst) this.playFirstAudio();
-			else this.isReadyToPlaySecondAudio = true;
-		},
-		isReadyToPlaySecondAudio(isReady) {
-			if (isReady && this.hasAudioSecond) this.playSecondAudio();
-			else this.isReadyToTakeAnswers = true;
-		},
 	},
 };
 </script>
@@ -202,7 +155,7 @@ export default {
 	height: 50px;
 }
 
-.midi-choice {
+.answer-option {
 	background-color: lightgray;
 	color: white;
 	border: none;
@@ -215,15 +168,11 @@ export default {
 	cursor: default;
 }
 
-.revealed-box {
-	background-color: grey;
-}
-
-.revealed-box.last-audio {
+.answer-option.revealed-box {
 	background-color: green;
 }
 
-.revealed-box.selected-box {
+.answer-option.revealed-box.selected-box {
 	background-color: orange;
 }
 
