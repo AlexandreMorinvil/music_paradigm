@@ -6,6 +6,7 @@ import { evaluation } from '@/store/evaluation.module';
 import { keyboard } from '@/store/keyboard.module';
 import { piano } from '@/store/piano.module';
 
+import { question } from '@/store/question.module';
 import { survey } from '@/store/survey.module';
 import { writting } from '@/store/writting.module';
 
@@ -26,6 +27,7 @@ const gettersKeyboard = keyboard.getters;
 const gettersPiano = piano.getters;
 
 const gettersSurvey = survey.getters;
+const gettersQuestion = question.getters;
 const gettersWritting = writting.getters;
 
 // Access the states associated (where the information is stored)
@@ -38,6 +40,7 @@ const stateKeyboard = keyboard.state;
 const statePiano = piano.state;
 
 const stateSurvey = survey.state;
+const stateQuestion = question.state;
 const stateWritting = writting.state;
 
 /**
@@ -75,6 +78,7 @@ function makeSimpleLogBlock() {
 	Object.assign(block, makeSimpleLogBlockPerformanceInformation());
 	if (blockType === 'survey') Object.assign(block, makeLogBlockSurveyAnswers());
 	if (blockType === 'witting') Object.assign(block, makeLogBlockWrittenAnswer());
+	if (blockType === 'question') Object.assign(block, makeLogBlockQuestionAnswer());
 	return block;
 }
 
@@ -207,6 +211,7 @@ function makeThoroughLogBlock() {
 	if (controlType !== 'none') Object.assign(block, makeSimpleBlockPerformanceInformation());
 	if (blockType === 'survey') Object.assign(block, makeLogBlockSurveyAnswers());
 	if (blockType === 'writting') Object.assign(block, makeLogBlockWrittenAnswer());
+	if (blockType === 'question') Object.assign(block, makeLogBlockQuestionAnswer());
 	return block;
 }
 
@@ -298,4 +303,21 @@ function makeLogBlockWrittenAnswer() {
 		writtingIsNumber: gettersWritting.writtingIsNumber(stateWritting),
 	};
 	return writtenAnswer;
+}
+
+/**
+ * Gather the information of a written input from a 'writting' state for a log block of Simple-Log and Thorough-Log format
+ * @returns {Log_Block_Question_Answer}
+ */
+ function makeLogBlockQuestionAnswer() {
+	const questionAnswer = {
+		questionAnswerIndex: gettersQuestion.questionAnswerIndex(stateQuestion),
+		isQuestionAnswerCorrect: gettersQuestion.isQuestionAnswerCorrect(stateQuestion),
+		questionCorrectAnswerIndex: gettersQuestion.questionCorrectAnswerIndex(stateQuestion),
+		questionOptionsValues: gettersQuestion.questionOptionsValues(stateQuestion),
+		questionOptionsTexts: gettersQuestion.questionOptionsTexts(stateQuestion),
+		questionAsked: gettersQuestion.questionAsked(stateQuestion),
+		questionRelatedContent: gettersQuestion.questionRelatedContent(stateQuestion),
+	};
+	return questionAnswer;
 }

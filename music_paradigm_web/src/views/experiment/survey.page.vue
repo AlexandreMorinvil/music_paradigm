@@ -32,7 +32,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('survey', ['setSurveyContext', 'setSurveyAnswers']),
+		...mapActions('survey', ['setSurveyContext', 'setSurveyAnswers', 'resetSurvey']),
 		updateFootnote() {
 			let footnoteMessage = '';
 			if (this.surveyAreAnswersMandatory) footnoteMessage = this.$t('views.experiment.survey.footnote-answer-first');
@@ -53,6 +53,7 @@ export default {
 		},
 	},
 	beforeMount() {
+		this.resetSurvey();
 		this.updateFootnote();
 		ExperimentEventBus.$on(experimentEvents.EVENT_ADVANCE_REQUEST, this.emitStateEndedSignal);
 	},

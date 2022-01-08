@@ -124,7 +124,7 @@ export default {
 		},
 		getImageOfOption(number) {
 			const index = number - 1;
-			return this.urlExperimentResource(this.listOptionImage[index]); // this.listOptionText[index];
+			return this.urlExperimentResource(this.listOptionImage[index]);
 		},
 		indicateReadyToTakeAnswers() {
 			this.isReadyToTakeAnswers = true;
