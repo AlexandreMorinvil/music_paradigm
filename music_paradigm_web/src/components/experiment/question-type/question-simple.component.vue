@@ -2,7 +2,7 @@
 	<div id="question-type" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
 		<question-simple-options-component v-on:answered="handleAnswer" v-on:questionAsked="handleQuestionAsked" class="options-area state-section" />
-		<text-after-question-area-component class="text-after-question-area state-section" ref="postQuestionText"/>
+		<text-after-question-area-component class="text-after-question-area state-section" ref="postQuestionText" />
 	</div>
 </template>
 
@@ -22,6 +22,8 @@ export default {
 	data() {
 		return {
 			DELAY_AFTER_ANSWER: 800,
+			context: {},
+			answers: null,
 		};
 	},
 	methods: {
@@ -34,9 +36,21 @@ export default {
 			this.$refs.postQuestionText.reveal();
 		},
 		handleAnswer(answerBundle) {
-			console.log(answerBundle);
+			this.retreiveContext(answerBundle);
+			this.retreiveAnswers(answerBundle);
 			setTimeout(() => this.$emit('responded', answerBundle), this.DELAY_AFTER_ANSWER);
 		},
+		retreiveContext(answerBundle) {
+			this.context = {
+				questionAsked: 'Question in text content',
+				questionCorrectAnswerIndex: answerBundle.questionCorrectAnswerIndex,
+				questionOptionsValues: answerBundle.questionOptionsValues,
+				questionOptionsTexts: answerBundle.questionOptionsTexts,
+			};
+		},
+		retreiveAnswers(answerBundle) {
+			this.answers = answerBundle.answerIndex;
+		}
 	},
 	beforeMount() {
 		this.updateFootnote();

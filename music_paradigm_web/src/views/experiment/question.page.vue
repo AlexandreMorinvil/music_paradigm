@@ -46,7 +46,7 @@ export default {
 		updateFootnote(footnoteMessage) {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
-		storeSurveyRecords() {
+		storeQuestionRecords() {
 			this.setQuestionContext(this.$refs.question.context);
 			this.setQuestionAnswers(this.$refs.question.answers);
 		},

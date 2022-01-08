@@ -4,12 +4,15 @@ export default {
 
 function DEFAULT_QUESTION_STATE() {
 	return {
-		questionAnswer: null,
+		// Amswer information
+		questionAnswerIndex: null,
+		isQuestionAnswerCorrect: null,
 
+		// Context information
+		questionAsked: '',
 		questionCorrectAnswerIndex: null,
 		questionOptionsValues: [],
 		questionOptionsTexts: [],
-		questionAsked: '',
 		questionRelatedContent: [],
 	};
 }

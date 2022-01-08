@@ -290,6 +290,8 @@ function updateStateOptionsContent(currentState, targetState, isInitialized) {
 		answerChoicesText,
 		answerChoicesColor,
 		answerChoicesImage,
+
+		rightAnswers,
 	} = currentBlock;
 
 	// Parsing the parameters that support single value input
@@ -305,6 +307,8 @@ function updateStateOptionsContent(currentState, targetState, isInitialized) {
 	currentState.optionsContent.answerChoicesText = (Array.isArray(answerChoicesText)) ? answerChoicesText : [];
 	currentState.optionsContent.answerChoicesColor = (Array.isArray(answerChoicesColor)) ? answerChoicesColor : defaultAnswerChoicesColor;
 	currentState.optionsContent.answerChoicesImage = (Array.isArray(answerChoicesImage)) ? answerChoicesImage : [];
+
+	currentState.optionsContent.rightAnswers = (Array.isArray(rightAnswers)) ? rightAnswers : null;
 
 	// Indicate that the media files is initialized
 	Object.assign(isInitialized, { options: true });

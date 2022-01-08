@@ -27,6 +27,8 @@ export default {
 	data() {
 		return {
 			DELAY_AFTER_ANSWER: 800,
+			context: {},
+			answers: null,
 		};
 	},
 	methods: {
@@ -39,8 +41,21 @@ export default {
 			this.$refs.postQuestionText.reveal();
 		},
 		handleAnswer(answerBundle) {
-			console.log(answerBundle);
+			this.retreiveContext(answerBundle);
+			this.retreiveAnswers(answerBundle);
 			setTimeout(() => this.$emit('responded', answerBundle), this.DELAY_AFTER_ANSWER);
+		},
+		retreiveContext(answerBundle) {
+			this.context = {
+				questionAsked: 'Question in main image file',
+				questionCorrectAnswerIndex: answerBundle.questionCorrectAnswerIndex,
+				questionOptionsValues: answerBundle.questionOptionsValues,
+				questionOptionsTexts: answerBundle.questionOptionsTexts,
+				questionRelatedContent: answerBundle.questionRelatedContent,
+			};
+		},
+		retreiveAnswers(answerBundle) {
+			this.answers = answerBundle.answerIndex;
 		},
 	},
 	beforeMount() {

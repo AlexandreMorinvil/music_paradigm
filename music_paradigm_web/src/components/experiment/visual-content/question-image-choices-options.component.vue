@@ -70,6 +70,7 @@ export default {
 			'answerChoicesColor',
 			'areAnswerOptionsVertical',
 			'areInactiveAnswersDisplayed',
+			'rightAnswers',
 		]),
 		isVertical() {
 			return this.areAnswerOptionsVertical;
@@ -99,6 +100,15 @@ export default {
 			if (typeof this.answerChoicesColor === 'string') for (const i in this.optionsValues) colors[i] = this.listOptionValues[i];
 			else if (Array.isArray(this.answerChoicesColor)) for (const i in this.answerChoicesColor) colors[i] = this.answerChoicesColor[i];
 			return colors;
+		},
+		correctAnswersIndex() {
+			if (!this.rightAnswers) return null;
+			let validRightAnswers = null;
+			const lastValidIndex = this.numberValidChoices - 1;
+			if (Array.isArray(this.rightAnswers)) {
+				validRightAnswers = this.rightAnswers.filter((index) => index <= lastValidIndex);
+			} else if (this.rightAnswers <= lastValidIndex) validRightAnswers = this.rightAnswers;
+			return validRightAnswers;
 		},
 		numberOptions() {
 			if (this.areInactiveAnswersDisplayed) return Math.max(this.listOptionValues.length, this.listOptionText.length, this.listOptionImage.length);
@@ -142,15 +152,18 @@ export default {
 		bundleAnswer(answerIndex) {
 			return {
 				answerIndex: answerIndex,
-				optionsValues: this.listOptionValues,
-				optionsText: this.listOptionText,
+				questionCorrectAnswerIndex: this.correctAnswersIndex,
+				questionOptionsValues: this.listOptionValues,
+				questionOptionsTexts: this.listOptionText,
+				questionRelatedContent: this.listOptionImage,
 			};
 		},
 		handleSelection(number) {
 			if (!this.areChoicesClickable) return;
 			if (!this.isValidSelection(number)) return;
 			this.selectedChoiceNumber = number;
-			this.$emit('answered', this.bundleAnswer(this.selectedChoiceNumber));
+			const selectedIndex = number - 1;
+			this.$emit('answered', this.bundleAnswer(selectedIndex));
 		},
 		getNumberElementsInRow(row) {
 			if (row < this.numberOptions / this.NUMBER_CHOICES_PER_ROW) return this.NUMBER_CHOICES_PER_ROW;

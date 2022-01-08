@@ -37,4 +37,8 @@ export default {
 			return imageName ? `${state.description.folder}/${imageName}` : '';
 		});
 	},
+
+	rightAnswers: (state) => {
+		return state.state.optionsContent.rightAnswers;
+	}
 };

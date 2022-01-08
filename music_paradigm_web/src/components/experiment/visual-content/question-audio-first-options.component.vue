@@ -53,7 +53,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('soundGenerator', ['hasAudioFirst', 'hasAudioSecond']),
+		...mapGetters('soundGenerator', ['hasAudioFirst', 'hasAudioSecond', 'audioFirstName', 'audioSecondName']),
 		...mapGetters('experiment', [
 			'textSpecification',
 			'answerChoicesValue',
@@ -90,6 +90,15 @@ export default {
 			if (typeof this.answerChoicesColor === 'string') for (const i in this.optionsValues) colors[i] = this.listOptionValues[i];
 			else if (Array.isArray(this.answerChoicesColor)) for (const i in this.answerChoicesColor) colors[i] = this.answerChoicesColor[i];
 			return colors;
+		},
+		correctAnswersIndex() {
+			if (!this.rightAnswers) return null;
+			let validRightAnswers = null;
+			const lastValidIndex = this.numberValidChoices - 1;
+			if (Array.isArray(this.rightAnswers)) {
+				validRightAnswers = this.rightAnswers.filter((index) => index <= lastValidIndex);
+			} else if (this.rightAnswers <= lastValidIndex) validRightAnswers = this.rightAnswers;
+			return validRightAnswers;
 		},
 		numberOptions() {
 			if (this.areInactiveAnswersDisplayed) return Math.max(this.listOptionText.length, this.listOptionValues.length);
@@ -143,18 +152,21 @@ export default {
 				this.isReadyToTakeAnswers = true;
 			}
 		},
-		bundleAnswer(answerNumber) {
+		bundleAnswer(answerIndex) {
 			return {
-				answerIndex: answerNumber,
-				optionsValues: this.listOptionValues,
-				optionsText: this.listOptionText,
+				answerIndex: answerIndex,
+				questionCorrectAnswerIndex: this.correctAnswersIndex,
+				questionOptionsValues: this.listOptionValues,
+				questionOptionsTexts: this.listOptionText,
+				questionRelatedContent: [this.audioFirstName, this.audioSecondName],
 			};
 		},
 		handleSelection(number) {
 			if (!this.areChoicesClickable) return;
 			if (!this.isValidSelection(number)) return;
 			this.selectedChoiceNumber = number;
-			this.$emit('answered', this.bundleAnswer(this.selectedChoiceNumber));
+			const selectedIndex = number - 1;
+			this.$emit('answered', this.bundleAnswer(selectedIndex));
 		},
 		getAnswerColor(number) {
 			const index = number - 1;
