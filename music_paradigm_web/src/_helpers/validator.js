@@ -240,6 +240,7 @@ function validateBlock(block, index = null) {
 
 		'logLabel',
 
+		'surveyType',
 		'surveyOptionsAreRadio',
 		'surveyAreAnswersMandatory',
 		'surveyInputOptionsValues',

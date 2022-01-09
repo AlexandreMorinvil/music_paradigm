@@ -63,6 +63,7 @@ const stateSchema = new Schema({
 
     logLabel: {type: String, default: undefined },
 
+    surveyType: { type: String, default: undefined, enum: ['checkbox', 'dropdown'] },
     surveyOptionsAreRadio: { type: Boolean, default: undefined },
     surveyAreAnswersMandatory: { type: Boolean, default: undefined },
     surveyInputOptionsValues: { type: [], default: undefined },

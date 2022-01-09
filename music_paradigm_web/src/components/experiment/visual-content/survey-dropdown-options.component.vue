@@ -1,19 +1,13 @@
 <template>
 	<div id="survey-area" class="state-section state-division-text">
 		<table class="survey-table">
-			<tr v-if="hasColumnHeaders">
-				<th class="survey-header" v-for="(header, index) in columnHeaders" :key="index">{{ header }}</th>
-			</tr>
 			<tr v-for="rowNumber in rowsCount" :key="rowNumber">
 				<td v-if="hasLeftSideColumn">{{ leftSideText[rowNumber - 1] }}</td>
-				<td v-for="columnNumber in columnsCount" :key="columnNumber">
-					<input
-						:type="isRadioOptions ? 'radio' : 'checkbox'"
-						:name="'question-' + rowNumber"
-						:value="valueOptions[columnNumber - 1]"
-						class="survey-input"
-						v-model="selectionPerRow[rowNumber - 1]"
-					/>
+				<td>
+					<select class="survey-input" v-model="selectionPerRow[rowNumber - 1]">
+						<option :value="null" style="text-align: center">&#x25BC;</option>
+						<option v-for="(value, index) in valueOptions" :key="index" :value="value" class="survey-option">{{ getOptionText(index) }}</option>
+					</select>
 				</td>
 				<td v-if="hasRightSideColumn">{{ rightSideText[rowNumber - 1] }}</td>
 			</tr>
@@ -52,18 +46,10 @@ export default {
 		hasRightSideColumn() {
 			return this.surveyRightSideText.length > 0;
 		},
-		columnHeaders() {
-			const columnTitles = [];
-			if (this.hasLeftSideColumn) columnTitles.push(''); // Add empty title if there is a leftside column
-			for (let i = 0; i < this.columnsCount; i++) columnTitles.push(this.surveyInputOptionsText[i]); // Add the specified column titles
-			if (this.hasRightSideColumn) columnTitles.push(''); // Add enpty title if there is a rightside column
-
-			return columnTitles;
-		},
 		rowsCount() {
 			return Math.max(this.surveyLeftSideText.length, this.surveyRightSideText.length);
 		},
-		columnsCount() {
+		optionsCount() {
 			return this.surveyInputOptionsValues.length;
 		},
 		leftSideText() {
@@ -94,7 +80,6 @@ export default {
 		},
 		context() {
 			return {
-				isSurveyRadio: this.surveyOptionsAreRadio,
 				surveyOptions: this.surveyInputOptionsValues,
 				surveyHeader: this.surveyInputOptionsText,
 				surveySideText: this.sideText,
@@ -102,6 +87,11 @@ export default {
 		},
 		answers() {
 			return this.selectionPerRow;
+		},
+	},
+	methods: {
+		getOptionText(index) {
+			return index > this.surveyInputOptionsText.length ? this.surveyInputOptionsText[index] : this.surveyInputOptionsValues[index];
 		},
 	},
 	beforeMount() {
@@ -113,12 +103,8 @@ export default {
 			immediate: true,
 			deep: true,
 			handler: function () {
-				let allAnswersAreGiven = true;
-				for (const answer of this.selectionPerRow) {
-					if (this.isRadioOptions && answer === null) allAnswersAreGiven = false;
-					else if (!this.isRadioOptions && !answer.length > 0) allAnswersAreGiven = false;
-				}
-				this.allAnswersAreGiven = allAnswersAreGiven;
+				if (this.selectionPerRow.includes(null)) this.allAnswersAreGiven = false;
+				else this.allAnswersAreGiven = true;
 			},
 		},
 	},
@@ -147,8 +133,9 @@ export default {
 }
 
 .survey-input {
-	width: 1em;
-	height: 1em;
+	width: 75%;
 	margin: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
 }
 </style>

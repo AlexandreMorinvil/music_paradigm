@@ -2,7 +2,7 @@
 	<div id="instruction-state" class="state-content-flex">
 		<image-area-component class="image-area state-section" />
 		<text-area-component class="text-area state-section" />
-		<survey-area-component class="survey-area state-section" ref="survey" />
+		<component :is="type" class="survey-area state-section" ref="survey" />
 		<button-area-component class="button-area state-section" :text="buttonText" ref="button" v-on:clicked="emitStateEndedSignal" />
 	</div>
 </template>
@@ -14,21 +14,33 @@ import { mapActions, mapGetters } from 'vuex';
 import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
 import ButtonAreaComponent from '@/components/experiment/visual-content/button-area.component.vue';
 import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
-import SurveyAreaComponent from '@/components/experiment/visual-content/survey-area.component.vue';
+import SurveyCheckboxOptionsComponent from '@/components/experiment/visual-content/survey-checkbox-options.component.vue';
+import SurveyDropdownOptionsComponent from '@/components/experiment/visual-content/survey-dropdown-options.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
 		ButtonAreaComponent,
 		ImageAreaComponent,
-		SurveyAreaComponent,
 		TextAreaComponent,
+		checkbox: SurveyCheckboxOptionsComponent,
+		dropdown: SurveyDropdownOptionsComponent,
 	},
-	props: {},
+	data() {
+		return {
+			allowedTypes: ['checkbox', 'dropdown'],
+			hasReceivedStartSignal: false,
+			DEFAULT_SURVEY_TYPE: 'checkbox',
+		};
+	},
 	computed: {
-		...mapGetters('experiment', ['surveyAreAnswersMandatory']),
+		...mapGetters('experiment', ['surveyType', 'surveyAreAnswersMandatory']),
 		buttonText() {
 			return this.$t('views.experiment.survey.continue');
+		},
+		type() {
+			if (this.allowedTypes.includes(this.surveyType)) return this.surveyType;
+			else return this.DEFAULT_SURVEY_TYPE;
 		},
 	},
 	methods: {

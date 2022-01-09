@@ -228,8 +228,11 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			isGoBackButtonInFootnote: DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE,		// Block specific isGoBackButtonInFootnote superceeding the general parameter
 			checkpoint: true,														// Indicate whether the state should be saved at the current block
 			strictPlay: false,														// Indicate whether the playing state must be stopped upon a mistake
+
+			surveyType: '',															// Indicate the survey type for the 'survey' type
 			surveyOptionsAreRadio: true,											// Indicate if the survey questions are radio (one choice is allowed per question) or if multiple choices per questions are allowed
 			surveyAreAnswersMandatory: false,										// Indicate whether all answers are mandatory in order to be able to go to the next step when in a survey or if some questions can be left unanswered
+
 			writtingMaxCharacters: 100,												// Indicate the maximum amount of caracters allowed to be written in a "writting" state
 			writtingMinCharacters: 0,												// Indicate the minimum amount of characters needed in a "writting" state to be able to move to the next state
 			writtingIsNumber: false,												// Indicate whether the input writting expected should only be a numerical input
