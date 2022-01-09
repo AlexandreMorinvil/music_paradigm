@@ -14,8 +14,8 @@
 						<th>Tags</th>
 						<th>Curriculum</th>
 						<th>Start Date</th>
-						<th>Last Advance</th>
 						<th>Progression<br />Duration</th>
+						<th>Last <br />Advance</th>
 						<th>Reached</th>
 						<th>Actions</th>
 					</tr>
@@ -29,8 +29,8 @@
 						<td style="white-space: pre-line">{{ makeTagsDisplay(user) }}</td>
 						<td>{{ makeCurriculumTitleDisplay(user) }}</td>
 						<td>{{ makeProgressionStartTimeDisplay(user) }}</td>
-						<td>{{ makeProgressionLastAdvanceTimeDisplay(user) }}</td>
 						<td>{{ makeProgressionDurationDisplay(user) }}</td>
+						<td>{{ makeProgressionLastAdvanceTimeDisplay(user) }}</td>
 						<td>{{ makeProgressionDisplay(user) }}</td>
 						<td class="widget-table-actions-buttons">
 							<button v-on:click="handleSelectUser(user._id)" class="widget-button button small" :class="isSelectedUser(user) ? 'turquoise' : 'blue'">
