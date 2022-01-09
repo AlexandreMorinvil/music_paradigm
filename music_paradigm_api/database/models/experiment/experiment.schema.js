@@ -10,6 +10,7 @@ const stateSchema = new Schema({
     textContent: { type: Schema.Types.Mixed, default: undefined },
     pictureFileName: { type: Schema.Types.Mixed, default: undefined },
     interactivePiano: { type: Schema.Types.Mixed, default: undefined },
+    interactiveClicker: { type: Schema.Types.Mixed, default: undefined },
     interactiveKeyboard: { type: Schema.Types.Mixed, default: undefined },
     interactiveKeyboardTextMapping: { type: Schema.Types.Mixed, default: undefined },
     midiFileName: { type: Schema.Types.Mixed, default: undefined },

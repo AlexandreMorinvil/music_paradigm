@@ -6,7 +6,7 @@
 
 <script>
 import '@/styles/experiment-content-template.css';
-import PianoVisualDisplayComponent from '@/components/piano/piano-visual-display.component.vue';
+import PianoVisualDisplayComponent from '@/components/controller/piano/piano-visual-display.component.vue';
 import { mapGetters } from 'vuex';
 
 export default {

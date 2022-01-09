@@ -225,6 +225,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 		helperImageFileName,
 		textReminder,
 		interactivePiano,
+		interactiveClicker,
 		interactiveKeyboard,
 		textAfterQuestionAsked,
 		textSpecification,
@@ -236,6 +237,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	let updatedHelperImageFileName = typeof helperImageFileName === 'string' ? helperImageFileName : null;
 	let updatedTextReminder = typeof textReminder === 'string' ? textReminder : null;
 	let updatedInteractivePiano = typeof interactivePiano === 'string' || typeof interactivePiano === 'boolean' ? interactivePiano : null;
+	let updatedInteractiveClicker = typeof interactiveClicker === 'string' || typeof interactiveClicker === 'boolean' ? interactiveClicker : null;
 	let updatedInteractiveKeyboard = typeof interactiveKeyboard === 'string' || typeof interactiveKeyboard === 'boolean' ? interactiveKeyboard : null;
 	let updatedTextAfterQuestionAsked = typeof textAfterQuestionAsked === 'string' ? textAfterQuestionAsked : null;
 	let updatedTextSpecification = typeof textSpecification === 'string' ? textSpecification : null;
@@ -248,6 +250,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(helperImageFileName)) updatedHelperImageFileName = helperImageFileName[piledContentIndex] || null;
 	if (Array.isArray(textReminder)) updatedTextReminder = textReminder || null;
 	if (Array.isArray(interactivePiano)) updatedInteractivePiano = interactivePiano[piledContentIndex] || null;
+	if (Array.isArray(interactiveClicker)) updatedInteractiveClicker = interactiveClicker[piledContentIndex] || null;
 	if (Array.isArray(interactiveKeyboard)) updatedInteractiveKeyboard = interactiveKeyboard[piledContentIndex] || null;
 	if (Array.isArray(textAfterQuestionAsked)) updatedTextAfterQuestionAsked = textAfterQuestionAsked || null;
 	if (Array.isArray(textSpecification)) updatedTextSpecification = textSpecification || null;
@@ -260,6 +263,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(updatedHelperImageFileName)) updatedHelperImageFileName = updatedHelperImageFileName[innerStepIndex];
 	if (Array.isArray(updatedTextReminder)) updatedTextReminder = updatedTextReminder[innerStepIndex];
 	if (Array.isArray(updatedInteractivePiano)) updatedInteractivePiano = updatedInteractivePiano[innerStepIndex];
+	if (Array.isArray(updatedInteractiveClicker)) updatedInteractiveClicker = updatedInteractiveClicker[innerStepIndex];
 	if (Array.isArray(updatedInteractiveKeyboard)) updatedInteractiveKeyboard = updatedInteractiveKeyboard[innerStepIndex];
 	if (Array.isArray(updatedTextAfterQuestionAsked)) updatedTextAfterQuestionAsked = textAfterQuestionAsked || null;
 	if (Array.isArray(updatedTextSpecification)) updatedTextSpecification = textSpecification || null;
@@ -271,6 +275,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	currentState.content.helperImageName = updatedHelperImageFileName || '';
 	currentState.content.textReminder = updatedTextReminder || '';
 	currentState.content.interactivePiano = updatedInteractivePiano || false;
+	currentState.content.interactiveClicker = updatedInteractiveClicker || false;
 	currentState.content.interactiveKeyboard = updatedInteractiveKeyboard || false;
 	currentState.content.textAfterQuestionAsked = updatedTextAfterQuestionAsked || '';
 	currentState.content.textSpecification = updatedTextSpecification || '';

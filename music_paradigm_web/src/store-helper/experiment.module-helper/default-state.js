@@ -172,6 +172,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			helperImageName: '', 													// Name of the helper image to display
 			textReminder: '',														// Helper ext to display
 			interactivePiano: false, 												// <Boolean|String> Directive to display the interactive piano
+			interactiveClicker: false,												// <Boolean|String> Directive to display the interactive clicker
 			interactiveKeyboard: false, 											// <Boolean|String> Directive to display the interactive keyboard
 			textAfterQuestionAsked: '',												// Text displayed after a question is asked in question states
 			textSpecification: '',													// Text to add a certain specification (used in question state)

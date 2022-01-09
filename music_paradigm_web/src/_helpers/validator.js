@@ -190,6 +190,7 @@ function validateBlock(block, index = null) {
 		'type',
 		'textContent',
 		'interactivePiano',
+		'interactiveClicker',
 		'interactiveKeyboard',
 		'interactiveKeyboardTextMapping',
 		'pictureFileName',
@@ -387,6 +388,7 @@ function validateAttributeType(key, value) {
 		case 'helperImageFileName':
 		case 'videoFileName':
 		case 'interactivePiano':
+		case 'interactiveClicker':
 		case 'interactiveKeyboard':
 		case 'midiFileName':
 		case 'referenceKeyboardKeys':
@@ -418,6 +420,7 @@ function validateAttributeType(key, value) {
 						break;
 
 					case 'interactivePiano':
+					case 'interactiveClicker':
 					case 'interactiveKeyboard':
 						// String or boolean
 						if (!(typeof value === 'string' || typeof value === 'boolean')) {
@@ -454,6 +457,7 @@ function validateAttributeType(key, value) {
 
 					// Array of String or boolean OR array of array of string or boolean
 					case 'interactivePiano':
+					case 'interactiveClicker':
 					case 'interactiveKeyboard':
 						value.forEach((element, index) => {
 							if (!(typeof element === 'string' || typeof element === 'boolean' || Array.isArray(element))) {

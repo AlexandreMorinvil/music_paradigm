@@ -18,8 +18,8 @@ import AlertComponent from '@/components/application-component/alert.component.v
 import NavigationBarDefaultComponent from '@/components/navigation-bar/navigation-bar-default.component.vue';
 import NavigationBarExperimentComponent from '@/components/navigation-bar/navigation-bar-experiment.component.vue';
 
-import KeyboardInputTrackerComponent from './components/keyboard/keyboard-input-tracker.component.vue';
-import PianoInputHandlerComponent from './components/piano/piano-input-handler.component.vue';
+import KeyboardInputTrackerComponent from './components/controller/keyboard/keyboard-input-tracker.component.vue';
+import PianoInputHandlerComponent from './components/controller/piano/piano-input-handler.component.vue';
 
 export default {
 	components: {
