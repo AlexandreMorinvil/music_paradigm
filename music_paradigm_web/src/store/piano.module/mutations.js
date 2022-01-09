@@ -28,9 +28,6 @@ export default {
 	},
 
 	// Mutations on player
-	setPlayer: (state, player) => {
-		state.player = player;
-	},
 	playMidiFile: (state) => {
 		state.player.play();
 	},
@@ -39,14 +36,6 @@ export default {
 	},
 	removePlayerEndOfFileAction: (state, functionToRemove) => {
 		state.player.off('endOfFile', functionToRemove);
-	},
-
-	// Mutations on piano
-	setPiano: (state, piano) => {
-		state.piano = piano;
-	},
-	clearPiano: (state) => {
-		state.piano = null;
 	},
 
 	// Mutations on key interations arrays

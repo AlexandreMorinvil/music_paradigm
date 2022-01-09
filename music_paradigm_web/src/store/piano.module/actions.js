@@ -25,9 +25,6 @@ export default {
 	},
 
 	// Player actions
-	setPlayer: ({ commit }, player) => {
-		commit('setPlayer', player);
-	},
 	playMidiFile: ({ commit }) => {
 		commit('playMidiFile');
 	},
@@ -36,14 +33,6 @@ export default {
 	},
 	removePlayerEndOfFileAction: ({ commit }, functionToRemove) => {
 		commit('removePlayerEndOfFileAction', functionToRemove);
-	},
-
-	// Piano instance
-	setPiano: ({ commit }, piano) => {
-		commit('setPiano', piano);
-	},
-	clearPiano: ({ commit }) => {
-		commit('clearPiano');
 	},
 
 	// Key interaction actions
