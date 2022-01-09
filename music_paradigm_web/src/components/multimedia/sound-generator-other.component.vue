@@ -7,7 +7,7 @@ export default {
 	data() {
 		return {
 			audio: new Audio(),
-			VOLUME_LEVEL: 0.5,
+			VOLUME_LEVEL: 0.25,
 		};
 	},
 	computed: {
