@@ -70,7 +70,7 @@ export default {
 
 .dimmensions {
 	border-radius: 10px;
-	height: 600px;
+	height: 700px;
 	width: 800px;
 }
 
@@ -134,11 +134,13 @@ export default {
 	text-align: justify;
 	display: grid;
 	grid-template-columns: 3em 1fr;
+	font-size: 0.9em;
 }
 
 .index-square {
 	width: auto;
 	height: 2em;
+	border-radius: 10px;
 	background-color: rgb(255, 0, 70);
 	border: 3px solid rgb(250, 0, 50);
 	padding: 0.2em;

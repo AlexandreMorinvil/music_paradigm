@@ -1,9 +1,6 @@
 <template>
 	<div id="app" class="app-grid">
-		<piano-input-handler-component />
-		<keyboard-input-tracker-component />
 		<alert-component id="alert" v-if="hasAlert" />
-
 		<div id="app-header" class="app-header app-header-position">
 			<component :is="navigationBarType" class="navigatiobn-bar" id="app-navigation-bar" />
 		</div>
@@ -18,16 +15,11 @@ import AlertComponent from '@/components/application-component/alert.component.v
 import NavigationBarDefaultComponent from '@/components/navigation-bar/navigation-bar-default.component.vue';
 import NavigationBarExperimentComponent from '@/components/navigation-bar/navigation-bar-experiment.component.vue';
 
-import KeyboardInputTrackerComponent from './components/controller/keyboard/keyboard-input-tracker.component.vue';
-import PianoInputHandlerComponent from './components/controller/piano/piano-input-handler.component.vue';
-
 export default {
 	components: {
 		'default-navigation-bar': NavigationBarDefaultComponent,
 		'experiment-navigation-bar': NavigationBarExperimentComponent,
 		AlertComponent,
-		KeyboardInputTrackerComponent,
-		PianoInputHandlerComponent,
 	},
 	data() {
 		return {
