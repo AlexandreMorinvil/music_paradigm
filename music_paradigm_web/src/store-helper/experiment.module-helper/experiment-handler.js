@@ -171,6 +171,7 @@ function setExperimentGeneralSettings(state) {
 		withTimer,
 		hasClearBackground,
 		hasSound,
+		keyboardMidiInputMapping,
 	} = state.experiment;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -199,6 +200,8 @@ function setExperimentGeneralSettings(state) {
 		withTimer: 							typeof withTimer === 'boolean' 						? withTimer : defaultSettings.withTimer,
 		hasClearBackground: 				typeof hasClearBackground === 'boolean' 			? hasClearBackground : defaultSettings.hasClearBackground,
 		hasSound: 							typeof hasSound === 'boolean' 						? hasSound : defaultSettings.hasSound,
+		keyboardMidiInputMapping:			typeof keyboardMidiInputMapping === 'object'
+											&& !Array.isArray(keyboardMidiInputMapping) 		? keyboardMidiInputMapping : defaultSettings.keyboardMidiInputMapping,
 	};
 }
 

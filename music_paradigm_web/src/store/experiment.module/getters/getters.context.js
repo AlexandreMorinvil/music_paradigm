@@ -39,5 +39,9 @@ export default {
 
 	hasSound: (state) => {
 		return state.settings.hasSound;
-	}
+	},
+
+	keyboardMidiInputMapping: (state) => {
+		return state.settings.keyboardMidiInputMapping;
+	},
 };
