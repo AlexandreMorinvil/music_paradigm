@@ -247,8 +247,8 @@ export default {
 	background-color: lightgray;
 	color: white;
 	border: none;
-	width: 125px;
-	height: 125px;
+	width: 115px;
+	height: 115px;
 	margin: 20px;
 }
 
