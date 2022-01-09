@@ -72,7 +72,6 @@ function makeLogReference(logHeader) {
     return {
         progressionId: progressionId,
         associativeId: associativeId,
-        associativeIdOrdinalNumber: associativeIdOrdinalNumber,
         logLabel: logLabel,
         completionCount: completionCount,
     }

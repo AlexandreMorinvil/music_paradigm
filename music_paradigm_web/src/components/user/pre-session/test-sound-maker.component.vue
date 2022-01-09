@@ -20,17 +20,12 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('piano', ['isPianoInitialized', 'piano']),
+		...mapGetters('soundGenerator', ['isSoundGeneratorInitialized', 'soundGeneratorInstrument']),
 	},
 	methods: {
 		makeSound(midiNumber) {
 			if (this.playingNote) this.playingNote.stop();
-			if (this.isPianoInitialized)
-				this.playingNote = this.instrument.play(midiNumber, 0, {
-					gain: (vel) => {
-						return vel / 127;
-					},
-				});
+			if (this.isSoundGeneratorInitialized) this.playingNote = this.instrument.play(midiNumber, 0, { gain: 1 });
 		},
 		stopSound() {
 			if (this.playingNote) this.playingNote.stop();
@@ -72,14 +67,14 @@ export default {
 		},
 	},
 	beforeMount() {
-		this.instrument = this.piano;
+		this.instrument = this.soundGeneratorInstrument;
 	},
 	beforeDestroy() {
 		this.stopNoteLoop();
 		this.stopSound();
 	},
 	watch: {
-		piano: {
+		soundGeneratorInstrument: {
 			deep: true,
 			immediate: true,
 			handler: function (pianoObject) {
