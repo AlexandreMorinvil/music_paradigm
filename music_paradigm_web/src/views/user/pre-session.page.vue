@@ -38,7 +38,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('session', ['needsMessagePreSession', 'needsPianoSettingPreExperiment']),
+		...mapGetters('session', ['needsMessagePreSession', 'needsPianoSettingPreExperiment', 'needsSoundTestPreExperiment']),
 		stages() {
 			const stages = [];
 			if (this.needsMessagePreSession) stages.push('message');
@@ -46,8 +46,8 @@ export default {
 			if (this.needsPianoSettingPreExperiment) {
 				stages.push('piano-plug');
 				stages.push('piano-test');
-				stages.push('sound');
 			}
+			if (this.needsSoundTestPreExperiment) stages.push('sound');
 			return stages;
 		},
 		stageComponent() {
@@ -62,6 +62,7 @@ export default {
 	},
 	methods: {
 		...mapActions('session', ['startSession', 'abortPresession']),
+		...mapActions('soundGenerator', ['initializeSoundGenerator', 'terminateSoundGenerator']),
 		abort() {
 			PianoEventBus.$emit(pianoEvents.EVENT_PIANO_TERMINATE_REQUEST);
 			this.abortPresession();
@@ -75,6 +76,12 @@ export default {
 			else this.currentStageIndex -= 1;
 		},
 	},
+	beforeMount() {
+		if (this.needsSoundTestPreExperiment) this.initializeSoundGenerator();
+	},
+	beforeDestroy() {
+		if (this.needsSoundTestPreExperiment) this.terminateSoundGenerator();
+	}
 };
 </script>
 

@@ -4,17 +4,24 @@ import { defaultState } from '@/store-helper/experiment.module-helper';
 export default {
 	currentStateType: (state) => {
 		// Return the type of the current state
-		if (state.cursor.flag.isBeyondEnd) {
-			return 'end';
+		if (state.cursor.flag.isBeyondEnd) return 'end';
+		else return state.state.type || '';
+	},
+
+	currentStateSubtype: (state) => {
+		const type = state.state.type;
+		switch (type) {
+			case 'playing': return state.state.settings.playingMode;
+			case 'question': return state.state.settings.questionType;
+			default: return '';
 		}
-		return state.state.type || '';
 	},
 
 	textContent: (state) => {
 		return state.state.content.text;
 	},
 
-    pictureName: (state) => {
+	pictureName: (state) => {
 		const pictureName = state.state.content.pictureName;
 		return pictureName ? `${state.description.folder}/${pictureName}` : '';
 	},

@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 // Exports
 module.exports = {
     makeMongooseLogQuery,
@@ -36,8 +38,10 @@ function makeUserMongooseFilters(userCriterias = null) {
 
     // Parse the criterias
     const { ids } = userCriterias;
-    if (Array.isArray(ids) && ids.length > 0)
-        Object.assign(filters, { userId: { $in: ids } });
+    if (Array.isArray(ids) && ids.length > 0) {
+        const castedIds = ids.map((id) => { return mongoose.Types.ObjectId(id) });
+        Object.assign(filters, { userId: { $in: castedIds } });
+    }
 
     return filters;
 }
@@ -48,8 +52,10 @@ function makeProgressionMongooseFilters(progressionCriterias = null) {
 
     // Parse the criterias
     const { ids } = progressionCriterias;
-    if (Array.isArray(ids) && ids.length > 0)
-        Object.assign(filters, { progressionId: { $in: ids } })
+    if (Array.isArray(ids) && ids.length > 0) {
+        const castedIds = ids.map((id) => { return mongoose.Types.ObjectId(id) });
+        Object.assign(filters, { progressionId: { $in: castedIds } })
+    }
 
     return filters;
 }
@@ -75,7 +81,6 @@ function makeLogLabelMongooseFilters(logLabelCriterias = null) {
     if (Array.isArray(values) && values.length > 0)
         Object.assign(filters, { logLabel: { $in: values } });
 
-
     return filters;
 }
 
@@ -85,8 +90,10 @@ function makeCurriculumMongooseFilters(curriculumCriterias = null) {
 
     // Parse the criterias
     const { ids } = curriculumCriterias;
-    if (Array.isArray(ids) && ids.length > 0)
-        Object.assign(filters, { completionCount: { $in: ids } });
+    if (Array.isArray(ids) && ids.length > 0) {
+        const castedIds = ids.map((id) => { return mongoose.Types.ObjectId(id) });
+        Object.assign(filters, { completionCount: { $in: castedIds } });
+    }
 
     return filters;
 }
@@ -97,8 +104,10 @@ function makeExperimentMongooseFilters(experimentCriterias = null) {
 
     // Parse the criterias
     const { ids } = experimentCriterias;
-    if (Array.isArray(ids) && ids.length > 0)
-        Object.assign(filters, { experimentId: { $in: ids } })
+    if (Array.isArray(ids) && ids.length > 0) {
+        const castedIds = ids.map((id) => { return mongoose.Types.ObjectId(id) });
+        Object.assign(filters, { experimentId: { $in: castedIds } })
+    }
 
     return filters;
 }
@@ -144,11 +153,15 @@ function makeLogsSpecificChoiceMongooseFilters(specificChoiceCriterias = null) {
 
     // Parse the criterias
     const { ids, excludedIds } = specificChoiceCriterias;
-    if (Array.isArray(ids) && ids.length > 0)
-        Object.assign(filters, { _id: { $in: ids } });
+    if (Array.isArray(ids) && ids.length > 0) {
+        const castedIds = ids.map((id) => { return mongoose.Types.ObjectId(id) });
+        Object.assign(filters, { _id: { $in: castedIds } });
+    }
 
-    if (Array.isArray(excludedIds) && excludedIds.length > 0)
-        Object.assign(filters, { _id: { $nin: excludedIds } });
+    if (Array.isArray(excludedIds) && excludedIds.length > 0) {
+        const castedIds = excludedIds.map((id) => { return mongoose.Types.ObjectId(id) });
+        Object.assign(filters, { _id: { $nin: castedIds } });
+    }
 
     return filters;
 }

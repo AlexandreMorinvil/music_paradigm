@@ -8,10 +8,6 @@
 		<users-editor-form-component class="editor-position inner-widget" ref="editorForm" />
 
 		<div class="submission-buttons-position">
-			<!-- <form submit.prevent ref="upload" style="display: none">
-				<input type="file" id="myfile" name="myfile" v-on:change="handleUploadUsers" ref="fileInput" />
-			</form>
-			<button class="widget-button inactive">Upload</button> -->
 			<button v-on:click="submitUserToCreate" class="widget-button green">Create</button>
 			<button v-on:click="submitUserToUpdate" class="widget-button blue" :class="{ inactive: !isUpdateButtonActive }">Update</button>
 			<button v-on:click="submitUserToDelete" class="widget-button red" :class="{ inactive: !isDeleteButtonActive }">Delete</button>
@@ -81,9 +77,6 @@ export default {
 		handleUnselection() {
 			if (!this.isUnselectButtonActive) return;
 			this.unsetSelectedUser();
-		},
-		handleUploadUsers() {
-			console.log('To implement');
 		},
 		evaluateIsRevertButtonActive(wasFormModified) {
 			this.isRevertButtonActive = wasFormModified;

@@ -69,12 +69,16 @@ const schema = new Schema(
 );
 
 // Virtual properties
-schema.virtual('startTimePassed').get(function() {
+schema.virtual('startTimePassed').get(function () {
     return (new Date()).getTime() - (new Date(this.startTime)).getTime()
 });
 
-schema.virtual('lastProgessionTimePassed').get(function() {
+schema.virtual('lastProgessionTimePassed').get(function () {
     return (new Date()).getTime() - (new Date(this.lastProgressionDate)).getTime()
+});
+
+schema.virtual('duration').get(function () {
+    return (new Date(this.lastProgressionDate)).getTime() - (new Date(this.startTime)).getTime();
 });
 
 schema.set('toJSON', { virtuals: true });

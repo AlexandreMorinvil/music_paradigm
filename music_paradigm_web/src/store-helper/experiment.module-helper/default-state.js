@@ -58,7 +58,10 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 		_id: null, // Id of the experiment
 
 		// The prelude sequence of the experiment
-		prelude: [], // Description of the different steps of the prelude
+		flowPrelude: [], // Those steps are done before accessing the main flow
+
+		// The conclusion sequence of the experiment
+		flowConclusion: [], // Those steps are allways put at the end of a session (when the end is reached or through a timeout)
 
 		// The sequence of the experiment
 		flow: [], // Description of the different steps of the experiment
@@ -147,8 +150,8 @@ function DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES() {
 			lastPiledContentIndex: 0, 												// Last index of media content piled at the index pile start
 		},
 		flag: {
-			isInPrelude: false,														// Indicator of whether or not the cursor is pointing at hte main experiment (as opposed to the prelude)
-			isInTimeUp: false, 														// Indicator of whether or not the time limit is reached
+			isInPrelude: false,														// Indicator of whether or not the cursor is pointing at the prelude flow
+			isInConclusion: false,													// Indicator of whether or not the cursor is pointing at the conclusion flow
 			isBeyondEnd: false, 													// Indicator of whether the index as reached the end of the flow (is checked before moving the cursor forward)
 			isInSkipableChain: false, 												// Indicator of whether the block must be skipped upon a skip request
 			isInSkipIfNotMetSuccessGoalChain: false,								// Indicator of whether the bloc is in a chain of blocs to skip if a "skipIfNotMetSuccessGoal" situation is encountered
@@ -184,6 +187,8 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			surveyInputOptionsText: [],												// List of the texts that will be displayed above each option of the survey
 			surveyLeftSideText: [],													// Questions or texts to be written for the survey at the left, each value will be written in a row (the maximum length of surveyLeftSideText or surveyRightSideText will determine the number of row)
 			surveyRightSideText: [],												// Questions or texts to be written for the survey at the right, each value will be written in a row (the maximum length of surveyLeftSideText or surveyRightSideText will determine the number of row)
+
+			rightAnswers: null,														// Right answers in a question state
 		},
 
 		// Multimedia elements
@@ -223,8 +228,11 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			isGoBackButtonInFootnote: DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE,		// Block specific isGoBackButtonInFootnote superceeding the general parameter
 			checkpoint: true,														// Indicate whether the state should be saved at the current block
 			strictPlay: false,														// Indicate whether the playing state must be stopped upon a mistake
+
+			surveyType: '',															// Indicate the survey type for the 'survey' type
 			surveyOptionsAreRadio: true,											// Indicate if the survey questions are radio (one choice is allowed per question) or if multiple choices per questions are allowed
 			surveyAreAnswersMandatory: false,										// Indicate whether all answers are mandatory in order to be able to go to the next step when in a survey or if some questions can be left unanswered
+
 			writtingMaxCharacters: 100,												// Indicate the maximum amount of caracters allowed to be written in a "writting" state
 			writtingMinCharacters: 0,												// Indicate the minimum amount of characters needed in a "writting" state to be able to move to the next state
 			writtingIsNumber: false,												// Indicate whether the input writting expected should only be a numerical input
@@ -233,11 +241,12 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 
 			questionType: DEFAULT_QUESTION_TYPE,									// Indicate the question type for the 'question' states
 			areAnswerOptionsVertical: false,										// Disposition of the anserChoices (vertical if true, horizontal if false)
-			// rightAnswers:
+			areInactiveAnswersDisplayed: false,										// Indicate if answers with a text but no value must be displayed (as incactive choices)
 		},
 		// Session specific informations
 		record: {
 			logLabel: DEFAULT_LOG_LABEL,											// Active label that will be associated to the logs
+			isInTimeUp: false, 														// Indicator of whether or not the time limit is reached
 			sucesses: 0, 															// Number of successes recorded
 			successesInLoop: 0, 													// Number of successes recorded in the loop
 			previousSucessesInLoop: 0,												// Number of sucesses in loop from the previous group of states

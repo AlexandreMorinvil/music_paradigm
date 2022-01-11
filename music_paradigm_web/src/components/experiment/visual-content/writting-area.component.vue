@@ -92,6 +92,7 @@ export default {
 
 textarea {
 	resize: none;
+	background-color: rgb(245, 245, 245);
 }
 
 .centering {

@@ -99,7 +99,8 @@ function validateExperiment(experiment) {
 		'withTimer',
 		'hasClearBackground',
 		'timeUpState',
-		'prelude',
+		'flowPrelude',
+		'flowConclusion',
 		'flow',
 		'variables',
 		'variablesSchedules',
@@ -146,8 +147,13 @@ function validateExperiment(experiment) {
 		validateBlock(element, index);
 	});
 
-	if (experiment.prelude)
-		experiment.prelude.forEach((element, index) => {
+	if (experiment.flowPrelude)
+		experiment.flowPrelude.forEach((element, index) => {
+			validateBlock(element, index);
+		});
+
+	if (experiment.flowConclusion)
+		experiment.flowConclusion.forEach((element, index) => {
 			validateBlock(element, index);
 		});
 
@@ -234,6 +240,7 @@ function validateBlock(block, index = null) {
 
 		'logLabel',
 
+		'surveyType',
 		'surveyOptionsAreRadio',
 		'surveyAreAnswersMandatory',
 		'surveyInputOptionsValues',
@@ -261,6 +268,7 @@ function validateBlock(block, index = null) {
 		'answerChoicesText',
 		'answerChoicesImage',
 		'answerChoicesColor',
+		'areInactiveAnswersDisplayed',
 
 		'rightAnswers',
 	];
@@ -354,6 +362,7 @@ function validateAttributeType(key, value) {
 		case 'withTimer':
 		case 'hasClearBackground':
 		case 'hasSound':
+		case 'areInactiveAnswersDisplayed':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}
@@ -525,7 +534,8 @@ function validateAttributeType(key, value) {
 			break;
 
 		// Array
-		case 'prelude':
+		case 'flowPrelude':
+		case 'flowConclusion':
 		case 'surveyInputOptionsValues':
 		case 'surveyInputOptionsText':
 		case 'surveyLeftSideText':

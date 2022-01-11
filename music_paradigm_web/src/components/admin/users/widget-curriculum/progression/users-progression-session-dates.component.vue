@@ -111,7 +111,6 @@ export default {
 			else return new Date(date).toLocaleDateString(undefined, this.datesOptions);
 		},
 		handleCompletionCountSelection(count) {
-			console.log('It gets here');
 			if (this.isSelectedCompletionCount(count)) this.unsetSelectedSessionCompletionCount();
 			else this.setSelectedSessionCompletionCount(count);
 		},

@@ -1,6 +1,6 @@
 <template>
 	<div class="pre-session-grid">
-		<piano-sound-maker-component style="display: none" ref="piano" />
+		<test-sound-maker-component style="display: none" ref="piano" />
 		<problem-sound-component v-if="hasProblem" v-on:ok="clearProblem" />
 		<p class="centered-text">{{ message }}</p>
 		<div class="button-layout">
@@ -15,13 +15,13 @@
 <script>
 import '@/styles/pre-session-template.css';
 
-import PianoSoundMakerComponent from '@/components/piano/piano-sound-maker.component.vue';
 import ProblemSoundComponent from '@/components/user/problem-prompt/problem-sound.component.vue';
+import TestSoundMakerComponent from '@/components/user/pre-session/test-sound-maker.component.vue';
 
 export default {
 	components: {
-		PianoSoundMakerComponent,
 		ProblemSoundComponent,
+		TestSoundMakerComponent,
 	},
 	props: {
 		isLastStage: {

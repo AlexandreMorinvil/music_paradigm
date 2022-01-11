@@ -11,8 +11,6 @@ export default {
 	getSequenceDuration,
 };
 
-// TODO: This file is a mess...
-
 // search for sub array
 function findSubarray(subarr, arr, fromIndex = 0) {
 	const found = [];
@@ -79,48 +77,41 @@ function arraysValid(arr1, arr2) {
 	else return true;
 }
 
-// Const average = data => data.length > 0 ? data.reduce((sum, value) => sum + value) / data.length : 0;
-// const standardDeviation = values => Math.sqrt(average(values.map(value => (value - average(values)) ** 2)));
-
-// speed mode (task 1) perfaaormance measures
 // Walker: number of correctly typed sequence per block
-// Old name : getSpeedW
-function getCorrectSequenceCount(refNoteArr, noteArr) {
-	const idxArr = findSubarray(refNoteArr, noteArr);
-	return idxArr.length;
+function getCorrectSequenceCount(referenceNoteArray, playedNoteArray) {
+	const indexArray = findSubarray(referenceNoteArray, playedNoteArray);
+	return indexArray.length;
 }
 
 // Duke: mean sequence duration measured from the onset of the first note to the onset of the final tone in each sequence.
-// Old name : getSpeedD
-function getSequenceDurations(refNoteArr, noteArr, timeArr) {
-	const idxArr = findSubarray(refNoteArr, noteArr);
-	if (idxArr.length < 1) {
+function getSequenceDurations(referenceNoteArray, playedNoteArray, playedTimeArray) {
+	const indexArray = findSubarray(referenceNoteArray, playedNoteArray);
+	if (indexArray.length < 1) {
 		return { durations: [], speedD: 0 };
 	}
-	const noteLength = refNoteArr.length - 1;
+	const noteLength = referenceNoteArray.length - 1;
 	let duration = 0;
 	const durations = [];
-	idxArr.forEach((idx) => {
-		const temp = timeArr[idx + noteLength] - timeArr[idx];
+	indexArray.forEach((idx) => {
+		const temp = playedTimeArray[idx + noteLength] - playedTimeArray[idx];
 		duration += temp;
 		durations.push(temp);
 	});
-	return { durations: durations, durationsAverage: duration / idxArr.length };
+	return { durations: durations, durationsAverage: duration / indexArray.length };
 }
 
-// Within-sequence measure assessed the time intervals between successive key presses within the sequence
-// for correct sequences only
-function getTransitionSpeeds(refNoteArr, noteArr, timeArr) {
-	const idxArr = findSubarray(refNoteArr, noteArr);
-	const sequenceCount = idxArr.length;
+// Within-sequence measure assessed the time intervals between successive key presses within the sequence for correct sequences only
+function getTransitionSpeeds(referenceNoteArray, playedNoteArray, playedTimeArray) {
+	const indexArray = findSubarray(referenceNoteArray, playedNoteArray);
+	const sequenceCount = indexArray.length;
 	if (sequenceCount <= 0) return { transitionSpeeds: [], transitionSpeedsAverage: [] };
 
 	const transitionSpeeds = [];
-	const noteLength = refNoteArr.length - 1;
+	const noteLength = referenceNoteArray.length - 1;
 	for (let i = 0; i < noteLength; i++) {
 		const subDurations = [];
-		idxArr.forEach((idx) => {
-			subDurations.push(timeArr[idx + i + 1] - timeArr[idx + i]);
+		indexArray.forEach((idx) => {
+			subDurations.push(playedTimeArray[idx + i + 1] - playedTimeArray[idx + i]);
 		});
 		transitionSpeeds.push(subDurations);
 	}
@@ -163,76 +154,74 @@ function getPitchAccuracy(reference, played) {
 	};
 }
 
-// (percentage of IOI durations performed in the correct order)
-// averaeg IOI duration difference over their reference IOI duration
-// (diff_a/a + diff_b/b+.......) / 2 - rhythm + tempo
-// Old name : getRhythmTempo
 // Average relative duration error
-function getDurationsRelativeError(refDurArr, durArr) {
-	if (!arraysValid(durArr, refDurArr)) return -1;
+function getDurationsRelativeError(referenceDurationArray, playedDurationArray) {
+	if (!arraysValid(playedDurationArray, referenceDurationArray)) return -1;
 
 	let arrDiff = 0;
-	for (let i = 0; i < refDurArr.length; i++) {
-		arrDiff += Math.abs(durArr[i] - refDurArr[i]) / refDurArr[i];
+	const notesToConsiderCount = Math.min(referenceDurationArray.length, playedDurationArray.length);
+	for (let i = 0; i < notesToConsiderCount; i++) {
+		arrDiff += Math.abs(playedDurationArray[i] - referenceDurationArray[i]) / referenceDurationArray[i];
 	}
 
-	return (arrDiff / refDurArr.length) * 100;
+	return (arrDiff / notesToConsiderCount) * 100;
 }
 
-// Old name : getIOIs
 // InterOnsetInterval : The interonset interval, or IOI, is the interval between onsets of stimuli
-function getInterOnsetIntervals(timeArr) {
+function getInterOnsetIntervals(playedTimeArray) {
 	const IOIs = [];
-	if (timeArr.length > 0) {
-		for (let i = 1; i < timeArr.length; i++) {
-			IOIs.push(timeArr[i] - timeArr[i - 1]);
+	if (playedTimeArray.length > 0) {
+		for (let i = 1; i < playedTimeArray.length; i++) {
+			IOIs.push(playedTimeArray[i] - playedTimeArray[i - 1]);
 		}
 	}
 	return IOIs; // Return [a,b,c,d]
 }
 
-function getInterOnsetIntervalsRelativeError(refTimeArr, timeArr, errorMargin = 0, relativeErrorMargin = 0) {
-	if (!arraysValid(timeArr, refTimeArr)) return -1;
-	const referenceIoi = getInterOnsetIntervals(refTimeArr);
-	const experimentalIoi = getInterOnsetIntervals(timeArr);
+function getInterOnsetIntervalsRelativeError(referenceTimeArray, playedTimeArray, errorMargin = 0, relativeErrorMargin = 0) {
+	if (!arraysValid(playedTimeArray, referenceTimeArray)) return -1;
+	const referenceIoi = getInterOnsetIntervals(referenceTimeArray);
+	const playedIoi = getInterOnsetIntervals(playedTimeArray);
 
 	const useRelativeError = relativeErrorMargin > 0;
 
 	let arrDiff = 0;
-	for (let i = 0; i < referenceIoi.length; i++) {
+	const notesToConsiderCount = Math.min(referenceIoi.length, playedIoi.length);
+	for (let i = 0; i < notesToConsiderCount; i++) {
 		const differenceOutsideErrorMargin = useRelativeError
-			? getDifferenceAdjustedWithRelativeError(refTimeArr[i], timeArr[i], relativeErrorMargin)
-			: getDifferenceAdjustedWithAbsoluteError(refTimeArr[i], timeArr[i], errorMargin);
+			? getDifferenceAdjustedWithRelativeError(referenceTimeArray[i], playedTimeArray[i], relativeErrorMargin)
+			: getDifferenceAdjustedWithAbsoluteError(referenceTimeArray[i], playedTimeArray[i], errorMargin);
 		arrDiff += differenceOutsideErrorMargin / referenceIoi[i];
 	}
 
-	return (arrDiff / experimentalIoi.length) * 100;
+	return (arrDiff / notesToConsiderCount) * 100;
 }
 
-function getRelativeInterOnsetIntervalsRelativeError(refTimeArr, timeArr, relativeErrorMargin = 0) {
-	if (!arraysValid(timeArr, refTimeArr)) return -1;
-	const referenceIoi = getInterOnsetIntervals(refTimeArr);
-	const experimentalIoi = getInterOnsetIntervals(timeArr);
+function getRelativeInterOnsetIntervalsRelativeError(referenceTimeArray, playedTimeArray, relativeErrorMargin = 0) {
+	if (!arraysValid(playedTimeArray, referenceTimeArray)) return -1;
+	const referenceIoi = getInterOnsetIntervals(referenceTimeArray);
+	const playedIoi = getInterOnsetIntervals(playedTimeArray);
 
 	const referenceAvergageIOI = referenceIoi.reduce((a, b) => a + b, 0) / referenceIoi.length;
-	const experimentalAvergageIOI = experimentalIoi.reduce((a, b) => a + b, 0) / experimentalIoi.length;
+	const playedAvergageIOI = playedIoi.reduce((a, b) => a + b, 0) / playedIoi.length;
 
 	let arrDiff = 0;
+	const notesToConsiderCount = Math.min(referenceIoi.length, playedIoi.length);
 	for (let i = 0; i < referenceIoi.length; i++) {
 		const referenceRelativeIoi = referenceIoi[i] / referenceAvergageIOI;
-		const experimentalRelativeIoi = experimentalIoi[i] / experimentalAvergageIOI;
+		const playedRelativeIoi = playedIoi[i] / playedAvergageIOI;
 
-		const differenceOutsideErrorMargin = getDifferenceAdjustedWithRelativeError(referenceRelativeIoi, experimentalRelativeIoi, relativeErrorMargin);
+		const differenceOutsideErrorMargin = getDifferenceAdjustedWithRelativeError(referenceRelativeIoi, playedRelativeIoi, relativeErrorMargin);
 		arrDiff += differenceOutsideErrorMargin / referenceRelativeIoi;
 	}
 
-	return (arrDiff / experimentalIoi.length) * 100;
+	return (arrDiff / notesToConsiderCount) * 100;
 }
 
 // Duration of the corresponding sequence of notes played (ms)
-function getSequenceDuration(timeArr, durationArr) {
-	const noteCount = timeArr.length;
-	return timeArr[0] + durationArr[noteCount - 1] - timeArr[noteCount - 1];
+function getSequenceDuration(playedTimeArray, durationArr) {
+	const noteCount = playedTimeArray.length;
+	return playedTimeArray[0] + durationArr[noteCount - 1] - playedTimeArray[noteCount - 1];
 }
 
 function getDifferenceAdjustedWithAbsoluteError(target, value, errorMargin = 0) {

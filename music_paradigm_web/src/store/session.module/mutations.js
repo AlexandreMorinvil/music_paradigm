@@ -56,7 +56,6 @@ export default {
 	},
 
 	clearSessionInformation(state) {
-		state.presSessionState = defaultState.PRE_SESSION_STATE();
 		state.sessionInformation = defaultState.EMPTY_SESSION_INFORMATION();
 	},
 };

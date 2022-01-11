@@ -54,6 +54,9 @@ export default {
 		start() {
 			this.$refs.timer.startTimer();
 		},
+		stop() {
+			this.$refs.timer.stopTimer();
+		},
 		recordTime() {
 			this.$refs.timer.recordTime();
 		},

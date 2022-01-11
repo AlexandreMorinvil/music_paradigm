@@ -126,17 +126,20 @@ export default {
 	// Mutations on the midi files data
 	eraseMidiFile: (state) => {
 		state.midiFile.name = '';
-		state.player.deleteFile();
 		state.midiFile.isLoaded = false;
+		state.player.deleteFile();
 		notesHandler.clearMidiFileNotes(state);
 	},
+
 	setMidiFileName: (state, midiFileName) => {
 		state.midiFile.name = midiFileName;
 	},
+
 	loadMidiArrayStream: (state, midiFile) => {
 		state.player.loadArrayBuffer(midiFile);
 		state.midiFile.isLoaded = true;
 	},
+
 	parseMidiNotes: (state, midiFile) => {
 		const jsonMidi = new Midi(midiFile);
 		const notes = jsonMidi.tracks[0].notes;

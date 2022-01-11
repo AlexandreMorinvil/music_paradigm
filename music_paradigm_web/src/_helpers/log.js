@@ -30,7 +30,7 @@ function returnValidLogType(logType) {
  * @type {Array<String>}
  * @description List of the states that are considered for the types that are valid of a simple log entry
  */
-const statesConsideredInSimpleLogs = ['playing', 'writting', 'survey'];
+const statesConsideredInSimpleLogs = ['playing', 'writting', 'survey', 'question'];
 
 /**
  * Returns wether a state type given in parameter should be considered in the simple logs

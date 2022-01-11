@@ -107,6 +107,7 @@ schema.statics.getListAllSummaries = async function () {
         userSummary.progressionStartTime = progressionGetters.getAdvanceStartTime(currentProgression);
         userSummary.progressionLastAdvancedDate = progressionGetters.getLastAdvanceDate(currentProgression);
         userSummary.progressionLastAdvancedTime = progressionGetters.getLastAdvanceTime(currentProgression);
+        userSummary.progressionDuration = progressionGetters.getDuration(currentProgression);
         Object.assign(userSummary, progressionAssociation.generateProgressionToCurriculumAssociationSummary(currentCurriculum, currentProgression));
 
         // Remove undesirable attributes

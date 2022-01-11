@@ -11,17 +11,27 @@ export default {
 	},
 	computed: {
 		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'audioFirst', 'audioSecond']),
+		...mapGetters('piano', ['isPianoInitialized']),
 	},
 	methods: {
 		...mapActions('piano', ['loadMidiFile']),
 		...mapActions('keyboard', ['loadReferenceKeyboardKeys']),
 		...mapActions('soundGenerator', ['loadFirstAudio', 'loadSecondAudio']),
+		initializePianoMidiLoader() {
+			this.$watch(
+				() => this.midiName,
+				(midiName) => {
+					if (midiName) this.loadMidiFile(midiName);
+				},
+				{ immediate: true },
+			);
+		},
 	},
 	watch: {
-		midiName: {
+		isPianoInitialized: {
 			immediate: true,
-			handler: function (midiName) {
-				if (midiName) this.loadMidiFile(midiName);
+			handler: function (isInitialized) {
+				if (isInitialized) this.initializePianoMidiLoader();
 			},
 		},
 

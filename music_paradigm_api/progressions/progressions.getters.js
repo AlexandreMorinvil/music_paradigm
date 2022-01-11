@@ -3,6 +3,7 @@ module.exports = {
     getAdvanceStartTime,
     getLastAdvanceDate,
     getLastAdvanceTime,
+    getDuration,
     getExperimentAssociated
 };
 
@@ -24,7 +25,7 @@ function getAdvanceStartDate(progression) {
 */
 function getAdvanceStartTime(progression) {
     if (!progression) return 0;
-    return progression.startTime ? (new Date()).getTime() - (new Date(progression.startTime)).getTime() : 0;
+    return progression ? progression.startTimePassed : 0;
 }
 
 /**
@@ -45,8 +46,21 @@ function getLastAdvanceDate(progression) {
 */
 function getLastAdvanceTime(progression) {
     if (!progression) return 0;
-    return progression ? (new Date()).getTime() - (new Date(progression.lastProgressionDate)).getTime() : 0;
+    return progression ? progression.lastProgessionTimePassed : 0;
 }
+
+/**
+ * Returns the duration over which the progression took place
+ * @param  {Object} progression     Progression from which the information will be fetched 
+ * @return {Date}                   The date of the last advance done in the progression
+ *                      
+*/
+function getDuration(progression) {
+    if (!progression) return 0;
+    return progression ? progression.duration : 0;
+}
+
+
 
 /**
  * Returns the nested experimetn associacted to an associative ID and it's orinal number

@@ -63,6 +63,7 @@ const stateSchema = new Schema({
 
     logLabel: {type: String, default: undefined },
 
+    surveyType: { type: String, default: undefined, enum: ['checkbox', 'dropdown'] },
     surveyOptionsAreRadio: { type: Boolean, default: undefined },
     surveyAreAnswersMandatory: { type: Boolean, default: undefined },
     surveyInputOptionsValues: { type: [], default: undefined },
@@ -84,6 +85,7 @@ const stateSchema = new Schema({
     textReminder: { type: Schema.Types.Mixed, default: undefined },
     
     areAnswerOptionsVertical: { type: Boolean, default: undefined },
+    areInactiveAnswersDisplayed: { type: Boolean, default: undefined },
     answerChoicesValue: { type: [], default: undefined },
     answerChoicesText: { type: [], default: undefined },
     answerChoicesColor: { type: [], default: undefined },
@@ -129,20 +131,25 @@ const schema = new Schema({
     hasClearBackground: { type: Boolean, default: undefined },
     hasSound: { type: Boolean, default: true },
 
-    prelude: {
+    flow: {
+        default: [],
+        type: [stateSchema],
+        required: true
+    },
+    flowPrelude: {
         default: [],
         type: [stateSchema],
         required: false,
+    },
+    flowConclusion: {
+        default: [],
+        type: [stateSchema],
+        required: false
     },
     timeUpState: {
         default: undefined,
         type: stateSchema,
         required: false
-    },
-    flow: {
-        default: [],
-        type: [stateSchema],
-        required: true
     },
     variables: [
         {

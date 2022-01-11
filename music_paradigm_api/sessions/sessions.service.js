@@ -1,4 +1,5 @@
 ﻿const sessionManager = require('sessions/session.manager');
+const User = require('database/db').User;
 
 module.exports = {
     initializeSession,
@@ -8,6 +9,7 @@ module.exports = {
 
 async function initializeSession(userId, associativeId, associativeIdOrdinalNumber) {
     try {
+        if (await User.isAdmin(userId)) return;
         await sessionManager.initializeSession(userId, associativeId, associativeIdOrdinalNumber);
         return;
     } catch (err) {
@@ -17,6 +19,7 @@ async function initializeSession(userId, associativeId, associativeIdOrdinalNumb
 
 async function concludeSession(userId, associativeId, associativeIdOrdinalNumber, isInTimeUp) {
     try {
+        if (await User.isAdmin(userId)) return;
         await sessionManager.concludeSession(userId, associativeId, associativeIdOrdinalNumber, isInTimeUp);
         return;
     } catch (err) {
@@ -26,6 +29,7 @@ async function concludeSession(userId, associativeId, associativeIdOrdinalNumber
 
 async function saveSessionState(userId, associativeId, cursor, state, timeIndicated, progressRatio) {
     try {
+        if (await User.isAdmin(userId)) return;
         await sessionManager.saveSessionState(userId, associativeId, cursor, state, timeIndicated, progressRatio);
         return;
     } catch (err) {

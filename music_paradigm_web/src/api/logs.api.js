@@ -1,5 +1,5 @@
 import { authHeader, url } from '@/_helpers';
-import { csvFileResponseHandler, defaultResponseHandler, jsonFileResponseHandler } from './default-response-handler';
+import { csvFileResponseHandler, defaultResponseHandler, jsonFileResponseHandler } from './response-handler';
 
 export const logsApi = {
 	getSpecificUserSimpleLog,
@@ -12,8 +12,10 @@ export const logsApi = {
 	getAdminThoroughLogSummaryList,
 	getUserSimpleLogCsv,
 	getUserThoroughLogCsv,
+	getUserThoroughLogUnwoundCsv,
 	getAdminSimpleLogCsv,
 	getAdminThoroughLogCsv,
+	getAdminThoroughLogUnwoundCsv,
 	getUserSimpleLogJson,
 	getUserThoroughLogJson,
 	getAdminSimpleLogJson,
@@ -110,6 +112,15 @@ function getUserThoroughLogCsv(criterias, mustSave = true) {
 	return fetch(url.logThorough('user-csv'), requestOptions).then(csvFileResponseHandler.bind(null, mustSave));
 }
 
+function getUserThoroughLogUnwoundCsv(criterias, mustSave = true) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(criterias),
+	};
+	return fetch(url.logThorough('user-csv-unwound'), requestOptions).then(csvFileResponseHandler.bind(null, mustSave));
+}
+
 function getAdminSimpleLogCsv(criterias, mustSave = true) {
 	const requestOptions = {
 		method: 'POST',
@@ -126,6 +137,15 @@ function getAdminThoroughLogCsv(criterias, mustSave = true) {
 		body: JSON.stringify(criterias),
 	};
 	return fetch(url.logThorough('admin-csv'), requestOptions).then(csvFileResponseHandler.bind(null, mustSave));
+}
+
+function getAdminThoroughLogUnwoundCsv(criterias, mustSave = true) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(criterias),
+	};
+	return fetch(url.logThorough('admin-csv-unwound'), requestOptions).then(csvFileResponseHandler.bind(null, mustSave));
 }
 
 // JSON

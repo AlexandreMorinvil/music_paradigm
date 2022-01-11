@@ -14,7 +14,8 @@
 						<th>Tags</th>
 						<th>Curriculum</th>
 						<th>Start Date</th>
-						<th>Last Advance</th>
+						<th>Progression<br />Duration</th>
+						<th>Last <br />Advance</th>
 						<th>Reached</th>
 						<th>Actions</th>
 					</tr>
@@ -28,6 +29,7 @@
 						<td style="white-space: pre-line">{{ makeTagsDisplay(user) }}</td>
 						<td>{{ makeCurriculumTitleDisplay(user) }}</td>
 						<td>{{ makeProgressionStartTimeDisplay(user) }}</td>
+						<td>{{ makeProgressionDurationDisplay(user) }}</td>
 						<td>{{ makeProgressionLastAdvanceTimeDisplay(user) }}</td>
 						<td>{{ makeProgressionDisplay(user) }}</td>
 						<td class="widget-table-actions-buttons">
@@ -83,21 +85,18 @@ export default {
 		},
 		makeTagsDisplay(user) {
 			const { tags } = user;
-			if (tags.length === 0) {
-				return '---';
-			} else {
-				let display = '';
-				for (const i in tags) {
-					if (i > 0) display += '\n';
-					display += tags[i];
-				}
-				return display;
-			}
+			if (tags.length === 0) return '---';
+			else return tags.join('\n');
 		},
 		makeCurriculumTitleDisplay(user) {
 			const { curriculumTitle } = user;
 			if (!curriculumTitle) return '---';
 			else return curriculumTitle;
+		},
+		makeProgressionDurationDisplay(user) {
+			const { progressionStartDate, progressionDuration } = user;
+			if (!progressionStartDate) return '---';
+			else return this.makeTimeLapseDisplay(progressionDuration);
 		},
 		makeProgressionStartTimeDisplay(user) {
 			const { progressionStartDate, progressionStartTime } = user;
@@ -108,13 +107,20 @@ export default {
 			return this.makeDateTimeLapsedDisplay(progressionLastAdvancedDate, progressionLastAdvancedTime);
 		},
 		makeProgressionDisplay(user) {
-			const { curriculumTotalNumber, progressionTotalNumber, reachedExperimentTitle, wasProgressionTotalNumberAdjusted, isProgressionBlocked, inAdvanceCount } = user;
+			const {
+				curriculumTotalNumber,
+				progressionTotalNumber,
+				reachedExperimentTitle,
+				wasProgressionTotalNumberAdjusted,
+				isProgressionBlocked,
+				inAdvanceCount,
+			} = user;
 			if (!curriculumTotalNumber) return '---';
 
 			const adjustmentSign = wasProgressionTotalNumberAdjusted ? ' adjusted' : '';
 			const inAdvanceSign = inAdvanceCount > 0 ? ` (+ ${inAdvanceCount} in adv.)` : '';
 			const blockingSign = isProgressionBlocked ? ' BLOCKED' : '';
-			const experimentTitle = (curriculumTotalNumber === progressionTotalNumber) ? '✓ COMPLETED' : `"${reachedExperimentTitle}"`;
+			const experimentTitle = curriculumTotalNumber === progressionTotalNumber ? '✓ COMPLETED' : `"${reachedExperimentTitle}"`;
 
 			return String(progressionTotalNumber) + inAdvanceSign + '/' + curriculumTotalNumber + adjustmentSign + blockingSign + '\n' + experimentTitle;
 		},
@@ -129,6 +135,12 @@ export default {
 			const date = new Date(startDate).toLocaleDateString(undefined, this.datesOptions);
 
 			// Display of the time lapsed
+			const timeLapsed = this.makeTimeLapseDisplay(durationInMilliseconds);
+
+			return String(date) + '\n' + timeLapsed + ' ago';
+		},
+		makeTimeLapseDisplay(durationInMilliseconds) {
+			// Display of the time lapsed
 			const { totalDays, days, weeks } = this.getDurationInWeekAndDays(durationInMilliseconds);
 			let timeLapsed = '';
 			if (totalDays < 1) timeLapsed = '< 24h';
@@ -136,7 +148,7 @@ export default {
 				if (weeks > 0) timeLapsed += String(weeks) + 'w. ';
 				timeLapsed += String(days) + 'd.';
 			}
-			return String(date) + '\n' + timeLapsed;
+			return timeLapsed;
 		},
 		makeSelectButtonText(user) {
 			return this.isSelectedUser(user) ? 'Unselect' : 'Select';

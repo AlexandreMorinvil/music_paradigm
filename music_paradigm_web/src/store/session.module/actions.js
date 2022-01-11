@@ -67,7 +67,7 @@ export default {
 	},
 
 	// Send a signal to the back-end to indicate that the session can be considered as completed
-	concludeSession({ commit, dispatch, getters }, isInTimeUp) {
+	concludeSession({ commit, getters }, isInTimeUp) {
 		commit('setIsConcludingSession');
 		return sessionApi
 			.concludeSession(getters.associativeId, getters.associativeIdOrdinalNumber, isInTimeUp)
@@ -80,7 +80,7 @@ export default {
 				},
 			)
 			.finally(() => {
-				dispatch('clearSessionInformation', null, { root: true });
+				commit('clearSessionInformation');
 				commit('setIsConcludingSessionEnd');
 			});
 	},
@@ -109,12 +109,8 @@ export default {
 			});
 	},
 
-	abortPresession({ commit, dispatch }) {
-		dispatch('clearSessionInformation', null, { root: true });
-		commit('leavePreSession');
-	},
-
-	clearSessionInformation({ commit }) {
+	abortPresession({ commit }) {
 		commit('clearSessionInformation');
+		commit('leavePreSession');
 	},
 };
