@@ -25,6 +25,14 @@ export default {
 	},
 
 	// Player actions
+	setPlayer: ({ commit }, player) => {
+		commit('setPlayer', player);
+	},
+
+	unsetPlayer: ({ commit }) => {
+		commit('unsetPlayer');
+	},
+
 	playMidiFile: ({ commit }) => {
 		commit('playMidiFile');
 	},

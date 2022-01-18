@@ -36,6 +36,8 @@ export default {
 	},
 	methods: {
 		...mapActions('piano', [
+			'setPlayer',
+			'unsetPlayer',
 			'setInitializedState',
 			'setInitializingState',
 			'addPressedKey',
@@ -136,6 +138,7 @@ export default {
 			// Initialize audio
 			this.audioConctext = new AudioContext();
 			this.player = new MidiPlayer.Player();
+			this.setPlayer(this.player);
 
 			const soundfont = require('soundfont-player');
 			const instrumentFileUrl = instruments.getInstrumentFile(this.instrument);
@@ -164,6 +167,7 @@ export default {
 			if (this.player) {
 				this.player.off('midiEvent', this.handleMidiMessage);
 				this.player.off('endOfFile', this.handleMidiFileEndOfFile);
+				this.unsetPlayer();
 			}
 			this.piano = null;
 			while (this.midiInputs.length > 0) this.midiInputs.pop().onmidimessage = null;

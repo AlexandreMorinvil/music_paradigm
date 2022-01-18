@@ -8,6 +8,15 @@ export default {
 		Object.assign(state, constants.DEFAULT_PIANO_STATE_VALUES());
 	},
 
+	// Player methods
+	setPlayer: (state, player) => {
+		state.player = player;
+	},
+
+	unsetPlayer: (state) => {
+		state.player = null;
+	},
+
 	// Pausing the piano
 	pausePiano: (state) => {
 		state.isPianoPaused = true;

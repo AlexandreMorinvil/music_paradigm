@@ -2,6 +2,10 @@ import { defaultState } from '@/store-helper/experiment.module-helper';
 
 // Parameters of the interactive piano
 export default {
+	keyboardMidiInputMapping: (state) => {
+		return state;
+	},
+
 	interactivePiano: (state) => {
 		return state.state.content.interactivePiano || false;
 	},

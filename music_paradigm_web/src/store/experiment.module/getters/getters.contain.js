@@ -14,6 +14,10 @@ export default {
 	},
 
 	// TODO: Verify logic
+	hasInteractiveClicker: (state) => {
+		return Boolean(state.state.content.interactiveClicker);
+	},
+
 	hasInteractivePiano: (state) => {
 		return Boolean(state.state.content.interactivePiano);
 	},
