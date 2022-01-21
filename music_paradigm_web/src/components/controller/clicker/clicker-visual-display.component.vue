@@ -1,6 +1,13 @@
 <template>
-	<!-- The HTML definition of this piano adapted from the open source project : https://codepen.io/zastrow/pen/oDBki -->
-	<div id="visual-clicker" class="visual-clicker">Here is gonna come the content</div>
+	<div id="visual-clicker" class="clicker-container">
+		<ul class="clicker-grid clicker-container-inner-space">
+			<li class="button-1-area key">1</li>
+			<li class="button-2-area key">2</li>
+			<li class="button-3-area key">3</li>
+			<li class="button-4-area key">4</li>
+			<li class="button-5-area key">5</li>
+		</ul>
+	</div>
 </template>
 
 <script>
@@ -121,39 +128,85 @@ export default {
 </script>
 
 <style scoped>
-.visual-clicker {
-	display: grid;
+.clicker-container {
+	position: static;
 	height: 100%;
 	width: 100%;
 	max-width: 500px;
 	max-height: 350px;
-
-	border-radius: 0.5em;
-	background: linear-gradient(to bottom right, rgba(230, 230, 230, 0.3), rgba(230, 230, 230, 0)), rgb(201, 205, 210);
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) inset, 0 1px rgba(125, 157, 212, 0.2) inset, 0 5px 15px rgba(0, 0, 0, 0.5);
-	padding: 12px;
-	border-radius: 10px;
+	background: linear-gradient(to bottom right, rgba(230, 230, 230, 0.3), rgba(230, 230, 230, 0)), rgb(215, 215, 200);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 1) inset, 0 1px rgba(125, 157, 212, 0.2) inset, 0 5px 15px rgba(0, 0, 0, 0.5);
+	border-radius: 70px;
+	padding: 22.5px;
 }
 
-.visual-clicker {
+.clicker-container-inner-space {
+	box-shadow: 0 0 5px rgb(0, 0, 0, 0.3) inset, 0 0 5px rgba(10, 10, 0, 0.25);
+	border-radius: 60px;
+}
+
+.clicker-grid {
+	display: grid;
+	height: 100%;
+	width: 100%;
 	grid-template:
-		'b b b b b b b b b b b b b b b b'
-		'b b b b b b b b b b b b b b b b'
+		'.  .  .  .  .  .  .  . '
+		'.  .  .  b3 .  .  .  . '
+		'.  .  b2 .  b4 .  .  . '
+		'.  b1 .  .  .  .  .  . '
+		'.  .  .  .  .  b5 b5 . '
+		'.  .  .  .  .  .  .  . ';
+	grid-gap: 5px;
+}
 
-		'b b b b b b 3 3 b b b b b b b b'
-		'b b b b 2 2 3 3 4 4 b b b b b b'
+li {
+	list-style: none;
+}
 
-		'b b b b 2 2 b b 4 4 b b b b b b'
-		'b b 1 1 b b b b b b b b b b b b'
+.key {
+	text-align: center;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	flex-grow: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
-		'b b 1 1 b b b b b b b b b b b b'
-		'b b b b b b b b b b 5 5 5 5 b b'
+.key {
+	position: relative;
+	color: rgb(209, 210, 212);
+	background-color: rgb(40, 40, 40);
+	border: 1px solid rgb(20, 20, 20);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.65) inset, 0 1px rgba(10, 10, 10, 0.7) inset, 1.5px 1.5px 1.5px rgba(0, 0, 0, 1),
+		4px 4px 5px rgba(0, 0, 0, 0.5);
+}
 
-		'b b b b b b b b b b 5 5 5 5 b b'
-		'b b b b b b b b b b b b b b b b'
+.button-1-area {
+	grid-area: b1;
+	transform: translateY(-50%);
+}
 
-		'b b b b b b b b b b b b b b b b'
-		'b b b b b b b b b b b b b b b b'
+.button-2-area {
+	grid-area: b2;
+	transform: translateY(-32%);
+}
+
+.button-3-area {
+	grid-area: b3;
+	transform: translateY(20%);
+}
+
+.button-4-area {
+	grid-area: b4;
+	transform: translateY(-58%);
+}
+
+.button-5-area {
+	grid-area: b5;
+	transform: translate(-20%, -38%);
+	width: 120%;
 }
 
 ul .designated {
