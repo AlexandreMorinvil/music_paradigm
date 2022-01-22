@@ -134,7 +134,7 @@ const schema = new Schema({
     hasClearBackground: { type: Boolean, default: undefined },
     hasSound: { type: Boolean, default: true },
 
-    keyboardMidiInputMapping:{
+    keyboardToMidiInputMapping:{
         default: undefined,
         type: Object,
         required: false

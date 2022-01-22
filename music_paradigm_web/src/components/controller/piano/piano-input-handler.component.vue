@@ -1,6 +1,6 @@
 <template>
 	<div style="display: none">
-		<piano-admin-input-handler-component v-on:simulated-midi-signal="manageMidiNote" style="display: none" />
+		<piano-admin-input-handler-component style="display: none" />
 	</div>
 </template>
 
@@ -224,11 +224,13 @@ export default {
 		this.probeCompatibility();
 		PianoEventBus.$on(pianoEvents.EVENT_PIANO_INIT_REQUEST, this.initPiano);
 		PianoEventBus.$on(pianoEvents.EVENT_PIANO_TERMINATE_REQUEST, this.terminatePiano);
+		PianoEventBus.$on(pianoEvents.EVENT_PIANO_SIMULATED_MIDI_SIGNAL, this.manageMidiNote);
 	},
 	beforeDestroy() {
 		this.terminatePiano();
 		PianoEventBus.$off(pianoEvents.EVENT_PIANO_INIT_REQUEST, this.initPiano);
 		PianoEventBus.$off(pianoEvents.EVENT_PIANO_TERMINATE_REQUEST, this.terminatePiano);
+		PianoEventBus.$off(pianoEvents.EVENT_PIANO_SIMULATED_MIDI_SIGNAL, this.manageMidiNote);
 	},
 };
 </script>

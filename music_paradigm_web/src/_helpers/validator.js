@@ -134,7 +134,7 @@ function validateExperiment(experiment) {
 		'instrument',
 		'hasSound',
 
-		'keyboardMidiInputMapping',
+		'keyboardToMidiInputMapping',
 	];
 	Object.keys(experiment).forEach((key) => {
 		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the general parameters is not allowed`);
@@ -372,7 +372,7 @@ function validateAttributeType(key, value) {
 			break;
 
 		// Object
-		case 'keyboardMidiInputMapping':
+		case 'keyboardToMidiInputMapping':
 		case 'timeUpState':
 		case 'lastRepetitionVersion':
 		case 'succeeededForSkipLoopVersion':

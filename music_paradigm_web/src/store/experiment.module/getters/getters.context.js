@@ -2,6 +2,18 @@ import { defaultState } from '@/store-helper/experiment.module-helper';
 
 // All the getters for the parameters oriented toward the frame of the experiments
 export default {
+	initialTimeInSeconds: (state) => {
+		return state.initialTimeIndicated;
+	},
+
+	keyboardToMidiInputMapping: (state) => {
+		return state.keyboardToMidiInputMapping;
+	},
+
+	hasKeyboardToMidiInputMapping: (state) => {
+		return Object.keys(state.keyboardToMidiInputMapping).length > 0;
+	},
+
 	controlType: (state) => {
 		return state.settings.controlType || defaultState.DEFAULT_CONTROL_TYPE;
 	},
@@ -23,10 +35,6 @@ export default {
 		return state.settings.withTimer;
 	},
 
-	initialTimeInSeconds: (state) => {
-		return state.initialTimeIndicated;
-	},
-
 	withProgressionBar: (state) => {
 		let withProgressionBar = defaultState.DEFAULT_WITH_PROGRESSION_BAR;
 		if (typeof state.settings.withProgressionBar === 'boolean') withProgressionBar = state.settings.withProgressionBar;
@@ -39,9 +47,5 @@ export default {
 
 	hasSound: (state) => {
 		return state.settings.hasSound;
-	},
-
-	keyboardMidiInputMapping: (state) => {
-		return state.settings.keyboardMidiInputMapping;
 	},
 };

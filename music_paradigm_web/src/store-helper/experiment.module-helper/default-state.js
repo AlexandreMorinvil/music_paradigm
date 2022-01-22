@@ -18,6 +18,7 @@ export default {
 	DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES,
 	DEFAULT_EXPERIMENT_VARIABLE_VALUES,
 	DEFAULT_EXPERIMENT_STATE_STATE_VALUES,
+	DEFAULT_KEYBOARD_TO_MIDI_INPUT_MAPPING,
 	IS_FULLY_NOT_INITIALIZED_STATUS,
 };
 
@@ -50,7 +51,6 @@ const DEFAULT_QUESTION_TYPE = 'simple';
 const DEFAULT_HAS_TIMER = true;
 const DEFAULT_HAS_CLEAR_BACKGROUND = false;
 const DEFAULT_HAS_SOUND = true;
-const DEFAULT_KEYBOARD_MIDI_INPUT_MAPPING = null; // keyboardMidiInputMapping
 
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
@@ -84,6 +84,9 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 
 		// Data used by the view pages
 		state: DEFAULT_EXPERIMENT_STATE_STATE_VALUES(),
+
+		// Mapping between the computer keyboard and the midi keyboard
+		keyboardToMidiInputMapping: DEFAULT_KEYBOARD_TO_MIDI_INPUT_MAPPING(),
 
 		// Variables used in the experiment
 		variablesInformation: DEFAULT_EXPERIMENT_VARIABLE_VALUES(),
@@ -130,7 +133,6 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		withTimer: DEFAULT_HAS_TIMER,														// Indicate whether the timer must be displayed
 		hasClearBackground: DEFAULT_HAS_CLEAR_BACKGROUND,									// Indicate whethe the experiment setting must be in white (true) or black (false)
 		hasSound: DEFAULT_HAS_SOUND,														// Indicate whether the experiment has sound
-		keyboardMidiInputMapping: DEFAULT_KEYBOARD_MIDI_INPUT_MAPPING						// Mapping between the computer keyboard and the midi keyboard
 	};
 }
 
@@ -259,6 +261,10 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			timeIndicatedInMilliseconds: 0											// Value in indicating the time indicated in the experiment (is used when the experiment has a time limit, this allows the app to make the user restart with the time he had left if he leaves the experiment early)
 		},
 	};
+}
+
+function DEFAULT_KEYBOARD_TO_MIDI_INPUT_MAPPING() {
+	return {};
 }
 
 
