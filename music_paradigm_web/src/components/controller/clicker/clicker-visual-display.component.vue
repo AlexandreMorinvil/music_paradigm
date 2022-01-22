@@ -1,81 +1,79 @@
 <template>
 	<div id="visual-clicker" class="clicker-container">
-		<ul class="clicker-grid clicker-container-inner-space">
-			<li class="button-1-area key">1</li>
-			<li class="button-2-area key">2</li>
-			<li class="button-3-area key">3</li>
-			<li class="button-4-area key">4</li>
-			<li class="button-5-area key">5</li>
-		</ul>
+		<div class="clicker-container-inner-space">
+			<ul class="clicker-grid" :class="isLeftHand ? 'left-hand' : 'right-hand'">
+				<li class="button-1-area"><button class="key">1</button></li>
+				<li class="button-2-area"><button class="key">2</button></li>
+				<li class="button-3-area"><button class="key"></button></li>
+				<li class="button-4-area"><button class="key">4</button></li>
+				<li class="button-5-area" :class="isLeftHand ? 'button-5-left-hand' : 'button-5-right-hand'"><button class="key">5</button></li>
+			</ul>
+		</div>
 	</div>
 </template>
 
 <script>
-// import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
-	// components: {},
-	// data() {
-	// 	return {
-	// 		highlightedDesignatedKeys: [],
-	// 		NOTE_COUNT: 25,
-	// 		OFFSET_STEP: 12,
-	// 		textKey0: '',
-	// 	};
-	// },
-	// computed: {
-	// 	...mapGetters('experiment', ['interactivePiano', 'interactivePianoFirstOctave', 'interactiveKeyboardTextMapping']),
-	// 	...mapGetters('piano', ['pressedKeys', 'midiFileTriggeredKeys', 'midiFileNotesMidi']),
-	// 	mustDisplayPressedKeys() {
-	// 		return !String(this.interactivePiano).includes('#');
-	// 	},
-	// 	mustDisplayLoadedMidiFirstNote() {
-	// 		return String(this.interactivePiano).includes('first');
-	// 	},
-	// 	mustDisplayLoadedMidiAllNotes() {
-	// 		return String(this.interactivePiano).includes('midi');
-	// 	},
-	// 	midiOffset() {
-	// 		return this.interactivePianoFirstOctave * this.OFFSET_STEP;
-	// 	},
-	// 	firstNote() {
-	// 		return this.midiOffset;
-	// 	},
-	// 	lastNote() {
-	// 		return this.midiOffset + this.NOTE_COUNT - 1;
-	// 	},
-	// 	textMapping() {
-	// 		const textMapping = [];
-	// 		if (Array.isArray(this.interactiveKeyboardTextMapping))
-	// 			for (const index in this.interactiveKeyboardTextMapping) {
-	// 				// Get the index of the key, if it is within the range to the displayed keys
-	// 				const currentMidiKeyNumber = this.midiFileNotesMidi[index];
-	// 				const correspondingKeyIndex = currentMidiKeyNumber - this.midiOffset;
-	// 				if (correspondingKeyIndex < 0 || correspondingKeyIndex > this.NOTE_COUNT - 1) continue;
-	// 				// Get the text to assign to the key
-	// 				const keyTextAssignation = this.interactiveKeyboardTextMapping[index];
-	// 				textMapping[correspondingKeyIndex] = keyTextAssignation;
-	// 			}
-	// 		else if (typeof this.interactiveKeyboardTextMapping === 'object') {
-	// 			for (const key in this.interactiveKeyboardTextMapping) {
-	// 				// Get the index of the key, if it is within the range to the displayed keys
-	// 				if (key < 0 || key > this.NOTE_COUNT - 1) continue;
-	// 				// Get the text to assign to the key
-	// 				const keyTextAssignation = this.interactiveKeyboardTextMapping[key];
-	// 				textMapping[key] = keyTextAssignation;
-	// 			}
-	// 		} else {
-	// 			// Get the index of the key, if it is within the range to the displayed keys
-	// 			const currentMidiKeyNumber = this.midiFileNotesMidi[0];
-	// 			const correspondingKeyIndex = currentMidiKeyNumber - this.midiOffset;
-	// 			if (correspondingKeyIndex < 0 || correspondingKeyIndex > this.NOTE_COUNT - 1) return [];
-	// 			// Get the text to assign to the key
-	// 			const keyTextAssignation = this.interactiveKeyboardTextMapping;
-	// 			textMapping[correspondingKeyIndex] = keyTextAssignation;
-	// 		}
-	// 		return textMapping;
-	// 	},
-	// },
+	data() {
+		return {
+			highlightedDesignatedKeys: [],
+		};
+	},
+	computed: {
+		...mapGetters('experiment', ['interactiveClicker', 'interactiveKeyboardTextMapping']),
+		// 	...mapGetters('piano', ['pressedKeys', 'midiFileTriggeredKeys', 'midiFileNotesMidi']),
+		isLeftHand() {
+			return true;
+		},
+		// 	mustDisplayPressedKeys() {
+		// 		return !String(this.interactivePiano).includes('#');
+		// 	},
+		// 	mustDisplayLoadedMidiFirstNote() {
+		// 		return String(this.interactivePiano).includes('first');
+		// 	},
+		// 	mustDisplayLoadedMidiAllNotes() {
+		// 		return String(this.interactivePiano).includes('midi');
+		// 	},
+		// 	firstNote() {
+		// 		return this.midiOffset;
+		// 	},
+		// 	lastNote() {
+		// 		return this.midiOffset + this.NOTE_COUNT - 1;
+		// 	},
+		// 	textMapping() {
+		// 		const textMapping = [];
+		// 		if (Array.isArray(this.interactiveKeyboardTextMapping))
+		// 			for (const index in this.interactiveKeyboardTextMapping) {
+		// 				// Get the index of the key, if it is within the range to the displayed keys
+		// 				const currentMidiKeyNumber = this.midiFileNotesMidi[index];
+		// 				const correspondingKeyIndex = currentMidiKeyNumber - this.midiOffset;
+		// 				if (correspondingKeyIndex < 0 || correspondingKeyIndex > this.NOTE_COUNT - 1) continue;
+		// 				// Get the text to assign to the key
+		// 				const keyTextAssignation = this.interactiveKeyboardTextMapping[index];
+		// 				textMapping[correspondingKeyIndex] = keyTextAssignation;
+		// 			}
+		// 		else if (typeof this.interactiveKeyboardTextMapping === 'object') {
+		// 			for (const key in this.interactiveKeyboardTextMapping) {
+		// 				// Get the index of the key, if it is within the range to the displayed keys
+		// 				if (key < 0 || key > this.NOTE_COUNT - 1) continue;
+		// 				// Get the text to assign to the key
+		// 				const keyTextAssignation = this.interactiveKeyboardTextMapping[key];
+		// 				textMapping[key] = keyTextAssignation;
+		// 			}
+		// 		} else {
+		// 			// Get the index of the key, if it is within the range to the displayed keys
+		// 			const currentMidiKeyNumber = this.midiFileNotesMidi[0];
+		// 			const correspondingKeyIndex = currentMidiKeyNumber - this.midiOffset;
+		// 			if (correspondingKeyIndex < 0 || correspondingKeyIndex > this.NOTE_COUNT - 1) return [];
+		// 			// Get the text to assign to the key
+		// 			const keyTextAssignation = this.interactiveKeyboardTextMapping;
+		// 			textMapping[correspondingKeyIndex] = keyTextAssignation;
+		// 		}
+		// 		return textMapping;
+		// 	},
+	},
 	// methods: {
 	// 	designateKeys(keys) {
 	// 		if (Array.isArray(keys)) this.highlightedDesignatedKeys = keys;
@@ -132,8 +130,8 @@ export default {
 	position: static;
 	height: 100%;
 	width: 100%;
-	max-width: 500px;
-	max-height: 350px;
+	max-width: 600px;
+	max-height: 450px;
 	background: linear-gradient(to bottom right, rgba(230, 230, 230, 0.3), rgba(230, 230, 230, 0)), rgb(215, 215, 200);
 	box-shadow: 0 0 10px rgba(0, 0, 0, 1) inset, 0 1px rgba(125, 157, 212, 0.2) inset, 0 5px 15px rgba(0, 0, 0, 0.5);
 	border-radius: 70px;
@@ -143,12 +141,11 @@ export default {
 .clicker-container-inner-space {
 	box-shadow: 0 0 5px rgb(0, 0, 0, 0.3) inset, 0 0 5px rgba(10, 10, 0, 0.25);
 	border-radius: 60px;
-}
-
-.clicker-grid {
-	display: grid;
 	height: 100%;
 	width: 100%;
+}
+
+.left-hand {
 	grid-template:
 		'.  .  .  .  .  .  .  . '
 		'.  .  .  b3 .  .  .  . '
@@ -156,7 +153,26 @@ export default {
 		'.  b1 .  .  .  .  .  . '
 		'.  .  .  .  .  b5 b5 . '
 		'.  .  .  .  .  .  .  . ';
+}
+
+.right-hand {
+	grid-template:
+		'.  .  .  .  .  .  .  . '
+		'.  .  .  .  b3 .  .  . '
+		'.  .  .  b4 .  b2 .  . '
+		'.  .  .  .  .  .  b1 . '
+		'.  b5 b5 .  .  .  .  . '
+		'.  .  .  .  .  .  .  . ';
+}
+
+.clicker-grid {
+	display: grid;
+	margin-left: -22.5px;
+	height: 100%;
+	width: 100%;
 	grid-gap: 5px;
+	grid-template-columns: repeat(8, calc(100% / 8));
+	grid-template-rows: repeat(6, calc(100% / 6));
 }
 
 li {
@@ -164,10 +180,10 @@ li {
 }
 
 .key {
+	width: 100%;
+	height: 100%;
 	text-align: center;
 	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
 	flex-grow: 1;
 	display: flex;
 	justify-content: center;
@@ -185,28 +201,35 @@ li {
 
 .button-1-area {
 	grid-area: b1;
-	transform: translateY(-50%);
+	transform: translateY(-70%);
 }
 
 .button-2-area {
 	grid-area: b2;
-	transform: translateY(-32%);
+	transform: translateY(-50%);
 }
 
 .button-3-area {
 	grid-area: b3;
-	transform: translateY(20%);
+	transform: translateY(0%);
 }
 
 .button-4-area {
 	grid-area: b4;
-	transform: translateY(-58%);
+	transform: translateY(-75%);
 }
 
 .button-5-area {
 	grid-area: b5;
-	transform: translate(-20%, -38%);
 	width: 120%;
+}
+
+.button-5-left-hand {
+	transform: translate(-20%, -60%);
+}
+
+.button-5-right-hand {
+	transform: translate(0, -60%);
 }
 
 ul .designated {
