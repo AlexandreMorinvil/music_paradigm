@@ -1,6 +1,8 @@
 <template>
 	<div id="experiment" class="experiment-context experiment-grid unselectable" :class="{ 'experiment-context-clear': isClearVersion }">
 		<keyboard-to-midi-input-mapper-component style="display: none" />
+		<midi-input-to-keyboard-mapper-component style="display: none" />
+
 		<keyboard-input-tracker-component style="display: none" />
 		<piano-input-handler-component style="display: none" />
 
@@ -33,6 +35,7 @@ import KeyboardInputTrackerComponent from '@/components/controller/keyboard/keyb
 import PianoInputHandlerComponent from '@/components/controller/piano/piano-input-handler.component.vue';
 
 import KeyboardToMidiInputMapperComponent from '@/components/controller/keyboard-to-midi-input-mapper.component.vue';
+import MidiInputToKeyboardMapperComponent from '@/components/controller/midi-input-to-keyboard-mapper.component.vue';
 
 export default {
 	components: {
@@ -41,7 +44,10 @@ export default {
 		LogComponent,
 		SessionComponent,
 		StatusBarComponent,
+
 		KeyboardToMidiInputMapperComponent,
+		MidiInputToKeyboardMapperComponent,
+
 		KeyboardInputTrackerComponent,
 		PianoInputHandlerComponent,
 	},

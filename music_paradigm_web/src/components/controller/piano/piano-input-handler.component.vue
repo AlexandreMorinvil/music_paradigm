@@ -52,14 +52,15 @@ export default {
 		/**
 		 * Handle the midi messages
 		 * @param {Object} midiNote
-		 * @param {String} midiNote.data[0] 144 for "Note On" or 128 for "Note Off"
-		 * @param {Number} midiNote.data[1] Value between 0-127
-		 * @param {Number} midiNote.data[2] Value between 0-127
+		 * @param {String} midiNote.data[0] 			144 for "Note On" or 128 for "Note Off"
+		 * @param {Number} midiNote.data[1] 			Value between 0-127
+		 * @param {Number} midiNote.data[2] 			Value between 0-127
+		 * @param {Boolean} midiNote.mustIngoreOffset 	Indicate whether the programmed offset must be ignored
 		 */
 		manageMidiNote(midiNote) {
 			const midiMessage = {
 				type: midiNote.data[0] === this.MIDI_MESSAGE_CODE_NOTE_ON ? 'Note On' : 'Note Off',
-				note: midiNote.data[1] + this.midiOffset,
+				note: midiNote.data[1] + (midiNote.mustIngoreOffset ? 0 : this.midiOffset),
 				velocity: midiNote.data[2],
 			};
 
