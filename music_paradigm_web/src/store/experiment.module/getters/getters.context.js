@@ -1,3 +1,4 @@
+import { controllerToMidiMapper } from '@/_helpers';
 import { defaultState } from '@/store-helper/experiment.module-helper';
 
 // All the getters for the parameters oriented toward the frame of the experiments
@@ -7,7 +8,11 @@ export default {
 	},
 
 	keyboardToMidiInputMapping: (state) => {
-		return state.keyboardToMidiInputMapping;
+		return controllerToMidiMapper.getKeyToMidiNoteMapping(state.keyboardToMidiInputMapping);
+	},
+
+	keyboardToClickerInputMapping: (state) => {
+		return controllerToMidiMapper.getkeyToCickerButtonMapping(state.keyboardToMidiInputMapping);
 	},
 
 	hasKeyboardToMidiInputMapping: (state) => {

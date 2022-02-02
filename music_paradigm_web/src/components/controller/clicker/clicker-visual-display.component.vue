@@ -2,11 +2,13 @@
 	<div id="visual-clicker" class="clicker-container">
 		<div class="clicker-container-inner-space">
 			<ul class="clicker-grid" :class="isLeftHand ? 'left-hand' : 'right-hand'">
-				<li class="button-1-area"><button class="key">1</button></li>
-				<li class="button-2-area"><button class="key">2</button></li>
-				<li class="button-3-area"><button class="key"></button></li>
-				<li class="button-4-area"><button class="key">4</button></li>
-				<li class="button-5-area" :class="isLeftHand ? 'button-5-left-hand' : 'button-5-right-hand'"><button class="key">5</button></li>
+				<li class="button-1-area"><button class="key" ref="clicker1"></button></li>
+				<li class="button-2-area"><button class="key" ref="clicker2"></button></li>
+				<li class="button-3-area"><button class="key" ref="clicker3"></button></li>
+				<li class="button-4-area"><button class="key" ref="clicker4"></button></li>
+				<li class="button-5-area" :class="isLeftHand ? 'button-5-left-hand' : 'button-5-right-hand'">
+					<button class="key" ref="clicker5"></button>
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -19,29 +21,27 @@ export default {
 	data() {
 		return {
 			highlightedDesignatedKeys: [],
+			clickerButtons: ['clicker1', 'clicker2', 'clicker3', 'clicker4', 'clicker5'],
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['interactiveClicker', 'interactiveKeyboardTextMapping']),
-		// 	...mapGetters('piano', ['pressedKeys', 'midiFileTriggeredKeys', 'midiFileNotesMidi']),
+		...mapGetters('experiment', ['interactiveClicker', 'interactiveKeyboardTextMapping', 'keyboardToClickerInputMapping']),
+		...mapGetters('keyboard', ['currentlyPressedKeyboardKeys', 'referenceKeyboardKeys', 'midiFileTriggeredAssociatedKeys']),
 		isLeftHand() {
 			return true;
 		},
-		// 	mustDisplayPressedKeys() {
-		// 		return !String(this.interactivePiano).includes('#');
-		// 	},
-		// 	mustDisplayLoadedMidiFirstNote() {
-		// 		return String(this.interactivePiano).includes('first');
-		// 	},
-		// 	mustDisplayLoadedMidiAllNotes() {
-		// 		return String(this.interactivePiano).includes('midi');
-		// 	},
-		// 	firstNote() {
-		// 		return this.midiOffset;
-		// 	},
-		// 	lastNote() {
-		// 		return this.midiOffset + this.NOTE_COUNT - 1;
-		// 	},
+		mapping() {
+			return this.keyboardToClickerInputMapping;
+		},
+		mustDisplayPressedKeys() {
+			return !String(this.interactiveClicker).includes('#');
+		},
+		mustDisplayLoadedMidiFirstNote() {
+			return String(this.interactiveClicker).includes('first');
+		},
+		// mustDisplayLoadedMidiAllNotes() {
+		// 	return String(this.interactiveClicker).includes('midi');
+		// },
 		// 	textMapping() {
 		// 		const textMapping = [];
 		// 		if (Array.isArray(this.interactiveKeyboardTextMapping))
@@ -74,54 +74,61 @@ export default {
 		// 		return textMapping;
 		// 	},
 	},
-	// methods: {
-	// 	designateKeys(keys) {
-	// 		if (Array.isArray(keys)) this.highlightedDesignatedKeys = keys;
-	// 		else if (typeof keys == 'number') this.highlightedDesignatedKeys = [keys];
-	// 	},
-	// 	clearDesignatedKeys() {
-	// 		this.highlightedDesignatedKeys = [];
-	// 	},
-	// 	hintAllNotes() {
-	// 		const designatedKeys = [];
-	// 		for (let index = 0; index < this.midiFileNotesMidi.length; index++) designatedKeys.push(this.midiFileNotesMidi[index]);
-	// 		this.designateKeys(designatedKeys);
-	// 	},
-	// 	hintFirstNote() {
-	// 		this.designateKeys(this.midiFileNotesMidi[0]);
-	// 	},
-	// },
+	methods: {
+		convertToKeyboardKey(clickerButton) {
+			return Object.keys(this.mapping).find((key) => this.mapping[key] == clickerButton);
+		},
+		// 	designateKeys(keys) {
+		// 		if (Array.isArray(keys)) this.highlightedDesignatedKeys = keys;
+		// 		else if (typeof keys == 'number') this.highlightedDesignatedKeys = [keys];
+		// 	},
+		// 	clearDesignatedKeys() {
+		// 		this.highlightedDesignatedKeys = [];
+		// 	},
+		// 	hintAllNotes() {
+		// 		const designatedKeys = [];
+		// 		for (let index = 0; index < this.midiFileNotesMidi.length; index++) designatedKeys.push(this.midiFileNotesMidi[index]);
+		// 		this.designateKeys(designatedKeys);
+		// 	},
+		// 	hintFirstNote() {
+		// 		this.designateKeys(this.midiFileNotesMidi[0]);
+		// 	},
+	},
 	// beforeDestroy() {
 	// 	this.clearDesignatedKeys();
 	// },
-	// watch: {
-	// 	pressedKeys(list) {
-	// 		for (let note = this.firstNote; note <= this.lastNote; note++) {
-	// 			if (this.mustDisplayPressedKeys && list.includes(note)) this.$refs[note.toString()].classList.add('user-triggered');
-	// 			else this.$refs[note.toString()].classList.remove('user-triggered');
-	// 		}
-	// 	},
-	// 	midiFileTriggeredKeys(list) {
-	// 		for (let note = this.firstNote; note <= this.lastNote; note++) {
-	// 			if (list.includes(note)) this.$refs[note.toString()].classList.add('midi-file-triggered');
-	// 			else this.$refs[note.toString()].classList.remove('midi-file-triggered');
-	// 		}
-	// 	},
-	// 	highlightedDesignatedKeys(list) {
-	// 		for (let note = this.firstNote; note <= this.lastNote; note++) {
-	// 			if (list.includes(note)) this.$refs[note.toString()].classList.add('designated');
-	// 			else this.$refs[note.toString()].classList.remove('designated');
-	// 		}
-	// 	},
-	// 	midiFileNotesMidi: {
-	// 		immediate: true,
-	// 		handler: function () {
-	// 			this.clearDesignatedKeys();
-	// 			if (this.mustDisplayLoadedMidiFirstNote) this.hintFirstNote();
-	// 			if (this.mustDisplayLoadedMidiAllNotes) this.hintAllNotes();
-	// 		},
-	// 	},
-	// },
+	watch: {
+		currentlyPressedKeyboardKeys(list) {
+			for (const clickerButton of this.clickerButtons) {
+				const associatedKey = this.convertToKeyboardKey(String(clickerButton));
+				if (this.mustDisplayPressedKeys && list.includes(associatedKey)) {
+					console.log('This is here');
+					this.$refs[String(clickerButton)].classList.add('user-triggered');
+				} else this.$refs[String(clickerButton)].classList.remove('user-triggered');
+			}
+		},
+		midiFileTriggeredAssociatedKeys(list) {
+			for (const clickerButton of this.clickerButtons) {
+				const associatedKey = this.convertToKeyboardKey(String(clickerButton));
+				if (list.includes(associatedKey)) this.$refs[String(clickerButton)].classList.add('midi-file-triggered');
+				else this.$refs[String(clickerButton)].classList.remove('midi-file-triggered');
+			}
+		},
+		// highlightedDesignatedKeys(list) {
+		// 	for (let note = this.firstNote; note <= this.lastNote; note++) {
+		// 		if (list.includes(note)) this.$refs[note.toString()].classList.add('designated');
+		// 		else this.$refs[note.toString()].classList.remove('designated');
+		// 	}
+		// },
+		// 	midiFileNotesMidi: {
+		// 		immediate: true,
+		// 		handler: function () {
+		// 			this.clearDesignatedKeys();
+		// 			if (this.mustDisplayLoadedMidiFirstNote) this.hintFirstNote();
+		// 			if (this.mustDisplayLoadedMidiAllNotes) this.hintAllNotes();
+		// 		},
+		// 	},
+	},
 };
 </script>
 
@@ -232,21 +239,24 @@ li {
 	transform: translate(0, -60%);
 }
 
-ul .designated {
+.designated {
 	color: black;
 	border: 1px solid rgb(19, 117, 4);
 	background: linear-gradient(to bottom, rgb(255, 252, 81) 0%, rgb(222, 219, 0) 100%);
+	box-shadow: none;
 }
 
-ul .user-triggered {
+.user-triggered {
 	color: white;
 	border: 1px solid rgb(4, 19, 117);
 	background: linear-gradient(to bottom, rgb(0, 187, 255) 0%, rgb(2, 48, 139) 100%);
+	box-shadow: none;
 }
 
-ul .midi-file-triggered {
+.midi-file-triggered {
 	color: white;
 	border: 1px solid rgb(19, 117, 4);
 	background: linear-gradient(to bottom, rgb(21, 255, 0) 0%, rgb(9, 139, 2) 100%);
+	box-shadow: none;
 }
 </style>
