@@ -134,6 +134,9 @@ export default {
 
 .survey-input {
 	width: 75%;
+	max-width: 700px;
+	font-size: 0.8em;
+	text-align: center;
 	margin: 10px;
 	padding-left: 20px;
 	padding-right: 20px;

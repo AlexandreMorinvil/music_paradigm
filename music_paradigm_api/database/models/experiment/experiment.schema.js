@@ -91,7 +91,7 @@ const stateSchema = new Schema({
     answerChoicesColor: { type: [], default: undefined },
     answerChoicesImage: { type: [], default: undefined },
 
-    rightAnswers: { type: [], default: undefined },
+    rightAnswers: { type: Schema.Types.Mixed, default: undefined },
 },
     {
         strict: true

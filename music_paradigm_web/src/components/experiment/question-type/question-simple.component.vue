@@ -72,5 +72,6 @@ export default {
 .text-after-question-area {
 	flex-grow: 1;
 	height: 10%;
+	max-height: 10%;
 }
 </style>

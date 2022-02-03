@@ -298,6 +298,7 @@ function updateStateOptionsContent(currentState, targetState, isInitialized) {
 
 	// Parsing the parameters that support single value input
 	const defaultAnswerChoicesColor = typeof answerChoicesColor === 'string' ? answerChoicesColor : [];
+	const defaultRightAnswer = typeof rightAnswers === 'number' ? rightAnswers : null;
 
 	// Parsing the survey parameters (they do no support short notations through nesting)
 	currentState.optionsContent.surveyInputOptionsValues = (Array.isArray(surveyInputOptionsValues)) ? surveyInputOptionsValues : [];
@@ -310,7 +311,7 @@ function updateStateOptionsContent(currentState, targetState, isInitialized) {
 	currentState.optionsContent.answerChoicesColor = (Array.isArray(answerChoicesColor)) ? answerChoicesColor : defaultAnswerChoicesColor;
 	currentState.optionsContent.answerChoicesImage = (Array.isArray(answerChoicesImage)) ? answerChoicesImage : [];
 
-	currentState.optionsContent.rightAnswers = (Array.isArray(rightAnswers)) ? rightAnswers : null;
+	currentState.optionsContent.rightAnswers = (Array.isArray(rightAnswers)) ? rightAnswers : defaultRightAnswer;
 
 	// Indicate that the media files is initialized
 	Object.assign(isInitialized, { options: true });

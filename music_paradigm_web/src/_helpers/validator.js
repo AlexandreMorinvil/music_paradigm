@@ -410,7 +410,6 @@ function validateAttributeType(key, value) {
 					case 'midiFileName':
 					case 'audioFirst':
 					case 'audioSecond':
-					case 'rightAnswers':
 						// String
 						if (!(typeof value === 'string')) {
 							throw new Error(`The key '${key}' must be of type 'String' or 'Array'`);
@@ -429,6 +428,13 @@ function validateAttributeType(key, value) {
 						}
 						break;
 
+					case 'rightAnswers':
+						// Number
+						if (!(typeof value === 'number')) {
+							throw new Error(`The key '${key}' must be of type 'Number' or 'Array'`);
+						}
+						break;
+
 					default:
 						break;
 				}
@@ -443,11 +449,19 @@ function validateAttributeType(key, value) {
 					case 'audioFirst':
 					case 'audioSecond':
 					case 'textAfterQuestionAsked':
-					case 'rightAnswers':
 					case 'answerChoicesColor':
 						value.forEach((element, index) => {
 							if (!(typeof element === 'string')) {
 								throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'String'`);
+							}
+						});
+						break;
+
+					// Array of Numbers
+					case 'rightAnswers':
+						value.forEach((element, index) => {
+							if (!(typeof element === 'number')) {
+								throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'Number'`);
 							}
 						});
 						break;
