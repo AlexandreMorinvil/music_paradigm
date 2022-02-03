@@ -1,6 +1,13 @@
 <template>
 	<div id="experiment" class="experiment-context experiment-grid unselectable" :class="{ 'experiment-context-clear': isClearVersion }">
+		<keyboard-to-midi-input-mapper-component style="display: none" />
+		<midi-input-to-keyboard-mapper-component style="display: none" />
+
+		<keyboard-input-tracker-component style="display: none" />
+		<piano-input-handler-component style="display: none" />
+
 		<loaded-content-component style="display: none" />
+
 		<log-component style="display: none" ref="log" />
 		<session-component style="display: none" ref="session" />
 
@@ -24,6 +31,12 @@ import LogComponent from '@/components/experiment/log/log.component.vue';
 import SessionComponent from '@/components/experiment/session/session.component.vue';
 import StatusBarComponent from '@/components/experiment/status-bar/status-bar.component.vue';
 
+import KeyboardInputTrackerComponent from '@/components/controller/keyboard/keyboard-input-tracker.component.vue';
+import PianoInputHandlerComponent from '@/components/controller/piano/piano-input-handler.component.vue';
+
+import KeyboardToMidiInputMapperComponent from '@/components/controller/keyboard-to-midi-input-mapper.component.vue';
+import MidiInputToKeyboardMapperComponent from '@/components/controller/midi-input-to-keyboard-mapper.component.vue';
+
 export default {
 	components: {
 		ExperimentContent,
@@ -31,6 +44,12 @@ export default {
 		LogComponent,
 		SessionComponent,
 		StatusBarComponent,
+
+		KeyboardToMidiInputMapperComponent,
+		MidiInputToKeyboardMapperComponent,
+
+		KeyboardInputTrackerComponent,
+		PianoInputHandlerComponent,
 	},
 	data() {
 		return {

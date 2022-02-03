@@ -1,3 +1,3 @@
-import constants from './constants';
+import { defaultState } from '@/store-helper/piano.module-helper';
 
-export default constants.DEFAULT_PIANO_STATE_VALUES();
+export default defaultState.DEFAULT_PIANO_STATE_VALUES();

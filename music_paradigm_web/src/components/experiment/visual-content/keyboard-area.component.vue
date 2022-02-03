@@ -6,7 +6,7 @@
 
 <script>
 import '@/styles/experiment-content-template.css';
-import KeyboardVisualDisplayComponent from '@/components/keyboard/keyboard-visual-display.component.vue';
+import KeyboardVisualDisplayComponent from '@/components/controller/keyboard/keyboard-visual-display.component.vue';
 import { mapGetters } from 'vuex';
 
 export default {

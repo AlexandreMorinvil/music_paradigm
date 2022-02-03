@@ -1,3 +1,3 @@
-import constants from './constants';
+import { defaultState } from '@/store-helper/keyboard.module-helper';
 
-export default constants.DEFAULT_KEYBOARD_TRACKER_VALUES();
+export default defaultState.DEFAULT_KEYBOARD_TRACKER_VALUES();

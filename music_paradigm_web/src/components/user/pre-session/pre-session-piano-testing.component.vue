@@ -18,7 +18,7 @@
 import '@/styles/pre-session-template.css';
 import { mapGetters } from 'vuex';
 
-import PianoVisualDisplayComponent from '@/components/piano/piano-visual-display.component.vue';
+import PianoVisualDisplayComponent from '@/components/controller/piano/piano-visual-display.component.vue';
 import ProblemPianoCorrespondanceComponent from '@/components/user/problem-prompt/problem-piano-correspondance.component.vue';
 import ProblemPianoInputComponent from '@/components/user/problem-prompt/problem-piano-input.component.vue';
 
@@ -36,7 +36,6 @@ export default {
 	},
 	data() {
 		return {
-			SECONDS_TO_RECEIVE_SIGNAL: 10,
 			timeoutUniqueID: 0,
 			hasReceivedSignal: false,
 			hasInputProblem: false,

@@ -17,4 +17,12 @@ export default {
 	interactiveKeyboardTextMapping: (state) => {
 		return state.state.mediaFile.interactiveKeyboardTextMapping || null;
 	},
+
+	interactiveClicker: (state) => {
+		return state.state.content.interactiveClicker || false;
+	},
+
+	interactiveKeyboard: (state) => {
+		return state.state.content.interactiveKeyboard || false;
+	},
 };
