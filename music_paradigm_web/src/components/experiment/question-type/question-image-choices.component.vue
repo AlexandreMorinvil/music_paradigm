@@ -83,6 +83,7 @@ export default {
 
 .text-after-question-area {
 	height: 10%;
+	max-height: 10%;
 }
 
 .question-image-half {
