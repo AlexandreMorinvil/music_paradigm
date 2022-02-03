@@ -18,6 +18,8 @@ module.exports = {
     getUserLogSummaryList,
     makeAdminLogCsv,
     makeUserLogCsv,
+    makeUserLogUnwoundCsv,
+    makeAdminLogUnwoundCsv,
     makeAdminLogJson,
     makeUserLogJson,
 };
@@ -102,6 +104,26 @@ async function makeAdminLogCsv(criterias) {
     try {
         const query = makeMongooseLogQuery(criterias);
         let data = await AdminLogThorough.getFileRelevantData(query);
+        return csvConverter.makeCsv(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function makeUserLogUnwoundCsv(criterias) {
+    try {
+        const query = makeMongooseLogQuery(criterias);
+        let data = await LogThorough.getFileRelevantDataUnwound(query);
+        return csvConverter.makeCsv(data);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function makeAdminLogUnwoundCsv(criterias) {
+    try {
+        const query = makeMongooseLogQuery(criterias);
+        let data = await AdminLogThorough.getFileRelevantDataUnwound(query);
         return csvConverter.makeCsv(data);
     } catch (err) {
         throw err;

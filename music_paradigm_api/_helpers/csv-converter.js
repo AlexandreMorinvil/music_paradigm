@@ -1,11 +1,14 @@
-﻿const { Parser } = require('json2csv');
+﻿const { Parser, transforms: { flatten } } = require('json2csv');
 
 // Exports
 module.exports = {
     makeCsv,
 };
 
-const opts = { header: true };
+const opts = {
+    header: true,
+    transforms: [flatten({ objects: true, arrays: false })]
+};
 
 async function makeCsv(data) {
     try {

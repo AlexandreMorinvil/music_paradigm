@@ -29,6 +29,7 @@ export default {
 		progressPercentageText() {
 			const ratio = this.session.experimentMarkerProgressRatio;
 			if (typeof ratio !== 'number') return '';
+			if (ratio === 0) return '';
 			const percentage = Math.floor(ratio * 100);
 			return ` at ${percentage}%`;
 		},

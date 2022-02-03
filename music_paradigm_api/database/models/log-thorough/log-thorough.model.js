@@ -4,9 +4,11 @@ schema = require('./log-thorough.schema');
 schema.set('toJSON', { virtuals: true });
 
 const irrelevantFields = [
-    '-id',
-    '-__v',
+    'id',
+    '__v',
+    'endTimestamp._id'
 ];
+const irrelevantFieldsWithMinus = irrelevantFields.map((field) => { return '-' + field })
 
 // Static methods
 schema.statics.initializeLog = async function (logHeader) {
@@ -41,11 +43,21 @@ schema.statics.makeSummaryList = async function (query) {
 }
 
 schema.statics.getFileRelevantData = async function (query) {
-    return this.find(query, irrelevantFields);
+    return this.find(query, irrelevantFieldsWithMinus);
+}
+
+schema.statics.getFileRelevantDataUnwound = async function (query) {
+    return this.
+        aggregate(
+            [
+                { $match: query },
+                { $unset: irrelevantFields },
+                { $unwind: { path: "$blocks", preserveNullAndEmptyArrays: true } }
+            ])
 }
 
 schema.statics.getOneLogFromId = async function (logId) {
-    return this.findById(logId, irrelevantFields);
+    return this.findById(logId, irrelevantFieldsWithMinus);
 }
 
 // Helper functions
@@ -53,7 +65,6 @@ function makeLogReference(logHeader) {
     const {
         progressionId,
         associativeId,
-        associativeIdOrdinalNumber,
         logLabel,
         completionCount
     } = logHeader;
@@ -61,7 +72,6 @@ function makeLogReference(logHeader) {
     return {
         progressionId: progressionId,
         associativeId: associativeId,
-        associativeIdOrdinalNumber: associativeIdOrdinalNumber,
         logLabel: logLabel,
         completionCount: completionCount,
     }

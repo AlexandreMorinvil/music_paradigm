@@ -6,6 +6,7 @@ import { evaluation } from '@/store/evaluation.module';
 import { keyboard } from '@/store/keyboard.module';
 import { piano } from '@/store/piano.module';
 
+import { question } from '@/store/question.module';
 import { survey } from '@/store/survey.module';
 import { writting } from '@/store/writting.module';
 
@@ -26,6 +27,7 @@ const gettersKeyboard = keyboard.getters;
 const gettersPiano = piano.getters;
 
 const gettersSurvey = survey.getters;
+const gettersQuestion = question.getters;
 const gettersWritting = writting.getters;
 
 // Access the states associated (where the information is stored)
@@ -38,6 +40,7 @@ const stateKeyboard = keyboard.state;
 const statePiano = piano.state;
 
 const stateSurvey = survey.state;
+const stateQuestion = question.state;
 const stateWritting = writting.state;
 
 /**
@@ -75,6 +78,7 @@ function makeSimpleLogBlock() {
 	Object.assign(block, makeSimpleLogBlockPerformanceInformation());
 	if (blockType === 'survey') Object.assign(block, makeLogBlockSurveyAnswers());
 	if (blockType === 'witting') Object.assign(block, makeLogBlockWrittenAnswer());
+	if (blockType === 'question') Object.assign(block, makeLogBlockQuestionAnswer());
 	return block;
 }
 
@@ -89,7 +93,7 @@ function makeSimpleLogBlockGeneralInformation() {
 		curriculumId: gettersSession.curriculumId(stateSession) || null,
 		progressionId: gettersSession.progressionId(stateSession) || null,
 		associativeId: gettersSession.associativeId(stateSession) || null,
-		associativeIdOrdinalNumber: gettersSession.associativeIdOrdinalNumber(stateSession) || null,
+		associativeIdOrdinalNumber: gettersSession.associativeIdOrdinalNumber(stateSession) || 0,
 		logLabel: gettersExperiment.logLabel(stateExperiment),
 
 		startCount: gettersSession.startCount(stateSession),
@@ -102,12 +106,13 @@ function makeSimpleLogBlockGeneralInformation() {
 		experimentVersion: gettersExperiment.experimentVersion(stateExperiment),
 
 		blockType: gettersExperiment.currentStateType(stateExperiment),
-		blockSubType: gettersExperiment.playingMode(stateExperiment),
+		blockSubType: gettersExperiment.currentStateSubtype(stateExperiment),
 		controlType: gettersExperiment.controlType(stateExperiment),
 		index: gettersExperiment.currentIndex(stateExperiment),
 		innerStepIndex: gettersExperiment.currentInnerStepIndex(stateExperiment),
 		repetition: gettersExperiment.currentRepetition(stateExperiment),
 		isInPrelude: gettersExperiment.isInPrelude(stateExperiment),
+		isInConclusion: gettersExperiment.isInConclusion(stateExperiment),
 		timestamp: Date.now(),
 	};
 }
@@ -117,13 +122,14 @@ function makeSimpleLogBlockGeneralInformation() {
  * @returns {Simple_Log_Block_Performance_Information}
  */
 function makeSimpleLogBlockPerformanceInformation() {
+	const blockType = gettersExperiment.currentStateType(stateExperiment);
 	const controlType = gettersExperiment.controlType(stateExperiment);
 	const performanceLog = {};
+
 	switch (controlType) {
 		case 'piano':
 			Object.assign(performanceLog, gettersPiano.pianoSimpleLogSummary(statePiano));
 			Object.assign(performanceLog, gettersPiano.pianoSimpleLogPreprocesed(statePiano));
-			performanceLog.grades = gettersEvaluation.grades(stateEvaluation);
 			break;
 		case 'keyboard':
 			Object.assign(performanceLog, gettersKeyboard.keyboardSimpleLogSummary(stateKeyboard));
@@ -132,6 +138,10 @@ function makeSimpleLogBlockPerformanceInformation() {
 		default:
 			break;
 	}
+
+	// Include the grades if it's a feedback state or a playing state
+	if (['playing', 'feedback'].includes(blockType)) performanceLog.grades = gettersEvaluation.grades(stateEvaluation);
+
 	return performanceLog;
 }
 
@@ -201,6 +211,7 @@ function makeThoroughLogBlock() {
 	if (controlType !== 'none') Object.assign(block, makeSimpleBlockPerformanceInformation());
 	if (blockType === 'survey') Object.assign(block, makeLogBlockSurveyAnswers());
 	if (blockType === 'writting') Object.assign(block, makeLogBlockWrittenAnswer());
+	if (blockType === 'question') Object.assign(block, makeLogBlockQuestionAnswer());
 	return block;
 }
 
@@ -215,12 +226,13 @@ function makeThoroughLogBlockGeneralInformation() {
 		startCount: gettersSession.startCount(stateSession),
 
 		blockType: gettersExperiment.currentStateType(stateExperiment),
-		blockSubType: gettersExperiment.playingMode(stateExperiment),
+		blockSubType: gettersExperiment.currentStateSubtype(stateExperiment),
 		controlType: gettersExperiment.controlType(stateExperiment),
 		index: gettersExperiment.currentIndex(stateExperiment),
 		innerStepIndex: gettersExperiment.currentInnerStepIndex(stateExperiment),
 		repetition: gettersExperiment.currentRepetition(stateExperiment),
 		isInPrelude: gettersExperiment.isInPrelude(stateExperiment),
+		isInConclusion: gettersExperiment.isInConclusion(stateExperiment),
 		timestamp: Date.now(),
 
 		textContent: gettersExperiment.textContent(stateExperiment),
@@ -234,12 +246,21 @@ function makeThoroughLogBlockGeneralInformation() {
  * @returns {Thorough_Log_Block_Performance_Information}
  */
 function makeSimpleBlockPerformanceInformation() {
+	const blockType = gettersExperiment.currentStateType(stateExperiment);
 	const controlType = gettersExperiment.controlType(stateExperiment);
 	const performanceLog = {};
+
+	// Include the piano information if the experiment had the piano control
 	if (controlType === 'piano') Object.assign(performanceLog, gettersPiano.pianoSimpleLogSummary(statePiano));
 	if (controlType === 'piano') Object.assign(performanceLog, gettersPiano.pianoSimpleLogPreprocesed(statePiano));
+
+	// Systematically include the keyboard input
 	Object.assign(performanceLog, gettersKeyboard.keyboardSimpleLogSummary(stateKeyboard));
 	Object.assign(performanceLog, gettersKeyboard.keyboardSimpleLogPreprocesed(stateKeyboard));
+
+	// Include the grades if it's a feedback state or a playing state
+	if (['playing', 'feedback'].includes(blockType)) performanceLog.grades = gettersEvaluation.grades(stateEvaluation);
+
 	return performanceLog;
 }
 
@@ -282,4 +303,21 @@ function makeLogBlockWrittenAnswer() {
 		writtingIsNumber: gettersWritting.writtingIsNumber(stateWritting),
 	};
 	return writtenAnswer;
+}
+
+/**
+ * Gather the information of a written input from a 'writting' state for a log block of Simple-Log and Thorough-Log format
+ * @returns {Log_Block_Question_Answer}
+ */
+ function makeLogBlockQuestionAnswer() {
+	const questionAnswer = {
+		questionAnswerIndex: gettersQuestion.questionAnswerIndex(stateQuestion),
+		isQuestionAnswerCorrect: gettersQuestion.isQuestionAnswerCorrect(stateQuestion),
+		questionCorrectAnswerIndex: gettersQuestion.questionCorrectAnswerIndex(stateQuestion),
+		questionOptionsValues: gettersQuestion.questionOptionsValues(stateQuestion),
+		questionOptionsTexts: gettersQuestion.questionOptionsTexts(stateQuestion),
+		questionAsked: gettersQuestion.questionAsked(stateQuestion),
+		questionRelatedContent: gettersQuestion.questionRelatedContent(stateQuestion),
+	};
+	return questionAnswer;
 }

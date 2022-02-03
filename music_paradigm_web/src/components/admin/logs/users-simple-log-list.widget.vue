@@ -15,9 +15,15 @@
 						</span>
 						<button class="widget-button small blue right-align" v-on:click="handleCsvDownload">Download CSV</button>
 						<button class="widget-button small turquoise right-align" v-on:click="handleJsonDownload">Download JSON</button>
-						<button class="widget-button small green right-align" v-on:click="toggleSelectionMode">{{ selectionModeButtonText }}</button>
-						<button class="widget-button small orange right-align" v-on:click="toggleExclusionMode">{{ exclusionModeButtonText }}</button>
-						<button class="widget-button small blue right-align" v-on:click="handleRefresh">{{ refreshButtonText }}</button>
+						<button class="widget-button small right-align" :class="isSelectionModeActivated ? 'red' : 'green'" v-on:click="toggleSelectionMode">
+							{{ selectionModeButtonText }}
+						</button>
+						<button class="widget-button small right-align" :class="isExclusionModeActivated ? 'red' : 'orange'" v-on:click="toggleExclusionMode">
+							{{ exclusionModeButtonText }}
+						</button>
+						<button class="widget-button small right-align" :class="hasSelectedLog ? 'turquoise' : 'blue'" v-on:click="handleRefresh">
+							{{ refreshButtonText }}
+						</button>
 					</th>
 				</tr>
 				<tr v-else class="logtype-header">
@@ -270,11 +276,12 @@ export default {
 			return logSummary.logLabel;
 		},
 		makeStateDisplay(logSummary) {
-			const { isInPrelude, blockType, blockSubType, index, repetition } = logSummary;
-			const sectionDisplay = isInPrelude ? '(prelude)\n' : '';
+			const { isInPrelude, isInConclusion, blockType, blockSubType, index, repetition } = logSummary;
+			const preludeSectionDisplay = isInPrelude ? '(prelude)\n' : '';
+			const conclusionSectionDisplay = isInConclusion ? '(conclusion)\n' : '';
 			const subTypeDisplay = `${blockType}` + (blockSubType ? `/${blockSubType}` : '');
 			const indexDisplay = `\nindex: ${index}, rep.: ${repetition}`;
-			return sectionDisplay + subTypeDisplay + indexDisplay;
+			return preludeSectionDisplay + conclusionSectionDisplay + subTypeDisplay + indexDisplay;
 		},
 		makeStartCompletionCountDisplay(logSummary) {
 			const { startCount, completionCount } = logSummary;

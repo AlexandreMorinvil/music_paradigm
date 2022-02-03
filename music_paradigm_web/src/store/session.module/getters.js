@@ -63,6 +63,10 @@ export default {
 		return state.sessionInformation.experiment.controlType === 'piano';
 	},
 
+	needsSoundTestPreExperiment: (state) => {
+		return Boolean(state.sessionInformation.experiment.hasSound);
+	},
+
 	logType: (state) => {
 		return state.sessionInformation.logType;
 	},

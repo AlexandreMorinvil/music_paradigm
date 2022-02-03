@@ -1,7 +1,7 @@
 <template>
 	<div id="question-type" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
-		<question-midi-note-options-component v-on:answered="handleAnswer" v-on:questionAsked="handleQuestionAsked" class="options-area state-section" />
+		<question-simple-options-component v-on:answered="handleAnswer" v-on:questionAsked="handleQuestionAsked" class="options-area state-section" />
 		<text-after-question-area-component class="text-after-question-area state-section" ref="postQuestionText" />
 	</div>
 </template>
@@ -9,13 +9,13 @@
 <script>
 import '@/styles/experiment-content-template.css';
 
-import QuestionMidiNoteOptionsComponent from '@/components/experiment/visual-content/question-midi-note-options.component.vue';
+import QuestionSimpleOptionsComponent from '@/components/experiment/visual-content/question-simple-options.component.vue';
 import TextAfterQuestionAreaComponent from '@/components/experiment/visual-content/text-after-question-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
-		QuestionMidiNoteOptionsComponent,
+		QuestionSimpleOptionsComponent,
 		TextAfterQuestionAreaComponent,
 		TextAreaComponent,
 	},
@@ -29,7 +29,7 @@ export default {
 	methods: {
 		updateFootnote() {
 			let footnoteMessage = '';
-			footnoteMessage = this.$tc('views.experiment.question.midi-note.footnote-explaination');
+			footnoteMessage = this.$tc('views.experiment.question.simple.footnote-explaination');
 			this.$emit('footnote', footnoteMessage);
 		},
 		handleQuestionAsked() {
@@ -42,11 +42,10 @@ export default {
 		},
 		retreiveContext(answerBundle) {
 			this.context = {
-				questionAsked: 'Question related to the audio(s) note(s)',
+				questionAsked: 'Question in text content',
 				questionCorrectAnswerIndex: answerBundle.questionCorrectAnswerIndex,
 				questionOptionsValues: answerBundle.questionOptionsValues,
 				questionOptionsTexts: answerBundle.questionOptionsTexts,
-				questionRelatedContent: answerBundle.questionRelatedContent,
 			};
 		},
 		retreiveAnswers(answerBundle) {

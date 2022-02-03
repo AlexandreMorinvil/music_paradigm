@@ -3,19 +3,20 @@
 		<sound-generator-component v-on:finished="handleAudioEnd" ref="audioManager" />
 		<div class="choices-area" :class="{ 'vertical-direction': isVertical }">
 			<button
-				v-for="(text, index) in listOptionText"
-				v-bind:key="index"
-				v-on:click="handleSelection(index)"
-				:style="reachedLastAudio && !(index === selectedChoiceIndex) && 'background-color:' + listOptionColors[index]"
+				v-for="number in numberOptions"
+				v-bind:key="number"
+				v-on:click="handleSelection(number)"
+				:style="reachedLastAudio && !(number === selectedChoiceNumber) && 'background-color:' + getAnswerColor(number)"
 				:class="{
 					'not-clickable': !areChoicesClickable,
-					'revealed-box': index <= revealedChoiceLastIndex,
+					'revealed-box': number <= revealedChoiceLastNumber,
 					'last-audio': reachedLastAudio,
-					'selected-box': index === selectedChoiceIndex,
+					'selected-box': number === selectedChoiceNumber,
+					'is-inactive': !isValidSelection(number),
 				}"
 				class="midi-choice"
 			>
-				{{ text }}
+				{{ getTextOfBox(number) }}
 			</button>
 		</div>
 		<p v-if="hasSpecification" class="specification-text">{{ textContent }}</p>
@@ -47,13 +48,20 @@ export default {
 			isReadyToTakeAnswers: false,
 
 			// Selection
-			selectedChoiceIndex: -1,
-			revealedChoiceLastIndex: -1,
+			selectedChoiceNumber: -1,
+			revealedChoiceLastNumber: 0,
 		};
 	},
 	computed: {
-		...mapGetters('soundGenerator', ['hasAudioFirst', 'hasAudioSecond']),
-		...mapGetters('experiment', ['textSpecification', 'answerChoicesValue', 'answerChoicesText', 'answerChoicesColor', 'areAnswerOptionsVertical']),
+		...mapGetters('soundGenerator', ['hasAudioFirst', 'hasAudioSecond', 'audioFirstName', 'audioSecondName']),
+		...mapGetters('experiment', [
+			'textSpecification',
+			'answerChoicesValue',
+			'answerChoicesText',
+			'answerChoicesColor',
+			'areAnswerOptionsVertical',
+			'areInactiveAnswersDisplayed',
+		]),
 		isVertical() {
 			return this.areAnswerOptionsVertical;
 		},
@@ -83,7 +91,20 @@ export default {
 			else if (Array.isArray(this.answerChoicesColor)) for (const i in this.answerChoicesColor) colors[i] = this.answerChoicesColor[i];
 			return colors;
 		},
+		correctAnswersIndex() {
+			if (!this.rightAnswers) return null;
+			let validRightAnswers = null;
+			const lastValidIndex = this.numberValidChoices - 1;
+			if (Array.isArray(this.rightAnswers)) {
+				validRightAnswers = this.rightAnswers.filter((index) => index <= lastValidIndex);
+			} else if (this.rightAnswers <= lastValidIndex) validRightAnswers = this.rightAnswers;
+			return validRightAnswers;
+		},
 		numberOptions() {
+			if (this.areInactiveAnswersDisplayed) return Math.max(this.listOptionText.length, this.listOptionValues.length);
+			return this.listOptionValues.length;
+		},
+		numberValidChoices() {
 			return this.listOptionValues.length;
 		},
 		reachedLastAudio() {
@@ -92,7 +113,7 @@ export default {
 			return numberAudioFinished >= numberAudio - 1;
 		},
 		isChoiceMade() {
-			return this.selectedChoiceIndex > 0;
+			return this.selectedChoiceNumber > 0;
 		},
 		areChoicesClickable() {
 			return this.isReadyToTakeAnswers && !this.isChoiceMade;
@@ -105,15 +126,17 @@ export default {
 		playSecondAudio() {
 			setTimeout(() => this.$refs.audioManager.playAudioSecond(), this.DELAY_SECOND_AUDIO_MILISECONDS);
 		},
-		getTextOfBox(index) {
-			return this.listOptionText[index];
+		getTextOfBox(number) {
+			const index = number - 1;
+			const imposedText = this.listOptionText[index];
+			return imposedText || number;
 		},
 		revealTheCoices() {
 			const stepsInMilliseconds = 10;
-			const numberSteps = this.numberOptions;
+			const numberSteps = this.numberValidChoices;
 			for (let index = 0; index < numberSteps; index++)
 				setTimeout(() => {
-					this.revealedChoiceLastIndex += 1;
+					this.revealedChoiceLastNumber += 1;
 				}, index * stepsInMilliseconds);
 			setTimeout(() => {
 				this.isReadyToPlayFirstAudio = true;
@@ -132,14 +155,25 @@ export default {
 		bundleAnswer(answerIndex) {
 			return {
 				answerIndex: answerIndex,
-				optionsValues: this.listOptionValues,
-				optionsText: this.listOptionText,
+				questionCorrectAnswerIndex: this.correctAnswersIndex,
+				questionOptionsValues: this.listOptionValues,
+				questionOptionsTexts: this.listOptionText,
+				questionRelatedContent: [this.audioFirstName, this.audioSecondName],
 			};
 		},
-		handleSelection(index) {
+		handleSelection(number) {
 			if (!this.areChoicesClickable) return;
-			this.selectedChoiceIndex = index;
-			this.$emit('answered', this.bundleAnswer(this.selectedChoiceIndex));
+			if (!this.isValidSelection(number)) return;
+			this.selectedChoiceNumber = number;
+			const selectedIndex = number - 1;
+			this.$emit('answered', this.bundleAnswer(selectedIndex));
+		},
+		getAnswerColor(number) {
+			const index = number - 1;
+			return this.listOptionColors[index];
+		},
+		isValidSelection(number) {
+			return number <= this.numberValidChoices;
 		},
 	},
 	mounted() {
@@ -177,6 +211,7 @@ export default {
 
 .specification-text {
 	margin: 20px;
+	height: 50px;
 }
 
 .midi-choice {
@@ -206,5 +241,9 @@ export default {
 
 .vertical-direction {
 	flex-direction: column;
+}
+
+.is-inactive {
+	cursor: default;
 }
 </style>

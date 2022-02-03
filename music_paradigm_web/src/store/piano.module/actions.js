@@ -84,6 +84,7 @@ export default {
 	eraseMidiFile: ({ commit }) => {
 		commit('eraseMidiFile');
 	},
+
 	loadMidiFile: ({ commit, dispatch }, midiFileName) => {
 		dispatch('eraseMidiFile');
 		return resourceApi.fetchMidiFile(midiFileName).then(
@@ -112,6 +113,8 @@ export default {
 			{
 				results: getters.results,
 				relativeRhythmImportance: relativeRhythmImportance,
+				rhythmErrorMarginInMilliseconds: rhythmErrorMarginInMilliseconds,
+				rhythmRelativeErrorMarginInFloat: rhythmRelativeErrorMarginInFloat,
 			},
 			{ root: true },
 		);

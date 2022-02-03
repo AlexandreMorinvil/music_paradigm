@@ -1,7 +1,6 @@
 /* eslint-disable max-lines-per-function */
 /* eslint-disable key-spacing */
 import defaultState from './default-state';
-
 import variableHandler from './variable-handler';
 
 export default {
@@ -10,12 +9,9 @@ export default {
 	setExperimentDescription,
 	populateExperimentConstantVariables,
 	setExperimentGeneralSettings,
-	setExperimentInitialState,
-	setExperimentPrelude,
+	setExperimentInitialRecord,
 	setExperimentFlow,
-	setExperimentTimeUpState,
 	storeParameterImposedValues,
-
 	setExperimentVariables,
 	setExperimentVariableSchedules,
 };
@@ -129,7 +125,7 @@ function setExperimentVariableSchedules(state) {
 }
 
 /**
- * Populate the flow and prelude with all the variable/parameter that are meant to be constant for the experiment. 
+ * Populate the flow and prelude flow with all the variable/parameter that are meant to be constant for the experiment. 
  * Once the constant variables/parameters are populated in the experiment, they can never be changed in the experiment for the ongoing session.
  * 
  * The only time in a session where the constant variables are populated is at the beginning. Afterward, any futher variable population is for
@@ -180,29 +176,29 @@ function setExperimentGeneralSettings(state) {
 	// Set the settings for the state. If no value is found, an appropreate default value is set
 	const defaultSettings = defaultState.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
 	state.settings = {
-		anyPianoKey:						typeof anyPianoKey === 'boolean' 					? anyPianoKey : defaultSettings.anyPianoKey,
-		enableSoundFlag:					typeof enableSoundFlag === 'boolean' 				? enableSoundFlag : defaultSettings.enableSoundFlag,
-		playingMode:						typeof playingMode === 'string' 					? playingMode : defaultSettings.playingMode,
-		instrument:							typeof instrument === 'string' 						? instrument : defaultSettings.instrument,
-		footnote:							typeof footnote === 'boolean' 						? footnote : defaultSettings.footnote,
-		footnoteType:						typeof footnoteType === 'string' 					? footnoteType : defaultSettings.footnoteType,
-		timeLimitInSeconds:					typeof timeLimitInSeconds === 'number' 				? timeLimitInSeconds : defaultSettings.timeLimitInSeconds,
-		logFlag:							typeof logFlag === 'boolean' 						? logFlag : defaultSettings.logFlag,
-		successesForSkip:					typeof successesForSkip === 'number' 				? successesForSkip : defaultSettings.successesForSkip,
-		hideFeedbackSmiley:					typeof hideFeedbackSmiley === 'boolean' 			? hideFeedbackSmiley : defaultSettings.hideFeedbackSmiley,
-		isSkipStepButtonInFootnote:			typeof isSkipStepButtonInFootnote === 'boolean' 	? isSkipStepButtonInFootnote : defaultSettings.isSkipStepButtonInFootnote,
-		isGoBackButtonInFootnote:			typeof isGoBackButtonInFootnote === 'boolean' 		? isGoBackButtonInFootnote : defaultSettings.isGoBackButtonInFootnote,
-		programmedOctaveOffset:				typeof programmedOctaveOffset === 'number' 			? programmedOctaveOffset : defaultSettings.programmedOctaveOffset,
-		interactivePianoFirstOctave:		typeof interactivePianoFirstOctave === 'number' 	? interactivePianoFirstOctave : defaultSettings.interactivePianoFirstOctave,
-		controlType:						typeof controlType === 'string' 					? controlType : defaultSettings.controlType,
-		relativeRhythmImportance:			typeof relativeRhythmImportance === 'number' 		? relativeRhythmImportance : defaultSettings.relativeRhythmImportance,
+		anyPianoKey: 						typeof anyPianoKey === 'boolean' 					? anyPianoKey : defaultSettings.anyPianoKey,
+		enableSoundFlag: 					typeof enableSoundFlag === 'boolean' 				? enableSoundFlag : defaultSettings.enableSoundFlag,
+		playingMode: 						typeof playingMode === 'string' 					? playingMode : defaultSettings.playingMode,
+		instrument: 						typeof instrument === 'string' 						? instrument : defaultSettings.instrument,
+		footnote: 							typeof footnote === 'boolean' 						? footnote : defaultSettings.footnote,
+		footnoteType: 						typeof footnoteType === 'string' 					? footnoteType : defaultSettings.footnoteType,
+		timeLimitInSeconds: 				typeof timeLimitInSeconds === 'number' 				? timeLimitInSeconds : defaultSettings.timeLimitInSeconds,
+		logFlag: 							typeof logFlag === 'boolean' 						? logFlag : defaultSettings.logFlag,
+		successesForSkip: 					typeof successesForSkip === 'number' 				? successesForSkip : defaultSettings.successesForSkip,
+		hideFeedbackSmiley: 				typeof hideFeedbackSmiley === 'boolean' 			? hideFeedbackSmiley : defaultSettings.hideFeedbackSmiley,
+		isSkipStepButtonInFootnote: 		typeof isSkipStepButtonInFootnote === 'boolean' 	? isSkipStepButtonInFootnote : defaultSettings.isSkipStepButtonInFootnote,
+		isGoBackButtonInFootnote: 			typeof isGoBackButtonInFootnote === 'boolean' 		? isGoBackButtonInFootnote : defaultSettings.isGoBackButtonInFootnote,
+		programmedOctaveOffset: 			typeof programmedOctaveOffset === 'number' 			? programmedOctaveOffset : defaultSettings.programmedOctaveOffset,
+		interactivePianoFirstOctave: 		typeof interactivePianoFirstOctave === 'number' 	? interactivePianoFirstOctave : defaultSettings.interactivePianoFirstOctave,
+		controlType: 						typeof controlType === 'string' 					? controlType : defaultSettings.controlType,
+		relativeRhythmImportance: 			typeof relativeRhythmImportance === 'number' 		? relativeRhythmImportance : defaultSettings.relativeRhythmImportance,
 		rhythmErrorMarginInMilliseconds: 	typeof rhythmErrorMarginInMilliseconds == 'number' 	? rhythmErrorMarginInMilliseconds : defaultSettings.rhythmErrorMarginInMilliseconds,
-		rhythmRelativeErrorMarginInFloat:	typeof rhythmRelativeErrorMarginInFloat == 'number' ? rhythmRelativeErrorMarginInFloat : defaultSettings.rhythmRelativeErrorMarginInFloat,
-		withProgressionBar:					typeof withProgressionBar === 'boolean' 			? withProgressionBar : defaultSettings.withProgressionBar,
-		cueWaitForClick: 					typeof cueWaitForClick === 'boolean'				? cueWaitForClick : defaultSettings.cueWaitForClick,
-		withTimer:							typeof withTimer === 'boolean'						? withTimer : defaultSettings.withTimer,
-		hasClearBackground:					typeof hasClearBackground === 'boolean'				? hasClearBackground : defaultSettings.hasClearBackground,
-		hasSound:							typeof hasSound === 'boolean'						? hasSound : defaultSettings.hasSound,
+		rhythmRelativeErrorMarginInFloat: 	typeof rhythmRelativeErrorMarginInFloat == 'number' ? rhythmRelativeErrorMarginInFloat : defaultSettings.rhythmRelativeErrorMarginInFloat,
+		withProgressionBar: 				typeof withProgressionBar === 'boolean' 			? withProgressionBar : defaultSettings.withProgressionBar,
+		cueWaitForClick: 					typeof cueWaitForClick === 'boolean' 				? cueWaitForClick : defaultSettings.cueWaitForClick,
+		withTimer: 							typeof withTimer === 'boolean' 						? withTimer : defaultSettings.withTimer,
+		hasClearBackground: 				typeof hasClearBackground === 'boolean' 			? hasClearBackground : defaultSettings.hasClearBackground,
+		hasSound: 							typeof hasSound === 'boolean' 						? hasSound : defaultSettings.hasSound,
 	};
 }
 
@@ -216,28 +212,10 @@ function setExperimentGeneralSettings(state) {
  * @param {Object} state.experiment 					Object from the backend conntaining all information related to the experiment.
  * @param {String} state.experiment.logLabel			Initial log label of the experiment (can be changed during the completion of the experiment).
 */
-function setExperimentInitialState(state) {
+function setExperimentInitialRecord(state) {
 	const { logLabel } = state.experiment;
 	const defaultSettings = defaultState.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
 	state.state.record.logLabel = typeof logLabel === 'string' ? logLabel : defaultSettings.logLabel;
-}
-
-
-/**
- * Store the prelude flow of the experiment received from the backend. 
- * @param {Object} state 								Vuex state.
- * @param {Object} state.experiment 					Object from the backend conntaining all information related to the experiment.
- * @param {Array<Object>} state.experiment.prelude		Flow description of the "prelude" which is a set of steps that will be presented  
- * 														before the main experiment takes place.
-*/
-function setExperimentPrelude(state) {
-	// Verify if a prelude is provided
-	if (!state.experiment.prelude) return;
-	let { prelude } = state.experiment;
-
-	// Deep copying the prelude
-	prelude = Array.isArray(prelude) ? prelude : [];
-	state.prelude = JSON.parse(JSON.stringify(prelude));
 }
 
 
@@ -249,21 +227,17 @@ function setExperimentPrelude(state) {
 */
 function setExperimentFlow(state) {
 	// Deep copying the flow
-	const { flow } = state.experiment;
+	const { flow, flowPrelude, flowConclusion, timeUpState } = state.experiment;
 	state.flow = JSON.parse(JSON.stringify(flow));
-}
 
+	// Deep copying the prelude flow
+	const flowPreludeToAssign = Array.isArray(flowPrelude) ? flowPrelude : [];
+	state.flowPrelude = JSON.parse(JSON.stringify(flowPreludeToAssign));
 
-/**
- * Store the state to be presented when the time available is lapsed for the experiment received from the backend.
- * @param {Object} state 								Vuex state.
- * @param {Object} state.experiment 					Object from the backend conntaining all information related to the experiment.
- * @param {Object} state.experiment.timeUpState			Block of type "End" that will be presented upon a time's up for the experiment.
-*/
-function setExperimentTimeUpState(state) {
-	// Deep copying the state
-	const { timeUpState } = state.experiment;
-	if (!timeUpState) return;
-	state.timeUpState = JSON.parse(JSON.stringify(timeUpState));
-	state.timeUpState.type = 'end';
+	// Deep copying the conclusion flow
+	const flowConclusionToAssign = Array.isArray(flowConclusion) ? flowConclusion : [];
+	state.flowConclusion = JSON.parse(JSON.stringify(flowConclusionToAssign));
+
+	// Deep copying the timeout state
+	state.timeUpState = timeUpState ? JSON.parse(JSON.stringify(timeUpState)) : null;
 }

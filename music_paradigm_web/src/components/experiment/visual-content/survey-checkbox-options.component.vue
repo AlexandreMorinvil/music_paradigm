@@ -8,16 +8,7 @@
 				<td v-if="hasLeftSideColumn">{{ leftSideText[rowNumber - 1] }}</td>
 				<td v-for="columnNumber in columnsCount" :key="columnNumber">
 					<input
-						v-if="isRadioOptions"
-						type="radio"
-						:name="'question-' + rowNumber"
-						:value="valueOptions[columnNumber - 1]"
-						class="survey-input"
-						v-model="selectionPerRow[rowNumber - 1]"
-					/>
-					<input
-						v-else
-						type="checkbox"
+						:type="isRadioOptions ? 'radio' : 'checkbox'"
 						:name="'question-' + rowNumber"
 						:value="valueOptions[columnNumber - 1]"
 						class="survey-input"

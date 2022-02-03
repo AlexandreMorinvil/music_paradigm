@@ -11,6 +11,7 @@ export default {
 	},
 
 	terminateSoundGenerator: (state) => {
+		state.isInitialized = false;
 		Object.assign(state, defaultState.DEFAULT_SOUND_GENERATOR_STATE());
 	},
 

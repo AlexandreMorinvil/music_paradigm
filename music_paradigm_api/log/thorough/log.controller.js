@@ -19,8 +19,11 @@ router.post('/admin-summary-list',  jwtAuthorize(role.admin), getAdminLogSummary
 router.post('/user-csv',            jwtAuthorize(role.admin), makeUserLogCsv);
 router.post('/admin-csv',           jwtAuthorize(role.admin), makeAdminLogCsv);
 
-router.post('/user-json',            jwtAuthorize(role.admin), makeUserLogJson);
-router.post('/admin-json',           jwtAuthorize(role.admin), makeAdminLogJson);
+router.post('/user-csv-unwound',    jwtAuthorize(role.admin), makeUserLogUnwoundCsv);
+router.post('/admin-csv-unwound',   jwtAuthorize(role.admin), makeAdminLogUnwoundCsv);
+
+router.post('/user-json',           jwtAuthorize(role.admin), makeUserLogJson);
+router.post('/admin-json',          jwtAuthorize(role.admin), makeAdminLogJson);
 
 
 module.exports = router;
@@ -113,6 +116,34 @@ function makeAdminLogCsv(req, res, next) {
     const criterias = req.body;
 
     service.makeAdminLogCsv(criterias)
+        .then((csv) => {
+            res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+            res.set('Access-Control-Expose-Headers', 'Content-Disposition');
+            res.set('Content-Type', 'text/csv');
+            res.status(200).send(csv);
+        })
+        .catch(err => next(err));
+}
+
+function makeUserLogUnwoundCsv(req, res, next) {
+
+    const criterias = req.body;
+
+    service.makeUserLogUnwoundCsv(criterias)
+        .then((csv) => {
+            res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+            res.set('Access-Control-Expose-Headers', 'Content-Disposition');
+            res.set('Content-Type', 'text/csv');
+            res.status(200).send(csv);
+        })
+        .catch(err => next(err));
+}
+
+function makeAdminLogUnwoundCsv(req, res, next) {
+
+    const criterias = req.body;
+
+    service.makeAdminLogUnwoundCsv(criterias)
         .then((csv) => {
             res.setHeader('Content-disposition', 'attachment; filename=data.csv');
             res.set('Access-Control-Expose-Headers', 'Content-Disposition');

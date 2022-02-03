@@ -104,6 +104,11 @@ const schema = new Schema(
 
 // Virtual properties
 
+schema.virtual('isCompleted').get(function () {
+    return this.completionCount >= this.completionsNeeded || this.adjustmentConsiderCompleted;
+});
+
+
 schema.virtual('completionsNeeded').get(function () {
     return 1 + this.adjustmentAdditionalCompletionsRequired;
 });

@@ -2,6 +2,8 @@ export default {
 	clearState: ({ commit }) => {
 		commit('clearState');
 	},
+
+	// Actions to start an experiment
 	setExperiment: ({ commit }, experiment) => {
 		commit('setExperiment', experiment);
 	},
@@ -24,28 +26,27 @@ export default {
 	// Prelude actions
 	initializePrelude: ({ commit }) => {
 		commit('initializePrelude');
-		commit('updateState');
 	},
-	leavePrelude: ({ commit }) => {
-		commit('leavePrelude');
-		commit('updateState');
+
+	// Conclusion actions
+	endExperimentByTimeUp: ({ commit }) => {
+		commit('endExperimentByTimeUp');
 	},
 
 	// Cursor handling actions
 	goNextStep: ({ commit }) => {
 		commit('moveNextStep');
 	},
+
 	goPreviousInnerStep: ({ commit }) => {
 		commit('movePreviousInnerStep');
 	},
+
 	goStepPostSkip: ({ commit }) => {
 		commit('movePostSkip');
 	},
 
 	// End actions
-	endExperimentByTimeout: ({ commit }) => {
-		commit('endExperimentByTimeout');
-	},
 	leaveExperiment: ({ commit }) => {
 		commit('leaveExperiment');
 	},

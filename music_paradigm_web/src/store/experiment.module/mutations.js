@@ -1,4 +1,4 @@
-import { blockHandler, cursorHandler, defaultState, experimentHandler, stateHandler } from '@/store-helper/experiment.module-helper';
+import { cursorHandler, defaultState, experimentHandler, flowHandler, stateHandler } from '@/store-helper/experiment.module-helper';
 import { routerNavigation } from '@/_helpers';
 
 export default {
@@ -21,11 +21,9 @@ export default {
 		experimentHandler.populateExperimentConstantVariables(state);
 
 		// Initialzie the experiment's content and states
-		experimentHandler.setExperimentPrelude(state);
 		experimentHandler.setExperimentFlow(state);
-		experimentHandler.setExperimentTimeUpState(state);
 		experimentHandler.setExperimentGeneralSettings(state);
-		experimentHandler.setExperimentInitialState(state);
+		experimentHandler.setExperimentInitialRecord(state);
 
 		// Conclude the experiment parsing
 		experimentHandler.concludeExperimentParsing(state);
@@ -42,7 +40,7 @@ export default {
 
 	initExperiment: (state, initialState) => {
 		routerNavigation.moveToExperimentPreparation();
-		state.state = initialState || defaultState.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
+		stateHandler.initializeStartState(state.state, initialState);
 		state.initialTimeIndicated = state.state.record.timeIndicated;
 	},
 
@@ -55,64 +53,40 @@ export default {
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
-	// Prelude initialization functions
+	// Prelude flow initialization functions
 	initializePrelude: (state) => {
-		// Moving the experiment flow, state and curdsor in a temporary memory to run the prelude
-		state.tempMemory.flow = JSON.parse(JSON.stringify(state.flow));
-		state.tempMemory.state = JSON.parse(JSON.stringify(state.state));
-		state.tempMemory.cursor = JSON.parse(JSON.stringify(state.cursor));
-
-		// Set the prelude as the experiment to run
-		state.flow = state.prelude;
-		state.state = defaultState.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
-		state.cursor = cursorHandler.assignCursor(state.flow);
-		state.cursor.flag.isInPrelude = true;
-
-		state.isInitialized = defaultState.IS_FULLY_NOT_INITIALIZED_STATUS();
+		flowHandler.moveToPreludeFlow(state);
+		const { flow, cursor, isInitialized, settings } = state;
+		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
-	leavePrelude: (state) => {
-		// Set the real experiment as the experiment to run
-		state.flow = JSON.parse(JSON.stringify(state.tempMemory.flow));
-		state.state = JSON.parse(JSON.stringify(state.tempMemory.state));
-		state.cursor = JSON.parse(JSON.stringify(state.tempMemory.cursor));
-
-		// Delete the prelude data
-		delete state.tempMemory.flow;
-		delete state.tempMemory.state;
-		delete state.tempMemory.cursor;
-
-		state.isInitialized = defaultState.IS_FULLY_NOT_INITIALIZED_STATUS();
+	// Conclusion flow initialization functions
+	endExperimentByTimeUp: (state) => {
+		flowHandler.moveToTimesUpConclusionFlow(state);
+		const { flow, cursor, isInitialized, settings } = state;
+		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
 	// Cursor handling
 	moveNextStep: (state) => {
-		const { flow, cursor, isInitialized, settings } = state;
+		let { flow, cursor, isInitialized, settings } = state;
 		cursorHandler.advance(state.state, flow, cursor, isInitialized);
+		({ flow, cursor, isInitialized, settings } = flowHandler.changeFlowIfNeeded(state));
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
 	movePreviousInnerStep: (state) => {
-		const { flow, cursor, isInitialized, settings } = state;
+		let { flow, cursor, isInitialized, settings } = state;
 		cursorHandler.goBack(flow, cursor, isInitialized);
+		({ flow, cursor, isInitialized, settings } = flowHandler.changeFlowIfNeeded(state));
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
 	},
 
 	movePostSkip: (state) => {
-		const { flow, cursor, isInitialized, settings } = state;
+		let { flow, cursor, isInitialized, settings } = state;
 		cursorHandler.skip(state.state, flow, cursor, isInitialized);
+		({ flow, cursor, isInitialized, settings } = flowHandler.changeFlowIfNeeded(state));
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
-	},
-
-	// End functions
-	endExperimentByTimeout: (state) => {
-		if (state.state.type === 'end') return;
-		state.cursor.flag.isInTimeUp = true;
-		const { cursor, settings } = state;
-		const timeoutBlock = blockHandler.getTimeUpBlock();
-		const isInitialized = defaultState.IS_FULLY_NOT_INITIALIZED_STATUS();
-		stateHandler.imposeState(state.state, timeoutBlock, cursor, isInitialized, settings);
-		state.state.record.timeIndicated = 0;
 	},
 
 	leaveExperiment: () => {

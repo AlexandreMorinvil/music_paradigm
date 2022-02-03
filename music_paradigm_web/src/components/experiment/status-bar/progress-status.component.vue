@@ -13,12 +13,13 @@ import { mapGetters } from 'vuex';
 
 export default {
 	computed: {
-		...mapGetters('experiment', ['hasClearBackground', 'stepsTotalCount', 'stepsLeftCount', 'isInPrelude']),
+		...mapGetters('experiment', ['hasClearBackground', 'stepsTotalCount', 'stepsLeftCount', 'isInPrelude', 'isInConclusion']),
 		isClearVersion() {
 			return this.hasClearBackground;
 		},
 		progressBarWith() {
 			if (this.isInPrelude) return 0;
+			if (this.isInConclusion) return 100;
 			else return 100 * (1 - this.stepsLeftCount / this.stepsTotalCount);
 		},
 	},

@@ -1,5 +1,9 @@
 // Survey parameters
 export default {
+	surveyType: (state) => {
+		return state.state.settings.surveyType;
+	},
+
 	surveyInputOptionsValues: (state) => {
 		return state.state.optionsContent.surveyInputOptionsValues;
 	},

@@ -1,5 +1,5 @@
 import { authHeader, url } from '@/_helpers';
-import { defaultResponseHandler } from './default-response-handler';
+import { defaultResponseHandler } from './response-handler';
 
 export const sessionApi = {
 	initializeSession,

@@ -92,6 +92,8 @@ function evaluateMelodyType(midiFileNotes, playedNotes) {
 	};
 }
 
+// The "type" field was added to be a consistent marker accros different languages in the log (since a version in Sweedish of the platform was also developped)
+
 function gradeSpeedType(evaluationResults, { minSequencePlayed }) {
 	const ADDITIONAL_SEQUENCES = 5;
 	const grades = [
@@ -105,7 +107,9 @@ function gradeSpeedType(evaluationResults, { minSequencePlayed }) {
 	return grades;
 }
 
-function gradeRhythmType(evaluationResults, { minNoteAccuracy, maxRhythmError }, relativeRhythmImportance) {
+function gradeRhythmType(evaluationResults,
+	{ minNoteAccuracy, maxRhythmError },
+	{ relativeRhythmImportance, rhythmErrorMarginInMilliseconds, rhythmRelativeErrorMarginInFloat }) {
 	// Give weighted importance to IOI error and relative IOI error
 	const rythmRelativeErrorMeasure =
 		relativeRhythmImportance * evaluationResults.relativeInterOnsetIntervalsRelativeError +
@@ -124,6 +128,9 @@ function gradeRhythmType(evaluationResults, { minNoteAccuracy, maxRhythmError },
 			mark: rythmRelativeErrorMeasure >= 0 ? Math.max(100 - rythmRelativeErrorMeasure, 0) : 0,
 			passMark: Math.min(Math.max(100 - maxRhythmError, 0), 100),
 			topMark: 100,
+			relativeRhythmWeight: relativeRhythmImportance,
+			errorMarginInMilliseconds: rhythmErrorMarginInMilliseconds,
+			relativeErrorMargin: rhythmRelativeErrorMarginInFloat,
 		},
 	];
 	return grades;

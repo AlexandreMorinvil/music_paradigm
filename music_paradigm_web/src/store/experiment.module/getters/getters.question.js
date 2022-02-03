@@ -8,6 +8,10 @@ export default {
 		return state.state.settings.areAnswerOptionsVertical;
 	},
 
+	areInactiveAnswersDisplayed: (state) => {
+		return state.state.settings.areInactiveAnswersDisplayed;
+	},
+
 	textAfterQuestionAsked: (state) => {
 		return state.state.content.textAfterQuestionAsked;
 	},
@@ -33,4 +37,8 @@ export default {
 			return imageName ? `${state.description.folder}/${imageName}` : '';
 		});
 	},
+
+	rightAnswers: (state) => {
+		return state.state.optionsContent.rightAnswers;
+	}
 };

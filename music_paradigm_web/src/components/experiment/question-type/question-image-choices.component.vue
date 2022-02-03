@@ -2,8 +2,8 @@
 	<div id="question-type" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
 		<div class="images-area image-disposition">
-			<image-area-component class="question-image-area" />
-			<question-image-choices-options-component v-on:answered="handleAnswer" v-on:questionAsked="handleQuestionAsked" class="options-image-area" />
+			<image-area-component class="question-image-half" />
+			<question-image-choices-options-component v-on:answered="handleAnswer" v-on:questionAsked="handleQuestionAsked" class="options-image-half" />
 		</div>
 		<text-after-question-area-component class="text-after-question-area state-section" ref="postQuestionText" />
 	</div>
@@ -27,20 +27,35 @@ export default {
 	data() {
 		return {
 			DELAY_AFTER_ANSWER: 800,
+			context: {},
+			answers: null,
 		};
 	},
 	methods: {
 		updateFootnote() {
 			let footnoteMessage = '';
-			footnoteMessage = this.$tc('views.experiment.question.audio.footnote-explaination');
+			footnoteMessage = this.$tc('views.experiment.question.image-choices.footnote-explaination');
 			this.$emit('footnote', footnoteMessage);
 		},
 		handleQuestionAsked() {
 			this.$refs.postQuestionText.reveal();
 		},
 		handleAnswer(answerBundle) {
-			console.log(answerBundle);
+			this.retreiveContext(answerBundle);
+			this.retreiveAnswers(answerBundle);
 			setTimeout(() => this.$emit('responded', answerBundle), this.DELAY_AFTER_ANSWER);
+		},
+		retreiveContext(answerBundle) {
+			this.context = {
+				questionAsked: 'Question in main image file',
+				questionCorrectAnswerIndex: answerBundle.questionCorrectAnswerIndex,
+				questionOptionsValues: answerBundle.questionOptionsValues,
+				questionOptionsTexts: answerBundle.questionOptionsTexts,
+				questionRelatedContent: answerBundle.questionRelatedContent,
+			};
+		},
+		retreiveAnswers(answerBundle) {
+			this.answers = answerBundle.answerIndex;
 		},
 	},
 	beforeMount() {
@@ -50,16 +65,6 @@ export default {
 </script>
 
 <style scoped>
-.text-area {
-	flex-grow: 1;
-	height: 10%;
-}
-
-.images-area {
-	flex-grow: 1;
-	height: 70%;
-}
-
 .image-disposition {
 	display: flex;
 	flex-direction: row;
@@ -68,18 +73,25 @@ export default {
 	align-items: center;
 }
 
-.questions-image-area {
-	/* flex-grow: 1; */
-	width: 30%;
+.text-area {
+	height: 10%;
 }
 
-.options-image-area {
-	flex-grow: 1;
-	width: 70%;
+.images-area {
+	height: 70%;
 }
 
 .text-after-question-area {
-	flex-grow: 1;
 	height: 10%;
+	max-height: 10%;
+}
+
+.question-image-half {
+	width: 50%;
+}
+
+.options-image-half {
+	width: 50%;
+	height: 100%;
 }
 </style>

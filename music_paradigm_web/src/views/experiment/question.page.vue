@@ -13,16 +13,16 @@
 <script>
 import '@/styles/experiment-content-template.css';
 import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
-// import SimpleQuestionComponent from '@/components/experiment/question-type/playing-melody.component';
 import AudioQuestionComponent  from '@/components/experiment/question-type/question-audio-first.component';
 import ImageQuestionComponent from '@/components/experiment/question-type/question-image-choices.component';
 import MidiNoteQuestionComponent from '@/components/experiment/question-type/question-midi-note.component';
+import SimpleQuestionComponent from '@/components/experiment/question-type/question-simple.component';
 
 export default {
 	components: {
-		// simple: SimpleQuestionComponent,
+		simple: SimpleQuestionComponent,
 		'audio-start': AudioQuestionComponent,
 		'image-choices': ImageQuestionComponent,
 		'midi-note': MidiNoteQuestionComponent,
@@ -31,20 +31,27 @@ export default {
 		return {
 			allowedTypes: ['simple', 'image-choices', 'audio-start', 'midi-note'],
 			hasReceivedStartSignal: false,
+			DEFAULT_QUESTION_TYPE: 'simple',
 		};
 	},
 	computed: {
 		...mapGetters('experiment', ['questionType']),
 		type() {
 			if (this.allowedTypes.includes(this.questionType)) return this.questionType;
-			else return 'simple';
+			else return this.DEFAULT_QUESTION_TYPE;
 		}
 	},
 	methods: {
+		...mapActions('question', ['setQuestionContext', 'setQuestionAnswers', 'resetQuestion']),
 		updateFootnote(footnoteMessage) {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
+		storeQuestionRecords() {
+			this.setQuestionContext(this.$refs.question.context);
+			this.setQuestionAnswers(this.$refs.question.answers);
+		},
 		handdleResponded() {
+			this.storeQuestionRecords();
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 		},
 		startAsking() {
@@ -53,6 +60,7 @@ export default {
 		},
 	},
 	beforeMount() {
+		this.resetQuestion();
 		this.updateFootnote();
 	},
 	mounted() {

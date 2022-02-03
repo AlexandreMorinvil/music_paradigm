@@ -28,6 +28,10 @@ export default {
 		return state.selectedUserProgression ? state.selectedUserProgression.lastProgessionTimePassed : 0;
 	},
 
+	progressionSelectedDuration: (state) => {
+		return state.selectedUserProgression ? state.selectedUserProgression.duration : 0;
+	},
+
 	// Selected session
 	sessionSelectedAssociativeId: (state) => {
 		return state.selectedSessionAssociativeId;
