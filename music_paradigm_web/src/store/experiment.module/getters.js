@@ -7,8 +7,7 @@ import currentStateGetters from './getters/getters.current-state';
 import globalSessionGetters from './getters/getters.global-session';
 import logGetters from './getters/getters.log';
 
-import interactiveKeyboardGetters from './getters/getters.interactive-keyboard';
-import interactivePianoGetters from './getters/getters.interactive-piano';
+import interactiveControllerGetters from './getters/getters.interactive-controller';
 
 import evaluationGetters from './getters/getters.evaluation';
 
@@ -33,8 +32,7 @@ export default {
 	...currentStateGetters,
 
 	// Interactive components
-	...interactiveKeyboardGetters,
-	...interactivePianoGetters,
+	...interactiveControllerGetters,
 
 	// Specifications
 	...evaluationGetters,

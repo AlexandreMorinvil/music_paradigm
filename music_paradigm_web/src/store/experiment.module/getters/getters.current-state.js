@@ -13,6 +13,7 @@ export default {
 		switch (type) {
 			case 'playing': return state.state.settings.playingMode;
 			case 'question': return state.state.settings.questionType;
+			case 'survey': return state.state.settings.surveyType;
 			default: return '';
 		}
 	},

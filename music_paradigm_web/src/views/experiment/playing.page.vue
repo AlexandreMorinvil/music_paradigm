@@ -2,8 +2,9 @@
 	<div id="playing-state" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
 		<image-area-component class="image-area state-section" />
-		<keyboard-area-component class="piano-area state-section" />
-		<piano-area-component class="piano-area state-section" />
+		<clicker-area-component class="virtual-controller-area state-section" />
+		<piano-area-component class="virtual-controller-area state-section" />
+		<keyboard-area-component class="virtual-controller-area state-section" />
 		<component :is="playingMode" class="play-area state-section" v-on:finished-playing="handdleEndOfPlaying" ref="playingMode" />
 	</div>
 </template>
@@ -14,9 +15,11 @@ import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-eve
 import { mapActions, mapGetters } from 'vuex';
 
 import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
+import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
+
+import ClickerAreaComponent from '@/components/experiment/visual-content/clicker-area.component.vue';
 import KeyboardAreaComponent from '@/components/experiment/visual-content/keyboard-area.component.vue';
 import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';
-import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 import KeyboardPressingSpeedComponent from '@/components/experiment/playing-mode/keyboard-pressing-speed.component';
 
@@ -28,8 +31,11 @@ export default {
 	components: {
 		TextAreaComponent,
 		ImageAreaComponent,
+
+		ClickerAreaComponent,
 		KeyboardAreaComponent,
 		PianoAreaComponent,
+
 		speed: PlayingSpeedComponent,
 		rhythm: PlayingRhythmComponent,
 		melody: PlayingMelodyComponent,
@@ -86,7 +92,7 @@ export default {
 	height: 50%;
 }
 
-.piano-area {
+.virtual-controller-area {
 	flex-grow: 1;
 	height: 50%;
 }

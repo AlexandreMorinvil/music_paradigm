@@ -1,6 +1,6 @@
 <template>
 	<div style="display: none">
-		<piano-admin-input-handler-component v-on:simulated-midi-signal="manageMidiNote" style="display: none" />
+		<piano-admin-input-handler-component style="display: none" />
 	</div>
 </template>
 
@@ -36,11 +36,10 @@ export default {
 	},
 	methods: {
 		...mapActions('piano', [
+			'setPlayer',
+			'unsetPlayer',
 			'setInitializedState',
 			'setInitializingState',
-			'setPlayer',
-			'setPiano',
-			'clearPiano',
 			'addPressedKey',
 			'deletePressedKey',
 			'addPressedNoteLog',
@@ -53,14 +52,15 @@ export default {
 		/**
 		 * Handle the midi messages
 		 * @param {Object} midiNote
-		 * @param {String} midiNote.data[0] 144 for "Note On" or 128 for "Note Off"
-		 * @param {Number} midiNote.data[1] Value between 0-127
-		 * @param {Number} midiNote.data[2] Value between 0-127
+		 * @param {String} midiNote.data[0] 			144 for "Note On" or 128 for "Note Off"
+		 * @param {Number} midiNote.data[1] 			Value between 0-127
+		 * @param {Number} midiNote.data[2] 			Value between 0-127
+		 * @param {Boolean} midiNote.mustIngoreOffset 	Indicate whether the programmed offset must be ignored
 		 */
 		manageMidiNote(midiNote) {
 			const midiMessage = {
 				type: midiNote.data[0] === this.MIDI_MESSAGE_CODE_NOTE_ON ? 'Note On' : 'Note Off',
-				note: midiNote.data[1] + this.midiOffset,
+				note: midiNote.data[1] + (midiNote.mustIngoreOffset ? 0 : this.midiOffset),
 				velocity: midiNote.data[2],
 			};
 
@@ -145,7 +145,6 @@ export default {
 			const instrumentFileUrl = instruments.getInstrumentFile(this.instrument);
 			soundfont.instrument(this.audioConctext, instrumentFileUrl).then((piano) => {
 				this.piano = piano;
-				this.setPiano(piano);
 
 				// MIDI input (piano) events
 				window.navigator.requestMIDIAccess().then((midiAccess) => {
@@ -169,8 +168,9 @@ export default {
 			if (this.player) {
 				this.player.off('midiEvent', this.handleMidiMessage);
 				this.player.off('endOfFile', this.handleMidiFileEndOfFile);
+				this.unsetPlayer();
 			}
-			this.clearPiano();
+			this.piano = null;
 			while (this.midiInputs.length > 0) this.midiInputs.pop().onmidimessage = null;
 			this.midiAccess = null;
 			this.setInitializedState(false);
@@ -225,11 +225,13 @@ export default {
 		this.probeCompatibility();
 		PianoEventBus.$on(pianoEvents.EVENT_PIANO_INIT_REQUEST, this.initPiano);
 		PianoEventBus.$on(pianoEvents.EVENT_PIANO_TERMINATE_REQUEST, this.terminatePiano);
+		PianoEventBus.$on(pianoEvents.EVENT_PIANO_SIMULATED_MIDI_SIGNAL, this.manageMidiNote);
 	},
 	beforeDestroy() {
 		this.terminatePiano();
 		PianoEventBus.$off(pianoEvents.EVENT_PIANO_INIT_REQUEST, this.initPiano);
 		PianoEventBus.$off(pianoEvents.EVENT_PIANO_TERMINATE_REQUEST, this.terminatePiano);
+		PianoEventBus.$off(pianoEvents.EVENT_PIANO_SIMULATED_MIDI_SIGNAL, this.manageMidiNote);
 	},
 };
 </script>

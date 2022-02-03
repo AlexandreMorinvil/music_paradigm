@@ -1,10 +1,9 @@
-import constants from './constants';
+import { defaultState, keysHandler } from '@/store-helper/keyboard.module-helper';
 import { keyboardPerformance } from '@/_helpers';
-import { keysHandler } from '@/store-helper/keyboard.module-helper';
 
 export default {
 	resetKeyboardTracking: (state) => {
-		Object.assign(state, constants.DEFAULT_KEYBOARD_TRACKER_VALUES());
+		Object.assign(state, defaultState.DEFAULT_KEYBOARD_TRACKER_VALUES());
 	},
 
 	// Mutation on isKeyboardInitialized
@@ -44,6 +43,11 @@ export default {
 
 	addReleasedKeyboardKeyLog: (state, key) => {
 		state.played.presses.duration.push(key.time - state.played.startTime - state.played.presses.time[state.played.presses.time.length - 1]);
+	},
+
+	// Mutations related to midi triggered keys (when there is a keyboard to midi mapping)
+	updateMidiFileTriggeredAssociatedKeys: (state, midiFileTriggeredKey) => {
+		state.midiFileTriggeredAssociatedKeys = midiFileTriggeredKey;
 	},
 
 	// Mutations on the reference keys

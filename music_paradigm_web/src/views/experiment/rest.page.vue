@@ -2,8 +2,9 @@
 	<div id="rest-state" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
 		<image-area-component class="image-area state-section" />
-		<piano-area-component class="piano-area state-section" />
-		<keyboard-area-component class="piano-area state-section" />
+		<clicker-area-component class="virtual-controller-area state-section" />
+		<piano-area-component class="virtual-controller-area state-section" />
+		<keyboard-area-component class="virtual-controller-area state-section" />
 	</div>
 </template>
 
@@ -12,17 +13,21 @@ import '@/styles/experiment-content-template.css';
 import { mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
+
 import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
+import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
+
+import ClickerAreaComponent from '@/components/experiment/visual-content/clicker-area.component.vue';
 import KeyboardAreaComponent from '@/components/experiment/visual-content/keyboard-area.component.vue';
 import PianoAreaComponent from '@/components/experiment/visual-content/piano-area.component.vue';
-import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
 		ImageAreaComponent,
+		TextAreaComponent,
+		ClickerAreaComponent,
 		KeyboardAreaComponent,
 		PianoAreaComponent,
-		TextAreaComponent,
 	},
 	props: {
 		lastPressedKey: {
@@ -96,7 +101,7 @@ export default {
 	height: 50%;
 }
 
-.piano-area {
+.virtual-controller-area {
 	flex-grow: 1;
 	height: 50%;
 }
