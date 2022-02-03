@@ -24,6 +24,7 @@ export default {
 		experimentHandler.setExperimentFlow(state);
 		experimentHandler.setExperimentGeneralSettings(state);
 		experimentHandler.setExperimentInitialRecord(state);
+		experimentHandler.setExperimentKeyboardToMidiInputMapping(state);
 
 		// Conclude the experiment parsing
 		experimentHandler.concludeExperimentParsing(state);

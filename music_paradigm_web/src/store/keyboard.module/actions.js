@@ -26,6 +26,11 @@ export default {
 		commit('deletePressedKeyboardKey', key);
 	},
 
+	// Mutations related to midi triggered keys (when there is a keyboard to midi mapping)
+	updateMidiFileTriggeredAssociatedKeys: ({ commit }, midiFileTriggeredKey) => {
+		commit('updateMidiFileTriggeredAssociatedKeys', midiFileTriggeredKey);
+	},
+
 	// Log of played notes
 	addPressedKeyboardKeyLog: ({ commit }, key) => {
 		commit('addPressedKeyboardKeyLog', key);

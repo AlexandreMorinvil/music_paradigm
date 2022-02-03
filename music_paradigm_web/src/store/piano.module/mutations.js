@@ -1,11 +1,20 @@
-import { midiConversion, notePerformance } from '@/_helpers';
 import { Midi } from '@tonejs/midi';
-import constants from './constants';
-import { notesHandler } from '@/store-helper/piano.module-helper';
+
+import { defaultState, notesHandler } from '@/store-helper/piano.module-helper';
+import { midiConversion, notePerformance } from '@/_helpers';
 
 export default {
 	resetPianoState: (state) => {
-		Object.assign(state, constants.DEFAULT_PIANO_STATE_VALUES());
+		Object.assign(state, defaultState.DEFAULT_PIANO_STATE_VALUES());
+	},
+
+	// Player methods
+	setPlayer: (state, player) => {
+		state.player = player;
+	},
+
+	unsetPlayer: (state) => {
+		state.player = null;
 	},
 
 	// Pausing the piano
@@ -28,9 +37,6 @@ export default {
 	},
 
 	// Mutations on player
-	setPlayer: (state, player) => {
-		state.player = player;
-	},
 	playMidiFile: (state) => {
 		state.player.play();
 	},
@@ -39,14 +45,6 @@ export default {
 	},
 	removePlayerEndOfFileAction: (state, functionToRemove) => {
 		state.player.off('endOfFile', functionToRemove);
-	},
-
-	// Mutations on piano
-	setPiano: (state, piano) => {
-		state.piano = piano;
-	},
-	clearPiano: (state) => {
-		state.piano = null;
 	},
 
 	// Mutations on key interations arrays

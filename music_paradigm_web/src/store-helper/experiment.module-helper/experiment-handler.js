@@ -10,6 +10,7 @@ export default {
 	populateExperimentConstantVariables,
 	setExperimentGeneralSettings,
 	setExperimentInitialRecord,
+	setExperimentKeyboardToMidiInputMapping,
 	setExperimentFlow,
 	storeParameterImposedValues,
 	setExperimentVariables,
@@ -216,6 +217,24 @@ function setExperimentInitialRecord(state) {
 	const { logLabel } = state.experiment;
 	const defaultSettings = defaultState.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
 	state.state.record.logLabel = typeof logLabel === 'string' ? logLabel : defaultSettings.logLabel;
+}
+
+
+/**
+ * Parse and store the keyboad to midi input mapping for the session. This mapping is notably useful for the experiments using the clicker or computer keyboard.
+ * @param {Object} state 										Vuex state.
+ * @param {Object} state.experiment 							Object from the backend conntaining all information related to the experiment.
+ * @param {Object} state.experiment.keyboardToMidiInputMapping	Keyboard to midi mapping object
+*/
+function setExperimentKeyboardToMidiInputMapping(state) {
+	const { keyboardToMidiInputMapping } = state.experiment;
+	const defaultKeyboardToMidiInputMapping = defaultState.DEFAULT_KEYBOARD_TO_MIDI_INPUT_MAPPING();
+
+	// Verify if the keyboardToMidiInputMapping is an object
+	const hasMappingProvided = typeof keyboardToMidiInputMapping === 'object' && !Array.isArray(keyboardToMidiInputMapping);
+
+	// Assign the mapping
+	state.keyboardToMidiInputMapping = hasMappingProvided ? keyboardToMidiInputMapping : defaultKeyboardToMidiInputMapping;
 }
 
 

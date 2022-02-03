@@ -18,6 +18,7 @@ export default {
 	DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES,
 	DEFAULT_EXPERIMENT_VARIABLE_VALUES,
 	DEFAULT_EXPERIMENT_STATE_STATE_VALUES,
+	DEFAULT_KEYBOARD_TO_MIDI_INPUT_MAPPING,
 	IS_FULLY_NOT_INITIALIZED_STATUS,
 };
 
@@ -83,6 +84,9 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 
 		// Data used by the view pages
 		state: DEFAULT_EXPERIMENT_STATE_STATE_VALUES(),
+
+		// Mapping between the computer keyboard and the midi keyboard
+		keyboardToMidiInputMapping: DEFAULT_KEYBOARD_TO_MIDI_INPUT_MAPPING(),
 
 		// Variables used in the experiment
 		variablesInformation: DEFAULT_EXPERIMENT_VARIABLE_VALUES(),
@@ -172,6 +176,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			helperImageName: '', 													// Name of the helper image to display
 			textReminder: '',														// Helper ext to display
 			interactivePiano: false, 												// <Boolean|String> Directive to display the interactive piano
+			interactiveClicker: false,												// <Boolean|String> Directive to display the interactive clicker
 			interactiveKeyboard: false, 											// <Boolean|String> Directive to display the interactive keyboard
 			textAfterQuestionAsked: '',												// Text displayed after a question is asked in question states
 			textSpecification: '',													// Text to add a certain specification (used in question state)
@@ -256,6 +261,10 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			timeIndicatedInMilliseconds: 0											// Value in indicating the time indicated in the experiment (is used when the experiment has a time limit, this allows the app to make the user restart with the time he had left if he leaves the experiment early)
 		},
 	};
+}
+
+function DEFAULT_KEYBOARD_TO_MIDI_INPUT_MAPPING() {
+	return {};
 }
 
 

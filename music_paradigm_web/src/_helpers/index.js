@@ -1,4 +1,5 @@
 import authHeader from './auth-header';
+import controllerToMidiMapper from './controller-to-midi-mapper';
 import downloadSave from './download-save';
 import experimentParser from './experiment-parser';
 import instruments from './instruments';
@@ -12,4 +13,19 @@ import routerNavigation from './router-navigation';
 import url from './url';
 import validator from './validator';
 
-export { authHeader, downloadSave, experimentParser, instruments, keyboardPerformance, log, logsQuery, midiConversion, notePerformance, ressourceName, routerNavigation, url, validator };
+export {
+    authHeader,
+    controllerToMidiMapper,
+    downloadSave,
+    experimentParser,
+    instruments,
+    keyboardPerformance,
+    log,
+    logsQuery,
+    midiConversion,
+    notePerformance,
+    ressourceName,
+    routerNavigation,
+    url,
+    validator
+};

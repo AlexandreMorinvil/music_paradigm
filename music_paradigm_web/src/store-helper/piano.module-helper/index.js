@@ -1,3 +1,4 @@
+import defaultState from './default-state';
 import notesHandler from './notes-handler';
 
-export { notesHandler };
+export { defaultState, notesHandler };

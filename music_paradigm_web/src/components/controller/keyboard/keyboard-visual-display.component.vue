@@ -129,7 +129,7 @@ export default {
 	},
 	computed: {
 		...mapGetters('experiment', ['interactiveKeyboard', 'interactivePianoFirstOctave']),
-		...mapGetters('keyboard', ['currentlyPressedKeyboardKeys', 'referenceKeyboardKeys']),
+		...mapGetters('keyboard', ['currentlyPressedKeyboardKeys', 'referenceKeyboardKeys', 'midiFileTriggeredAssociatedKeys']),
 		mustDisplayPotentiallyCorrectKeys() {
 			return !this.interactiveKeyboard.includes('#');
 		},
@@ -174,6 +174,13 @@ export default {
 					this.$refs[keyString].classList.remove('user-triggered');
 					this.$refs[keyString].classList.remove('wrong');
 				}
+			}
+		},
+		midiFileTriggeredAssociatedKeys(list) {
+			for (const key of this.keys) {
+				const keyString = key.toString();
+				if (list.includes(key)) this.$refs[keyString].classList.add('midi-file-triggered');
+				else this.$refs[keyString].classList.remove('midi-file-triggered');
 			}
 		},
 		highlightedDesignatedKeys(list) {
@@ -318,5 +325,11 @@ ul .wrong {
 	color: rgb(45, 45, 45);
 	border: 1px solid rgb(117, 4, 4);
 	background: linear-gradient(to bottom, rgb(255, 81, 81) 0%, rgb(222, 0, 0) 100%);
+}
+
+ul .midi-file-triggered {
+	color: rgb(45, 45, 45);
+	border: 1px solid rgb(19, 117, 4);
+	background: linear-gradient(to bottom, rgb(21, 255, 0) 0%, rgb(9, 139, 2) 100%);
 }
 </style>

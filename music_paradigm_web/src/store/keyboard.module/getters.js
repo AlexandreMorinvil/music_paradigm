@@ -17,6 +17,11 @@ export default {
 		return state.played.presses.keys;
 	},
 
+	// Getter for the midi file triggered keys (if there is a keyboard to midi mapping)
+	midiFileTriggeredAssociatedKeys: (state) => {
+		return state.midiFileTriggeredAssociatedKeys;
+	},
+
 	// Getter for the reference keys
 	referenceKeyboardKeys: (state) => {
 		return state.referenceKeys;

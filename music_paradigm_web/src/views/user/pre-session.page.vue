@@ -1,21 +1,26 @@
 /* eslint-disable max-len */
 <template>
-	<user-page-content-frame-component :title="$t('views.user.pre-session.before-starting')">
-		<component
-			:is="stageComponent"
-			v-on:end-stage="moveNextStage"
-			v-on:back-stage="moveBackStage"
-			v-on:abort="abort"
-			:isLastStage="isLastStage"
-			class="fill pre-session-text"
-		/>
-	</user-page-content-frame-component>
+	<div class="fill pre-session-text">
+		<piano-input-handler-component />
+		<user-page-content-frame-component :title="$t('views.user.pre-session.before-starting')">
+			<component
+				:is="stageComponent"
+				v-on:end-stage="moveNextStage"
+				v-on:back-stage="moveBackStage"
+				v-on:abort="abort"
+				:isLastStage="isLastStage"
+				class="fill pre-session-text"
+			/>
+		</user-page-content-frame-component>
+	</div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
 import { PianoEventBus, pianoEvents } from '@/event-bus/piano-event-bus.service.js';
+import PianoInputHandlerComponent from '@/components/controller/piano/piano-input-handler.component.vue';
+
 import PreSessionAdviceComponent from '@/components/user/pre-session/pre-session-advice.component.vue';
 import PreSessionMessageComponent from '@/components/user/pre-session/pre-session-message.component.vue';
 import PreSessionPianoSettingComponent from '@/components/user/pre-session/pre-session-piano-setting.component.vue';
@@ -23,8 +28,11 @@ import PreSessionPianoSoundComponent from '@/components/user/pre-session/pre-ses
 import PreSessionPianoTestingComponent from '@/components/user/pre-session/pre-session-piano-testing.component.vue';
 import UserPageContentFrameComponent from '@/components/content-frame/user-page-content-frame.component.vue';
 
+
 export default {
 	components: {
+		PianoInputHandlerComponent,
+
 		UserPageContentFrameComponent,
 		message: PreSessionMessageComponent,
 		advice: PreSessionAdviceComponent,
@@ -81,7 +89,7 @@ export default {
 	},
 	beforeDestroy() {
 		if (this.needsSoundTestPreExperiment) this.terminateSoundGenerator();
-	}
+	},
 };
 </script>
 
