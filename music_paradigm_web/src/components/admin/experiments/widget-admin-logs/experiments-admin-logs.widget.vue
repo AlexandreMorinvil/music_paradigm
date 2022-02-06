@@ -12,8 +12,8 @@
 				>
 			</span>
 		</h3>
-		<users-simple-log-list-component :rules="rules" ref="simpleLogsList" />
-		<users-thorough-log-list-component :rules="rules" ref="thoroughLogsList" />
+		<admin-simple-log-list-component :rules="rules" ref="simpleLogsList" />
+		<admin-thorough-log-list-component :rules="rules" ref="thoroughLogsList" />
 	</div>
 </template>
 
@@ -21,14 +21,14 @@
 import '@/styles/widget-template.css';
 import '@/styles/form-template.css';
 
-import UsersSimpleLogListComponent from '@/components/admin/logs/users-simple-log-list.widget.vue';
-import UsersThoroughLogListComponent from '@/components/admin/logs/users-thorough-log-list.widget.vue';
+import AdminSimpleLogListComponent from '@/components/admin/logs/admin-simple-log-list.widget.vue';
+import AdminThoroughLogListComponent from '@/components/admin/logs/admin-thorough-log-list.widget.vue';
 import { mapGetters } from 'vuex';
 
 export default {
 	components: {
-		UsersSimpleLogListComponent,
-		UsersThoroughLogListComponent,
+		AdminSimpleLogListComponent,
+		AdminThoroughLogListComponent,
 	},
 	data() {
 		return {};

@@ -13,7 +13,7 @@
 		</widget-content-frame>
 
 		<widget-content-frame :isShownInitial="false" title="Users Experiements Logs">
-			<experiments-user-logs-widget />
+			<experiments-users-logs-widget />
 		</widget-content-frame>
 
 		<widget-content-frame title="List">
@@ -29,7 +29,7 @@ import ExperimentsEditor from '@/components/admin/experiments/ExperimentsEditorW
 import ExperimentsAdminLogsWidget from '@/components/admin/experiments/widget-admin-logs/experiments-admin-logs.widget.vue';
 import ExperimentsLauncherWidget from '@/components/admin/experiments/widget-launcher/experiments-launcher.widget.vue';
 import ExperimentsListWidget from '@/components/admin/experiments/widget-list/experiments-list.widget.vue';
-import ExperimentsUserLogsWidget from '@/components/admin/experiments/widget-user-logs/experiments-user-logs.widget.vue';
+import ExperimentsUsersLogsWidget from '@/components/admin/experiments/widget-users-logs/experiments-users-logs.widget.vue';
 import WidgetContentFrame from '@/components/content-frame/widget-content-frame.component.vue';
 
 export default {
@@ -39,7 +39,7 @@ export default {
 		experimentsEditor: ExperimentsEditor,
 		ExperimentsLauncherWidget,
 		ExperimentsAdminLogsWidget,
-		ExperimentsUserLogsWidget,
+		ExperimentsUsersLogsWidget,
 		ExperimentsListWidget,
 	},
 };

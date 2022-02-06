@@ -62,6 +62,32 @@ export default {
 			);
 	},
 
+	getSpecificAdminSimpleLog({ commit, dispatch }, logId) {
+		return logsApi
+			.getSpecificAdminSimpleLog(logId)
+			.then(
+				(log) => {
+					commit('setSelectedAdminSimpleLog', log);
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `Admin simple log fetch failed : ${error.message}`, { root: true });
+				}
+			);
+	},
+
+	getSpecificAdminThoroughLog({ commit, dispatch }, logId) {
+		return logsApi
+			.getSpecificAdminThoroughLog(logId)
+			.then(
+				(log) => {
+					commit('setSelectedAdminThoroughLog', log);
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `Admin thorough log fetch failed : ${error.message}`, { root: true });
+				}
+			);
+	},
+
 	// Summary lists
 	getUserSimpleLogSummaryList({ commit, dispatch }, rules) {
 		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
@@ -103,7 +129,7 @@ export default {
 		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
 		commit('indicateLoadingAdminSimpleLogList');
 		return logsApi
-			.getUserSimpleLogSummaryList(criterias)
+			.getAdminSimpleLogSummaryList(criterias)
 			.then(
 				(summarylist) => {
 					commit('setAdminSimpleLogList', summarylist);
@@ -121,7 +147,7 @@ export default {
 		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
 		commit('indicateLoadingAdminThoroughLogList');
 		return logsApi
-			.getUserThoroughLogSummaryList(criterias)
+			.getAdminThoroughLogSummaryList(criterias)
 			.then(
 				(summarylist) => {
 					commit('setAdminThoroughLogList', summarylist);

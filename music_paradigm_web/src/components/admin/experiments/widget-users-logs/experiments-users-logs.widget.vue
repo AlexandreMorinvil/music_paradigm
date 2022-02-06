@@ -1,5 +1,5 @@
 <template>
-	<div id="experiments-user-logs" class="widget widget-bg">
+	<div id="experiments-users-logs" class="widget widget-bg">
 		<h3 style="text-align: center">
 			<span v-if="hasExperimentSelection"
 				>GROUP=<span class="selected-element-text"> {{ experimentsGroupDisplay }} </span>
