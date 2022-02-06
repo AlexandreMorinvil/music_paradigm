@@ -33,6 +33,18 @@ export default {
 		return experimentParser.getParameterVariables(state.selection.content).length > 0;
 	},
 
+	experimentsSelectedGroup: (state) => {
+		return state.selection.content.group;
+	},
+
+	experimentsSelectedName: (state) => {
+		return state.selection.content.name;
+	},
+
+	experimentsSelectedVersion: (state) => {
+		return state.selection.content.version;
+	},
+
 	// Status
 	hasExperimentSelection: (state) => {
 		return validator.isExperimentValid(state.selection.content);
