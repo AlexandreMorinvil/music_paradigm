@@ -35,10 +35,10 @@
 				</tr>
 				<tr v-if="hasElements" class="log-identifier-header include-white-space">
 					<th>#</th>
+					<th>Associative ID</th>
 					<th>Admin Label</th>
 					<th>Experiment</th>
 					<th>Log Label</th>
-					<th>Completion</th>
 					<th>Start Date</th>
 					<th>Last Date</th>
 				</tr>
@@ -56,10 +56,10 @@
 					}"
 				>
 					<td>{{ index + 1 }}</td>
+					<td>{{ makeAssociativeIdDisplay(logSummary) }}</td>
 					<td>{{ makeAdminLabelDisplay(logSummary) }}</td>
 					<td>{{ makeExperimentDisplay(logSummary) }}</td>
 					<td>{{ makeLogLabelDisplay(logSummary) }}</td>
-					<td>{{ makeCompletionCountDisplay(logSummary) }}</td>
 					<td>{{ makeStartDateDisplay(logSummary) }}</td>
 					<td>{{ makeLastDateDisplay(logSummary) }}</td>
 				</tr>
@@ -260,6 +260,9 @@ export default {
 				logList.scrollTop = topPosition;
 			}, 0);
 		},
+		makeAssociativeIdDisplay(logSummary) {
+			return logSummary.associativeId;
+		},
 		makeAdminLabelDisplay(logSummary) {
 			return logSummary.username;
 		},
@@ -269,9 +272,6 @@ export default {
 		},
 		makeLogLabelDisplay(logSummary) {
 			return logSummary.logLabel;
-		},
-		makeCompletionCountDisplay(logSummary) {
-			return logSummary.completionCount;
 		},
 		makeStartDateDisplay(logSummary) {
 			return new Date(logSummary.createdAt).toLocaleDateString(undefined, this.datesOptions);

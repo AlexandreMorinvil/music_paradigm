@@ -34,11 +34,11 @@
 				</tr>
 				<tr v-if="hasElements" class="log-identifier-header include-white-space">
 					<th>#</th>
+					<th>Associative ID</th>
 					<th>Admin Label</th>
 					<th>Experiment</th>
 					<th>Log Label</th>
 					<th>State</th>
-					<th style=": ">Start |<br />Completion</th>
 					<th>Date</th>
 				</tr>
 			</thead>
@@ -55,11 +55,11 @@
 					}"
 				>
 					<td>{{ index + 1 }}</td>
+					<td>{{ makeAssociativeIdDisplay(logSummary) }}</td>
 					<td>{{ makeAdminLabelDisplay(logSummary) }}</td>
 					<td>{{ makeExperimentDisplay(logSummary) }}</td>
 					<td>{{ makeLogLabelDisplay(logSummary) }}</td>
 					<td>{{ makeStateDisplay(logSummary) }}</td>
-					<td>{{ makeStartCompletionCountDisplay(logSummary) }}</td>
 					<td>{{ makeDateDisplay(logSummary) }}</td>
 				</tr>
 			</tbody>
@@ -253,6 +253,9 @@ export default {
 				const logList = document.getElementById(this.tableContextDomId);
 				logList.scrollTop = topPosition;
 			}, 0);
+		},
+		makeAssociativeIdDisplay(logSummary) {
+			return logSummary.associativeId;
 		},
 		makeAdminLabelDisplay(logSummary) {
 			return logSummary.username;
