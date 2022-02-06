@@ -28,7 +28,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('log', ['clearLogType']),
+		...mapActions('log', ['clearLogSpecifications']),
 		initialize() {
 			if (this.$refs.log.initialize) this.$refs.log.initialize();
 		},
@@ -37,7 +37,7 @@ export default {
 		},
 		conclude() {
 			if (this.$refs.log.conclude) this.$refs.log.conclude();
-			this.clearLogType();
+			this.clearLogSpecifications();
 		},
 	},
 };

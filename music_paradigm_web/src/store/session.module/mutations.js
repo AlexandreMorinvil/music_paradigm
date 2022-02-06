@@ -58,4 +58,8 @@ export default {
 	clearSessionInformation(state) {
 		state.sessionInformation = defaultState.EMPTY_SESSION_INFORMATION();
 	},
+
+	setTags(state, tags) {
+		state.tags = tags;
+	},
 };

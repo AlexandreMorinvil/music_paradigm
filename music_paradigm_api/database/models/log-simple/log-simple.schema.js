@@ -11,6 +11,7 @@ const schema = new Schema(
         associativeId: { type: String, default: undefined },
         associativeIdOrdinalNumber : { type: Number, default: undefined },
         logLabel: { type: String, default: 'default' },
+        logTags: { type: [String], default: null },
 
         startCount: { type: Number, default: 1 },
         completionCount: { type: Number, default: 0 },

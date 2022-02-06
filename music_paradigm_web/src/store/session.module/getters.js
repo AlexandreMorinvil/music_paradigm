@@ -70,4 +70,8 @@ export default {
 	logType: (state) => {
 		return state.sessionInformation.logType;
 	},
+
+	tags: (state) => {
+		return state.sessionInformation.tags;
+	},
 };

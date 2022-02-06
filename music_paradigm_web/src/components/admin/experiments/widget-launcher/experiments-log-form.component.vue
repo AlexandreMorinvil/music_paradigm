@@ -7,6 +7,8 @@
 					{{ type }}
 				</option>
 			</select>
+			<h3 class="log-type-title">Tags</h3>
+			<input v-model="insertedLogTag" v-on:blur="updateLogTags" />
 		</div>
 	</form>
 </template>
@@ -21,26 +23,35 @@ export default {
 	data() {
 		return {
 			selectedLogType: '',
+			insertedLogTag: '',
 		};
 	},
 	components: {},
 	computed: {
 		...mapGetters('experiments', ['logType']),
+		...mapGetters('session', ['tags']),
 		logTypeOptions() {
 			return log.logTypeOptions;
 		},
 	},
 	methods: {
 		...mapActions('experiments', ['setLogType']),
+		...mapActions('session', ['setTags']),
 		setValidLogType(logType) {
 			return log.returnValidLogType(logType);
 		},
 		updateLogType() {
 			this.setLogType(this.selectedLogType);
 		},
+		updateLogTags() {
+			console.log('Test START');
+			this.setTags([this.insertedLogTag]);
+			console.log('Test END');
+		},
 	},
 	beforeMount() {
 		this.selectedLogType = this.logType;
+		this.insertedLogTag = this.tags[0] || '';
 	},
 };
 </script>

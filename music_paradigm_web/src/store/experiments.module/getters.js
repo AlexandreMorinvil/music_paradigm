@@ -9,6 +9,12 @@ export default {
 		return state.selection.content;
 	},
 
+	experimentSelectedToRun: (state) => {
+		const experiment = JSON.parse(JSON.stringify(state.selection.content));
+		experiment._id = state.selection._id;
+		return experiment;
+	},
+
 	selectedId: (state) => {
 		return state.selection._id;
 	},

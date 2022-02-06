@@ -1,10 +1,10 @@
 <template>
 	<admin-page-content-frame title="Experiments">
-		<widget-content-frame title="Editor">
+		<widget-content-frame title="Experiment Editor">
 			<experiments-editor />
 		</widget-content-frame>
 
-		<widget-content-frame title="Launcher">
+		<widget-content-frame title="Session Launcher">
 			<experiments-launcher-widget />
 		</widget-content-frame>
 
@@ -16,7 +16,7 @@
 			<experiments-users-logs-widget />
 		</widget-content-frame>
 
-		<widget-content-frame title="List">
+		<widget-content-frame title="Experiments List">
 			<experiments-list-widget />
 		</widget-content-frame>
 	</admin-page-content-frame>

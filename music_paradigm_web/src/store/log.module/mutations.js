@@ -30,7 +30,7 @@ export default {
 		state.logType = logType || defaultState.DEFAULT_LOG_TYPE();
 	},
 
-	clearLogType(state) {
+	clearLogSpecifications(state) {
 		state.logType = defaultState.DEFAULT_LOG_TYPE();
 	},
 };

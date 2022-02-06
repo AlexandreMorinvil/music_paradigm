@@ -36,7 +36,7 @@
 				<tr v-if="hasElements" class="log-identifier-header include-white-space">
 					<th>#</th>
 					<th>Associative ID</th>
-					<th>Admin Label</th>
+					<th>Tag</th>
 					<th>Experiment</th>
 					<th>Log Label</th>
 					<th>Start Date</th>

@@ -15,6 +15,7 @@ module.exports = {
 */
 async function getSessionInformation(userId, associativeId, associativeIdOrdinalNumber) {
 
+    const user = await User.findById(userId);
     const progression = await User.getLastProgression(userId);
     const curriculum = await Curriculum.findById(progression.curriculumReference);
     const experimentDoneInProgression = progression.getExperimentAssociated(associativeId, associativeIdOrdinalNumber) || {};
@@ -51,6 +52,9 @@ async function getSessionInformation(userId, associativeId, associativeIdOrdinal
         previousState: experimentMaker.state,
         previousCursor: experimentMaker.cursor,
         previousTimeIndicated: experimentMaker.timeIndicated,
+
+        // Session specific information
+        logTags: user.tags,
     };
 
     return sessionInformation;
