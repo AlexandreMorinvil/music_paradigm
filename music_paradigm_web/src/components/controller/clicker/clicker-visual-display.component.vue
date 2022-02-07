@@ -20,17 +20,28 @@ import { mapGetters } from 'vuex';
 export default {
 	data() {
 		return {
-			highlightedDesignatedKeys: [],
+			highlightedDesignatedAssociatedKeys: [],
 			clickerButtons: ['clicker1', 'clicker2', 'clicker3', 'clicker4', 'clicker5'],
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['interactiveClicker', 'interactiveKeyboardTextMapping', 'keyboardToClickerInputMapping']),
-		...mapGetters('keyboard', ['currentlyPressedKeyboardKeys', 'referenceKeyboardKeys', 'midiFileTriggeredAssociatedKeys']),
+		...mapGetters('experiment', [
+			'interactiveClicker',
+			'interactiveKeyboardTextMapping',
+			'keyboardToClickerInputMapping',
+			'keyboardToMidiInputMapping',
+		]),
+		...mapGetters('keyboard', ['currentlyPressedKeyboardKeys', 'referenceKeyboardKeys', 'midiFileTriggeredAssociatedKeys', 'midiFileAssociatedKeys']),
 		isLeftHand() {
 			return true;
 		},
-		mapping() {
+		mappingMidiToKeyboard() {
+			return this.keyboardToMidiInputMapping;
+		},
+		/**
+		 * Mapping { key: button }
+		*/
+		mappingKeyboradToClicker() {
 			return this.keyboardToClickerInputMapping;
 		},
 		mustDisplayPressedKeys() {
@@ -39,9 +50,9 @@ export default {
 		mustDisplayLoadedMidiFirstNote() {
 			return String(this.interactiveClicker).includes('first');
 		},
-		// mustDisplayLoadedMidiAllNotes() {
-		// 	return String(this.interactiveClicker).includes('midi');
-		// },
+		mustDisplayLoadedMidiAllNotes() {
+			return String(this.interactiveClicker).includes('midi');
+		},
 		// 	textMapping() {
 		// 		const textMapping = [];
 		// 		if (Array.isArray(this.interactiveKeyboardTextMapping))
@@ -75,43 +86,50 @@ export default {
 		// 	},
 	},
 	methods: {
-		convertToKeyboardKey(clickerButton) {
-			return Object.keys(this.mapping).find((key) => this.mapping[key] == clickerButton);
+		convertButtonToKeyboardKey(clickerButton) {
+			return Object.keys(this.mappingKeyboradToClicker).find((key) => this.mappingKeyboradToClicker[key] == clickerButton);
 		},
-		// 	designateKeys(keys) {
-		// 		if (Array.isArray(keys)) this.highlightedDesignatedKeys = keys;
-		// 		else if (typeof keys == 'number') this.highlightedDesignatedKeys = [keys];
-		// 	},
-		// 	clearDesignatedKeys() {
-		// 		this.highlightedDesignatedKeys = [];
-		// 	},
-		// 	hintAllNotes() {
-		// 		const designatedKeys = [];
-		// 		for (let index = 0; index < this.midiFileNotesMidi.length; index++) designatedKeys.push(this.midiFileNotesMidi[index]);
-		// 		this.designateKeys(designatedKeys);
-		// 	},
-		// 	hintFirstNote() {
-		// 		this.designateKeys(this.midiFileNotesMidi[0]);
-		// 	},
+		designateKeys(keys) {
+			if (Array.isArray(keys)) this.highlightedDesignatedAssociatedKeys = keys;
+			else this.highlightedDesignatedAssociatedKeys = [keys];
+		},
+		clearDesignatedKeys() {
+			this.highlightedDesignatedAssociatedKeys = [];
+		},
+		hintAllNotes() {
+			const designatedKeys = [];
+			for (let index = 0; index < this.midiFileAssociatedKeys.length; index++) designatedKeys.push(this.midiFileAssociatedKeys[index]);
+			this.designateKeys(designatedKeys);
+		},
+		hintFirstNote() {
+			console.log('Ola');
+			this.designateKeys(this.midiFileAssociatedKeys[0]);
+		},
 	},
-	// beforeDestroy() {
-	// 	this.clearDesignatedKeys();
-	// },
+	beforeDestroy() {
+		this.clearDesignatedKeys();
+	},
 	watch: {
 		currentlyPressedKeyboardKeys(list) {
 			for (const clickerButton of this.clickerButtons) {
-				const associatedKey = this.convertToKeyboardKey(String(clickerButton));
+				const associatedKey = this.convertButtonToKeyboardKey(String(clickerButton));
 				if (this.mustDisplayPressedKeys && list.includes(associatedKey)) {
-					console.log('This is here');
 					this.$refs[String(clickerButton)].classList.add('user-triggered');
 				} else this.$refs[String(clickerButton)].classList.remove('user-triggered');
 			}
 		},
 		midiFileTriggeredAssociatedKeys(list) {
 			for (const clickerButton of this.clickerButtons) {
-				const associatedKey = this.convertToKeyboardKey(String(clickerButton));
+				const associatedKey = this.convertButtonToKeyboardKey(String(clickerButton));
 				if (list.includes(associatedKey)) this.$refs[String(clickerButton)].classList.add('midi-file-triggered');
 				else this.$refs[String(clickerButton)].classList.remove('midi-file-triggered');
+			}
+		},
+		highlightedDesignatedAssociatedKeys(list) {
+			for (const clickerButton of this.clickerButtons) {
+				const associatedKey = this.convertButtonToKeyboardKey(String(clickerButton));
+				if (list.includes(associatedKey)) this.$refs[String(clickerButton)].classList.add('designated');
+				else this.$refs[String(clickerButton)].classList.remove('designated');
 			}
 		},
 		// highlightedDesignatedKeys(list) {
@@ -120,14 +138,14 @@ export default {
 		// 		else this.$refs[note.toString()].classList.remove('designated');
 		// 	}
 		// },
-		// 	midiFileNotesMidi: {
-		// 		immediate: true,
-		// 		handler: function () {
-		// 			this.clearDesignatedKeys();
-		// 			if (this.mustDisplayLoadedMidiFirstNote) this.hintFirstNote();
-		// 			if (this.mustDisplayLoadedMidiAllNotes) this.hintAllNotes();
-		// 		},
-		// 	},
+		midiFileNotesMidi: {
+			immediate: true,
+			handler: function () {
+				this.clearDesignatedKeys();
+				if (this.mustDisplayLoadedMidiFirstNote) this.hintFirstNote();
+				if (this.mustDisplayLoadedMidiAllNotes) this.hintAllNotes();
+			},
+		},
 	},
 };
 </script>
@@ -243,7 +261,6 @@ li {
 	color: black;
 	border: 1px solid rgb(19, 117, 4);
 	background: linear-gradient(to bottom, rgb(255, 252, 81) 0%, rgb(222, 219, 0) 100%);
-	box-shadow: none;
 }
 
 .user-triggered {

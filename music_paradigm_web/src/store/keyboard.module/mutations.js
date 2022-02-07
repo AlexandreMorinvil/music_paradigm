@@ -45,9 +45,13 @@ export default {
 		state.played.presses.duration.push(key.time - state.played.startTime - state.played.presses.time[state.played.presses.time.length - 1]);
 	},
 
-	// Mutations related to midi triggered keys (when there is a keyboard to midi mapping)
-	updateMidiFileTriggeredAssociatedKeys: (state, midiFileTriggeredKey) => {
-		state.midiFileTriggeredAssociatedKeys = midiFileTriggeredKey;
+	// Mutations related to midi keys (when there is a keyboard to midi mapping)
+	updateMidiFileTriggeredAssociatedKeys: (state, midiFileTriggeredKeys) => {
+		state.midiFileTriggeredAssociatedKeys = midiFileTriggeredKeys;
+	},
+
+	updateMidiFileAssociatedKeys: (state, midiFileKeys) => {
+		state.midiFileAssociatedKeys = midiFileKeys;
 	},
 
 	// Mutations on the reference keys

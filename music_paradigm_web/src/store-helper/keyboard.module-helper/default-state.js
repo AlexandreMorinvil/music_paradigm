@@ -16,6 +16,7 @@ function DEFAULT_KEYBOARD_TRACKER_VALUES() {
 
 		// The notes being activated due to the keyboard to midi input mapping
 		midiFileTriggeredAssociatedKeys: [],
+		midiFileAssociatedKeys: [],
 
 		// Data from the notes played by the user
 		played: {

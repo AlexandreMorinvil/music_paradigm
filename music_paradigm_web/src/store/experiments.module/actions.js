@@ -67,7 +67,7 @@ export default {
 		experimentsApi.getDefinition(id).then(
 			(description) => {
 				dispatch('log/setLogType', getters.logType, { root: true });
-				dispatch('session/setTags', getters.imposedTags, { root: true });
+				dispatch('session/setImposedTags', getters.imposedTags, { root: true });
 				commit('setEditedExperiment', description);
 				commit('setSelectedExperiment', description);
 				dispatch('experiment/setExperiment', description, { root: true });
