@@ -271,7 +271,6 @@ export default {
 		},
 		makeLogTagsDisplay(logSummary) {
 			const { logTags } = logSummary;
-			console.log(logSummary);
 			if (!logTags) return '---';
 			if (Array.isArray(logTags)) {
 				if (logTags.length > 0) return logTags.join('\n');
