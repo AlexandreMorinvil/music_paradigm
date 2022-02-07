@@ -2,12 +2,20 @@
 	<div id="visual-clicker" class="clicker-container">
 		<div class="clicker-container-inner-space">
 			<ul class="clicker-grid" :class="isLeftHand ? 'left-hand' : 'right-hand'">
-				<li class="button-1-area"><button class="key" ref="clicker1"></button></li>
-				<li class="button-2-area"><button class="key" ref="clicker2"></button></li>
-				<li class="button-3-area"><button class="key" ref="clicker3"></button></li>
-				<li class="button-4-area"><button class="key" ref="clicker4"></button></li>
+				<li class="button-1-area">
+					<button class="key" ref="clicker1">{{ textMapping['clicker1'] }}</button>
+				</li>
+				<li class="button-2-area">
+					<button class="key" ref="clicker2">{{ textMapping['clicker2'] }}</button>
+				</li>
+				<li class="button-3-area">
+					<button class="key" ref="clicker3">{{ textMapping['clicker3'] }}</button>
+				</li>
+				<li class="button-4-area">
+					<button class="key" ref="clicker4">{{ textMapping['clicker4'] }}</button>
+				</li>
 				<li class="button-5-area" :class="isLeftHand ? 'button-5-left-hand' : 'button-5-right-hand'">
-					<button class="key" ref="clicker5"></button>
+					<button class="key" ref="clicker5">{{ textMapping['clicker5'] }}</button>
 				</li>
 			</ul>
 		</div>
@@ -20,17 +28,25 @@ import { mapGetters } from 'vuex';
 export default {
 	data() {
 		return {
-			highlightedDesignatedKeys: [],
+			highlightedDesignatedAssociatedKeys: [],
 			clickerButtons: ['clicker1', 'clicker2', 'clicker3', 'clicker4', 'clicker5'],
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['interactiveClicker', 'interactiveKeyboardTextMapping', 'keyboardToClickerInputMapping']),
-		...mapGetters('keyboard', ['currentlyPressedKeyboardKeys', 'referenceKeyboardKeys', 'midiFileTriggeredAssociatedKeys']),
+		...mapGetters('experiment', [
+			'interactiveClicker',
+			'interactiveKeyboardTextMapping',
+			'keyboardToClickerInputMapping',
+			'keyboardToMidiInputMapping',
+		]),
+		...mapGetters('keyboard', ['currentlyPressedKeyboardKeys', 'referenceKeyboardKeys', 'midiFileTriggeredAssociatedKeys', 'midiFileAssociatedKeys']),
 		isLeftHand() {
 			return true;
 		},
-		mapping() {
+		/**
+		 * Mapping { key: button }
+		 */
+		mappingKeyboradToClicker() {
 			return this.keyboardToClickerInputMapping;
 		},
 		mustDisplayPressedKeys() {
@@ -39,95 +55,125 @@ export default {
 		mustDisplayLoadedMidiFirstNote() {
 			return String(this.interactiveClicker).includes('first');
 		},
-		// mustDisplayLoadedMidiAllNotes() {
-		// 	return String(this.interactiveClicker).includes('midi');
-		// },
-		// 	textMapping() {
-		// 		const textMapping = [];
-		// 		if (Array.isArray(this.interactiveKeyboardTextMapping))
-		// 			for (const index in this.interactiveKeyboardTextMapping) {
-		// 				// Get the index of the key, if it is within the range to the displayed keys
-		// 				const currentMidiKeyNumber = this.midiFileNotesMidi[index];
-		// 				const correspondingKeyIndex = currentMidiKeyNumber - this.midiOffset;
-		// 				if (correspondingKeyIndex < 0 || correspondingKeyIndex > this.NOTE_COUNT - 1) continue;
-		// 				// Get the text to assign to the key
-		// 				const keyTextAssignation = this.interactiveKeyboardTextMapping[index];
-		// 				textMapping[correspondingKeyIndex] = keyTextAssignation;
-		// 			}
-		// 		else if (typeof this.interactiveKeyboardTextMapping === 'object') {
-		// 			for (const key in this.interactiveKeyboardTextMapping) {
-		// 				// Get the index of the key, if it is within the range to the displayed keys
-		// 				if (key < 0 || key > this.NOTE_COUNT - 1) continue;
-		// 				// Get the text to assign to the key
-		// 				const keyTextAssignation = this.interactiveKeyboardTextMapping[key];
-		// 				textMapping[key] = keyTextAssignation;
-		// 			}
-		// 		} else {
-		// 			// Get the index of the key, if it is within the range to the displayed keys
-		// 			const currentMidiKeyNumber = this.midiFileNotesMidi[0];
-		// 			const correspondingKeyIndex = currentMidiKeyNumber - this.midiOffset;
-		// 			if (correspondingKeyIndex < 0 || correspondingKeyIndex > this.NOTE_COUNT - 1) return [];
-		// 			// Get the text to assign to the key
-		// 			const keyTextAssignation = this.interactiveKeyboardTextMapping;
-		// 			textMapping[correspondingKeyIndex] = keyTextAssignation;
-		// 		}
-		// 		return textMapping;
-		// 	},
+		mustDisplayReferenceAllKeys() {
+			return String(this.interactiveKeyboard).includes('all');
+		},
+		mustDisplayLoadedMidiAllNotes() {
+			return String(this.interactiveClicker).includes('midi');
+		},
+		numberButtons() {
+			return this.clickerButtons.length;
+		},
+		textMapping() {
+			const textMapping = [];
+			if (Array.isArray(this.interactiveKeyboardTextMapping))
+				for (const index in this.interactiveKeyboardTextMapping) {
+					// Get the key
+					const currentMidiAssociatedKey = this.midiFileAssociatedKeys[index];
+
+					// Get the text to assign to the key
+					const keyTextAssignation = this.interactiveKeyboardTextMapping[index];
+
+					// Assign the key to the button
+					const associatedButton = this.mappingKeyboradToClicker[currentMidiAssociatedKey] || 'none';
+					textMapping[associatedButton] = keyTextAssignation;
+				}
+			else if (typeof this.interactiveKeyboardTextMapping === 'object') {
+				for (const button in this.interactiveKeyboardTextMapping) {
+					// Get the text to assign to the key
+					const keyTextAssignation = this.interactiveKeyboardTextMapping[button];
+					textMapping[button] = keyTextAssignation;
+				}
+			} else {
+				// Get the key
+				const currentMidiAssociatedKey = this.midiFileAssociatedKeys[0];
+
+				// Get the text to assign to the key
+				const keyTextAssignation = this.interactiveKeyboardTextMapping;
+
+				// Assign the key to the button
+				const associatedButton = this.mappingKeyboradToClicker[currentMidiAssociatedKey] || 'none';
+				textMapping[associatedButton] = keyTextAssignation;
+			}
+			return textMapping;
+		},
 	},
 	methods: {
-		convertToKeyboardKey(clickerButton) {
-			return Object.keys(this.mapping).find((key) => this.mapping[key] == clickerButton);
+		convertButtonToKeyboardKey(clickerButton) {
+			return Object.keys(this.mappingKeyboradToClicker).find((key) => this.mappingKeyboradToClicker[key] == clickerButton);
 		},
-		// 	designateKeys(keys) {
-		// 		if (Array.isArray(keys)) this.highlightedDesignatedKeys = keys;
-		// 		else if (typeof keys == 'number') this.highlightedDesignatedKeys = [keys];
-		// 	},
-		// 	clearDesignatedKeys() {
-		// 		this.highlightedDesignatedKeys = [];
-		// 	},
-		// 	hintAllNotes() {
-		// 		const designatedKeys = [];
-		// 		for (let index = 0; index < this.midiFileNotesMidi.length; index++) designatedKeys.push(this.midiFileNotesMidi[index]);
-		// 		this.designateKeys(designatedKeys);
-		// 	},
-		// 	hintFirstNote() {
-		// 		this.designateKeys(this.midiFileNotesMidi[0]);
-		// 	},
+		designateKeys(keys) {
+			if (Array.isArray(keys)) this.highlightedDesignatedAssociatedKeys = keys;
+			else this.highlightedDesignatedAssociatedKeys = [keys];
+		},
+		clearDesignatedKeys() {
+			this.highlightedDesignatedAssociatedKeys = [];
+		},
+		hintAllKeys() {
+			const designatedKeys = [];
+			for (let index = 0; index < this.referenceKeyboardKeys.length; index++) designatedKeys.push(this.referenceKeyboardKeys[index]);
+			this.designateKeys(designatedKeys);
+		},
+		hintAllNotes() {
+			const designatedKeys = [];
+			for (let index = 0; index < this.midiFileAssociatedKeys.length; index++) designatedKeys.push(this.midiFileAssociatedKeys[index]);
+			this.designateKeys(designatedKeys);
+		},
+		hintFirstNote() {
+			this.designateKeys(this.midiFileAssociatedKeys[0]);
+		},
 	},
-	// beforeDestroy() {
-	// 	this.clearDesignatedKeys();
-	// },
+	beforeDestroy() {
+		this.clearDesignatedKeys();
+	},
 	watch: {
 		currentlyPressedKeyboardKeys(list) {
 			for (const clickerButton of this.clickerButtons) {
-				const associatedKey = this.convertToKeyboardKey(String(clickerButton));
+				const associatedKey = this.convertButtonToKeyboardKey(String(clickerButton));
 				if (this.mustDisplayPressedKeys && list.includes(associatedKey)) {
-					console.log('This is here');
 					this.$refs[String(clickerButton)].classList.add('user-triggered');
 				} else this.$refs[String(clickerButton)].classList.remove('user-triggered');
 			}
 		},
 		midiFileTriggeredAssociatedKeys(list) {
 			for (const clickerButton of this.clickerButtons) {
-				const associatedKey = this.convertToKeyboardKey(String(clickerButton));
+				const associatedKey = this.convertButtonToKeyboardKey(String(clickerButton));
 				if (list.includes(associatedKey)) this.$refs[String(clickerButton)].classList.add('midi-file-triggered');
 				else this.$refs[String(clickerButton)].classList.remove('midi-file-triggered');
 			}
 		},
-		// highlightedDesignatedKeys(list) {
-		// 	for (let note = this.firstNote; note <= this.lastNote; note++) {
-		// 		if (list.includes(note)) this.$refs[note.toString()].classList.add('designated');
-		// 		else this.$refs[note.toString()].classList.remove('designated');
-		// 	}
-		// },
-		// 	midiFileNotesMidi: {
-		// 		immediate: true,
-		// 		handler: function () {
-		// 			this.clearDesignatedKeys();
-		// 			if (this.mustDisplayLoadedMidiFirstNote) this.hintFirstNote();
-		// 			if (this.mustDisplayLoadedMidiAllNotes) this.hintAllNotes();
-		// 		},
-		// 	},
+		highlightedDesignatedAssociatedKeys(list) {
+			for (const clickerButton of this.clickerButtons) {
+				const associatedKey = this.convertButtonToKeyboardKey(String(clickerButton));
+				if (list.includes(associatedKey)) this.$refs[String(clickerButton)].classList.add('designated');
+				else this.$refs[String(clickerButton)].classList.remove('designated');
+			}
+		},
+		highlightedDesignatedKeys(list) {
+			for (const clickerButton of this.clickerButtons) {
+				const associatedKey = this.convertButtonToKeyboardKey(String(clickerButton));
+				if (list.includes(associatedKey)) this.$refs[String(clickerButton)].classList.add('designated');
+				else this.$refs[String(clickerButton)].classList.remove('designated');
+			}
+		},
+		midiFileAssociatedKeys: {
+			immediate: true,
+			handler: function () {
+				this.clearDesignatedKeys();
+				if (this.mustDisplayLoadedMidiFirstNote) this.hintFirstNote();
+				if (this.mustDisplayReferenceAllKeys) this.hintAllKeys();
+				if (this.mustDisplayLoadedMidiAllNotes) this.hintAllNotes();
+			},
+		},
+		referenceKeyboardKeys: {
+			immediate: true,
+			handler: function () {
+				this.clearDesignatedKeys();
+				if (this.mustDisplayReferenceFirstKey) this.hintFistKey();
+				if (this.mustDisplayReferenceAllKeys) this.hintAllKeys();
+				if (this.mustDisplayLoadedMidiAllNotes) this.hintAllNotes();
+			},
+		},
 	},
 };
 </script>
@@ -200,6 +246,7 @@ li {
 .key {
 	position: relative;
 	color: rgb(209, 210, 212);
+	outline: none;
 	background-color: rgb(40, 40, 40);
 	border: 1px solid rgb(20, 20, 20);
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.65) inset, 0 1px rgba(10, 10, 10, 0.7) inset, 1.5px 1.5px 1.5px rgba(0, 0, 0, 1),
@@ -243,7 +290,6 @@ li {
 	color: black;
 	border: 1px solid rgb(19, 117, 4);
 	background: linear-gradient(to bottom, rgb(255, 252, 81) 0%, rgb(222, 219, 0) 100%);
-	box-shadow: none;
 }
 
 .user-triggered {

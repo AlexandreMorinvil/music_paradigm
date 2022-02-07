@@ -172,6 +172,7 @@ function setExperimentGeneralSettings(state) {
 		withTimer,
 		hasClearBackground,
 		hasSound,
+		timeLeftMessages,
 	} = state.experiment;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -200,6 +201,7 @@ function setExperimentGeneralSettings(state) {
 		withTimer: 							typeof withTimer === 'boolean' 						? withTimer : defaultSettings.withTimer,
 		hasClearBackground: 				typeof hasClearBackground === 'boolean' 			? hasClearBackground : defaultSettings.hasClearBackground,
 		hasSound: 							typeof hasSound === 'boolean' 						? hasSound : defaultSettings.hasSound,
+		timeLeftMessages:					typeof timeLeftMessages === 'object'				? timeLeftMessages : defaultSettings.timeLeftMessages,
 	};
 }
 

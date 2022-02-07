@@ -1,20 +1,19 @@
 <template>
 	<div :id="tableContextDomId" class="board-position widget-table-context" :class="isDownloading && 'downloading-filter'">
 		<code-editor-component v-show="hasSelectedLog" :readOnly="true" ref="codeEditor" />
-		<loader-circular-component v-if="isLoadingUserThoroughLogList" class="loader" />
+		<loader-circular-component v-if="isLoadingAdminSimpleLogList" class="loader" />
 		<table v-else class="widget-table">
 			<thead>
 				<tr v-if="hasElements" class="logtype-header">
 					<th colspan="9">
 						<span>
-							<span> THOROUGH LOGS ({{ totalThatWillBeKept }}{{ totalNumberElements }})</span>
+							<span> SIMPLE LOGS ({{ totalThatWillBeKept }}{{ totalNumberElements }})</span>
 							<span v-if="isFetchingSpecificLog" class="generating-message include-white-space"> ...FORMATING THE LOG... </span>
 							<span v-if="isDownloading" class="generating-message include-white-space"> ...GENERATING LOG FILE... </span>
 							<span v-if="isSelectionModeActivated" class="generating-message include-white-space"> - Select the logs to keep</span>
 							<span v-if="isExclusionModeActivated" class="generating-message include-white-space"> - Select the logs to exclude</span>
 						</span>
-						<button class="widget-button small green right-align" v-on:click="handleUnwoudCsvDownload">Download Unwound CSV</button>
-						<button class="widget-button small blue right-align" v-on:click="handleCsvDownload">Download Normal CSV</button>
+						<button class="widget-button small blue right-align" v-on:click="handleCsvDownload">Download CSV</button>
 						<button class="widget-button small turquoise right-align" v-on:click="handleJsonDownload">Download JSON</button>
 						<button class="widget-button small right-align" :class="isSelectionModeActivated ? 'red' : 'green'" v-on:click="toggleSelectionMode">
 							{{ selectionModeButtonText }}
@@ -29,21 +28,18 @@
 				</tr>
 				<tr v-else class="logtype-header">
 					<th>
-						<span>No THOROUGH LOGS corresponding</span>
+						<span>No SIMPLE LOGS corresponding</span>
 						<button class="widget-button small blue right-align" v-on:click="handleRefresh">Refresh</button>
 					</th>
 				</tr>
 				<tr v-if="hasElements" class="log-identifier-header include-white-space">
 					<th>#</th>
-					<th>username</th>
-					<th>tags</th>
-					<th>curriculum</th>
 					<th>Associative ID</th>
+					<th>Tags</th>
 					<th>Experiment</th>
 					<th>Log Label</th>
-					<th>Completion</th>
-					<th>Start Date</th>
-					<th>Last Date</th>
+					<th>State</th>
+					<th>Date</th>
 				</tr>
 			</thead>
 
@@ -59,15 +55,12 @@
 					}"
 				>
 					<td>{{ index + 1 }}</td>
-					<td>{{ makeUsernameDisplay(logSummary) }}</td>
-					<td>{{ makeLogTagsDisplay(logSummary) }}</td>
-					<td>{{ makeCurriculumDisplay(logSummary) }}</td>
 					<td>{{ makeAssociativeIdDisplay(logSummary) }}</td>
+					<td>{{ makeLogTagsDisplay(logSummary) }}</td>
 					<td>{{ makeExperimentDisplay(logSummary) }}</td>
 					<td>{{ makeLogLabelDisplay(logSummary) }}</td>
-					<td>{{ makeCompletionCountDisplay(logSummary) }}</td>
-					<td>{{ makeStartDateDisplay(logSummary) }}</td>
-					<td>{{ makeLastDateDisplay(logSummary) }}</td>
+					<td>{{ makeStateDisplay(logSummary) }}</td>
+					<td>{{ makeDateDisplay(logSummary) }}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -115,8 +108,8 @@ export default {
 	},
 	data() {
 		return {
-			tableContextDomId: 'user-thorough-logs-list',
-			logEntryDomIdAbreviation: 'utl-', // "utl" stands for 'user thorough logs'
+			tableContextDomId: 'admin-simple-logs-list',
+			logEntryDomIdAbreviation: 'utl-', // "utl" stands for 'admin thorough logs'
 			datesOptions: { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' },
 			isFetchingSpecificLog: false,
 			isSelectionModeActivated: false,
@@ -126,12 +119,12 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('logs', ['isLoadingUserThoroughLogList', 'userThoroughLogList', 'isDownloadingLogs', 'selectedUserThoroughLog']),
+		...mapGetters('logs', ['isLoadingAdminSimpleLogList', 'adminSimpleLogList', 'isDownloadingLogs', 'selectedAdminSimpleLog']),
 		isListLoading() {
-			return this.isLoadingUserThoroughLogList;
+			return this.isLoadingAdminSimpleLogList;
 		},
 		logSummaryList() {
-			return this.userThoroughLogList || [];
+			return this.adminSimpleLogList || [];
 		},
 		totalThatWillBeKept() {
 			const selectedCount = this.selectedLogIds.length;
@@ -141,7 +134,7 @@ export default {
 			return '';
 		},
 		totalNumberElements() {
-			return this.userThoroughLogList.length;
+			return this.adminSimpleLogList.length;
 		},
 		hasElements() {
 			return this.logSummaryList.length > 0;
@@ -159,7 +152,7 @@ export default {
 			return this.hasSelectedLog ? 'Unselect Log' : 'Refresh';
 		},
 		selectedLogId() {
-			return this.selectedUserThoroughLog._id || null;
+			return this.selectedAdminSimpleLog._id || null;
 		},
 		hasSelectedLog() {
 			return Boolean(this.selectedLogId);
@@ -174,32 +167,27 @@ export default {
 	},
 	methods: {
 		...mapActions('logs', [
-			'getSpecificUserThoroughLog',
-			'getUserThoroughLogSummaryList',
-			'clearUserThoroughLogSummaryList',
-			'clearSelectedUserThoroughLog',
-			'downloadUserThoroughLogJson',
-			'downloadUserThoroughLogCSV',
-			'downloadUserThoroughLogUnwoundCSV',
+			'getSpecificAdminSimpleLog',
+			'getAdminSimpleLogSummaryList',
+			'clearAdminSimpleLogSummaryList',
+			'clearSelectedAdminSimpleLog',
+			'downloadAdminSimpleLogCSV',
+			'downloadAdminSimpleLogJson',
 		]),
 		refresh() {
-			this.clearSelectedUserThoroughLog();
-			this.getUserThoroughLogSummaryList(this.rules);
+			this.clearSelectedAdminSimpleLog();
+			this.getAdminSimpleLogSummaryList(this.rules);
 			this.isSelectionModeActivated = false;
 			this.isExclusionModeActivated = false;
 			this.emptySpecificLogsRules();
 		},
-		handleUnwoudCsvDownload() {
-			if (this.isDownloading) return;
-			this.downloadUserThoroughLogUnwoundCSV(this.completeRules);
-		},
 		handleCsvDownload() {
 			if (this.isDownloading) return;
-			this.downloadUserThoroughLogCSV(this.completeRules);
+			this.downloadAdminSimpleLogCSV(this.completeRules);
 		},
 		handleJsonDownload() {
 			if (this.isDownloading) return;
-			this.downloadUserThoroughLogJson(this.completeRules);
+			this.downloadAdminSimpleLogJson(this.completeRules);
 		},
 		handleLogClick(logId) {
 			if (this.isDownloading) return;
@@ -212,7 +200,7 @@ export default {
 			} else this.selectLog(logId);
 		},
 		handleRefresh() {
-			if (this.hasSelectedLog) this.clearSelectedUserThoroughLog();
+			if (this.hasSelectedLog) this.clearSelectedAdminSimpleLog();
 			else this.refresh();
 		},
 		toggleExclusionMode() {
@@ -236,9 +224,9 @@ export default {
 		selectLog(logId) {
 			const codeEditor = this.$refs.codeEditor;
 			this.isFetchingSpecificLog = true;
-			this.getSpecificUserThoroughLog(logId)
+			this.getSpecificAdminSimpleLog(logId)
 				.then(() => {
-					const content = this.selectedUserThoroughLog;
+					const content = this.selectedAdminSimpleLog;
 					const formatedContent = JSON.stringify(content, null, '\t');
 					codeEditor.setValue(formatedContent);
 					codeEditor.setFullScreenMode();
@@ -249,11 +237,11 @@ export default {
 				});
 		},
 		unselectLog() {
-			this.clearSelectedUserThoroughLog();
+			this.clearSelectedAdminSimpleLog();
 		},
 		cleanUp() {
-			this.clearUserThoroughLogSummaryList();
-			this.clearSelectedUserThoroughLog();
+			this.clearAdminSimpleLogSummaryList();
+			this.clearSelectedAdminSimpleLog();
 		},
 		goToLog(logId) {
 			// The timeout is an adjustment to ensure that the scrolling is done after any
@@ -266,23 +254,16 @@ export default {
 				logList.scrollTop = topPosition;
 			}, 0);
 		},
-		makeUsernameDisplay(logSummary) {
-			return logSummary.username;
+		makeAssociativeIdDisplay(logSummary) {
+			return logSummary.associativeId;
 		},
 		makeLogTagsDisplay(logSummary) {
 			const { logTags } = logSummary;
-			console.log(logSummary);
 			if (!logTags) return '---';
 			if (Array.isArray(logTags)) {
 				if (logTags.length > 0) return logTags.join('\n');
 				else return '---';
 			} else return logTags;
-		},
-		makeCurriculumDisplay(logSummary) {
-			return logSummary.curriculumTitle;
-		},
-		makeAssociativeIdDisplay(logSummary) {
-			return logSummary.associativeId;
 		},
 		makeExperimentDisplay(logSummary) {
 			const { experimentGroup, experimentName, experimentVersion } = logSummary;
@@ -291,14 +272,20 @@ export default {
 		makeLogLabelDisplay(logSummary) {
 			return logSummary.logLabel;
 		},
-		makeCompletionCountDisplay(logSummary) {
-			return logSummary.completionCount;
+		makeStateDisplay(logSummary) {
+			const { isInPrelude, isInConclusion, blockType, blockSubType, index, repetition } = logSummary;
+			const preludeSectionDisplay = isInPrelude ? '(prelude)\n' : '';
+			const conclusionSectionDisplay = isInConclusion ? '(conclusion)\n' : '';
+			const subTypeDisplay = `${blockType}` + (blockSubType ? `/${blockSubType}` : '');
+			const indexDisplay = `\nindex: ${index}, rep.: ${repetition}`;
+			return preludeSectionDisplay + conclusionSectionDisplay + subTypeDisplay + indexDisplay;
 		},
-		makeStartDateDisplay(logSummary) {
+		makeStartCompletionCountDisplay(logSummary) {
+			const { startCount, completionCount } = logSummary;
+			return `${startCount} | ${completionCount}`;
+		},
+		makeDateDisplay(logSummary) {
 			return new Date(logSummary.createdAt).toLocaleDateString(undefined, this.datesOptions);
-		},
-		makeLastDateDisplay(logSummary) {
-			return new Date(logSummary.updatedAt).toLocaleDateString(undefined, this.datesOptions);
 		},
 	},
 	beforeMount() {
@@ -346,8 +333,7 @@ export default {
 }
 
 .widget-button {
-	width: 108px;
-	height: 80px;
+	width: 130px;
 	border-radius: 0;
 	margin: 0;
 }

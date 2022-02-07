@@ -1,7 +1,7 @@
 <template>
 	<div :id="tableContextDomId" class="board-position widget-table-context" :class="isDownloading && 'downloading-filter'">
 		<code-editor-component v-show="hasSelectedLog" :readOnly="true" ref="codeEditor" />
-		<loader-circular-component v-if="isLoadingUserThoroughLogList" class="loader" />
+		<loader-circular-component v-if="isLoadingAdminThoroughLogList" class="loader" />
 		<table v-else class="widget-table">
 			<thead>
 				<tr v-if="hasElements" class="logtype-header">
@@ -35,13 +35,10 @@
 				</tr>
 				<tr v-if="hasElements" class="log-identifier-header include-white-space">
 					<th>#</th>
-					<th>username</th>
-					<th>tags</th>
-					<th>curriculum</th>
 					<th>Associative ID</th>
+					<th>Tags</th>
 					<th>Experiment</th>
 					<th>Log Label</th>
-					<th>Completion</th>
 					<th>Start Date</th>
 					<th>Last Date</th>
 				</tr>
@@ -59,13 +56,10 @@
 					}"
 				>
 					<td>{{ index + 1 }}</td>
-					<td>{{ makeUsernameDisplay(logSummary) }}</td>
-					<td>{{ makeLogTagsDisplay(logSummary) }}</td>
-					<td>{{ makeCurriculumDisplay(logSummary) }}</td>
 					<td>{{ makeAssociativeIdDisplay(logSummary) }}</td>
+					<td>{{ makeLogTagsDisplay(logSummary) }}</td>
 					<td>{{ makeExperimentDisplay(logSummary) }}</td>
 					<td>{{ makeLogLabelDisplay(logSummary) }}</td>
-					<td>{{ makeCompletionCountDisplay(logSummary) }}</td>
 					<td>{{ makeStartDateDisplay(logSummary) }}</td>
 					<td>{{ makeLastDateDisplay(logSummary) }}</td>
 				</tr>
@@ -115,8 +109,8 @@ export default {
 	},
 	data() {
 		return {
-			tableContextDomId: 'user-thorough-logs-list',
-			logEntryDomIdAbreviation: 'utl-', // "utl" stands for 'user thorough logs'
+			tableContextDomId: 'admin-thorough-logs-list',
+			logEntryDomIdAbreviation: 'utl-', // "utl" stands for 'admin thorough logs'
 			datesOptions: { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' },
 			isFetchingSpecificLog: false,
 			isSelectionModeActivated: false,
@@ -126,12 +120,12 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('logs', ['isLoadingUserThoroughLogList', 'userThoroughLogList', 'isDownloadingLogs', 'selectedUserThoroughLog']),
+		...mapGetters('logs', ['isLoadingAdminThoroughLogList', 'adminThoroughLogList', 'isDownloadingLogs', 'selectedAdminThoroughLog']),
 		isListLoading() {
-			return this.isLoadingUserThoroughLogList;
+			return this.isLoadingAdminThoroughLogList;
 		},
 		logSummaryList() {
-			return this.userThoroughLogList || [];
+			return this.adminThoroughLogList || [];
 		},
 		totalThatWillBeKept() {
 			const selectedCount = this.selectedLogIds.length;
@@ -141,7 +135,7 @@ export default {
 			return '';
 		},
 		totalNumberElements() {
-			return this.userThoroughLogList.length;
+			return this.adminThoroughLogList.length;
 		},
 		hasElements() {
 			return this.logSummaryList.length > 0;
@@ -159,7 +153,7 @@ export default {
 			return this.hasSelectedLog ? 'Unselect Log' : 'Refresh';
 		},
 		selectedLogId() {
-			return this.selectedUserThoroughLog._id || null;
+			return this.selectedAdminThoroughLog._id || null;
 		},
 		hasSelectedLog() {
 			return Boolean(this.selectedLogId);
@@ -174,32 +168,32 @@ export default {
 	},
 	methods: {
 		...mapActions('logs', [
-			'getSpecificUserThoroughLog',
-			'getUserThoroughLogSummaryList',
-			'clearUserThoroughLogSummaryList',
-			'clearSelectedUserThoroughLog',
-			'downloadUserThoroughLogJson',
-			'downloadUserThoroughLogCSV',
-			'downloadUserThoroughLogUnwoundCSV',
+			'getSpecificAdminThoroughLog',
+			'getAdminThoroughLogSummaryList',
+			'clearAdminThoroughLogSummaryList',
+			'clearSelectedAdminThoroughLog',
+			'downloadAdminThoroughLogJson',
+			'downloadAdminThoroughLogCSV',
+			'downloadAdminThoroughLogUnwoundCSV',
 		]),
 		refresh() {
-			this.clearSelectedUserThoroughLog();
-			this.getUserThoroughLogSummaryList(this.rules);
+			this.clearSelectedAdminThoroughLog();
+			this.getAdminThoroughLogSummaryList(this.rules);
 			this.isSelectionModeActivated = false;
 			this.isExclusionModeActivated = false;
 			this.emptySpecificLogsRules();
 		},
 		handleUnwoudCsvDownload() {
 			if (this.isDownloading) return;
-			this.downloadUserThoroughLogUnwoundCSV(this.completeRules);
+			this.downloadAdminThoroughLogUnwoundCSV(this.completeRules);
 		},
 		handleCsvDownload() {
 			if (this.isDownloading) return;
-			this.downloadUserThoroughLogCSV(this.completeRules);
+			this.downloadAdminThoroughLogCSV(this.completeRules);
 		},
 		handleJsonDownload() {
 			if (this.isDownloading) return;
-			this.downloadUserThoroughLogJson(this.completeRules);
+			this.downloadAdminThoroughLogJson(this.completeRules);
 		},
 		handleLogClick(logId) {
 			if (this.isDownloading) return;
@@ -212,7 +206,7 @@ export default {
 			} else this.selectLog(logId);
 		},
 		handleRefresh() {
-			if (this.hasSelectedLog) this.clearSelectedUserThoroughLog();
+			if (this.hasSelectedLog) this.clearSelectedAdminThoroughLog();
 			else this.refresh();
 		},
 		toggleExclusionMode() {
@@ -236,9 +230,9 @@ export default {
 		selectLog(logId) {
 			const codeEditor = this.$refs.codeEditor;
 			this.isFetchingSpecificLog = true;
-			this.getSpecificUserThoroughLog(logId)
+			this.getSpecificAdminThoroughLog(logId)
 				.then(() => {
-					const content = this.selectedUserThoroughLog;
+					const content = this.selectedAdminThoroughLog;
 					const formatedContent = JSON.stringify(content, null, '\t');
 					codeEditor.setValue(formatedContent);
 					codeEditor.setFullScreenMode();
@@ -249,11 +243,11 @@ export default {
 				});
 		},
 		unselectLog() {
-			this.clearSelectedUserThoroughLog();
+			this.clearSelectedAdminThoroughLog();
 		},
 		cleanUp() {
-			this.clearUserThoroughLogSummaryList();
-			this.clearSelectedUserThoroughLog();
+			this.clearAdminThoroughLogSummaryList();
+			this.clearSelectedAdminThoroughLog();
 		},
 		goToLog(logId) {
 			// The timeout is an adjustment to ensure that the scrolling is done after any
@@ -266,23 +260,16 @@ export default {
 				logList.scrollTop = topPosition;
 			}, 0);
 		},
-		makeUsernameDisplay(logSummary) {
-			return logSummary.username;
+		makeAssociativeIdDisplay(logSummary) {
+			return logSummary.associativeId;
 		},
 		makeLogTagsDisplay(logSummary) {
 			const { logTags } = logSummary;
-			console.log(logSummary);
 			if (!logTags) return '---';
 			if (Array.isArray(logTags)) {
 				if (logTags.length > 0) return logTags.join('\n');
 				else return '---';
 			} else return logTags;
-		},
-		makeCurriculumDisplay(logSummary) {
-			return logSummary.curriculumTitle;
-		},
-		makeAssociativeIdDisplay(logSummary) {
-			return logSummary.associativeId;
 		},
 		makeExperimentDisplay(logSummary) {
 			const { experimentGroup, experimentName, experimentVersion } = logSummary;
@@ -290,9 +277,6 @@ export default {
 		},
 		makeLogLabelDisplay(logSummary) {
 			return logSummary.logLabel;
-		},
-		makeCompletionCountDisplay(logSummary) {
-			return logSummary.completionCount;
 		},
 		makeStartDateDisplay(logSummary) {
 			return new Date(logSummary.createdAt).toLocaleDateString(undefined, this.datesOptions);

@@ -77,4 +77,8 @@ export default {
 	setLogType(state, logType) {
 		state.logType = logType;
 	},
+
+	setTags(state, tags) {
+		state.imposedTags = tags;
+	},
 };

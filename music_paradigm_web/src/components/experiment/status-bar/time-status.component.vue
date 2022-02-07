@@ -29,10 +29,11 @@ export default {
 			minutes: 0,
 			hours: 0,
 			days: 0,
+			smallestTimeLeftMessageUpdated: Infinity,
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['initialTimeInSeconds', 'timeLimitInSeconds']),
+		...mapGetters('experiment', ['initialTimeInSeconds', 'timeLimitInSeconds', 'timeLeftMessages', 'hasTimeLeftMessages']),
 		color() {
 			return this.turnedOn ? 'active' : 'inactive';
 		},
@@ -82,6 +83,18 @@ export default {
 		recordTime() {
 			this.trackExperimentTimeIndicated(this.totalTime);
 		},
+		verifyTimeLeftMessageToShow() {
+			let hasNewMessage = false;
+			const totalTimeInSeconds = this.totalTime / 1000;
+			for (const time in this.timeLeftMessages) {
+				if (totalTimeInSeconds < time && time < this.smallestTimeLeftMessageUpdated) {
+					this.smallestTimeLeftMessageUpdated = time;
+					hasNewMessage = true;
+				}
+			}
+			if (hasNewMessage)
+				ExperimentEventBus.$emit(experimentEvents.EVENT_NEW_TIME_LEFT_MESSAGE, this.timeLeftMessages[this.smallestTimeLeftMessageUpdated]);
+		},
 	},
 	mounted() {
 		this.setTime(this.initialTimeToSet);
@@ -91,6 +104,7 @@ export default {
 	},
 	watch: {
 		totalTime(value) {
+			if (this.hasTimeLeftMessages) this.verifyTimeLeftMessageToShow();
 			if (value < 0) {
 				this.setTime(0);
 				this.stopTimer();

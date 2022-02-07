@@ -33,6 +33,9 @@ export default {
 		const selectedIndex = state.pressedKeys.indexOf(key);
 		if (selectedIndex !== -1) state.pressedKeys.splice(selectedIndex, 1);
 	},
+	deleteAllPressedKeyboardKeys: (state) => {
+		state.pressedKeys.splice(0, state.pressedKeys.length);
+	},
 	// Mutations on the data from the notes played
 	addPressedKeyboardKeyLog: (state, key) => {
 		const keyCount = state.played.presses.keys.length;
@@ -45,9 +48,13 @@ export default {
 		state.played.presses.duration.push(key.time - state.played.startTime - state.played.presses.time[state.played.presses.time.length - 1]);
 	},
 
-	// Mutations related to midi triggered keys (when there is a keyboard to midi mapping)
-	updateMidiFileTriggeredAssociatedKeys: (state, midiFileTriggeredKey) => {
-		state.midiFileTriggeredAssociatedKeys = midiFileTriggeredKey;
+	// Mutations related to midi keys (when there is a keyboard to midi mapping)
+	updateMidiFileTriggeredAssociatedKeys: (state, midiFileTriggeredKeys) => {
+		state.midiFileTriggeredAssociatedKeys = midiFileTriggeredKeys;
+	},
+
+	updateMidiFileAssociatedKeys: (state, midiFileKeys) => {
+		state.midiFileAssociatedKeys = midiFileKeys;
 	},
 
 	// Mutations on the reference keys

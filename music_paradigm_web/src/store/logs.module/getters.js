@@ -30,11 +30,11 @@ export default {
 	},
 
 	adminSimpleLogList: (state) => {
-		return state.userSimpleLogList;
+		return state.adminSimpleLogList;
 	},
 
 	adminThoroughLogList: (state) => {
-		return state.userThoroughLogList;
+		return state.adminThoroughLogList;
 	},
 
 	// Selected log

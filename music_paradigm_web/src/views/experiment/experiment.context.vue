@@ -80,8 +80,8 @@ export default {
 			'endExperimentByTimeUp',
 			'leaveExperiment',
 		]),
-		...mapActions('keyboard', ['resetPressedKeyboardKeysLogs', 'resetKeyboardTracking']),
-		...mapActions('piano', ['resetPlayedNotesLogs', 'resetPianoState', 'releasedAllNotesNotReleasedInLog']),
+		...mapActions('keyboard', ['resetPressedKeyboardKeysLogs', 'resetKeyboardTracking', 'deleteAllPressedKeyboardKeys']),
+		...mapActions('piano', ['resetPlayedNotesLogs', 'resetPianoState', 'releasedAllNotesNotReleasedInLog', 'deleteAllPressedKeys']),
 		...mapActions('soundGenerator', ['initializeSoundGenerator', 'terminateSoundGenerator']),
 		initializeControl() {
 			if (this.controlType === 'piano') PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);
@@ -133,6 +133,8 @@ export default {
 			this.$refs.log.addBlock();
 			this.resetPressedKeyboardKeysLogs();
 			this.resetPlayedNotesLogs();
+			this.deleteAllPressedKeyboardKeys();
+			this.deleteAllPressedKeys();
 		},
 		handleButtonPress(pressedKey) {
 			if (pressedKey.key === ' ') this.isSpaceBarPressed = true;

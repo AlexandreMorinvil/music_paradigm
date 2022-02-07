@@ -13,4 +13,5 @@ export default {
 	experimentsHeadersList: defaultState.EMPTY_EXPERIMENTS_HEADERS_LIST(),
 	imposedParameterValues: defaultState.DEFAULT_IMPOSED_PARAMETERS(),
 	logType: defaultState.DEFAULT_LOG_TYPE(),
+	imposedTags: defaultState.DEFAULT_IMPOSED_TAGS(),
 };
