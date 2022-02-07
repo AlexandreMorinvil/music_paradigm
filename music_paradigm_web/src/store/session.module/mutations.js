@@ -59,7 +59,7 @@ export default {
 		state.sessionInformation = defaultState.EMPTY_SESSION_INFORMATION();
 	},
 
-	setTags(state, tags) {
-		state.tags = tags;
+	setImposedTags(state, tags) {
+		state.sessionInformation.tags = tags;
 	},
 };

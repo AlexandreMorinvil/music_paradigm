@@ -35,6 +35,10 @@ export default {
 		return state.logType;
 	},
 
+	imposedTags: (state) => {
+		return state.imposedTags;
+	},
+
 	hasParameterInSelectedExperiment: (state) => {
 		return experimentParser.getParameterVariables(state.selection.content).length > 0;
 	},
