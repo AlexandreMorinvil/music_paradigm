@@ -7,7 +7,7 @@
 					{{ type }}
 				</option>
 			</select>
-			<h3 class="log-tags-title">Tags</h3>
+			<h3 class="log-tags-title">Tag</h3>
 			<input v-model="insertedLogTag" v-on:change="updateLogTags" />
 		</div>
 	</form>
@@ -46,9 +46,7 @@ export default {
 			this.setLogType(this.selectedLogType);
 		},
 		updateLogTags() {
-			console.log('Test START');
 			this.setTags(this.logTagsToSet);
-			console.log('Test END');
 		},
 	},
 	beforeMount() {

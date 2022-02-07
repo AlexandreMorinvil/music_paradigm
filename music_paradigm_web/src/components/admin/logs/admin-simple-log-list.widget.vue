@@ -35,7 +35,7 @@
 				<tr v-if="hasElements" class="log-identifier-header include-white-space">
 					<th>#</th>
 					<th>Associative ID</th>
-					<th>Tag</th>
+					<th>Tags</th>
 					<th>Experiment</th>
 					<th>Log Label</th>
 					<th>State</th>
@@ -56,7 +56,7 @@
 				>
 					<td>{{ index + 1 }}</td>
 					<td>{{ makeAssociativeIdDisplay(logSummary) }}</td>
-					<td>{{ makeAdminLabelDisplay(logSummary) }}</td>
+					<td>{{ makeLogTagsDisplay(logSummary) }}</td>
 					<td>{{ makeExperimentDisplay(logSummary) }}</td>
 					<td>{{ makeLogLabelDisplay(logSummary) }}</td>
 					<td>{{ makeStateDisplay(logSummary) }}</td>
@@ -257,8 +257,14 @@ export default {
 		makeAssociativeIdDisplay(logSummary) {
 			return logSummary.associativeId;
 		},
-		makeAdminLabelDisplay(logSummary) {
-			return logSummary.username;
+		makeLogTagsDisplay(logSummary) {
+			const { logTags } = logSummary;
+						console.log(logSummary);
+			if (!logTags) return '---';
+			if (Array.isArray(logTags)) {
+				if (logTags.length > 0) return logTags.join('\n');
+				else return '---';
+			} else return logTags;
 		},
 		makeExperimentDisplay(logSummary) {
 			const { experimentGroup, experimentName, experimentVersion } = logSummary;
