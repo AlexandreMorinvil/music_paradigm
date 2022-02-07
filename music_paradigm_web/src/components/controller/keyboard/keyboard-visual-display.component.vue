@@ -198,12 +198,14 @@ export default {
 				else this.$refs[keyString].classList.remove('designated');
 			}
 		},
-		midiFileAssociatedKeys(list) {
-			for (const key of this.keys) {
-				const keyString = key.toString();
-				if (list.includes(key)) this.$refs[keyString].classList.add('designated');
-				else this.$refs[keyString].classList.remove('designated');
-			}
+		midiFileAssociatedKeys: {
+			immediate: true,
+			handler: function () {
+				this.clearDesignatedKeys();
+				if (this.mustDisplayLoadedMidiFirstNote) this.hintFirstNote();
+				if (this.mustDisplayReferenceAllKeys) this.hintAllKeys();
+				if (this.mustDisplayLoadedMidiAllNotes) this.hintAllNotes();
+			},
 		},
 		referenceKeyboardKeys: {
 			immediate: true,

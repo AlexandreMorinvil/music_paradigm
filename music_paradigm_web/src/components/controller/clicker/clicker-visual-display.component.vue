@@ -55,6 +55,9 @@ export default {
 		mustDisplayLoadedMidiFirstNote() {
 			return String(this.interactiveClicker).includes('first');
 		},
+		mustDisplayReferenceAllKeys() {
+			return String(this.interactiveKeyboard).includes('all');
+		},
 		mustDisplayLoadedMidiAllNotes() {
 			return String(this.interactiveClicker).includes('midi');
 		},
@@ -82,15 +85,15 @@ export default {
 					textMapping[button] = keyTextAssignation;
 				}
 			} else {
-					// Get the key
-					const currentMidiAssociatedKey = this.midiFileAssociatedKeys[0];
+				// Get the key
+				const currentMidiAssociatedKey = this.midiFileAssociatedKeys[0];
 
-					// Get the text to assign to the key
-					const keyTextAssignation = this.interactiveKeyboardTextMapping;
+				// Get the text to assign to the key
+				const keyTextAssignation = this.interactiveKeyboardTextMapping;
 
-					// Assign the key to the button
-					const associatedButton = this.mappingKeyboradToClicker[currentMidiAssociatedKey] || 'none';
-					textMapping[associatedButton] = keyTextAssignation;
+				// Assign the key to the button
+				const associatedButton = this.mappingKeyboradToClicker[currentMidiAssociatedKey] || 'none';
+				textMapping[associatedButton] = keyTextAssignation;
 			}
 			return textMapping;
 		},
@@ -105,6 +108,11 @@ export default {
 		},
 		clearDesignatedKeys() {
 			this.highlightedDesignatedAssociatedKeys = [];
+		},
+		hintAllKeys() {
+			const designatedKeys = [];
+			for (let index = 0; index < this.referenceKeyboardKeys.length; index++) designatedKeys.push(this.referenceKeyboardKeys[index]);
+			this.designateKeys(designatedKeys);
 		},
 		hintAllNotes() {
 			const designatedKeys = [];
@@ -141,17 +149,28 @@ export default {
 				else this.$refs[String(clickerButton)].classList.remove('designated');
 			}
 		},
-		// highlightedDesignatedKeys(list) {
-		// 	for (let note = this.firstNote; note <= this.lastNote; note++) {
-		// 		if (list.includes(note)) this.$refs[note.toString()].classList.add('designated');
-		// 		else this.$refs[note.toString()].classList.remove('designated');
-		// 	}
-		// },
-		midiFileNotesMidi: {
+		highlightedDesignatedKeys(list) {
+			for (const clickerButton of this.clickerButtons) {
+				const associatedKey = this.convertButtonToKeyboardKey(String(clickerButton));
+				if (list.includes(associatedKey)) this.$refs[String(clickerButton)].classList.add('designated');
+				else this.$refs[String(clickerButton)].classList.remove('designated');
+			}
+		},
+		midiFileAssociatedKeys: {
 			immediate: true,
 			handler: function () {
 				this.clearDesignatedKeys();
 				if (this.mustDisplayLoadedMidiFirstNote) this.hintFirstNote();
+				if (this.mustDisplayReferenceAllKeys) this.hintAllKeys();
+				if (this.mustDisplayLoadedMidiAllNotes) this.hintAllNotes();
+			},
+		},
+		referenceKeyboardKeys: {
+			immediate: true,
+			handler: function () {
+				this.clearDesignatedKeys();
+				if (this.mustDisplayReferenceFirstKey) this.hintFistKey();
+				if (this.mustDisplayReferenceAllKeys) this.hintAllKeys();
 				if (this.mustDisplayLoadedMidiAllNotes) this.hintAllNotes();
 			},
 		},
