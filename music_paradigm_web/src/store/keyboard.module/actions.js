@@ -25,6 +25,9 @@ export default {
 	deletePressedKeyboardKey: ({ commit }, key) => {
 		commit('deletePressedKeyboardKey', key);
 	},
+	deleteAllPressedKeyboardKeys: ({ commit }) => {
+		commit('deleteAllPressedKeyboardKeys');
+	},
 
 	// Mutations related to midi keys (when there is a keyboard to midi mapping)
 	updateMidiFileTriggeredAssociatedKeys: ({ commit }, midiFileTriggeredKeys) => {

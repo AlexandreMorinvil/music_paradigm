@@ -50,6 +50,9 @@ export default {
 	deletePressedKey: ({ commit }, key) => {
 		commit('deletePressedKey', key);
 	},
+	deleteAllPressedKeys: ({ commit }) => {
+		commit('deleteAllPressedKeys');
+	},
 	addMidiFileTriggeredKey: ({ commit }, key) => {
 		commit('addMidiFileTriggeredKey', key);
 	},

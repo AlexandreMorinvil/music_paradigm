@@ -59,6 +59,9 @@ export default {
 		const selectedIndex = state.pressedKeys.indexOf(key);
 		if (selectedIndex !== -1) state.pressedKeys.splice(selectedIndex, 1);
 	},
+	deleteAllPressedKeys: (state) => {
+		state.pressedKeys.splice(0, state.pressedKeys.length);
+	},
 	addMidiFileTriggeredKey: (state, key) => {
 		const selectedIndex = state.midiFileTriggeredKeys.indexOf(key);
 		if (selectedIndex === -1) state.midiFileTriggeredKeys.push(key);

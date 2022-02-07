@@ -102,7 +102,6 @@ export default {
 			this.designateKeys(designatedKeys);
 		},
 		hintFirstNote() {
-			console.log('Ola');
 			this.designateKeys(this.midiFileAssociatedKeys[0]);
 		},
 	},

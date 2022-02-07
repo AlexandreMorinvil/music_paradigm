@@ -129,18 +129,21 @@ export default {
 	},
 	computed: {
 		...mapGetters('experiment', ['interactiveKeyboard', 'interactivePianoFirstOctave']),
-		...mapGetters('keyboard', ['currentlyPressedKeyboardKeys', 'referenceKeyboardKeys', 'midiFileTriggeredAssociatedKeys']),
+		...mapGetters('keyboard', ['currentlyPressedKeyboardKeys', 'referenceKeyboardKeys', 'midiFileTriggeredAssociatedKeys', 'midiFileAssociatedKeys']),
 		mustDisplayPotentiallyCorrectKeys() {
-			return !this.interactiveKeyboard.includes('#');
+			return !String(this.interactiveKeyboard).includes('#');
 		},
 		mustDisplayWrongKeys() {
-			return !this.interactiveKeyboard.includes('##') && this.referenceKeyboardKeys.length > 0;
+			return !String(this.interactiveKeyboard).includes('##') && this.referenceKeyboardKeys.length > 0;
 		},
 		mustDisplayReferenceFirstKey() {
-			return this.interactiveKeyboard.includes('first');
+			return String(this.interactiveKeyboard).includes('first');
 		},
 		mustDisplayReferenceAllKeys() {
-			return this.interactiveKeyboard.includes('all');
+			return String(this.interactiveKeyboard).includes('all');
+		},
+		mustDisplayLoadedMidiAllNotes() {
+			return String(this.interactiveKeyboard).includes('midi');
 		},
 	},
 	methods: {
@@ -154,6 +157,11 @@ export default {
 		hintAllKeys() {
 			const designatedKeys = [];
 			for (let index = 0; index < this.referenceKeyboardKeys.length; index++) designatedKeys.push(this.referenceKeyboardKeys[index]);
+			this.designateKeys(designatedKeys);
+		},
+		hintAllNotes() {
+			const designatedKeys = [];
+			for (let index = 0; index < this.midiFileAssociatedKeys.length; index++) designatedKeys.push(this.midiFileAssociatedKeys[index]);
 			this.designateKeys(designatedKeys);
 		},
 		hintFistKey() {
@@ -190,12 +198,20 @@ export default {
 				else this.$refs[keyString].classList.remove('designated');
 			}
 		},
+		midiFileAssociatedKeys(list) {
+			for (const key of this.keys) {
+				const keyString = key.toString();
+				if (list.includes(key)) this.$refs[keyString].classList.add('designated');
+				else this.$refs[keyString].classList.remove('designated');
+			}
+		},
 		referenceKeyboardKeys: {
 			immediate: true,
 			handler: function () {
 				this.clearDesignatedKeys();
 				if (this.mustDisplayReferenceFirstKey) this.hintFistKey();
 				if (this.mustDisplayReferenceAllKeys) this.hintAllKeys();
+				if (this.mustDisplayLoadedMidiAllNotes) this.hintAllNotes();
 			},
 		},
 	},

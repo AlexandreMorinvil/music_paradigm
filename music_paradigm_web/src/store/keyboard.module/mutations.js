@@ -33,6 +33,9 @@ export default {
 		const selectedIndex = state.pressedKeys.indexOf(key);
 		if (selectedIndex !== -1) state.pressedKeys.splice(selectedIndex, 1);
 	},
+	deleteAllPressedKeyboardKeys: (state) => {
+		state.pressedKeys.splice(0, state.pressedKeys.length);
+	},
 	// Mutations on the data from the notes played
 	addPressedKeyboardKeyLog: (state, key) => {
 		const keyCount = state.played.presses.keys.length;
