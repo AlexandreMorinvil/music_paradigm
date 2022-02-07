@@ -104,7 +104,7 @@ const stateSchema = new Schema({
 const schema = new Schema({
     group: { type: String, default: "default", lowercase: true, trim: true },
     name: { type: String, required: true, lowercase: true, trim: true },
-    version: { type: Number, default: 1, min: 1 },
+    version: { type: String, default: "1" },
     folder: { type: String, reqired: true },
     mode: { type: String, default: "rhythm" },
     anyPianoKey: { type: Boolean, default: false },

@@ -5,7 +5,7 @@
 		<table v-else class="widget-table">
 			<thead>
 				<tr v-if="hasElements" class="logtype-header">
-					<th colspan="9">
+					<th colspan="10">
 						<span>
 							<span> THOROUGH LOGS ({{ totalThatWillBeKept }}{{ totalNumberElements }})</span>
 							<span v-if="isFetchingSpecificLog" class="generating-message include-white-space"> ...FORMATING THE LOG... </span>
