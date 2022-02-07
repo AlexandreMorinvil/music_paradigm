@@ -2,12 +2,20 @@
 	<div id="visual-clicker" class="clicker-container">
 		<div class="clicker-container-inner-space">
 			<ul class="clicker-grid" :class="isLeftHand ? 'left-hand' : 'right-hand'">
-				<li class="button-1-area"><button class="key" ref="clicker1"></button></li>
-				<li class="button-2-area"><button class="key" ref="clicker2"></button></li>
-				<li class="button-3-area"><button class="key" ref="clicker3"></button></li>
-				<li class="button-4-area"><button class="key" ref="clicker4"></button></li>
+				<li class="button-1-area">
+					<button class="key" ref="clicker1">{{ textMapping['clicker1'] }}</button>
+				</li>
+				<li class="button-2-area">
+					<button class="key" ref="clicker2">{{ textMapping['clicker2'] }}</button>
+				</li>
+				<li class="button-3-area">
+					<button class="key" ref="clicker3">{{ textMapping['clicker3'] }}</button>
+				</li>
+				<li class="button-4-area">
+					<button class="key" ref="clicker4">{{ textMapping['clicker4'] }}</button>
+				</li>
 				<li class="button-5-area" :class="isLeftHand ? 'button-5-left-hand' : 'button-5-right-hand'">
-					<button class="key" ref="clicker5"></button>
+					<button class="key" ref="clicker5">{{ textMapping['clicker5'] }}</button>
 				</li>
 			</ul>
 		</div>
@@ -35,12 +43,9 @@ export default {
 		isLeftHand() {
 			return true;
 		},
-		mappingMidiToKeyboard() {
-			return this.keyboardToMidiInputMapping;
-		},
 		/**
 		 * Mapping { key: button }
-		*/
+		 */
 		mappingKeyboradToClicker() {
 			return this.keyboardToClickerInputMapping;
 		},
@@ -53,37 +58,42 @@ export default {
 		mustDisplayLoadedMidiAllNotes() {
 			return String(this.interactiveClicker).includes('midi');
 		},
-		// 	textMapping() {
-		// 		const textMapping = [];
-		// 		if (Array.isArray(this.interactiveKeyboardTextMapping))
-		// 			for (const index in this.interactiveKeyboardTextMapping) {
-		// 				// Get the index of the key, if it is within the range to the displayed keys
-		// 				const currentMidiKeyNumber = this.midiFileNotesMidi[index];
-		// 				const correspondingKeyIndex = currentMidiKeyNumber - this.midiOffset;
-		// 				if (correspondingKeyIndex < 0 || correspondingKeyIndex > this.NOTE_COUNT - 1) continue;
-		// 				// Get the text to assign to the key
-		// 				const keyTextAssignation = this.interactiveKeyboardTextMapping[index];
-		// 				textMapping[correspondingKeyIndex] = keyTextAssignation;
-		// 			}
-		// 		else if (typeof this.interactiveKeyboardTextMapping === 'object') {
-		// 			for (const key in this.interactiveKeyboardTextMapping) {
-		// 				// Get the index of the key, if it is within the range to the displayed keys
-		// 				if (key < 0 || key > this.NOTE_COUNT - 1) continue;
-		// 				// Get the text to assign to the key
-		// 				const keyTextAssignation = this.interactiveKeyboardTextMapping[key];
-		// 				textMapping[key] = keyTextAssignation;
-		// 			}
-		// 		} else {
-		// 			// Get the index of the key, if it is within the range to the displayed keys
-		// 			const currentMidiKeyNumber = this.midiFileNotesMidi[0];
-		// 			const correspondingKeyIndex = currentMidiKeyNumber - this.midiOffset;
-		// 			if (correspondingKeyIndex < 0 || correspondingKeyIndex > this.NOTE_COUNT - 1) return [];
-		// 			// Get the text to assign to the key
-		// 			const keyTextAssignation = this.interactiveKeyboardTextMapping;
-		// 			textMapping[correspondingKeyIndex] = keyTextAssignation;
-		// 		}
-		// 		return textMapping;
-		// 	},
+		numberButtons() {
+			return this.clickerButtons.length;
+		},
+		textMapping() {
+			const textMapping = [];
+			if (Array.isArray(this.interactiveKeyboardTextMapping))
+				for (const index in this.interactiveKeyboardTextMapping) {
+					// Get the key
+					const currentMidiAssociatedKey = this.midiFileAssociatedKeys[index];
+
+					// Get the text to assign to the key
+					const keyTextAssignation = this.interactiveKeyboardTextMapping[index];
+
+					// Assign the key to the button
+					const associatedButton = this.mappingKeyboradToClicker[currentMidiAssociatedKey] || 'none';
+					textMapping[associatedButton] = keyTextAssignation;
+				}
+			else if (typeof this.interactiveKeyboardTextMapping === 'object') {
+				for (const button in this.interactiveKeyboardTextMapping) {
+					// Get the text to assign to the key
+					const keyTextAssignation = this.interactiveKeyboardTextMapping[button];
+					textMapping[button] = keyTextAssignation;
+				}
+			} else {
+					// Get the key
+					const currentMidiAssociatedKey = this.midiFileAssociatedKeys[0];
+
+					// Get the text to assign to the key
+					const keyTextAssignation = this.interactiveKeyboardTextMapping;
+
+					// Assign the key to the button
+					const associatedButton = this.mappingKeyboradToClicker[currentMidiAssociatedKey] || 'none';
+					textMapping[associatedButton] = keyTextAssignation;
+			}
+			return textMapping;
+		},
 	},
 	methods: {
 		convertButtonToKeyboardKey(clickerButton) {
@@ -217,6 +227,7 @@ li {
 .key {
 	position: relative;
 	color: rgb(209, 210, 212);
+	outline: none;
 	background-color: rgb(40, 40, 40);
 	border: 1px solid rgb(20, 20, 20);
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.65) inset, 0 1px rgba(10, 10, 10, 0.7) inset, 1.5px 1.5px 1.5px rgba(0, 0, 0, 1),
