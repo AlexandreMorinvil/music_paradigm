@@ -1,7 +1,9 @@
 <template>
 	<div id="navigation-bar" :class="{ 'clear-navigation-bar': isClearVersion }">
-		<div class="navigation-bar-wrapper navigation-bar-center"></div>
-
+		<div class="navigation-bar-wrapper navigation-bar-left"></div>
+		<div class="navigation-bar-wrapper navigation-bar-center">
+			<time-left-message-component v-if="hasTimeLeftMessages" />
+		</div>
 		<div class="navigation-bar-wrapper navigation-bar-right">
 			<div id="button-leave" class="app-navigation-bar-button" v-on:click="gotToHomePage">{{ $t('navigation-bar.leave') }}</div>
 		</div>
@@ -13,12 +15,17 @@ import '@/styles/navigation-bar-template.css';
 import { mapGetters } from 'vuex';
 import { routerNavigation } from '@/_helpers';
 
+import TimeLeftMessageComponent from '@/components/experiment/element/time-left-message.component.vue';
+
 export default {
+	components: {
+		TimeLeftMessageComponent,
+	},
 	computed: {
-		...mapGetters('experiment', ['hasClearBackground']),
+		...mapGetters('experiment', ['hasClearBackground', 'hasTimeLeftMessages']),
 		isClearVersion() {
 			return this.hasClearBackground;
-		}
+		},
 	},
 	methods: {
 		gotToHomePage() {
@@ -29,7 +36,7 @@ export default {
 </script>
 
 <style scoped>
-.clear-navigation-bar  {
+.clear-navigation-bar {
 	background-color: rgb(215, 215, 215);
 	border-color: rgb(205, 205, 205);
 	color: rgb(15, 15, 15);

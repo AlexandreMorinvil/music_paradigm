@@ -51,6 +51,7 @@ const DEFAULT_QUESTION_TYPE = 'simple';
 const DEFAULT_HAS_TIMER = true;
 const DEFAULT_HAS_CLEAR_BACKGROUND = false;
 const DEFAULT_HAS_SOUND = true;
+const DEFAULT_TIME_LEFT_MESSAGES = {};
 
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
@@ -133,6 +134,7 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		withTimer: DEFAULT_HAS_TIMER,														// Indicate whether the timer must be displayed
 		hasClearBackground: DEFAULT_HAS_CLEAR_BACKGROUND,									// Indicate whethe the experiment setting must be in white (true) or black (false)
 		hasSound: DEFAULT_HAS_SOUND,														// Indicate whether the experiment has sound
+		timeLeftMessages: DEFAULT_TIME_LEFT_MESSAGES,										// Object containning a message to display when certain time left thresholds (indicated in milliseconds) are reached
 	};
 }
 

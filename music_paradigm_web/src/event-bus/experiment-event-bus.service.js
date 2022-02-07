@@ -16,4 +16,6 @@ export const experimentEvents = {
 
 	EVENT_SET_FOOTNOTE: 'set-footnote',
 	EVENT_OVERIDE_FOOTNOTE: 'overide-footnote',
+
+	EVENT_NEW_TIME_LEFT_MESSAGE: 'new-time-left-message',
 };

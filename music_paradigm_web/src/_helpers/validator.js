@@ -118,6 +118,7 @@ function validateExperiment(experiment) {
 		'footnote',
 		'footnoteType',
 		'timeLimitInSeconds',
+		'timeLeftMessages',
 		'logFlag',
 		'successesForSkip',
 		'hideFeedbackSmiley',
@@ -380,6 +381,7 @@ function validateAttributeType(key, value) {
 		case 'timeUpState':
 		case 'lastRepetitionVersion':
 		case 'succeeededForSkipLoopVersion':
+		case 'timeLeftMessages':
 			if (!(typeof value === 'object') || Array.isArray(value)) {
 				throw new Error(`The key '${key}' must be of type 'Object'`);
 			}

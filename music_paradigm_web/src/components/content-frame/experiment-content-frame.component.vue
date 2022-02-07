@@ -58,6 +58,7 @@ export default {
 			'hasTextReminder',
 			'hasSkipOption',
 			'hasGoBackOption',
+			'hasTimeLeftMessages',
 			'isWaitingStartSignal',
 			'isSkipButtonInFootnote',
 			'isGoBackButtonInFootnote',
