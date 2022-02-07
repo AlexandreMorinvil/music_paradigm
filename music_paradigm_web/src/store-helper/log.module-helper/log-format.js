@@ -95,6 +95,7 @@ function makeSimpleLogBlockGeneralInformation() {
 		associativeId: gettersSession.associativeId(stateSession) || null,
 		associativeIdOrdinalNumber: gettersSession.associativeIdOrdinalNumber(stateSession) || 0,
 		logLabel: gettersExperiment.logLabel(stateExperiment),
+		logTags: gettersSession.tags(stateSession),
 
 		startCount: gettersSession.startCount(stateSession),
 		completionCount: gettersSession.completionCount(stateSession),
@@ -178,6 +179,7 @@ function makeThoroughLogHeader(targetLogLabel) {
 		progressionId: gettersSession.progressionId(stateSession) || null,
 		associativeId: gettersSession.associativeId(stateSession) || null,
 		logLabel: targetLogLabel || gettersExperiment.logLabel(stateExperiment),
+		logTags: gettersSession.tags(stateSession),
 
 		completionCount: gettersSession.completionCount(stateSession),
 

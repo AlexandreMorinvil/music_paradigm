@@ -11,7 +11,7 @@ export default {
 	},
 	computed: {
 		...mapGetters('experiment', ['hasKeyboardToMidiInputMapping', 'keyboardToMidiInputMapping']),
-		...mapGetters('piano', ['pressedKeys', 'midiFileTriggeredKeys']),
+		...mapGetters('piano', ['pressedKeys', 'midiFileTriggeredKeys', 'midiFileNotesMidi']),
 		hasMapping() {
 			return this.hasKeyboardToMidiInputMapping;
 		},
@@ -20,7 +20,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('keyboard', ['updateMidiFileTriggeredAssociatedKeys']),
+		...mapActions('keyboard', ['updateMidiFileTriggeredAssociatedKeys', 'updateMidiFileAssociatedKeys']),
 		toKey(midiNumber) {
 			return Object.keys(this.mapping).find((key) => this.mapping[key] == midiNumber);
 		},
@@ -38,6 +38,15 @@ export default {
 				if (!this.hasMapping) return;
 				const listKeysIndicated = this.converMidiToKeyboardKey(list);
 				this.updateMidiFileTriggeredAssociatedKeys(listKeysIndicated);
+			},
+		},
+		midiFileNotesMidi: {
+			deep: true,
+			immediate: true,
+			handler: function (list) {
+				if (!this.hasMapping) return;
+				const listKeysIndicated = this.converMidiToKeyboardKey(list);
+				this.updateMidiFileAssociatedKeys(listKeysIndicated);
 			},
 		},
 	},

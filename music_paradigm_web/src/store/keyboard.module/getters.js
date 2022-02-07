@@ -22,6 +22,10 @@ export default {
 		return state.midiFileTriggeredAssociatedKeys;
 	},
 
+	midiFileAssociatedKeys: (state) => {
+		return state.midiFileAssociatedKeys;
+	},
+
 	// Getter for the reference keys
 	referenceKeyboardKeys: (state) => {
 		return state.referenceKeys;

@@ -133,6 +133,7 @@ const schema = new Schema({
     withTimer: { type: Boolean, default: true },
     hasClearBackground: { type: Boolean, default: undefined },
     hasSound: { type: Boolean, default: true },
+    timeLeftMessages: { type: Object, default: undefined },
 
     keyboardToMidiInputMapping:{
         default: undefined,

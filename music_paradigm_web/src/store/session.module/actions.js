@@ -113,4 +113,8 @@ export default {
 		commit('clearSessionInformation');
 		commit('leavePreSession');
 	},
+
+	setImposedTags({ commit }, tags) {
+		commit('setImposedTags', tags);
+	},
 };

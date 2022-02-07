@@ -9,6 +9,12 @@ export default {
 		return state.selection.content;
 	},
 
+	experimentSelectedToRun: (state) => {
+		const experiment = JSON.parse(JSON.stringify(state.selection.content));
+		experiment._id = state.selection._id;
+		return experiment;
+	},
+
 	selectedId: (state) => {
 		return state.selection._id;
 	},
@@ -29,8 +35,24 @@ export default {
 		return state.logType;
 	},
 
+	imposedTags: (state) => {
+		return state.imposedTags;
+	},
+
 	hasParameterInSelectedExperiment: (state) => {
 		return experimentParser.getParameterVariables(state.selection.content).length > 0;
+	},
+
+	experimentsSelectedGroup: (state) => {
+		return state.selection.content.group;
+	},
+
+	experimentsSelectedName: (state) => {
+		return state.selection.content.name;
+	},
+
+	experimentsSelectedVersion: (state) => {
+		return state.selection.content.version;
 	},
 
 	// Status

@@ -16,6 +16,7 @@ const schema = new Schema(
         curriculumId: { type: Schema.Types.ObjectId, default: null },
         associativeId: { type: String, default: undefined },
         logLabel: { type: String, default: 'default' },
+        logTags: { type: [String], default: null },
 
         completionCount: { type: Number, default: 0 },
 

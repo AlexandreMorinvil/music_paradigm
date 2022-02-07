@@ -6,6 +6,7 @@ export default {
 	EMPTY_EXPERIMENTS_HEADERS_LIST,
 	DEFAULT_IMPOSED_PARAMETERS,
 	DEFAULT_LOG_TYPE,
+	DEFAULT_IMPOSED_TAGS,
 };
 
 /**
@@ -57,4 +58,12 @@ function DEFAULT_IMPOSED_PARAMETERS() {
  */
 function DEFAULT_LOG_TYPE() {
 	return log.defaultLogType;
+}
+
+/**
+ * Returns the default list of tags (it consists of an empty list)
+ * @returns An empty list
+*/
+function DEFAULT_IMPOSED_TAGS() {
+	return [];
 }

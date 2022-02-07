@@ -28,7 +28,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('experiments', ['fetchAllExperimentsHeaders', 'setImposedParameterValues']),
+		...mapActions('experiments', ['setImposedParameterValues']),
 		updateImposedParameters() {
 			this.setImposedParameterValues(this.parameters);
 		},

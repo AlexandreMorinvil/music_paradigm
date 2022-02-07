@@ -1,14 +1,14 @@
 /* eslint-disable max-lines-per-function */
-import { logFormat } from '@/store-helper/log.module-helper';
 import { logApi } from '@/api';
+import { logFormat } from '@/store-helper/log.module-helper';
 
 export default {
 	setLogType({ commit }, logType) {
 		commit('setLogType', logType);
 	},
 
-	clearLogType({ commit }) {
-		commit('clearLogType');
+	clearLogSpecifications({ commit }) {
+		commit('clearLogSpecifications');
 	},
 
 	addSimmpleLogBlock({ commit }) {

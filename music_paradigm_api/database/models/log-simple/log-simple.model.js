@@ -24,6 +24,7 @@ schema.statics.makeSummaryList = async function (query) {
         'associativeId',
         'associativeIdOrdinalNumber',
         'logLabel',
+        'logTags',
 
         'startCount',
         'completionCount',

@@ -53,4 +53,12 @@ export default {
 	hasSound: (state) => {
 		return state.settings.hasSound;
 	},
+
+	timeLeftMessages: (state) => {
+		return state.settings.timeLeftMessages;
+	},
+
+	hasTimeLeftMessages: (state) => {
+		return Object.keys(state.settings.timeLeftMessages).length > 0;
+	},
 };
