@@ -36,6 +36,7 @@
 				<tr v-if="hasElements" class="log-identifier-header include-white-space">
 					<th>#</th>
 					<th>username</th>
+					<th>tags</th>
 					<th>curriculum</th>
 					<th>Associative ID</th>
 					<th>Experiment</th>
@@ -59,6 +60,7 @@
 				>
 					<td>{{ index + 1 }}</td>
 					<td>{{ makeUsernameDisplay(logSummary) }}</td>
+					<td>{{ makeLogTagsDisplay(logSummary) }}</td>
 					<td>{{ makeCurriculumDisplay(logSummary) }}</td>
 					<td>{{ makeAssociativeIdDisplay(logSummary) }}</td>
 					<td>{{ makeExperimentDisplay(logSummary) }}</td>
@@ -266,6 +268,15 @@ export default {
 		},
 		makeUsernameDisplay(logSummary) {
 			return logSummary.username;
+		},
+		makeLogTagsDisplay(logSummary) {
+			const { logTags } = logSummary;
+			console.log(logSummary);
+			if (!logTags) return '---';
+			if (Array.isArray(logTags)) {
+				if (logTags.length > 0) return logTags.join('\n');
+				else return '---';
+			} else return logTags;
 		},
 		makeCurriculumDisplay(logSummary) {
 			return logSummary.curriculumTitle;
