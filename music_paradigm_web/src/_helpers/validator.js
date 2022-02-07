@@ -12,13 +12,17 @@ export default {
 /**
  * @constant ALLOWED_ENTRIES_INTERACTIVE_HELPERS
  * @type {Array<String>}
- * @description combinations of ['true', 'false', 'all', 'midi', 'first'] and ['', '#']
+ * @description combinations of ['half-', ''] and ['true', 'false', 'all', 'midi', 'first'] and ['', '#']
  * 				For example : 'true', 'true#', 'false', 'false#', 'all', 'all#', ...
  * 				These values are allowed for the attributes :
  * 				- interactivePiano
  * 				- interactiveKeyboard
  * */
-const ALLOWED_ENTRIES_INTERACTIVE_HELPERS = ['true', 'false', 'all', 'midi', 'first'].flatMap((d) => ['', '#', '##'].map((v) => d + v));
+const ALLOWED_ENTRIES_INTERACTIVE_HELPERS = ['half-', ''].flatMap((c) => {
+	const b = ['true', 'false', 'all', 'midi', 'first']
+		.flatMap((d) => ['', '#', '##'].map((v) => d + v));
+	return b.map((v) => c + v);
+});
 
 
 /**
