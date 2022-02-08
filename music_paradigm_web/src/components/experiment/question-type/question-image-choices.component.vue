@@ -87,11 +87,11 @@ export default {
 }
 
 .question-image-half {
-	width: 50%;
+	width: 100%;
 }
 
 .options-image-half {
-	width: 50%;
+	width: 100%;
 	height: 100%;
 }
 </style>
