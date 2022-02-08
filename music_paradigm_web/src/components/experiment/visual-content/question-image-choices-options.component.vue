@@ -104,7 +104,7 @@ export default {
 		correctAnswersIndex() {
 			if (!this.rightAnswers) return null;
 			let validRightAnswers = null;
-			const lastValidIndex = this.numberValidChoices - 1;
+			const lastValidIndex = this.numberValidOptions - 1;
 			if (Array.isArray(this.rightAnswers)) {
 				validRightAnswers = this.rightAnswers.filter((index) => index <= lastValidIndex);
 			} else if (this.rightAnswers <= lastValidIndex) validRightAnswers = this.rightAnswers;
