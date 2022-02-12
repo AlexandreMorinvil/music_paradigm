@@ -20,7 +20,7 @@ const schema = new Schema(
         curriculumTitle: { type: String, default: null },
         experimentGroup: { type: String, default: undefined },
         experimentName: { type: String, default: undefined },
-        experimentVersion: { type: Number, default: undefined },
+        experimentVersion: { type: String, default: undefined },
 
         blockType: { type: String },
         blockSubType: { type: String },
