@@ -128,6 +128,7 @@ function makeSimpleLogBlockPerformanceInformation() {
 	const performanceLog = {};
 
 	switch (controlType) {
+		case 'clicker':
 		case 'piano':
 			Object.assign(performanceLog, gettersPiano.pianoSimpleLogSummary(statePiano));
 			Object.assign(performanceLog, gettersPiano.pianoSimpleLogPreprocesed(statePiano));
@@ -253,8 +254,8 @@ function makeSimpleBlockPerformanceInformation() {
 	const performanceLog = {};
 
 	// Include the piano information if the experiment had the piano control
-	if (controlType === 'piano') Object.assign(performanceLog, gettersPiano.pianoSimpleLogSummary(statePiano));
-	if (controlType === 'piano') Object.assign(performanceLog, gettersPiano.pianoSimpleLogPreprocesed(statePiano));
+	if (controlType === 'piano' || controlType === 'clicker') Object.assign(performanceLog, gettersPiano.pianoSimpleLogSummary(statePiano));
+	if (controlType === 'piano' || controlType === 'clicker') Object.assign(performanceLog, gettersPiano.pianoSimpleLogPreprocesed(statePiano));
 
 	// Systematically include the keyboard input
 	Object.assign(performanceLog, gettersKeyboard.keyboardSimpleLogSummary(stateKeyboard));

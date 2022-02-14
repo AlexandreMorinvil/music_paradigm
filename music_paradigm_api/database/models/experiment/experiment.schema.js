@@ -119,7 +119,7 @@ const schema = new Schema({
     isGoBackButtonInFootnote: { type: Boolean, default: undefined },
     programmedOctaveOffset: { type: Number, default: 0 },
     interactivePianoFirstOctave: { type: Number, default: 4 },
-    controlType: { type: String, default: 'piano', enum: ['piano', 'keyboard', 'none'] },
+    controlType: { type: String, default: 'piano', enum: ['piano', 'keyboard', 'clicker', 'none'] },
     
     relativeRhythmImportance: { type: Number, default: undefined },
     rhythmErrorMarginInMilliseconds: { type: Number, default: undefined },

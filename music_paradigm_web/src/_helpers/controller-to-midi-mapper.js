@@ -1,6 +1,8 @@
 export default {
     getKeyToMidiNoteMapping,
     getkeyToCickerButtonMapping,
+    getCickerButtonIncludedInMapping,
+    getKeyboardKeysHavingCickerButtonMapping,
 };
 
 /**
@@ -40,4 +42,26 @@ function getkeyToCickerButtonMapping(keyboardToMidiMapping) {
         }
     });
     return MAPPING;
+}
+
+
+/**
+ * Returns the list of clicker buttons that have a mapping to a keyoard key
+*/
+function getCickerButtonIncludedInMapping(keyboardToMidiMapping) {
+    const keyToCickerButtonMapping = getkeyToCickerButtonMapping(keyboardToMidiMapping);
+    const buttons = Object.values(keyToCickerButtonMapping);
+    const buttonsWithoutDuplicates = new Set(buttons);
+    return Array.from(buttonsWithoutDuplicates);
+}
+
+
+/**
+ * Returns the list of keyboardKeys that have a mapping to a clicker button
+*/
+function getKeyboardKeysHavingCickerButtonMapping(keyboardToMidiMapping) {
+    const keyToCickerButtonMapping = getkeyToCickerButtonMapping(keyboardToMidiMapping);
+    const keys = Object.keys(keyToCickerButtonMapping);
+    const keysWithoutDuplicates = new Set(keys);
+    return Array.from(keysWithoutDuplicates);
 }

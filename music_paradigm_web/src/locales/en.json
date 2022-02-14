@@ -45,6 +45,19 @@
         "close-all": "Please close all other applications and webpages before continuing.",
         "web-browser": "Make sure you are using the Google Chrome web browser."
       },
+      "attach-clicker": {
+        "attach-clicker": "Please attach the clicker to your computer using the USB-chord and place it so you can play it comfortably.\n\nWhen done, press the button below",
+        "initializing": "Initializing...",
+        "initialize-clicker": "Initialize Clicker"
+      },
+      "test-clicker": {
+        "no-clicker-mapping": "The clicker will initially be disabled.",
+        "verify-clicker": "Verify that the yellow button(s) indicated on dislay mirror the buttons you press.",
+        "verify-only-yellow-button": "(If a button is not in yellow, nothing will happen when you press it)",
+        "press-yellow-button": "Press any yellow button on the clicker",
+        "problem-signal": "Nothing happens when I press a button indicated in yellow?",
+        "problem-correspondance": "The buttons highlighted do not correspond to the buttons I press?"
+      },
       "attach-piano": {
         "attach-piano": "Please attach the MIDI-keyboard to your computer using the USB-chord and place it so you can play it comfortably.\n\nWhen done, press the button below",
         "initializing": "Initializing...",
@@ -70,6 +83,16 @@
         "solution-1": "No solution",
         "conclusion": "If the solution above did not fix the problem:\n Please contact the operator of the platform for further technical support. | If the solutions above did not fix the problem:\n Please contact the operator of the platform for further technical support.",
         "button": "OK"
+      },
+      "clicker-input": {
+        "title": "No clicker input received",
+        "solution-1": "Try uplugging and replugging the clicker.\nPress the OK buton to restart the clicker initialization.",
+        "conclusion": "If the solution above did not fix the problem:\nIt is likely that there is a problem with the keyboard of your computer.\nPlease contact the operator of the platform for further technical support."
+      },
+      "clicker-correspondance": {
+        "title": "Not corresponding buttons",
+        "solution-1": "If there is no button highlighted in yellow : it is normal that nothing happens when you press a button on the clicker, you can proceed to continue.",
+        "solution-2": "If the yellow buttons reacting do not mirror the buttons you press : it is likely that there is a problem with the configuration of the session you are about to start. Please contact the operator of the platform for further technical support."
       },
       "piano-setting": {
         "title": "MIDI keyboard not reachable",

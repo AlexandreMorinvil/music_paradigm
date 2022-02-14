@@ -61,7 +61,13 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['hasClearBackground', 'hasPrelude', 'isInMainFlow', 'controlType', 'considerExperimentFinished']),
+		...mapGetters('experiment', [
+			'hasClearBackground',
+			'hasPrelude',
+			'isInMainFlow',
+			'mustInitializePianoInputHandler',
+			'considerExperimentFinished',
+		]),
 		isClearVersion() {
 			return this.hasClearBackground;
 		},
@@ -84,7 +90,7 @@ export default {
 		...mapActions('piano', ['resetPlayedNotesLogs', 'resetPianoState', 'releasedAllNotesNotReleasedInLog', 'deleteAllPressedKeys']),
 		...mapActions('soundGenerator', ['initializeSoundGenerator', 'terminateSoundGenerator']),
 		initializeControl() {
-			if (this.controlType === 'piano') PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);
+			if (this.mustInitializePianoInputHandler) PianoEventBus.$emit(pianoEvents.EVENT_PIANO_INIT_REQUEST);
 			KeyboardEventBus.$emit(keyboardEvents.EVENT_TRACKER_INIT_REQUEST);
 		},
 		terminateControl() {

@@ -1,3 +1,5 @@
+import { controllerToMidiMapper } from '@/_helpers';
+
 export default {
 	curriculumTitle: (state) => {
 		return state.sessionInformation.curriculumTitle || null;
@@ -63,8 +65,16 @@ export default {
 		return state.sessionInformation.experiment.controlType === 'piano';
 	},
 
+	needsClickerSettingPreExperiment: (state) => {
+		return state.sessionInformation.experiment.controlType === 'clicker';
+	},
+
 	needsSoundTestPreExperiment: (state) => {
 		return Boolean(state.sessionInformation.experiment.hasSound);
+	},
+
+	keyboardToMidiInputMapping: (state) => {
+		return state.sessionInformation.experiment.keyboardToMidiInputMapping || {};
 	},
 
 	logType: (state) => {
