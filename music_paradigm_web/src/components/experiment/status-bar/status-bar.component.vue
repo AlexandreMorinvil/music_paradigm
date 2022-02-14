@@ -32,9 +32,9 @@ export default {
 		ProgressStatusComponent,
 	},
 	computed: {
-		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'controlType', 'withProgressionBar', 'withTimer', 'hasClearBackground']),
+		...mapGetters('experiment', ['midiName', 'referenceKeyboardKeys', 'mustInitializePianoInputHandler', 'withProgressionBar', 'withTimer', 'hasClearBackground']),
 		hasPianoStatus() {
-			return this.controlType === 'piano';
+			return this.mustInitializePianoInputHandler;
 		},
 		mustDisplayTime() {
 			return this.withTimer;

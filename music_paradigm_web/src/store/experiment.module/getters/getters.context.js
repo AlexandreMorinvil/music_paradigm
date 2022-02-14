@@ -20,7 +20,7 @@ export default {
 	},
 
 	controlType: (state) => {
-		return state.settings.controlType || defaultState.DEFAULT_CONTROL_TYPE;
+		return state.settings.controlType;
 	},
 
 	timeLimitInSeconds: (state) => {
@@ -60,5 +60,9 @@ export default {
 
 	hasTimeLeftMessages: (state) => {
 		return Object.keys(state.settings.timeLeftMessages).length > 0;
+	},
+
+	mustInitializePianoInputHandler: (state) => {
+		return state.settings.controlType === 'piano' || (state.settings.hasSound && state.settings.controlType !== 'none');
 	},
 };
