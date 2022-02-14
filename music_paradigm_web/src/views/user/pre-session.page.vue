@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 <template>
 	<div class="fill pre-session-text">
+		<keyboard-input-tracker-component />
 		<piano-input-handler-component />
 		<user-page-content-frame-component :title="$t('views.user.pre-session.before-starting')">
 			<component
@@ -18,19 +19,23 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
+import { KeyboardEventBus, keyboardEvents } from '@/event-bus/keyboard-event-bus.service.js';
 import { PianoEventBus, pianoEvents } from '@/event-bus/piano-event-bus.service.js';
+import KeyboardInputTrackerComponent from '@/components/controller/keyboard/keyboard-input-tracker.component.vue';
 import PianoInputHandlerComponent from '@/components/controller/piano/piano-input-handler.component.vue';
 
 import PreSessionAdviceComponent from '@/components/user/pre-session/pre-session-advice.component.vue';
+import PreSessionClickerSettingComponent from '@/components/user/pre-session/pre-session-clicker-setting.component.vue';
+import PreSessionClickerTestingComponent from '@/components/user/pre-session/pre-session-clicker-testing.component.vue';
 import PreSessionMessageComponent from '@/components/user/pre-session/pre-session-message.component.vue';
 import PreSessionPianoSettingComponent from '@/components/user/pre-session/pre-session-piano-setting.component.vue';
 import PreSessionPianoSoundComponent from '@/components/user/pre-session/pre-session-sound.component.vue';
 import PreSessionPianoTestingComponent from '@/components/user/pre-session/pre-session-piano-testing.component.vue';
 import UserPageContentFrameComponent from '@/components/content-frame/user-page-content-frame.component.vue';
 
-
 export default {
 	components: {
+		KeyboardInputTrackerComponent,
 		PianoInputHandlerComponent,
 
 		UserPageContentFrameComponent,
@@ -38,6 +43,8 @@ export default {
 		advice: PreSessionAdviceComponent,
 		'piano-plug': PreSessionPianoSettingComponent,
 		'piano-test': PreSessionPianoTestingComponent,
+		'clicker-plug': PreSessionClickerSettingComponent,
+		'clicker-test': PreSessionClickerTestingComponent,
 		sound: PreSessionPianoSoundComponent,
 	},
 	data() {
@@ -46,7 +53,12 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('session', ['needsMessagePreSession', 'needsPianoSettingPreExperiment', 'needsSoundTestPreExperiment']),
+		...mapGetters('session', [
+			'needsMessagePreSession',
+			'needsClickerSettingPreExperiment',
+			'needsPianoSettingPreExperiment',
+			'needsSoundTestPreExperiment',
+		]),
 		stages() {
 			const stages = [];
 			if (this.needsMessagePreSession) stages.push('message');
@@ -54,6 +66,10 @@ export default {
 			if (this.needsPianoSettingPreExperiment) {
 				stages.push('piano-plug');
 				stages.push('piano-test');
+			}
+			if (this.needsClickerSettingPreExperiment) {
+				stages.push('clicker-plug');
+				stages.push('clicker-test');
 			}
 			if (this.needsSoundTestPreExperiment) stages.push('sound');
 			return stages;
@@ -73,6 +89,7 @@ export default {
 		...mapActions('soundGenerator', ['initializeSoundGenerator', 'terminateSoundGenerator']),
 		abort() {
 			PianoEventBus.$emit(pianoEvents.EVENT_PIANO_TERMINATE_REQUEST);
+			KeyboardEventBus.$emit(keyboardEvents.EVENT_TRACKER_TERMINATE_REQUEST);
 			this.abortPresession();
 		},
 		moveNextStage() {

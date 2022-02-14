@@ -20,7 +20,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['controlType', 'hasSound']),
+		...mapGetters('experiment', ['hasSound', 'mustInitializePianoInputHandler']),
 		...mapGetters('piano', ['isPianoInitialized']),
 		...mapGetters('keyboard', ['isKeyboardInitialized']),
 		...mapGetters('soundGenerator', ['isSoundGeneratorInitialized']),
@@ -30,8 +30,8 @@ export default {
 		},
 		isReadyToStart() {
 			let isReady = true;
-			if (this.controlType === 'keyboard') isReady &= this.isKeyboardInitialized;
-			if (this.controlType === 'piano') isReady &= this.isPianoInitialized;
+			isReady &= this.isKeyboardInitialized;
+			if (this.mustInitializePianoInputHandler) isReady &= this.isPianoInitialized;
 			if (this.hasSound) isReady &= this.isSoundGeneratorInitialized;
 			return isReady;
 		},

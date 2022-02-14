@@ -28,6 +28,7 @@ import { mapGetters } from 'vuex';
 export default {
 	data() {
 		return {
+			mappingKeyboradToClicker: {},
 			highlightedDesignatedAssociatedKeys: [],
 			clickerButtons: ['clicker1', 'clicker2', 'clicker3', 'clicker4', 'clicker5'],
 		};
@@ -46,9 +47,6 @@ export default {
 		/**
 		 * Mapping { key: button }
 		 */
-		mappingKeyboradToClicker() {
-			return this.keyboardToClickerInputMapping;
-		},
 		mustDisplayPressedKeys() {
 			return !String(this.interactiveClicker).includes('#');
 		},
@@ -99,6 +97,14 @@ export default {
 		},
 	},
 	methods: {
+		assignMapping(keyboardToClickerInputMapping) {
+			this.mappingKeyboradToClicker = keyboardToClickerInputMapping || {};
+		},
+		imposeIndicatedButtons(buttons) {
+			this.highlightedDesignatedAssociatedKeys = buttons.map((button) => {
+				return this.convertButtonToKeyboardKey(button);
+			});
+		},
 		convertButtonToKeyboardKey(clickerButton) {
 			return Object.keys(this.mappingKeyboradToClicker).find((key) => this.mappingKeyboradToClicker[key] == clickerButton);
 		},
@@ -172,6 +178,13 @@ export default {
 				if (this.mustDisplayReferenceFirstKey) this.hintFistKey();
 				if (this.mustDisplayReferenceAllKeys) this.hintAllKeys();
 				if (this.mustDisplayLoadedMidiAllNotes) this.hintAllNotes();
+			},
+		},
+		keyboardToClickerInputMapping: {
+			deep: true,
+			immediate: true,
+			handler: function () {
+				this.assignMapping(this.keyboardToClickerInputMapping);
 			},
 		},
 	},

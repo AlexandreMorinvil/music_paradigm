@@ -13,7 +13,7 @@ const logTypeOptions = ['none', 'simple', 'thorough'];
  * @default 'simple'
  * @description List of the states that are considered for the types that are valid of a simple log entry
  */
-const defaultLogType = logTypeOptions[1];
+const defaultLogType = logTypeOptions[2];
 
 /**
  * Returns the list of all the possible log types
