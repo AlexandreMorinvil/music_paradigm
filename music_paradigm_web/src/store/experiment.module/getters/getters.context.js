@@ -65,4 +65,16 @@ export default {
 	mustInitializePianoInputHandler: (state) => {
 		return state.settings.controlType === 'piano' || (state.settings.hasSound && state.settings.controlType !== 'none');
 	},
+
+	hashasNavigationBar: (state) => {
+		return state.state.settings.hashasNavigationBar;
+	},
+
+	hasStatusBar: (state) => {
+		return state.state.settings.hasStatusBar;
+	},
+
+	isFullScreen: (state) => {
+		return state.state.settings.isFullScreen;
+	},
 };

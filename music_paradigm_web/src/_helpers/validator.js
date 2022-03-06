@@ -138,6 +138,9 @@ function validateExperiment(experiment) {
 		'cueWaitForClick',
 		'instrument',
 		'hasSound',
+		'hashasNavigationBar',
+		'hasStatusBar',
+		'isFullScreen',
 
 		'keyboardToMidiInputMapping',
 	];
@@ -263,6 +266,9 @@ function validateBlock(block, index = null) {
 		'writtingTextPlaceHolder',
 
 		'instrument',
+		'hashasNavigationBar',
+		'hasStatusBar',
+		'isFullScreen',
 
 		'questionType',
 		'audioFirst',
@@ -371,6 +377,9 @@ function validateAttributeType(key, value) {
 		case 'hasClearBackground':
 		case 'hasSound':
 		case 'areInactiveAnswersDisplayed':
+		case 'hashasNavigationBar':
+		case 'hasStatusBar':
+		case 'isFullScreen':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

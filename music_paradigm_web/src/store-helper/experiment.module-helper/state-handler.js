@@ -118,6 +118,9 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		questionType,
 		areAnswerOptionsVertical,
 		areInactiveAnswersDisplayed,
+		hashasNavigationBar,
+		hasStatusBar,
+		isFullScreen,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -160,6 +163,9 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		questionType: 					typeof questionType === 'string' 					? questionType : generalSettings.questionType,
 		areAnswerOptionsVertical: 		typeof areAnswerOptionsVertical === 'boolean' 		? areAnswerOptionsVertical : false,
 		areInactiveAnswersDisplayed:	typeof areInactiveAnswersDisplayed === 'boolean' 	? areInactiveAnswersDisplayed : false,
+		hashasNavigationBar:			typeof hashasNavigationBar === 'boolean'			? hashasNavigationBar : generalSettings.hashasNavigationBar,
+		hasStatusBar:					typeof hasStatusBar === 'boolean'					? hasStatusBar : generalSettings.hasStatusBar,
+		isFullScreen:					typeof isFullScreen === 'boolean'					? isFullScreen : generalSettings.isFullScreen,
 	};
 
 	// Indicate that the state (current block's settings) was already initialized
