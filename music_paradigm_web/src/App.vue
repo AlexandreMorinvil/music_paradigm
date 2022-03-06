@@ -60,6 +60,7 @@ html,
 body,
 #app {
 	height: 100vh;
+	overflow: auto;
 }
 
 body {

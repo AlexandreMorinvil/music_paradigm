@@ -25,6 +25,8 @@ import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-eve
 import { KeyboardEventBus, keyboardEvents } from '@/event-bus/keyboard-event-bus.service.js';
 import { PianoEventBus, pianoEvents } from '@/event-bus/piano-event-bus.service.js';
 
+import { fullScreen } from '@/_helpers';
+
 import ExperimentContent from '@/components/content-frame/experiment-content-frame.component.vue';
 import LoadedContentComponent from '@/components/experiment/session/loaded-content.component.vue';
 import LogComponent from '@/components/experiment/log/log.component.vue';
@@ -62,6 +64,7 @@ export default {
 	},
 	computed: {
 		...mapGetters('experiment', [
+			'isFullScreen',
 			'hasStatusBar',
 			'hasClearBackground',
 			'hasPrelude',
@@ -187,6 +190,7 @@ export default {
 		this.resetKeyboardTracking();
 		this.resetPianoState();
 		this.clearState();
+		fullScreen.leaveFullScreen();
 	},
 	watch: {
 		isTimerRunning: {
@@ -201,6 +205,13 @@ export default {
 				if (isConsideredFinished) this.concludeExperiment();
 			},
 		},
+		isFullScreen: {
+			immediate: true,
+			handler: function(isOn) {
+				if (isOn) fullScreen.enterFullScreen();
+				else fullScreen.leaveFullScreen();
+			},
+		}
 	},
 	beforeRouteLeave(to, from, next) {
 		// We need to verify that the route departure is not a redirection, otherwise

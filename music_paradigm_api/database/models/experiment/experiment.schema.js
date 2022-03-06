@@ -141,7 +141,7 @@ const schema = new Schema({
 
     hasNavigationBar: { type: Boolean, default: true },
     hasStatusBar: { type: Boolean, default: true },
-    isFullScreen: { type: Boolean, default: false },
+    isFullScreen: { type: Boolean, default: true },
 
     keyboardToMidiInputMapping:{
         default: undefined,
