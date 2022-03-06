@@ -173,7 +173,7 @@ function setExperimentGeneralSettings(state) {
 		hasClearBackground,
 		hasSound,
 		timeLeftMessages,
-		hashasNavigationBar,
+		hasNavigationBar,
 		hasStatusBar,
 		isFullScreen,
 	} = state.experiment;
@@ -205,7 +205,7 @@ function setExperimentGeneralSettings(state) {
 		hasClearBackground: 				typeof hasClearBackground === 'boolean' 			? hasClearBackground : defaultSettings.hasClearBackground,
 		hasSound: 							typeof hasSound === 'boolean' 						? hasSound : defaultSettings.hasSound,
 		timeLeftMessages:					typeof timeLeftMessages === 'object'				? timeLeftMessages : defaultSettings.timeLeftMessages,
-		hashasNavigationBar:				typeof hashasNavigationBar === 'boolean'			? hashasNavigationBar : defaultSettings.hashasNavigationBar,
+		hasNavigationBar:				typeof hasNavigationBar === 'boolean'			? hasNavigationBar : defaultSettings.hasNavigationBar,
 		hasStatusBar:						typeof hasStatusBar === 'boolean'					? hasStatusBar : defaultSettings.hasStatusBar,
 		isFullScreen:						typeof isFullScreen === 'boolean'					? isFullScreen : defaultSettings.isFullScreen,
 	};

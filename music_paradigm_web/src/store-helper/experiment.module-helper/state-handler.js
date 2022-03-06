@@ -118,7 +118,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		questionType,
 		areAnswerOptionsVertical,
 		areInactiveAnswersDisplayed,
-		hashasNavigationBar,
+		hasNavigationBar,
 		hasStatusBar,
 		isFullScreen,
 	} = currentBlock;
@@ -163,7 +163,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		questionType: 					typeof questionType === 'string' 					? questionType : generalSettings.questionType,
 		areAnswerOptionsVertical: 		typeof areAnswerOptionsVertical === 'boolean' 		? areAnswerOptionsVertical : false,
 		areInactiveAnswersDisplayed:	typeof areInactiveAnswersDisplayed === 'boolean' 	? areInactiveAnswersDisplayed : false,
-		hashasNavigationBar:			typeof hashasNavigationBar === 'boolean'			? hashasNavigationBar : generalSettings.hashasNavigationBar,
+		hasNavigationBar:			typeof hasNavigationBar === 'boolean'			? hasNavigationBar : generalSettings.hasNavigationBar,
 		hasStatusBar:					typeof hasStatusBar === 'boolean'					? hasStatusBar : generalSettings.hasStatusBar,
 		isFullScreen:					typeof isFullScreen === 'boolean'					? isFullScreen : generalSettings.isFullScreen,
 	};

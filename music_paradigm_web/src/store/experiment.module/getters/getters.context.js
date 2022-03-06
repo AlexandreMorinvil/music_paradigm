@@ -66,8 +66,8 @@ export default {
 		return state.settings.controlType === 'piano' || (state.settings.hasSound && state.settings.controlType !== 'none');
 	},
 
-	hashasNavigationBar: (state) => {
-		return state.state.settings.hashasNavigationBar;
+	hasNavigationBar: (state) => {
+		return state.state.settings.hasNavigationBar;
 	},
 
 	hasStatusBar: (state) => {

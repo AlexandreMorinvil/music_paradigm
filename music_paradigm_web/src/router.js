@@ -71,6 +71,11 @@ const router = new Router({
 					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/feedback.page.vue'),
 				},
 				{
+					path: 'pvt',
+					name: 'experiment.pvt',
+					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/pvt.page.vue'),
+				},
+				{
 					path: 'question',
 					name: 'experiment.question',
 					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/question.page.vue'),

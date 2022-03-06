@@ -30,7 +30,7 @@ const ALLOWED_ENTRIES_INTERACTIVE_HELPERS = ['half-', ''].flatMap((c) => {
  * @type {Array<String>}
  * @description Allowed values for the 'type' attributes of the flow descriptions
  * */
-const ALLOWED_STATE_TYPES = ['cue', 'end', 'feedback', 'instruction', 'playing', 'rest', 'video', 'survey', 'writting', 'question'];
+const ALLOWED_STATE_TYPES = ['cue', 'end', 'feedback', 'instruction', 'playing', 'pvt', 'question', 'rest', 'survey', 'video', 'writting'];
 
 function getMinimalValidExperimentStructure() {
 	return {
@@ -138,7 +138,7 @@ function validateExperiment(experiment) {
 		'cueWaitForClick',
 		'instrument',
 		'hasSound',
-		'hashasNavigationBar',
+		'hasNavigationBar',
 		'hasStatusBar',
 		'isFullScreen',
 
@@ -266,7 +266,7 @@ function validateBlock(block, index = null) {
 		'writtingTextPlaceHolder',
 
 		'instrument',
-		'hashasNavigationBar',
+		'hasNavigationBar',
 		'hasStatusBar',
 		'isFullScreen',
 
@@ -377,7 +377,7 @@ function validateAttributeType(key, value) {
 		case 'hasClearBackground':
 		case 'hasSound':
 		case 'areInactiveAnswersDisplayed':
-		case 'hashasNavigationBar':
+		case 'hasNavigationBar':
 		case 'hasStatusBar':
 		case 'isFullScreen':
 			if (!(typeof value === 'boolean')) {

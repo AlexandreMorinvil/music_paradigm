@@ -11,7 +11,7 @@
 		<log-component style="display: none" ref="log" />
 		<session-component style="display: none" ref="session" />
 
-		<status-bar-component ref="status" class="status-bar-position" />
+		<status-bar-component v-show="hasStatusBarVisible" ref="status" class="status-bar-position" />
 		<div id="state-content" class="state-content state-content-position" :class="{ 'state-content-clear': isClearVersion }">
 			<experiment-content :lastPressedKey="lastPressedKey" :isSpaceBarPressed="isSpaceBarPressed" />
 		</div>
@@ -62,12 +62,16 @@ export default {
 	},
 	computed: {
 		...mapGetters('experiment', [
+			'hasStatusBar',
 			'hasClearBackground',
 			'hasPrelude',
 			'isInMainFlow',
 			'mustInitializePianoInputHandler',
 			'considerExperimentFinished',
 		]),
+		hasStatusBarVisible() {
+			return this.hasStatusBar;
+		},
 		isClearVersion() {
 			return this.hasClearBackground;
 		},

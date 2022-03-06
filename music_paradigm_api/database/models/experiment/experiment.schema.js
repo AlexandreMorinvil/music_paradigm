@@ -5,7 +5,7 @@ const stateSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ["cue", "end", "feedback", "instruction", "playing", "rest", "video", "survey", "writting", 'question']
+        enum: ["cue", "end", "feedback", "instruction", "playing", 'pvt', 'question', "rest", "survey", "video", "writting"]
     },
     textContent: { type: Schema.Types.Mixed, default: undefined },
     pictureFileName: { type: Schema.Types.Mixed, default: undefined },
@@ -95,6 +95,10 @@ const stateSchema = new Schema({
     answerChoicesImage: { type: [], default: undefined },
 
     rightAnswers: { type: Schema.Types.Mixed, default: undefined },
+
+    hasNavigationBar: { type: Boolean, default: undefined },
+    hasStatusBar: { type: Boolean, default: undefined },
+    isFullScreen: { type: Boolean, default: undefined },
 },
     {
         strict: true
@@ -134,6 +138,10 @@ const schema = new Schema({
     hasClearBackground: { type: Boolean, default: undefined },
     hasSound: { type: Boolean, default: true },
     timeLeftMessages: { type: Object, default: undefined },
+
+    hasNavigationBar: { type: Boolean, default: true },
+    hasStatusBar: { type: Boolean, default: true },
+    isFullScreen: { type: Boolean, default: false },
 
     keyboardToMidiInputMapping:{
         default: undefined,
