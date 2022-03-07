@@ -63,6 +63,10 @@ body,
 	overflow: auto;
 }
 
+html {
+	overflow: auto !important;
+}
+
 body {
 	font-size: 1.3rem;
 	font-family: Arial, Helvetica, sans-serif;
