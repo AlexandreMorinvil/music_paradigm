@@ -14,7 +14,7 @@ export default {
 		return {
 			isCounting: false,
 			counterUniqueIdentifier: 0,
-			timeStepInMilliseconds: 7,
+			timeStepInMilliseconds: 5,
 			referenceTime: 0,
 			totalTime: 0,
 		};
@@ -44,8 +44,8 @@ export default {
 		},
 		stopTimer() {
 			window.clearInterval(this.counterUniqueIdentifier);
-			this.countUp();
 			this.isCounting = false;
+			this.$emit('pvtReacted', this.totalTime);
 		},
 		countUp() {
 			this.totalTime = new Date().getTime() - this.referenceTime.getTime();

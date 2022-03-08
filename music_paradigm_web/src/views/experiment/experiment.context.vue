@@ -13,7 +13,7 @@
 
 		<status-bar-component v-show="hasStatusBarVisible" ref="status" class="status-bar-position" />
 		<div id="state-content" class="state-content state-content-position" :class="{ 'state-content-clear': isClearVersion }">
-			<experiment-content :lastPressedKey="lastPressedKey" :isSpaceBarPressed="isSpaceBarPressed" :isMousePressed="isMousePressed" />
+			<experiment-content :lastPressedKey="lastPressedKey" :isSpaceBarPressed="isSpaceBarPressed" />
 		</div>
 	</div>
 </template>
@@ -59,7 +59,6 @@ export default {
 			hasConlcluded: false,
 			needsConfirmationToLeave: true,
 			isSpaceBarPressed: false,
-			isMousePressed: false,
 			lastPressedKey: '',
 		};
 	},
@@ -158,18 +157,10 @@ export default {
 		handleButtonRelease(releasedKey) {
 			if (releasedKey.key === ' ') this.isSpaceBarPressed = false;
 		},
-		handleMouseDown() {
-			this.isMousePressed = true;
-		},
-		handleMouseUp() {
-			this.isMousePressed = false;
-		},
 	},
 	mounted() {
 		window.addEventListener('keydown', this.handleButtonPress);
 		window.addEventListener('keyup', this.handleButtonRelease);
-		window.addEventListener('mousedown', this.handleMouseDown);
-		window.addEventListener('mouseup', this.handleMouseUp);
 		ExperimentEventBus.$on(experimentEvents.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
 		ExperimentEventBus.$on(experimentEvents.EVENT_GO_BACK_REQUET, this.navigateBackAnInnerStep);
 		ExperimentEventBus.$on(experimentEvents.EVENT_EXPERIMENT_READY, this.startExperiement);
@@ -187,8 +178,6 @@ export default {
 
 		window.removeEventListener('keydown', this.handleButtonPress);
 		window.removeEventListener('keyup', this.handleButtonRelease);
-		window.removeEventListener('mousedown', this.handleMouseDown);
-		window.removeEventListener('mouseup', this.handleMouseUp);
 		ExperimentEventBus.$off(experimentEvents.EVENT_SKIP_REQUET, this.navigateExperimentSkip);
 		ExperimentEventBus.$off(experimentEvents.EVENT_GO_BACK_REQUET, this.navigateBackAnInnerStep);
 		ExperimentEventBus.$off(experimentEvents.EVENT_EXPERIMENT_READY, this.startExperiement);

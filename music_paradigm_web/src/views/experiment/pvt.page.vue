@@ -1,7 +1,7 @@
 <template>
 	<div id="instruction-state" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
-		<pvt-stimulus-area-component class="image-area state-section" ref="stimulus" />
+		<pvt-stimulus-area-component class="image-area state-section" v-on:pvtMoveOn="handleMoveOn" ref="stimulus" />
 	</div>
 </template>
 
@@ -32,23 +32,27 @@ export default {
 				return false;
 			},
 		},
-		isMousePressed: {
-			type: Boolean,
-			default() {
-				return false;
-			},
-		},
 	},
 	data() {
 		return {
-			hasReceivedInput: false,
-			stimuliArray: [],
-			reactionTimaeArray: [],
-			isSuccessArray: [],
+			//
+			pvtStimuli: [],
+			pvtInputTimes: [],
+			pvtReactionTimes: [],
+			pvtAreTooEarly: [],
+
+			// Delays
+			DELAY_AFTER_INPUT_RECEIVED: 3000,
 		};
 	},
 	computed: {
 		...mapGetters('experiment', ['pvtMinTime', 'pvtMaxTime', 'pvtCount']),
+		numberSuccessfulStimuli() {
+			return this.pvtReactionTimes.length;
+		},
+		hasDoneAllRequiredStimuli() {
+			return this.numberSuccessfulStimuli >= this.pvtCount;
+		},
 	},
 	methods: {
 		updateFootnote() {
@@ -60,22 +64,37 @@ export default {
 		handleUserInput() {
 			this.$refs.stimulus.handleUserInput();
 		},
+		parseResult(pvtResult) {
+			const { stimulusTime, inputTime, isTooEarly, reactionTime } = pvtResult;
+			this.pvtStimuli.push(stimulusTime);
+			this.pvtInputTimes.push(inputTime);
+			this.pvtAreTooEarly.push(isTooEarly);
+			if (!isTooEarly) this.pvtReactionTimes.push(reactionTime);
+		},
+		handleMoveOn(pvtResult) {
+			this.parseResult(pvtResult);
+			setTimeout(() => {
+				if (this.hasDoneAllRequiredStimuli) {
+					// TODO: HANDLE LOGS
+					this.emitStateEndedSignal();
+				} else this.$refs.stimulus.restart();
+			}, this.DELAY_AFTER_INPUT_RECEIVED);
+		},
 		emitStateEndedSignal() {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 		},
 	},
 	beforeMount() {
 		this.updateFootnote();
+		window.addEventListener('pointerdown', this.handleUserInput);
 		ExperimentEventBus.$on(experimentEvents.EVENT_ADVANCE_REQUEST, this.emitStateEndedSignal);
 	},
 	beforeDestroy() {
+		window.removeEventListener('pointerdown', this.handleUserInput);
 		ExperimentEventBus.$off(experimentEvents.EVENT_ADVANCE_REQUEST, this.emitStateEndedSignal);
 	},
 	watch: {
 		isSpaceBarPressed(isPressed) {
-			if (isPressed) this.handleUserInput();
-		},
-		isMousePressed(isPressed) {
 			if (isPressed) this.handleUserInput();
 		},
 		pressedKeys(keys) {
