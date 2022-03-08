@@ -1,7 +1,7 @@
 <template>
 	<div id="instruction-state" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
-		<image-area-component class="image-area state-section" />
+		<pvt-stimulus-area-component class="image-area state-section" ref="stimulus" />
 	</div>
 </template>
 
@@ -11,13 +11,13 @@ import { mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
 
-import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
+import PvtStimulusAreaComponent from '@/components/experiment/visual-content/pvt-stimulus-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
-		ImageAreaComponent,
 		TextAreaComponent,
+		PvtStimulusAreaComponent,
 	},
 	props: {
 		lastPressedKey: {
@@ -32,16 +32,33 @@ export default {
 				return false;
 			},
 		},
+		isMousePressed: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
+	},
+	data() {
+		return {
+			hasReceivedInput: false,
+			stimuliArray: [],
+			reactionTimaeArray: [],
+			isSuccessArray: [],
+		};
 	},
 	computed: {
-		...mapGetters('experiment', ['']),
+		...mapGetters('experiment', ['pvtMinTime', 'pvtMaxTime', 'pvtCount']),
 	},
 	methods: {
 		updateFootnote() {
 			let footnoteMessage = '';
-			if (this.anyPianoKey) footnoteMessage = this.$t('views.experiment.instruction.footnote-press-any-key');
-			else footnoteMessage = this.$t('views.experiment.instruction.footnote-press-space-bar');
+			if (this.anyPianoKey) footnoteMessage = this.$t('views.experiment.pvt.footnote-press-any-key');
+			else footnoteMessage = this.$t('views.experiment.pvt.footnote-press-space-bar');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
+		},
+		handleUserInput() {
+			this.$refs.stimulus.handleUserInput();
 		},
 		emitStateEndedSignal() {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
@@ -56,10 +73,13 @@ export default {
 	},
 	watch: {
 		isSpaceBarPressed(isPressed) {
-			if (isPressed) this.emitStateEndedSignal();
+			if (isPressed) this.handleUserInput();
+		},
+		isMousePressed(isPressed) {
+			if (isPressed) this.handleUserInput();
 		},
 		pressedKeys(keys) {
-			if (this.anyPianoKey && keys.length > 0) this.emitStateEndedSignal();
+			if (this.anyPianoKey && keys.length > 0) this.handleUserInput();
 		},
 	},
 };
@@ -68,9 +88,10 @@ export default {
 <style scoped>
 .text-area {
 	flex-grow: 1;
+	height: 10%;
 }
 
-.image-area {
+.pvt-stimulus-area {
 	flex-grow: 1;
 }
 </style>

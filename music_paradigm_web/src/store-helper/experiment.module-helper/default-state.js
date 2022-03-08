@@ -54,7 +54,7 @@ const DEFAULT_HAS_SOUND = true;
 const DEFAULT_TIME_LEFT_MESSAGES = {};
 const DEFAULT_HAS_NAVIGATION_BAR = true;
 const DEFAULT_STAUS_BAR = true;
-const DEFAULT_IF_FULL_SCREEN = true;
+const DEFAULT_IF_FULL_SCREEN = false;
 
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
@@ -256,9 +256,16 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			areAnswerOptionsVertical: false,										// Disposition of the anserChoices (vertical if true, horizontal if false)
 			areInactiveAnswersDisplayed: false,										// Indicate if answers with a text but no value must be displayed (as incactive choices)
 
-			hasNavigationBar: DEFAULT_HAS_NAVIGATION_BAR,						// Block specific indicator of whether the step should have the upper navigation bar
+			hasNavigationBar: DEFAULT_HAS_NAVIGATION_BAR,							// Block specific indicator of whether the step should have the upper navigation bar
 			hasStatusBar: DEFAULT_STAUS_BAR,										// Block specific indicator of whether the step should have the status bar
 			isFullScreen: DEFAULT_IF_FULL_SCREEN,									// Block specific indicator of whether the step should be in full screen
+
+			pvtMinTime: 1000,														// Minimum time for a pvt stimulus in milliseconds
+			pvtMaxTime: 10000,														// Maximum time for a pvt stimulus in milliseconds
+			pvtCount: 1,															// Number of pvt stimuli to submit
+			pvtMaxResponseTime: 10000,												// Maximum time to react to the stimulus
+			pvtTooEarlyMessage: '',													// Message to display if the user reacts before the stimulus in a pvt state
+			pvtHasCentralElement: true,												// Indicates if the pvt test must have a centre visual element
 		},
 		// Session specific informations
 		record: {

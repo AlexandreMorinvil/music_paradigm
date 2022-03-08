@@ -121,6 +121,12 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		hasNavigationBar,
 		hasStatusBar,
 		isFullScreen,
+		pvtMinTime,
+		pvtMaxTime,
+		pvtCount,
+		pvtMaxResponseTime,
+		pvtTooEarlyMessage,
+		pvtHasCentralElement,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -166,6 +172,12 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		hasNavigationBar:				typeof hasNavigationBar === 'boolean'				? hasNavigationBar : generalSettings.hasNavigationBar,
 		hasStatusBar:					typeof hasStatusBar === 'boolean'					? hasStatusBar : generalSettings.hasStatusBar,
 		isFullScreen:					typeof isFullScreen === 'boolean'					? isFullScreen : generalSettings.isFullScreen,
+		pvtMinTime:						typeof pvtMinTime === 'number' 						? pvtMinTime : 1000,
+		pvtMaxTime:						typeof pvtMaxTime === 'number' 						? pvtMaxTime : 10000,
+		pvtCount:						typeof pvtCount === 'number' 						? pvtCount : 1,
+		pvtMaxResponseTime:				typeof pvtMaxResponseTime === 'number'				? pvtMaxResponseTime : 10000,
+		pvtTooEarlyMessage:				typeof pvtTooEarlyMessage === 'string'				? pvtTooEarlyMessage : '',
+		pvtHasCentralElement:			typeof pvtHasCentralElement === 'string'			? pvtHasCentralElement : true,
 	};
 
 	// Indicate that the state (current block's settings) was already initialized

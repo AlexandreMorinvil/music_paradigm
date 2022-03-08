@@ -285,6 +285,13 @@ function validateBlock(block, index = null) {
 		'areInactiveAnswersDisplayed',
 
 		'rightAnswers',
+
+		'pvtMinTime',
+		'pvtMaxTime',
+		'pvtCount',
+		'pvtMaxResponseTime',
+		'pvtTooEarlyMessage',
+		'pvtHasCentralElement',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -328,6 +335,8 @@ function validateAttributeType(key, value) {
 		case 'writtingTextPlaceHolder':
 		case 'instrument':
 		case 'questionType':
+		case 'pvtHasCentralElement':
+		case 'pvtTooEarlyMessage':
 			if (!(typeof value === 'string')) {
 				throw new Error(`The key '${key}' must be of type 'String'`);
 			}
@@ -346,6 +355,10 @@ function validateAttributeType(key, value) {
 		case 'skipIfNotMetSuccessGoal':
 		case 'writtingMaxCharacters':
 		case 'writtingMinCharacters':
+		case 'pvtMinTime':
+		case 'pvtMaxTime':
+		case 'pvtCount':
+		case 'pvtMaxResponseTime':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}

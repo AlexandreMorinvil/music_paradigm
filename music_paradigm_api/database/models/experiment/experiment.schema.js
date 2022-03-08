@@ -99,6 +99,13 @@ const stateSchema = new Schema({
     hasNavigationBar: { type: Boolean, default: undefined },
     hasStatusBar: { type: Boolean, default: undefined },
     isFullScreen: { type: Boolean, default: undefined },
+
+    pvtMinTime: { type: Number, default: undefined },
+    pvtMaxTime: { type: Number, default: undefined },
+    pvtCount: { type: Number, default: undefined },
+    pvtMaxResponseTime: { type: Number, default: undefined },
+    pvtTooEarlyMessage: { type: String, default: undefined },
+    pvtHasCentralElement: { type: Boolean, default: undefined },
 },
     {
         strict: true
