@@ -52,6 +52,9 @@ const DEFAULT_HAS_TIMER = true;
 const DEFAULT_HAS_CLEAR_BACKGROUND = false;
 const DEFAULT_HAS_SOUND = true;
 const DEFAULT_TIME_LEFT_MESSAGES = {};
+const DEFAULT_HAS_NAVIGATION_BAR = true;
+const DEFAULT_STAUS_BAR = true;
+const DEFAULT_IF_FULL_SCREEN = false;
 
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
@@ -135,6 +138,9 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		hasClearBackground: DEFAULT_HAS_CLEAR_BACKGROUND,									// Indicate whethe the experiment setting must be in white (true) or black (false)
 		hasSound: DEFAULT_HAS_SOUND,														// Indicate whether the experiment has sound
 		timeLeftMessages: DEFAULT_TIME_LEFT_MESSAGES,										// Object containning a message to display when certain time left thresholds (indicated in milliseconds) are reached
+		hasNavigationBar: DEFAULT_HAS_NAVIGATION_BAR,									// Indicates if the session should have the upper navigation bar
+		hasStatusBar: DEFAULT_STAUS_BAR,													// Indicates if the session should have the status bar
+		isFullScreen: DEFAULT_IF_FULL_SCREEN,												// Indicates if the session should be in full screen
 	};
 }
 
@@ -249,6 +255,17 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			questionType: DEFAULT_QUESTION_TYPE,									// Indicate the question type for the 'question' states
 			areAnswerOptionsVertical: false,										// Disposition of the anserChoices (vertical if true, horizontal if false)
 			areInactiveAnswersDisplayed: false,										// Indicate if answers with a text but no value must be displayed (as incactive choices)
+
+			hasNavigationBar: DEFAULT_HAS_NAVIGATION_BAR,							// Block specific indicator of whether the step should have the upper navigation bar
+			hasStatusBar: DEFAULT_STAUS_BAR,										// Block specific indicator of whether the step should have the status bar
+			isFullScreen: DEFAULT_IF_FULL_SCREEN,									// Block specific indicator of whether the step should be in full screen
+
+			pvtMinTime: 1000,														// Minimum time for a pvt stimulus in milliseconds
+			pvtMaxTime: 10000,														// Maximum time for a pvt stimulus in milliseconds
+			pvtCount: 1,															// Number of pvt stimuli to submit
+			pvtMaxResponseTime: 10000,												// Maximum time to react to the stimulus
+			pvtTooEarlyMessage: '',													// Message to display if the user reacts before the stimulus in a pvt state
+			pvtHasCentralElement: true,												// Indicates if the pvt test must have a centre visual element
 		},
 		// Session specific informations
 		record: {

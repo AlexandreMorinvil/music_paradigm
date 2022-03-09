@@ -173,6 +173,9 @@ function setExperimentGeneralSettings(state) {
 		hasClearBackground,
 		hasSound,
 		timeLeftMessages,
+		hasNavigationBar,
+		hasStatusBar,
+		isFullScreen,
 	} = state.experiment;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -202,6 +205,9 @@ function setExperimentGeneralSettings(state) {
 		hasClearBackground: 				typeof hasClearBackground === 'boolean' 			? hasClearBackground : defaultSettings.hasClearBackground,
 		hasSound: 							typeof hasSound === 'boolean' 						? hasSound : defaultSettings.hasSound,
 		timeLeftMessages:					typeof timeLeftMessages === 'object'				? timeLeftMessages : defaultSettings.timeLeftMessages,
+		hasNavigationBar:				typeof hasNavigationBar === 'boolean'			? hasNavigationBar : defaultSettings.hasNavigationBar,
+		hasStatusBar:						typeof hasStatusBar === 'boolean'					? hasStatusBar : defaultSettings.hasStatusBar,
+		isFullScreen:						typeof isFullScreen === 'boolean'					? isFullScreen : defaultSettings.isFullScreen,
 	};
 }
 

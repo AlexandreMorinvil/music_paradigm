@@ -1,5 +1,5 @@
 <template>
-	<div id="navigation-bar" :class="{ 'clear-navigation-bar': isClearVersion }">
+	<div id="navigation-bar" v-show="isShown" :class="{ 'clear-navigation-bar': isClearVersion }">
 		<div class="navigation-bar-wrapper navigation-bar-left"></div>
 		<div class="navigation-bar-wrapper navigation-bar-center">
 			<time-left-message-component v-if="hasTimeLeftMessages" />
@@ -22,7 +22,10 @@ export default {
 		TimeLeftMessageComponent,
 	},
 	computed: {
-		...mapGetters('experiment', ['hasClearBackground', 'hasTimeLeftMessages']),
+		...mapGetters('experiment', ['hasClearBackground', 'hasTimeLeftMessages', 'hasNavigationBar']),
+		isShown() {
+			return this.hasNavigationBar;
+		},
 		isClearVersion() {
 			return this.hasClearBackground;
 		},

@@ -206,6 +206,10 @@
         "loading": "Loading...",
         "ready": "Ready"
       },
+      "pvt": {
+        "footnote-press-any-key": "Press any key or click anywhere with the mouse when the count starts.",
+        "footnote-press-space-bar": "Press the space bar or click anywhere with the mouse when the count starts."
+      },
       "question": {
         "midi-note": {
           "footnote-explaination": "Select the note by clicking on the sequence number"

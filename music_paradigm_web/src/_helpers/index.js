@@ -2,6 +2,7 @@ import authHeader from './auth-header';
 import controllerToMidiMapper from './controller-to-midi-mapper';
 import downloadSave from './download-save';
 import experimentParser from './experiment-parser';
+import fullScreen from './full-screen';
 import instruments from './instruments';
 import keyboardPerformance from './keyboard-performance';
 import log from './log';
@@ -18,6 +19,7 @@ export {
     controllerToMidiMapper,
     downloadSave,
     experimentParser,
+    fullScreen,
     instruments,
     keyboardPerformance,
     log,
