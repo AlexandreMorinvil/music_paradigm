@@ -335,7 +335,6 @@ function validateAttributeType(key, value) {
 		case 'writtingTextPlaceHolder':
 		case 'instrument':
 		case 'questionType':
-		case 'pvtHasCentralElement':
 		case 'pvtTooEarlyMessage':
 			if (!(typeof value === 'string')) {
 				throw new Error(`The key '${key}' must be of type 'String'`);
@@ -393,6 +392,7 @@ function validateAttributeType(key, value) {
 		case 'hasNavigationBar':
 		case 'hasStatusBar':
 		case 'isFullScreen':
+		case 'pvtHasCentralElement':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

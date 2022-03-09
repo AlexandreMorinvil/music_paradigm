@@ -7,7 +7,7 @@
 
 <script>
 import '@/styles/experiment-content-template.css';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
 
@@ -55,6 +55,7 @@ export default {
 		},
 	},
 	methods: {
+		...mapActions('pvt', ['setPvtResults', 'setPvtContext']),
 		updateFootnote() {
 			let footnoteMessage = '';
 			if (this.anyPianoKey) footnoteMessage = this.$t('views.experiment.pvt.footnote-press-any-key');
@@ -71,11 +72,24 @@ export default {
 			this.pvtAreTooEarly.push(isTooEarly);
 			if (!isTooEarly) this.pvtReactionTimes.push(reactionTime);
 		},
+		storePvtRecords() {
+			this.setPvtContext({
+				pvtMinTime: this.pvtMinTime,
+				pvtMaxTime: this.pvtMaxTime,
+				pvtHasCentralElement: this.pvtHasCentralElement,
+			});
+			this.setPvtResults({
+				pvtStimuli: this.pvtStimuli,
+				pvtInputTimes: this.pvtInputTimes,
+				pvtReactionTimes: this.pvtReactionTimes,
+				pvtAreTooEarly: this.pvtAreTooEarly,
+			});
+		},
 		handleMoveOn(pvtResult) {
 			this.parseResult(pvtResult);
 			setTimeout(() => {
 				if (this.hasDoneAllRequiredStimuli) {
-					// TODO: HANDLE LOGS
+					this.storePvtRecords();
 					this.emitStateEndedSignal();
 				} else this.$refs.stimulus.restart();
 			}, this.DELAY_AFTER_INPUT_RECEIVED);
@@ -90,6 +104,7 @@ export default {
 		ExperimentEventBus.$on(experimentEvents.EVENT_ADVANCE_REQUEST, this.emitStateEndedSignal);
 	},
 	beforeDestroy() {
+		this.storePvtRecords();
 		window.removeEventListener('pointerdown', this.handleUserInput);
 		ExperimentEventBus.$off(experimentEvents.EVENT_ADVANCE_REQUEST, this.emitStateEndedSignal);
 	},
