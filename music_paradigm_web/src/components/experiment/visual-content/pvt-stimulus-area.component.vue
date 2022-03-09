@@ -3,7 +3,7 @@
 		<center-element-component v-if="showsCentralElement" />
 		<too-early-text-component v-if="hasReceivedInputTooEarly" />
 		<count-up-component v-on:pvtReacted="handleReactionTime" v-if="hasRevealedStimulus" ref="countUp" />
-		<span class="pvt-specifiction"> Here ? {{ specification }} </span>
+		<span class="pvt-specifiction"> {{ specification }} </span>
 	</div>
 </template>
 

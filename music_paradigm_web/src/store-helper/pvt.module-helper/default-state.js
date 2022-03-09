@@ -8,7 +8,7 @@ function DEFAULT_PVT_STATE() {
 		pvtStimuli: [],
 		pvtInputTimes: [],
 		pvtReactionTimes: [],
-		pvtAreTooEarly: [],
+		pvtReactionTooEarly: [],
 
 		// Context information
 		pvtMinTime: null,

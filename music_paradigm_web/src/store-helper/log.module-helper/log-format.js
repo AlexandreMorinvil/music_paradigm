@@ -6,6 +6,7 @@ import { evaluation } from '@/store/evaluation.module';
 import { keyboard } from '@/store/keyboard.module';
 import { piano } from '@/store/piano.module';
 
+import { pvt } from '@/store/pvt.module';
 import { question } from '@/store/question.module';
 import { survey } from '@/store/survey.module';
 import { writting } from '@/store/writting.module';
@@ -26,8 +27,9 @@ const gettersEvaluation = evaluation.getters;
 const gettersKeyboard = keyboard.getters;
 const gettersPiano = piano.getters;
 
-const gettersSurvey = survey.getters;
+const gettersPvt = pvt.getters;
 const gettersQuestion = question.getters;
+const gettersSurvey = survey.getters;
 const gettersWritting = writting.getters;
 
 // Access the states associated (where the information is stored)
@@ -39,8 +41,9 @@ const stateEvaluation = evaluation.state;
 const stateKeyboard = keyboard.state;
 const statePiano = piano.state;
 
-const stateSurvey = survey.state;
+const statePvt = pvt.state;
 const stateQuestion = question.state;
+const stateSurvey = survey.state;
 const stateWritting = writting.state;
 
 /**
@@ -56,7 +59,7 @@ const stateWritting = writting.state;
  * Each Simple-Log block contains the information about the session to which it is associated.
  * The Simple-Log format does not provide the full story of how a session happened.
  * Only the information about the performances or the required inputs of the user are recorded.
- * Simple-Log blocks are (generally) only generated for "playing", "survey" and "writting" states.
+ * Simple-Log blocks are (generally) only generated for "playing", "pvt", "survey" and "writting" states.
  */
 
 /**
@@ -79,6 +82,7 @@ function makeSimpleLogBlock() {
 	if (blockType === 'survey') Object.assign(block, makeLogBlockSurveyAnswers());
 	if (blockType === 'witting') Object.assign(block, makeLogBlockWrittenAnswer());
 	if (blockType === 'question') Object.assign(block, makeLogBlockQuestionAnswer());
+	if (blockType === 'pvt') Object.assign(block, makeLogBlockPvtResults());
 	return block;
 }
 
@@ -215,6 +219,7 @@ function makeThoroughLogBlock() {
 	if (blockType === 'survey') Object.assign(block, makeLogBlockSurveyAnswers());
 	if (blockType === 'writting') Object.assign(block, makeLogBlockWrittenAnswer());
 	if (blockType === 'question') Object.assign(block, makeLogBlockQuestionAnswer());
+	if (blockType === 'pvt') Object.assign(block, makeLogBlockPvtResults());
 	return block;
 }
 
@@ -309,7 +314,7 @@ function makeLogBlockWrittenAnswer() {
 }
 
 /**
- * Gather the information of a written input from a 'writting' state for a log block of Simple-Log and Thorough-Log format
+ * Gather the information of a 'question' state for a log block of Simple-Log and Thorough-Log format
  * @returns {Log_Block_Question_Answer}
  */
  function makeLogBlockQuestionAnswer() {
@@ -323,4 +328,23 @@ function makeLogBlockWrittenAnswer() {
 		questionRelatedContent: gettersQuestion.questionRelatedContent(stateQuestion),
 	};
 	return questionAnswer;
+}
+
+/**
+ * Gather the information of a 'pvt' state for a log block of Simple-Log and Thorough-Log format
+ * @returns {Log_Block_Pvt_Results}
+ */
+ function makeLogBlockPvtResults() {
+	const pvtResults = {
+		pvtStimuli: gettersPvt.pvtStimuli(statePvt),
+		pvtInputTimes: gettersPvt.pvtInputTimes(statePvt),
+		pvtReactionTimes: gettersPvt.pvtReactionTimes(statePvt),
+		pvtReactionTooEarly: gettersPvt.pvtReactionTooEarly(statePvt),
+		pvtMinTime: gettersPvt.pvtMinTime(statePvt),
+		pvtMaxTime: gettersPvt.pvtMaxTime(statePvt),
+		pvtCount: gettersPvt.pvtCount(statePvt),
+		pvtHasCentralElement: gettersPvt.pvtHasCentralElement(statePvt),
+		pvtReactionTimeAverage: gettersPvt.pvtReactionTimeAverage(statePvt),
+	};
+	return pvtResults;
 }

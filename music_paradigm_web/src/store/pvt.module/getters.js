@@ -1,8 +1,4 @@
 export default {
-	questionAnswerIndex: (state) => {
-		return state.questionAnswerIndex;
-	},
-
 	pvtStimuli: (state) => {
 		return state.pvtStimuli;
 	},
@@ -15,8 +11,8 @@ export default {
 		return state.pvtReactionTimes;
 	},
 
-	pvtAreTooEarly: (state) => {
-		return state.pvtAreTooEarly;
+	pvtReactionTooEarly: (state) => {
+		return state.pvtReactionTooEarly;
 	},
 
 	pvtMinTime: (state) => {

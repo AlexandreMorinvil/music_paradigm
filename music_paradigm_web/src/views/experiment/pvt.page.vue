@@ -39,7 +39,7 @@ export default {
 			pvtStimuli: [],
 			pvtInputTimes: [],
 			pvtReactionTimes: [],
-			pvtAreTooEarly: [],
+			pvtReactionTooEarly: [],
 
 			// Delays
 			DELAY_AFTER_INPUT_RECEIVED: 3500,
@@ -69,7 +69,7 @@ export default {
 			const { stimulusTime, inputTime, isTooEarly, reactionTime } = pvtResult;
 			this.pvtStimuli.push(stimulusTime);
 			this.pvtInputTimes.push(inputTime);
-			this.pvtAreTooEarly.push(isTooEarly);
+			this.pvtReactionTooEarly.push(isTooEarly);
 			if (!isTooEarly) this.pvtReactionTimes.push(reactionTime);
 		},
 		storePvtRecords() {
@@ -82,7 +82,7 @@ export default {
 				pvtStimuli: this.pvtStimuli,
 				pvtInputTimes: this.pvtInputTimes,
 				pvtReactionTimes: this.pvtReactionTimes,
-				pvtAreTooEarly: this.pvtAreTooEarly,
+				pvtReactionTooEarly: this.pvtReactionTooEarly,
 			});
 		},
 		handleMoveOn(pvtResult) {

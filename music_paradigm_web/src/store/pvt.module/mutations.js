@@ -5,7 +5,7 @@ export default {
 		state.pvtStimuli = result.pvtStimuli;
 		state.pvtInputTimes = result.pvtInputTimes;
 		state.pvtReactionTimes = result.pvtReactionTimes;
-		state.pvtAreTooEarly = result.pvtAreTooEarly;
+		state.pvtReactionTooEarly = result.pvtReactionTooEarly;
 	},
 
 	setPvtContext: (state, context) => {
