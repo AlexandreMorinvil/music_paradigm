@@ -1,10 +1,7 @@
 <template>
 	<div id="app" class="app-grid">
 		<alert-component id="alert" v-if="hasAlert" />
-		<div id="app-header" class="app-header app-header-position">
-			<component :is="navigationBarType" class="navigatiobn-bar" id="app-navigation-bar" />
-		</div>
-
+		<component :is="navigationBarType" class="app-header app-header-position navigatiobn-bar" id="app-navigation-bar" />
 		<router-view class="app-main-position" />
 	</div>
 </template>
@@ -63,6 +60,11 @@ html,
 body,
 #app {
 	height: 100vh;
+	overflow: auto;
+}
+
+html {
+	overflow: auto !important;
 }
 
 body {
@@ -81,7 +83,7 @@ body {
 
 .app-header-position {
 	grid-area: header;
-	position: fixed;
+	position: sticky;
 	top: 0;
 	z-index: 1000;
 }
@@ -92,7 +94,7 @@ body {
 
 .app-grid {
 	display: grid;
-	grid-template-rows: 56px;
+	grid-template-rows: auto 1fr;
 	grid-template-areas:
 		'header'
 		'main';

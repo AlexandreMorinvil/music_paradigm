@@ -30,7 +30,7 @@ const ALLOWED_ENTRIES_INTERACTIVE_HELPERS = ['half-', ''].flatMap((c) => {
  * @type {Array<String>}
  * @description Allowed values for the 'type' attributes of the flow descriptions
  * */
-const ALLOWED_STATE_TYPES = ['cue', 'end', 'feedback', 'instruction', 'playing', 'rest', 'video', 'survey', 'writting', 'question'];
+const ALLOWED_STATE_TYPES = ['cue', 'end', 'feedback', 'instruction', 'playing', 'pvt', 'question', 'rest', 'survey', 'video', 'writting'];
 
 function getMinimalValidExperimentStructure() {
 	return {
@@ -138,6 +138,9 @@ function validateExperiment(experiment) {
 		'cueWaitForClick',
 		'instrument',
 		'hasSound',
+		'hasNavigationBar',
+		'hasStatusBar',
+		'isFullScreen',
 
 		'keyboardToMidiInputMapping',
 	];
@@ -263,6 +266,9 @@ function validateBlock(block, index = null) {
 		'writtingTextPlaceHolder',
 
 		'instrument',
+		'hasNavigationBar',
+		'hasStatusBar',
+		'isFullScreen',
 
 		'questionType',
 		'audioFirst',
@@ -279,6 +285,13 @@ function validateBlock(block, index = null) {
 		'areInactiveAnswersDisplayed',
 
 		'rightAnswers',
+
+		'pvtMinTime',
+		'pvtMaxTime',
+		'pvtCount',
+		'pvtMaxResponseTime',
+		'pvtTooEarlyMessage',
+		'pvtHasCentralElement',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -322,6 +335,7 @@ function validateAttributeType(key, value) {
 		case 'writtingTextPlaceHolder':
 		case 'instrument':
 		case 'questionType':
+		case 'pvtTooEarlyMessage':
 			if (!(typeof value === 'string')) {
 				throw new Error(`The key '${key}' must be of type 'String'`);
 			}
@@ -340,6 +354,10 @@ function validateAttributeType(key, value) {
 		case 'skipIfNotMetSuccessGoal':
 		case 'writtingMaxCharacters':
 		case 'writtingMinCharacters':
+		case 'pvtMinTime':
+		case 'pvtMaxTime':
+		case 'pvtCount':
+		case 'pvtMaxResponseTime':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
@@ -371,6 +389,10 @@ function validateAttributeType(key, value) {
 		case 'hasClearBackground':
 		case 'hasSound':
 		case 'areInactiveAnswersDisplayed':
+		case 'hasNavigationBar':
+		case 'hasStatusBar':
+		case 'isFullScreen':
+		case 'pvtHasCentralElement':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

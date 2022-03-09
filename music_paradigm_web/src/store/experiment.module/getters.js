@@ -15,6 +15,7 @@ import cueGetters from './getters/getters.cue';
 import cursorGetters from './getters/getters.cursor';
 import feedbackGetters from './getters/getters.feedback';
 import playingGetters from './getters/getters.playing';
+import pvtGetters from './getters/getters.pvt';
 import questionGetters from './getters/getters.question';
 import surveyGetters from './getters/getters.survey';
 import writtingGetters from './getters/getters.writting';
@@ -41,6 +42,7 @@ export default {
 	...cueGetters,
 	...feedbackGetters,
 	...playingGetters,
+	...pvtGetters,
 	...questionGetters,
 	...surveyGetters,
 	...writtingGetters,

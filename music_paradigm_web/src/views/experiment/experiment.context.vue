@@ -11,7 +11,7 @@
 		<log-component style="display: none" ref="log" />
 		<session-component style="display: none" ref="session" />
 
-		<status-bar-component ref="status" class="status-bar-position" />
+		<status-bar-component v-show="hasStatusBarVisible" ref="status" class="status-bar-position" />
 		<div id="state-content" class="state-content state-content-position" :class="{ 'state-content-clear': isClearVersion }">
 			<experiment-content :lastPressedKey="lastPressedKey" :isSpaceBarPressed="isSpaceBarPressed" />
 		</div>
@@ -24,6 +24,8 @@ import { mapActions, mapGetters } from 'vuex';
 import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
 import { KeyboardEventBus, keyboardEvents } from '@/event-bus/keyboard-event-bus.service.js';
 import { PianoEventBus, pianoEvents } from '@/event-bus/piano-event-bus.service.js';
+
+import { fullScreen } from '@/_helpers';
 
 import ExperimentContent from '@/components/content-frame/experiment-content-frame.component.vue';
 import LoadedContentComponent from '@/components/experiment/session/loaded-content.component.vue';
@@ -55,19 +57,24 @@ export default {
 		return {
 			isTimerAllowedToCount: false,
 			hasConlcluded: false,
-			isSpaceBarPressed: false,
 			needsConfirmationToLeave: true,
+			isSpaceBarPressed: false,
 			lastPressedKey: '',
 		};
 	},
 	computed: {
 		...mapGetters('experiment', [
+			'isFullScreen',
+			'hasStatusBar',
 			'hasClearBackground',
 			'hasPrelude',
 			'isInMainFlow',
 			'mustInitializePianoInputHandler',
 			'considerExperimentFinished',
 		]),
+		hasStatusBarVisible() {
+			return this.hasStatusBar;
+		},
 		isClearVersion() {
 			return this.hasClearBackground;
 		},
@@ -183,6 +190,7 @@ export default {
 		this.resetKeyboardTracking();
 		this.resetPianoState();
 		this.clearState();
+		fullScreen.leaveFullScreen();
 	},
 	watch: {
 		isTimerRunning: {
@@ -195,6 +203,13 @@ export default {
 			immediate: true,
 			handler: function (isConsideredFinished) {
 				if (isConsideredFinished) this.concludeExperiment();
+			},
+		},
+		isFullScreen: {
+			immediate: true,
+			handler: function (isOn) {
+				if (isOn) fullScreen.enterFullScreen();
+				else fullScreen.leaveFullScreen();
 			},
 		},
 	},
