@@ -35,14 +35,14 @@ export default {
 	},
 	data() {
 		return {
-			//
+			// Results
 			pvtStimuli: [],
 			pvtInputTimes: [],
 			pvtReactionTimes: [],
 			pvtAreTooEarly: [],
 
 			// Delays
-			DELAY_AFTER_INPUT_RECEIVED: 3000,
+			DELAY_AFTER_INPUT_RECEIVED: 3500,
 		};
 	},
 	computed: {

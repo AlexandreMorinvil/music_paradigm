@@ -3,6 +3,7 @@
 		<center-element-component v-if="showsCentralElement" />
 		<too-early-text-component v-if="hasReceivedInputTooEarly" />
 		<count-up-component v-on:pvtReacted="handleReactionTime" v-if="hasRevealedStimulus" ref="countUp" />
+		<span class="pvt-specifiction"> Here ? {{ specification }} </span>
 	</div>
 </template>
 
@@ -22,11 +23,7 @@ export default {
 	},
 	data() {
 		return {
-			// Initialization information
-			isFirstTime: true,
-
 			// Information to manage the sequence of events
-
 			hasRevealedStimulus: false,
 			hasReceivedInput: false,
 			wasStopedByTimeLimit: false,
@@ -42,7 +39,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['pvtHasCentralElement', 'pvtMinTime', 'pvtMaxTime', 'pvtCount']),
+		...mapGetters('experiment', ['pvtHasCentralElement', 'pvtMinTime', 'pvtMaxTime', 'textSpecification']),
 		showsCentralElement() {
 			return !this.hasRevealedStimulus && !this.hasReceivedInput && this.pvtHasCentralElement;
 		},
@@ -52,11 +49,16 @@ export default {
 		showsCountUp() {
 			return this.hasRevealedStimulus && !this.hasReceivedInputTooEarly;
 		},
+		specification() {
+			return this.textSpecification;
+		},
 	},
 	methods: {
 		restart() {
-			this.isFirstTime = false;
-
+			this.resetValues();
+			this.revealStimulusAfterDelay();
+		},
+		resetValues() {
 			this.hasRevealedStimulus = false;
 			this.hasReceivedInput = false;
 
@@ -66,8 +68,6 @@ export default {
 
 			this.referenceTime = new Date().getTime();
 			this.stimulusTimeout = null;
-
-			this.revealStimulusAfterDelay();
 		},
 		generateRandomStimulus() {
 			return Math.floor(Math.random() * (this.pvtMaxTime - this.pvtMinTime + 1)) + this.pvtMinTime;
@@ -117,14 +117,14 @@ export default {
 
 <style scoped>
 .state-section {
-	background-color: rgb(39, 39, 39);
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	align-content: center;
 }
 
-.image-area {
-	flex-grow: 1;
+.pvt-specifiction {
+	margin: 20px;
 }
 </style>
