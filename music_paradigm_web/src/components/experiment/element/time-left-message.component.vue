@@ -14,7 +14,6 @@ export default {
 	},
 	methods: {
 		updateMessage(message) {
-			console.log('IT reached here');
 			this.message = message;
 			this.isFlashing = true;
 			setTimeout(() => {
