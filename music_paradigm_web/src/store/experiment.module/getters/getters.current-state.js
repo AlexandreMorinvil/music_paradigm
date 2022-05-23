@@ -118,4 +118,8 @@ export default {
 		else if (typeof state.settings.footnoteType === 'string') footnoteType = state.settings.footnoteType;
 		return footnoteType;
 	},
+
+	mainOptionText: (state) => {
+		return state.state.settings.mainOptionText;
+	},
 };

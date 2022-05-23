@@ -48,20 +48,29 @@ export default {
 			else footnoteMessage = this.$t('views.experiment.end.footnote-press-space-bar');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
+		endTask() {
+			ExperimentEventBus.$emit(experimentEvents.EVENT_EXPERIMENT_ENDED);
+		},
 	},
 	beforeMount() {
 		this.updateFootnote();
 		ExperimentEventBus.$emit(experimentEvents.EVENT_EXPERIMENT_REACHED_CONCLUSION);
 	},
+	mounted() {
+		ExperimentEventBus.$on(experimentEvents.EVENT_ADVANCE_REQUEST, this.endTask);
+	},
+	beforeDestroy() {
+		ExperimentEventBus.$off(experimentEvents.EVENT_ADVANCE_REQUEST, this.endTask);
+	},
 	watch: {
 		isSpaceBarPressed(isPressed) {
 			if (isPressed) {
-				ExperimentEventBus.$emit(experimentEvents.EVENT_EXPERIMENT_ENDED);
+				this.endTask();
 			}
 		},
 		pressedKeys(keys) {
 			if (this.anyPianoKey && keys.length > 0) {
-				ExperimentEventBus.$emit(experimentEvents.EVENT_EXPERIMENT_ENDED);
+				this.endTask();
 			}
 		},
 	},

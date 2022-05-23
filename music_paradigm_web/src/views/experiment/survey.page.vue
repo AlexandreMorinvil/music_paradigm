@@ -34,9 +34,10 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['surveyType', 'surveyAreAnswersMandatory']),
+		...mapGetters('experiment', ['surveyType', 'surveyAreAnswersMandatory', 'mainOptionText', 'hasMainOptionText']),
 		buttonText() {
-			return this.$t('views.experiment.survey.continue');
+			if (this.hasMainOptionText) return this.mainOptionText;
+			else return this.$t('views.experiment.survey.continue');
 		},
 		type() {
 			if (this.allowedTypes.includes(this.surveyType)) return this.surveyType;

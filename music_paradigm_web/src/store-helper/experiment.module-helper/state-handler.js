@@ -96,6 +96,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		melodyRepetition,
 		successesForSkipLoop,
 		isSkipStepButtonInFootnote,
+		isSkipButtonInMainOptions,
 		isGoBackButtonInFootnote,
 		startSignal,
 		feedbackNumerical,
@@ -127,6 +128,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		pvtMaxResponseTime,
 		pvtTooEarlyMessage,
 		pvtHasCentralElement,
+		mainOptionText,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -147,6 +149,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		melodyRepetition: 				typeof melodyRepetition === 'number' 				? melodyRepetition : 1,
 		successesForSkipLoop: 			typeof successesForSkipLoop === 'number' 			? successesForSkipLoop : generalSettings.successesForSkipLoop,
 		isSkipStepButtonInFootnote: 	typeof isSkipStepButtonInFootnote === 'boolean' 	? isSkipStepButtonInFootnote : generalSettings.isSkipStepButtonInFootnote,
+		isSkipButtonInMainOptions:		typeof isSkipButtonInMainOptions === 'boolean'		? isSkipButtonInMainOptions : generalSettings.isSkipButtonInMainOptions,
 		isGoBackButtonInFootnote: 		typeof isGoBackButtonInFootnote === 'boolean' 		? isGoBackButtonInFootnote : generalSettings.isGoBackButtonInFootnote,
 		startSignal: 					typeof startSignal === 'number' 					? startSignal : 0,
 		feedbackNumerical: 				typeof feedbackNumerical === 'boolean' 				? feedbackNumerical : false,
@@ -178,6 +181,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		pvtMaxResponseTime:				typeof pvtMaxResponseTime === 'number'				? pvtMaxResponseTime : 10000,
 		pvtTooEarlyMessage:				typeof pvtTooEarlyMessage === 'string'				? pvtTooEarlyMessage : '',
 		pvtHasCentralElement:			typeof pvtHasCentralElement === 'string'			? pvtHasCentralElement : true,
+		mainOptionText: 				typeof mainOptionText === 'string'					? mainOptionText : '',
 	};
 
 	// Indicate that the state (current block's settings) was already initialized

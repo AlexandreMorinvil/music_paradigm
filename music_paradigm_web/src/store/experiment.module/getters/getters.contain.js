@@ -50,12 +50,33 @@ export default {
 	hasSuccessFeedbackMessage(state) {
 		return Boolean(state.state.settings.successFeedbackMessage);
 	},
+
 	hasFailureFeedbackMessage(state) {
 		return Boolean(state.state.settings.failureFeedbackMessage);
 	},
 
-	isSkipButtonInFootnote: (state) => {
-		return state.state.settings.footnote && state.state.settings.footnoteType === 'button' && state.state.settings.isSkipStepButtonInFootnote;
+	hasMainOptionText(state) {
+		return Boolean(state.state.settings.mainOptionText);
+	},
+
+	isSkipButtonInCorner: (state, getters) => {
+		const isInMainOptions = getters.isSkipButtonInMainOptions;
+		const isInFootnote = getters.isSkipButtonInFootnote;
+		return !isInMainOptions && !isInFootnote;
+	},
+
+	isSkipButtonInFootnote: (state, getters) => {
+		const isSkipButtonInMainOptions = getters.isSkipButtonInMainOptions;
+		const hasFootnote = state.state.settings.footnote;
+		const isFootnoteButtonType = state.state.settings.footnoteType === 'button';
+		const isAskedToPutSkipButtonInFootnote = state.state.settings.isSkipStepButtonInFootnote;
+		return !isSkipButtonInMainOptions && hasFootnote && isFootnoteButtonType && isAskedToPutSkipButtonInFootnote;
+	},
+
+	isSkipButtonInMainOptions: (state) => {
+		const canHaveMainOptionsSkipButton = state.state.type == 'survey';
+		const isAskedToPutSkipButtonInMainOptions = state.state.settings.isSkipButtonInMainOptions;
+		return canHaveMainOptionsSkipButton && isAskedToPutSkipButtonInMainOptions;
 	},
 
 	isGoBackButtonInFootnote: (state) => {
