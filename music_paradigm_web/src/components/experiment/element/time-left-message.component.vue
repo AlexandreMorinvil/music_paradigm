@@ -1,5 +1,5 @@
 <template>
-	<div class="time-left-message" :class="{ flash: isFlashing }">{{ message }}</div>
+	<div class="time-left-message" v-show="isToBeDisplayed">{{ message }}</div>
 </template>
 
 <script>
@@ -9,16 +9,19 @@ export default {
 	data() {
 		return {
 			message: '',
-			isFlashing: false,
+			isToBeDisplayed: false,
+			messageDisplayTimeInSeconds: 5,
+			timeoutUniqueIndex: null,
 		};
 	},
 	methods: {
 		updateMessage(message) {
+			clearTimeout(this.timeoutUniqueIndex);
 			this.message = message;
-			this.isFlashing = true;
-			setTimeout(() => {
-				this.isFlashing = false;
-			},  2 * 1000);
+			this.isToBeDisplayed = true;
+		},
+		hideMessage() {
+			this.isToBeDisplayed = false;
 		},
 	},
 	mounted() {
@@ -27,21 +30,28 @@ export default {
 	beforeDestroy() {
 		ExperimentEventBus.$off(experimentEvents.EVENT_NEW_TIME_LEFT_MESSAGE, this.updateMessage);
 	},
+	watch: {
+		isToBeDisplayed: {
+			immediate: true,
+			handler: function() {
+				if (this.isToBeDisplayed)
+					this.timeoutUniqueIndex = setTimeout(this.hideMessage, this.messageDisplayTimeInSeconds * 1000);
+			}
+		},
+	},
 };
 </script>
 
 <style scoped>
 .time-left-message {
 	display: flex;
+	background: rgb(0, 115, 255);
 	text-align: center;
 	justify-content: center;
 	align-items: center;
 	margin: 10px;
-}
-
-.flash {
-	color: red !important;
-	background: orange;
+	padding: 20px;
+	border-radius: 10px;
 	opacity: 0.5;
 }
 </style>

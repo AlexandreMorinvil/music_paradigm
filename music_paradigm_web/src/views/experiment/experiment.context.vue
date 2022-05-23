@@ -10,7 +10,7 @@
 
 		<log-component style="display: none" ref="log" />
 		<session-component style="display: none" ref="session" />
-
+		<time-left-message-component class="time-left-message-position" />
 		<status-bar-component v-show="hasStatusBarVisible" ref="status" class="status-bar-position" />
 		<div id="state-content" class="state-content state-content-position" :class="{ 'state-content-clear': isClearVersion }">
 			<experiment-content :lastPressedKey="lastPressedKey" :isSpaceBarPressed="isSpaceBarPressed" />
@@ -32,6 +32,7 @@ import LoadedContentComponent from '@/components/experiment/session/loaded-conte
 import LogComponent from '@/components/experiment/log/log.component.vue';
 import SessionComponent from '@/components/experiment/session/session.component.vue';
 import StatusBarComponent from '@/components/experiment/status-bar/status-bar.component.vue';
+import TimeLeftMessageComponent from '@/components/experiment/element/time-left-message.component.vue';
 
 import KeyboardInputTrackerComponent from '@/components/controller/keyboard/keyboard-input-tracker.component.vue';
 import PianoInputHandlerComponent from '@/components/controller/piano/piano-input-handler.component.vue';
@@ -41,11 +42,13 @@ import MidiInputToKeyboardMapperComponent from '@/components/controller/midi-inp
 
 export default {
 	components: {
+
 		ExperimentContent,
 		LoadedContentComponent,
 		LogComponent,
 		SessionComponent,
 		StatusBarComponent,
+		TimeLeftMessageComponent,
 
 		KeyboardToMidiInputMapperComponent,
 		MidiInputToKeyboardMapperComponent,
@@ -67,6 +70,7 @@ export default {
 			'isFullScreen',
 			'hasStatusBar',
 			'hasClearBackground',
+			'hasTimeLeftMessages',
 			'hasPrelude',
 			'isInMainFlow',
 			'mustInitializePianoInputHandler',
@@ -280,5 +284,11 @@ export default {
 
 .state-content-clear * {
 	color: rgb(80, 80, 80);
+}
+
+.time-left-message-position {
+	position: fixed;
+    transform: translateX(-50%);
+	left: 50%;
 }
 </style>
