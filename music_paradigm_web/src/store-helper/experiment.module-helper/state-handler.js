@@ -128,6 +128,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		pvtMaxResponseTime,
 		pvtTooEarlyMessage,
 		pvtHasCentralElement,
+		mainOptionText,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -180,6 +181,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		pvtMaxResponseTime:				typeof pvtMaxResponseTime === 'number'				? pvtMaxResponseTime : 10000,
 		pvtTooEarlyMessage:				typeof pvtTooEarlyMessage === 'string'				? pvtTooEarlyMessage : '',
 		pvtHasCentralElement:			typeof pvtHasCentralElement === 'string'			? pvtHasCentralElement : true,
+		mainOptionText: 				typeof mainOptionText === 'string'					? mainOptionText : '',
 	};
 
 	// Indicate that the state (current block's settings) was already initialized

@@ -50,8 +50,13 @@ export default {
 	hasSuccessFeedbackMessage(state) {
 		return Boolean(state.state.settings.successFeedbackMessage);
 	},
+
 	hasFailureFeedbackMessage(state) {
 		return Boolean(state.state.settings.failureFeedbackMessage);
+	},
+
+	hasMainOptionText(state) {
+		return Boolean(state.state.settings.mainOptionText);
 	},
 
 	isSkipButtonInCorner: (state, getters) => {

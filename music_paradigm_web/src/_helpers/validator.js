@@ -245,6 +245,8 @@ function validateBlock(block, index = null) {
 		'isInSkipIfNotMetSuccessGoalChain',
 		'isSkipButtonInMainOptions',
 
+		'mainOptionText',
+
 		'resetVariableValue',
 		'incrementVariable',
 		'decrementVariable',
@@ -338,6 +340,7 @@ function validateAttributeType(key, value) {
 		case 'instrument':
 		case 'questionType':
 		case 'pvtTooEarlyMessage':
+		case 'mainOptionText':
 			if (!(typeof value === 'string')) {
 				throw new Error(`The key '${key}' must be of type 'String'`);
 			}

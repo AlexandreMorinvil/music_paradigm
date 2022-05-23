@@ -46,6 +46,8 @@ const stateSchema = new Schema({
     skipIfNotMetSuccessGoal: { type: Number, default: undefined },
     isInSkipIfNotMetSuccessGoalChain: { type: Boolean, default: undefined },
 
+    mainOptionText: { type: String, default: undefined },
+
     canGoBack: { type: Boolean, default: undefined },
     isGoBackButtonInFootnote: { type: Boolean, default: undefined },
     goBackStepButton: { type: String, default: undefined },

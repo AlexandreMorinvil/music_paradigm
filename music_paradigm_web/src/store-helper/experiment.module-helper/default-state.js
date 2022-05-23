@@ -244,6 +244,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			isGoBackButtonInFootnote: DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE,		// Block specific isGoBackButtonInFootnote superceeding the general parameter
 			checkpoint: true,														// Indicate whether the state should be saved at the current block
 			strictPlay: false,														// Indicate whether the playing state must be stopped upon a mistake
+			mainOptionText: '',														// Indicate the text to include when there is a state with a main option/button
 
 			surveyType: '',															// Indicate the survey type for the 'survey' type
 			surveyOptionsAreRadio: true,											// Indicate if the survey questions are radio (one choice is allowed per question) or if multiple choices per questions are allowed
