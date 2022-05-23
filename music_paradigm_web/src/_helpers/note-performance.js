@@ -142,6 +142,7 @@ function gradeRhythmType(evaluationResults,
 function gradeMelodyType(evaluationResults, { minNoteAccuracy }) {
 	const grades = [
 		{
+			gradeCode: 'gradePianoMelodyAccuracy_',
 			criteria: 'Melody Accuracy',
 			mark: Math.max(evaluationResults.pitchAccuracy, 0),
 			passMark: Math.min(Math.max(minNoteAccuracy, 0), 100),
