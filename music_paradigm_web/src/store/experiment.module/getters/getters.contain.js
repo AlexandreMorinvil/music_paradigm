@@ -39,7 +39,7 @@ export default {
 	},
 
 	hasSkipOption: (state) => {
-		return Boolean(state.state.settings.skipStepButton);
+		return Boolean(state.state.settings.skipStepButton) || Boolean(state.state.settings.skipStepButtonMessage);
 	},
 
 	hasGoBackOption: (state) => {
