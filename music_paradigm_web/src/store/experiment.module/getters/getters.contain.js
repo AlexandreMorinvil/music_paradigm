@@ -74,7 +74,7 @@ export default {
 	},
 
 	isSkipButtonInMainOptions: (state) => {
-		const canHaveMainOptionsSkipButton = state.state.type == 'survey';
+		const canHaveMainOptionsSkipButton = ['survey', 'writting'].includes(state.state.type);
 		const isAskedToPutSkipButtonInMainOptions = state.state.settings.isSkipButtonInMainOptions;
 		return canHaveMainOptionsSkipButton && isAskedToPutSkipButtonInMainOptions;
 	},
