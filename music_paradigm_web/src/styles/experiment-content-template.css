@@ -33,3 +33,19 @@
     text-align: center;
     white-space: pre-line;
 }
+
+.footnote-button {
+    font-size: calc(1vh + 1vw);
+    max-width: 800px;
+    background-color: rgb(50, 185, 255);
+    border: 3px solid rgb(55, 190, 250);
+    border-radius: 10px;
+	margin: 10px;
+	height: initial;
+	padding: 15px;
+	flex: 1;
+}
+
+.smaller-button {
+    font-size: calc(0.6vh + 0.6vw);
+}

@@ -2,8 +2,8 @@
 	<div id="content-frame" class="experiment-content-container experiment-content-grid">
 		<helper-image-component v-if="hasHelperImage" class="helper-image" />
 		<text-reminder-component v-if="hasTextReminder" class="text-reminder" />
-		<go-back-button-component v-if="hasGoBackOption && !isGoBackButtonInFootnote" class="go-back-button" />
-		<skip-button-component v-if="hasSkipOption && !isSkipButtonInFootnote" class="skip-button" />
+		<go-back-button-component v-if="hasGoBackOption && !isGoBackButtonInFootnote" class="go-back-button smaller-button" />
+		<skip-button-component v-if="hasSkipOption && !isSkipButtonInFootnote" class="skip-button smaller-button" />
 		<start-signal-timer-component v-if="isWaitingStartSignal" class="start-signal" />
 
 		<router-view

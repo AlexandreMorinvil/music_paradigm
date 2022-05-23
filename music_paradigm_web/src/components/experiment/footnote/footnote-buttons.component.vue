@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import '@/styles/experiment-content-template.css';
 import { mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
@@ -38,17 +39,5 @@ export default {
 	justify-content: center;
 	align-items: stretch;
 	flex-wrap: nowrap;
-}
-
-.footnote-button {
-	font-size: calc(1vh + 1vw);
-	color: black;
-	background-color: rgb(200, 200, 200);
-	border: 3px solid rgb(185, 185, 185);
-	margin: 10px;
-	/* width: initial; */
-	height: initial;
-	padding: 15px;
-	flex: 1;
 }
 </style>
