@@ -146,7 +146,12 @@ function makeSimpleLogBlockPerformanceInformation() {
 	}
 
 	// Include the grades if it's a feedback state or a playing state
-	if (['playing', 'feedback'].includes(blockType)) performanceLog.grades = gettersEvaluation.grades(stateEvaluation);
+	if (['playing', 'feedback'].includes(blockType)) 
+	{
+		// TODO: the 'grades' is kept for compatibility with previous data, but should be removed to only keep the 'unwoundgrades'.
+		performanceLog.grades = gettersEvaluation.grades(stateEvaluation);
+		Object.assign(performanceLog, gettersEvaluation.unwoundGrades(stateEvaluation));
+	}
 
 	return performanceLog;
 }
@@ -267,7 +272,12 @@ function makeSimpleBlockPerformanceInformation() {
 	Object.assign(performanceLog, gettersKeyboard.keyboardSimpleLogPreprocesed(stateKeyboard));
 
 	// Include the grades if it's a feedback state or a playing state
-	if (['playing', 'feedback'].includes(blockType)) performanceLog.grades = gettersEvaluation.grades(stateEvaluation);
+	if (['playing', 'feedback'].includes(blockType))
+	{
+		// TODO: the 'grades' is kept for compatibility with previous data, but should be removed to only keep the 'unwoundgrades'.
+		performanceLog.grades = gettersEvaluation.grades(stateEvaluation);
+		Object.assign(performanceLog, gettersEvaluation.unwoundGrades(stateEvaluation));
+	}
 
 	return performanceLog;
 }
