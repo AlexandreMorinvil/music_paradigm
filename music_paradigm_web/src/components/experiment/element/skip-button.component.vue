@@ -1,5 +1,5 @@
 <template>
-	<button v-on:click="emitSkipSignal" class="footnote-button">{{ buttonMessage }}</button>
+	<button v-on:click="emitSkipSignal" class="task-button">{{ buttonMessage }}</button>
 </template>
 
 <script>

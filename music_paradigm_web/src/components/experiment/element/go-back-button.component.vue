@@ -1,5 +1,5 @@
 <template>
-	<button v-on:click="emitGoBackSignal" class="footnote-button">{{ buttonMessage }}</button>
+	<button v-on:click="emitGoBackSignal" class="task-button">{{ buttonMessage }}</button>
 </template>
 
 <script>

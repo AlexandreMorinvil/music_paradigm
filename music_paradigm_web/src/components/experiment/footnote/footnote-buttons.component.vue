@@ -1,8 +1,8 @@
 <template>
 	<div class="button-flex">
-		<go-back-button-component v-if="isGoBackButtonInFootnote" class="footnote-button" />
-		<button v-on:click="emitAdvanceSignal" class="footnote-button"><footnote-message-component /></button>
-		<skip-button-component v-if="isSkipButtonInFootnote" class="footnote-button" />
+		<go-back-button-component v-if="isGoBackButtonInFootnote" class="task-button" />
+		<button v-on:click="emitAdvanceSignal" class="task-button"><footnote-message-component /></button>
+		<skip-button-component v-if="isSkipButtonInFootnote" class="task-button" />
 	</div>
 </template>
 

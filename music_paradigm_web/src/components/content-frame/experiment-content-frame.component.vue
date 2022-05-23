@@ -3,7 +3,7 @@
 		<helper-image-component v-if="hasHelperImage" class="helper-image" />
 		<text-reminder-component v-if="hasTextReminder" class="text-reminder" />
 		<go-back-button-component v-if="hasGoBackOption && !isGoBackButtonInFootnote" class="go-back-button smaller-button" />
-		<skip-button-component v-if="hasSkipOption && !isSkipButtonInFootnote" class="skip-button smaller-button" />
+		<skip-button-component v-if="hasSkipOption && isSkipButtonInCorner" class="skip-button smaller-button" />
 		<start-signal-timer-component v-if="isWaitingStartSignal" class="start-signal" />
 
 		<router-view
@@ -59,7 +59,7 @@ export default {
 			'hasSkipOption',
 			'hasGoBackOption',
 			'isWaitingStartSignal',
-			'isSkipButtonInFootnote',
+			'isSkipButtonInCorner',
 			'isGoBackButtonInFootnote',
 		]),
 	},

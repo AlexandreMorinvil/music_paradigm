@@ -123,6 +123,7 @@ function validateExperiment(experiment) {
 		'successesForSkip',
 		'hideFeedbackSmiley',
 		'isSkipStepButtonInFootnote',
+		'isSkipButtonInMainOptions',
 		'programmedOctaveOffset',
 		'interactivePianoFirstOctave',
 		'controlType',
@@ -242,6 +243,7 @@ function validateBlock(block, index = null) {
 		'considerExperimentFinished',
 		'skipIfNotMetSuccessGoal',
 		'isInSkipIfNotMetSuccessGoalChain',
+		'isSkipButtonInMainOptions',
 
 		'resetVariableValue',
 		'incrementVariable',
@@ -371,6 +373,8 @@ function validateAttributeType(key, value) {
 		case 'logFlag':
 		case 'hideFeedbackSmiley':
 		case 'skipStepButtonInFootnote':
+		case 'isSkipStepButtonInFootnote':
+		case 'isSkipButtonInMainOptions':
 		case 'feedbackNumerical':
 		case 'skipLoopOnLastRepetition':
 		case 'canGoBack':

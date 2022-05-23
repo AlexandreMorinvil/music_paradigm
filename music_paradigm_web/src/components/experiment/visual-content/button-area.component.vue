@@ -1,18 +1,29 @@
 <template>
-	<div id="text-area" class="state-section state-division-text">
-		<button class="main-button" :class="isActive ? 'active' : 'innactive'" v-on:click="signalButtonWasClicked">{{ text }}</button>
+	<div id="buttons-area" class="button-flex">
+		<button class="task-button" :class="isActive ? 'active' : 'innactive'" v-on:click="signalButtonWasClicked">{{ text }}</button>
+		<skip-button-component v-if="isSkipButtonInMainOptions" class="task-button" />
 	</div>
 </template>
 
 <script>
 import '@/styles/experiment-content-template.css';
+import { mapGetters } from 'vuex';
+
+import SkipButtonComponent from '@/components/experiment/element/skip-button.component.vue';
+
 
 export default {
+	components: {
+		SkipButtonComponent,
+	},
 	data() {
 		return {
 			text: 'Click',
 			isActive: false,
 		};
+	},
+	computed: {
+		...mapGetters('experiment', ['isSkipButtonInMainOptions']),
 	},
 	methods: {
 		setText(text) {
@@ -32,17 +43,12 @@ export default {
 </script>
 
 <style scoped>
-.main-button {
-	font-size: 1.5em;
-	min-height: 100px;
-	max-height: 120px;
-	min-width: 400px;
-	max-width: 9000px;
-	background-color: rgb(0, 200, 255);
-	box-shadow: 5px 10px 8px black;
-	border-style: solid;
-	border-width: 5px;
-	border-radius: 5px;
+.button-flex {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: stretch;
+	flex-wrap: nowrap;
 }
 
 .active {
@@ -64,9 +70,5 @@ export default {
 	justify-content: center;
 	align-items: center;
 	align-content: center;
-}
-
-.centering {
-	width: 60%;
 }
 </style>

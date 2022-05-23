@@ -36,6 +36,7 @@ const DEFAULT_LOG_FLAG = true;
 const DEFAULT_SUCCESSES_FOR_SKIP = 0;
 const DEFAULT_HIDE_FEEDBACK_SMILEY = false;
 const DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE = false;
+const DEFAULT_IS_SKIP_BUTTON_IN_MAIN_OPTIONS = false;
 const DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE = false;
 const DEFAULT_PROGRAMMED_OCTAVE_OFFSET = 0;
 const DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE = 4;
@@ -125,6 +126,7 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		successesForSkip: DEFAULT_SUCCESSES_FOR_SKIP, 										// Indicate the number of successful 'Playing' states before being able to leave a group of blocks
 		hideFeedbackSmiley: DEFAULT_HIDE_FEEDBACK_SMILEY, 									// Indicate whether the feedback state contains a smiley by default
 		isSkipStepButtonInFootnote: DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE, 					// Indicates wether the skip buttons are displayed by default in the footnote when there is a button footnote
+		isSkipButtonInMainOptions: DEFAULT_IS_SKIP_BUTTON_IN_MAIN_OPTIONS,					// Indicates wether the skip button is displayed by default in the main options of the states with options when applicable.
 		isGoBackButtonInFootnote: DEFAULT_IS_GO_BACK_BUTTON_IN_FOOTNOTE, 					// Indicates wether the go back button is displayed by default in the footnote when there is a button footnote
 		programmedOctaveOffset: DEFAULT_PROGRAMMED_OCTAVE_OFFSET, 							// Indicates a preset octave shift for the midi piano (knowing that most midi piano are on octave 3 by default)
 		interactivePianoFirstOctave: DEFAULT_INTERACTIVE_PIANO_FIRST_OCTAVE,				// Indicate the first octave from which the notes must be displayed on the interactive piano (which has 2 octaves)
@@ -225,6 +227,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			logFlag: DEFAULT_LOG_FLAG,												// Block specific "logFlag" superseding the general setting
 			skipStepButton: '', 													// Button to press to skip the next block (is valid only if a button is specified)
 			isSkipStepButtonInFootnote: DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE,			// Block specific isSkipStepButtonInFootnote superceeding the general parameter
+			isSkipButtonInMainOptions: DEFAULT_IS_SKIP_BUTTON_IN_MAIN_OPTIONS,		// Block specific isSkipButtonInMainOptions superceeding the general parameter
 			skipStepButtonMessage: '', 												// Message indicated on the skip button if there is a skip button
 			successFeedbackMessage: '', 											// Additional message displayed upon sucessfull feedback for all criteras
 			failureFeedbackMessage: '', 											// Additional message displayed upon feedback with at least one failed critera
