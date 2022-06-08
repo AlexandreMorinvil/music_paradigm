@@ -26,9 +26,10 @@ export default {
 	},
 	props: {},
 	computed: {
-		...mapGetters('experiment', ['writtingMinCharacters']),
+		...mapGetters('experiment', ['writtingMinCharacters', 'mainOptionText', 'hasMainOptionText']),
 		buttonText() {
-			return this.$t('views.experiment.writting.continue');
+			if (this.hasMainOptionText) return this.mainOptionText;
+			else return this.$t('views.experiment.writting.continue');
 		},
 	},
 	methods: {

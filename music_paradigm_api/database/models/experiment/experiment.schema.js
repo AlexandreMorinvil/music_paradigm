@@ -33,6 +33,7 @@ const stateSchema = new Schema({
     skipStepButton: { type: String, default: undefined },
     isSkipStepButtonInFootnote: { type: Boolean, default: undefined },
     skipStepButtonMessage: { type: String, default: undefined },
+    isSkipButtonInMainOptions: { type: Boolean, default: undefined },
     isInSkipableChain: { type: Boolean, default: undefined },
     successFeedbackMessage: { type: String, default: undefined },
     failureFeedbackMessage: { type: String, default: undefined },
@@ -44,6 +45,8 @@ const stateSchema = new Schema({
     skipLoopOnLastRepetition: { type: Boolean, default: undefined },
     skipIfNotMetSuccessGoal: { type: Number, default: undefined },
     isInSkipIfNotMetSuccessGoalChain: { type: Boolean, default: undefined },
+
+    mainOptionText: { type: String, default: undefined },
 
     canGoBack: { type: Boolean, default: undefined },
     isGoBackButtonInFootnote: { type: Boolean, default: undefined },
@@ -127,6 +130,7 @@ const schema = new Schema({
     successesForSkip: { type: Number, default: 0 },
     hideFeedbackSmiley: { type: Boolean, default: false },
     isSkipStepButtonInFootnote: { type: Boolean, default: undefined },
+    isSkipButtonInMainOptions: { type: Boolean, default: undefined },
     isGoBackButtonInFootnote: { type: Boolean, default: undefined },
     programmedOctaveOffset: { type: Number, default: 0 },
     interactivePianoFirstOctave: { type: Number, default: 4 },

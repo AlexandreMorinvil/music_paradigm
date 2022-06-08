@@ -27,6 +27,7 @@ function evaluateSpeedType(referenceKeys, pressedKeys) {
 function gradeSpeedType(evaluationResults, { minSequencePlayed }) {
 	const grades = [
 		{
+			gradeCode: 'keyboardSequenceCount_',
 			criteria: 'Sequence Played',
 			mark: evaluationResults.sequenceCount,
 			passMark: 1,

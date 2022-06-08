@@ -1,9 +1,7 @@
 <template>
 	<div id="navigation-bar" v-show="isShown" :class="{ 'clear-navigation-bar': isClearVersion }">
 		<div class="navigation-bar-wrapper navigation-bar-left"></div>
-		<div class="navigation-bar-wrapper navigation-bar-center">
-			<time-left-message-component v-if="hasTimeLeftMessages" />
-		</div>
+		<div class="navigation-bar-wrapper navigation-bar-center"></div>
 		<div class="navigation-bar-wrapper navigation-bar-right">
 			<div id="button-leave" class="app-navigation-bar-button" v-on:click="gotToHomePage">{{ $t('navigation-bar.leave') }}</div>
 		</div>
@@ -15,14 +13,9 @@ import '@/styles/navigation-bar-template.css';
 import { mapGetters } from 'vuex';
 import { routerNavigation } from '@/_helpers';
 
-import TimeLeftMessageComponent from '@/components/experiment/element/time-left-message.component.vue';
-
 export default {
-	components: {
-		TimeLeftMessageComponent,
-	},
 	computed: {
-		...mapGetters('experiment', ['hasClearBackground', 'hasTimeLeftMessages', 'hasNavigationBar']),
+		...mapGetters('experiment', ['hasClearBackground', 'hasNavigationBar']),
 		isShown() {
 			return this.hasNavigationBar;
 		},

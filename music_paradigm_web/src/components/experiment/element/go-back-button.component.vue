@@ -1,8 +1,9 @@
 <template>
-	<button v-on:click="emitGoBackSignal">{{ buttonMessage }}</button>
+	<button v-on:click="emitGoBackSignal" class="task-button">{{ buttonMessage }}</button>
 </template>
 
 <script>
+import '@/styles/experiment-content-template.css';
 import { mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
@@ -38,10 +39,6 @@ export default {
 
 <style scoped>
 button {
-	font-size: calc(0.6vh + 0.6vw);
-	background-color: rgb(200, 200, 200);
-	border: 3px solid rgb(185, 185, 185);
 	padding-top: auto;
-	margin: 10px;
 }
 </style>
