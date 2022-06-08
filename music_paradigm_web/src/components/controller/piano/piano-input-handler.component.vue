@@ -28,6 +28,9 @@ export default {
 			midiInputs: [],
 			MAX_VELOCITY: 127,
 			MIDI_MESSAGE_CODE_NOTE_ON: 144,
+
+			MIN_INTER_ONSET_INTERVAL: 25,
+			lastOnsetTimePerNote: {},
 		};
 	},
 	computed: {
@@ -64,6 +67,9 @@ export default {
 				velocity: midiNote.data[2],
 			};
 
+			// Verification to prevent buggy multiple input handling
+			if (!this.isOnsetValid(midiMessage)) return;
+
 			// Additional support for MIDI protocoles using a velocity === 0 as a Note Off signal
 			if (midiMessage.velocity === 0) midiMessage.type = 'Note Off';
 
@@ -91,6 +97,15 @@ export default {
 				default:
 					break;
 			}
+		},
+		isOnsetValid(midiMessage) {
+			const currentTime = Date.now();
+			const lastTime = this.lastOnsetTimePerNote[midiMessage.note];
+			console.log(currentTime - lastTime);
+			if (!lastTime || currentTime - lastTime > this.MIN_INTER_ONSET_INTERVAL) {
+				this.lastOnsetTimePerNote[midiMessage.note] = currentTime;
+				return true;
+			} else return false;
 		},
 		playNote(note) {
 			this.playingNotes[note] = this.piano.play(note, 0, {
