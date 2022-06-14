@@ -30,7 +30,20 @@ const ALLOWED_ENTRIES_INTERACTIVE_HELPERS = ['half-', ''].flatMap((c) => {
  * @type {Array<String>}
  * @description Allowed values for the 'type' attributes of the flow descriptions
  * */
-const ALLOWED_STATE_TYPES = ['cue', 'end', 'feedback', 'instruction', 'playing', 'pvt', 'question', 'rest', 'survey', 'video', 'writting'];
+const ALLOWED_STATE_TYPES = [
+	'cue',
+	'end',
+	'feedback',
+	'grid-location-task',
+	'instruction',
+	'playing',
+	'pvt',
+	'question',
+	'rest',
+	'survey',
+	'video',
+	'writting',
+];
 
 function getMinimalValidExperimentStructure() {
 	return {

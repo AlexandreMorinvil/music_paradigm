@@ -56,19 +56,19 @@ const router = new Router({
 					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/cue.page.vue'),
 				},
 				{
-					path: 'playing',
-					name: 'experiment.playing',
-					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/playing.page.vue'),
-				},
-				{
-					path: 'video',
-					name: 'experiment.video',
-					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/video.page.vue'),
-				},
-				{
 					path: 'feedback',
 					name: 'experiment.feedback',
 					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/feedback.page.vue'),
+				},
+				{
+					path: 'grid-location-task',
+					name: 'experiment.grid-location-task',
+					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/grid-location-task.page.vue'),
+				},
+				{
+					path: 'playing',
+					name: 'experiment.playing',
+					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/playing.page.vue'),
 				},
 				{
 					path: 'pvt',
@@ -89,6 +89,11 @@ const router = new Router({
 					path: 'survey',
 					name: 'experiment.survey',
 					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/survey.page.vue'),
+				},
+				{
+					path: 'video',
+					name: 'experiment.video',
+					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/video.page.vue'),
 				},
 				{
 					path: 'writting',

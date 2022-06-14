@@ -1,7 +1,8 @@
 <template>
-	<div id="instruction-state" class="state-content-flex">
+	<div id="grid-loaction-task-state" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
-		<image-area-component class="image-area state-section" />
+		<image-target-area-component class="image-target-area state-section" />
+		<image-matrix-area-component class="image-matrix-area state-section" />
 	</div>
 </template>
 
@@ -10,12 +11,14 @@ import '@/styles/experiment-content-template.css';
 
 import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
 
-import ImageAreaComponent from '@/components/experiment/visual-content/image-area.component.vue';
+import ImageMatrixAreaComponent from '@/components/experiment/visual-content/image-matrix-area.component.vue';
+import ImageTargetAreaComponent from '@/components/experiment/visual-content/image-target-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
-		ImageAreaComponent,
+		ImageTargetAreaComponent,
+		ImageMatrixAreaComponent,
 		TextAreaComponent,
 	},
 	props: {},
@@ -40,11 +43,11 @@ export default {
 	flex-grow: 1;
 }
 
-.image-area {
+.image-target-area {
 	flex-grow: 1;
 }
 
-.virtual-controller-area {
+.image-matrix-area {
 	flex-grow: 1;
 }
 </style>

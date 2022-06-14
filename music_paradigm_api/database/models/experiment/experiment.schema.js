@@ -5,7 +5,20 @@ const stateSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ["cue", "end", "feedback", "instruction", "playing", 'pvt', 'question', "rest", "survey", "video", "writting"]
+        enum: [
+            "cue", 
+            "end", 
+            "feedback", 
+            "grid-location-task", 
+            "instruction", 
+            "playing", 
+            "pvt", 
+            "question", 
+            "rest", 
+            "survey", 
+            "video", 
+            "writting",
+        ]
     },
     textContent: { type: Schema.Types.Mixed, default: undefined },
     pictureFileName: { type: Schema.Types.Mixed, default: undefined },
