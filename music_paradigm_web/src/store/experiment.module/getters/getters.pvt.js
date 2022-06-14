@@ -12,10 +12,6 @@ export default {
 		return state.state.settings.pvtCount;
 	},
 
-	pvtMaxResponseTime: (state) => {
-		return state.state.settings.pvtMaxResponseTime;
-	},
-
 	pvtTooEarlyMessage: (state) => {
 		return state.state.settings.pvtTooEarlyMessage;
 	},

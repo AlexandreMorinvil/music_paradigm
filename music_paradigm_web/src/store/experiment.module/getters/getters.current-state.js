@@ -122,4 +122,8 @@ export default {
 	mainOptionText: (state) => {
 		return state.state.settings.mainOptionText;
 	},
+
+	maxResponseTime: (state) => {
+		return state.state.settings.maxResponseTime;
+	},
 };

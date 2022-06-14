@@ -293,9 +293,10 @@ function validateBlock(block, index = null) {
 		'pvtMinTime',
 		'pvtMaxTime',
 		'pvtCount',
-		'pvtMaxResponseTime',
 		'pvtTooEarlyMessage',
 		'pvtHasCentralElement',
+
+		'maxResponseTime',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -362,7 +363,7 @@ function validateAttributeType(key, value) {
 		case 'pvtMinTime':
 		case 'pvtMaxTime':
 		case 'pvtCount':
-		case 'pvtMaxResponseTime':
+		case 'maxResponseTime':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
