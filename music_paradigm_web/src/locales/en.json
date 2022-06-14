@@ -52,7 +52,7 @@
       },
       "test-clicker": {
         "no-clicker-mapping": "The clicker will initially be disabled.",
-        "verify-clicker": "Verify that the yellow button(s) indicated on dislay mirror the buttons you press.",
+        "verify-clicker": "Verify that the yellow button(s) indicated on display mirror the buttons you press.",
         "verify-only-yellow-button": "(If a button is not in yellow, nothing will happen when you press it)",
         "press-yellow-button": "Press any yellow button on the clicker",
         "problem-signal": "Nothing happens when I press a button indicated in yellow?",
@@ -64,7 +64,7 @@
         "initialize-midi": "Initialize MIDI Keyboard"
       },
       "test-piano": {
-        "verify-piano": "The piano is now muted: you will not hear any sound.\nVerify that the keys indicated on dislay mirror the keys you press.",
+        "verify-piano": "The piano is now muted: you will not hear any sound.\nVerify that the keys indicated on display mirror the keys you press.",
         "press-any-key": "Press any key on the MIDI Keyboard",
         "problem-signal": "Nothing happens when I press any key?",
         "problem-correspondance": "The keys highlighted do not correspond to the key I press?"
