@@ -296,6 +296,11 @@ function validateBlock(block, index = null) {
 		'pvtTooEarlyMessage',
 		'pvtHasCentralElement',
 
+		'matrixSizeX',
+		'matrixSizeY',
+		'presentationTime',
+		'stimuliTime',
+		'textBeforeMainContent',
 		'maxResponseTime',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
@@ -364,6 +369,10 @@ function validateAttributeType(key, value) {
 		case 'pvtMaxTime':
 		case 'pvtCount':
 		case 'maxResponseTime':
+		case 'matrixSizeX':
+		case 'matrixSizeY':
+		case 'presentationTime':
+		case 'stimuliTime':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
@@ -421,6 +430,7 @@ function validateAttributeType(key, value) {
 		case 'interactiveKeyboardTextMapping':
 		case 'textContent':
 		case 'textAfterQuestionAsked':
+		case 'textBeforeMainContent':
 		case 'textSpecification':
 		case 'textReminder':
 		case 'pictureFileName':
@@ -443,6 +453,7 @@ function validateAttributeType(key, value) {
 
 					case 'textContent':
 					case 'textAfterQuestionAsked':
+					case 'textBeforeMainContent':
 					case 'textSpecification':
 					case 'textReminder':
 					case 'pictureFileName':
@@ -491,6 +502,7 @@ function validateAttributeType(key, value) {
 					case 'audioFirst':
 					case 'audioSecond':
 					case 'textAfterQuestionAsked':
+					case 'textBeforeMainContent':
 					case 'answerChoicesColor':
 						value.forEach((element, index) => {
 							if (!(typeof element === 'string')) {

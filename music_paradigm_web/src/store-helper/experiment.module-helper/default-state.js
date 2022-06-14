@@ -189,6 +189,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			interactiveClicker: false,												// <Boolean|String> Directive to display the interactive clicker
 			interactiveKeyboard: false, 											// <Boolean|String> Directive to display the interactive keyboard
 			textAfterQuestionAsked: '',												// Text displayed after a question is asked in question states
+			textBeforeMainContent: '',												// Text displayed before the main content of a state (used in grid location task)
 			textSpecification: '',													// Text to add a certain specification (used in question state)
 		},
 
@@ -270,6 +271,11 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			maxResponseTime: 10000,													// Maximum time to react to the stimulus
 			pvtTooEarlyMessage: '',													// Message to display if the user reacts before the stimulus in a pvt state
 			pvtHasCentralElement: true,												// Indicates if the pvt test must have a centre visual element
+
+			matrixSizeX: 1,															// X dimension of the matrix in states where a matix is involved (used in grid-location-task)
+			matrixSizeY: 1,															// Y dimension of the matrix in states where a matix is involved (used in grid-location-task)
+			presentationTime: 5000,													// Time during which a content is presentation before the main elements of a state (used in grid-location-task)
+			stimuliTime: 1000,														// Time during which a stimuli is presented (used in grid-location-task)
 		},
 		// Session specific informations
 		record: {

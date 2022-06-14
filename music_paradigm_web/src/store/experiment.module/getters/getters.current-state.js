@@ -22,6 +22,10 @@ export default {
 		return state.state.content.text;
 	},
 
+	textBeforeMainContent: (state) => {
+		return state.state.content.textBeforeMainContent;
+	},
+
 	pictureName: (state) => {
 		const pictureName = state.state.content.pictureName;
 		return pictureName ? `${state.description.folder}/${pictureName}` : '';
@@ -86,6 +90,10 @@ export default {
 	timeoutInSeconds: (state) => {
 		// Return the the timeout time specified by the block if it exists, otherwise, return a value of 0 to be interpreted as "There is no timeout"
 		return state.state.settings.timeoutInSeconds || 0;
+	},
+
+	presentationTime: (state) => {
+		return state.state.settings.presentationTime;
 	},
 
 	startSignal: (state) => {
