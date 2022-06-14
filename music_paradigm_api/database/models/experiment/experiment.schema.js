@@ -106,9 +106,15 @@ const stateSchema = new Schema({
     pvtMinTime: { type: Number, default: undefined },
     pvtMaxTime: { type: Number, default: undefined },
     pvtCount: { type: Number, default: undefined },
-    pvtMaxResponseTime: { type: Number, default: undefined },
     pvtTooEarlyMessage: { type: String, default: undefined },
     pvtHasCentralElement: { type: Boolean, default: undefined },
+
+    matrixSizeX: { type: Number, default: undefined },
+    matrixSizeY: { type: Number, default: undefined },
+    presentationTime: { type: Number, default: undefined },
+    stimuliTime: { type: Number, default: undefined },
+    textBeforeMainContent: { type: Schema.Types.Mixed, default: undefined },
+    maxResponseTime: { type: Number, default: undefined },
 },
     {
         strict: true
