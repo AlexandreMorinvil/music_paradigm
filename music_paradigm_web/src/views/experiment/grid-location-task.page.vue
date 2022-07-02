@@ -1,8 +1,7 @@
 <template>
 	<div id="grid-loaction-task-state" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
-		<image-target-area-component class="image-target-area state-section" />
-		<image-matrix-area-component class="image-matrix-area state-section" />
+		<grid-location-task-grid-area-component class="grid-location-task-grid-area state-section" />
 	</div>
 </template>
 
@@ -11,14 +10,12 @@ import '@/styles/experiment-content-template.css';
 
 import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
 
-import ImageMatrixAreaComponent from '@/components/experiment/visual-content/image-matrix-area.component.vue';
-import ImageTargetAreaComponent from '@/components/experiment/visual-content/image-target-area.component.vue';
+import GridLocationTaskGridAreaComponent from '@/components/experiment/visual-content/grid-location-task-grid-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
-		ImageTargetAreaComponent,
-		ImageMatrixAreaComponent,
+		GridLocationTaskGridAreaComponent,
 		TextAreaComponent,
 	},
 	props: {},
@@ -43,11 +40,7 @@ export default {
 	flex-grow: 1;
 }
 
-.image-target-area {
-	flex-grow: 1;
-}
-
-.image-matrix-area {
+.grid-location-task-grid-area {
 	flex-grow: 1;
 }
 </style>
