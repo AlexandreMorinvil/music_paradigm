@@ -56,6 +56,7 @@ const DEFAULT_TIME_LEFT_MESSAGES = {};
 const DEFAULT_HAS_NAVIGATION_BAR = true;
 const DEFAULT_STAUS_BAR = true;
 const DEFAULT_IF_FULL_SCREEN = false;
+const DEFAULT_REPRODUCTION_SEED = null;
 
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
@@ -140,9 +141,10 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		hasClearBackground: DEFAULT_HAS_CLEAR_BACKGROUND,									// Indicate whethe the experiment setting must be in white (true) or black (false)
 		hasSound: DEFAULT_HAS_SOUND,														// Indicate whether the experiment has sound
 		timeLeftMessages: DEFAULT_TIME_LEFT_MESSAGES,										// Object containning a message to display when certain time left thresholds (indicated in milliseconds) are reached
-		hasNavigationBar: DEFAULT_HAS_NAVIGATION_BAR,									// Indicates if the session should have the upper navigation bar
+		hasNavigationBar: DEFAULT_HAS_NAVIGATION_BAR,										// Indicates if the session should have the upper navigation bar
 		hasStatusBar: DEFAULT_STAUS_BAR,													// Indicates if the session should have the status bar
 		isFullScreen: DEFAULT_IF_FULL_SCREEN,												// Indicates if the session should be in full screen
+		reproductionSeed: DEFAULT_REPRODUCTION_SEED,										// Seed used in randomized components that can make the components reproductible.
 	};
 }
 
@@ -276,6 +278,8 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			matrixSizeY: 1,															// Y dimension of the matrix in states where a matix is involved (used in grid-location-task)
 			presentationTime: 5000,													// Time during which a content is presentation before the main elements of a state (used in grid-location-task)
 			stimuliTime: 1000,														// Time during which a stimuli is presented (used in grid-location-task)
+
+			reproductionSeed: DEFAULT_REPRODUCTION_SEED,							// Block specific Seed used in randomized components that can make the components reproductible.
 		},
 		// Session specific informations
 		record: {

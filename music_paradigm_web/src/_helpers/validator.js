@@ -157,6 +157,8 @@ function validateExperiment(experiment) {
 		'isFullScreen',
 
 		'keyboardToMidiInputMapping',
+
+		'reproductionSeed',
 	];
 	Object.keys(experiment).forEach((key) => {
 		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the general parameters is not allowed`);
@@ -315,6 +317,8 @@ function validateBlock(block, index = null) {
 		'stimuliTime',
 		'textBeforeMainContent',
 		'maxResponseTime',
+
+		'reproductionSeed',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -360,6 +364,7 @@ function validateAttributeType(key, value) {
 		case 'questionType':
 		case 'pvtTooEarlyMessage':
 		case 'mainOptionText':
+		case 'reproductionSeed':
 			if (!(typeof value === 'string')) {
 				throw new Error(`The key '${key}' must be of type 'String'`);
 			}

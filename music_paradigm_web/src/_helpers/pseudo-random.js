@@ -6,10 +6,10 @@ export default {
 /**
  * Generate a list of permuted indexes.
  */
-function generateReproduciblePermutedIndexList(range, reproductionKey = null) {
+function generateReproduciblePermutedIndexList(range, reproductionSeed = null) {
 
     // Initialize the random key.
-    const hash32 = initializePseudoRandomNumberGenration(reproductionKey);
+    const hash32 = initializePseudoRandomNumberGenration(reproductionSeed);
 
     // Determine how many random numbers must be generated.
     let numberCount = 0;
@@ -75,6 +75,6 @@ function mulberry32(a) {
  * Initialize pseudo random number generation.
  */
 function initializePseudoRandomNumberGenration(seed = null) {
-    const reproductionKey = seed ? String(seed) : String(Math.random());
-    return cyrb128(reproductionKey)[0];
+    const reproductionSeed = seed ? String(seed) : String(Math.random());
+    return cyrb128(reproductionSeed)[0];
 }

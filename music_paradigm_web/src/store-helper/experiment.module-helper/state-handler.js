@@ -133,6 +133,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		matrixSizeY,
 		presentationTime,
 		stimuliTime,
+		reproductionSeed,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -190,6 +191,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		matrixSizeY:					typeof matrixSizeY === 'number' 					? matrixSizeY : 1,
 		presentationTime:				typeof presentationTime === 'number' 				? presentationTime : 5000,
 		stimuliTime:					typeof stimuliTime === 'number' 					? stimuliTime : 1000,
+		reproductionSeed:				typeof reproductionSeed === 'string'				? reproductionSeed : generalSettings.reproductionSeed,
 	};
 
 	// Indicate that the state (current block's settings) was already initialized

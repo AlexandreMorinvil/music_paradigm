@@ -128,6 +128,8 @@ const stateSchema = new Schema({
     stimuliTime: { type: Number, default: undefined },
     textBeforeMainContent: { type: Schema.Types.Mixed, default: undefined },
     maxResponseTime: { type: Number, default: undefined },
+
+    reproductionSeed: { type: String, default: undefined },
 },
     {
         strict: true
@@ -172,6 +174,8 @@ const schema = new Schema({
     hasNavigationBar: { type: Boolean, default: true },
     hasStatusBar: { type: Boolean, default: true },
     isFullScreen: { type: Boolean, default: true },
+
+    reproductionSeed: { type: String, default: undefined },
 
     keyboardToMidiInputMapping:{
         default: undefined,

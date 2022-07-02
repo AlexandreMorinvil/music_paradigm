@@ -9,6 +9,8 @@
 import '@/styles/experiment-content-template.css';
 import { mapGetters } from 'vuex';
 
+import { pseudoRandom } from '@/_helpers';
+
 import ImageMatrixComponent from '@/components/experiment/grid-location-task/image-matrix.component.vue';
 import ImageTargetComponent from '@/components/experiment/grid-location-task/image-target.component.vue';
 
@@ -20,19 +22,22 @@ export default {
 	data() {
 		return {
 			DEFAULT_SQUARE_SIZE: 200,
-			UsedImagesSet: [],
+			ImagesSet: [],
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['answerChoicesImage', 'answerChoicesValue']),
+		...mapGetters('experiment', ['answerChoicesImage', 'answerChoicesValue', 'reproductionSeed']),
+		totalMatrixCellsCount() {
+			return this.matrixSizeX * this.matrixSizeY;
+		},
 		totalUsedImagesCount() {
-			return Math.min(this.matrixSizeX * this.matrixSizeY, this.answerChoicesImage);
+			return Math.min(this.totalMatrixCellsCount, this.answerChoicesImage);
 		},
 	},
 	methods: {
-		// constructUsedImagesSet() {
-
-		// },
+		constructUsedImagesSet() {
+			const indexList = pseudoRandom.generateReproduciblePermutedIndexList(this.totalMatrixCellsCount, this.reproductionSeed);
+		},
 	}
 };
 </script>

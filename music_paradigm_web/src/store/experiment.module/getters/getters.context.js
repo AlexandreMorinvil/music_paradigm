@@ -77,4 +77,8 @@ export default {
 	isFullScreen: (state) => {
 		return state.state.settings.isFullScreen;
 	},
+
+	reproductionSeed: (state) => {
+		return state.state.settings.reproductionSeed;
+	},
 };
