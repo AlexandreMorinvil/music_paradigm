@@ -124,6 +124,7 @@ const stateSchema = new Schema({
 
     matrixSizeX: { type: Number, default: undefined },
     matrixSizeY: { type: Number, default: undefined },
+    matrixUsedCellsCount: { type: Number, default: undefined },
     presentationTime: { type: Number, default: undefined },
     stimuliTime: { type: Number, default: undefined },
     textBeforeMainContent: { type: Schema.Types.Mixed, default: undefined },

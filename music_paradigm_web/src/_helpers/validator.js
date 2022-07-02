@@ -313,6 +313,7 @@ function validateBlock(block, index = null) {
 
 		'matrixSizeX',
 		'matrixSizeY',
+		'matrixUsedCellsCount',
 		'presentationTime',
 		'stimuliTime',
 		'textBeforeMainContent',
@@ -391,6 +392,7 @@ function validateAttributeType(key, value) {
 		case 'matrixSizeY':
 		case 'presentationTime':
 		case 'stimuliTime':
+		case 'matrixUsedCellsCount':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
