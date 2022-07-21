@@ -1,10 +1,38 @@
 /* eslint-disable no-magic-numbers */
 export default {
     generateReproduciblePermutedIndexList,
+    generateReproduciblePermutedFittedIndexList,
 };
 
 /**
- * Generate a list of permuted indexes.
+ * Generate a list of permuted indexes with an order reproductible with a given seed.
+ * If the result size is larger than the range, additional number will be added to fit the fit the 
+ * result size, while minimizing repetition.
+ * If the result size is smaller than the range, fewer number will be included in the range, and 
+ */
+ function generateReproduciblePermutedFittedIndexList(range, resultSize, reproductionSeed = null) {
+
+    // Generate a range array with all the indexes of the parameter array.
+    const randomList = [];
+    let incrementingReproductionSeed = reproductionSeed;
+
+    // Add randomly picked numbers to the random list for as long as its number of elements is lower then the 
+    // number of elements desired.
+    while (randomList.length < resultSize) {
+        const randomRangeBatch = generateReproduciblePermutedIndexList(range, incrementingReproductionSeed);
+        Array.prototype.push.apply(randomList, randomRangeBatch);
+
+        // If there is a reproduction seed, we increment it. If there was none, we leave it to its empty state.
+        if (reproductionSeed) incrementingReproductionSeed += 1;
+    }
+
+    // Return the list containing the expected number of elements.
+    return randomList.splice(0, resultSize);
+}
+
+
+/**
+ * Generate a list of permuted indexes with an order reproductible with a given seed.
  */
 function generateReproduciblePermutedIndexList(range, reproductionSeed = null) {
 
@@ -12,10 +40,7 @@ function generateReproduciblePermutedIndexList(range, reproductionSeed = null) {
     const hash32 = initializePseudoRandomNumberGenration(reproductionSeed);
 
     // Determine how many random numbers must be generated.
-    let numberCount = 0;
-    if (Array.isArray(range)) numberCount = range.length;
-    else if (typeof range === 'number') numberCount = range;
-    else return [];
+    const numberCount = interpretRange(range);
 
     // Generate a range array with all the indexes of the parameter array.
     const orderedRange = [...Array(numberCount).keys()];
@@ -77,4 +102,11 @@ function mulberry32(a) {
 function initializePseudoRandomNumberGenration(seed = null) {
     const reproductionSeed = seed ? String(seed) : String(Math.random());
     return cyrb128(reproductionSeed)[0];
+}
+
+function interpretRange(range) {
+    // Determine how many random numbers must be permutated.
+    if (Array.isArray(range)) return range.length;
+    else if (typeof range === 'number') return range;
+    return 0;
 }

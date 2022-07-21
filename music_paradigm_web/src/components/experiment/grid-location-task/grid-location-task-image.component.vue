@@ -1,16 +1,21 @@
 <template>
-	<img :src="imageSource" :style="dimensions" alt="No image">
+	<img :src="urlExperimentResource(imageSrc)" :style="dimensions" alt="No image" class="matrix-image" />
 </template>
 
 <script>
 import '@/styles/experiment-content-template.css';
+import { mapGetters } from 'vuex';
 
 export default {
-    props: {
-		imageSource: {
-			type: String,
+	props: {
+		cellSpecifications: {
+			type: Object,
 			default() {
-				return '';
+				return {
+					imageId: null,
+					position: null,
+					imageSrc: null,
+				};
 			},
 		},
 		isClickable: {
@@ -20,24 +25,31 @@ export default {
 			},
 		},
 	},
-    data() {
+	data() {
 		return {
-			DEFAULT_SQUARE_SIZE: 200,
+			DEFAULT_SQUARE_SIZE: 100,
 		};
 	},
-    computed: {
-        dimensions() {
-            return this.heightStyle + this.widthStyle;
-        },
-        heightStyle() {
-            return 'height: ' + this.DEFAULT_SQUARE_SIZE + 'px;';
-        },
-        widthStyle() {
-            return 'width: ' + this.DEFAULT_SQUARE_SIZE + 'px;';
-        }
-    }
+	computed: {
+		...mapGetters(['urlExperimentResource']),
+		imageSrc() {
+			return this.cellSpecifications.imageSrc;
+		},
+		dimensions() {
+			return this.heightStyle + this.widthStyle;
+		},
+		heightStyle() {
+			return 'height: ' + this.DEFAULT_SQUARE_SIZE + 'px;';
+		},
+		widthStyle() {
+			return 'width: ' + this.DEFAULT_SQUARE_SIZE + 'px;';
+		},
+	},
 };
 </script>
 
 <style scoped>
+.matrix-image {
+	background-color: grey;
+}
 </style>
