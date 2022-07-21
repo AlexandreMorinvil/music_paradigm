@@ -63,14 +63,14 @@ export default {
 			const imagesUsedIndexList = pseudoRandom.generateReproduciblePermutedFittedIndexList(
 				this.totalUsedImagesCount, // range
 				this.matrixUsedCellsCount, // resultSize
-				this.reproductionSeed, // reproductionSeed
+				this.reproductionSeed + 'image', // reproductionSeed
 			);
 
 			// Generate a list of indexes for the positions in the matrix for the images used.
 			const positionsUsedIndexList = pseudoRandom.generateReproduciblePermutedFittedIndexList(
 				this.totalMatrixCellsCount, // range
 				this.matrixUsedCellsCount, // resultSize
-				this.reproductionSeed, // reproductionSeed
+				this.reproductionSeed + 'position', // reproductionSeed
 			);
 
 			// Generate a list of objects with the image and position.
