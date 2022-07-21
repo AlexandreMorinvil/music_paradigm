@@ -1,6 +1,6 @@
 <template>
-	<div id="image-matrix-area" class="state-section state-division-image-matrix">
-		<div v-for="rowNumber in dimensionY" :key="rowNumber">
+	<div id="image-matrix-part" class="image-matrix-part">
+		<div v-for="rowNumber in dimensionY" :key="rowNumber" :style="columnCountStyle" class="grid-location-task-matrix-row">
 			<grid-location-task-image-component
 				v-for="columnNumber in dimensionX"
 				:key="columnNumber"
@@ -42,6 +42,9 @@ export default {
 	},
 	computed: {
 		...mapGetters('experiment', []),
+		columnCountStyle() {
+			return { '--matrix-column-number': this.dimensionX };
+		},
 	},
 	methods: {
 		getSpecificationsForCell(rowNumber, columnNumber) {
@@ -53,16 +56,22 @@ export default {
 				return cellSpecification.positionId == positionId;
 			});
 			return cellSpecifiactions;
-		}
-	}
+		},
+	},
 };
 </script>
 
 <style scoped>
-.state-section {
+.image-matrix-part {
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	align-content: center;
+}
+
+.grid-location-task-matrix-row {
+	display: grid;
+	grid-template-columns: repeat(var(--matrix-column-number), auto);
 }
 </style>

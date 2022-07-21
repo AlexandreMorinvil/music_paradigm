@@ -1,11 +1,11 @@
 <template>
 	<div id="grid-location-task-grid" class="state-section grid-location-taks-grid-disposition">
-		<image-target-component :cellSpecificationsList="imageBundle" class="image-target-area state-section" />
+		<image-target-component :cellSpecificationsList="imageBundle" class="image-target-part" />
 		<image-matrix-component
 			:dimensionX="matrixDimensionX"
 			:dimensionY="matrixDimensionY"
 			:cellSpecificationsList="imageBundle"
-			class="image-matrix-area state-section"
+			class="image-matrix-part"
 		/>
 	</div>
 </template>
@@ -95,6 +95,14 @@ export default {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	align-items: stretch;
+	align-items: center;
+}
+
+.image-target-part {
+	
+}
+
+.image-matrix-part {
+
 }
 </style>

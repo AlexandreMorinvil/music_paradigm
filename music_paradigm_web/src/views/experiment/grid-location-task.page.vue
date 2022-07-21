@@ -38,9 +38,11 @@ export default {
 <style scoped>
 .text-area {
 	flex-grow: 1;
+	height: 10%;
 }
 
 .grid-location-task-grid-area {
 	flex-grow: 1;
+	height: 90%;
 }
 </style>

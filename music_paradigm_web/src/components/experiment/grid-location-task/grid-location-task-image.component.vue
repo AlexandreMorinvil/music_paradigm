@@ -1,5 +1,7 @@
 <template>
-	<img :src="urlExperimentResource(imageSrc)" :style="dimensions" alt="No image" class="matrix-image" />
+	<div :style="dimensions" class="grid-location-task-image-box">
+		<img :src="urlExperimentResource(imageSrc)" class="grid-location-task-image" />
+	</div>
 </template>
 
 <script>
@@ -27,7 +29,7 @@ export default {
 	},
 	data() {
 		return {
-			DEFAULT_SQUARE_SIZE: 100,
+			DEFAULT_SQUARE_SIZE: 140,
 		};
 	},
 	computed: {
@@ -49,7 +51,13 @@ export default {
 </script>
 
 <style scoped>
-.matrix-image {
-	background-color: grey;
+.grid-location-task-image-box {
+	background-color: rgb(225, 225, 225);
+	margin: 10px;
+}
+
+.grid-location-task-image {
+	height: 100%;
+	width: 100%;
 }
 </style>

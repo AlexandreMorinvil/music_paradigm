@@ -1,5 +1,5 @@
 <template>
-	<div id="image-target-area" class="state-section state-division-image-matrix">
+	<div id="image-target-area" class="state-division-image-target">
 		<grid-location-task-image-component />
 	</div>
 </template>
