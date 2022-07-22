@@ -1,6 +1,6 @@
 <template>
 	<div :style="dimensions" class="grid-location-task-image-box">
-		<img :src="urlExperimentResource(imageSrc)" class="grid-location-task-image" />
+		<img v-show="isRevealed" :src="urlExperimentResource(imageSrc)" class="grid-location-task-image" />
 	</div>
 </template>
 
@@ -29,6 +29,7 @@ export default {
 	},
 	data() {
 		return {
+			isRevealed: true,
 			DEFAULT_SQUARE_SIZE: 140,
 		};
 	},
@@ -47,13 +48,21 @@ export default {
 			return 'width: ' + this.DEFAULT_SQUARE_SIZE + 'px;';
 		},
 	},
+	methods: {
+		reveal() {
+			this.isRevealed = true;
+		},
+		hide() {
+			this.isRevealed = false;
+		}
+	}
 };
 </script>
 
 <style scoped>
 .grid-location-task-image-box {
 	background-color: rgb(225, 225, 225);
-	margin: 10px;
+	margin: 8px;
 }
 
 .grid-location-task-image {

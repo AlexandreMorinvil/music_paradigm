@@ -5,6 +5,7 @@
 				v-for="columnNumber in dimensionX"
 				:key="columnNumber"
 				:cellSpecifications="getSpecificationsForCell(rowNumber, columnNumber)"
+				:ref="CELL_REFERENCE_PREFIX + getCellPositionId(rowNumber, columnNumber)"
 			/>
 		</div>
 	</div>
@@ -12,7 +13,6 @@
 
 <script>
 import '@/styles/experiment-content-template.css';
-import { mapGetters } from 'vuex';
 
 import GridLocationTaskImageComponent from '@/components/experiment/grid-location-task/grid-location-task-image.component.vue';
 
@@ -40,22 +40,43 @@ export default {
 			},
 		},
 	},
+	data() {
+		return {
+			// The reference of cells will have the format "<PREFIX>-<POSITION ID>""
+			CELL_REFERENCE_PREFIX: 'matrix-cell-',
+		};
+	},
 	computed: {
-		...mapGetters('experiment', []),
 		columnCountStyle() {
 			return { '--matrix-column-number': this.dimensionX };
 		},
 	},
 	methods: {
-		getSpecificationsForCell(rowNumber, columnNumber) {
+		getCellPositionId(rowNumber, columnNumber) {
 			const rowIndex = rowNumber - 1;
 			const columnIndex = columnNumber - 1;
-			const positionId = this.dimensionY * rowIndex + columnIndex;
-
+			return this.dimensionX * rowIndex + columnIndex;
+		},
+		getCellCoordinates(positionId) {
+			return {
+				rowIndex: Math.floor(positionId / this.dimensionX),
+				columnIndex: positionId %  this.dimensionX,
+			};
+		},
+		getSpecificationsForCell(rowNumber, columnNumber) {
+			const positionId = this.getCellPositionId(rowNumber, columnNumber);
 			const cellSpecifiactions = this.cellSpecificationsList.find((cellSpecification) => {
 				return cellSpecification.positionId == positionId;
 			});
 			return cellSpecifiactions;
+		},
+		revealCell(PositionId) {
+			const cellIdentifier = this.CELL_REFERENCE_PREFIX + PositionId;
+			this.refs[cellIdentifier].reveal();
+		},
+		hideCell(PositionId) {
+			const cellIdentifier = this.CELL_REFERENCE_PREFIX + PositionId;
+			this.refs[cellIdentifier].hide();
 		},
 	},
 };
