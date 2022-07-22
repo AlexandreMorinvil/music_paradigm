@@ -72,11 +72,11 @@ export default {
 		},
 		revealCell(PositionId) {
 			const cellIdentifier = this.CELL_REFERENCE_PREFIX + PositionId;
-			this.refs[cellIdentifier].reveal();
+			this.$refs[cellIdentifier].reveal();
 		},
 		hideCell(PositionId) {
 			const cellIdentifier = this.CELL_REFERENCE_PREFIX + PositionId;
-			this.refs[cellIdentifier].hide();
+			this.$refs[cellIdentifier].hide();
 		},
 	},
 };

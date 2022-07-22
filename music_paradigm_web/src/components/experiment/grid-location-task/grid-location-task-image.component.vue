@@ -30,13 +30,15 @@ export default {
 	data() {
 		return {
 			isRevealed: true,
+			overwrittingImageSource: null,
 			DEFAULT_SQUARE_SIZE: 140,
 		};
 	},
 	computed: {
 		...mapGetters(['urlExperimentResource']),
 		imageSrc() {
-			return this.cellSpecifications.imageSrc;
+			if (this.overwrittingImageSource) return this.overwrittingImageSource;
+			else return this.cellSpecifications.imageSrc;
 		},
 		dimensions() {
 			return this.heightStyle + this.widthStyle;
@@ -49,13 +51,16 @@ export default {
 		},
 	},
 	methods: {
-		reveal() {
+		reveal(imposedImageSource = null) {
+			this.overwrittingImageSource = null;
+			if (imposedImageSource) this.overwrittingImageSource = imposedImageSource;
 			this.isRevealed = true;
 		},
 		hide() {
+			this.overwrittingImageSource = null;
 			this.isRevealed = false;
-		}
-	}
+		},
+	},
 };
 </script>
 
