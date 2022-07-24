@@ -1,11 +1,12 @@
 <template>
 	<div id="grid-location-task-grid" class="state-section grid-location-taks-grid-disposition">
-		<image-target-component :cellSpecificationsList="imageBundle" class="image-target-part" />
+		<image-target-component :cellSpecificationsList="imageBundle" class="image-target-part" ref="imageTarget" />
 		<image-matrix-component
 			:dimensionX="matrixDimensionX"
 			:dimensionY="matrixDimensionY"
 			:cellSpecificationsList="imageBundle"
 			class="image-matrix-part"
+			ref="imageMatrix"
 		/>
 	</div>
 </template>
@@ -26,8 +27,10 @@ export default {
 	},
 	data() {
 		return {
-			DEFAULT_SQUARE_SIZE: 200,
 			imageBundle: [],
+			DEFAULT_SQUARE_SIZE: 200,
+			IMAGE_REPRODUCTION_SEED_MODIFIER: 'image',
+			POSITION_REPRODUCTION_SEED_MODIFIER: 'position',
 		};
 	},
 	computed: {
@@ -56,6 +59,19 @@ export default {
 		},
 	},
 	methods: {
+		timeout(timeInMilliseconds) {
+			return new Promise((resolve) => setTimeout(resolve, timeInMilliseconds));
+		},
+		async cueTargetImage(iamgeSrc) {
+			this.$refs.imageTarget.showImage(iamgeSrc);
+			await this.timeout(1000);
+			this.$refs.imageTarget.hideImage(iamgeSrc);
+		},
+		async showMatrixImage(positionId) {
+			this.$refs.imageMatrix.revealCell(positionId);
+			await this.timeout(1000);
+			this.$refs.imageMatrix.hideCell(positionId);
+		},
 		constructImageBundle() {
 			this.imageBundle = [];
 
@@ -63,14 +79,14 @@ export default {
 			const imagesUsedIndexList = pseudoRandom.generateReproduciblePermutedFittedIndexList(
 				this.totalUsedImagesCount, // range
 				this.matrixUsedCellsCount, // resultSize
-				this.reproductionSeed + 'image', // reproductionSeed
+				this.reproductionSeed + this.IMAGE_REPRODUCTION_SEED_MODIFIER, // reproductionSeed
 			);
 
 			// Generate a list of indexes for the positions in the matrix for the images used.
 			const positionsUsedIndexList = pseudoRandom.generateReproduciblePermutedFittedIndexList(
 				this.totalMatrixCellsCount, // range
 				this.matrixUsedCellsCount, // resultSize
-				this.reproductionSeed + 'position', // reproductionSeed
+				this.reproductionSeed + this.POSITION_REPRODUCTION_SEED_MODIFIER, // reproductionSeed
 			);
 
 			// Generate a list of objects with the image and position.
@@ -99,10 +115,8 @@ export default {
 }
 
 .image-target-part {
-	
 }
 
 .image-matrix-part {
-
 }
 </style>

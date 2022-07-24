@@ -60,7 +60,7 @@ export default {
 		getCellCoordinates(positionId) {
 			return {
 				rowIndex: Math.floor(positionId / this.dimensionX),
-				columnIndex: positionId %  this.dimensionX,
+				columnIndex: positionId % this.dimensionX,
 			};
 		},
 		getSpecificationsForCell(rowNumber, columnNumber) {
@@ -70,12 +70,12 @@ export default {
 			});
 			return cellSpecifiactions;
 		},
-		revealCell(PositionId) {
-			const cellIdentifier = this.CELL_REFERENCE_PREFIX + PositionId;
+		revealCell(positionId) {
+			const cellIdentifier = this.CELL_REFERENCE_PREFIX + positionId;
 			this.$refs[cellIdentifier].reveal();
 		},
-		hideCell(PositionId) {
-			const cellIdentifier = this.CELL_REFERENCE_PREFIX + PositionId;
+		hideCell(positionId) {
+			const cellIdentifier = this.CELL_REFERENCE_PREFIX + positionId;
 			this.$refs[cellIdentifier].hide();
 		},
 	},
