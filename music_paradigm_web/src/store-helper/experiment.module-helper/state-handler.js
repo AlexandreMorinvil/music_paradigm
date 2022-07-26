@@ -191,7 +191,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		matrixSizeX:					typeof matrixSizeX === 'number' 					? matrixSizeX : 2,
 		matrixSizeY:					typeof matrixSizeY === 'number' 					? matrixSizeY : 2,
 		matrixUsedCellsCount: 			typeof matrixUsedCellsCount === 'number' 			? matrixUsedCellsCount : -1,
-		presentationTime:				typeof presentationTime === 'number' 				? presentationTime : 5000,
+		presentationTime:				typeof presentationTime === 'number' 				? presentationTime : 3000,
 		stimuliTime:					typeof stimuliTime === 'number' 					? stimuliTime : 1000,
 		reproductionSeed:				typeof reproductionSeed === 'string'				? reproductionSeed : generalSettings.reproductionSeed,
 	};

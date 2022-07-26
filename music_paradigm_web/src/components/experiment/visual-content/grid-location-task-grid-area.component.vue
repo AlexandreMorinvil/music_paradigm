@@ -1,10 +1,10 @@
 <template>
 	<div id="grid-location-task-grid" class="state-section grid-location-taks-grid-disposition">
-		<image-target-component :cellSpecificationsList="imageBundle" class="image-target-part" ref="imageTarget" />
+		<image-target-component :cellSpecificationsList="cellSpecificationsList" ref="imageTarget" />
 		<image-matrix-component
 			:dimensionX="matrixDimensionX"
 			:dimensionY="matrixDimensionY"
-			:cellSpecificationsList="imageBundle"
+			:cellSpecificationsList="cellSpecificationsList"
 			class="image-matrix-part"
 			ref="imageMatrix"
 		/>
@@ -27,10 +27,11 @@ export default {
 	},
 	data() {
 		return {
-			imageBundle: [],
+			cellSpecificationsList: [],
 			DEFAULT_SQUARE_SIZE: 200,
 			IMAGE_REPRODUCTION_SEED_MODIFIER: 'image',
 			POSITION_REPRODUCTION_SEED_MODIFIER: 'position',
+			TIME_BETWEEN_PRESENTATION_DISPLAY: 1000,
 		};
 	},
 	computed: {
@@ -40,7 +41,9 @@ export default {
 			'matrixSizeX',
 			'matrixSizeY',
 			'matrixUsedCellsCount',
+			'presentationTime',
 			'reproductionSeed',
+			'stimuliTime',
 		]),
 		matrixDimensionX() {
 			return this.matrixSizeX;
@@ -59,21 +62,21 @@ export default {
 		},
 	},
 	methods: {
-		timeout(timeInMilliseconds) {
+		setTimeout(timeInMilliseconds) {
 			return new Promise((resolve) => setTimeout(resolve, timeInMilliseconds));
 		},
 		async cueTargetImage(iamgeSrc) {
 			this.$refs.imageTarget.showImage(iamgeSrc);
-			await this.timeout(1000);
+			await this.setTimeout(this.stimuliTime);
 			this.$refs.imageTarget.hideImage(iamgeSrc);
 		},
 		async showMatrixImage(positionId) {
 			this.$refs.imageMatrix.revealCell(positionId);
-			await this.timeout(1000);
+			await this.setTimeout(this.presentationTime);
 			this.$refs.imageMatrix.hideCell(positionId);
 		},
 		constructImageBundle() {
-			this.imageBundle = [];
+			this.cellSpecificationsList = [];
 
 			// Generate a list of indexes for the images used.
 			const imagesUsedIndexList = pseudoRandom.generateReproduciblePermutedFittedIndexList(
@@ -92,13 +95,34 @@ export default {
 			// Generate a list of objects with the image and position.
 			for (const i in imagesUsedIndexList) {
 				const imageIndex = imagesUsedIndexList[i];
-				this.imageBundle.push({
+				this.cellSpecificationsList.push({
 					imageId: imageIndex,
 					positionId: positionsUsedIndexList[i],
 					imageSrc: this.answerChoicesImage[imageIndex],
 				});
 			}
 		},
+		async presentMatrix() {
+			// Generate a random presentation order.
+			const presentationOrderIndexList = pseudoRandom.generateReproduciblePermutedIndexList(
+				this.cellSpecificationsList.length, // range
+				Math.random(), // reproductionSeed
+			);
+
+			// Go over all the cells to present in the oder of the random presentation order index list.
+			for (const i in presentationOrderIndexList) {
+
+				// Present the cell that is at the order indicated by presentationOrderIndexList.
+				const orderIndex = presentationOrderIndexList[i];
+				const { positionId } = this.cellSpecificationsList[orderIndex];
+				await this.showMatrixImage(positionId);
+
+				// Wait a small delay before moving on to the next image.
+				// If it is the last cell to display, we ignore the delay.
+				if (i !== presentationOrderIndexList.length - 1)
+					await this.setTimeout(this.TIME_BETWEEN_PRESENTATION_DISPLAY);
+			}
+		}
 	},
 	mounted() {
 		this.constructImageBundle();
@@ -112,11 +136,5 @@ export default {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-}
-
-.image-target-part {
-}
-
-.image-matrix-part {
 }
 </style>

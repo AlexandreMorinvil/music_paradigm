@@ -5,7 +5,7 @@
 				v-for="columnNumber in dimensionX"
 				:key="columnNumber"
 				:cellSpecifications="getSpecificationsForCell(rowNumber, columnNumber)"
-				:ref="CELL_REFERENCE_PREFIX + getCellPositionId(rowNumber, columnNumber)"
+				:ref="CELL_REFERENCE_PREFIX"
 			/>
 		</div>
 	</div>
@@ -43,7 +43,7 @@ export default {
 	data() {
 		return {
 			// The reference of cells will have the format "<PREFIX>-<POSITION ID>""
-			CELL_REFERENCE_PREFIX: 'matrix-cell-',
+			CELL_REFERENCE_PREFIX: 'matrixCell',
 		};
 	},
 	computed: {
@@ -70,13 +70,14 @@ export default {
 			});
 			return cellSpecifiactions;
 		},
+		makeCellReference(positionId) {
+			return String(this.CELL_REFERENCE_PREFIX + positionId);
+		},
 		revealCell(positionId) {
-			const cellIdentifier = this.CELL_REFERENCE_PREFIX + positionId;
-			this.$refs[cellIdentifier].reveal();
+			this.$refs.matrixCell[positionId].reveal();
 		},
 		hideCell(positionId) {
-			const cellIdentifier = this.CELL_REFERENCE_PREFIX + positionId;
-			this.$refs[cellIdentifier].hide();
+			this.$refs.matrixCell[positionId].hide();
 		},
 	},
 };

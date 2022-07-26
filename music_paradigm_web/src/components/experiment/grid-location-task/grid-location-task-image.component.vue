@@ -29,7 +29,7 @@ export default {
 	},
 	data() {
 		return {
-			isRevealed: true,
+			isRevealed: false,
 			overwrittingImageSource: null,
 			DEFAULT_SQUARE_SIZE: 140,
 		};

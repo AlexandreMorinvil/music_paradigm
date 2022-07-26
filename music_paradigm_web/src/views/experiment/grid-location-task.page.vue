@@ -1,8 +1,8 @@
 <template>
 	<div id="grid-loaction-task-state" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
-		<grid-location-task-grid-area-component class="grid-location-task-grid-area state-section" />
-		<sequence-text-area-component v-if="hasSequenceText" ref="sequenceText" class="text-area state-section" />
+		<grid-location-task-grid-area-component class="grid-location-task-grid-area state-section" ref="GridLocationTask" />
+		<sequence-text-area-component v-if="hasSequenceText" class="text-area state-section" ref="sequenceText" />
 	</div>
 </template>
 
@@ -60,19 +60,31 @@ export default {
 		async executeSequenceOfSteps() {
 			// If there is no sequence text, we wait a certain amount of time before the test.
 			if (!this.hasSequenceText) await this.setTimeout(this.TIME_BEFORE_ANYTHING);
+
+			// Present the images.
 			if (this.hasPresentationText) {
 				await this.setTimeout(this.TIME_BEFORE_STARTING_PRESENTATION);
 				await this.showPresentationText(this.TIME_DISPLAY_PRESENTATION_TEXT);
 			}
+			await this.presentImages();
+
+			// Submit the test.
 			if (this.hasStartTestText) {
 				await this.setTimeout(this.TIME_BEFORE_STARTING_PRESENTATION);
 				await this.showStartTestText(this.TIME_DISPLAY_START_TEST_TEXT);
 			}
+
+			// Conclude the test block.
 			if (this.hasAfterTestText) {
 				await this.setTimeout(this.TIME_BEFORE_SHOWING_CONCLUSION);
 				await this.showAfterTestText(this.TIME_DISPLAY_AFTER_TEST_TEXT);
 			}
+
+			// Wait a small delay before continuing.
 			await this.setTimeout(this.TIME_AFTER_EVERYTHING);
+		},
+		async presentImages() {
+			await this.$refs.GridLocationTask.presentMatrix();
 		},
 		async showPresentationText(timeInMilliseconds) {
 			this.$refs.sequenceText.activateTextBeforeMainContent();

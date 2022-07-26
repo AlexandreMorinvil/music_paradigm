@@ -277,7 +277,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 
 			matrixSizeX: 2,															// X dimension of the matrix in states where a matix is involved (used in grid-location-task)
 			matrixSizeY: 2,															// Y dimension of the matrix in states where a matix is involved (used in grid-location-task)
-			presentationTime: 5000,													// Time during which a content is presentation before the main elements of a state (used in grid-location-task)
+			presentationTime: 3000,													// Time during which a content is presentation before the main elements of a state (used in grid-location-task)
 			stimuliTime: 1000,														// Time during which a stimuli is presented (used in grid-location-task)
 			matrixUsedCellsCount: -1,												// Indicate the number of cells of the matrix should be used. A negative number indicates the numebr of cells that should not be used.
 
