@@ -192,6 +192,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			interactiveKeyboard: false, 											// <Boolean|String> Directive to display the interactive keyboard
 			textAfterQuestionAsked: '',												// Text displayed after a question is asked in question states
 			textBeforeMainContent: '',												// Text displayed before the main content of a state (used in grid location task)
+			textAfterAnswerReceived: '',											// Text displayed after all the answers of the user are reveived (used in grid location task)
 			textSpecification: '',													// Text to add a certain specification (used in question state)
 		},
 

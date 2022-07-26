@@ -316,9 +316,10 @@ function validateBlock(block, index = null) {
 		'matrixUsedCellsCount',
 		'presentationTime',
 		'stimuliTime',
-		'textBeforeMainContent',
 		'maxResponseTime',
 
+		'textBeforeMainContent',
+		'textAfterAnswerReceived',
 		'reproductionSeed',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
@@ -451,6 +452,7 @@ function validateAttributeType(key, value) {
 		case 'textContent':
 		case 'textAfterQuestionAsked':
 		case 'textBeforeMainContent':
+		case 'textAfterAnswerReceived':
 		case 'textSpecification':
 		case 'textReminder':
 		case 'pictureFileName':
@@ -474,6 +476,7 @@ function validateAttributeType(key, value) {
 					case 'textContent':
 					case 'textAfterQuestionAsked':
 					case 'textBeforeMainContent':
+					case 'textAfterAnswerReceived':
 					case 'textSpecification':
 					case 'textReminder':
 					case 'pictureFileName':
@@ -523,6 +526,7 @@ function validateAttributeType(key, value) {
 					case 'audioSecond':
 					case 'textAfterQuestionAsked':
 					case 'textBeforeMainContent':
+					case 'textAfterAnswerReceived':
 					case 'answerChoicesColor':
 						value.forEach((element, index) => {
 							if (!(typeof element === 'string')) {

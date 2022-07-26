@@ -26,6 +26,10 @@ export default {
 		return state.state.content.textBeforeMainContent;
 	},
 
+	textAfterAnswerReceived: (state) => {
+		return state.state.content.textAfterAnswerReceived;
+	},
+
 	pictureName: (state) => {
 		const pictureName = state.state.content.pictureName;
 		return pictureName ? `${state.description.folder}/${pictureName}` : '';

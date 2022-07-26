@@ -264,6 +264,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 		textAfterQuestionAsked,
 		textSpecification,
 		textBeforeMainContent,
+		textAfterAnswerReceived,
 	} = currentBlock;
 
 	// Using the values that are not set in an array if there are any
@@ -276,6 +277,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	let updatedInteractiveKeyboard = typeof interactiveKeyboard === 'string' || typeof interactiveKeyboard === 'boolean' ? interactiveKeyboard : null;
 	let updatedTextAfterQuestionAsked = typeof textAfterQuestionAsked === 'string' ? textAfterQuestionAsked : null;
 	let updatedTextBeforeMainContent = typeof textBeforeMainContent === 'string' ? textBeforeMainContent : null;
+	let updatedTextAfterAnswerReceived = typeof textAfterAnswerReceived === 'string' ? textAfterAnswerReceived : null;
 	let updatedTextSpecification = typeof textSpecification === 'string' ? textSpecification : null;
 
 	// If the value is in an array
@@ -290,6 +292,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(interactiveKeyboard)) updatedInteractiveKeyboard = interactiveKeyboard[piledContentIndex] || null;
 	if (Array.isArray(textAfterQuestionAsked)) updatedTextAfterQuestionAsked = textAfterQuestionAsked || null;
 	if (Array.isArray(textBeforeMainContent)) updatedTextBeforeMainContent = textBeforeMainContent || null;
+	if (Array.isArray(textAfterAnswerReceived)) updatedTextAfterAnswerReceived = textAfterAnswerReceived || null;
 	if (Array.isArray(textSpecification)) updatedTextSpecification = textSpecification || null;
 
 	// If the value is in a nested array
@@ -304,6 +307,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(updatedInteractiveKeyboard)) updatedInteractiveKeyboard = updatedInteractiveKeyboard[innerStepIndex];
 	if (Array.isArray(updatedTextAfterQuestionAsked)) updatedTextAfterQuestionAsked = textAfterQuestionAsked || null;
 	if (Array.isArray(updatedTextBeforeMainContent)) updatedTextBeforeMainContent = textBeforeMainContent || null;
+	if (Array.isArray(updatedTextAfterAnswerReceived)) updatedTextAfterAnswerReceived = textAfterAnswerReceived || null;
 	if (Array.isArray(updatedTextSpecification)) updatedTextSpecification = textSpecification || null;
 
 	// === Update the state ===
@@ -317,6 +321,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	currentState.content.interactiveKeyboard = updatedInteractiveKeyboard || false;
 	currentState.content.textAfterQuestionAsked = updatedTextAfterQuestionAsked || '';
 	currentState.content.textBeforeMainContent = updatedTextBeforeMainContent || '';
+	currentState.content.textAfterAnswerReceived = updatedTextAfterAnswerReceived || '';
 	currentState.content.textSpecification = updatedTextSpecification || '';
 
 	// Indicate that the media files is initialized
