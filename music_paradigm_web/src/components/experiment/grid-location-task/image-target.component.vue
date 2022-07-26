@@ -14,8 +14,11 @@ export default {
 		GridLocationTaskImageComponent,
 	},
 	methods: {
-		showImage(imageSrc) {
-			this.$refs.targetImage.reveal(imageSrc);
+		loadCellSpecification(cellSpecifiaction) {
+			this.$refs.targetImage.updateCellSpecification(cellSpecifiaction);
+		},
+		showImage() {
+			this.$refs.targetImage.reveal();
 		},
 		hideImage() {
 			this.$refs.targetImage.hide();

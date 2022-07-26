@@ -1,6 +1,6 @@
 <template>
 	<div id="grid-location-task-grid" class="state-section grid-location-taks-grid-disposition">
-		<image-target-component :cellSpecificationsList="cellSpecificationsList" ref="imageTarget" />
+		<image-target-component ref="imageTarget" />
 		<image-matrix-component
 			:dimensionX="matrixDimensionX"
 			:dimensionY="matrixDimensionY"
@@ -31,7 +31,8 @@ export default {
 			DEFAULT_SQUARE_SIZE: 200,
 			IMAGE_REPRODUCTION_SEED_MODIFIER: 'image',
 			POSITION_REPRODUCTION_SEED_MODIFIER: 'position',
-			TIME_BETWEEN_PRESENTATION_DISPLAY: 1000,
+			TIME_BETWEEN_PRESENTATION_DISPLAY: 500,
+			TIME_DELAY_BEFORE_TEST_DISPLAY: 500,
 		};
 	},
 	computed: {
@@ -62,13 +63,14 @@ export default {
 		},
 	},
 	methods: {
-		setTimeout(timeInMilliseconds) {
+		setTimeout(timeInMilliseconds, stopWaitWhenReceiveAnswer) {
 			return new Promise((resolve) => setTimeout(resolve, timeInMilliseconds));
 		},
-		async cueTargetImage(iamgeSrc) {
-			this.$refs.imageTarget.showImage(iamgeSrc);
+		async askTargetImage(cellSpecifiaction) {
+			this.$refs.imageTarget.loadCellSpecification(cellSpecifiaction);
+			this.$refs.imageTarget.showImage(cellSpecifiaction);
 			await this.setTimeout(this.stimuliTime);
-			this.$refs.imageTarget.hideImage(iamgeSrc);
+			this.$refs.imageTarget.hideImage();
 		},
 		async showMatrixImage(positionId) {
 			this.$refs.imageMatrix.revealCell(positionId);
@@ -102,20 +104,37 @@ export default {
 				});
 			}
 		},
-		async presentMatrix() {
-			// Generate a random presentation order.
-			const presentationOrderIndexList = pseudoRandom.generateReproduciblePermutedIndexList(
+		generateRandomPresentationOrder() {
+			return pseudoRandom.generateReproduciblePermutedIndexList(
 				this.cellSpecificationsList.length, // range
 				Math.random(), // reproductionSeed
 			);
-
+		},
+		async presentMatrix() {
 			// Go over all the cells to present in the oder of the random presentation order index list.
+			const presentationOrderIndexList = this.generateRandomPresentationOrder();
 			for (const i in presentationOrderIndexList) {
 
 				// Present the cell that is at the order indicated by presentationOrderIndexList.
 				const orderIndex = presentationOrderIndexList[i];
 				const { positionId } = this.cellSpecificationsList[orderIndex];
 				await this.showMatrixImage(positionId);
+
+				// Wait a small delay before moving on to the next image.
+				// If it is the last cell to display, we ignore the delay.
+				if (i !== presentationOrderIndexList.length - 1)
+					await this.setTimeout(this.TIME_BETWEEN_PRESENTATION_DISPLAY);
+			}
+		},
+		async askImagePositions() {
+			// Go over all the cells to present in the oder of the random presentation order index list.
+			const presentationOrderIndexList = this.generateRandomPresentationOrder();
+			for (const i in presentationOrderIndexList) {
+
+				// Present the cell that is at the order indicated by presentationOrderIndexList.
+				const orderIndex = presentationOrderIndexList[i];
+				const cellSpecifiaction = this.cellSpecificationsList[orderIndex];
+				await this.askTargetImage(cellSpecifiaction);
 
 				// Wait a small delay before moving on to the next image.
 				// If it is the last cell to display, we ignore the delay.

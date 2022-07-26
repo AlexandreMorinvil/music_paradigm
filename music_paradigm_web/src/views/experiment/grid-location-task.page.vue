@@ -31,7 +31,7 @@ export default {
 			TIME_DISPLAY_AFTER_TEST_TEXT: 3000,
 			TIME_BEFORE_STARTING_PRESENTATION: 3000,
 			TIME_BEFORE_STARTING_TEST: 3000,
-			TIME_BEFORE_SHOWING_CONCLUSION: 1500,
+			TIME_BEFORE_SHOWING_CONCLUSION: 1000,
 		};
 	},
 	computed: {
@@ -73,6 +73,7 @@ export default {
 				await this.setTimeout(this.TIME_BEFORE_STARTING_PRESENTATION);
 				await this.showStartTestText(this.TIME_DISPLAY_START_TEST_TEXT);
 			}
+			await this.testImages();
 
 			// Conclude the test block.
 			if (this.hasAfterTestText) {
@@ -85,6 +86,9 @@ export default {
 		},
 		async presentImages() {
 			await this.$refs.GridLocationTask.presentMatrix();
+		},
+		async testImages() {
+			await this.$refs.GridLocationTask.askImagePositions();
 		},
 		async showPresentationText(timeInMilliseconds) {
 			this.$refs.sequenceText.activateTextBeforeMainContent();

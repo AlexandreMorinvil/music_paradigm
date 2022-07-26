@@ -30,14 +30,14 @@ export default {
 	data() {
 		return {
 			isRevealed: false,
-			overwrittingImageSource: null,
+			overwrittingCellSpecification: null,
 			DEFAULT_SQUARE_SIZE: 140,
 		};
 	},
 	computed: {
 		...mapGetters(['urlExperimentResource']),
 		imageSrc() {
-			if (this.overwrittingImageSource) return this.overwrittingImageSource;
+			if (this.overwrittingCellSpecification) return this.overwrittingCellSpecification.imageSrc;
 			else return this.cellSpecifications.imageSrc;
 		},
 		dimensions() {
@@ -51,13 +51,13 @@ export default {
 		},
 	},
 	methods: {
-		reveal(imposedImageSource = null) {
-			this.overwrittingImageSource = null;
-			if (imposedImageSource) this.overwrittingImageSource = imposedImageSource;
+		updateCellSpecification(cellSpecifiaction) {
+			this.overwrittingCellSpecification = cellSpecifiaction;
+		},
+		reveal() {
 			this.isRevealed = true;
 		},
 		hide() {
-			this.overwrittingImageSource = null;
 			this.isRevealed = false;
 		},
 	},
