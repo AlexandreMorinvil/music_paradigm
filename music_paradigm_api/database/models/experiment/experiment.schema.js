@@ -127,9 +127,10 @@ const stateSchema = new Schema({
     matrixUsedCellsCount: { type: Number, default: undefined },
     presentationTime: { type: Number, default: undefined },
     stimuliTime: { type: Number, default: undefined },
-    textBeforeMainContent: { type: Schema.Types.Mixed, default: undefined },
     maxResponseTime: { type: Number, default: undefined },
-
+    
+    textBeforeMainContent: { type: Schema.Types.Mixed, default: undefined },
+    textAfterAnswerReceived: { type: Schema.Types.Mixed, default: undefined },
     reproductionSeed: { type: String, default: undefined },
 },
     {
