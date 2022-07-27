@@ -271,7 +271,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			pvtMinTime: 1000,														// Minimum time for a pvt stimulus in milliseconds
 			pvtMaxTime: 10000,														// Maximum time for a pvt stimulus in milliseconds
 			pvtCount: 1,															// Number of pvt stimuli to submit
-			maxResponseTime: 10000,													// Maximum time to react to the stimulus
+			maxResponseTime: 5000,													// Maximum time to react to the stimulus
 			pvtTooEarlyMessage: '',													// Message to display if the user reacts before the stimulus in a pvt state
 			pvtHasCentralElement: true,												// Indicates if the pvt test must have a centre visual element
 

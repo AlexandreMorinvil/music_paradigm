@@ -2,10 +2,11 @@
 	<div id="grid-location-task-grid" class="state-section grid-location-taks-grid-disposition">
 		<image-target-component ref="imageTarget" />
 		<image-matrix-component
+			class="image-matrix-part"
 			:dimensionX="matrixDimensionX"
 			:dimensionY="matrixDimensionY"
 			:cellSpecificationsList="cellSpecificationsList"
-			class="image-matrix-part"
+			v-on:cellSelected="handleAnswer"
 			ref="imageMatrix"
 		/>
 	</div>
@@ -28,11 +29,19 @@ export default {
 	data() {
 		return {
 			cellSpecificationsList: [],
-			DEFAULT_SQUARE_SIZE: 200,
+
+			// Answer handling
+			hasReceivedAnswerForCurrentStimuli: false,
+			resolveToExcecuteWhenAnswerIsReceived: null,
+			answerWaitTimeout: null,
+
+			// Reproduction seed modifiers
 			IMAGE_REPRODUCTION_SEED_MODIFIER: 'image',
 			POSITION_REPRODUCTION_SEED_MODIFIER: 'position',
+
+			// Times
 			TIME_BETWEEN_PRESENTATION_DISPLAY: 500,
-			TIME_DELAY_BEFORE_TEST_DISPLAY: 500,
+			TIME_DELAY_BETWEEN_TEST_DISPLAYS: 1500,
 		};
 	},
 	computed: {
@@ -42,6 +51,7 @@ export default {
 			'matrixSizeX',
 			'matrixSizeY',
 			'matrixUsedCellsCount',
+			'maxResponseTime',
 			'presentationTime',
 			'reproductionSeed',
 			'stimuliTime',
@@ -63,19 +73,61 @@ export default {
 		},
 	},
 	methods: {
-		setTimeout(timeInMilliseconds, stopWaitWhenReceiveAnswer) {
-			return new Promise((resolve) => setTimeout(resolve, timeInMilliseconds));
+		setTimeout(timeInMilliseconds) {
+			return new Promise((resolve) => {
+				setTimeout(resolve, timeInMilliseconds);
+			});
+		},
+		setTimeoutForAnswer(timeDisplayImageInMilliseconds, timeTakeAnswerInMilliseconds) {
+			return new Promise((resolve) => {
+				// When this promise is resolved, we no longer wait for answers.
+				this.hasReceivedAnswerForCurrentStimuli = false;
+				this.resolveWhenAnswered = resolve;
+
+				// Wait a first amount of time while the image is displayed.
+				this.answerWaitTimeout = setTimeout(() => {
+					this.hideTargetImage();
+
+					// Wait another amount of time while is image is hidden.
+					this.answerWaitTimeout = setTimeout(this.stopAnswerWait, timeTakeAnswerInMilliseconds);
+				}, timeDisplayImageInMilliseconds);
+			});
 		},
 		async askTargetImage(cellSpecifiaction) {
-			this.$refs.imageTarget.loadCellSpecification(cellSpecifiaction);
-			this.$refs.imageTarget.showImage(cellSpecifiaction);
-			await this.setTimeout(this.stimuliTime);
-			this.$refs.imageTarget.hideImage();
+			this.showTargetImage(cellSpecifiaction);
+			await this.setTimeoutForAnswer(this.stimuliTime, this.maxResponseTime);
+			this.hideTargetImage();
 		},
 		async showMatrixImage(positionId) {
-			this.$refs.imageMatrix.revealCell(positionId);
+			this.presentImageInMatrix(positionId);
 			await this.setTimeout(this.presentationTime);
+			this.hideImageInMatrix(positionId);
+		},
+		showTargetImage(cellSpecifiaction) {
+			this.$refs.imageTarget.loadCellSpecification(cellSpecifiaction);
+			this.$refs.imageTarget.showImage(cellSpecifiaction);
+		},
+		hideTargetImage() {
+			this.$refs.imageTarget.hideImage();
+		},
+		presentImageInMatrix(positionId) {
+			this.$refs.imageMatrix.revealCell(positionId);
+		},
+		hideImageInMatrix(positionId) {
 			this.$refs.imageMatrix.hideCell(positionId);
+		},
+		stopAnswerWait() {
+			if (!this.resolveWhenAnswered) return false;
+			this.resolveWhenAnswered();
+			this.resolveWhenAnswered = null;
+			clearTimeout(this.answerWaitTimeout);
+			this.answerWaitTimeout = null;
+			this.hasReceivedAnswerForCurrentStimuli = true;
+			return true;
+		},
+		handleAnswer(clickedCellSpecifications) {
+			if (!this.stopAnswerWait()) return;
+			console.log(clickedCellSpecifications);
 		},
 		constructImageBundle() {
 			this.cellSpecificationsList = [];
@@ -114,7 +166,6 @@ export default {
 			// Go over all the cells to present in the oder of the random presentation order index list.
 			const presentationOrderIndexList = this.generateRandomPresentationOrder();
 			for (const i in presentationOrderIndexList) {
-
 				// Present the cell that is at the order indicated by presentationOrderIndexList.
 				const orderIndex = presentationOrderIndexList[i];
 				const { positionId } = this.cellSpecificationsList[orderIndex];
@@ -122,15 +173,13 @@ export default {
 
 				// Wait a small delay before moving on to the next image.
 				// If it is the last cell to display, we ignore the delay.
-				if (i !== presentationOrderIndexList.length - 1)
-					await this.setTimeout(this.TIME_BETWEEN_PRESENTATION_DISPLAY);
+				if (i !== presentationOrderIndexList.length - 1) await this.setTimeout(this.TIME_BETWEEN_PRESENTATION_DISPLAY);
 			}
 		},
 		async askImagePositions() {
 			// Go over all the cells to present in the oder of the random presentation order index list.
 			const presentationOrderIndexList = this.generateRandomPresentationOrder();
 			for (const i in presentationOrderIndexList) {
-
 				// Present the cell that is at the order indicated by presentationOrderIndexList.
 				const orderIndex = presentationOrderIndexList[i];
 				const cellSpecifiaction = this.cellSpecificationsList[orderIndex];
@@ -138,10 +187,11 @@ export default {
 
 				// Wait a small delay before moving on to the next image.
 				// If it is the last cell to display, we ignore the delay.
-				if (i !== presentationOrderIndexList.length - 1)
-					await this.setTimeout(this.TIME_BETWEEN_PRESENTATION_DISPLAY);
+				const isLastStimuli = i === presentationOrderIndexList.length - 1;
+				const shouldWaitBeforeNextStimuli = this.hasReceivedAnswerForCurrentStimuli;
+				if (!isLastStimuli && shouldWaitBeforeNextStimuli) await this.setTimeout(this.TIME_DELAY_BETWEEN_TEST_DISPLAYS);
 			}
-		}
+		},
 	},
 	mounted() {
 		this.constructImageBundle();

@@ -1,6 +1,6 @@
 <template>
 	<div id="image-target-area" class="state-division-image-target">
-		<grid-location-task-image-component :isClickable="false" ref="targetImage" />
+		<grid-location-task-image-component ref="targetImage" />
 	</div>
 </template>
 

@@ -106,15 +106,17 @@ export default {
 			this.$refs.sequenceText.hide();
 		},
 		setTimeout(timeInMilliseconds) {
-			return new Promise((resolve) => { setTimeout(resolve, timeInMilliseconds); });
-		}
+			return new Promise((resolve) => {
+				setTimeout(resolve, timeInMilliseconds);
+			});
+		},
 	},
 	beforeMount() {
 		this.updateFootnote();
 	},
 	mounted() {
 		this.executeSequenceOfSteps();
-	}
+	},
 };
 </script>
 

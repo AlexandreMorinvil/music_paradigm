@@ -5,6 +5,7 @@
 				v-for="columnNumber in dimensionX"
 				:key="columnNumber"
 				:cellSpecifications="getSpecificationsForCell(rowNumber, columnNumber)"
+				v-on:click.native="handleBeingClicked(rowNumber, columnNumber)"
 				:ref="CELL_REFERENCE_PREFIX"
 			/>
 		</div>
@@ -69,6 +70,9 @@ export default {
 				return cellSpecification.positionId == positionId;
 			});
 			return cellSpecifiactions;
+		},
+		handleBeingClicked(rowNumber, columnNumber) {
+			this.$emit('cellSelected', this.getSpecificationsForCell(rowNumber, columnNumber));
 		},
 		makeCellReference(positionId) {
 			return String(this.CELL_REFERENCE_PREFIX + positionId);

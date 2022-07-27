@@ -20,12 +20,6 @@ export default {
 				};
 			},
 		},
-		isClickable: {
-			type: Boolean,
-			default() {
-				return false;
-			},
-		},
 	},
 	data() {
 		return {
