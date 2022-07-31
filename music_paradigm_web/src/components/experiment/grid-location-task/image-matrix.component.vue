@@ -102,8 +102,8 @@ export default {
 			this.cellSpecificationsList.forEach((cell) => {
 				const { rowIndex, columnIndex } = this.getCellCoordinates(cell.positionId);
 				imagePositions.push({
-					x: columnIndex,
-					y: rowIndex,
+					x: columnIndex + 1,
+					y: rowIndex + 1,
 				});
 			});
 
