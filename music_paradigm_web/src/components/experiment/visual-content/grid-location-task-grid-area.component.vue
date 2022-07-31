@@ -71,6 +71,9 @@ export default {
 		totalUsedImagesCount() {
 			return Math.min(this.totalMatrixCellsCount, this.matrixUsedCellsCount, this.totalAvailableImagesCount);
 		},
+		isWaitingForAnswer() {
+			return this.answerWaitTimeout !== null;
+		},
 	},
 	methods: {
 		setTimeout(timeInMilliseconds) {
@@ -94,6 +97,7 @@ export default {
 			});
 		},
 		async askTargetImage(cellSpecifiaction) {
+			this.activateMatrixClickability();
 			this.showTargetImage(cellSpecifiaction);
 			await this.setTimeoutForAnswer(this.stimuliTime, this.maxResponseTime);
 			this.hideTargetImage();
@@ -115,6 +119,12 @@ export default {
 		},
 		hideImageInMatrix(positionId) {
 			this.$refs.imageMatrix.hideCell(positionId);
+		},
+		activateMatrixClickability() {
+			this.$refs.imageMatrix.activateClickability();
+		},
+		deactivateMatrixClickability() {
+			this.$refs.imageMatrix.deactivateClickability();
 		},
 		stopAnswerWait() {
 			if (!this.resolveWhenAnswered) return false;
@@ -195,7 +205,16 @@ export default {
 	},
 	mounted() {
 		this.constructImageBundle();
+		this.deactivateMatrixClickability();
 	},
+	watch: {
+		isWaitingForAnswer: {
+			handler: function(isWaiting) {
+				if (isWaiting) this.activateMatrixClickability();
+				else this.deactivateMatrixClickability();
+			}
+		}
+	}
 };
 </script>
 

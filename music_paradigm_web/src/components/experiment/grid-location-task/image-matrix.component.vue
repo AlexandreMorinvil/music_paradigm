@@ -83,6 +83,16 @@ export default {
 		hideCell(positionId) {
 			this.$refs.matrixCell[positionId].hide();
 		},
+		activateClickability() {
+			this.$refs.matrixCell.forEach(cell => {
+				cell.activateClickability();
+			});
+		},
+		deactivateClickability() {
+			this.$refs.matrixCell.forEach(cell => {
+				cell.deactivateClickability();
+			});
+		}
 	},
 };
 </script>

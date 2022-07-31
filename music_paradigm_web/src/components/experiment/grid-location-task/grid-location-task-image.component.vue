@@ -1,5 +1,5 @@
 <template>
-	<div :style="dimensions" class="grid-location-task-image-box">
+	<div :style="dimensions" :class="{'clickable-cell': isClickable}" class="grid-location-task-image-box">
 		<img v-show="isRevealed" :src="urlExperimentResource(imageSrc)" class="grid-location-task-image" />
 	</div>
 </template>
@@ -23,6 +23,7 @@ export default {
 	},
 	data() {
 		return {
+			isClickable: false,
 			isRevealed: false,
 			overwrittingCellSpecification: null,
 			DEFAULT_SQUARE_SIZE: 140,
@@ -54,6 +55,12 @@ export default {
 		hide() {
 			this.isRevealed = false;
 		},
+		activateClickability() {
+			this.isClickable = true;
+		},
+		deactivateClickability() {
+			this.isClickable = false;
+		},
 	},
 };
 </script>
@@ -62,6 +69,10 @@ export default {
 .grid-location-task-image-box {
 	background-color: rgb(225, 225, 225);
 	margin: 8px;
+}
+
+.clickable-cell:active {
+	filter: brightness(70%);
 }
 
 .grid-location-task-image {
