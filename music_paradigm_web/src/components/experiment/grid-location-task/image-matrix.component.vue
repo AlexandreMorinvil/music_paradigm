@@ -51,6 +51,9 @@ export default {
 		columnCountStyle() {
 			return { '--matrix-column-number': this.dimensionX };
 		},
+		numberImages() {
+			return this.cellSpecificationsList.length;
+		},
 	},
 	methods: {
 		getCellPositionId(rowNumber, columnNumber) {
@@ -92,6 +95,25 @@ export default {
 			this.$refs.matrixCell.forEach(cell => {
 				cell.deactivateClickability();
 			});
+		},
+		bundleSetup() {
+			// Transform the positionIds of the cell specifications in a coordinate format (with first index 1).
+			const imagePositions = [];
+			this.cellSpecificationsList.forEach((cell) => {
+				const { rowIndex, columnIndex } = this.getCellCoordinates(cell.positionId);
+				imagePositions.push({
+					x: columnIndex,
+					y: rowIndex,
+				});
+			});
+
+			// Return the setup of the matrix.
+			return {
+				numberImages: this.numberImages,
+				xMatrixDimension: this.dimensionX,
+				yMatrixDimension: this.dimensionY,
+				imagePositions: imagePositions,
+			};
 		}
 	},
 };

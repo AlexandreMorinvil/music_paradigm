@@ -14,7 +14,6 @@ export default {
 			type: Object,
 			default() {
 				return {
-					imageId: null,
 					position: null,
 					imageSrc: null,
 				};

@@ -28,18 +28,30 @@ export default {
 	},
 	data() {
 		return {
+			// Results.
+			tagetImage: [],
+			targetImagePosition: [],
+			timeToClick: [],
+			positionClicked: [],
+			imageAtPositionClicked: [],
+
+			// Answer handling helpers.
+			currentTargetImage: null,
+			timeTargetCueWasGiven: null,
+
+			// Setup of the matrix.
 			cellSpecificationsList: [],
 
-			// Answer handling
+			// Answer handling.
 			hasReceivedAnswerForCurrentStimuli: false,
 			resolveToExcecuteWhenAnswerIsReceived: null,
 			answerWaitTimeout: null,
 
-			// Reproduction seed modifiers
+			// Reproduction seed modifiers.
 			IMAGE_REPRODUCTION_SEED_MODIFIER: 'image',
 			POSITION_REPRODUCTION_SEED_MODIFIER: 'position',
 
-			// Times
+			// Times constants.
 			TIME_BETWEEN_PRESENTATION_DISPLAY: 500,
 			TIME_DELAY_BETWEEN_TEST_DISPLAYS: 1500,
 			TIME_DELAY_AFTER_IMAGE_CLICKED: 1000,
@@ -98,7 +110,8 @@ export default {
 			});
 		},
 		async askTargetImage(cellSpecifiaction) {
-			this.activateMatrixClickability();
+			this.currentTargetImage = cellSpecifiaction;
+			this.timeTargetCueWasGiven = new Date();
 			this.showTargetImage(cellSpecifiaction);
 			await this.setTimeoutForAnswer(this.stimuliTime, this.maxResponseTime);
 			if (this.hasReceivedAnswerForCurrentStimuli) await this.setTimeout(this.TIME_DELAY_AFTER_IMAGE_CLICKED);
@@ -138,8 +151,27 @@ export default {
 			return true;
 		},
 		handleAnswer(clickedCellSpecifications) {
+			// If we are not waiting for an answer, we ignore the answer received.
 			if (!this.stopAnswerWait()) return;
-			console.log(clickedCellSpecifications);
+
+			// Retreive infromation of the answer.
+			const timeAnswerReceived = new Date();
+			const { imageSrc: targetImageSrc, positionId: targetPositionId } = this.currentTargetImage;
+			const { imageSrc: clickedImageSrc, positionId: clickedPositionId } = clickedCellSpecifications;
+			const convertPositionIdToCoordinates = (positionId) => {
+				const { columnIndex, rowIndex } = this.$refs.imageMatrix.getCellCoordinates(positionId);
+				return {
+					x: columnIndex + 1,
+					y: rowIndex + 1,
+				};
+			};
+
+			// Record the information of the position clicked.
+			this.timeToClick.push(timeAnswerReceived - this.timeTargetCueWasGiven);
+			this.tagetImage.push(targetImageSrc);
+			this.targetImagePosition.push(convertPositionIdToCoordinates(targetPositionId));
+			this.imageAtPositionClicked.push(clickedImageSrc);
+			this.positionClicked.push(convertPositionIdToCoordinates(clickedPositionId));
 		},
 		constructImageBundle() {
 			this.cellSpecificationsList = [];
@@ -162,7 +194,6 @@ export default {
 			for (const i in imagesUsedIndexList) {
 				const imageIndex = imagesUsedIndexList[i];
 				this.cellSpecificationsList.push({
-					imageId: imageIndex,
 					positionId: positionsUsedIndexList[i],
 					imageSrc: this.answerChoicesImage[imageIndex],
 				});
@@ -203,6 +234,12 @@ export default {
 				const shouldWaitBeforeNextStimuli = this.hasReceivedAnswerForCurrentStimuli;
 				if (!isLastStimuli && shouldWaitBeforeNextStimuli) await this.setTimeout(this.TIME_DELAY_BETWEEN_TEST_DISPLAYS);
 			}
+		},
+		reportMatrixSetup() {
+			return this.$refs.imageMatrix.bundleSetup();
+		},
+		reportResults() {
+			return;
 		},
 	},
 	mounted() {
