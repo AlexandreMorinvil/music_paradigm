@@ -34,6 +34,7 @@ export default {
 			timeToClick: [],
 			positionClicked: [],
 			imageAtPositionClicked: [],
+			isAnswerRightList: [],
 
 			// Answer handling helpers.
 			currentTargetImage: null,
@@ -87,6 +88,27 @@ export default {
 		isWaitingForAnswer() {
 			return this.answerWaitTimeout !== null;
 		},
+		interocationsCount() {
+			return this.isAnswerRightList.length;
+		},
+		rightAnswersCount() {
+			return this.isAnswerRightList.filter(isCorrect => isCorrect).length;
+		},
+		matrixSetup() {
+			return this.$refs.imageMatrix.bundleSetup();
+		},
+		results() {
+			return {
+				tagetImage: this.tagetImage,
+				targetImagePosition: this.targetImagePosition,
+				timeToClick: this.timeToClick,
+				positionClicked: this.positionClicked,
+				imageAtPositionClicked: this.imageAtPositionClicked,
+				isAnswerRightList: this.isAnswerRightList,
+				interocationsCount: this.interocationsCount,
+				rightAnswersCount: this.rightAnswersCount,
+			};
+		}
 	},
 	methods: {
 		setTimeout(timeInMilliseconds) {
@@ -172,6 +194,7 @@ export default {
 			this.targetImagePosition.push(convertPositionIdToCoordinates(targetPositionId));
 			this.imageAtPositionClicked.push(clickedImageSrc);
 			this.positionClicked.push(convertPositionIdToCoordinates(clickedPositionId));
+			this.isAnswerRightList.push(targetPositionId === clickedPositionId);
 		},
 		constructImageBundle() {
 			this.cellSpecificationsList = [];
@@ -234,12 +257,6 @@ export default {
 				const shouldWaitBeforeNextStimuli = this.hasReceivedAnswerForCurrentStimuli;
 				if (!isLastStimuli && shouldWaitBeforeNextStimuli) await this.setTimeout(this.TIME_DELAY_BETWEEN_TEST_DISPLAYS);
 			}
-		},
-		reportMatrixSetup() {
-			return this.$refs.imageMatrix.bundleSetup();
-		},
-		reportResults() {
-			return;
 		},
 	},
 	mounted() {
