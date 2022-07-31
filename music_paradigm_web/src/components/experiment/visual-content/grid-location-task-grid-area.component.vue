@@ -42,6 +42,7 @@ export default {
 			// Times
 			TIME_BETWEEN_PRESENTATION_DISPLAY: 500,
 			TIME_DELAY_BETWEEN_TEST_DISPLAYS: 1500,
+			TIME_DELAY_AFTER_IMAGE_CLICKED: 1000,
 		};
 	},
 	computed: {
@@ -91,7 +92,7 @@ export default {
 				this.answerWaitTimeout = setTimeout(() => {
 					this.hideTargetImage();
 
-					// Wait another amount of time while is image is hidden.
+					// Wait another amount of time while the image is hidden.
 					this.answerWaitTimeout = setTimeout(this.stopAnswerWait, timeTakeAnswerInMilliseconds);
 				}, timeDisplayImageInMilliseconds);
 			});
@@ -100,6 +101,7 @@ export default {
 			this.activateMatrixClickability();
 			this.showTargetImage(cellSpecifiaction);
 			await this.setTimeoutForAnswer(this.stimuliTime, this.maxResponseTime);
+			if (this.hasReceivedAnswerForCurrentStimuli) await this.setTimeout(this.TIME_DELAY_AFTER_IMAGE_CLICKED);
 			this.hideTargetImage();
 		},
 		async showMatrixImage(positionId) {
@@ -209,12 +211,12 @@ export default {
 	},
 	watch: {
 		isWaitingForAnswer: {
-			handler: function(isWaiting) {
+			handler: function (isWaiting) {
 				if (isWaiting) this.activateMatrixClickability();
 				else this.deactivateMatrixClickability();
-			}
-		}
-	}
+			},
+		},
+	},
 };
 </script>
 

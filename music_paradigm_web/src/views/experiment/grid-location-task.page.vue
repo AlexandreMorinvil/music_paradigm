@@ -26,6 +26,7 @@ export default {
 		return {
 			TIME_BEFORE_ANYTHING: 3000,
 			TIME_AFTER_EVERYTHING: 1500,
+			TIME_SMALL_TRANSITION_TIME: 1000,
 			TIME_DISPLAY_PRESENTATION_TEXT: 3000,
 			TIME_DISPLAY_START_TEST_TEXT: 3000,
 			TIME_DISPLAY_AFTER_TEST_TEXT: 3000,
@@ -65,6 +66,7 @@ export default {
 			if (this.hasPresentationText) {
 				await this.setTimeout(this.TIME_BEFORE_STARTING_PRESENTATION);
 				await this.showPresentationText(this.TIME_DISPLAY_PRESENTATION_TEXT);
+				await this.setTimeout(this.TIME_SMALL_TRANSITION_TIME);
 			}
 			await this.presentImages();
 
@@ -72,6 +74,7 @@ export default {
 			if (this.hasStartTestText) {
 				await this.setTimeout(this.TIME_BEFORE_STARTING_PRESENTATION);
 				await this.showStartTestText(this.TIME_DISPLAY_START_TEST_TEXT);
+				await this.setTimeout(this.TIME_SMALL_TRANSITION_TIME);
 			}
 			await this.testImages();
 
