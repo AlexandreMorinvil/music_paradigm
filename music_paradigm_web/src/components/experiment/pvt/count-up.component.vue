@@ -20,12 +20,12 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['pvtMaxResponseTime']),
+		...mapGetters('experiment', ['maxResponseTime']),
 		color() {
 			return !this.isCounting && 'frozen';
 		},
 		upperLimit() {
-			return this.pvtMaxResponseTime;
+			return this.maxResponseTime;
 		},
 		timerDisplay() {
 			return this.totalTime;

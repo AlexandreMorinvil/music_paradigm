@@ -56,6 +56,7 @@ const DEFAULT_TIME_LEFT_MESSAGES = {};
 const DEFAULT_HAS_NAVIGATION_BAR = true;
 const DEFAULT_STAUS_BAR = true;
 const DEFAULT_IF_FULL_SCREEN = false;
+const DEFAULT_REPRODUCTION_SEED = null;
 
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
@@ -140,9 +141,10 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		hasClearBackground: DEFAULT_HAS_CLEAR_BACKGROUND,									// Indicate whethe the experiment setting must be in white (true) or black (false)
 		hasSound: DEFAULT_HAS_SOUND,														// Indicate whether the experiment has sound
 		timeLeftMessages: DEFAULT_TIME_LEFT_MESSAGES,										// Object containning a message to display when certain time left thresholds (indicated in milliseconds) are reached
-		hasNavigationBar: DEFAULT_HAS_NAVIGATION_BAR,									// Indicates if the session should have the upper navigation bar
+		hasNavigationBar: DEFAULT_HAS_NAVIGATION_BAR,										// Indicates if the session should have the upper navigation bar
 		hasStatusBar: DEFAULT_STAUS_BAR,													// Indicates if the session should have the status bar
 		isFullScreen: DEFAULT_IF_FULL_SCREEN,												// Indicates if the session should be in full screen
+		reproductionSeed: DEFAULT_REPRODUCTION_SEED,										// Seed used in randomized components that can make the components reproductible.
 	};
 }
 
@@ -189,6 +191,8 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			interactiveClicker: false,												// <Boolean|String> Directive to display the interactive clicker
 			interactiveKeyboard: false, 											// <Boolean|String> Directive to display the interactive keyboard
 			textAfterQuestionAsked: '',												// Text displayed after a question is asked in question states
+			textBeforeMainContent: '',												// Text displayed before the main content of a state (used in grid location task)
+			textAfterAnswerReceived: '',											// Text displayed after all the answers of the user are reveived (used in grid location task)
 			textSpecification: '',													// Text to add a certain specification (used in question state)
 		},
 
@@ -267,9 +271,17 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			pvtMinTime: 1000,														// Minimum time for a pvt stimulus in milliseconds
 			pvtMaxTime: 10000,														// Maximum time for a pvt stimulus in milliseconds
 			pvtCount: 1,															// Number of pvt stimuli to submit
-			pvtMaxResponseTime: 10000,												// Maximum time to react to the stimulus
+			maxResponseTime: 5000,													// Maximum time to react to the stimulus
 			pvtTooEarlyMessage: '',													// Message to display if the user reacts before the stimulus in a pvt state
 			pvtHasCentralElement: true,												// Indicates if the pvt test must have a centre visual element
+
+			matrixSizeX: 2,															// X dimension of the matrix in states where a matix is involved (used in glt)
+			matrixSizeY: 2,															// Y dimension of the matrix in states where a matix is involved (used in glt)
+			presentationTime: 1000,													// Time during which a content is presentation before the main elements of a state (used in glt)
+			stimuliTime: 1000,														// Time during which a stimuli is presented (used in glt)
+			matrixUsedCellsCount: -1,												// Indicate the number of cells of the matrix should be used. A negative number indicates the numebr of cells that should not be used.
+
+			reproductionSeed: DEFAULT_REPRODUCTION_SEED,							// Block specific Seed used in randomized components that can make the components reproductible.
 		},
 		// Session specific informations
 		record: {

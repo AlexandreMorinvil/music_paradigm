@@ -177,6 +177,7 @@ function setExperimentGeneralSettings(state) {
 		hasNavigationBar,
 		hasStatusBar,
 		isFullScreen,
+		reproductionSeed,
 	} = state.experiment;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -210,6 +211,7 @@ function setExperimentGeneralSettings(state) {
 		hasNavigationBar:					typeof hasNavigationBar === 'boolean'				? hasNavigationBar : defaultSettings.hasNavigationBar,
 		hasStatusBar:						typeof hasStatusBar === 'boolean'					? hasStatusBar : defaultSettings.hasStatusBar,
 		isFullScreen:						typeof isFullScreen === 'boolean'					? isFullScreen : defaultSettings.isFullScreen,
+		reproductionSeed:					typeof reproductionSeed === 'string'				? reproductionSeed : defaultSettings.reproductionSeed,
 	};
 }
 

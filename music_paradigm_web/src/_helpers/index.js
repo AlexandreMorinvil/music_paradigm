@@ -9,6 +9,7 @@ import log from './log';
 import logsQuery from './logs-query';
 import midiConversion from './midi-conversion';
 import notePerformance from './note-performance';
+import pseudoRandom from './pseudo-random';
 import ressourceName from './ressource-name';
 import routerNavigation from './router-navigation';
 import url from './url';
@@ -26,6 +27,7 @@ export {
     logsQuery,
     midiConversion,
     notePerformance,
+    pseudoRandom,
     ressourceName,
     routerNavigation,
     url,
