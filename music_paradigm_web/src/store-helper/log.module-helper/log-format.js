@@ -379,7 +379,7 @@ function makeLogBlockWrittenAnswer() {
 		positionClicked: gettersGlt.positionClicked(stateGlt),
 		imageAtPositionClicked: gettersGlt.imageAtPositionClicked(stateGlt),
 		isAnswerRightList: gettersGlt.isAnswerRightList(stateGlt),
-		interocationsCount: gettersGlt.interocationsCount(stateGlt),
+		interogationsCount: gettersGlt.interogationsCount(stateGlt),
 		rightAnswersCount: gettersGlt.rightAnswersCount(stateGlt),
 	};
 	return gltResults;

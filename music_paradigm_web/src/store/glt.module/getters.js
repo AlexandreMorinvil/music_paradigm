@@ -39,8 +39,8 @@ export default {
 		return state.isAnswerRightList;
 	},
 
-	interocationsCount: (state) => {
-		return state.interocationsCount;
+	interogationsCount: (state) => {
+		return state.interogationsCount;
 	},
 
 	rightAnswersCount: (state) => {

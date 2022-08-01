@@ -1,13 +1,13 @@
 export default {
 	recordMatrixSetup: ({ commit }, setupUp) => {
-		commit('setMatrixSetup', setupUp);
+		commit('recordMatrixSetup', setupUp);
 	},
 
-	recordGridLocationTaksAnswers: ({ commit }, answers) => {
-		commit('recordGridLocationTaksAnswers', answers);
+	recordGltResults: ({ commit }, answers) => {
+		commit('recordGltResults', answers);
 	},
 
-	resetGridLocationTaskRecords: ({ commit }) => {
+	resetGltRecords: ({ commit }) => {
 		commit('resetGridLocationTaskRecords');
 	},
 };

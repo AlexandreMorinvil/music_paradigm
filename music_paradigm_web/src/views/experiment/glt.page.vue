@@ -1,24 +1,24 @@
 <template>
 	<div id="grid-loaction-task-state" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
-		<glt-grid-area-component class="glt-grid-area state-section" ref="GridLocationTask" />
+		<glt-grid-area-component class="glt-grid-area state-section" ref="gridLocationTask" />
 		<sequence-text-area-component v-if="hasSequenceText" class="text-area state-section" ref="sequenceText" />
 	</div>
 </template>
 
 <script>
 import '@/styles/experiment-content-template.css';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
 
-import GridLocationTaskGridAreaComponent from '@/components/experiment/visual-content/glt-grid-area.component.vue';
+import GltGridAreaComponent from '@/components/experiment/visual-content/glt-grid-area.component.vue';
 import SequenceTextAreaComponent from '@/components/experiment/visual-content/sequence-text-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
 export default {
 	components: {
-		GridLocationTaskGridAreaComponent,
+		GltGridAreaComponent,
 		SequenceTextAreaComponent,
 		TextAreaComponent,
 	},
@@ -51,9 +51,14 @@ export default {
 		},
 	},
 	methods: {
+		...mapActions('glt', ['recordMatrixSetup', 'recordGltResults', 'resetGltRecords']),
 		updateFootnote() {
 			const footnoteMessage = this.$t('views.experiment.glt.footnote');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
+		},
+		storeGltRecords() {
+			this.recordMatrixSetup(this.$refs.gridLocationTask.matrixSetup);
+			this.recordGltResults(this.$refs.gridLocationTask.results);
 		},
 		emitStateEndedSignal() {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
@@ -78,6 +83,9 @@ export default {
 			}
 			await this.testImages();
 
+			// Record the results.
+			this.storeGltRecords();
+
 			// Conclude the test block.
 			if (this.hasAfterTestText) {
 				await this.setTimeout(this.TIME_BEFORE_SHOWING_CONCLUSION);
@@ -88,10 +96,10 @@ export default {
 			await this.setTimeout(this.TIME_AFTER_EVERYTHING);
 		},
 		async presentImages() {
-			await this.$refs.GridLocationTask.presentMatrix();
+			await this.$refs.gridLocationTask.presentMatrix();
 		},
 		async testImages() {
-			await this.$refs.GridLocationTask.askImagePositions();
+			await this.$refs.gridLocationTask.askImagePositions();
 		},
 		async showPresentationText(timeInMilliseconds) {
 			this.$refs.sequenceText.activateTextBeforeMainContent();
@@ -117,8 +125,9 @@ export default {
 	beforeMount() {
 		this.updateFootnote();
 	},
-	mounted() {
-		this.executeSequenceOfSteps();
+	async mounted() {
+		await this.executeSequenceOfSteps();
+		this.emitStateEndedSignal();
 	},
 };
 </script>
