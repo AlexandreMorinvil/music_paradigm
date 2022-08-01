@@ -6,7 +6,7 @@
 				:key="columnNumber"
 				:cellSpecifications="getSpecificationsForCell(rowNumber, columnNumber)"
 				v-on:click.native="handleBeingClicked(rowNumber, columnNumber)"
-				:ref="CELL_REFERENCE_PREFIX"
+				ref="matrixCell"
 			/>
 		</div>
 	</div>
@@ -41,12 +41,6 @@ export default {
 			},
 		},
 	},
-	data() {
-		return {
-			// The reference of cells will have the format "<PREFIX>-<POSITION ID>""
-			CELL_REFERENCE_PREFIX: 'matrixCell',
-		};
-	},
 	computed: {
 		columnCountStyle() {
 			return { '--matrix-column-number': this.dimensionX };
@@ -68,17 +62,24 @@ export default {
 			};
 		},
 		getSpecificationsForCell(rowNumber, columnNumber) {
+
+			// Search for the cell in the list of cells with specifications.
 			const positionId = this.getCellPositionId(rowNumber, columnNumber);
 			const cellSpecifiactions = this.cellSpecificationsList.find((cellSpecification) => {
 				return cellSpecification.positionId == positionId;
 			});
-			return cellSpecifiactions;
+
+			// Return the cell if it was found in the list of cells with specifications or return the cell 
+			// specification with its position if it was not specified in the list of cells with specificaitons.
+			if (cellSpecifiactions) return cellSpecifiactions;
+			else
+				return {
+					positionId: positionId,
+					imageSrc: null,
+				};
 		},
 		handleBeingClicked(rowNumber, columnNumber) {
 			this.$emit('cellSelected', this.getSpecificationsForCell(rowNumber, columnNumber));
-		},
-		makeCellReference(positionId) {
-			return String(this.CELL_REFERENCE_PREFIX + positionId);
 		},
 		revealCell(positionId) {
 			this.$refs.matrixCell[positionId].reveal();
@@ -87,12 +88,12 @@ export default {
 			this.$refs.matrixCell[positionId].hide();
 		},
 		activateClickability() {
-			this.$refs.matrixCell.forEach(cell => {
+			this.$refs.matrixCell.forEach((cell) => {
 				cell.activateClickability();
 			});
 		},
 		deactivateClickability() {
-			this.$refs.matrixCell.forEach(cell => {
+			this.$refs.matrixCell.forEach((cell) => {
 				cell.deactivateClickability();
 			});
 		},
@@ -102,6 +103,7 @@ export default {
 			this.cellSpecificationsList.forEach((cell) => {
 				const { rowIndex, columnIndex } = this.getCellCoordinates(cell.positionId);
 				imagePositions.push({
+					imageSrc: cell.imageSrc,
 					x: columnIndex + 1,
 					y: rowIndex + 1,
 				});
@@ -114,7 +116,7 @@ export default {
 				yMatrixDimension: this.dimensionY,
 				imagePositions: imagePositions,
 			};
-		}
+		},
 	},
 };
 </script>

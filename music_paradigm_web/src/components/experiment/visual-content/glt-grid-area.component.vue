@@ -55,7 +55,7 @@ export default {
 			// Times constants.
 			TIME_BETWEEN_PRESENTATION_DISPLAY: 500,
 			TIME_DELAY_BETWEEN_TEST_DISPLAYS: 1500,
-			TIME_DELAY_AFTER_IMAGE_CLICKED: 1000,
+			TIME_DELAY_AFTER_IMAGE_CLICKED: 500,
 		};
 	},
 	computed: {
@@ -169,12 +169,18 @@ export default {
 			this.resolveWhenAnswered = null;
 			clearTimeout(this.answerWaitTimeout);
 			this.answerWaitTimeout = null;
-			this.hasReceivedAnswerForCurrentStimuli = true;
 			return true;
 		},
-		handleAnswer(clickedCellSpecifications) {
+		handleAnswer(clickedCellSpecifications = {}) {
 			// If we are not waiting for an answer, we ignore the answer received.
 			if (!this.stopAnswerWait()) return;
+
+			this.hasReceivedAnswerForCurrentStimuli = true;
+			this.recordResultsOfStimuli(clickedCellSpecifications);
+		},
+		recordResultsOfStimuli(clickedCellSpecifications = {}) {
+			// Verify of there was an answer or not to handle the cases where no answer is given.
+			const hasAnswer = Boolean(clickedCellSpecifications.positionId);
 
 			// Retreive infromation of the answer.
 			const timeAnswerReceived = new Date();
@@ -189,12 +195,13 @@ export default {
 			};
 
 			// Record the information of the position clicked.
-			this.timeToClick.push(timeAnswerReceived - this.timeTargetCueWasGiven);
 			this.tagetImage.push(targetImageSrc);
 			this.targetImagePosition.push(convertPositionIdToCoordinates(targetPositionId));
-			this.imageAtPositionClicked.push(clickedImageSrc);
-			this.positionClicked.push(convertPositionIdToCoordinates(clickedPositionId));
+
 			this.isAnswerRightList.push(targetPositionId === clickedPositionId);
+			this.timeToClick.push(hasAnswer ? timeAnswerReceived - this.timeTargetCueWasGiven : null);
+			this.imageAtPositionClicked.push(hasAnswer ? clickedImageSrc : null);
+			this.positionClicked.push(hasAnswer ? convertPositionIdToCoordinates(clickedPositionId) : null);
 		},
 		constructImageBundle() {
 			this.cellSpecificationsList = [];
