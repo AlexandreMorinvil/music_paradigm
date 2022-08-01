@@ -1,17 +1,17 @@
 <template>
 	<div id="image-target-area" class="state-division-image-target">
-		<grid-location-task-image-component ref="targetImage" />
+		<glt-cell-component ref="targetImage" />
 	</div>
 </template>
 
 <script>
 import '@/styles/experiment-content-template.css';
 
-import GridLocationTaskImageComponent from '@/components/experiment/grid-location-task/grid-location-task-image.component.vue';
+import GltCellComponent from '@/components/experiment/glt/glt-cell.component.vue';
 
 export default {
 	components: {
-		GridLocationTaskImageComponent,
+		GltCellComponent,
 	},
 	methods: {
 		loadCellSpecification(cellSpecifiaction) {

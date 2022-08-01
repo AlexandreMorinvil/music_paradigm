@@ -8,8 +8,8 @@ const stateSchema = new Schema({
         enum: [
             "cue", 
             "end", 
-            "feedback", 
-            "grid-location-task", 
+            "feedback",
+            "glt", 
             "instruction", 
             "playing", 
             "pvt", 

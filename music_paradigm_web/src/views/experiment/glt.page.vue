@@ -1,7 +1,7 @@
 <template>
 	<div id="grid-loaction-task-state" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
-		<grid-location-task-grid-area-component class="grid-location-task-grid-area state-section" ref="GridLocationTask" />
+		<glt-grid-area-component class="glt-grid-area state-section" ref="GridLocationTask" />
 		<sequence-text-area-component v-if="hasSequenceText" class="text-area state-section" ref="sequenceText" />
 	</div>
 </template>
@@ -12,7 +12,7 @@ import { mapGetters } from 'vuex';
 
 import { ExperimentEventBus, experimentEvents } from '@/event-bus/experiment-event-bus.service.js';
 
-import GridLocationTaskGridAreaComponent from '@/components/experiment/visual-content/grid-location-task-grid-area.component.vue';
+import GridLocationTaskGridAreaComponent from '@/components/experiment/visual-content/glt-grid-area.component.vue';
 import SequenceTextAreaComponent from '@/components/experiment/visual-content/sequence-text-area.component.vue';
 import TextAreaComponent from '@/components/experiment/visual-content/text-area.component.vue';
 
@@ -52,7 +52,7 @@ export default {
 	},
 	methods: {
 		updateFootnote() {
-			const footnoteMessage = this.$t('views.experiment.grid-location-task.footnote');
+			const footnoteMessage = this.$t('views.experiment.glt.footnote');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		emitStateEndedSignal() {
@@ -128,7 +128,7 @@ export default {
 	height: 10%;
 }
 
-.grid-location-task-grid-area {
+.glt-grid-area {
 	flex-grow: 1;
 }
 </style>

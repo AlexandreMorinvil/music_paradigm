@@ -1,6 +1,6 @@
 <template>
-	<div :style="dimensions" :class="{'clickable-cell': isClickable}" class="grid-location-task-image-box">
-		<img v-show="isRevealed" :src="urlExperimentResource(imageSrc)" class="grid-location-task-image" />
+	<div :style="dimensions" :class="{'clickable-cell': isClickable}" class="glt-cell">
+		<img v-show="isRevealed" :src="urlExperimentResource(imageSrc)" class="glt-image" />
 	</div>
 </template>
 
@@ -65,7 +65,7 @@ export default {
 </script>
 
 <style scoped>
-.grid-location-task-image-box {
+.glt-cell {
 	background-color: rgb(225, 225, 225);
 	margin: 8px;
 }
@@ -74,7 +74,7 @@ export default {
 	filter: brightness(70%);
 }
 
-.grid-location-task-image {
+.glt-image {
 	height: 100%;
 	width: 100%;
 }

@@ -61,9 +61,9 @@ const router = new Router({
 					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/feedback.page.vue'),
 				},
 				{
-					path: 'grid-location-task',
-					name: 'experiment.grid-location-task',
-					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/grid-location-task.page.vue'),
+					path: 'glt',
+					name: 'experiment.glt',
+					component: () => import(/* WebpackChunkName: "experiment" */ './views/experiment/glt.page.vue'),
 				},
 				{
 					path: 'playing',

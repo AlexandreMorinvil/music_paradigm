@@ -14,7 +14,7 @@ import evaluationGetters from './getters/getters.evaluation';
 import cueGetters from './getters/getters.cue';
 import cursorGetters from './getters/getters.cursor';
 import feedbackGetters from './getters/getters.feedback';
-import gridLoactionTaskGetters from './getters/getters.grid-location-task';
+import gltGetters from './getters/getters.glt';
 import playingGetters from './getters/getters.playing';
 import pvtGetters from './getters/getters.pvt';
 import questionGetters from './getters/getters.question';
@@ -42,7 +42,7 @@ export default {
 	// Getters specific for some states
 	...cueGetters,
 	...feedbackGetters,
-	...gridLoactionTaskGetters,
+	...gltGetters,
 	...playingGetters,
 	...pvtGetters,
 	...questionGetters,

@@ -364,11 +364,11 @@ function makeLogBlockWrittenAnswer() {
 }
 
 /**
- * Gather the information of a 'grid-location-task' state for a log block of Simple-Log and Thorough-Log format
+ * Gather the information of a 'glt' (grid-location-task) state for a log block of Simple-Log and Thorough-Log format
  * @returns {Log_Block_Grid_Location_Task_Results}
  */
  function makeLogBlockGltResults() {
-	const gridLocationTaskResults = {
+	const gltResults = {
 		numberImages: gettersGlt.numberImages(stateGlt),
 		xMatrixDimension: gettersGlt.xMatrixDimension(stateGlt),
 		yMatrixDimension: gettersGlt.yMatrixDimension(stateGlt),
@@ -382,5 +382,5 @@ function makeLogBlockWrittenAnswer() {
 		interocationsCount: gettersGlt.interocationsCount(stateGlt),
 		rightAnswersCount: gettersGlt.rightAnswersCount(stateGlt),
 	};
-	return gridLocationTaskResults;
+	return gltResults;
 }

@@ -1,7 +1,7 @@
 <template>
 	<div id="image-matrix-part" class="image-matrix-part">
-		<div v-for="rowNumber in dimensionY" :key="rowNumber" :style="columnCountStyle" class="grid-location-task-matrix-row">
-			<grid-location-task-image-component
+		<div v-for="rowNumber in dimensionY" :key="rowNumber" :style="columnCountStyle" class="glt-matrix-row">
+			<glt-cell-component
 				v-for="columnNumber in dimensionX"
 				:key="columnNumber"
 				:cellSpecifications="getSpecificationsForCell(rowNumber, columnNumber)"
@@ -15,11 +15,11 @@
 <script>
 import '@/styles/experiment-content-template.css';
 
-import GridLocationTaskImageComponent from '@/components/experiment/grid-location-task/grid-location-task-image.component.vue';
+import GltCellComponent from '@/components/experiment/glt/glt-cell.component.vue';
 
 export default {
 	components: {
-		GridLocationTaskImageComponent,
+		GltCellComponent,
 	},
 	props: {
 		dimensionX: {
@@ -128,7 +128,7 @@ export default {
 	align-content: center;
 }
 
-.grid-location-task-matrix-row {
+.glt-matrix-row {
 	display: grid;
 	grid-template-columns: repeat(var(--matrix-column-number), auto);
 }

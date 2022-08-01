@@ -1,5 +1,5 @@
 <template>
-	<div id="grid-location-task-grid" class="state-section grid-location-taks-grid-disposition">
+	<div id="glt-grid" class="state-section grid-location-taks-grid-disposition">
 		<image-target-component ref="imageTarget" />
 		<image-matrix-component
 			class="image-matrix-part"
@@ -18,8 +18,8 @@ import { mapGetters } from 'vuex';
 
 import { pseudoRandom } from '@/_helpers';
 
-import ImageMatrixComponent from '@/components/experiment/grid-location-task/image-matrix.component.vue';
-import ImageTargetComponent from '@/components/experiment/grid-location-task/image-target.component.vue';
+import ImageMatrixComponent from '@/components/experiment/glt/image-matrix.component.vue';
+import ImageTargetComponent from '@/components/experiment/glt/image-target.component.vue';
 
 export default {
 	components: {

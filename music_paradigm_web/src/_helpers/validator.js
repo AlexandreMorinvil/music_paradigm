@@ -34,7 +34,7 @@ const ALLOWED_STATE_TYPES = [
 	'cue',
 	'end',
 	'feedback',
-	'grid-location-task',
+	'glt',
 	'instruction',
 	'playing',
 	'pvt',
