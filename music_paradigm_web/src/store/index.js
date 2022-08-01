@@ -12,6 +12,7 @@ import { curriculums } from './curriculums.module';
 import { evaluation } from './evaluation.module';
 import { experiment } from './experiment.module';
 import { experiments } from './experiments.module';
+import { glt } from './glt.module';
 import { keyboard } from './keyboard.module';
 import { log } from './log.module';
 import { logs } from './logs.module';
@@ -38,6 +39,7 @@ export default new Vuex.Store({
 		evaluation,
 		experiment,
 		experiments,
+		glt,
 		keyboard,
 		log,
 		logs,

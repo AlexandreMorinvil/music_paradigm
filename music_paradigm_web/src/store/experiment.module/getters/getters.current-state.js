@@ -22,6 +22,14 @@ export default {
 		return state.state.content.text;
 	},
 
+	textBeforeMainContent: (state) => {
+		return state.state.content.textBeforeMainContent;
+	},
+
+	textAfterAnswerReceived: (state) => {
+		return state.state.content.textAfterAnswerReceived;
+	},
+
 	pictureName: (state) => {
 		const pictureName = state.state.content.pictureName;
 		return pictureName ? `${state.description.folder}/${pictureName}` : '';
@@ -88,6 +96,10 @@ export default {
 		return state.state.settings.timeoutInSeconds || 0;
 	},
 
+	presentationTime: (state) => {
+		return state.state.settings.presentationTime;
+	},
+
 	startSignal: (state) => {
 		return state.state.settings.startSignal || 0;
 	},
@@ -121,5 +133,9 @@ export default {
 
 	mainOptionText: (state) => {
 		return state.state.settings.mainOptionText;
+	},
+
+	maxResponseTime: (state) => {
+		return state.state.settings.maxResponseTime;
 	},
 };

@@ -125,10 +125,16 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		pvtMinTime,
 		pvtMaxTime,
 		pvtCount,
-		pvtMaxResponseTime,
+		maxResponseTime,
 		pvtTooEarlyMessage,
 		pvtHasCentralElement,
 		mainOptionText,
+		matrixSizeX,
+		matrixSizeY,
+		matrixUsedCellsCount,
+		presentationTime,
+		stimuliTime,
+		reproductionSeed,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -178,10 +184,16 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		pvtMinTime:						typeof pvtMinTime === 'number' 						? pvtMinTime : 1000,
 		pvtMaxTime:						typeof pvtMaxTime === 'number' 						? pvtMaxTime : 10000,
 		pvtCount:						typeof pvtCount === 'number' 						? pvtCount : 1,
-		pvtMaxResponseTime:				typeof pvtMaxResponseTime === 'number'				? pvtMaxResponseTime : 10000,
+		maxResponseTime:				typeof maxResponseTime === 'number'					? maxResponseTime : 10000,
 		pvtTooEarlyMessage:				typeof pvtTooEarlyMessage === 'string'				? pvtTooEarlyMessage : '',
 		pvtHasCentralElement:			typeof pvtHasCentralElement === 'string'			? pvtHasCentralElement : true,
 		mainOptionText: 				typeof mainOptionText === 'string'					? mainOptionText : '',
+		matrixSizeX:					typeof matrixSizeX === 'number' 					? matrixSizeX : 2,
+		matrixSizeY:					typeof matrixSizeY === 'number' 					? matrixSizeY : 2,
+		matrixUsedCellsCount: 			typeof matrixUsedCellsCount === 'number' 			? matrixUsedCellsCount : -1,
+		presentationTime:				typeof presentationTime === 'number' 				? presentationTime : 1000,
+		stimuliTime:					typeof stimuliTime === 'number' 					? stimuliTime : 1000,
+		reproductionSeed:				typeof reproductionSeed === 'string'				? reproductionSeed : generalSettings.reproductionSeed,
 	};
 
 	// Indicate that the state (current block's settings) was already initialized
@@ -251,6 +263,8 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 		interactiveKeyboard,
 		textAfterQuestionAsked,
 		textSpecification,
+		textBeforeMainContent,
+		textAfterAnswerReceived,
 	} = currentBlock;
 
 	// Using the values that are not set in an array if there are any
@@ -262,6 +276,8 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	let updatedInteractiveClicker = typeof interactiveClicker === 'string' || typeof interactiveClicker === 'boolean' ? interactiveClicker : null;
 	let updatedInteractiveKeyboard = typeof interactiveKeyboard === 'string' || typeof interactiveKeyboard === 'boolean' ? interactiveKeyboard : null;
 	let updatedTextAfterQuestionAsked = typeof textAfterQuestionAsked === 'string' ? textAfterQuestionAsked : null;
+	let updatedTextBeforeMainContent = typeof textBeforeMainContent === 'string' ? textBeforeMainContent : null;
+	let updatedTextAfterAnswerReceived = typeof textAfterAnswerReceived === 'string' ? textAfterAnswerReceived : null;
 	let updatedTextSpecification = typeof textSpecification === 'string' ? textSpecification : null;
 
 	// If the value is in an array
@@ -275,6 +291,8 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(interactiveClicker)) updatedInteractiveClicker = interactiveClicker[piledContentIndex] || null;
 	if (Array.isArray(interactiveKeyboard)) updatedInteractiveKeyboard = interactiveKeyboard[piledContentIndex] || null;
 	if (Array.isArray(textAfterQuestionAsked)) updatedTextAfterQuestionAsked = textAfterQuestionAsked || null;
+	if (Array.isArray(textBeforeMainContent)) updatedTextBeforeMainContent = textBeforeMainContent || null;
+	if (Array.isArray(textAfterAnswerReceived)) updatedTextAfterAnswerReceived = textAfterAnswerReceived || null;
 	if (Array.isArray(textSpecification)) updatedTextSpecification = textSpecification || null;
 
 	// If the value is in a nested array
@@ -288,6 +306,8 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(updatedInteractiveClicker)) updatedInteractiveClicker = updatedInteractiveClicker[innerStepIndex];
 	if (Array.isArray(updatedInteractiveKeyboard)) updatedInteractiveKeyboard = updatedInteractiveKeyboard[innerStepIndex];
 	if (Array.isArray(updatedTextAfterQuestionAsked)) updatedTextAfterQuestionAsked = textAfterQuestionAsked || null;
+	if (Array.isArray(updatedTextBeforeMainContent)) updatedTextBeforeMainContent = textBeforeMainContent || null;
+	if (Array.isArray(updatedTextAfterAnswerReceived)) updatedTextAfterAnswerReceived = textAfterAnswerReceived || null;
 	if (Array.isArray(updatedTextSpecification)) updatedTextSpecification = textSpecification || null;
 
 	// === Update the state ===
@@ -300,6 +320,8 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	currentState.content.interactiveClicker = updatedInteractiveClicker || false;
 	currentState.content.interactiveKeyboard = updatedInteractiveKeyboard || false;
 	currentState.content.textAfterQuestionAsked = updatedTextAfterQuestionAsked || '';
+	currentState.content.textBeforeMainContent = updatedTextBeforeMainContent || '';
+	currentState.content.textAfterAnswerReceived = updatedTextAfterAnswerReceived || '';
 	currentState.content.textSpecification = updatedTextSpecification || '';
 
 	// Indicate that the media files is initialized
