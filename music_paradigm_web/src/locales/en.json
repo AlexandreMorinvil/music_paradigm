@@ -195,6 +195,9 @@
         "footnote-press-any-key": "Press any piano key or the space bar to go to the next step",
         "footnote-press-space-bar": "Press the space bar to go to the next step"
       },
+      "glt": {
+        "footnote": "The session will go to the next step after the test"
+      },
       "instruction": {
         "footnote-press-any-key": "Press any piano key or the space bar to go to the next step",
         "footnote-press-space-bar": "Press the space bar to go to the next step"
@@ -207,8 +210,8 @@
         "ready": "Ready"
       },
       "pvt": {
-        "footnote-press-any-key": "Press any key or click anywhere with the mouse when the count starts.",
-        "footnote-press-space-bar": "Press the space bar or click anywhere with the mouse when the count starts."
+        "footnote-press-any-key": "Press any key or click anywhere with the mouse when the count starts",
+        "footnote-press-space-bar": "Press the space bar or click anywhere with the mouse when the count starts"
       },
       "question": {
         "midi-note": {

@@ -5,7 +5,20 @@ const stateSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ["cue", "end", "feedback", "instruction", "playing", 'pvt', 'question', "rest", "survey", "video", "writting"]
+        enum: [
+            "cue", 
+            "end", 
+            "feedback",
+            "glt", 
+            "instruction", 
+            "playing", 
+            "pvt", 
+            "question", 
+            "rest", 
+            "survey", 
+            "video", 
+            "writting",
+        ]
     },
     textContent: { type: Schema.Types.Mixed, default: undefined },
     pictureFileName: { type: Schema.Types.Mixed, default: undefined },
@@ -106,9 +119,19 @@ const stateSchema = new Schema({
     pvtMinTime: { type: Number, default: undefined },
     pvtMaxTime: { type: Number, default: undefined },
     pvtCount: { type: Number, default: undefined },
-    pvtMaxResponseTime: { type: Number, default: undefined },
     pvtTooEarlyMessage: { type: String, default: undefined },
     pvtHasCentralElement: { type: Boolean, default: undefined },
+
+    matrixSizeX: { type: Number, default: undefined },
+    matrixSizeY: { type: Number, default: undefined },
+    matrixUsedCellsCount: { type: Number, default: undefined },
+    presentationTime: { type: Number, default: undefined },
+    stimuliTime: { type: Number, default: undefined },
+    maxResponseTime: { type: Number, default: undefined },
+    
+    textBeforeMainContent: { type: Schema.Types.Mixed, default: undefined },
+    textAfterAnswerReceived: { type: Schema.Types.Mixed, default: undefined },
+    reproductionSeed: { type: String, default: undefined },
 },
     {
         strict: true
@@ -153,6 +176,8 @@ const schema = new Schema({
     hasNavigationBar: { type: Boolean, default: true },
     hasStatusBar: { type: Boolean, default: true },
     isFullScreen: { type: Boolean, default: true },
+
+    reproductionSeed: { type: String, default: undefined },
 
     keyboardToMidiInputMapping:{
         default: undefined,

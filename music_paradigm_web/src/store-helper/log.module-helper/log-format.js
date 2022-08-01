@@ -6,6 +6,7 @@ import { evaluation } from '@/store/evaluation.module';
 import { keyboard } from '@/store/keyboard.module';
 import { piano } from '@/store/piano.module';
 
+import { glt } from '@/store/glt.module';
 import { pvt } from '@/store/pvt.module';
 import { question } from '@/store/question.module';
 import { survey } from '@/store/survey.module';
@@ -27,6 +28,7 @@ const gettersEvaluation = evaluation.getters;
 const gettersKeyboard = keyboard.getters;
 const gettersPiano = piano.getters;
 
+const gettersGlt = glt.getters;
 const gettersPvt = pvt.getters;
 const gettersQuestion = question.getters;
 const gettersSurvey = survey.getters;
@@ -41,6 +43,7 @@ const stateEvaluation = evaluation.state;
 const stateKeyboard = keyboard.state;
 const statePiano = piano.state;
 
+const stateGlt = glt.state;
 const statePvt = pvt.state;
 const stateQuestion = question.state;
 const stateSurvey = survey.state;
@@ -146,7 +149,7 @@ function makeSimpleLogBlockPerformanceInformation() {
 	}
 
 	// Include the grades if it's a feedback state or a playing state
-	if (['playing', 'feedback'].includes(blockType)) 
+	if (['playing', 'feedback'].includes(blockType))
 	{
 		// TODO: the 'grades' is kept for compatibility with previous data, but should be removed to only keep the 'unwoundgrades'.
 		performanceLog.grades = gettersEvaluation.grades(stateEvaluation);
@@ -221,10 +224,11 @@ function makeThoroughLogBlock() {
 	const block = {};
 	Object.assign(block, makeThoroughLogBlockGeneralInformation());
 	if (controlType !== 'none') Object.assign(block, makeSimpleBlockPerformanceInformation());
+	if (blockType === 'glt') Object.assign(block, makeLogBlockGltResults());
+	if (blockType === 'pvt') Object.assign(block, makeLogBlockPvtResults());
+	if (blockType === 'question') Object.assign(block, makeLogBlockQuestionAnswer());
 	if (blockType === 'survey') Object.assign(block, makeLogBlockSurveyAnswers());
 	if (blockType === 'writting') Object.assign(block, makeLogBlockWrittenAnswer());
-	if (blockType === 'question') Object.assign(block, makeLogBlockQuestionAnswer());
-	if (blockType === 'pvt') Object.assign(block, makeLogBlockPvtResults());
 	return block;
 }
 
@@ -357,4 +361,26 @@ function makeLogBlockWrittenAnswer() {
 		pvtReactionTimeAverage: gettersPvt.pvtReactionTimeAverage(statePvt),
 	};
 	return pvtResults;
+}
+
+/**
+ * Gather the information of a 'glt' (grid-location-task) state for a log block of Simple-Log and Thorough-Log format
+ * @returns {Log_Block_Grid_Location_Task_Results}
+ */
+ function makeLogBlockGltResults() {
+	const gltResults = {
+		numberImages: gettersGlt.numberImages(stateGlt),
+		xMatrixDimension: gettersGlt.xMatrixDimension(stateGlt),
+		yMatrixDimension: gettersGlt.yMatrixDimension(stateGlt),
+		imagePositions: gettersGlt.imagePositions(stateGlt),
+		tagetImage: gettersGlt.tagetImage(stateGlt),
+		targetImagePosition: gettersGlt.targetImagePosition(stateGlt),
+		timeToClick: gettersGlt.timeToClick(stateGlt),
+		positionClicked: gettersGlt.positionClicked(stateGlt),
+		imageAtPositionClicked: gettersGlt.imageAtPositionClicked(stateGlt),
+		isAnswerRightList: gettersGlt.isAnswerRightList(stateGlt),
+		interogationsCount: gettersGlt.interogationsCount(stateGlt),
+		rightAnswersCount: gettersGlt.rightAnswersCount(stateGlt),
+	};
+	return gltResults;
 }

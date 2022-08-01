@@ -30,7 +30,20 @@ const ALLOWED_ENTRIES_INTERACTIVE_HELPERS = ['half-', ''].flatMap((c) => {
  * @type {Array<String>}
  * @description Allowed values for the 'type' attributes of the flow descriptions
  * */
-const ALLOWED_STATE_TYPES = ['cue', 'end', 'feedback', 'instruction', 'playing', 'pvt', 'question', 'rest', 'survey', 'video', 'writting'];
+const ALLOWED_STATE_TYPES = [
+	'cue',
+	'end',
+	'feedback',
+	'glt',
+	'instruction',
+	'playing',
+	'pvt',
+	'question',
+	'rest',
+	'survey',
+	'video',
+	'writting',
+];
 
 function getMinimalValidExperimentStructure() {
 	return {
@@ -144,6 +157,8 @@ function validateExperiment(experiment) {
 		'isFullScreen',
 
 		'keyboardToMidiInputMapping',
+
+		'reproductionSeed',
 	];
 	Object.keys(experiment).forEach((key) => {
 		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the general parameters is not allowed`);
@@ -293,9 +308,19 @@ function validateBlock(block, index = null) {
 		'pvtMinTime',
 		'pvtMaxTime',
 		'pvtCount',
-		'pvtMaxResponseTime',
 		'pvtTooEarlyMessage',
 		'pvtHasCentralElement',
+
+		'matrixSizeX',
+		'matrixSizeY',
+		'matrixUsedCellsCount',
+		'presentationTime',
+		'stimuliTime',
+		'maxResponseTime',
+
+		'textBeforeMainContent',
+		'textAfterAnswerReceived',
+		'reproductionSeed',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -341,6 +366,7 @@ function validateAttributeType(key, value) {
 		case 'questionType':
 		case 'pvtTooEarlyMessage':
 		case 'mainOptionText':
+		case 'reproductionSeed':
 			if (!(typeof value === 'string')) {
 				throw new Error(`The key '${key}' must be of type 'String'`);
 			}
@@ -362,7 +388,12 @@ function validateAttributeType(key, value) {
 		case 'pvtMinTime':
 		case 'pvtMaxTime':
 		case 'pvtCount':
-		case 'pvtMaxResponseTime':
+		case 'maxResponseTime':
+		case 'matrixSizeX':
+		case 'matrixSizeY':
+		case 'presentationTime':
+		case 'stimuliTime':
+		case 'matrixUsedCellsCount':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
@@ -420,6 +451,8 @@ function validateAttributeType(key, value) {
 		case 'interactiveKeyboardTextMapping':
 		case 'textContent':
 		case 'textAfterQuestionAsked':
+		case 'textBeforeMainContent':
+		case 'textAfterAnswerReceived':
 		case 'textSpecification':
 		case 'textReminder':
 		case 'pictureFileName':
@@ -442,6 +475,8 @@ function validateAttributeType(key, value) {
 
 					case 'textContent':
 					case 'textAfterQuestionAsked':
+					case 'textBeforeMainContent':
+					case 'textAfterAnswerReceived':
 					case 'textSpecification':
 					case 'textReminder':
 					case 'pictureFileName':
@@ -490,6 +525,8 @@ function validateAttributeType(key, value) {
 					case 'audioFirst':
 					case 'audioSecond':
 					case 'textAfterQuestionAsked':
+					case 'textBeforeMainContent':
+					case 'textAfterAnswerReceived':
 					case 'answerChoicesColor':
 						value.forEach((element, index) => {
 							if (!(typeof element === 'string')) {
