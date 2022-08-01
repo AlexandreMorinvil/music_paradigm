@@ -225,6 +225,11 @@ const schema = new Schema({
                 default: undefined,
                 required: true
             },
+            acceptsFreeTextValue: {
+                type: Boolean,
+                default: undefined,
+                required: false
+            },
             valueSelectionType: {
                 type: String,
                 enum: ['assigned', 'random', 'scheduled'],
