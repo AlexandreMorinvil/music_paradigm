@@ -128,6 +128,8 @@ const stateSchema = new Schema({
     presentationTime: { type: Number, default: undefined },
     stimuliTime: { type: Number, default: undefined },
     maxResponseTime: { type: Number, default: undefined },
+    includesPresentation: { type: Boolean, default: undefined },
+    includesTest: { type: Boolean, default: undefined },
     
     textBeforeMainContent: { type: Schema.Types.Mixed, default: undefined },
     textAfterAnswerReceived: { type: Schema.Types.Mixed, default: undefined },

@@ -321,6 +321,8 @@ function validateBlock(block, index = null) {
 		'textBeforeMainContent',
 		'textAfterAnswerReceived',
 		'reproductionSeed',
+		'includesPresentation',
+		'includesTest',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -431,6 +433,8 @@ function validateAttributeType(key, value) {
 		case 'hasStatusBar':
 		case 'isFullScreen':
 		case 'pvtHasCentralElement':
+		case 'includesPresentation':
+		case 'includesTest':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

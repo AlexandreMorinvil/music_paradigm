@@ -25,4 +25,12 @@ export default {
 	stimuliTime: (state) => {
 		return state.state.settings.stimuliTime;
 	},
+
+	includesPresentation: (state) => {
+		return state.state.settings.includesPresentation;
+	},
+
+	includesTest: (state) => {
+		return state.state.settings.includesTest;
+	},
 };

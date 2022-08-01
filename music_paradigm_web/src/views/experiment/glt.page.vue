@@ -36,7 +36,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['textBeforeMainContent', 'textAfterQuestionAsked', 'textAfterAnswerReceived']),
+		...mapGetters('experiment', ['includesPresentation', 'includesTest', 'textBeforeMainContent', 'textAfterQuestionAsked', 'textAfterAnswerReceived']),
 		hasSequenceText() {
 			return this.hasPresentationText || this.hasStartTestText || this.hasAfterTestText;
 		},
@@ -73,7 +73,8 @@ export default {
 				await this.showPresentationText(this.TIME_DISPLAY_PRESENTATION_TEXT);
 				await this.setTimeout(this.TIME_SMALL_TRANSITION_TIME);
 			}
-			await this.presentImages();
+			if (this.includesPresentation)
+				await this.presentImages();
 
 			// Submit the test.
 			if (this.hasStartTestText) {
@@ -81,7 +82,8 @@ export default {
 				await this.showStartTestText(this.TIME_DISPLAY_START_TEST_TEXT);
 				await this.setTimeout(this.TIME_SMALL_TRANSITION_TIME);
 			}
-			await this.testImages();
+			if (this.includesTest)
+				await this.testImages();
 
 			// Record the results.
 			this.storeGltRecords();

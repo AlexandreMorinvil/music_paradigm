@@ -280,6 +280,8 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			presentationTime: 1000,													// Time during which a content is presentation before the main elements of a state (used in glt)
 			stimuliTime: 1000,														// Time during which a stimuli is presented (used in glt)
 			matrixUsedCellsCount: -1,												// Indicate the number of cells of the matrix should be used. A negative number indicates the numebr of cells that should not be used.
+			includesPresentation: true,												// Indicate if the state includes a presentation phase (used in glt)
+			includesTest: true,														// Indicate if the state includes a test phase (used in glt)
 
 			reproductionSeed: DEFAULT_REPRODUCTION_SEED,							// Block specific Seed used in randomized components that can make the components reproductible.
 		},

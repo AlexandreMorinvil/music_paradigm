@@ -135,6 +135,8 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		presentationTime,
 		stimuliTime,
 		reproductionSeed,
+		includesPresentation,
+		includesTest,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -194,6 +196,8 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		presentationTime:				typeof presentationTime === 'number' 				? presentationTime : 1000,
 		stimuliTime:					typeof stimuliTime === 'number' 					? stimuliTime : 1000,
 		reproductionSeed:				typeof reproductionSeed === 'string'				? reproductionSeed : generalSettings.reproductionSeed,
+		includesPresentation:			typeof includesPresentation === 'boolean'			? includesPresentation : true,
+		includesTest: 		 			typeof includesTest === 'boolean'					? includesTest : true,
 	};
 
 	// Indicate that the state (current block's settings) was already initialized
