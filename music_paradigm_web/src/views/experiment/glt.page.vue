@@ -36,7 +36,14 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['includesPresentation', 'includesTest', 'textBeforeMainContent', 'textAfterQuestionAsked', 'textAfterAnswerReceived']),
+		...mapGetters('experiment', [
+			'includesPresentation',
+			'includesTest',
+			'textBeforeMainContent',
+			'reproductionSeed',
+			'textAfterQuestionAsked',
+			'textAfterAnswerReceived',
+		]),
 		hasSequenceText() {
 			return this.hasPresentationText || this.hasStartTestText || this.hasAfterTestText;
 		},
@@ -49,14 +56,22 @@ export default {
 		hasAfterTestText() {
 			return Boolean(this.textAfterAnswerReceived);
 		},
+		blockParameters() {
+			return {
+				reproductionSeed: this.reproductionSeed,
+				includesPresentation: this.includesPresentation,
+				includesTest: this.includesTest,
+			};
+		},
 	},
 	methods: {
-		...mapActions('glt', ['recordMatrixSetup', 'recordGltResults', 'resetGltRecords']),
+		...mapActions('glt', ['recordMatrixSetup', 'recordGltResults', 'recordGltParameters', 'resetGltRecords']),
 		updateFootnote() {
 			const footnoteMessage = this.$t('views.experiment.glt.footnote');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		storeGltRecords() {
+			this.recordGltParameters(this.blockParameters);
 			this.recordMatrixSetup(this.$refs.gridLocationTask.matrixSetup);
 			this.recordGltResults(this.$refs.gridLocationTask.results);
 		},
@@ -73,8 +88,7 @@ export default {
 				await this.showPresentationText(this.TIME_DISPLAY_PRESENTATION_TEXT);
 				await this.setTimeout(this.TIME_SMALL_TRANSITION_TIME);
 			}
-			if (this.includesPresentation)
-				await this.presentImages();
+			if (this.includesPresentation) await this.presentImages();
 
 			// Submit the test.
 			if (this.hasStartTestText) {
@@ -82,8 +96,7 @@ export default {
 				await this.showStartTestText(this.TIME_DISPLAY_START_TEST_TEXT);
 				await this.setTimeout(this.TIME_SMALL_TRANSITION_TIME);
 			}
-			if (this.includesTest)
-				await this.testImages();
+			if (this.includesTest) await this.testImages();
 
 			// Record the results.
 			this.storeGltRecords();

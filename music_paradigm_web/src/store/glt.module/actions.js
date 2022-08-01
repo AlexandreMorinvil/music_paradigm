@@ -1,4 +1,8 @@
 export default {
+	recordGltParameters: ({ commit }, parameters) => {
+		commit('recordGltParameters', parameters);
+	},
+
 	recordMatrixSetup: ({ commit }, setupUp) => {
 		commit('recordMatrixSetup', setupUp);
 	},

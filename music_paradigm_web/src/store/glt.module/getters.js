@@ -1,4 +1,16 @@
 export default {
+	reproductionSeed: (state) => {
+		return state.reproductionSeed;
+	},
+
+	includesPresentation: (state) => {
+		return state.includesPresentation;
+	},
+
+	includesTest: (state) => {
+		return state.includesTest;
+	},
+
 	numberImages: (state) => {
 		return state.numberImages;
 	},

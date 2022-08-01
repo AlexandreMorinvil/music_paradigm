@@ -1,6 +1,12 @@
 import { defaultState } from '@/store-helper/question.module-helper';
 
 export default {
+	recordGltParameters: (state, parameters) => {
+		state.reproductionSeed = parameters.reproductionSeed;
+		state.includesPresentation = parameters.includesPresentation;
+		state.includesTest = parameters.includesTest;
+	},
+
 	recordMatrixSetup: (state, setup) => {
 		state.numberImages = setup.numberImages;
 		state.xMatrixDimension = setup.xMatrixDimension;

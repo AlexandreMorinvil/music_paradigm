@@ -381,6 +381,9 @@ function makeLogBlockWrittenAnswer() {
 		isAnswerRightList: gettersGlt.isAnswerRightList(stateGlt),
 		interogationsCount: gettersGlt.interogationsCount(stateGlt),
 		rightAnswersCount: gettersGlt.rightAnswersCount(stateGlt),
+		reproductionSeed: gettersGlt.reproductionSeed(stateGlt),
+		includesPresentation: gettersGlt.includesPresentation(stateGlt),
+		includesTest: gettersGlt.includesTest(stateGlt),
 	};
 	return gltResults;
 }
