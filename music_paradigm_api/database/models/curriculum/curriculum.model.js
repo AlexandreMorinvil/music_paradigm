@@ -25,14 +25,14 @@ schema.statics.getListAllHeaders = async function () {
         
         let curriculumObject = curriculumDocument.toObject();
         const { 
-            acceptsFreeTextVariableValues, 
-            optionVariableValues, 
-            defaultVariableAssignation 
+            parameterAcceptsFreeTextValuesMap, 
+            parameterOptionValuesListMap, 
+            parameterDefaultValueMap 
         } = await curriculumDocument.getParameters();
 
-        curriculumObject['optionVariableValues'] = optionVariableValues;
-        curriculumObject['defaultVariableAssignation'] = defaultVariableAssignation;
-        curriculumObject['acceptsFreeTextVariableValues'] = acceptsFreeTextVariableValues;
+        curriculumObject['parameterOptionValuesListMap'] = parameterOptionValuesListMap;
+        curriculumObject['parameterDefaultValueMap'] = parameterDefaultValueMap;
+        curriculumObject['parameterAcceptsFreeTextValuesMap'] = parameterAcceptsFreeTextValuesMap;
         curriculumObjectsList.push(curriculumObject);
     }
 
@@ -75,17 +75,17 @@ schema.methods.update = async function (updatedCurriculum) {
  * @return {Object} Informations on the parameters involved in the curriculum.
  * format :
  * {
- *      optionVariableValues: {
+ *      parameterOptionValuesListMap: {
  *          VARIABLE_NAME: [ ... options ... ],
  *          VARIABLE_NAME: [ ... options ... ],
  *          ...
  *      },
- *      defaultVariableAssignation: {
+ *      parameterDefaultValueMap: {
  *          VARIABLE_NAME: DEFAULT_VALUE,
  *          VARIABLE_NAME: DEFAULT_VALUE,
  *          ...
  *      }
- *      acceptsFreeTextVariableValues: {
+ *      parameterAcceptsFreeTextValuesMap: {
  *          VARIABLE_NAME: Boolean,
  *          VARIABLE_NAME: Boolean,
  *          ... 
@@ -138,9 +138,9 @@ schema.methods.getParameters = async function () {
 
     // Return informations of the parameters involved in the curriculum.
     return {
-        optionVariableValues: completeOptionValuesListMap,
-        defaultVariableAssignation: defaultAssignedValueMap,
-        acceptsFreeTextVariableValues: acceptsFreeTextValuesMap
+        parameterOptionValuesListMap: completeOptionValuesListMap,
+        parameterDefaultValueMap: defaultAssignedValueMap,
+        parameterAcceptsFreeTextValuesMap: acceptsFreeTextValuesMap,
     };
 }
 

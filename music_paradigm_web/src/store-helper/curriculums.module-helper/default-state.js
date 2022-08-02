@@ -15,18 +15,7 @@ function EMPTY_SELECTED_CURRICULUM() {
 }
 
 function EMPTY_CURRICULUMS_LIST() {
-	return [
-		{
-			_id: null,
-			title: '',
-			logType: '',
-			isSequential: true,
-			experimentsCount: 0,
-
-			optionVariableValues: {},
-			defaultVariableAssignation: {},
-		},
-	];
+	return [];
 }
 
 function BLANK_CURRICULUM_EXPERIMENT(index) {

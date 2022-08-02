@@ -4,10 +4,19 @@
 			<h3>Parameter(s) :</h3>
 		</div>
 
-		<div v-for="(options, parameter) in parameterOptions" :key="parameter" class="inner-inner-widget parameter-grid">
-			<label for="parameter-value"> {{ parameter }} : </label>
-			<select name="parameter-value" v-model="selectedParameters[parameter]">
-				<option v-for="(option, index) in options" :key="index" :value="option">
+		<div
+			v-for="(parameterOptionValuesList, parameterName) in parameterOptionValuesListMap"
+			:key="parameterName"
+			class="inner-inner-widget parameter-grid"
+		>
+			<label for="parameter-value"> {{ parameterName }} : </label>
+			<input
+				name="parameter-value"
+				v-if="parameterInputModeIsFreeTextMap[parameterName]"
+				v-model="parameterValueMap[parameterName]"
+			/>
+			<select name="parameter-value" v-else v-model="parameterValueMap[parameterName]">
+				<option v-for="(option, index) in parameterOptionValuesList" :key="index" :value="option">
 					{{ option }}
 				</option>
 			</select>
@@ -26,7 +35,8 @@ export default {
 	data() {
 		return {
 			curriculumId: null,
-			selectedParameters: {},
+			parameterValueMap: {},
+			parameterInputModeIsFreeTextMap: {},
 		};
 	},
 	computed: {
@@ -41,27 +51,51 @@ export default {
 			return filteredCurriculum;
 		},
 		parameterDefaultValues() {
-			return this.selectedCurriculum ? this.selectedCurriculum.defaultVariableAssignation : {};
+			return this.selectedCurriculum ? this.selectedCurriculum.parameterDefaultValueMap : {};
 		},
-		parameterOptions() {
-			return this.selectedCurriculum ? this.selectedCurriculum.optionVariableValues : {};
+		parameterOptionValuesListMap() {
+			return this.selectedCurriculum ? this.selectedCurriculum.parameterOptionValuesListMap : {};
+		},
+		parameterAcceptsFreeTextValuesMap() {
+			return this.selectedCurriculum ? this.selectedCurriculum.parameterAcceptsFreeTextValuesMap : {};
 		},
 		wasParametersModified() {
 			let wasModified = false;
-			for (const name in this.selectedParameters) if (this.selectedParameters[name] !== this.currentlyAssignedValues[name]) wasModified = true;
+			for (const name in this.parameterValueMap)
+				if (this.parameterValueMap[name] !== this.currentlyAssignedValues[name]) wasModified = true;
 			return wasModified;
 		},
 	},
 	methods: {
 		bundleParametersForm() {
-			return { assignedParameters: this.selectedParameters };
+			return { assignedParameters: this.parameterValueMap };
 		},
 		changeCurriculum(curriculum) {
 			this.curriculumId = curriculum;
 			this.assignSelectedToForm();
+			this.refreshParametersDefaultInputMode();
 		},
 		assignSelectedToForm() {
-			this.selectedParameters = JSON.parse(JSON.stringify(this.currentlyAssignedValues)) || {};
+			this.parameterValueMap = JSON.parse(JSON.stringify(this.currentlyAssignedValues)) || {};
+		},
+		refreshParametersDefaultInputMode() {
+
+			// Iterate over all the variables.
+			for (const parameterName in this.parameterValueMap) {
+
+				console.log(parameterName);
+
+				// Retreive the details associated to the current parameter.
+				const optionValuesList = this.parameterOptionValuesListMap[parameterName];
+				const acceptsFreeTextValues = this.parameterAcceptsFreeTextValuesMap[parameterName];
+
+				// If the parameter accepts free text answer and has no option value aside from its default value, by 
+				// default its input mode is free text. Otherwise, the default input method is a selection list.
+				if (acceptsFreeTextValues && optionValuesList.length <= 1)
+					this.parameterInputModeIsFreeTextMap[parameterName] = true;
+				else
+					this.parameterInputModeIsFreeTextMap[parameterName] = false;
+			}
 		},
 	},
 	mounted() {
