@@ -20,6 +20,17 @@
 					{{ option }}
 				</option>
 			</select>
+			<div>
+				<!-- TODO : Allow toggling from selection mode to free text mode.
+				<button
+					type="button"
+					v-if="getAcceptsFreeTexValues(parameterName)"
+					v-on:click="toggleInputMode(parameterName)"
+					class="widget-button small blue"
+				>
+					{{ showInputModeSwitchButtonText(parameterName) }}
+				</button> -->
+			</div>
 		</div>
 	</form>
 </template>
@@ -44,13 +55,13 @@ export default {
 		...mapGetters('users/progressions', ['progressionSelectedImposedParameters']),
 		...mapGetters('curriculums', ['curriculumsList']),
 		currentlyAssignedValues() {
-			return Object.assign({}, this.parameterDefaultValues, this.progressionSelectedImposedParameters);
+			return Object.assign({}, this.parameterDefaultValueMap, this.progressionSelectedImposedParameters);
 		},
 		selectedCurriculum() {
 			const filteredCurriculum = this.curriculumsList.find((curriculum) => curriculum._id === this.curriculumId);
 			return filteredCurriculum;
 		},
-		parameterDefaultValues() {
+		parameterDefaultValueMap() {
 			return this.selectedCurriculum ? this.selectedCurriculum.parameterDefaultValueMap : {};
 		},
 		parameterOptionValuesListMap() {
@@ -79,23 +90,34 @@ export default {
 			this.parameterValueMap = JSON.parse(JSON.stringify(this.currentlyAssignedValues)) || {};
 		},
 		refreshParametersDefaultInputMode() {
-
 			// Iterate over all the variables.
 			for (const parameterName in this.parameterValueMap) {
-
-				console.log(parameterName);
-
 				// Retreive the details associated to the current parameter.
-				const optionValuesList = this.parameterOptionValuesListMap[parameterName];
-				const acceptsFreeTextValues = this.parameterAcceptsFreeTextValuesMap[parameterName];
+				const optionValuesList = this.getOptionValuesList(parameterName);
+				const acceptsFreeTextValues = this.getAcceptsFreeTexValues(parameterName);
 
-				// If the parameter accepts free text answer and has no option value aside from its default value, by 
+				// If the parameter accepts free text answer and has no option value aside from its default value, by
 				// default its input mode is free text. Otherwise, the default input method is a selection list.
 				if (acceptsFreeTextValues && optionValuesList.length <= 1)
 					this.parameterInputModeIsFreeTextMap[parameterName] = true;
-				else
-					this.parameterInputModeIsFreeTextMap[parameterName] = false;
+				else this.parameterInputModeIsFreeTextMap[parameterName] = false;
 			}
+		},
+		toggleInputMode(parameterName) {
+			// TODO: Allow toggling from selection mode to free text mode.
+			this.parameterInputModeIsFreeTextMap[parameterName] = !this.parameterInputModeIsFreeTextMap[parameterName];
+		},
+		showInputModeSwitchButtonText(parameterName) {
+			// TODO: Allow toggling from selection mode to free text mode.
+			const isCurrentInputModeFreeText = this.parameterInputModeIsFreeTextMap[parameterName];
+			if (isCurrentInputModeFreeText) return 'Proposed value';
+			else return 'Free text value';
+		},
+		getAcceptsFreeTexValues(parameterName) {
+			return this.parameterAcceptsFreeTextValuesMap[parameterName] || false;
+		},
+		getOptionValuesList(parameterName) {
+			return this.parameterOptionValuesListMap[parameterName] || [];
 		},
 	},
 	mounted() {
@@ -119,7 +141,7 @@ export default {
 <style scoped>
 .parameter-grid {
 	display: grid;
-	grid-template-columns: 1fr 3fr;
+	grid-template-columns: 1fr 3fr 1fr;
 }
 
 label {
