@@ -1,4 +1,4 @@
-import { defaultState } from '@/store-helper/question.module-helper';
+import { defaultState } from '@/store-helper/glt.module-helper';
 
 export default {
 	recordGltParameters: (state, parameters) => {

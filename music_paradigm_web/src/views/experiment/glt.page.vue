@@ -145,6 +145,7 @@ export default {
 		},
 	},
 	beforeMount() {
+		this.resetGltRecords();
 		this.updateFootnote();
 	},
 	async mounted() {

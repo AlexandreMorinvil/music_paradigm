@@ -20,6 +20,6 @@ export default {
 	},
 
 	resetGltRecords: ({ commit }) => {
-		commit('resetGridLocationTaskRecords');
+		commit('resetGltRecords');
 	},
 };
