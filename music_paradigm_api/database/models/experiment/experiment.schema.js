@@ -130,6 +130,11 @@ const stateSchema = new Schema({
     maxResponseTime: { type: Number, default: undefined },
     includesPresentation: { type: Boolean, default: undefined },
     includesTest: { type: Boolean, default: undefined },
+    gltScoreForSuccess: { type: Number, default: undefined },
+    gltMustHideBeforeClick: { type: Boolean, default: undefined },
+    gltPauseBetweenPresentations: { type: Number, default: undefined },
+    gltPauseBetweenStimuli: { type: Number, default: undefined },
+    gltCellSize: { type: Number, default: undefined },
     
     textBeforeMainContent: { type: Schema.Types.Mixed, default: undefined },
     textAfterAnswerReceived: { type: Schema.Types.Mixed, default: undefined },

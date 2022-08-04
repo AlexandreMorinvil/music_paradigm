@@ -88,7 +88,7 @@ export default {
 		isWaitingForAnswer() {
 			return this.answerWaitTimeout !== null;
 		},
-		interogationsCount() {
+		interrogationsCount() {
 			return this.isAnswerRightList.length;
 		},
 		rightAnswersCount() {
@@ -105,7 +105,7 @@ export default {
 				positionClicked: this.positionClicked,
 				imageAtPositionClicked: this.imageAtPositionClicked,
 				isAnswerRightList: this.isAnswerRightList,
-				interogationsCount: this.interogationsCount,
+				interrogationsCount: this.interrogationsCount,
 				rightAnswersCount: this.rightAnswersCount,
 			};
 		}

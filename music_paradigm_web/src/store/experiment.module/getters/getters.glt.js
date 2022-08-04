@@ -1,5 +1,25 @@
 // PVT state parameters
 export default {
+	gltScoreForSuccess: (state) => {
+		return state.state.settings.gltScoreForSuccess;
+	},
+
+	gltMustHideBeforeClick: (state) => {
+		return state.state.settings.gltMustHideBeforeClick;
+	},
+
+	gltPauseBetweenPresentations: (state) => {
+		return state.state.settings.gltPauseBetweenPresentations;
+	},
+
+	gltPauseBetweenStimuli: (state) => {
+		return state.state.settings.gltPauseBetweenStimuli;
+	},
+
+	gltCellSize: (state) => {
+		return state.state.settings.gltCellSize;
+	},
+
 	matrixSizeX: (state) => {
 		return state.state.settings.matrixSizeX;
 	},

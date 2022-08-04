@@ -137,6 +137,11 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		reproductionSeed,
 		includesPresentation,
 		includesTest,
+		gltScoreForSuccess,
+		gltMustHideBeforeClick,
+		gltPauseBetweenPresentations,
+		gltPauseBetweenStimuli,
+		gltCellSize,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -198,7 +203,12 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		reproductionSeed:				typeof reproductionSeed === 'string'				? reproductionSeed : generalSettings.reproductionSeed,
 		includesPresentation:			typeof includesPresentation === 'boolean'			? includesPresentation : true,
 		includesTest: 		 			typeof includesTest === 'boolean'					? includesTest : true,
-	};
+		gltScoreForSuccess: 			typeof gltScoreForSuccess === 'number' 				? gltScoreForSuccess : 0,
+		gltMustHideBeforeClick: 		typeof gltMustHideBeforeClick === 'boolean' 		? gltMustHideBeforeClick : true,
+		gltPauseBetweenPresentations: 	typeof gltPauseBetweenPresentations === 'number' 	? gltPauseBetweenPresentations : 1000,
+		gltPauseBetweenStimuli: 		typeof gltPauseBetweenStimuli === 'number' 			? gltPauseBetweenStimuli : 1000,
+		gltCellSize: 					typeof gltCellSize === 'number' 					? gltCellSize : 100,
+		};
 
 	// Indicate that the state (current block's settings) was already initialized
 	Object.assign(isInitialized, { state: true });

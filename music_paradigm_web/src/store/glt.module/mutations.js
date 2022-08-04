@@ -21,7 +21,7 @@ export default {
 		state.positionClicked = answers.positionClicked;
 		state.imageAtPositionClicked = answers.imageAtPositionClicked;
 		state.isAnswerRightList = answers.isAnswerRightList;
-		state.interogationsCount = answers.interogationsCount;
+		state.interrogationsCount = answers.interrogationsCount;
 		state.rightAnswersCount = answers.rightAnswersCount;
 	},
 

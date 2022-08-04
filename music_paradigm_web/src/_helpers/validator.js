@@ -323,6 +323,11 @@ function validateBlock(block, index = null) {
 		'reproductionSeed',
 		'includesPresentation',
 		'includesTest',
+		'gltScoreForSuccess',
+		'gltMustHideBeforeClick',
+		'gltPauseBetweenPresentations',
+		'gltPauseBetweenStimuli',
+		'gltCellSize',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -396,6 +401,10 @@ function validateAttributeType(key, value) {
 		case 'presentationTime':
 		case 'stimuliTime':
 		case 'matrixUsedCellsCount':
+		case 'gltScoreForSuccess':
+		case 'gltPauseBetweenPresentations':
+		case 'gltPauseBetweenStimuli':
+		case 'gltCellSize':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
@@ -435,6 +444,7 @@ function validateAttributeType(key, value) {
 		case 'pvtHasCentralElement':
 		case 'includesPresentation':
 		case 'includesTest':
+		case 'gltMustHideBeforeClick':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

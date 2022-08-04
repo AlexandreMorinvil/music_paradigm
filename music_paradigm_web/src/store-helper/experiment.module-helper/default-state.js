@@ -283,6 +283,12 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			includesPresentation: true,												// Indicate if the state includes a presentation phase (used in glt)
 			includesTest: true,														// Indicate if the state includes a test phase (used in glt)
 
+			gltScoreForSuccess: 0,													// Number of correct answers required in a glt state for the state to be considered a success.
+			gltMustHideBeforeClick: true, 											// Indicates whether the user should be able to click a cell in the glt matrix when the stimulus is still visible. 
+			gltPauseBetweenPresentations: 1000, 									// Time to wait after having presented a cell and before presenting the next cell in the glt.
+			gltPauseBetweenStimuli: 1000,											// Time to wait after having cued a stimulus and before cuing the next cell in the glt.
+			gltCellSize: 100,														// Size of the size of the square cells in the glt grid.
+
 			reproductionSeed: DEFAULT_REPRODUCTION_SEED,							// Block specific Seed used in randomized components that can make the components reproductible.
 		},
 		// Session specific informations

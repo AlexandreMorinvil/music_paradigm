@@ -65,7 +65,13 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('glt', ['recordMatrixSetup', 'recordGltResults', 'recordGltParameters', 'resetGltRecords']),
+		...mapActions('glt', [
+			'evaluateGlt',
+			'recordMatrixSetup',
+			'recordGltResults',
+			'recordGltParameters',
+			'resetGltRecords',
+		]),
 		updateFootnote() {
 			const footnoteMessage = this.$t('views.experiment.glt.footnote');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
@@ -100,6 +106,7 @@ export default {
 
 			// Record the results.
 			this.storeGltRecords();
+			this.evaluateGlt();
 
 			// Conclude the test block.
 			if (this.hasAfterTestText) {
