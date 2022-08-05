@@ -16,12 +16,22 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['textBeforeMainContent', 'textAfterQuestionAsked', 'textAfterAnswerReceived']),
+		...mapGetters('experiment', [
+			'textBeforeMainContent',
+			'textAfterQuestionAsked',
+			'textAfterAnswerReceived',
+			'textWaitBeforeNextStep',
+		]),
 		textContent() {
 			return this.textAfterQuestionAsked;
 		},
 		shouldExist() {
-			return this.hasTextBeforeMainContent || this.hasTextAfterQuestionAsked || this.hasTextAfterAnswerReceived;
+			return (
+				this.hasTextBeforeMainContent ||
+				this.hasTextAfterQuestionAsked ||
+				this.hasTextAfterAnswerReceived ||
+				this.hasTextWaitBeforeNextStep
+			);
 		},
 		hasTextBeforeMainContent() {
 			return Boolean(this.textBeforeMainContent);
@@ -31,6 +41,9 @@ export default {
 		},
 		hasTextAfterAnswerReceived() {
 			return Boolean(this.textAfterAnswerReceived);
+		},
+		hasTextWaitBeforeNextStep() {
+			return Boolean(this.textWaitBeforeNextStep);
 		},
 	},
 	methods: {
@@ -46,12 +59,16 @@ export default {
 			this.activatedTextContent = this.textAfterAnswerReceived;
 			this.reveal();
 		},
+		activateTextWaitBeforeNextStep() {
+			this.activatedTextContent = this.textWaitBeforeNextStep;
+			this.reveal();
+		},
 		reveal() {
 			this.isRevealed = true;
 		},
 		hide() {
 			this.isRevealed = false;
-		}
+		},
 	},
 };
 </script>

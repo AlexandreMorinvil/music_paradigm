@@ -43,6 +43,8 @@ export default {
 			'reproductionSeed',
 			'textAfterQuestionAsked',
 			'textAfterAnswerReceived',
+			'textWaitBeforeNextStep',
+			'waitBeforeNextStep',
 		]),
 		hasSequenceText() {
 			return this.hasPresentationText || this.hasStartTestText || this.hasAfterTestText;
@@ -55,6 +57,9 @@ export default {
 		},
 		hasAfterTestText() {
 			return Boolean(this.textAfterAnswerReceived);
+		},
+		hasBeforeNextStepText() {
+			return Boolean(this.textWaitBeforeNextStep);
 		},
 		blockParameters() {
 			return {
@@ -113,9 +118,11 @@ export default {
 				await this.setTimeout(this.TIME_BEFORE_SHOWING_CONCLUSION);
 				await this.showAfterTestText(this.TIME_DISPLAY_AFTER_TEST_TEXT);
 			}
-
-			// Wait a small delay before continuing.
 			await this.setTimeout(this.TIME_AFTER_EVERYTHING);
+		},
+		async waitBeforeEnding() {
+			// Wait a small delay before continuing.
+			await this.showTextWaitBeforeNextStep(this.waitBeforeNextStep);
 		},
 		async presentImages() {
 			await this.$refs.gridLocationTask.presentMatrix();
@@ -138,6 +145,11 @@ export default {
 			await this.setTimeout(timeInMilliseconds);
 			this.$refs.sequenceText.hide();
 		},
+		async showTextWaitBeforeNextStep(timeInMilliseconds) {
+			this.$refs.sequenceText.activateTextWaitBeforeNextStep();
+			await this.setTimeout(timeInMilliseconds);
+			this.$refs.sequenceText.hide();
+		},
 		setTimeout(timeInMilliseconds) {
 			return new Promise((resolve) => {
 				setTimeout(resolve, timeInMilliseconds);
@@ -150,6 +162,7 @@ export default {
 	},
 	async mounted() {
 		await this.executeSequenceOfSteps();
+		await this.waitBeforeEnding();
 		this.emitStateEndedSignal();
 	},
 };

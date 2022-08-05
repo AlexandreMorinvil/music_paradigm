@@ -144,6 +144,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		gltCellSize,
 		matrixUnusedCells,
 		cuePresentationDelay,
+		waitBeforeNextStep,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -212,6 +213,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		gltCellSize: 					typeof gltCellSize === 'number' 					? gltCellSize : 100,
 		matrixUnusedCells:				typeof matrixUnusedCells === 'object'				? matrixUnusedCells : null,
 		cuePresentationDelay:			typeof cuePresentationDelay === 'number'			? cuePresentationDelay : generalSettings.matrixUnusedCells,
+		waitBeforeNextStep: 			typeof waitBeforeNextStep === 'number'				? waitBeforeNextStep : 0,
 		};
 
 	// Indicate that the state (current block's settings) was already initialized
@@ -283,6 +285,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 		textSpecification,
 		textBeforeMainContent,
 		textAfterAnswerReceived,
+		textWaitBeforeNextStep,
 	} = currentBlock;
 
 	// Using the values that are not set in an array if there are any
@@ -296,6 +299,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	let updatedTextAfterQuestionAsked = typeof textAfterQuestionAsked === 'string' ? textAfterQuestionAsked : null;
 	let updatedTextBeforeMainContent = typeof textBeforeMainContent === 'string' ? textBeforeMainContent : null;
 	let updatedTextAfterAnswerReceived = typeof textAfterAnswerReceived === 'string' ? textAfterAnswerReceived : null;
+	let updatedTextWaitBeforeNextStep = typeof textWaitBeforeNextStep === 'string' ? textWaitBeforeNextStep : null;
 	let updatedTextSpecification = typeof textSpecification === 'string' ? textSpecification : null;
 
 	// If the value is in an array
@@ -311,6 +315,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(textAfterQuestionAsked)) updatedTextAfterQuestionAsked = textAfterQuestionAsked || null;
 	if (Array.isArray(textBeforeMainContent)) updatedTextBeforeMainContent = textBeforeMainContent || null;
 	if (Array.isArray(textAfterAnswerReceived)) updatedTextAfterAnswerReceived = textAfterAnswerReceived || null;
+	if (Array.isArray(textWaitBeforeNextStep)) updatedTextWaitBeforeNextStep = textWaitBeforeNextStep || null;
 	if (Array.isArray(textSpecification)) updatedTextSpecification = textSpecification || null;
 
 	// If the value is in a nested array
@@ -326,6 +331,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(updatedTextAfterQuestionAsked)) updatedTextAfterQuestionAsked = textAfterQuestionAsked || null;
 	if (Array.isArray(updatedTextBeforeMainContent)) updatedTextBeforeMainContent = textBeforeMainContent || null;
 	if (Array.isArray(updatedTextAfterAnswerReceived)) updatedTextAfterAnswerReceived = textAfterAnswerReceived || null;
+	if (Array.isArray(updatedTextWaitBeforeNextStep)) updatedTextWaitBeforeNextStep = textWaitBeforeNextStep || null;
 	if (Array.isArray(updatedTextSpecification)) updatedTextSpecification = textSpecification || null;
 
 	// === Update the state ===
@@ -340,6 +346,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	currentState.content.textAfterQuestionAsked = updatedTextAfterQuestionAsked || '';
 	currentState.content.textBeforeMainContent = updatedTextBeforeMainContent || '';
 	currentState.content.textAfterAnswerReceived = updatedTextAfterAnswerReceived || '';
+	currentState.content.textWaitBeforeNextStep = updatedTextWaitBeforeNextStep || '';
 	currentState.content.textSpecification = updatedTextSpecification || '';
 
 	// Indicate that the media files is initialized

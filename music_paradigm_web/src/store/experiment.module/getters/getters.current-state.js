@@ -30,6 +30,10 @@ export default {
 		return state.state.content.textAfterAnswerReceived;
 	},
 
+	textWaitBeforeNextStep: (state) => {
+		return state.state.content.textWaitBeforeNextStep;
+	},
+
 	pictureName: (state) => {
 		const pictureName = state.state.content.pictureName;
 		return pictureName ? `${state.description.folder}/${pictureName}` : '';
@@ -137,5 +141,9 @@ export default {
 
 	maxResponseTime: (state) => {
 		return state.state.settings.maxResponseTime;
+	},
+
+	waitBeforeNextStep: (state) => {
+		return state.state.settings.waitBeforeNextStep;
 	},
 };

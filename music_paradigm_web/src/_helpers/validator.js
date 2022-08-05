@@ -337,6 +337,9 @@ function validateBlock(block, index = null) {
 		'matrixUnusedCells',
 
 		'cuePresentationDelay',
+
+		'waitBeforeNextStep',
+		'textWaitBeforeNextStep',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -415,6 +418,7 @@ function validateAttributeType(key, value) {
 		case 'gltPauseBetweenStimuli':
 		case 'gltCellSize':
 		case 'cuePresentationDelay':
+		case 'waitBeforeNextStep':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
@@ -479,6 +483,7 @@ function validateAttributeType(key, value) {
 		case 'textAfterAnswerReceived':
 		case 'textSpecification':
 		case 'textReminder':
+		case 'textWaitBeforeNextStep':
 		case 'pictureFileName':
 		case 'helperImageFileName':
 		case 'videoFileName':
@@ -502,6 +507,7 @@ function validateAttributeType(key, value) {
 					case 'textAfterQuestionAsked':
 					case 'textBeforeMainContent':
 					case 'textAfterAnswerReceived':
+					case 'textWaitBeforeNextStep':
 					case 'textSpecification':
 					case 'textReminder':
 					case 'pictureFileName':
@@ -559,6 +565,7 @@ function validateAttributeType(key, value) {
 					case 'textAfterQuestionAsked':
 					case 'textBeforeMainContent':
 					case 'textAfterAnswerReceived':
+					case 'textWaitBeforeNextStep':
 					case 'answerChoicesColor':
 						value.forEach((element, index) => {
 							if (!(typeof element === 'string')) {

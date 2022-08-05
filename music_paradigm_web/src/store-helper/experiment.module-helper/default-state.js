@@ -195,6 +195,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			textAfterQuestionAsked: '',												// Text displayed after a question is asked in question states
 			textBeforeMainContent: '',												// Text displayed before the main content of a state (used in grid location task)
 			textAfterAnswerReceived: '',											// Text displayed after all the answers of the user are reveived (used in grid location task)
+			textWaitBeforeNextStep: '',												// Text displayed before moving to the next state during the "wait before next step" time.
 			textSpecification: '',													// Text to add a certain specification (used in question state)
 		},
 
@@ -295,6 +296,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			cuePresentationDelay: DEFAULT_CUE_PRESENTATION_DELAY,					// Block specific delay that should be waited before presenting the cue in a cue state.
 
 			reproductionSeed: DEFAULT_REPRODUCTION_SEED,							// Block specific Seed used in randomized components that can make the components reproductible.
+			waitBeforeNextStep: 0,													// Delay before the transition to the next state used in certain states (glt).
 		},
 		// Session specific informations
 		record: {
