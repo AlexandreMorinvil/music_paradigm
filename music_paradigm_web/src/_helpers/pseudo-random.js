@@ -40,7 +40,6 @@ function generateReproduciblePermutedFittedIndexList(
 }
 
 
-
 /**
  * Generate a list of permuted indexes with an order reproductible with a given seed.
  */

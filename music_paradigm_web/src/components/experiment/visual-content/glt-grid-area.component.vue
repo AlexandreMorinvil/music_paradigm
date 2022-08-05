@@ -53,8 +53,6 @@ export default {
 			POSITION_REPRODUCTION_SEED_MODIFIER: 'position',
 
 			// Times constants.
-			TIME_BETWEEN_PRESENTATION_DISPLAY: 500,
-			TIME_DELAY_BETWEEN_TEST_DISPLAYS: 1500,
 			TIME_DELAY_AFTER_IMAGE_CLICKED: 500,
 		};
 	},
@@ -62,6 +60,8 @@ export default {
 		...mapGetters('experiment', [
 			'answerChoicesImage',
 			'answerChoicesValue',
+			'gltPauseBetweenStimuli',
+			'gltPauseBetweenPresentations',
 			'matrixSizeX',
 			'matrixSizeY',
 			'matrixUnusedCells',
@@ -255,7 +255,7 @@ export default {
 
 				// Wait a small delay before moving on to the next image.
 				// If it is the last cell to display, we ignore the delay.
-				if (i !== presentationOrderIndexList.length - 1) await this.setTimeout(this.TIME_BETWEEN_PRESENTATION_DISPLAY);
+				if (i !== presentationOrderIndexList.length - 1) await this.setTimeout(this.gltPauseBetweenPresentations);
 			}
 		},
 		async askImagePositions() {
@@ -271,7 +271,7 @@ export default {
 				// If it is the last cell to display, we ignore the delay.
 				const isLastStimuli = i === presentationOrderIndexList.length - 1;
 				const shouldWaitBeforeNextStimuli = this.hasReceivedAnswerForCurrentStimuli;
-				if (!isLastStimuli && shouldWaitBeforeNextStimuli) await this.setTimeout(this.TIME_DELAY_BETWEEN_TEST_DISPLAYS);
+				if (!isLastStimuli && shouldWaitBeforeNextStimuli) await this.setTimeout(this.gltPauseBetweenStimuli);
 			}
 		},
 	},
