@@ -25,11 +25,11 @@ export default {
 			isClickable: false,
 			isRevealed: false,
 			overwrittingCellSpecification: null,
-			DEFAULT_SQUARE_SIZE: 140,
 		};
 	},
 	computed: {
 		...mapGetters(['urlExperimentResource']),
+		...mapGetters('experiment', ['gltCellSize']),
 		imageSrc() {
 			if (this.overwrittingCellSpecification) return this.overwrittingCellSpecification.imageSrc;
 			else return this.cellSpecifications.imageSrc;
@@ -38,10 +38,10 @@ export default {
 			return this.heightStyle + this.widthStyle;
 		},
 		heightStyle() {
-			return 'height: ' + this.DEFAULT_SQUARE_SIZE + 'px;';
+			return 'height: ' + this.gltCellSize + 'px;';
 		},
 		widthStyle() {
-			return 'width: ' + this.DEFAULT_SQUARE_SIZE + 'px;';
+			return 'width: ' + this.gltCellSize + 'px;';
 		},
 	},
 	methods: {

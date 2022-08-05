@@ -36,9 +36,19 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['textBeforeMainContent', 'textAfterQuestionAsked', 'textAfterAnswerReceived']),
+		...mapGetters('evaluation', ['hasSuccess']),
+		...mapGetters('experiment', [
+			'includesPresentation',
+			'includesTest',
+			'textBeforeMainContent',
+			'reproductionSeed',
+			'textAfterQuestionAsked',
+			'textAfterAnswerReceived',
+			'textWaitBeforeNextStep',
+			'waitBeforeNextStep',
+		]),
 		hasSequenceText() {
-			return this.hasPresentationText || this.hasStartTestText || this.hasAfterTestText;
+			return this.hasPresentationText || this.hasStartTestText || this.hasAfterTestText || this.hasBeforeNextStepText;
 		},
 		hasPresentationText() {
 			return Boolean(this.textBeforeMainContent);
@@ -49,16 +59,39 @@ export default {
 		hasAfterTestText() {
 			return Boolean(this.textAfterAnswerReceived);
 		},
+		hasBeforeNextStepText() {
+			return Boolean(this.textWaitBeforeNextStep);
+		},
+		blockParameters() {
+			return {
+				reproductionSeed: this.reproductionSeed,
+				includesPresentation: this.includesPresentation,
+				includesTest: this.includesTest,
+			};
+		},
 	},
 	methods: {
-		...mapActions('glt', ['recordMatrixSetup', 'recordGltResults', 'resetGltRecords']),
+		...mapActions('experiment', ['addSuccess']),
+		...mapActions('glt', [
+			'evaluateGlt',
+			'recordMatrixSetup',
+			'recordGltResults',
+			'recordGltParameters',
+			'resetGltRecords',
+		]),
 		updateFootnote() {
 			const footnoteMessage = this.$t('views.experiment.glt.footnote');
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		storeGltRecords() {
+			this.recordGltParameters(this.blockParameters);
 			this.recordMatrixSetup(this.$refs.gridLocationTask.matrixSetup);
 			this.recordGltResults(this.$refs.gridLocationTask.results);
+		},
+		evaluate() {
+			this.evaluateGlt();
+			if (this.hasSuccess)
+				this.addSuccess();
 		},
 		emitStateEndedSignal() {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
@@ -73,7 +106,7 @@ export default {
 				await this.showPresentationText(this.TIME_DISPLAY_PRESENTATION_TEXT);
 				await this.setTimeout(this.TIME_SMALL_TRANSITION_TIME);
 			}
-			await this.presentImages();
+			if (this.includesPresentation) await this.presentImages();
 
 			// Submit the test.
 			if (this.hasStartTestText) {
@@ -81,19 +114,22 @@ export default {
 				await this.showStartTestText(this.TIME_DISPLAY_START_TEST_TEXT);
 				await this.setTimeout(this.TIME_SMALL_TRANSITION_TIME);
 			}
-			await this.testImages();
+			if (this.includesTest) await this.testImages();
 
 			// Record the results.
 			this.storeGltRecords();
+			this.evaluate();
 
 			// Conclude the test block.
 			if (this.hasAfterTestText) {
 				await this.setTimeout(this.TIME_BEFORE_SHOWING_CONCLUSION);
 				await this.showAfterTestText(this.TIME_DISPLAY_AFTER_TEST_TEXT);
 			}
-
-			// Wait a small delay before continuing.
 			await this.setTimeout(this.TIME_AFTER_EVERYTHING);
+		},
+		async waitBeforeEnding() {
+			// Wait a small delay before continuing.
+			await this.showTextWaitBeforeNextStep(this.waitBeforeNextStep);
 		},
 		async presentImages() {
 			await this.$refs.gridLocationTask.presentMatrix();
@@ -116,6 +152,11 @@ export default {
 			await this.setTimeout(timeInMilliseconds);
 			this.$refs.sequenceText.hide();
 		},
+		async showTextWaitBeforeNextStep(timeInMilliseconds) {
+			this.$refs.sequenceText.activateTextWaitBeforeNextStep();
+			await this.setTimeout(timeInMilliseconds);
+			this.$refs.sequenceText.hide();
+		},
 		setTimeout(timeInMilliseconds) {
 			return new Promise((resolve) => {
 				setTimeout(resolve, timeInMilliseconds);
@@ -123,10 +164,12 @@ export default {
 		},
 	},
 	beforeMount() {
+		this.resetGltRecords();
 		this.updateFootnote();
 	},
 	async mounted() {
 		await this.executeSequenceOfSteps();
+		await this.waitBeforeEnding();
 		this.emitStateEndedSignal();
 	},
 };

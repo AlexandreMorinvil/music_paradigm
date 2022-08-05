@@ -17,7 +17,7 @@ function DEFAULT_GLT_STATE() {
 		positionClicked: [],
 		imageAtPositionClicked: [],
 		isAnswerRightList: [],
-		interogationsCount: [],
+		interrogationsCount: [],
 		rightAnswersCount: [],
 	};
 }

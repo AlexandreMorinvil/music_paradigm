@@ -4,23 +4,51 @@ const schema = require('./curriculum.middleware');
 schema.set('toJSON', { virtuals: true });
 
 // Static methods
+
+/**
+ * Get list all headers
+ * This function returns  a list of all the curriculum objects to which is added additional information regarding the 
+ * parameters included in the experimenrs.
+ * 
+ * @return {Array<Object>} A list of all the curriculum objects with parameter's infomration added.
+ */
 schema.statics.getListAllHeaders = async function () {
+
+    // Retreive the list of all curriculum documents.
     const curriculumDocumentsList = await this
         .find({})
         .sort({ updatedAt: -1, createdAt: 1, title: 1 });
     const curriculumObjectsList = [];
 
-    for (element of curriculumDocumentsList) {
-        let curriculum = element.toObject();
-        const { optionVariableValues, defaultVariableAssignation } = await element.getParameters();
-        curriculum['optionVariableValues'] = optionVariableValues;
-        curriculum['defaultVariableAssignation'] = defaultVariableAssignation;
-        curriculumObjectsList.push(curriculum);
+    // Append the parameters information to all the curriculum objects. 
+    for (curriculumDocument of curriculumDocumentsList) {
+        
+        let curriculumObject = curriculumDocument.toObject();
+        const { 
+            parameterAcceptsFreeTextValuesMap, 
+            parameterOptionValuesListMap, 
+            parameterDefaultValueMap 
+        } = await curriculumDocument.getParameters();
+
+        curriculumObject['parameterOptionValuesListMap'] = parameterOptionValuesListMap;
+        curriculumObject['parameterDefaultValueMap'] = parameterDefaultValueMap;
+        curriculumObject['parameterAcceptsFreeTextValuesMap'] = parameterAcceptsFreeTextValuesMap;
+        curriculumObjectsList.push(curriculumObject);
     }
+
+    // Returns alist of all the curriculum objects
     return curriculumObjectsList;
 };
 
 // Instance methods
+
+/**
+ * Get experiment associated
+ * This function returns the document of the experiment associated to an associative ID.
+ * 
+ * @param {String} associativeId Associative ID that associates an experiement to an experiemnt in a curriculum.
+ * @returns the document of the experiment associated to an associative ID.
+ */
 schema.methods.getExperimentAssociated = function (associativeId) {
     const experimentArrayCurriculum = this.experiments
         .filter(experiment => { return experiment.associativeId === associativeId; });
@@ -37,10 +65,41 @@ schema.methods.update = async function (updatedCurriculum) {
     return this;
 };
 
+/**
+ * Get parammeters
+ * 
+ * Extract all the variables with the type "parameter" from all the experiments in the curriculum and adds returns an
+ * object containing their option values, their default value and and indicator of whether or not those variables can
+ * be assigned a value inputed as a free text value.
+ * 
+ * @return {Object} Informations on the parameters involved in the curriculum.
+ * format :
+ * {
+ *      parameterOptionValuesListMap: {
+ *          VARIABLE_NAME: [ ... options ... ],
+ *          VARIABLE_NAME: [ ... options ... ],
+ *          ...
+ *      },
+ *      parameterDefaultValueMap: {
+ *          VARIABLE_NAME: DEFAULT_VALUE,
+ *          VARIABLE_NAME: DEFAULT_VALUE,
+ *          ...
+ *      }
+ *      parameterAcceptsFreeTextValuesMap: {
+ *          VARIABLE_NAME: Boolean,
+ *          VARIABLE_NAME: Boolean,
+ *          ... 
+ *      }
+ * }
+ */
 schema.methods.getParameters = async function () {
-    const allParameters = [];
-    const formattedVariables = {};
-    const defaultVariableAssignation = {};
+
+    // Initialize the return values.
+    const acceptsFreeTextValuesMap = {};
+    const completeOptionValuesListMap = {};
+    const defaultAssignedValueMap = {};
+
+    // Retreive the list of all the "variables" attributes from all the experiments of the curriculum.
     const curriculum = await model
         .findOne(
             { _id: this._id },
@@ -49,23 +108,39 @@ schema.methods.getParameters = async function () {
         .populate(
             { path: 'experiments.experimentReference', select: 'variables' }
         )
-    const experimentsList = curriculum.experiments;
-    const experimentDefinitionsList = experimentsList.map(experiment => experiment.experimentReference);
-    experimentDefinitionsList.forEach((experiment) => allParameters.push(experiment.getParameters()))
-    allParameters.forEach(variablesArray => {
-        variablesArray.forEach(variable => {
-            const { name, optionValues, assignedValue } = variable
-            if (!defaultVariableAssignation[name]) defaultVariableAssignation[name] = assignedValue;
+    const referencExperimentsList = curriculum.experiments;
+    const variableAttributeInExperimentsList = referencExperimentsList.map(
+        experiment => experiment.experimentReference
+    );
 
-            if (!formattedVariables[name]) formattedVariables[name] = [];
-            formattedVariables[name] = formattedVariables[name].concat(optionValues);
-            formattedVariables[name] = formattedVariables[name].concat(assignedValue);
-            formattedVariables[name] = [...new Set(formattedVariables[name])];
+    // Parse the variables of type "parameter" among the variables in all the experiments.
+    const parametersFullList = [];
+    variableAttributeInExperimentsList.forEach((experiment) => parametersFullList.push(experiment.getParameters()))
+    parametersFullList.forEach(variablesArray => {
+        variablesArray.forEach(variable => {
+            const { assignedValue, acceptsFreeTextValue, name, optionValues } = variable
+
+            // Assign the default values a the first assigned value found for a given variable name in all the 
+            // experiments of the curriculum.
+            if (!defaultAssignedValueMap[name]) defaultAssignedValueMap[name] = assignedValue;
+
+            // List all the option values taking into account the explicitly state option values of the variable and
+            // including the assign value (which isn't necessarily included in the option vlaues).
+            if (!completeOptionValuesListMap[name]) completeOptionValuesListMap[name] = [];
+            completeOptionValuesListMap[name] = completeOptionValuesListMap[name].concat(optionValues);
+            completeOptionValuesListMap[name] = completeOptionValuesListMap[name].concat(assignedValue);
+            completeOptionValuesListMap[name] = [...new Set(completeOptionValuesListMap[name])];
+
+            // Indicate whether or not the variable accepts free text value assignation.
+            if (!acceptsFreeTextValuesMap[name]) acceptsFreeTextValuesMap[name] = acceptsFreeTextValue;
         });
     });
+
+    // Return informations of the parameters involved in the curriculum.
     return {
-        optionVariableValues: formattedVariables,
-        defaultVariableAssignation: defaultVariableAssignation
+        parameterOptionValuesListMap: completeOptionValuesListMap,
+        parameterDefaultValueMap: defaultAssignedValueMap,
+        parameterAcceptsFreeTextValuesMap: acceptsFreeTextValuesMap,
     };
 }
 

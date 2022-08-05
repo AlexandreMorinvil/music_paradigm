@@ -128,9 +128,21 @@ const stateSchema = new Schema({
     presentationTime: { type: Number, default: undefined },
     stimuliTime: { type: Number, default: undefined },
     maxResponseTime: { type: Number, default: undefined },
+    includesPresentation: { type: Boolean, default: undefined },
+    includesTest: { type: Boolean, default: undefined },
+    gltScoreForSuccess: { type: Number, default: undefined },
+    gltMustHideBeforeClick: { type: Boolean, default: undefined },
+    gltPauseBetweenPresentations: { type: Number, default: undefined },
+    gltPauseBetweenStimuli: { type: Number, default: undefined },
+    gltCellSize: { type: Number, default: undefined },
+
+    matrixUnusedCells: { type: Schema.Types.Mixed, default: undefined },
+    cuePresentationDelay: { type: Number, default: undefined },
     
     textBeforeMainContent: { type: Schema.Types.Mixed, default: undefined },
     textAfterAnswerReceived: { type: Schema.Types.Mixed, default: undefined },
+    textWaitBeforeNextStep: { type: String, default: undefined },
+    waitBeforeNextStep: { type: Number, default: undefined },
     reproductionSeed: { type: String, default: undefined },
 },
     {
@@ -177,6 +189,8 @@ const schema = new Schema({
     hasStatusBar: { type: Boolean, default: true },
     isFullScreen: { type: Boolean, default: true },
 
+    cuePresentationDelay: { type: Number, default: undefined },
+
     reproductionSeed: { type: String, default: undefined },
 
     keyboardToMidiInputMapping:{
@@ -222,6 +236,11 @@ const schema = new Schema({
                 type: Schema.Types.Mixed,
                 default: undefined,
                 required: true
+            },
+            acceptsFreeTextValue: {
+                type: Boolean,
+                default: undefined,
+                required: false
             },
             valueSelectionType: {
                 type: String,

@@ -9,6 +9,16 @@ export default {
 
 // Allowed values
 
+const generateAllowedEntriesInteractiveCombiantions = () => {
+	const createCombinations = (array1, array2) => { return array1.flatMap(d => array2.map(v => d + v)); };
+	let combinationsList = ['half-', ''];
+	combinationsList = createCombinations(combinationsList, ['true', 'false', 'all', 'midi', 'first']);
+	combinationsList = createCombinations(combinationsList, ['', '#', '##']);
+	combinationsList = createCombinations(combinationsList, ['', '%']);
+
+	return combinationsList;
+};
+
 /**
  * @constant ALLOWED_ENTRIES_INTERACTIVE_HELPERS
  * @type {Array<String>}
@@ -18,11 +28,7 @@ export default {
  * 				- interactivePiano
  * 				- interactiveKeyboard
  * */
-const ALLOWED_ENTRIES_INTERACTIVE_HELPERS = ['half-', ''].flatMap((c) => {
-	const b = ['true', 'false', 'all', 'midi', 'first']
-		.flatMap((d) => ['', '#', '##'].map((v) => d + v));
-	return b.map((v) => c + v);
-});
+const ALLOWED_ENTRIES_INTERACTIVE_HELPERS = generateAllowedEntriesInteractiveCombiantions();
 
 
 /**
@@ -150,6 +156,7 @@ function validateExperiment(experiment) {
 		'logLabel',
 
 		'cueWaitForClick',
+		'cuePresentationDelay',
 		'instrument',
 		'hasSound',
 		'hasNavigationBar',
@@ -321,6 +328,19 @@ function validateBlock(block, index = null) {
 		'textBeforeMainContent',
 		'textAfterAnswerReceived',
 		'reproductionSeed',
+		'includesPresentation',
+		'includesTest',
+		'gltScoreForSuccess',
+		'gltMustHideBeforeClick',
+		'gltPauseBetweenPresentations',
+		'gltPauseBetweenStimuli',
+		'gltCellSize',
+		'matrixUnusedCells',
+
+		'cuePresentationDelay',
+
+		'waitBeforeNextStep',
+		'textWaitBeforeNextStep',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -394,6 +414,12 @@ function validateAttributeType(key, value) {
 		case 'presentationTime':
 		case 'stimuliTime':
 		case 'matrixUsedCellsCount':
+		case 'gltScoreForSuccess':
+		case 'gltPauseBetweenPresentations':
+		case 'gltPauseBetweenStimuli':
+		case 'gltCellSize':
+		case 'cuePresentationDelay':
+		case 'waitBeforeNextStep':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
@@ -431,6 +457,9 @@ function validateAttributeType(key, value) {
 		case 'hasStatusBar':
 		case 'isFullScreen':
 		case 'pvtHasCentralElement':
+		case 'includesPresentation':
+		case 'includesTest':
+		case 'gltMustHideBeforeClick':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}
@@ -455,6 +484,7 @@ function validateAttributeType(key, value) {
 		case 'textAfterAnswerReceived':
 		case 'textSpecification':
 		case 'textReminder':
+		case 'textWaitBeforeNextStep':
 		case 'pictureFileName':
 		case 'helperImageFileName':
 		case 'videoFileName':
@@ -467,6 +497,7 @@ function validateAttributeType(key, value) {
 		case 'audioSecond':
 		case 'rightAnswers':
 		case 'answerChoicesColor':
+		case 'matrixUnusedCells':
 			// Elements of the array
 			if (!Array.isArray(value)) {
 				switch (key) {
@@ -477,6 +508,7 @@ function validateAttributeType(key, value) {
 					case 'textAfterQuestionAsked':
 					case 'textBeforeMainContent':
 					case 'textAfterAnswerReceived':
+					case 'textWaitBeforeNextStep':
 					case 'textSpecification':
 					case 'textReminder':
 					case 'pictureFileName':
@@ -511,6 +543,13 @@ function validateAttributeType(key, value) {
 						}
 						break;
 
+					case 'matrixUnusedCells':
+						// Object
+						if (!(typeof value === 'object') || Array.isArray(value)) {
+							throw new Error(`The key '${key}' must be of type 'Object' or 'Array'`);
+						}
+						break;
+
 					default:
 						break;
 				}
@@ -527,6 +566,7 @@ function validateAttributeType(key, value) {
 					case 'textAfterQuestionAsked':
 					case 'textBeforeMainContent':
 					case 'textAfterAnswerReceived':
+					case 'textWaitBeforeNextStep':
 					case 'answerChoicesColor':
 						value.forEach((element, index) => {
 							if (!(typeof element === 'string')) {
@@ -540,6 +580,15 @@ function validateAttributeType(key, value) {
 						value.forEach((element, index) => {
 							if (!(typeof element === 'number')) {
 								throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'Number'`);
+							}
+						});
+						break;
+
+					// Array of Objects.
+					case 'matrixUnusedCells':
+						value.forEach((element, index) => {
+							if (!(typeof value === 'object') || Array.isArray(value)) {
+								throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'Object'`);
 							}
 						});
 						break;

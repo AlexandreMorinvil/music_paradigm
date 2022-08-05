@@ -16,12 +16,24 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['textBeforeMainContent', 'textAfterQuestionAsked', 'textAfterAnswerReceived']),
+		...mapGetters('experiment', [
+			'textBeforeMainContent',
+			'textAfterQuestionAsked',
+			'textAfterAnswerReceived',
+			'textWaitBeforeNextStep',
+		]),
+		// XXX: ASAP : Remove those hard coded variables and implement a more flexible mechanism.
+		...mapGetters('glt', ['interrogationsCount', 'rightAnswersCount']),
 		textContent() {
 			return this.textAfterQuestionAsked;
 		},
 		shouldExist() {
-			return this.hasTextBeforeMainContent || this.hasTextAfterQuestionAsked || this.hasTextAfterAnswerReceived;
+			return (
+				this.hasTextBeforeMainContent ||
+				this.hasTextAfterQuestionAsked ||
+				this.hasTextAfterAnswerReceived ||
+				this.hasTextWaitBeforeNextStep
+			);
 		},
 		hasTextBeforeMainContent() {
 			return Boolean(this.textBeforeMainContent);
@@ -31,6 +43,9 @@ export default {
 		},
 		hasTextAfterAnswerReceived() {
 			return Boolean(this.textAfterAnswerReceived);
+		},
+		hasTextWaitBeforeNextStep() {
+			return Boolean(this.textWaitBeforeNextStep);
 		},
 	},
 	methods: {
@@ -44,6 +59,13 @@ export default {
 		},
 		activateTextAfterAnswerReceived() {
 			this.activatedTextContent = this.textAfterAnswerReceived;
+			// XXX: ASAP : Remove those hard coded variables and implement a more flexible mechanism.
+			this.activatedTextContent = this.activatedTextContent.replace("%GLT_SUCCESS_COUNT%", this.rightAnswersCount);
+			this.activatedTextContent = this.activatedTextContent.replace("%GLT_TOTAL_INTEROGATIONS_COUNT%", this.interrogationsCount);
+			this.reveal();
+		},
+		activateTextWaitBeforeNextStep() {
+			this.activatedTextContent = this.textWaitBeforeNextStep;
 			this.reveal();
 		},
 		reveal() {
@@ -51,7 +73,7 @@ export default {
 		},
 		hide() {
 			this.isRevealed = false;
-		}
+		},
 	},
 };
 </script>

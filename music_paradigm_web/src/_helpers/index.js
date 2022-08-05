@@ -3,10 +3,12 @@ import controllerToMidiMapper from './controller-to-midi-mapper';
 import downloadSave from './download-save';
 import experimentParser from './experiment-parser';
 import fullScreen from './full-screen';
+import gltPerformance from './glt-performance';
 import instruments from './instruments';
 import keyboardPerformance from './keyboard-performance';
 import log from './log';
 import logsQuery from './logs-query';
+import matrix from './matrix';
 import midiConversion from './midi-conversion';
 import notePerformance from './note-performance';
 import pseudoRandom from './pseudo-random';
@@ -21,10 +23,12 @@ export {
     downloadSave,
     experimentParser,
     fullScreen,
+    gltPerformance,
     instruments,
     keyboardPerformance,
     log,
     logsQuery,
+    matrix,
     midiConversion,
     notePerformance,
     pseudoRandom,
