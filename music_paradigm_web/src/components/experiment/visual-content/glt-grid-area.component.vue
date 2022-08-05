@@ -175,26 +175,27 @@ export default {
 			this.$refs.imageMatrix.hideCell(positionId);
 		},
 		activateMatrixClickability() {
+			console.log('input ACTIVE');
 			this.$refs.imageMatrix.activateClickability();
 			this.timeSinceStartOfAnswerPeriod = new Date();
 		},
 		deactivateMatrixClickability() {
+			console.log('input DEACTIVATED');
 			this.$refs.imageMatrix.deactivateClickability();
 		},
-		stopAnswerWait() {
+		stopAnswerWait(clickedCellSpecifications) {
 			if (!this.resolveWhenAnswered) return false;
+			this.recordResultsOfStimuli(clickedCellSpecifications || {});
 			this.resolveWhenAnswered();
 			this.resolveWhenAnswered = null;
 			clearTimeout(this.answerWaitTimeout);
 			this.answerWaitTimeout = null;
 			return true;
 		},
-		handleAnswer(clickedCellSpecifications = {}) {
+		handleAnswer(clickedCellSpecifications) {
 			// If we are not waiting for an answer, we ignore the answer received.
-			if (!this.stopAnswerWait()) return;
-
+			if (!this.stopAnswerWait(clickedCellSpecifications || {})) return;
 			this.hasReceivedAnswerForCurrentStimuli = true;
-			this.recordResultsOfStimuli(clickedCellSpecifications);
 		},
 		recordResultsOfStimuli(clickedCellSpecifications = {}) {
 			// Verify of there was an answer or not to handle the cases where no answer is given.

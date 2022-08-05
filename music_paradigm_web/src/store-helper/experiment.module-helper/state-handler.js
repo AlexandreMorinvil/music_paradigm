@@ -212,7 +212,7 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		gltPauseBetweenStimuli: 		typeof gltPauseBetweenStimuli === 'number' 			? gltPauseBetweenStimuli : 1000,
 		gltCellSize: 					typeof gltCellSize === 'number' 					? gltCellSize : 100,
 		matrixUnusedCells:				typeof matrixUnusedCells === 'object'				? matrixUnusedCells : null,
-		cuePresentationDelay:			typeof cuePresentationDelay === 'number'			? cuePresentationDelay : generalSettings.matrixUnusedCells,
+		cuePresentationDelay:			typeof cuePresentationDelay === 'number'			? cuePresentationDelay : generalSettings.cuePresentationDelay,
 		waitBeforeNextStep: 			typeof waitBeforeNextStep === 'number'				? waitBeforeNextStep : 0,
 		};
 

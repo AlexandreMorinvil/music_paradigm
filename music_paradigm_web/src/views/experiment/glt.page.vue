@@ -36,6 +36,7 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters('evaluation', ['hasSuccess']),
 		...mapGetters('experiment', [
 			'includesPresentation',
 			'includesTest',
@@ -70,6 +71,7 @@ export default {
 		},
 	},
 	methods: {
+		...mapActions('experiment', ['addSuccess']),
 		...mapActions('glt', [
 			'evaluateGlt',
 			'recordMatrixSetup',
@@ -85,6 +87,11 @@ export default {
 			this.recordGltParameters(this.blockParameters);
 			this.recordMatrixSetup(this.$refs.gridLocationTask.matrixSetup);
 			this.recordGltResults(this.$refs.gridLocationTask.results);
+		},
+		evaluate() {
+			this.evaluateGlt();
+			if (this.hasSuccess)
+				this.addSuccess();
 		},
 		emitStateEndedSignal() {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
@@ -111,7 +118,7 @@ export default {
 
 			// Record the results.
 			this.storeGltRecords();
-			this.evaluateGlt();
+			this.evaluate();
 
 			// Conclude the test block.
 			if (this.hasAfterTestText) {

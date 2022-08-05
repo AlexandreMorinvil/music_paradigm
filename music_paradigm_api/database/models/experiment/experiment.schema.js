@@ -189,6 +189,8 @@ const schema = new Schema({
     hasStatusBar: { type: Boolean, default: true },
     isFullScreen: { type: Boolean, default: true },
 
+    cuePresentationDelay: { type: Number, default: undefined },
+
     reproductionSeed: { type: String, default: undefined },
 
     keyboardToMidiInputMapping:{

@@ -156,6 +156,7 @@ function validateExperiment(experiment) {
 		'logLabel',
 
 		'cueWaitForClick',
+		'cuePresentationDelay',
 		'instrument',
 		'hasSound',
 		'hasNavigationBar',

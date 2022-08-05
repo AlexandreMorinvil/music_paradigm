@@ -44,8 +44,7 @@ export default {
 	},
 	data() {
 		return {
-			errorAutomaticTransitionSeconds: 5,
-			minPlaybackDelayMs: 1000,
+			errorAutomaticTransitionMs: 5,
 			isSpacebarPressRecorded: false,
 		};
 	},
@@ -85,9 +84,9 @@ export default {
 			immediate: true,
 			handler: function (isReady) {
 				if (!this.cueWaitForClick && isReady)
-					setTimeout(() => this.playMidiFile(), this.minPlaybackDelayMs + this.cuePresentationDelay);
+					setTimeout(this.playMidiFile, this.cuePresentationDelay);
 				else if (this.midiName === '')
-					setTimeout(() => this.manageHavingNoMidiFile(), this.errorAutomaticTransitionSeconds * 1000);
+					setTimeout(() => this.manageHavingNoMidiFile(), this.errorAutomaticTransitionMs);
 			},
 		},
 		isSpaceBarPressed(isPressed) {
