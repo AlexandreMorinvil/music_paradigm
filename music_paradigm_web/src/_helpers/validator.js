@@ -328,6 +328,9 @@ function validateBlock(block, index = null) {
 		'gltPauseBetweenPresentations',
 		'gltPauseBetweenStimuli',
 		'gltCellSize',
+		'matrixUnusedCells',
+
+		'cuePresentationDelay',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -405,6 +408,7 @@ function validateAttributeType(key, value) {
 		case 'gltPauseBetweenPresentations':
 		case 'gltPauseBetweenStimuli':
 		case 'gltCellSize':
+		case 'cuePresentationDelay':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
@@ -481,6 +485,7 @@ function validateAttributeType(key, value) {
 		case 'audioSecond':
 		case 'rightAnswers':
 		case 'answerChoicesColor':
+		case 'matrixUnusedCells':
 			// Elements of the array
 			if (!Array.isArray(value)) {
 				switch (key) {
@@ -525,6 +530,13 @@ function validateAttributeType(key, value) {
 						}
 						break;
 
+					case 'matrixUnusedCells':
+						// Object
+						if (!(typeof value === 'object') || Array.isArray(value)) {
+							throw new Error(`The key '${key}' must be of type 'Object' or 'Array'`);
+						}
+						break;
+
 					default:
 						break;
 				}
@@ -554,6 +566,15 @@ function validateAttributeType(key, value) {
 						value.forEach((element, index) => {
 							if (!(typeof element === 'number')) {
 								throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'Number'`);
+							}
+						});
+						break;
+
+					// Array of Objects.
+					case 'matrixUnusedCells':
+						value.forEach((element, index) => {
+							if (!(typeof value === 'object') || Array.isArray(value)) {
+								throw new Error(`The element number ${index + 1} in the array of the key '${key}' must be of type 'Object'`);
 							}
 						});
 						break;

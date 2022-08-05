@@ -142,6 +142,8 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		gltPauseBetweenPresentations,
 		gltPauseBetweenStimuli,
 		gltCellSize,
+		matrixUnusedCells,
+		cuePresentationDelay,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -208,6 +210,8 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		gltPauseBetweenPresentations: 	typeof gltPauseBetweenPresentations === 'number' 	? gltPauseBetweenPresentations : 1000,
 		gltPauseBetweenStimuli: 		typeof gltPauseBetweenStimuli === 'number' 			? gltPauseBetweenStimuli : 1000,
 		gltCellSize: 					typeof gltCellSize === 'number' 					? gltCellSize : 100,
+		matrixUnusedCells:				typeof matrixUnusedCells === 'object'				? matrixUnusedCells : null,
+		cuePresentationDelay:			typeof cuePresentationDelay === 'number'			? cuePresentationDelay : generalSettings.matrixUnusedCells,
 		};
 
 	// Indicate that the state (current block's settings) was already initialized

@@ -10,7 +10,7 @@ export default {
  * result size, while minimizing repetition.
  * If the result size is smaller than the range, fewer number will be included in the range, and 
  */
- function generateReproduciblePermutedFittedIndexList(range, resultSize, reproductionSeed = null) {
+ function generateReproduciblePermutedFittedIndexList(range, resultSize, reproductionSeed = null, exclusionList = []) {
 
     // Generate a range array with all the indexes of the parameter array.
     const randomList = [];

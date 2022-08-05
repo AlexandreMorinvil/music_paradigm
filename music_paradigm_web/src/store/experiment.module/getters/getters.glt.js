@@ -28,6 +28,10 @@ export default {
 		return state.state.settings.matrixSizeY;
 	},
 
+	matrixUnusedCells: (state) => {
+		return state.state.settings.matrixUnusedCells;
+	},
+
 	matrixUsedCellsCount: (state, getters) => {
 		const totalMatrixCellCount = getters.matrixSizeX * getters.matrixSizeY;
 		const specififedMatrixUsedCellsCount = state.state.settings.matrixUsedCellsCount;

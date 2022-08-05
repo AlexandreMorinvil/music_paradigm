@@ -27,6 +27,7 @@ const UNSET_INDEX = -1;
 
 // Default settings values
 const DEFAULT_ANY_PIANO_KEY = false;
+const DEFAULT_CUE_PRESENTATION_DELAY = 0;
 const DEFAULT_ENABLE_SOUND_FLAG = false;
 const DEFAULT_PLAYING_MODE = 'rhythm';
 const DEFAULT_FOOTNOTE = false;
@@ -145,6 +146,7 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		hasStatusBar: DEFAULT_STAUS_BAR,													// Indicates if the session should have the status bar
 		isFullScreen: DEFAULT_IF_FULL_SCREEN,												// Indicates if the session should be in full screen
 		reproductionSeed: DEFAULT_REPRODUCTION_SEED,										// Seed used in randomized components that can make the components reproductible.
+		cuePresentationDelay: DEFAULT_CUE_PRESENTATION_DELAY,								// Delay that should be waited before presenting the cue in a cue state.
 	};
 }
 
@@ -288,6 +290,9 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			gltPauseBetweenPresentations: 1000, 									// Time to wait after having presented a cell and before presenting the next cell in the glt.
 			gltPauseBetweenStimuli: 1000,											// Time to wait after having cued a stimulus and before cuing the next cell in the glt.
 			gltCellSize: 100,														// Size of the size of the square cells in the glt grid.
+			matrixUnusedCells: [],												    // Indicates the cells that should not be used in a matrix (used in glt).
+
+			cuePresentationDelay: DEFAULT_CUE_PRESENTATION_DELAY,					// Block specific delay that should be waited before presenting the cue in a cue state.
 
 			reproductionSeed: DEFAULT_REPRODUCTION_SEED,							// Block specific Seed used in randomized components that can make the components reproductible.
 		},

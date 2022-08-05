@@ -64,6 +64,7 @@ export default {
 			'answerChoicesValue',
 			'matrixSizeX',
 			'matrixSizeY',
+			'matrixUnusedCells',
 			'matrixUsedCellsCount',
 			'maxResponseTime',
 			'presentationTime',
@@ -83,7 +84,17 @@ export default {
 			return this.matrixSizeX * this.matrixSizeY;
 		},
 		totalUsedImagesCount() {
-			return Math.min(this.totalMatrixCellsCount, this.matrixUsedCellsCount, this.totalAvailableImagesCount);
+			return Math.min(
+				this.totalMatrixCellsCount - this.ignoredCellsCount,
+				this.matrixUsedCellsCount,
+				this.totalAvailableImagesCount,
+			);
+		},
+		ignoredCellsList() {
+			return this.generateIgnoredCellsList();
+		},
+		ignoredCellsCount() {
+			return this.ignoredCellsList.length;
 		},
 		isWaitingForAnswer() {
 			return this.answerWaitTimeout !== null;
@@ -92,7 +103,7 @@ export default {
 			return this.isAnswerRightList.length;
 		},
 		rightAnswersCount() {
-			return this.isAnswerRightList.filter(isCorrect => isCorrect).length;
+			return this.isAnswerRightList.filter((isCorrect) => isCorrect).length;
 		},
 		matrixSetup() {
 			return this.$refs.imageMatrix.bundleSetup();
@@ -108,9 +119,55 @@ export default {
 				interrogationsCount: this.interrogationsCount,
 				rightAnswersCount: this.rightAnswersCount,
 			};
-		}
+		},
 	},
 	methods: {
+		generateIgnoredCellsList() {
+			let ignoredIndexesList = [];
+			const generateIgnoredIndexes = (unusedCellsObject) => {
+				let ignoredIndexesFromObjectList = [];
+
+				// Extract the coordonates.
+				const { x, y } = unusedCellsObject;
+
+				// Interpret the meaning of the coordinates :
+				// If both coordonates are indicated, we ignore the cell it corresponds to.
+				if (x && y) ignoredIndexesFromObjectList = [y * this.matrixDimensionX + x];
+				// If only the x coordinate is indicated, we ignore the column it corresponds to.
+				else if (x) {
+					const rowIndexesRangeList = [...Array(this.matrixDimensionY).keys()];
+					ignoredIndexesFromObjectList = rowIndexesRangeList.map((index) => {
+						return index * this.matrixDimensionX;
+					});
+				}
+
+				// If only the y coordinate is indicated, we ignore the row it corresponds to.
+				else if (y) {
+					const rowIndexesRangeList = [...Array(this.matrixDimensionX).keys()];
+					ignoredIndexesFromObjectList = rowIndexesRangeList.map((index) => {
+						return index + y * this.matrixDimensionX;
+					});
+				}
+
+				return ignoredIndexesFromObjectList;
+			};
+
+			// If nothing is specified, we return no ignored index.
+			if (this.maxtrixUnusedCells === null) return [];
+			// If the unused cells are specified by an array, the interpretation of all the objects of the array
+			// provides the list of indexes to ignore.
+			else if (Array.isArray(this.maxtrixUnusedCells)) {
+				for (const unusedCellsObject of this.maxtrixUnusedCells)
+					Array.prototype.push.apply(ignoredIndexesList, generateIgnoredIndexes(unusedCellsObject));
+			}
+			// If the unused cells are specified by an object, the interpretation of that object provides the list of
+			// indexes to ignore.
+			else if (typeof this.matrixUnusedCells === 'object')
+				ignoredIndexesList = generateIgnoredIndexes(this.matrixUnusedCells);
+
+			// Return the list of ignored indexes.
+			return ignoredIndexesList;
+		},
 		setTimeout(timeInMilliseconds) {
 			return new Promise((resolve) => {
 				setTimeout(resolve, timeInMilliseconds);
@@ -218,6 +275,7 @@ export default {
 				this.totalMatrixCellsCount, // range
 				this.matrixUsedCellsCount, // resultSize
 				this.reproductionSeed + this.POSITION_REPRODUCTION_SEED_MODIFIER, // reproductionSeed
+				this.ignoredCellsList, // exclusionList
 			);
 
 			// Generate a list of objects with the image and position.
