@@ -9,6 +9,16 @@ export default {
 
 // Allowed values
 
+const generateAllowedEntriesInteractiveCombiantions = () => {
+	const createCombinations = (array1, array2) => { return array1.flatMap(d => array2.map(v => d + v)); };
+	let combinationsList = ['half-', ''];
+	combinationsList = createCombinations(combinationsList, ['true', 'false', 'all', 'midi', 'first']);
+	combinationsList = createCombinations(combinationsList, ['', '#', '##']);
+	combinationsList = createCombinations(combinationsList, ['', '%']);
+
+	return combinationsList;
+};
+
 /**
  * @constant ALLOWED_ENTRIES_INTERACTIVE_HELPERS
  * @type {Array<String>}
@@ -18,11 +28,7 @@ export default {
  * 				- interactivePiano
  * 				- interactiveKeyboard
  * */
-const ALLOWED_ENTRIES_INTERACTIVE_HELPERS = ['half-', ''].flatMap((c) => {
-	const b = ['true', 'false', 'all', 'midi', 'first']
-		.flatMap((d) => ['', '#', '##'].map((v) => d + v));
-	return b.map((v) => c + v);
-});
+const ALLOWED_ENTRIES_INTERACTIVE_HELPERS = generateAllowedEntriesInteractiveCombiantions();
 
 
 /**

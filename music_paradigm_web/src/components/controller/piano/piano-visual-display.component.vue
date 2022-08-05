@@ -2,40 +2,40 @@
 	<!-- The HTML definition of this piano adapted from the open source project : https://codepen.io/zastrow/pen/oDBki -->
 	<div id="visual-piano" class="visual-piano">
 		<ul class="set">
-			<li id="note-48" :ref="'' + (0 + midiOffset)" class="white c" :class="{ 'larger': isHalfPiano }">
+			<li id="note-48" :ref="'' + (0 + midiOffset)" class="white c" :class="{ larger: isHalfPiano }">
 				<span>{{ textMapping[0] }}</span>
 			</li>
-			<li id="note-49" :ref="'' + (1 + midiOffset)" class="black cs" :class="{ 'larger': isHalfPiano }">
+			<li id="note-49" :ref="'' + (1 + midiOffset)" class="black cs" :class="{ larger: isHalfPiano }">
 				<span>{{ textMapping[1] }}</span>
 			</li>
-			<li id="note-50" :ref="'' + (2 + midiOffset)" class="white d" :class="{ 'larger': isHalfPiano }">
+			<li id="note-50" :ref="'' + (2 + midiOffset)" class="white d" :class="{ larger: isHalfPiano }">
 				<span>{{ textMapping[2] }}</span>
 			</li>
-			<li id="note-51" :ref="'' + (3 + midiOffset)" class="black ds" :class="{ 'larger': isHalfPiano }">
+			<li id="note-51" :ref="'' + (3 + midiOffset)" class="black ds" :class="{ larger: isHalfPiano }">
 				<span>{{ textMapping[3] }}</span>
 			</li>
-			<li id="note-52" :ref="'' + (4 + midiOffset)" class="white e" :class="{ 'larger': isHalfPiano }">
+			<li id="note-52" :ref="'' + (4 + midiOffset)" class="white e" :class="{ larger: isHalfPiano }">
 				<span>{{ textMapping[4] }}</span>
 			</li>
-			<li id="note-53" :ref="'' + (5 + midiOffset)" class="white f" :class="{ 'larger': isHalfPiano }">
+			<li id="note-53" :ref="'' + (5 + midiOffset)" class="white f" :class="{ larger: isHalfPiano }">
 				<span>{{ textMapping[5] }}</span>
 			</li>
-			<li id="note-54" :ref="'' + (6 + midiOffset)" class="black fs" :class="{ 'larger': isHalfPiano }">
+			<li id="note-54" :ref="'' + (6 + midiOffset)" class="black fs" :class="{ larger: isHalfPiano }">
 				<span>{{ textMapping[6] }}</span>
 			</li>
-			<li id="note-55" :ref="'' + (7 + midiOffset)" class="white g" :class="{ 'larger': isHalfPiano }">
+			<li id="note-55" :ref="'' + (7 + midiOffset)" class="white g" :class="{ larger: isHalfPiano }">
 				<span>{{ textMapping[7] }}</span>
 			</li>
-			<li id="note-56" :ref="'' + (8 + midiOffset)" class="black gs" :class="{ 'larger': isHalfPiano }">
+			<li id="note-56" :ref="'' + (8 + midiOffset)" class="black gs" :class="{ larger: isHalfPiano }">
 				<span>{{ textMapping[8] }}</span>
 			</li>
-			<li id="note-57" :ref="'' + (9 + midiOffset)" class="white a" :class="{ 'larger': isHalfPiano }">
+			<li id="note-57" :ref="'' + (9 + midiOffset)" class="white a" :class="{ larger: isHalfPiano }">
 				<span>{{ textMapping[9] }}</span>
 			</li>
-			<li id="note-58" :ref="'' + (10 + midiOffset)" class="black as" :class="{ 'larger': isHalfPiano }">
+			<li id="note-58" :ref="'' + (10 + midiOffset)" class="black as" :class="{ larger: isHalfPiano }">
 				<span>{{ textMapping[10] }}</span>
 			</li>
-			<li id="note-59" :ref="'' + (11 + midiOffset)" class="white b" :class="{ 'larger': isHalfPiano }">
+			<li id="note-59" :ref="'' + (11 + midiOffset)" class="white b" :class="{ larger: isHalfPiano }">
 				<span>{{ textMapping[11] }}</span>
 			</li>
 			<li v-show="isFullPiano" id="note-60" :ref="'' + (12 + midiOffset)" class="white c">
@@ -97,6 +97,9 @@ export default {
 	computed: {
 		...mapGetters('experiment', ['interactivePiano', 'interactivePianoFirstOctave', 'interactiveKeyboardTextMapping']),
 		...mapGetters('piano', ['pressedKeys', 'midiFileTriggeredKeys', 'midiFileNotesMidi']),
+		mustDisplayCuedKeys() {
+			return !String(this.interactivePiano).includes('%');
+		},
 		mustDisplayPressedKeys() {
 			return !String(this.interactivePiano).includes('#');
 		},
@@ -167,7 +170,8 @@ export default {
 		},
 		hintAllNotes() {
 			const designatedKeys = [];
-			for (let index = 0; index < this.midiFileNotesMidi.length; index++) designatedKeys.push(this.midiFileNotesMidi[index]);
+			for (let index = 0; index < this.midiFileNotesMidi.length; index++)
+				designatedKeys.push(this.midiFileNotesMidi[index]);
 			this.designateKeys(designatedKeys);
 		},
 		hintFirstNote() {
@@ -180,13 +184,15 @@ export default {
 	watch: {
 		pressedKeys(list) {
 			for (let note = this.firstNote; note <= this.lastNote; note++) {
-				if (this.mustDisplayPressedKeys && list.includes(note)) this.$refs[note.toString()].classList.add('user-triggered');
+				if (this.mustDisplayPressedKeys && list.includes(note))
+					this.$refs[note.toString()].classList.add('user-triggered');
 				else this.$refs[note.toString()].classList.remove('user-triggered');
 			}
 		},
 		midiFileTriggeredKeys(list) {
 			for (let note = this.firstNote; note <= this.lastNote; note++) {
-				if (list.includes(note)) this.$refs[note.toString()].classList.add('midi-file-triggered');
+				if (this.mustDisplayCuedKeys && list.includes(note))
+					this.$refs[note.toString()].classList.add('midi-file-triggered');
 				else this.$refs[note.toString()].classList.remove('midi-file-triggered');
 			}
 		},
@@ -271,12 +277,14 @@ ul .white:active,
 	z-index: 2;
 	border: 1px solid #000;
 	border-radius: 0 0 3px 3px;
-	box-shadow: -1px -1px 2px rgba(255, 255, 255, 0.2) inset, 0 -5px 2px 3px rgba(0, 0, 0, 0.6) inset, 0 2px 4px rgba(0, 0, 0, 0.5);
+	box-shadow: -1px -1px 2px rgba(255, 255, 255, 0.2) inset, 0 -5px 2px 3px rgba(0, 0, 0, 0.6) inset,
+		0 2px 4px rgba(0, 0, 0, 0.5);
 	background: linear-gradient(45deg, #222 0%, #555 100%);
 }
 
 .black:active {
-	box-shadow: -1px -1px 2px rgba(255, 255, 255, 0.2) inset, 0 -2px 2px 3px rgba(0, 0, 0, 0.6) inset, 0 1px 2px rgba(0, 0, 0, 0.5);
+	box-shadow: -1px -1px 2px rgba(255, 255, 255, 0.2) inset, 0 -2px 2px 3px rgba(0, 0, 0, 0.6) inset,
+		0 1px 2px rgba(0, 0, 0, 0.5);
 	background: linear-gradient(to right, #444 0%, #222 100%);
 }
 
