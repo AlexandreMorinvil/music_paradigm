@@ -21,12 +21,13 @@ function generateReproduciblePermutedFittedIndexList(
     const randomList = [];
     let incrementingReproductionSeed = reproductionSeed;
 
+    // TODO: Add a verification to make sure the excludedIndexesList does not include all possible valies of the range.
     // Add randomly picked numbers to the random list for as long as its number of elements is lower then the 
     // number of elements desired.
     while (randomList.length < resultSize) {
         let randomRangeBatch = generateReproduciblePermutedIndexList(range, incrementingReproductionSeed);
         randomRangeBatch = randomRangeBatch.filter(function (value) {
-            return excludedIndexesList.includes(value);
+            return !excludedIndexesList.includes(value);
         });
 
         Array.prototype.push.apply(randomList, randomRangeBatch);

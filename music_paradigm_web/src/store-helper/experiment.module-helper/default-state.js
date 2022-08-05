@@ -290,7 +290,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			gltPauseBetweenPresentations: 1000, 									// Time to wait after having presented a cell and before presenting the next cell in the glt.
 			gltPauseBetweenStimuli: 1000,											// Time to wait after having cued a stimulus and before cuing the next cell in the glt.
 			gltCellSize: 100,														// Size of the size of the square cells in the glt grid.
-			matrixUnusedCells: [],												    // Indicates the cells that should not be used in a matrix (used in glt).
+			matrixUnusedCells: null,												// Indicates the cells that should not be used in a matrix (used in glt).
 
 			cuePresentationDelay: DEFAULT_CUE_PRESENTATION_DELAY,					// Block specific delay that should be waited before presenting the cue in a cue state.
 

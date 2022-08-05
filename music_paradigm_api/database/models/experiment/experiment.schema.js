@@ -135,6 +135,9 @@ const stateSchema = new Schema({
     gltPauseBetweenPresentations: { type: Number, default: undefined },
     gltPauseBetweenStimuli: { type: Number, default: undefined },
     gltCellSize: { type: Number, default: undefined },
+
+    matrixUnusedCells: { type: Schema.Types.Mixed, default: undefined },
+    cuePresentationDelay: { type: Number, default: undefined },
     
     textBeforeMainContent: { type: Schema.Types.Mixed, default: undefined },
     textAfterAnswerReceived: { type: Schema.Types.Mixed, default: undefined },

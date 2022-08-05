@@ -26,29 +26,31 @@ function generateIgnoredCellsList(matrixUnusedCells, matrixDimensionX, matrixDim
 
     // Return the list of ignored indexes.
     return ignoredIndexesList;
-};
+}
 
 function generateIgnoredIndexes(unusedCellsObject, matrixDimensionX, matrixDimensionY) {
     let ignoredIndexesFromObjectList = [];
 
     // Extract the coordonates.
     const { x, y } = unusedCellsObject;
+    const logicalX = x - 1;
+    const logicalY = y - 1;
 
     // Interpret the meaning of the coordinates :
     // If both coordonates are indicated, we ignore the cell it corresponds to.
-    if (x && y) ignoredIndexesFromObjectList = [y * matrixDimensionX + x];
+    if (x && y) ignoredIndexesFromObjectList = [logicalY * matrixDimensionX + logicalX];
     // If only the x coordinate is indicated, we ignore the column it corresponds to.
     else if (x) {
         const rowIndexesRangeList = [...Array(matrixDimensionY).keys()];
         ignoredIndexesFromObjectList = rowIndexesRangeList.map((index) => {
-            return index * matrixDimensionX;
+            return index * matrixDimensionX + logicalX;
         });
     }
     // If only the y coordinate is indicated, we ignore the row it corresponds to.
     else if (y) {
         const rowIndexesRangeList = [...Array(matrixDimensionX).keys()];
         ignoredIndexesFromObjectList = rowIndexesRangeList.map((index) => {
-            return index + y * matrixDimensionX;
+            return index + logicalY * matrixDimensionX;
         });
     }
 
