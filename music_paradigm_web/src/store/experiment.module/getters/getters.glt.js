@@ -1,3 +1,5 @@
+import { matrix } from '@/_helpers';
+
 // PVT state parameters
 export default {
 	gltScoreForSuccess: (state) => {
@@ -33,14 +35,26 @@ export default {
 	},
 
 	matrixUsedCellsCount: (state, getters) => {
-		const totalMatrixCellCount = getters.matrixSizeX * getters.matrixSizeY;
+		const matrixSizeY = getters.matrixSizeY;
+		const matrixSizeX = getters.matrixSizeX;
+		const matrixUnusedCells = getters.matrixUnusedCells;
+		const totalMatrixCellCount = matrixSizeX * matrixSizeY;
+		const maxUsedCellsCount =
+			totalMatrixCellCount - matrix.getIgnoredCellsCount(matrixUnusedCells, matrixSizeX, matrixSizeY);
 		const specififedMatrixUsedCellsCount = state.state.settings.matrixUsedCellsCount;
 
-		// If the specified number of cells is positive, we return that number (or the number of all the cells if the number is too large).
-		if (specififedMatrixUsedCellsCount > 0) return Math.min(specififedMatrixUsedCellsCount, totalMatrixCellCount);
+		// If the specified number of cells is positive, we return that number (or the number of all the cells if 
+		// the number is too large).
+		if (specififedMatrixUsedCellsCount > 0)
+			return Math.min(specififedMatrixUsedCellsCount, maxUsedCellsCount);
 
-		// If the specified number of cells is negative, we return the total number of cells minus the specified number (or a minumum of 0).
-		else if (specififedMatrixUsedCellsCount < 0) return Math.max(totalMatrixCellCount - Math.abs(specififedMatrixUsedCellsCount), 0);
+		// If the specified number of cells is negative, we return the total number of cells minus the specified 
+		// number (or a minumum of 0).
+		else if (specififedMatrixUsedCellsCount < 0)
+			return Math.max(
+				Math.min(totalMatrixCellCount - Math.abs(specififedMatrixUsedCellsCount), maxUsedCellsCount),
+				0,
+			);
 
 		// Otherwise, we return the specified number, which can only be 0.
 		else return specififedMatrixUsedCellsCount;

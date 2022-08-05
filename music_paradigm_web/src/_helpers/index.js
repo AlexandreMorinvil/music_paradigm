@@ -8,6 +8,7 @@ import instruments from './instruments';
 import keyboardPerformance from './keyboard-performance';
 import log from './log';
 import logsQuery from './logs-query';
+import matrix from './matrix';
 import midiConversion from './midi-conversion';
 import notePerformance from './note-performance';
 import pseudoRandom from './pseudo-random';
@@ -27,6 +28,7 @@ export {
     keyboardPerformance,
     log,
     logsQuery,
+    matrix,
     midiConversion,
     notePerformance,
     pseudoRandom,
