@@ -149,7 +149,7 @@ function makeSimpleLogBlockPerformanceInformation() {
 	}
 
 	// Include the grades if it's a feedback state or a playing state
-	if (['playing', 'feedback'].includes(blockType))
+	if (['feedback', 'glt', 'playing'].includes(blockType))
 	{
 		// TODO: the 'grades' is kept for compatibility with previous data, but should be removed to only keep the 'unwoundgrades'.
 		performanceLog.grades = gettersEvaluation.grades(stateEvaluation);
@@ -275,8 +275,8 @@ function makeSimpleBlockPerformanceInformation() {
 	Object.assign(performanceLog, gettersKeyboard.keyboardSimpleLogSummary(stateKeyboard));
 	Object.assign(performanceLog, gettersKeyboard.keyboardSimpleLogPreprocesed(stateKeyboard));
 
-	// Include the grades if it's a feedback state or a playing state
-	if (['playing', 'feedback'].includes(blockType))
+	// Include the grades for certain types of block
+	if (['feedback', 'glt', 'playing'].includes(blockType))
 	{
 		// TODO: the 'grades' is kept for compatibility with previous data, but should be removed to only keep the 'unwoundgrades'.
 		performanceLog.grades = gettersEvaluation.grades(stateEvaluation);
@@ -379,8 +379,11 @@ function makeLogBlockWrittenAnswer() {
 		positionClicked: gettersGlt.positionClicked(stateGlt),
 		imageAtPositionClicked: gettersGlt.imageAtPositionClicked(stateGlt),
 		isAnswerRightList: gettersGlt.isAnswerRightList(stateGlt),
-		interogationsCount: gettersGlt.interogationsCount(stateGlt),
+		interrogationsCount: gettersGlt.interrogationsCount(stateGlt),
 		rightAnswersCount: gettersGlt.rightAnswersCount(stateGlt),
+		reproductionSeed: gettersGlt.reproductionSeed(stateGlt),
+		includesPresentation: gettersGlt.includesPresentation(stateGlt),
+		includesTest: gettersGlt.includesTest(stateGlt),
 	};
 	return gltResults;
 }

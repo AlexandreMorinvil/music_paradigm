@@ -41,6 +41,12 @@ export default {
 			},
 		},
 	},
+	data() {
+		return {
+			// Status
+			isClickabilityActivated: false,
+		};
+	},
 	computed: {
 		columnCountStyle() {
 			return { '--matrix-column-number': this.dimensionX };
@@ -79,6 +85,7 @@ export default {
 				};
 		},
 		handleBeingClicked(rowNumber, columnNumber) {
+			if (!this.isClickabilityActivated) return;
 			this.$emit('cellSelected', this.getSpecificationsForCell(rowNumber, columnNumber));
 		},
 		revealCell(positionId) {
@@ -88,11 +95,13 @@ export default {
 			this.$refs.matrixCell[positionId].hide();
 		},
 		activateClickability() {
+			this.isClickabilityActivated = true;
 			this.$refs.matrixCell.forEach((cell) => {
 				cell.activateClickability();
 			});
 		},
 		deactivateClickability() {
+			this.isClickabilityActivated = false;
 			this.$refs.matrixCell.forEach((cell) => {
 				cell.deactivateClickability();
 			});

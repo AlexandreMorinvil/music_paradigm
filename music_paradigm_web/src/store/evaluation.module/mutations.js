@@ -1,18 +1,30 @@
-import { keyboardPerformance, notePerformance } from '@/_helpers';
+import { gltPerformance, keyboardPerformance, notePerformance } from '@/_helpers';
 import config from '@/config';
 
 export default {
+	evaluateGltType: (state, {
+		rightAnswersCount,
+		interrogationsCount,
+		successThreshold,
+	}) => {
+		state.grades = gltPerformance.gradeGltType({
+			rightAnswersCount: rightAnswersCount,
+			interrogationsCount: interrogationsCount,
+			successThreshold: successThreshold,
+		});
+	},
+
 	evaluateSpeedType: (state, results) => {
-		state.grades = notePerformance.gradeSpeedType(results, {
+		state.grades = gltPerformance.gradeSpeedType(results, {
 			minSequencePlayed: config.minSequencePlayed || 1,
 		});
 	},
 
 	evaluateRhythmType: (state, {
-		results: results,
-		relativeRhythmImportance: relativeRhythmImportance,
-		rhythmErrorMarginInMilliseconds: rhythmErrorMarginInMilliseconds,
-		rhythmRelativeErrorMarginInFloat: rhythmRelativeErrorMarginInFloat
+		results,
+		relativeRhythmImportance,
+		rhythmErrorMarginInMilliseconds,
+		rhythmRelativeErrorMarginInFloat
 	}) => {
 		state.grades = notePerformance.gradeRhythmType(
 			results,

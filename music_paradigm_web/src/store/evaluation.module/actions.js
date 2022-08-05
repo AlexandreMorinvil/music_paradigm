@@ -1,10 +1,22 @@
 export default {
 	// Performance evaluation
+	evaluateGltType: ({ commit }, {
+		rightAnswersCount,
+		interrogationsCount,
+		successThreshold,
+	}) => {
+		commit('evaluateGltType', {
+			rightAnswersCount: rightAnswersCount,
+			interrogationsCount: interrogationsCount,
+			successThreshold: successThreshold,
+		});
+	},
+
 	evaluateRhythmType: ({ commit }, {
-		results: results,
-		relativeRhythmImportance: relativeRhythmImportance,
-		rhythmErrorMarginInMilliseconds: rhythmErrorMarginInMilliseconds,
-		rhythmRelativeErrorMarginInFloat: rhythmRelativeErrorMarginInFloat,
+		results,
+		relativeRhythmImportance,
+		rhythmErrorMarginInMilliseconds,
+		rhythmRelativeErrorMarginInFloat,
 	}) => {
 		commit('evaluateRhythmType', {
 			results: results,
