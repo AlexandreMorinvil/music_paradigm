@@ -47,7 +47,7 @@ export default {
 			'waitBeforeNextStep',
 		]),
 		hasSequenceText() {
-			return this.hasPresentationText || this.hasStartTestText || this.hasAfterTestText;
+			return this.hasPresentationText || this.hasStartTestText || this.hasAfterTestText || this.hasBeforeNextStepText;
 		},
 		hasPresentationText() {
 			return Boolean(this.textBeforeMainContent);

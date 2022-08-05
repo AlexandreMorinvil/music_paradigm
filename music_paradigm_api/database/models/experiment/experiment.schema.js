@@ -141,6 +141,8 @@ const stateSchema = new Schema({
     
     textBeforeMainContent: { type: Schema.Types.Mixed, default: undefined },
     textAfterAnswerReceived: { type: Schema.Types.Mixed, default: undefined },
+    textWaitBeforeNextStep: { type: String, default: undefined },
+    waitBeforeNextStep: { type: Number, default: undefined },
     reproductionSeed: { type: String, default: undefined },
 },
     {
