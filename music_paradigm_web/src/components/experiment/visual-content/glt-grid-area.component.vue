@@ -275,7 +275,7 @@ export default {
 				this.totalMatrixCellsCount, // range
 				this.matrixUsedCellsCount, // resultSize
 				this.reproductionSeed + this.POSITION_REPRODUCTION_SEED_MODIFIER, // reproductionSeed
-				this.ignoredCellsList, // exclusionList
+				this.ignoredCellsList, // excludedIndexesList
 			);
 
 			// Generate a list of objects with the image and position.

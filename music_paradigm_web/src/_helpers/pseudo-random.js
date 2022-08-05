@@ -10,7 +10,12 @@ export default {
  * result size, while minimizing repetition.
  * If the result size is smaller than the range, fewer number will be included in the range, and 
  */
- function generateReproduciblePermutedFittedIndexList(range, resultSize, reproductionSeed = null, exclusionList = []) {
+function generateReproduciblePermutedFittedIndexList(
+    range,
+    resultSize,
+    reproductionSeed = null,
+    excludedIndexesList = []
+) {
 
     // Generate a range array with all the indexes of the parameter array.
     const randomList = [];
@@ -19,7 +24,11 @@ export default {
     // Add randomly picked numbers to the random list for as long as its number of elements is lower then the 
     // number of elements desired.
     while (randomList.length < resultSize) {
-        const randomRangeBatch = generateReproduciblePermutedIndexList(range, incrementingReproductionSeed);
+        let randomRangeBatch = generateReproduciblePermutedIndexList(range, incrementingReproductionSeed);
+        randomRangeBatch = randomRangeBatch.filter(function (value) {
+            return excludedIndexesList.includes(value);
+        });
+
         Array.prototype.push.apply(randomList, randomRangeBatch);
 
         // If there is a reproduction seed, we increment it. If there was none, we leave it to its empty state.
@@ -29,6 +38,7 @@ export default {
     // Return the list containing the expected number of elements.
     return randomList.splice(0, resultSize);
 }
+
 
 
 /**
