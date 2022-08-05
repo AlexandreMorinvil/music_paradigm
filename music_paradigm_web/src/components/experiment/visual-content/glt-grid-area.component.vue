@@ -175,12 +175,10 @@ export default {
 			this.$refs.imageMatrix.hideCell(positionId);
 		},
 		activateMatrixClickability() {
-			console.log('input ACTIVE');
 			this.$refs.imageMatrix.activateClickability();
 			this.timeSinceStartOfAnswerPeriod = new Date();
 		},
 		deactivateMatrixClickability() {
-			console.log('input DEACTIVATED');
 			this.$refs.imageMatrix.deactivateClickability();
 		},
 		stopAnswerWait(clickedCellSpecifications) {
