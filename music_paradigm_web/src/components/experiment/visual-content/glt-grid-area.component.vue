@@ -1,5 +1,9 @@
 <template>
-	<div id="glt-grid" class="state-section grid-location-taks-grid-disposition">
+	<div
+		id="glt-grid"
+		:class="{ 'hide-cursor': mustHideCursor }"
+		class="state-section grid-location-taks-grid-disposition"
+	>
 		<image-target-component ref="imageTarget" />
 		<image-matrix-component
 			class="image-matrix-part"
@@ -28,6 +32,9 @@ export default {
 	},
 	data() {
 		return {
+			// Status
+			isTargetImageDisplayed: false,
+
 			// Results.
 			tagetImage: [],
 			targetImagePosition: [],
@@ -38,7 +45,7 @@ export default {
 
 			// Answer handling helpers.
 			currentTargetImage: null,
-			timeTargetCueWasGiven: null,
+			timeSinceStartOfAnswerPeriod: null,
 
 			// Setup of the matrix.
 			cellSpecificationsList: [],
@@ -60,6 +67,7 @@ export default {
 		...mapGetters('experiment', [
 			'answerChoicesImage',
 			'answerChoicesValue',
+			'gltMustHideBeforeClick',
 			'gltPauseBetweenStimuli',
 			'gltPauseBetweenPresentations',
 			'matrixSizeX',
@@ -84,11 +92,7 @@ export default {
 			return this.matrixSizeX * this.matrixSizeY;
 		},
 		totalUsedImagesCount() {
-			return Math.min(
-				this.totalMatrixCellsCount,
-				this.matrixUsedCellsCount,
-				this.totalAvailableImagesCount,
-			);
+			return Math.min(this.totalMatrixCellsCount, this.matrixUsedCellsCount, this.totalAvailableImagesCount);
 		},
 		ignoredCellsList() {
 			return matrix.generateIgnoredCellsList(this.matrixUnusedCells, this.matrixDimensionX, this.matrixDimensionY);
@@ -117,6 +121,12 @@ export default {
 				rightAnswersCount: this.rightAnswersCount,
 			};
 		},
+		mustHideCursor() {
+			return this.isTargetImageDisplayed && this.gltMustHideBeforeClick;
+		},
+		mustActivateClickability() {
+			return this.isWaitingForAnswer && !(this.gltMustHideBeforeClick && this.isTargetImageDisplayed);
+		},
 	},
 	methods: {
 		setTimeout(timeInMilliseconds) {
@@ -141,7 +151,6 @@ export default {
 		},
 		async askTargetImage(cellSpecifiaction) {
 			this.currentTargetImage = cellSpecifiaction;
-			this.timeTargetCueWasGiven = new Date();
 			this.showTargetImage(cellSpecifiaction);
 			await this.setTimeoutForAnswer(this.stimuliTime, this.maxResponseTime);
 			if (this.hasReceivedAnswerForCurrentStimuli) await this.setTimeout(this.TIME_DELAY_AFTER_IMAGE_CLICKED);
@@ -167,6 +176,7 @@ export default {
 		},
 		activateMatrixClickability() {
 			this.$refs.imageMatrix.activateClickability();
+			this.timeSinceStartOfAnswerPeriod = new Date();
 		},
 		deactivateMatrixClickability() {
 			this.$refs.imageMatrix.deactivateClickability();
@@ -207,7 +217,7 @@ export default {
 			this.targetImagePosition.push(convertPositionIdToCoordinates(targetPositionId));
 
 			this.isAnswerRightList.push(targetPositionId === clickedPositionId);
-			this.timeToClick.push(hasAnswer ? timeAnswerReceived - this.timeTargetCueWasGiven : null);
+			this.timeToClick.push(hasAnswer ? timeAnswerReceived - this.timeSinceStartOfAnswerPeriod : null);
 			this.imageAtPositionClicked.push(hasAnswer ? clickedImageSrc : null);
 			this.positionClicked.push(hasAnswer ? convertPositionIdToCoordinates(clickedPositionId) : null);
 		},
@@ -274,15 +284,21 @@ export default {
 				if (!isLastStimuli && shouldWaitBeforeNextStimuli) await this.setTimeout(this.gltPauseBetweenStimuli);
 			}
 		},
+		updateTargetImageStatus(isImageDisplayed) {
+			this.isTargetImageDisplayed = isImageDisplayed;
+		},
 	},
 	mounted() {
 		this.constructImageBundle();
 		this.deactivateMatrixClickability();
+		this.$watch(() => this.$refs.imageTarget.isImageDisplayed, this.updateTargetImageStatus, {
+			immediate: true,
+		});
 	},
 	watch: {
-		isWaitingForAnswer: {
-			handler: function (isWaiting) {
-				if (isWaiting) this.activateMatrixClickability();
+		mustActivateClickability: {
+			handler: function () {
+				if (this.mustActivateClickability) this.activateMatrixClickability();
 				else this.deactivateMatrixClickability();
 			},
 		},
@@ -296,5 +312,9 @@ export default {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+.hide-cursor {
+	cursor: none;
 }
 </style>
