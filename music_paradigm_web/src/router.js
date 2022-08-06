@@ -146,7 +146,7 @@ const router = new Router({
 				{
 					path: 'tasks-management',
 					name: 'admin.tasks-management',
-					component: () => import(/* WebpackChunkName: "admin" */ './views/admin/experiments.page.vue'),
+					component: () => import(/* WebpackChunkName: "admin" */ './views/admin/tasks-management.page.vue'),
 				},
 				{
 					path: 'curriculums',
