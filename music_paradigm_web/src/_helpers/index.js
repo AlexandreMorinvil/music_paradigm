@@ -1,7 +1,6 @@
 import authHeader from './auth-header';
 import controllerToMidiMapper from './controller-to-midi-mapper';
 import downloadSave from './download-save';
-import experimentParser from './experiment-parser';
 import fullScreen from './full-screen';
 import gltPerformance from './glt-performance';
 import instruments from './instruments';
@@ -15,13 +14,11 @@ import pseudoRandom from './pseudo-random';
 import ressourceName from './ressource-name';
 import routerNavigation from './router-navigation';
 import url from './url';
-import validator from './validator';
 
 export {
     authHeader,
     controllerToMidiMapper,
     downloadSave,
-    experimentParser,
     fullScreen,
     gltPerformance,
     instruments,
@@ -35,5 +32,4 @@ export {
     ressourceName,
     routerNavigation,
     url,
-    validator
 };
