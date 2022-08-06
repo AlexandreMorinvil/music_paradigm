@@ -5,10 +5,6 @@ export default {
 		return state.edition;
 	},
 
-	experimentSelected: (state) => {
-		return state.selection.content;
-	},
-
 	experimentSelectedToRun: (state) => {
 		const experiment = JSON.parse(JSON.stringify(state.selection.content));
 		experiment._id = state.selection._id;

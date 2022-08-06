@@ -80,10 +80,6 @@ export default {
 		);
 	},
 
-	copySelectionToEdition({ commit, getters }) {
-		commit('setEditedExperiment', getters.experimentSelected);
-	},
-
 	unsetSelectionExperiment({ commit }) {
 		commit('unsetSelectedExperiment');
 	},
@@ -113,10 +109,6 @@ export default {
 				dispatch('alert/setWarningAlert', `The experiment could not be compiled : ${error.message}`, { root: true });
 			},
 		);
-	},
-
-	clearCompiledExperiment({ commit }) {
-		commit('clearCompiledExperiment');
 	},
 
 	createExperiment({ commit, dispatch }, experiment) {

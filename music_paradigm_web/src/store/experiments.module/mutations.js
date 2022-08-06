@@ -61,10 +61,6 @@ export default {
 		delete state.edition._id;
 	},
 
-	clearCompiledExperiment(state) {
-		state.edition = defaultState.DEFAULT_MINIMAL_EXPERIMENT();
-	},
-
 	setHeadersList(state, experimentsHeadersLst) {
 		state.experimentsHeadersList = experimentsHeadersLst;
 	},

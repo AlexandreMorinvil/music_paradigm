@@ -4,36 +4,17 @@
 			<button v-on:click="handleCompilation" class="widget-button blue">Compile</button>
 			<button v-on:click="handleReversion" class="widget-button blue">Revert</button>
 			<button v-on:click="handleClearance" class="widget-button blue">Clear</button>
-		</div>
-
-		<div class="selection-buttons-position">
-			<button v-on:click="handleCopying" class="widget-button blue">Copy to Editor</button>
 			<button v-on:click="handleUnselection" class="widget-button turquoise">Unselect</button>
 		</div>
 
 		<div class="editor-position code-context">
-			<div class="text-editor-label">Editor : {{ editionStatus }}</div>
 			<div class="editor-size-fix">
 				<code-editor v-on:ready="writeEditionToEditorChanges" :readOnly="false" ref="codeEditor" />
 			</div>
 		</div>
 
-		<div class="reference-position code-context">
-			<div class="text-editor-label">Selection : {{ selectionStatus }}</div>
-			<div class="editor-size-fix">
-				<code-editor v-on:ready="writeSelectionToReferenceChanges" :readOnly="true" ref="codeReference" />
-			</div>
-		</div>
-
 		<div class="create-position">
-			<form v-on:submit.prevent="handleSubmit" ref="upload" style="display: none">
-				<input type="file" id="myfile" name="myfile" v-on:change="handleUploadExperiment" ref="fileInput" />
-			</form>
-			<button v-on:click="$refs.fileInput.click()" class="widget-button blue">Upload</button>
 			<button v-on:click="submitExperimentToCreate" class="widget-button green">Create</button>
-		</div>
-
-		<div class="update-position">
 			<button v-on:click="submitExperimentToUpdate" class="widget-button blue">Update</button>
 			<button v-on:click="submitExperimentToDelete" class="widget-button red">Delete</button>
 		</div>
@@ -57,18 +38,13 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiments', ['experimentEdited', 'experimentSelected', 'selectedId', 'hasCompiledEdition']),
+		...mapGetters('experiments', [
+			'experimentEdited',
+			'selectedId',
+			'hasCompiledEdition'
+		]),
 		editionContent() {
 			return this.$refs.codeEditor.code;
-		},
-		editionStatus() {
-			let status = 'EMPTY';
-			if (this.hasCompiledEdition) status = 'COMPILED';
-			if (this.isEditorModified) status = 'EDITED';
-			return status;
-		},
-		selectionStatus() {
-			return 'DISPLAYED BELOW';
 		},
 	},
 	methods: {
@@ -76,8 +52,6 @@ export default {
 		...mapActions('experiments', [
 			'compileExperiment',
 			'attemptExperimentCompilation',
-			'clearCompiledExperiment',
-			'copySelectionToEdition',
 			'unsetSelectionExperiment',
 			'createExperiment',
 			'updateExperiment',
@@ -85,9 +59,6 @@ export default {
 		]),
 		setEditorContent(textContent) {
 			this.$refs.codeEditor.setValue(textContent);
-		},
-		setReferenceContent(textContent) {
-			this.$refs.codeReference.setValue(textContent);
 		},
 		submitExperimentToCreate() {
 			this.createExperiment(this.experimentEdited);
@@ -121,46 +92,15 @@ export default {
 		handleClearance() {
 			this.setEditorContent(JSON.stringify(validator.getMinimalValidExperimentStructure(), null, '\t'));
 		},
-		handleCopying() {
-			this.copySelectionToEdition();
-		},
 		handleUnselection() {
 			this.unsetSelectionExperiment();
-		},
-		handleUploadExperiment(event) {
-			const input = event.target;
-
-			function readFileContent(file) {
-				const reader = new FileReader();
-				return new Promise((resolve, reject) => {
-					reader.onload = (loadEvent) => resolve(loadEvent.target.result);
-					reader.onerror = (error) => reject(error);
-					reader.readAsText(file);
-				});
-			}
-
-			if (!('files' in input) || !(input.files.length === 1)) {
-				this.setErrorAlert('A file must be selected');
-				return;
-			}
-
-			readFileContent(input.files[0])
-				.then((content) => {
-					this.$refs.codeEditor.setValue(content);
-					this.attemptExperimentCompilation(this.convertEditorTextToObject(content));
-				})
-				.catch((error) => {
-					this.setErrorAlert(error.message);
-				})
-				.finally(() => {
-					this.$refs.upload.reset();
-				});
 		},
 		convertEditorTextToObject() {
 			try {
 				return JSON.parse(this.editionContent);
 			} catch (e) {
 				this.setErrorAlert('The JSON syntax of the experiment definition is not valid');
+				return {};
 			}
 		},
 		writeEditionToEditorChanges() {
@@ -172,36 +112,16 @@ export default {
 				{ immediate: true },
 			);
 		},
-		writeSelectionToReferenceChanges() {
-			this.$watch(
-				'experimentSelected',
-				(newValue) => {
-					this.setReferenceContent(JSON.stringify(newValue, null, '\t'));
-				},
-				{ immediate: true },
-			);
-		},
-		notEmplementedYet() {
-			this.setInformationAlert('TODO');
-			console.log('Not yet ready');
-		},
 	},
 };
 </script>
 
 <style scoped>
 .edition-buttons-position {
-	grid-area: edition-btn;
+	grid-area: edition;
 	display: grid;
 	grid-gap: 15px;
-	grid-template-columns: 1fr 1fr 1fr;
-}
-
-.selection-buttons-position {
-	grid-area: selection-btn;
-	display: grid;
-	grid-gap: 15px;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .editor-position {
@@ -209,38 +129,20 @@ export default {
 	background-color: rgb(225, 225, 225);
 	color: black;
 	display: grid;
-	/* grid-template-rows: auto; */
-}
-
-.reference-position {
-	grid-area: reference;
-	background-color: rgb(225, 225, 225);
-	color: black;
-	display: grid;
-	/* grid-template-rows: auto; */
 }
 
 .create-position {
-	grid-area: create;
+	grid-area: submission;
 	display: grid;
 	grid-gap: 15px;
-	grid-template-columns: 1fr 1fr;
-}
-
-.update-position {
-	grid-area: update;
-	display: grid;
-	grid-gap: 15px;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr;
 }
 
 .widget {
-	grid-template-columns: 1fr 1fr;
-	/* grid-template-rows: 64pxx; */
 	grid-template-areas:
-		'edition-btn selection-btn'
-		'editor reference'
-		'create update';
+		'edition   '
+		'editor    '
+		'submission';
 }
 
 .text-editor-label {
