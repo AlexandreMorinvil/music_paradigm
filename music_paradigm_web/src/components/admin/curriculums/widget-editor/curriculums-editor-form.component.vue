@@ -73,7 +73,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiments', ['experimentsHeadersList']),
+		...mapGetters('management/tasks', ['experimentsHeadersList']),
 		...mapGetters('curriculums', [
 			'hasSelectedCurriculum',
 			'getBlankCurriculumExperiment',
@@ -103,7 +103,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('experiments', ['fetchAllExperimentsHeaders']),
+		...mapActions('management/tasks', ['fetchAllExperimentsHeaders']),
 		setValidLogType(logType) {
 			return log.returnValidLogType(logType);
 		},

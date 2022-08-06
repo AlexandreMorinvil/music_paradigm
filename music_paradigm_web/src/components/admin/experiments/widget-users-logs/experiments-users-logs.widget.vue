@@ -34,7 +34,7 @@ export default {
 		return {};
 	},
 	computed: {
-		...mapGetters('experiments', [
+		...mapGetters('management/tasks', [
 			'selectedId',
 			'hasExperimentSelection',
 			'experimentsSelectedGroup',

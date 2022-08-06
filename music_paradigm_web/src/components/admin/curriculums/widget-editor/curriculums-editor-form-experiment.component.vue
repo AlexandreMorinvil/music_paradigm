@@ -121,7 +121,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiments', ['experimentsHeadersList']),
+		...mapGetters('management/tasks', ['experimentsHeadersList']),
 		...mapGetters('curriculums', ['getBlankCurriculumExperiment', 'curriculumSelectedExperimentAtIndex']),
 		hasUpButton() {
 			return this.index !== 0;

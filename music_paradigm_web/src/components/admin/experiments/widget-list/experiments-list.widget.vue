@@ -59,13 +59,13 @@ export default {
 		return {};
 	},
 	computed: {
-		...mapGetters('experiments', ['isFetchingExperimentHeadersList', 'experimentsHeadersList', 'selectedId']),
+		...mapGetters('management/tasks', ['isFetchingExperimentHeadersList', 'experimentsHeadersList', 'selectedId']),
 		isListLoading() {
 			return this.isFetchingExperimentHeadersList;
 		},
 	},
 	methods: {
-		...mapActions('experiments', [
+		...mapActions('management/tasks', [
 			'fetchAllExperimentsHeaders',
 			'setEditorExperiment',
 			'setSelectionExperiment',

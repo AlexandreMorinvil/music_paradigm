@@ -25,7 +25,7 @@ export default {
 			immediate: true,
 			handler(to) {
 				let currentPage = 'undefined';
-				const pageList = ['home', 'experiments', 'account'];
+				const pageList = ['home', 'tasks', 'account'];
 				for (const i in pageList) {
 					const page = pageList[i];
 					if (to.name === `user.${page}`) {

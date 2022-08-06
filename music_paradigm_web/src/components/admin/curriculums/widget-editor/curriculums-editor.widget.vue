@@ -31,11 +31,11 @@ export default {
 		CurriculumsEditorFormComponent,
 	},
 	computed: {
-		...mapGetters('experiments', ['experimentsHeadersList']),
+		...mapGetters('management/tasks', ['experimentsHeadersList']),
 		...mapGetters('curriculums', ['hasSelectedCurriculum', 'curriculumSelectedId']),
 	},
 	methods: {
-		...mapActions('experiments', ['fetchAllExperimentsHeaders']),
+		...mapActions('management/tasks', ['fetchAllExperimentsHeaders']),
 		...mapActions('curriculums', ['unsetSelectedCurriculum', 'createCurriculum', 'updateCurriculum', 'deleteCurriculum']),
 		bundleCurrirulumForm() {
 			return this.$refs.editorForm.bundleCurrirulumForm();

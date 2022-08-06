@@ -28,7 +28,7 @@ export default {
 	},
 	components: {},
 	computed: {
-		...mapGetters('experiments', ['logType']),
+		...mapGetters('management/tasks', ['logType']),
 		...mapGetters('session', ['tags']),
 		logTypeOptions() {
 			return log.logTypeOptions;
@@ -38,7 +38,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('experiments', ['setLogType', 'setTags']),
+		...mapActions('management/tasks', ['setLogType', 'setTags']),
 		setValidLogType(logType) {
 			return log.returnValidLogType(logType);
 		},

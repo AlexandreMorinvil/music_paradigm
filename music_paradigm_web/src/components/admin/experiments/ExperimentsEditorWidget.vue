@@ -38,7 +38,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiments', [
+		...mapGetters('management/tasks', [
 			'experimentEdited',
 			'selectedId',
 			'hasCompiledEdition'
@@ -49,7 +49,7 @@ export default {
 	},
 	methods: {
 		...mapActions('alert', ['setErrorAlert', 'setInformationAlert']),
-		...mapActions('experiments', [
+		...mapActions('management/tasks', [
 			'compileExperiment',
 			'attemptExperimentCompilation',
 			'unsetSelectionExperiment',

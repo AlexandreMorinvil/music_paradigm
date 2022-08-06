@@ -25,7 +25,7 @@ export default {
 		ExperimentsParameterFormComponent,
 	},
 	computed: {
-		...mapGetters('experiments', ['hasExperimentSelection', 'hasParameterInSelectedExperiment']),
+		...mapGetters('management/tasks', ['hasExperimentSelection', 'hasParameterInSelectedExperiment']),
 		needsParameterForm() {
 			return this.hasParameterInSelectedExperiment;
 		},
@@ -34,7 +34,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('experiments', ['startSelectedExperiment']),
+		...mapActions('management/tasks', ['startSelectedExperiment']),
 		handleExperimentStart() {
 			if (this.isRunSelectionButtonActive) this.startSelectedExperiment();
 		},

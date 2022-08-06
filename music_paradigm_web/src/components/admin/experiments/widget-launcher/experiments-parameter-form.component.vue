@@ -22,13 +22,13 @@ import { mapActions, mapGetters } from 'vuex';
 export default {
 	components: {},
 	computed: {
-		...mapGetters('experiments', ['experimentSelectedParameters']),
+		...mapGetters('management/tasks', ['experimentSelectedParameters']),
 		parameters() {
 			return JSON.parse(JSON.stringify(this.experimentSelectedParameters));
 		},
 	},
 	methods: {
-		...mapActions('experiments', ['setImposedParameterValues']),
+		...mapActions('management/tasks', ['setImposedParameterValues']),
 		updateImposedParameters() {
 			this.setImposedParameterValues(this.parameters);
 		},
