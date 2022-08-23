@@ -194,6 +194,7 @@ export default {
 	background-color: rgb(200, 180, 0);
 	border-color: rgb(195, 175, 0);
 	color: rgb(250, 250, 250);
+	stroke: rgb(100, 100, 60);
 	fill: rgb(100, 100, 60);
 }
 
