@@ -40,7 +40,7 @@ function transitionState(currentState, targetState, cursor, isInitialized, gener
 	if (!isInitialized.state) updateStateSettings(currentState, targetState, isInitialized, generalSettings);
 	if (!isInitialized.media) updateStateMediaFiles(currentState, targetState, cursor, isInitialized);
 	if (!isInitialized.content) updateStateContent(currentState, targetState, cursor, isInitialized);
-	if (!isInitialized.options) updateStateOptionsContent(currentState, targetState, isInitialized);
+	if (!isInitialized.options) updateStateOptionsContent(currentState, targetState, cursor, isInitialized);
 }
 
 // Functions to perform the state transition
@@ -353,7 +353,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	Object.assign(isInitialized, { content: true });
 }
 
-function updateStateOptionsContent(currentState, targetState, isInitialized) {
+function updateStateOptionsContent(currentState, targetState, cursor, isInitialized) {
 	// Parsing the current block
 	const currentBlock = targetState; // Flow[cursor.current.index];
 	const {
@@ -385,7 +385,8 @@ function updateStateOptionsContent(currentState, targetState, isInitialized) {
 	currentState.optionsContent.answerChoicesColor = (Array.isArray(answerChoicesColor)) ? answerChoicesColor : defaultAnswerChoicesColor;
 	currentState.optionsContent.answerChoicesImage = (Array.isArray(answerChoicesImage)) ? answerChoicesImage : [];
 
-	currentState.optionsContent.rightAnswers = (Array.isArray(rightAnswers)) ? rightAnswers : defaultRightAnswer;
+	const piledContentIndex = cursor.current.piledContentIndex;
+	currentState.optionsContent.rightAnswers = (Array.isArray(rightAnswers)) ? rightAnswers[piledContentIndex] : defaultRightAnswer;
 
 	// Indicate that the media files is initialized
 	Object.assign(isInitialized, { options: true });

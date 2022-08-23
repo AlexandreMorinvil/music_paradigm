@@ -82,10 +82,10 @@ function performVariableReplacement(block, conversionRules) {
 
 		// Transform the special caracters so that they can properly be handled in the conversion
 		let conversionValue = conversionRules[reference];
-		if (typeof conversionValue === 'string') conversionValue = conversionValue.replaceAll('\n', '\\n');
+		if (typeof conversionValue === 'string') conversionValue = conversionValue.replace(/(\r\n|\n|\r)/gm, '\\n');
 
 		// Replace the reference by tge conversion value
-		stringBlock = stringBlock.replaceAll(reference, conversionValue);
+		stringBlock = stringBlock.replace(new RegExp(reference, 'g'), conversionValue);
 	}
 
 	// Parse the converted block
@@ -166,7 +166,7 @@ function updateStateVariables() {
 }
 
 function wrapVariableName(variableName) {
-	return '$' + variableName + '$';
+	return '\\$' + variableName + '\\$';
 }
 
 function wrapStateVariableName(stateVariableName) {

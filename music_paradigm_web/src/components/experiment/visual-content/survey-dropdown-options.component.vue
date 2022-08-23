@@ -140,6 +140,6 @@ export default {
 	margin: 10px;
 	padding-left: 20px;
 	padding-right: 20px;
-	background-color: white;
+	background-color: rgb(250, 250, 250);
 }
 </style>

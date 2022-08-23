@@ -101,7 +101,6 @@ export default {
 		isOnsetValid(midiMessage) {
 			const currentTime = Date.now();
 			const lastTime = this.lastOnsetTimePerNote[midiMessage.note];
-			console.log(currentTime - lastTime);
 			if (!lastTime || currentTime - lastTime > this.MIN_INTER_ONSET_INTERVAL) {
 				this.lastOnsetTimePerNote[midiMessage.note] = currentTime;
 				return true;

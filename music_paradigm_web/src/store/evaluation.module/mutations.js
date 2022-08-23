@@ -15,7 +15,7 @@ export default {
 	},
 
 	evaluateSpeedType: (state, results) => {
-		state.grades = gltPerformance.gradeSpeedType(results, {
+		state.grades = notePerformance.gradeSpeedType(results, {
 			minSequencePlayed: config.minSequencePlayed || 1,
 		});
 	},
