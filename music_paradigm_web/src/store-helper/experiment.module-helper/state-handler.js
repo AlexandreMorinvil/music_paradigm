@@ -40,7 +40,7 @@ function transitionState(currentState, targetState, cursor, isInitialized, gener
 	if (!isInitialized.state) updateStateSettings(currentState, targetState, isInitialized, generalSettings);
 	if (!isInitialized.media) updateStateMediaFiles(currentState, targetState, cursor, isInitialized);
 	if (!isInitialized.content) updateStateContent(currentState, targetState, cursor, isInitialized);
-	if (!isInitialized.options) updateStateOptionsContent(currentState, targetState, isInitialized);
+	if (!isInitialized.options) updateStateOptionsContent(currentState, targetState, cursor, isInitialized);
 }
 
 // Functions to perform the state transition
@@ -135,6 +135,16 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		presentationTime,
 		stimuliTime,
 		reproductionSeed,
+		includesPresentation,
+		includesTest,
+		gltScoreForSuccess,
+		gltMustHideBeforeClick,
+		gltPauseBetweenPresentations,
+		gltPauseBetweenStimuli,
+		gltCellSize,
+		matrixUnusedCells,
+		cuePresentationDelay,
+		waitBeforeNextStep,
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -194,7 +204,17 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		presentationTime:				typeof presentationTime === 'number' 				? presentationTime : 1000,
 		stimuliTime:					typeof stimuliTime === 'number' 					? stimuliTime : 1000,
 		reproductionSeed:				typeof reproductionSeed === 'string'				? reproductionSeed : generalSettings.reproductionSeed,
-	};
+		includesPresentation:			typeof includesPresentation === 'boolean'			? includesPresentation : true,
+		includesTest: 		 			typeof includesTest === 'boolean'					? includesTest : true,
+		gltScoreForSuccess: 			typeof gltScoreForSuccess === 'number' 				? gltScoreForSuccess : 0,
+		gltMustHideBeforeClick: 		typeof gltMustHideBeforeClick === 'boolean' 		? gltMustHideBeforeClick : true,
+		gltPauseBetweenPresentations: 	typeof gltPauseBetweenPresentations === 'number' 	? gltPauseBetweenPresentations : 1000,
+		gltPauseBetweenStimuli: 		typeof gltPauseBetweenStimuli === 'number' 			? gltPauseBetweenStimuli : 1000,
+		gltCellSize: 					typeof gltCellSize === 'number' 					? gltCellSize : 100,
+		matrixUnusedCells:				typeof matrixUnusedCells === 'object'				? matrixUnusedCells : null,
+		cuePresentationDelay:			typeof cuePresentationDelay === 'number'			? cuePresentationDelay : generalSettings.cuePresentationDelay,
+		waitBeforeNextStep: 			typeof waitBeforeNextStep === 'number'				? waitBeforeNextStep : 0,
+		};
 
 	// Indicate that the state (current block's settings) was already initialized
 	Object.assign(isInitialized, { state: true });
@@ -265,6 +285,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 		textSpecification,
 		textBeforeMainContent,
 		textAfterAnswerReceived,
+		textWaitBeforeNextStep,
 	} = currentBlock;
 
 	// Using the values that are not set in an array if there are any
@@ -278,6 +299,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	let updatedTextAfterQuestionAsked = typeof textAfterQuestionAsked === 'string' ? textAfterQuestionAsked : null;
 	let updatedTextBeforeMainContent = typeof textBeforeMainContent === 'string' ? textBeforeMainContent : null;
 	let updatedTextAfterAnswerReceived = typeof textAfterAnswerReceived === 'string' ? textAfterAnswerReceived : null;
+	let updatedTextWaitBeforeNextStep = typeof textWaitBeforeNextStep === 'string' ? textWaitBeforeNextStep : null;
 	let updatedTextSpecification = typeof textSpecification === 'string' ? textSpecification : null;
 
 	// If the value is in an array
@@ -293,6 +315,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(textAfterQuestionAsked)) updatedTextAfterQuestionAsked = textAfterQuestionAsked || null;
 	if (Array.isArray(textBeforeMainContent)) updatedTextBeforeMainContent = textBeforeMainContent || null;
 	if (Array.isArray(textAfterAnswerReceived)) updatedTextAfterAnswerReceived = textAfterAnswerReceived || null;
+	if (Array.isArray(textWaitBeforeNextStep)) updatedTextWaitBeforeNextStep = textWaitBeforeNextStep || null;
 	if (Array.isArray(textSpecification)) updatedTextSpecification = textSpecification || null;
 
 	// If the value is in a nested array
@@ -308,6 +331,7 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	if (Array.isArray(updatedTextAfterQuestionAsked)) updatedTextAfterQuestionAsked = textAfterQuestionAsked || null;
 	if (Array.isArray(updatedTextBeforeMainContent)) updatedTextBeforeMainContent = textBeforeMainContent || null;
 	if (Array.isArray(updatedTextAfterAnswerReceived)) updatedTextAfterAnswerReceived = textAfterAnswerReceived || null;
+	if (Array.isArray(updatedTextWaitBeforeNextStep)) updatedTextWaitBeforeNextStep = textWaitBeforeNextStep || null;
 	if (Array.isArray(updatedTextSpecification)) updatedTextSpecification = textSpecification || null;
 
 	// === Update the state ===
@@ -322,13 +346,14 @@ function updateStateContent(currentState, targetState, cursor, isInitialized) {
 	currentState.content.textAfterQuestionAsked = updatedTextAfterQuestionAsked || '';
 	currentState.content.textBeforeMainContent = updatedTextBeforeMainContent || '';
 	currentState.content.textAfterAnswerReceived = updatedTextAfterAnswerReceived || '';
+	currentState.content.textWaitBeforeNextStep = updatedTextWaitBeforeNextStep || '';
 	currentState.content.textSpecification = updatedTextSpecification || '';
 
 	// Indicate that the media files is initialized
 	Object.assign(isInitialized, { content: true });
 }
 
-function updateStateOptionsContent(currentState, targetState, isInitialized) {
+function updateStateOptionsContent(currentState, targetState, cursor, isInitialized) {
 	// Parsing the current block
 	const currentBlock = targetState; // Flow[cursor.current.index];
 	const {
@@ -360,7 +385,8 @@ function updateStateOptionsContent(currentState, targetState, isInitialized) {
 	currentState.optionsContent.answerChoicesColor = (Array.isArray(answerChoicesColor)) ? answerChoicesColor : defaultAnswerChoicesColor;
 	currentState.optionsContent.answerChoicesImage = (Array.isArray(answerChoicesImage)) ? answerChoicesImage : [];
 
-	currentState.optionsContent.rightAnswers = (Array.isArray(rightAnswers)) ? rightAnswers : defaultRightAnswer;
+	const piledContentIndex = cursor.current.piledContentIndex;
+	currentState.optionsContent.rightAnswers = (Array.isArray(rightAnswers)) ? rightAnswers[piledContentIndex] : defaultRightAnswer;
 
 	// Indicate that the media files is initialized
 	Object.assign(isInitialized, { options: true });

@@ -1,4 +1,16 @@
 export default {
+	reproductionSeed: (state) => {
+		return state.reproductionSeed;
+	},
+
+	includesPresentation: (state) => {
+		return state.includesPresentation;
+	},
+
+	includesTest: (state) => {
+		return state.includesTest;
+	},
+
 	numberImages: (state) => {
 		return state.numberImages;
 	},
@@ -39,8 +51,8 @@ export default {
 		return state.isAnswerRightList;
 	},
 
-	interogationsCount: (state) => {
-		return state.interogationsCount;
+	interrogationsCount: (state) => {
+		return state.interrogationsCount;
 	},
 
 	rightAnswersCount: (state) => {

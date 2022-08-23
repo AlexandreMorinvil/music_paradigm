@@ -76,7 +76,7 @@ export default {
 			return colors;
 		},
 		correctAnswersIndex() {
-			if (!this.rightAnswers) return null;
+			if (this.rightAnswers == null) return null;
 			let validRightAnswers = null;
 			const lastValidIndex = this.numberValidChoices - 1;
 			if (Array.isArray(this.rightAnswers)) {

@@ -150,6 +150,7 @@ function populateExperimentConstantVariables(state) {
 function setExperimentGeneralSettings(state) {
 	const {
 		anyPianoKey,
+		cuePresentationDelay,
 		enableSoundFlag,
 		playingMode,
 		instrument,
@@ -184,6 +185,7 @@ function setExperimentGeneralSettings(state) {
 	const defaultSettings = defaultState.DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES();
 	state.settings = {
 		anyPianoKey: 						typeof anyPianoKey === 'boolean' 					? anyPianoKey : defaultSettings.anyPianoKey,
+		cuePresentationDelay:				typeof cuePresentationDelay === 'number'			? cuePresentationDelay : defaultSettings.cuePresentationDelay,
 		enableSoundFlag: 					typeof enableSoundFlag === 'boolean' 				? enableSoundFlag : defaultSettings.enableSoundFlag,
 		playingMode: 						typeof playingMode === 'string' 					? playingMode : defaultSettings.playingMode,
 		instrument: 						typeof instrument === 'string' 						? instrument : defaultSettings.instrument,

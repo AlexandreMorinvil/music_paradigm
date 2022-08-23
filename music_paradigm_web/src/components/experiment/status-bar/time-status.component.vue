@@ -87,8 +87,8 @@ export default {
 			let hasNewMessage = false;
 			const totalTimeInSeconds = this.totalTime / 1000;
 			for (const time in this.timeLeftMessages) {
-				if (totalTimeInSeconds < time && time < this.smallestTimeLeftMessageUpdated) {
-					this.smallestTimeLeftMessageUpdated = time;
+				if (totalTimeInSeconds < Number(time) && Number(time) < this.smallestTimeLeftMessageUpdated) {
+					this.smallestTimeLeftMessageUpdated = Number(time);
 					hasNewMessage = true;
 				}
 			}

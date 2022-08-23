@@ -27,6 +27,7 @@ const UNSET_INDEX = -1;
 
 // Default settings values
 const DEFAULT_ANY_PIANO_KEY = false;
+const DEFAULT_CUE_PRESENTATION_DELAY = 0;
 const DEFAULT_ENABLE_SOUND_FLAG = false;
 const DEFAULT_PLAYING_MODE = 'rhythm';
 const DEFAULT_FOOTNOTE = false;
@@ -145,6 +146,7 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		hasStatusBar: DEFAULT_STAUS_BAR,													// Indicates if the session should have the status bar
 		isFullScreen: DEFAULT_IF_FULL_SCREEN,												// Indicates if the session should be in full screen
 		reproductionSeed: DEFAULT_REPRODUCTION_SEED,										// Seed used in randomized components that can make the components reproductible.
+		cuePresentationDelay: DEFAULT_CUE_PRESENTATION_DELAY,								// Delay that should be waited before presenting the cue in a cue state.
 	};
 }
 
@@ -193,6 +195,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			textAfterQuestionAsked: '',												// Text displayed after a question is asked in question states
 			textBeforeMainContent: '',												// Text displayed before the main content of a state (used in grid location task)
 			textAfterAnswerReceived: '',											// Text displayed after all the answers of the user are reveived (used in grid location task)
+			textWaitBeforeNextStep: '',												// Text displayed before moving to the next state during the "wait before next step" time.
 			textSpecification: '',													// Text to add a certain specification (used in question state)
 		},
 
@@ -280,8 +283,20 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			presentationTime: 1000,													// Time during which a content is presentation before the main elements of a state (used in glt)
 			stimuliTime: 1000,														// Time during which a stimuli is presented (used in glt)
 			matrixUsedCellsCount: -1,												// Indicate the number of cells of the matrix should be used. A negative number indicates the numebr of cells that should not be used.
+			includesPresentation: true,												// Indicate if the state includes a presentation phase (used in glt)
+			includesTest: true,														// Indicate if the state includes a test phase (used in glt)
+
+			gltScoreForSuccess: 0,													// Number of correct answers required in a glt state for the state to be considered a success.
+			gltMustHideBeforeClick: true, 											// Indicates whether the user should be able to click a cell in the glt matrix when the stimulus is still visible. 
+			gltPauseBetweenPresentations: 1000, 									// Time to wait after having presented a cell and before presenting the next cell in the glt.
+			gltPauseBetweenStimuli: 1000,											// Time to wait after having cued a stimulus and before cuing the next cell in the glt.
+			gltCellSize: 100,														// Size of the size of the square cells in the glt grid.
+			matrixUnusedCells: null,												// Indicates the cells that should not be used in a matrix (used in glt).
+
+			cuePresentationDelay: DEFAULT_CUE_PRESENTATION_DELAY,					// Block specific delay that should be waited before presenting the cue in a cue state.
 
 			reproductionSeed: DEFAULT_REPRODUCTION_SEED,							// Block specific Seed used in randomized components that can make the components reproductible.
+			waitBeforeNextStep: 0,													// Delay before the transition to the next state used in certain states (glt).
 		},
 		// Session specific informations
 		record: {

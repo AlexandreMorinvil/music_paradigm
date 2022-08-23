@@ -13,6 +13,12 @@ export default {
 	components: {
 		GltCellComponent,
 	},
+	data() {
+		return {
+			// Status
+			isImageDisplayed: false,
+		};
+	},
 	methods: {
 		loadCellSpecification(cellSpecifiaction) {
 			this.$refs.targetImage.updateCellSpecification(cellSpecifiaction);
@@ -23,6 +29,15 @@ export default {
 		hideImage() {
 			this.$refs.targetImage.hide();
 		},
+	},
+	mounted() {
+		this.$watch(
+			() => this.$refs.targetImage.isRevealed,
+			(isRevealed) => {
+				this.isImageDisplayed = isRevealed;
+			},
+			{ immediate: true },
+		);
 	},
 };
 </script>

@@ -1,6 +1,12 @@
-import { defaultState } from '@/store-helper/question.module-helper';
+import { defaultState } from '@/store-helper/glt.module-helper';
 
 export default {
+	recordGltParameters: (state, parameters) => {
+		state.reproductionSeed = parameters.reproductionSeed;
+		state.includesPresentation = parameters.includesPresentation;
+		state.includesTest = parameters.includesTest;
+	},
+
 	recordMatrixSetup: (state, setup) => {
 		state.numberImages = setup.numberImages;
 		state.xMatrixDimension = setup.xMatrixDimension;
@@ -15,7 +21,7 @@ export default {
 		state.positionClicked = answers.positionClicked;
 		state.imageAtPositionClicked = answers.imageAtPositionClicked;
 		state.isAnswerRightList = answers.isAnswerRightList;
-		state.interogationsCount = answers.interogationsCount;
+		state.interrogationsCount = answers.interrogationsCount;
 		state.rightAnswersCount = answers.rightAnswersCount;
 	},
 
