@@ -1,22 +1,11 @@
 <template>
-	<!-- This structure was used instead of using a standard <img /> element due to issues with the size restrictions
-	on the standard image HTML elements. By using this structure, we can easily guarrantee that the image will never
-	overflow or expend its contant as it is merely the "contained" and non-repeated background of a <span> element -->
 	<div id="image-area" class="image-area" v-if="hasPicture">
-		<span
-			:style="
-				'background: url(' +
-				urlExperimentResource(pictureName) +
-				');' +
-				'background-size: contain !important;' +
-				'background-repeat: no-repeat !important;' +
-				'background-position: center !important;'
-			"
+		<img
+			:src="urlExperimentResource(pictureName)"
 			class="background-image"
 			role="img"
 			aria-label="image"
-		>
-		</span>
+		/>
 	</div>
 </template>
 
@@ -34,18 +23,20 @@ export default {
 
 <style scoped>
 .image-area {
+	display: flex;
 	height: 100%;
 	width: 100%;
 	min-height: auto;
+	justify-content: center;
+	align-items: center;
 }
 
 .background-image {
 	display: block;
-	width: 100%;
-	height: 100%;
+	max-height: 100%;
+	max-width: 100%;
 	min-height: 100px;
-	background-size: contain !important;
-	background-repeat: no-repeat !important;
-	background-position: center !important;
+	height: 100%;
+	object-fit: contain;
 }
 </style>
