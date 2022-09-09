@@ -58,6 +58,8 @@ export default {
 	},
 	data() {
 		return {
+			isTaskStarted: false,
+			isTaskStarting: false,
 			isTimerAllowedToCount: false,
 			hasConlcluded: false,
 			needsConfirmationToLeave: true,
@@ -112,12 +114,16 @@ export default {
 			this.endExperimentByTimeUp();
 		},
 		startExperiement() {
+			if (this.isTaskStarted || this.isTaskStarting) return;
+			this.isTaskStarting = true;
 			this.$refs.session.initialize();
 			this.$refs.log.initialize();
 			if (this.hasPrelude) {
 				this.initializePrelude();
 			} else this.updateState();
 			this.isTimerAllowedToCount = true;
+			this.isTaskStarted = true;
+			this.isTaskStarting = false;
 		},
 		navigateExperiment() {
 			this.$refs.status.recordTime();
