@@ -1,5 +1,5 @@
 <template>
-	<div  class="state-content-flex">
+	<div class="state-content-flex">
 		<component
 			:is="type"
 			class="question-area state-section"
@@ -108,6 +108,11 @@ export default {
 				this.$refs.buttons.activateSecondaryButton();
 			} else this.$refs.buttons.hideSecondaryButton();
 		},
+		activateSubmissionButtonIfAnswerIsSelected(hasAnswerSelected) {
+			if (!this.questionMustConfirmAnswer) return;
+			if (hasAnswerSelected) this.$refs.buttons.activatePrimaryButton();
+			else this.$refs.buttons.deactivatePrimaryButton();
+		},
 		startAsking() {
 			this.hasReceivedStartSignal = true;
 			this.$refs.question.start();
@@ -119,6 +124,9 @@ export default {
 	},
 	mounted() {
 		this.activateAppropriateButtons();
+		this.$watch(() => this.$refs.question.hasAnswerSelected, this.activateSubmissionButtonIfAnswerIsSelected, {
+			immediate: true,
+		});
 		ExperimentEventBus.$on(experimentEvents.EVENT_START_SIGNAL_READY, this.startAsking);
 	},
 	beforeDestroy() {

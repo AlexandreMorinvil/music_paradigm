@@ -30,6 +30,11 @@ export default {
 			answers: null,
 		};
 	},
+	computed: {
+		hasAnswerSelected() {
+			return this.answers !== null;
+		},
+	},
 	methods: {
 		updateFootnote() {
 			let footnoteMessage = '';
