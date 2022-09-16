@@ -61,8 +61,8 @@ export default {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 		},
 		activateButtonIfAppropriate() {
-			if (this.surveyAreAnswersMandatory && !this.$refs.survey.allAnswersAreGiven) this.$refs.button.deactivate();
-			else this.$refs.button.activate();
+			if (this.surveyAreAnswersMandatory && !this.$refs.survey.allAnswersAreGiven) this.$refs.button.deactivatePrimaryButton();
+			else this.$refs.button.activatePrimaryButton();
 		},
 	},
 	beforeMount() {
@@ -74,7 +74,7 @@ export default {
 		ExperimentEventBus.$off(experimentEvents.EVENT_ADVANCE_REQUEST, this.emitStateEndedSignal);
 	},
 	mounted() {
-		this.$refs.button.setText(this.buttonText);
+		this.$refs.button.setTextPrimaryButton(this.buttonText);
 		this.$watch(() => this.$refs.survey.allAnswersAreGiven, this.activateButtonIfAppropriate, { immediate: true });
 	},
 };

@@ -44,6 +44,14 @@ import '@/styles/experiment-content-template.css';
 import { mapGetters } from 'vuex';
 
 export default {
+	props: {
+		canSelectionChange: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
+	},
 	data() {
 		return {
 			// DOM rules
@@ -121,7 +129,7 @@ export default {
 			return this.selectedChoiceNumber > 0;
 		},
 		areChoicesClickable() {
-			return this.isReadyToTakeAnswers && !this.isChoiceMade;
+			return this.isReadyToTakeAnswers && !this.isChoiceMade || this.canSelectionChange;
 		},
 		numberRows() {
 			return Math.ceil(this.numberOptions / this.NUMBER_CHOICES_PER_ROW);

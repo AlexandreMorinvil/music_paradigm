@@ -38,6 +38,22 @@ export default {
 		});
 	},
 
+	questionMustConfirmAnswer: (state) => {
+		return state.state.settings.questionMustConfirmAnswer;
+	},
+
+	questionCanSubmitBlankAnswer: (state) => {
+		return state.state.settings.questionCanSubmitBlankAnswer;
+	},
+
+	questionSubmitAnswerButtonText: (state) => {
+		return state.state.settings.questionSubmitAnswerButtonText;
+	},
+
+	questionBlankAnswerButtonText: (state) => {
+		return state.state.settings.questionBlankAnswerButtonText;
+	},
+
 	rightAnswers: (state) => {
 		return state.state.optionsContent.rightAnswers;
 	}

@@ -266,6 +266,10 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			questionType: DEFAULT_QUESTION_TYPE,									// Indicate the question type for the 'question' states
 			areAnswerOptionsVertical: false,										// Disposition of the anserChoices (vertical if true, horizontal if false)
 			areInactiveAnswersDisplayed: false,										// Indicate if answers with a text but no value must be displayed (as incactive choices)
+			questionMustConfirmAnswer: false,										// Indicates whether or not the question must have a 'submit/confirm' button. If set to false, a click on an option will automatically submit the clicked option as the answer. 
+			questionCanSubmitBlankAnswer: false,									// Indicate whether or not a blank answer is accepted for the question in questions. A 'submit no answer' button will be displayed in the options if this parameter is set to true.
+			questionSubmitAnswerButtonText: '',										// Text to display in the submit answer button of a question state that needs a confirmation before submitting answers
+			questionBlankAnswerButtonText: '',										// Text to display in the 'submit blank answer' button of a question state and accepts blank answers
 
 			hasNavigationBar: DEFAULT_HAS_NAVIGATION_BAR,							// Block specific indicator of whether the step should have the upper navigation bar
 			hasStatusBar: DEFAULT_STAUS_BAR,										// Block specific indicator of whether the step should have the status bar

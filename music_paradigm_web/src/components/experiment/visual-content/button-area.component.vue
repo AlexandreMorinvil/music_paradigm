@@ -1,6 +1,21 @@
 <template>
 	<div id="buttons-area" class="button-flex">
-		<button class="task-button" :class="isActive ? 'active' : 'innactive'" v-on:click="signalButtonWasClicked">{{ text }}</button>
+		<button
+			v-if="isPrimaryButtonDisplayed"
+			class="task-button"
+			:class="isPrimaryButtonActive ? 'active' : 'innactive'"
+			v-on:click="signalPrimaryButtonWasClicked"
+		>
+			{{ textPrimaryButton }}
+		</button>
+		<button
+			v-if="isSecondaryButtonDisplayed"
+			class="task-button"
+			:class="isSecondaryButtonActive ? 'active' : 'innactive'"
+			v-on:click="signalSecondaryButtonWasClicked"
+		>
+			{{ textSecondaryButton }}
+		</button>
 		<skip-button-component v-if="isSkipButtonInMainOptions" class="task-button" />
 	</div>
 </template>
@@ -11,32 +26,65 @@ import { mapGetters } from 'vuex';
 
 import SkipButtonComponent from '@/components/experiment/element/skip-button.component.vue';
 
-
 export default {
 	components: {
 		SkipButtonComponent,
 	},
 	data() {
 		return {
-			text: 'Click',
-			isActive: false,
+			// Main button
+			isPrimaryButtonDisplayed: true,
+			textPrimaryButton: 'Click',
+			isPrimaryButtonActive: false,
+
+			// Secondary Button
+			isSecondaryButtonDisplayed: false,
+			textSecondaryButton: 'Click',
+			isSecondaryButtonActive: false,
 		};
 	},
 	computed: {
 		...mapGetters('experiment', ['isSkipButtonInMainOptions']),
 	},
 	methods: {
-		setText(text) {
-			this.text = text || 'Click';
+		// Main Button
+		hidePrimaryButton() {
+			this.isPrimaryButtonDisplayed = false;
 		},
-		activate() {
-			this.isActive = true;
+		showPrimaryButton() {
+			this.isPrimaryButtonDisplayed = true;
 		},
-		deactivate() {
-			this.isActive = false;
+		setTextPrimaryButton(text) {
+			this.textPrimaryButton = text || 'Click';
 		},
-		signalButtonWasClicked() {
-			if (this.isActive) this.$emit('clicked');
+		activatePrimaryButton() {
+			this.isPrimaryButtonActive = true;
+		},
+		deactivatePrimaryButton() {
+			this.isPrimaryButtonActive = false;
+		},
+		signalPrimaryButtonWasClicked() {
+			if (this.isPrimaryButtonActive) this.$emit('clicked');
+		},
+
+		// Secondary Button
+		hideSecondaryButton() {
+			this.isSecondaryButtonDisplayed = false;
+		},
+		showSecondaryButton() {
+			this.isSecondaryButtonDisplayed = true;
+		},
+		setTextSecondaryButton(text) {
+			this.textSecondaryButton = text || 'Click';
+		},
+		activateSecondaryButton() {
+			this.isSecondaryButtonActive = true;
+		},
+		deactivateSecondaryButton() {
+			this.isSecondaryButtonActive = false;
+		},
+		signalSecondaryButtonWasClicked() {
+			if (this.isSecondaryButtonActive) this.$emit('clickedSecond');
 		},
 	},
 };

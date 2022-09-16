@@ -309,6 +309,10 @@ function validateBlock(block, index = null) {
 		'answerChoicesImage',
 		'answerChoicesColor',
 		'areInactiveAnswersDisplayed',
+		'questionMustConfirmAnswer',
+		'questionCanSubmitBlankAnswer',
+		'questionSubmitAnswerButtonText',
+		'questionBlankAnswerButtonText',
 
 		'rightAnswers',
 
@@ -387,6 +391,8 @@ function validateAttributeType(key, value) {
 		case 'pvtTooEarlyMessage':
 		case 'mainOptionText':
 		case 'reproductionSeed':
+		case 'questionSubmitAnswerButtonText':
+		case 'questionBlankAnswerButtonText':
 			if (!(typeof value === 'string')) {
 				throw new Error(`The key '${key}' must be of type 'String'`);
 			}
@@ -460,6 +466,8 @@ function validateAttributeType(key, value) {
 		case 'includesPresentation':
 		case 'includesTest':
 		case 'gltMustHideBeforeClick':
+		case 'questionMustConfirmAnswer':
+		case 'questionCanSubmitBlankAnswer':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

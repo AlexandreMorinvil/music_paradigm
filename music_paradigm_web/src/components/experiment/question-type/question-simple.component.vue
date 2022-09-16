@@ -1,7 +1,12 @@
 <template>
 	<div id="question-type" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
-		<question-simple-options-component v-on:answered="handleAnswer" v-on:questionAsked="handleQuestionAsked" class="options-area state-section" />
+		<question-simple-options-component
+			:canSelectionChange="canSelectionChange"
+			v-on:answered="handleAnswer"
+			v-on:questionAsked="handleQuestionAsked"
+			class="options-area state-section"
+		/>
 		<text-after-question-area-component class="text-after-question-area state-section" ref="postQuestionText" />
 	</div>
 </template>
@@ -19,12 +24,25 @@ export default {
 		TextAfterQuestionAreaComponent,
 		TextAreaComponent,
 	},
+	props: {
+		canSelectionChange: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
+	},
 	data() {
 		return {
 			DELAY_AFTER_ANSWER: 800,
 			context: {},
 			answers: null,
 		};
+	},
+	computed: {
+		hasAnswerSelected() {
+			return this.answers !== null;
+		},
 	},
 	methods: {
 		updateFootnote() {
