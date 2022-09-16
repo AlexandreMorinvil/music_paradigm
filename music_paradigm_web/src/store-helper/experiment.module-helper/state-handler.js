@@ -145,6 +145,10 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		matrixUnusedCells,
 		cuePresentationDelay,
 		waitBeforeNextStep,
+		questionMustConfirmAnswer, 
+		questionCanSubmitBlankAnswer, 
+		questionSubmitAnswerButtonText, 
+		questionBlankAnswerButtonText, 
 	} = currentBlock;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -214,6 +218,10 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		matrixUnusedCells:				typeof matrixUnusedCells === 'object'				? matrixUnusedCells : null,
 		cuePresentationDelay:			typeof cuePresentationDelay === 'number'			? cuePresentationDelay : generalSettings.cuePresentationDelay,
 		waitBeforeNextStep: 			typeof waitBeforeNextStep === 'number'				? waitBeforeNextStep : 0,
+		questionMustConfirmAnswer:	 	typeof questionMustConfirmAnswer === 'boolean'		? questionMustConfirmAnswer : false,
+		questionCanSubmitBlankAnswer:	typeof questionCanSubmitBlankAnswer === 'boolean'	? questionCanSubmitBlankAnswer : false,
+		questionSubmitAnswerButtonText:	typeof questionSubmitAnswerButtonText === 'string'	? questionSubmitAnswerButtonText : '',
+		questionBlankAnswerButtonText:	typeof questionBlankAnswerButtonText === 'string'	? questionBlankAnswerButtonText : '',
 		};
 
 	// Indicate that the state (current block's settings) was already initialized

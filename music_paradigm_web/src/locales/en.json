@@ -214,6 +214,8 @@
         "footnote-press-space-bar": "Press the space bar or click anywhere with the mouse when the count starts"
       },
       "question": {
+        "submit": "Submit answer",
+        "submit-no-answer": "No answer",
         "midi-note": {
           "footnote-explaination": "Select the note by clicking on the sequence number"
         },

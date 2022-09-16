@@ -102,6 +102,10 @@ const stateSchema = new Schema({
     textAfterQuestionAsked: { type: Schema.Types.Mixed, default: undefined },
     textSpecification: { type: Schema.Types.Mixed, default: undefined },
     textReminder: { type: Schema.Types.Mixed, default: undefined },
+    questionMustConfirmAnswer: { type: Boolean, default: undefined },
+    questionCanSubmitBlankAnswer: { type: Boolean, default: undefined },
+    questionSubmitAnswerButtonText: { type: String, default: undefined },
+    questionBlankAnswerButtonText: { type: String, default: undefined },
     
     areAnswerOptionsVertical: { type: Boolean, default: undefined },
     areInactiveAnswersDisplayed: { type: Boolean, default: undefined },
