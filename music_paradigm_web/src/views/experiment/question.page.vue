@@ -3,6 +3,7 @@
 		<component
 			:is="type"
 			class="question-area state-section"
+			:canSelectionChange="canSelectionChange"
 			v-on:responded="handleAnswerProvided"
 			v-on:footnote="updateFootnote"
 			ref="question"
@@ -52,6 +53,9 @@ export default {
 			'questionSubmitAnswerButtonText',
 			'questionBlankAnswerButtonText',
 		]),
+		canSelectionChange() {
+			return this.questionMustConfirmAnswer;
+		},
 		hasSubmissionButtons() {
 			return this.questionMustConfirmAnswer || this.questionCanSubmitBlankAnswer;
 		},

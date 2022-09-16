@@ -26,6 +26,14 @@ import '@/styles/experiment-content-template.css';
 import { mapGetters } from 'vuex';
 
 export default {
+	props: {
+		canSelectionChange: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
+	},
 	data() {
 		return {
 			// Delays
@@ -95,7 +103,7 @@ export default {
 			return this.selectedChoiceNumber > 0;
 		},
 		areChoicesClickable() {
-			return this.isReadyToTakeAnswers && !this.isChoiceMade;
+			return this.isReadyToTakeAnswers && !this.isChoiceMade || this.canSelectionChange;
 		},
 	},
 	methods: {

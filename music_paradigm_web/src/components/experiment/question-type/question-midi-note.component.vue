@@ -1,7 +1,12 @@
 <template>
 	<div id="question-type" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
-		<question-midi-note-options-component v-on:answered="handleAnswer" v-on:questionAsked="handleQuestionAsked" class="options-area state-section" />
+		<question-midi-note-options-component
+			:canSelectionChange="canSelectionChange"
+			v-on:answered="handleAnswer"
+			v-on:questionAsked="handleQuestionAsked"
+			class="options-area state-section"
+		/>
 		<text-after-question-area-component class="text-after-question-area state-section" ref="postQuestionText" />
 	</div>
 </template>
@@ -18,6 +23,14 @@ export default {
 		QuestionMidiNoteOptionsComponent,
 		TextAfterQuestionAreaComponent,
 		TextAreaComponent,
+	},
+	props: {
+		canSelectionChange: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
 	},
 	data() {
 		return {

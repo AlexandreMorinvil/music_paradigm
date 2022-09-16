@@ -3,7 +3,12 @@
 		<text-area-component class="text-area state-section" />
 		<div class="images-area image-disposition">
 			<image-area-component class="question-image-half" />
-			<question-image-choices-options-component v-on:answered="handleAnswer" v-on:questionAsked="handleQuestionAsked" class="options-image-half" />
+			<question-image-choices-options-component
+				:canSelectionChange="canSelectionChange"
+				v-on:answered="handleAnswer"
+				v-on:questionAsked="handleQuestionAsked"
+				class="options-image-half"
+			/>
 		</div>
 		<text-after-question-area-component class="text-after-question-area state-section" ref="postQuestionText" />
 	</div>
@@ -23,6 +28,14 @@ export default {
 		QuestionImageChoicesOptionsComponent,
 		TextAfterQuestionAreaComponent,
 		TextAreaComponent,
+	},
+	props: {
+		canSelectionChange: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
 	},
 	data() {
 		return {

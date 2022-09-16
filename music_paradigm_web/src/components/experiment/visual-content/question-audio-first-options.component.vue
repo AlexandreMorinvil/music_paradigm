@@ -33,6 +33,14 @@ export default {
 	components: {
 		SoundGeneratorComponent,
 	},
+	props: {
+		canSelectionChange: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
+	},
 	data() {
 		return {
 			// Delays
@@ -117,7 +125,7 @@ export default {
 			return this.selectedChoiceNumber > 0;
 		},
 		areChoicesClickable() {
-			return this.isReadyToTakeAnswers && !this.isChoiceMade;
+			return this.isReadyToTakeAnswers && !this.isChoiceMade || this.canSelectionChange;
 		},
 	},
 	methods: {

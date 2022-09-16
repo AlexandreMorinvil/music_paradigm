@@ -2,6 +2,7 @@
 	<div id="question-type" class="state-content-flex">
 		<text-area-component class="text-area state-section" />
 		<question-audio-first-options-component
+			:canSelectionChange="canSelectionChange"
 			v-on:answered="handleAnswer"
 			v-on:questionAsked="handleQuestionAsked"
 			class="options-area state-section"
@@ -22,6 +23,14 @@ export default {
 		QuestionAudioFirstOptionsComponent,
 		TextAfterQuestionAreaComponent,
 		TextAreaComponent,
+	},
+	props: {
+		canSelectionChange: {
+			type: Boolean,
+			default() {
+				return false;
+			},
+		},
 	},
 	data() {
 		return {
