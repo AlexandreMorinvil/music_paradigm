@@ -9,7 +9,7 @@ export default {
 		state.questionRelatedContent = context.questionRelatedContent;
 	},
 
-	setQuestionAnswers: (state, answerIndex) => {
+	setQuestionAnswers: (state, answerIndex = null) => {
 		state.questionAnswerIndex = answerIndex;
 		state.isQuestionAnswerCorrect = answerHandler.getAnswerCorrectness(state.questionCorrectAnswerIndex, state.questionAnswerIndex);
 	},

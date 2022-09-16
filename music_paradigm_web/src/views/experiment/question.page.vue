@@ -3,13 +3,15 @@
 		<component
 			:is="type"
 			class="question-area state-section"
-			v-on:responded="handdleResponded"
+			v-on:responded="handleAnswerProvided"
 			v-on:footnote="updateFootnote"
 			ref="question"
 		/>
 		<button-area-component
 			v-if="hasSubmissionButtons"
 			class="button-area state-section"
+			v-on:clicked="concludeWithResponse"
+			v-on:clickedSecond="concludeWithoutResponse"
 			ref="buttons"
 		/>
 	</div>
@@ -75,8 +77,18 @@ export default {
 			this.setQuestionContext(this.$refs.question.context);
 			this.setQuestionAnswers(this.$refs.question.answers);
 		},
-		handdleResponded() {
+		handleAnswerProvided() {
+			if (this.questionMustConfirmAnswer) return;
+			else this.concludeWithResponse();
+		},
+		concludeWithResponse() {
 			this.storeQuestionRecords();
+			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
+		},
+		concludeWithoutResponse() {
+			this.resetQuestion();
+			this.setQuestionContext(this.$refs.question.context);
+			this.setQuestionAnswers(null);
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 		},
 		activateAppropriateButtons() {

@@ -12,7 +12,7 @@
 			v-if="isSecondaryButtonDisplayed"
 			class="task-button"
 			:class="isSecondaryButtonActive ? 'active' : 'innactive'"
-			v-on:click="signalPrimaryButtonWasClicked"
+			v-on:click="signalSecondaryButtonWasClicked"
 		>
 			{{ textSecondaryButton }}
 		</button>
