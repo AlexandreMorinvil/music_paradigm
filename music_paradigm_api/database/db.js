@@ -8,7 +8,7 @@ const mongoUrl = process.env.NODE_ENV == 'production' ?
 console.log(mongoUrl);
 
 // Estabilishing a connection
-mongoose.connect(mongoUrl, { useCreateIndex: true, useNewUrlParser: true });
+mongoose.connect(mongoUrl, { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true });
 
 // Event listeners
 mongoose.connection.on('connected', handleConnection);

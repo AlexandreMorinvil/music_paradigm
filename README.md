@@ -244,8 +244,11 @@ $ docker-compose -f "docker-compose.yml" up -d --build
 $ sudo npm install -g mongo-express
 
 ## 2. Start the MongoDB service
+## (Depending on you instalation of mongodb, the command might be one of the following)
 
 $ sudo systemctl start mongod
+
+$ sudo systemctl start mongodb
 
 # 3. Run the following commands
 
