@@ -12,7 +12,7 @@ export default {
     computed: {
         ...mapGetters('experiments', ['hasTaskInTasksHeadersList', 'isDownloadingTasksZipFile']),
         isButtonActive() {
-            return !this.isDownloadingTasksZipFile// && this.hasTaskInTasksHeadersList;
+            return !this.isDownloadingTasksZipFile && this.hasTaskInTasksHeadersList;
         },
     },
     methods: {
