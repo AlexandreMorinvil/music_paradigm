@@ -64,7 +64,15 @@ export default {
 		return validator.isExperimentValid(state.edition);
 	},
 
+	hasTaskInTasksHeadersList: (_, getters) => {
+		return !getters.isFetchingExperimentHeadersList && getters.experimentsHeadersList.length > 0;
+	},
+
 	isFetchingExperimentHeadersList: (state) => {
 		return state.status.isFetchingExperimentHeadersList;
+	},
+
+	isDownloadingTasksZipFile: (state) => {
+		return state.status.isDownloadingTasksZipFile;
 	},
 };

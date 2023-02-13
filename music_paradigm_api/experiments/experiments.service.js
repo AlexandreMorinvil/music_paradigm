@@ -1,18 +1,34 @@
 ﻿const db = require('database/db');
+const ziFileTaskHandler = require('zip-file/zip-file-tasks.handler');
 const Experiment = db.Experiment;
 
 module.exports = {
     create,
     getListAllHeaders,
+    getTaskListZipFile,
     getById,
     getDescriptionFromId,
     update,
     delete: _delete
 };
 
+
 async function getListAllHeaders() {
     try {
         return await Experiment.getListAllHeaders();
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function getTaskListZipFile() {
+    try {
+        const tasksDescriptionListDocument = await Experiment.getAllTasksDescriptionListDocument();
+        const tasksDescriptionZipFileData =
+            await ziFileTaskHandler.generateZipFileFromTaskDescriptions(
+                tasksDescriptionListDocument
+            );
+        return tasksDescriptionZipFileData;
     } catch (err) {
         throw err;
     }

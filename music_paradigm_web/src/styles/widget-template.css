@@ -4,9 +4,11 @@
   grid-gap: 25px;
 }
 
+.widget-section,
 .inner-widget {
-  padding: 20px 40px;
+  padding: 15px 40px 20px;
   background-color: rgb(40, 40, 40);
+  border-radius: 10px;
 }
 
 .inner-inner-widget {

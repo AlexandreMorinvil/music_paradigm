@@ -21,14 +21,19 @@ schema.set('toJSON', transformationOprtions);
 // Middleeare
 schema.pre("save", function () {
     this.name = this.name.toLowerCase().trim();
-    this.group = this.graphLookup.toLowerCase().trim();
+    this.group = this.group.toLowerCase().trim();
 });
 
 // Static methods
+schema.statics.getAllTasksDescriptionListDocument = function () {
+    return this.find({})
+        .sort({ group: 1, name: 1, version: 1 });
+};
+
 schema.statics.getListAllHeaders = function () {
     return this.find({}, 'group name version folder createdAt updatedAt')
         .sort({ group: 1, name: 1, version: 1 });
-};
+};        
 
 // Instance methods
 schema.methods.getDefinition = function () {

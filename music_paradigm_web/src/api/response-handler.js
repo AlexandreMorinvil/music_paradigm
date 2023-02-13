@@ -40,6 +40,18 @@ export function jsonFileResponseHandler(mustSave, response, handleErrorStatus = 
 	});
 }
 
+export function zipFileResponseHandler(mustSave, response, handleErrorStatus = () => { }) {
+	const filename = getFileNameFromResponse(response);
+	return response.text().then((data) => {
+		if (!response.ok) {
+			handleErrorStatus(response.status);
+			const error = response.statusText;
+			return Promise.reject(new Error(error));
+		}
+		if (mustSave) downloadSave.saveZip(data, filename);
+	});
+}
+
 function getFileNameFromResponse(response) {
     let filename = '';
     const disposition = response.headers.get('Content-Disposition');

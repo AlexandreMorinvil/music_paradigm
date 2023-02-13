@@ -183,4 +183,21 @@ export default {
 				commit('indicateDeleteRequestEnd');
 			});
 	},
+
+	downloadTasksZipFile({ commit, dispatch }) {
+		commit('indicateDownloadingTasksZipFile');
+		experimentsApi
+			.downloadTasksZipFile()
+			.then(
+				() => {
+					dispatch('alert/setInformationAlert', 'Tasks list zip file retreived successfully', { root: true });
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `Tasks list zip file download failed : ${error.message}`, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateDownloadingTasksZipFileEnd');
+			});
+	}
 };

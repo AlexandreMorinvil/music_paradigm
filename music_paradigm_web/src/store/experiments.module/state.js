@@ -7,6 +7,7 @@ export default {
 		isUpdating: false,
 		isDeleting: false,
 		hasCompiledEdition: false,
+		isDownloadingTasksZipFile: false,
 	},
 	edition: defaultState.DEFAULT_MINIMAL_EXPERIMENT(),
 	selection: defaultState.DEFAULT_EMPTY_SELECTION(),
