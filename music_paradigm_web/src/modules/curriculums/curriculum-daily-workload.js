@@ -22,9 +22,15 @@ function generateCurriculumDayWorkloadList(curriculum) {
 
         const delayInDays = curriculumSession.delayInDays;
         const isUniqueInDay = curriculumSession.isUniqueInDay;
-        let daysLeftBeforeNextSession = isSequential ?
-            delayInDays :
-            Math.min(delayInDays - currentDay, 0);
+        const isFirstSession = index === 0;
+
+        let daysLeftBeforeNextSession = 0;
+        if (isFirstSession)
+            daysLeftBeforeNextSession = 0;
+        else if (isSequential)
+            daysLeftBeforeNextSession = delayInDays;
+        else
+            daysLeftBeforeNextSession = Math.min(delayInDays - currentDay, 0);
 
         if (daysLeftBeforeNextSession > 0) {
             currentDay += daysLeftBeforeNextSession;
