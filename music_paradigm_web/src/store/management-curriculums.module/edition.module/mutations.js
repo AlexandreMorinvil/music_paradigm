@@ -1,4 +1,4 @@
-import { curriculumGenerator } from '@/modules/curriculums';
+import { curriculumGenerator, curriculumSessionsEditor } from '@/modules/curriculums';
 
 export default {
 	editCurriculumEditionLogType(state, logType) {
@@ -14,7 +14,11 @@ export default {
 	},
 
 	editCurriculumEditionSessionAssociativeId(state, associativeId) {
-		state.editionCurriculum.experiments[state.selectedSessionIndex].associativeId = associativeId;
+		curriculumSessionsEditor.editCurriculumSessionAssociativeId(
+			state.editionCurriculum.experiments,
+			state.selectedSessionIndex,
+			associativeId
+		)
 	},
 
 	editCurriculumEditionSessionDelayInDays(state, delayInDays) {
@@ -30,7 +34,11 @@ export default {
 	},
 
 	editCurriculumEditionSessionTaskReference(state, taskReference) {
-		state.editionCurriculum.experiments[state.selectedSessionIndex].experimentReference = taskReference;
+		curriculumSessionsEditor.editCurriculumSessionTaskReference(
+			state.editionCurriculum.experiments,
+			state.selectedSessionIndex,
+			taskReference
+		)
 	},
 
 	editCurriculumEditionSessionTitle(state, title) {
