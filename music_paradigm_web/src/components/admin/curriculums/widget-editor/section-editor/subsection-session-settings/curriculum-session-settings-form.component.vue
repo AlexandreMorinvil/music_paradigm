@@ -3,8 +3,12 @@
 		<div class="label-input-spacing" v-if="canFormBeDisplayed">
 
 			<label for="title">Associative ID </label>
-			<input type="text" v-model="associativeId" name="title" autocomplete="new-associative-id"
-				placeholder="Insert an associative Id" />
+			<div class="associative-id-input-area">
+				<input type="text" v-model="associativeIdInput" name="title" autocomplete="new-associative-id"
+					placeholder="Insert an associative Id" />
+				<button class="widget-button small blue" :class="isAssociativeIdEdited || 'inactive'"
+					v-on:click="commitAssociativeIdEdition">Edit</button>
+			</div>
 
 			<label for="log-type">Task </label>
 			<select :class="!taskReference && 'placeholder-option'" name="experiment-reference" v-model="taskReference">
@@ -38,10 +42,16 @@
 
 <script>
 import '@/styles/form-template.css';
+import '@/styles/widget-template.css';
 
-import { mapGetters, mapMutations } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
+	data() {
+		return {
+			associativeIdInput: "",
+		}
+	},
 	computed: {
 		...mapGetters('experiments', ['experimentsHeadersList']),
 		...mapGetters('managementCurriculums/edition', [
@@ -49,20 +59,13 @@ export default {
 			'curriculumEditionSessionDelayInDays',
 			'curriculumEditionSessionIsCompletionLimited',
 			'curriculumEditionSessionIsUniqueInDay',
+			'curriculumEditionSelectedSessionIndex',
 			'curriculumEditionSessionTaskReference',
 			'curriculumEditionSessionText',
 			'curriculumEditionSessionTitle',
 			'hasCurriculumEditionSelectedSession',
-			'hasAtLeastOneSessionInEditionCurriculum'
+			'hasAtLeastOneSessionInEditionCurriculum',
 		]),
-		associativeId: {
-			get() {
-				return this.curriculumEditionSessionAssociativeId;
-			},
-			set(value) {
-				this.editCurriculumEditionSessionAssociativeId(value);
-			},
-		},
 		delayInDays: {
 			get() {
 				return this.curriculumEditionSessionDelayInDays;
@@ -124,11 +127,13 @@ export default {
 			});
 			return tasksReferenceAndNameList;
 		},
-
+		isAssociativeIdEdited() {
+			return this.associativeIdInput !== this.curriculumEditionSessionAssociativeId;
+		},
 	},
 	methods: {
+		...mapActions('managementCurriculums/edition', ['editCurriculumEditionSessionAssociativeId']),
 		...mapMutations('managementCurriculums/edition', [
-			'editCurriculumEditionSessionAssociativeId',
 			'editCurriculumEditionSessionDelayInDays',
 			'editCurriculumEditionSessionIsCompletionLimited',
 			'editCurriculumEditionSessionIsUniqueInDay',
@@ -136,16 +141,41 @@ export default {
 			'editCurriculumEditionSessionText',
 			'editCurriculumEditionSessionTitle',
 		]),
+		commitAssociativeIdEdition() {
+			this.editCurriculumEditionSessionAssociativeId(this.associativeIdInput);
+		},
 		formatTaskUniqueName(task) {
 			if (task) return String(task.group) + '/' + task.name + '/[v]' + task.version;
 			else return '';
 		},
+		resetInputAssociativeId() {
+			this.associativeIdInput = this.curriculumEditionSessionAssociativeId;
+		}
 
 	},
+	watch: {
+		curriculumEditionSessionAssociativeId: {
+			immediate: true,
+			handler: function () {
+				this.resetInputAssociativeId();
+			}
+		},
+		curriculumEditionSelectedSessionIndex: {
+			immediate: true,
+			handler: function () {
+				this.resetInputAssociativeId();
+			}
+		}
+	}
 };
 </script>
 
 <style scoped>
+.associative-id-input-area {
+	display: grid;
+	grid-template-columns: 4fr 1fr;
+}
+
 .form-area {
 	display: flex;
 	flex-direction: column;
