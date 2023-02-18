@@ -33,7 +33,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('curriculums', ['curriculumsList']),
+		...mapGetters('managementCurriculums', ['curriculumsList']),
 		...mapGetters('users', ['hasSelectedUser', 'userSelectedId']),
 		isUnselectButtonActive() {
 			return this.hasSelectedUser;
@@ -43,7 +43,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('curriculums', ['fetchAllCurriculumHeaders']),
+		...mapActions('managementCurriculums', ['fetchAllCurriculumHeaders']),
 		...mapActions('users', ['unsetSelectedUser', 'updateUser', 'deleteUser']),
 		bundleUserFromForm() {
 			return this.$refs.editorForm.bundleUserFromForm();

@@ -23,6 +23,12 @@ export default {
 		return state.experimentsHeadersList;
 	},
 
+	taskHeaderForReference: (state) => (taskReference) => {
+		return state.experimentsHeadersList.find((taskHeader) => {
+			return taskHeader._id == taskReference;
+		}) || null;
+	},
+
 	experimentSelectedParameters: (state) => {
 		return experimentParser.getParameterVariables(state.selection.content);
 	},

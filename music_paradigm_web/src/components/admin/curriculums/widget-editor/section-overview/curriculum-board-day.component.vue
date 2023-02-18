@@ -1,0 +1,87 @@
+<template>
+    <div class="curriculum-day-container">
+        <div class="curriculum-day-label">
+            <div class="label-text"> <b> {{ delayText }} </b></div>
+            <div v-if="isDelayDueToUniqueInDay" class="label-precision"> {{ isDelayDueToUniqueInDayText }} </div>
+        </div>
+        <CurriculumBoardSession v-for="(curriculumSession, index) in curriculumSessionsList" :key="index"
+            :curriculumSession="curriculumSession" />
+    </div>
+</template>
+
+<script>
+import '@/styles/color-palette.css';
+
+import CurriculumBoardSession from './curriculum-board-session.component.vue';
+import { CurriculumDayWorkload } from '@/modules/curriculums';
+
+export default {
+    components: {
+        CurriculumBoardSession
+    },
+    props: {
+        dayWorkload: {
+            type: CurriculumDayWorkload,
+            default() {
+                return new CurriculumDayWorkload();
+            }
+        }
+    },
+    computed: {
+        delayText() {
+            const delayInDays = this.dayWorkload.delayInDays;
+            if (delayInDays === 0) return 'First day';
+            else if (delayInDays === 1) return 'After 1 day';
+            else if (delayInDays > 1) return `After ${delayInDays} days`;
+        },
+        isDelayDueToUniqueInDay() {
+            return this.dayWorkload.isDelayDueToUniqueInDay;
+        },
+        isDelayDueToUniqueInDayText() {
+            return 'Previous session requires waiting next day';
+        },
+        curriculumSessionsList() {
+            return this.dayWorkload.sessionsList;
+        },
+    }
+};
+</script>
+
+<style scoped>
+.curriculum-day-container {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    background-color: var(--color-blue-board-tag-background);
+    border-color: var(--color-blue-board-tag-border);
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 4px;
+    margin: 10px;
+    padding: 20px 10px 10px;
+	box-shadow: 5px 5px 5px rgb(15, 15, 15);
+}
+
+.curriculum-day-label {
+    display: inline;
+    position: absolute;
+    left: -15px;
+    top: -25px;
+    padding: 5px;
+    width: auto;
+    background-color: var(--color-turquoise-board-tag-background);
+    border-color: var(--color-turquoise-board-tag-border);
+    border-style: solid;
+    border-width: 3px;
+    box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.label-text {
+    font-size: 0.8em;
+}
+
+.label-precision {
+    font-size: 0.5em;
+}
+</style>

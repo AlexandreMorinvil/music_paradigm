@@ -8,7 +8,6 @@ import state from './state';
 
 import { account } from './account.module';
 import { alert } from './alert.module';
-import { curriculums } from './curriculums.module';
 import { evaluation } from './evaluation.module';
 import { experiment } from './experiment.module';
 import { experiments } from './experiments.module';
@@ -16,6 +15,7 @@ import { glt } from './glt.module';
 import { keyboard } from './keyboard.module';
 import { log } from './log.module';
 import { logs } from './logs.module';
+import { managementCurriculums } from './management-curriculums.module';
 import { piano } from './piano.module';
 import { pvt } from './pvt.module';
 import { question } from './question.module';
@@ -35,7 +35,6 @@ export default new Vuex.Store({
 	modules: {
 		alert,
 		account,
-		curriculums,
 		evaluation,
 		experiment,
 		experiments,
@@ -43,6 +42,7 @@ export default new Vuex.Store({
 		keyboard,
 		log,
 		logs,
+		managementCurriculums,
 		piano,
 		pvt,
 		question,

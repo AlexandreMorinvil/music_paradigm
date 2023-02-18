@@ -91,7 +91,7 @@ const schema = new Schema(
                     },
 
                     // Specify whether this experiment can be completed the same day as another experiment
-                    isUniqueIndDay: {
+                    isUniqueInDay: {
                         type: Boolean,
                         default: true
                     },

@@ -1,5 +1,4 @@
 export default {
-	// // Status Updates
 	indicateFetchingCurriculumList(state) {
 		state.status.isFetchingCurriculumsList = true;
 	},
@@ -30,16 +29,6 @@ export default {
 
 	indicateDeleteRequestEnd(state) {
 		state.status.isDeleting = false;
-	},
-
-	// Setters
-	setSelectedCurriculum(state, curriculum) {
-		state.selection = {};
-		Object.assign(state.selection, curriculum);
-	},
-
-	unsetSelectedCurriculum(state) {
-		state.selection = {};
 	},
 
 	setHeadersList(state, usersHeadersLst) {

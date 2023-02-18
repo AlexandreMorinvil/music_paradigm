@@ -25,7 +25,7 @@ function EMPTY_PROGRESSION_SUMMARY() {
 			title: '',
 			text: '',
 			releaseTime: '',
-			isUniqueIndDay: true,
+			isUniqueInDay: true,
 			isCompletionLimited: true,
 
 			completionCount: 0,

@@ -55,7 +55,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('curriculums', ['fetchAllCurriculumHeaders']),
+		...mapActions('managementCurriculums', ['fetchAllCurriculumHeaders']),
 		...mapActions('users', ['assignCurriculum']),
 		...mapActions('users/progressions', ['updateParameters', 'updateAdjustments']),
 		bundleUserCurriculumInformation() {

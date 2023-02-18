@@ -1,4 +1,6 @@
-.form-area {
+/* TODO: Get rid of this */
+
+/* .form-area {
     --form-background-color: rgb(40, 40, 40);
     --inner-form-background-color: rgb(50, 50, 50);
 }
@@ -20,10 +22,11 @@
     border-radius: 4px;
     padding-left: 10px;
     font-size: 0.8em;
-}
+} */
 
 .selected-element-text {
-    color: rgb(24, 210, 24);;
+    color: rgb(24, 210, 24);
+    ;
 }
 
 /* Template elements */
@@ -40,4 +43,5 @@ textarea {
     background-color: white;
     border: 2px solid rgb(210, 210, 210);
     color: black;
+    padding: 2.5px;
 }
