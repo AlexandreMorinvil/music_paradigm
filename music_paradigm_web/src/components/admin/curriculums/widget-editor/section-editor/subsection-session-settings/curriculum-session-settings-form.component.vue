@@ -7,8 +7,7 @@
 				placeholder="Insert an associative Id" />
 
 			<label for="log-type">Task </label>
-			<select :class="!taskReference && 'placeholder-option'" name="experiment-reference"
-				v-model="taskReference">
+			<select :class="!taskReference && 'placeholder-option'" name="experiment-reference" v-model="taskReference">
 				<option value="">Select the task of this session</option>
 				<option v-for="(referenceAndName, index) in tasksReferenceAndNameList" :key="index"
 					:value="tasksReferenceAndNameList[index].reference">
@@ -24,12 +23,11 @@
 			<input type="number" v-model="delayInDays" min="0" name="delay-in-days" autocomplete="new-delay"
 				placeholder="Insert the delay before availability" />
 
+			<label for="isUniqueInDay"> Once done, wait next day </label>
+			<input class="checkbox" v-model="isUniqueInDay" name="isUniqueInDay" type="checkbox" />
 
 			<label for="isCompletionLimited"> Only one completion </label>
 			<input class="checkbox" v-model="isCompletionLimited" name="isCompletionLimited" type="checkbox" />
-
-			<label for="isUniqueInDay"> Once done, wait next day </label>
-			<input class="checkbox" v-model="isUniqueInDay" name="isUniqueInDay" type="checkbox" />
 
 			<label for="text">Text</label>
 			<textarea v-model="text" name="text" row="2" placeholder="Insert a text to display to the user" />

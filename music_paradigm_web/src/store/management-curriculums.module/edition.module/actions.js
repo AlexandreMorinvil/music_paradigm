@@ -52,6 +52,7 @@ export default {
 
 	unsetCurriculumEdition({ commit }) {
 		commit('unsetCurriculumEdition');
+		commit('unsetCurriculumEditionSelectedSessionIndex');
 	},
 
 	unsetCurriculumEditionSelectedSessionIndex({commit}) {

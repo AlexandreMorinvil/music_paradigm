@@ -5,7 +5,7 @@ export default {
 }
 
 function generateCurriculumDayWorkloadList(curriculum) {
-    
+
     if (!curriculum) return [];
 
     const dayWorkloadList = [];
@@ -18,7 +18,7 @@ function generateCurriculumDayWorkloadList(curriculum) {
 
     let wasPreviousSessionUniqueInDay = false;
 
-    curriculumSessionsList.forEach(curriculumSession => {
+    curriculumSessionsList.forEach((curriculumSession, index) => {
 
         const delayInDays = curriculumSession.delayInDays;
         const isUniqueInDay = curriculumSession.isUniqueInDay;
@@ -28,16 +28,24 @@ function generateCurriculumDayWorkloadList(curriculum) {
 
         if (daysLeftBeforeNextSession > 0) {
             currentDay += daysLeftBeforeNextSession;
-            dayWorkload = new CurriculumDayWorkload(currentDay, false /* isDelayDueToUniqueInDay */);
+            dayWorkload = new CurriculumDayWorkload(
+                currentDay,
+                false /* isDelayDueToUniqueInDay */,
+                index /* indexInCurriculumOfFirstSession */
+            );
             dayWorkloadList.push(dayWorkload);
         }
         else if (wasPreviousSessionUniqueInDay) {
             currentDay += 1;
-            dayWorkload = new CurriculumDayWorkload(currentDay, true /* isDelayDueToUniqueInDay */);
+            dayWorkload = new CurriculumDayWorkload(
+                currentDay,
+                true /* isDelayDueToUniqueInDay */,
+                index /* indexInCurriculumOfFirstSession */
+            );
             dayWorkloadList.push(dayWorkload);
         }
 
-        dayWorkload.addSession(curriculumSession)
+        dayWorkload.addSession(curriculumSession);
 
         wasPreviousSessionUniqueInDay = isUniqueInDay;
     });

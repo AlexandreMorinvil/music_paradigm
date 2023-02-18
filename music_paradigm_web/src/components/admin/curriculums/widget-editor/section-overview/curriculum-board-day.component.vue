@@ -5,7 +5,7 @@
             <div v-if="isDelayDueToUniqueInDay" class="label-precision"> {{ isDelayDueToUniqueInDayText }} </div>
         </div>
         <CurriculumBoardSession v-for="(curriculumSession, index) in curriculumSessionsList" :key="index"
-            :curriculumSession="curriculumSession" />
+            :curriculumSession="curriculumSession" :index="getSessionIndex(index)" />
     </div>
 </template>
 
@@ -28,8 +28,11 @@ export default {
         }
     },
     computed: {
+        curriculumSessionsList() {
+            return this.dayWorkload.sessionsList;
+        },
         delayText() {
-            const delayInDays = this.dayWorkload.delayInDays;
+            const delayInDays = Number(this.dayWorkload.delayInDays);
             if (delayInDays === 0) return 'First day';
             else if (delayInDays === 1) return 'After 1 day';
             else if (delayInDays > 1) return `After ${delayInDays} days`;
@@ -40,9 +43,11 @@ export default {
         isDelayDueToUniqueInDayText() {
             return 'Previous session requires waiting next day';
         },
-        curriculumSessionsList() {
-            return this.dayWorkload.sessionsList;
-        },
+    },
+    methods: {
+        getSessionIndex(index) {
+            return this.dayWorkload.indexInCurriculumOfFirstSession + index;
+        }
     }
 };
 </script>

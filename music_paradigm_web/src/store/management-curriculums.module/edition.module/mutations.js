@@ -59,6 +59,6 @@ export default {
 	},
 
 	unsetCurriculumEditionSelectedSessionIndex(state) {
-		state.selectedSessionIndex = 0;
+		state.selectedSessionIndex = -1;
 	},
 };

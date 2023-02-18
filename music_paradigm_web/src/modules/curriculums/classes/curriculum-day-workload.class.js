@@ -1,7 +1,8 @@
 export class CurriculumDayWorkload {
-    constructor(delayInDays, isDelayDueToUniqueInDay) {
+    constructor(delayInDays, isDelayDueToUniqueInDay, indexInCurriculumOfFirstSession = 0) {
         this.delayInDays = delayInDays;
         this.sessionsList =  [];
+        this.indexInCurriculumOfFirstSession = indexInCurriculumOfFirstSession;
         this.isDelayDueToUniqueInDay = isDelayDueToUniqueInDay;
     }
 

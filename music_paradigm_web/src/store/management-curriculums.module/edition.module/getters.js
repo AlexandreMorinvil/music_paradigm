@@ -20,31 +20,38 @@ export default {
 	},
 
 	curriculumEditionSessionAssociativeId(state) {
-		return state.editionCurriculum.experiments[state.selectedSessionIndex].associativeId;
+		const curriculumEditionSession = state.editionCurriculum.experiments[state.selectedSessionIndex] || {};
+		return curriculumEditionSession.associativeId;
 	},
 
 	curriculumEditionSessionDelayInDays(state) {
-		return state.editionCurriculum.experiments[state.selectedSessionIndex].delayInDays;
+		const curriculumEditionSession = state.editionCurriculum.experiments[state.selectedSessionIndex] || {};
+		return curriculumEditionSession.delayInDays;
 	},
 
 	curriculumEditionSessionIsCompletionLimited(state) {
-		return state.editionCurriculum.experiments[state.selectedSessionIndex].isCompletionLimited;
+		const curriculumEditionSession = state.editionCurriculum.experiments[state.selectedSessionIndex] || {};
+		return curriculumEditionSession.isCompletionLimited;
 	},
 
 	curriculumEditionSessionIsUniqueInDay(state) {
-		return state.editionCurriculum.experiments[state.selectedSessionIndex].isUniqueInDay;
+		const curriculumEditionSession = state.editionCurriculum.experiments[state.selectedSessionIndex] || {};
+		return curriculumEditionSession.isUniqueInDay;
 	},
 
 	curriculumEditionSessionTaskReference(state) {
-		return state.editionCurriculum.experiments[state.selectedSessionIndex].experimentReference;
+		const curriculumEditionSession = state.editionCurriculum.experiments[state.selectedSessionIndex] || {};
+		return curriculumEditionSession.experimentReference;
 	},
 
 	curriculumEditionSessionTitle(state) {
-		return state.editionCurriculum.experiments[state.selectedSessionIndex].title;
+		const curriculumEditionSession = state.editionCurriculum.experiments[state.selectedSessionIndex] || {};
+		return curriculumEditionSession.title;
 	},
 
 	curriculumEditionSessionText(state) {
-		return state.editionCurriculum.experiments[state.selectedSessionIndex].text;
+		const curriculumEditionSession = state.editionCurriculum.experiments[state.selectedSessionIndex] || {};
+		return curriculumEditionSession.text;
 	},
 
 	curriculumEditionTitle: (state) => {

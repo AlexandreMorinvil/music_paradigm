@@ -1,23 +1,28 @@
 <template>
-    <div class="session-container">
-        <div>
-            <div>{{ title }}</div>
-            <div class="session-task">{{ taskName }}</div>
+    <div :class="isSessionLinkedToSelectedSession && 'highlighted-session'">
+        <div class="session-container" :class="{
+            'session-container-shadow': !isSessionLinkedToSelectedSession,
+            'selected-session': isSelectedSession
+        }" v-on:click="handleSessionClick">
+            <div>
+                <div>{{ title }}</div>
+                <div class="session-task">{{ taskName }}</div>
+            </div>
+            <div class="session-specifications">
+                <b>Delay : </b>
+                <span>{{ delayInDays }} day(s)</span>
+
+                <b>Wait a day after : </b>
+                <span>{{ isUniqueInDayText }}</span>
+
+                <b>Completion limit : </b>
+                <span>{{ isCompletionLitmitedText }}</span>
+
+                <b>Has text : </b>
+                <span>{{ hasTextIndicator }}</span>
+            </div>
+            <div class="associative-id-contanier-box"><b>Ass. ID:</b> {{ completeAssociativeId }}</div>
         </div>
-        <div class="session-specifications">
-            <b>Delay : </b>
-            <span>{{ delayInDays }} day(s)</span>
-
-            <b>Wait a day after : </b>
-            <span>{{ isUniqueInDayText }}</span>
-
-            <b>Completion limit : </b>
-            <span>{{ isCompletionLitmitedText }}</span>
-
-            <b>Has text : </b>
-            <span>{{ hasTextIndicator }}</span>
-        </div>
-        <div class="associative-id-contanier-box"><b>Ass. ID:</b> {{ completeAssociativeId }}</div>
     </div>
 </template>
 
@@ -25,7 +30,7 @@
 import '@/styles/color-palette.css';
 
 import { curriculumGenerator } from '@/modules/curriculums';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     props: {
@@ -34,16 +39,26 @@ export default {
             default() {
                 return curriculumGenerator.GENERATE_BLANK_CURRICULUM_SESSION();
             }
+        },
+        index: {
+            type: Number,
+            default() {
+                return -1;
+            }
         }
     },
     computed: {
-        ...mapGetters("experiments", ["taskHeaderForReference"]),
-		completeAssociativeId() {
-			return `${this.curriculumSession.associativeId} / ${this.curriculumSession.associativeIdOrdinalNumber}`;
-		},
+        ...mapGetters('experiments', ['taskHeaderForReference']),
+        ...mapGetters('managementCurriculums/edition', [
+            'curriculumEditionSessionAssociativeId',
+            'curriculumEditionSelectedSessionIndex',
+        ]),
+        completeAssociativeId() {
+            return `${this.curriculumSession.associativeId} / ${this.curriculumSession.associativeIdOrdinalNumber}`;
+        },
 
         delayInDays() {
-            return this.curriculumSession.delayInDays;
+            return Number(this.curriculumSession.delayInDays);
         },
 
         experimentReference() {
@@ -62,6 +77,14 @@ export default {
             return this.curriculumSession.isCompletionLimited ? "✓" : "";;
         },
 
+        isSelectedSession() {
+            return this.curriculumEditionSelectedSessionIndex === this.index;
+        },
+
+        isSessionLinkedToSelectedSession() {
+            return this.curriculumSession.associativeId === this.curriculumEditionSessionAssociativeId;
+        },
+
         releaseTime() {
             return this.curriculumSession.releaseTime || 0;
         },
@@ -77,6 +100,16 @@ export default {
             const title = this.curriculumSession.title || "";
             return title.length > 0 ? title : "#NO TITLE";
         },
+    },
+    methods: {
+        ...mapActions('managementCurriculums/edition', [
+            'setCurriculumEditionSelectedSessionIndex',
+            'unsetCurriculumEditionSelectedSessionIndex',
+        ]),
+        handleSessionClick() {
+            if (this.isSelectedSession) this.unsetCurriculumEditionSelectedSessionIndex();
+            else this.setCurriculumEditionSelectedSessionIndex(this.index);
+        }
     }
 };
 </script>
@@ -91,7 +124,6 @@ export default {
     height: 200px;
     margin: 10px;
     background-color: gray;
-    box-shadow: 5px 5px 5px rgb(15, 15, 15);
     border-style: solid;
     border-radius: 10px;
     border-width: 4px;
@@ -103,6 +135,10 @@ export default {
     fill: var(--color-blue-board-item-stroke);
 }
 
+.session-container-shadow {
+    box-shadow: 5px 5px 5px rgb(15, 15, 15);
+}
+
 .session-task {
     font-size: 0.7em;
 }
@@ -111,23 +147,35 @@ export default {
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 4px;
-    font-size: 0.65em;
+    font-size: 0.625em;
     text-align: left;
 }
 
 .associative-id-contanier-box {
-	position: absolute;
-	display: inline;
-	padding: 1px;
-	width: auto;
-	bottom: -20px;
-	left: -10px;
-	border-width: 3px;
-	border-style: solid;
-	background-color: var(--color-green-board-tag-background);
-	border-color: var(--color-green-board-tag-border);
-	color: rgba(255, 255, 255, 0.85);
+    position: absolute;
+    display: inline;
+    padding: 1px;
+    width: auto;
+    bottom: -20px;
+    left: -10px;
+    border-width: 3px;
+    border-style: solid;
+    background-color: var(--color-green-board-tag-background);
+    border-color: var(--color-green-board-tag-border);
+    color: rgba(255, 255, 255, 0.85);
     font-size: 0.7em;
-	box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1);
+}
+
+.highlighted-session {
+    background-color: rgba(109, 217, 54, 0.25);
+    box-shadow: 0 0px 10px rgba(112, 223, 57, 0.5);
+    border-radius: 10px;
+}
+
+.selected-session {
+    background-color: var(--color-green-board-item-background);
+    border-color: var(--color-green-board-item-border);
+    color: var(--color-green-board-item-text);
 }
 </style>
