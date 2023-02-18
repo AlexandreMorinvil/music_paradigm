@@ -17,13 +17,13 @@ function GENERATE_BLANK_CURRICULUM() {
 
 function GENERATE_BLANK_CURRICULUM_SESSION(index = 0) {
 	return {
-		associativeId: 'id' + index,
+		associativeId: 'id' + (index + 1),
 		associativeIdOrdinalNumber: 0,
 		experimentReference: '',
 		title: '',
 		delayInDays: 0,
 		releaseTime: '00:00',
-		isUniqueInDay: true,
+		isUniqueInDay: false,
 		isCompletionLimited: true,
 		text: '',
 	};

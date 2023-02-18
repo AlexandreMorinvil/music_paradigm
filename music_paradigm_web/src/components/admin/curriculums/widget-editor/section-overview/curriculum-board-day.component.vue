@@ -1,23 +1,27 @@
 <template>
-    <div class="curriculum-day-container">
+    <div class="curriculum-day-container" :class="mustMakeSpaceForPositionAfterDay && 'margin-after-day'" >
         <div class="curriculum-day-label">
             <div class="label-text"> <b> {{ delayText }} </b></div>
             <div v-if="isDelayDueToUniqueInDay" class="label-precision"> {{ isDelayDueToUniqueInDayText }} </div>
         </div>
-        <CurriculumBoardSession v-for="(curriculumSession, index) in curriculumSessionsList" :key="index"
-            :curriculumSession="curriculumSession" :index="getSessionIndex(index)" />
+        <CurriculumBoardSessionPositionComponent v-for="(curriculumSession, index) in curriculumSessionsList" :key="index"
+            class="session-area" :dayWorkload="dayWorkload" :indexInDayWorkload="index">
+            <CurriculumBoardSessionComponent :curriculumSession="curriculumSession" :index="getSessionIndex(index)" />
+        </CurriculumBoardSessionPositionComponent>
     </div>
 </template>
 
 <script>
 import '@/styles/color-palette.css';
 
-import CurriculumBoardSession from './curriculum-board-session.component.vue';
 import { CurriculumDayWorkload } from '@/modules/curriculums';
+import CurriculumBoardSessionComponent from './curriculum-board-session.component.vue';
+import CurriculumBoardSessionPositionComponent from './curriculum-board-session-position.component.vue';
 
 export default {
     components: {
-        CurriculumBoardSession
+        CurriculumBoardSessionPositionComponent,
+        CurriculumBoardSessionComponent,
     },
     props: {
         dayWorkload: {
@@ -43,11 +47,20 @@ export default {
         isDelayDueToUniqueInDayText() {
             return 'Previous session requires waiting next day';
         },
+        isLastDayOfCurriculum() {
+            return this.dayWorkload.isLastDayOfCurriculum;
+        },
+        isLastSessionUniqueInDay() {
+            return this.dayWorkload.isLastSessionUniqueInDay();
+        },
+        mustMakeSpaceForPositionAfterDay() {
+            return this.isLastDayOfCurriculum && this.isLastSessionUniqueInDay;
+        }
     },
     methods: {
         getSessionIndex(index) {
-            return this.dayWorkload.indexInCurriculumOfFirstSession + index;
-        }
+            return this.dayWorkload.getSessionIndexInCurriculum(index);
+        },
     }
 };
 </script>
@@ -64,7 +77,7 @@ export default {
     border-width: 4px;
     margin: 10px;
     padding: 20px 10px 10px;
-	box-shadow: 5px 5px 5px rgb(15, 15, 15);
+    box-shadow: 5px 5px 5px rgb(15, 15, 15);
 }
 
 .curriculum-day-label {
@@ -88,5 +101,9 @@ export default {
 
 .label-precision {
     font-size: 0.5em;
+}
+
+.margin-after-day {
+    margin-right: 175px;
 }
 </style>

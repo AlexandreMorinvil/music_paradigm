@@ -56,5 +56,7 @@ function generateCurriculumDayWorkloadList(curriculum) {
         wasPreviousSessionUniqueInDay = isUniqueInDay;
     });
 
-    return dayWorkloadList
+    dayWorkload.setAsLastDayOfCurriculum();
+
+    return dayWorkloadList;
 }
