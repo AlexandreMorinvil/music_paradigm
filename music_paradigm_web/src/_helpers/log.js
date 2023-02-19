@@ -20,7 +20,7 @@ const defaultLogType = logTypeOptions[2];
  * @returns {Array<String>} An array with the names of all the possible log types
  */
 function returnValidLogType(logType) {
-	return logTypeOptions.includes(logType) ? logType : 'simple';
+	return logTypeOptions.includes(logType) ? logType : defaultLogType;
 }
 
 // Simple logs

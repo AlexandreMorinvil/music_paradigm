@@ -9,6 +9,8 @@
 </template>
 
 <script>
+// import '@/styles/color-palette.css';
+
 export default {
 	data() {
 		return {
@@ -135,8 +137,8 @@ export default {
 
 <style scoped>
 .session-container {
-	width: 180px;
-	height: 180px;
+	width: 200px;
+	height: 200px;
 	margin: 10px;
 	background-color: gray;
 	box-shadow: 5px 5px 5px rgb(15, 15, 15);
@@ -172,52 +174,46 @@ export default {
 }
 
 .unavailable {
-	background-color: rgb(40, 40, 40);
-	border-color: rgb(35, 35, 35);
-	color: rgb(80, 80, 80);
-	stroke: rgb(20, 20, 20);
-	fill: rgb(20, 20, 20);
+	background-color: var(--color-dark-grey-board-item-background);
+	border-color: var(--color-dark-grey-board-item-border);
+	color: var(--color-dark-grey-board-item-text);
+	stroke: var(--color-dark-grey-board-item-stroke);
+	fill: var(--color-dark-grey-board-item-stroke);
 	cursor: default;
 	outline: none;
 }
 
 .almost-available {
-	background-color: rgb(60, 60, 60);
-	border-color: rgb(55, 55, 55);
-	color: rgb(100, 100, 100);
-	fill: rgb(40, 40, 40);
+	background-color: var(--color-grey-board-item-background);
+	border-color: var(--color-grey-board-item-border);
+	color: var(--color-grey-board-item-text);
+	fill: var(--color-grey-board-item-stroke);
 	cursor: default;
 	outline: none;
 }
 
 .new-available {
-	background-color: rgb(200, 180, 0);
-	border-color: rgb(195, 175, 0);
-	color: rgb(250, 250, 250);
-	stroke: rgb(100, 100, 60);
-	fill: rgb(100, 100, 60);
+	background-color: var(--color-yellow-board-item-background);
+	border-color: var(--color-yellow-board-item-border);
+	color: var(--color-yellow-board-item-text);
+	stroke: var(--color-yellow-board-item-stroke);
+	fill: var(--color-yellow-board-item-stroke);
 }
 
 .completed-available {
-	background-color: rgb(0, 190, 50);
-	border-color: rgb(0, 185, 45);
-	color: rgb(0, 130, 0);
-	fill: rgb(0, 130, 0);
+	background-color: var(--color-green-board-item-background);
+	border-color: var(--color-green-board-item-border);
+	color: var(--color-green-board-item-text);
+	fill: var(--color-green-board-item-stroke);
 }
 
 .completed {
-	background-color: rgb(0, 190, 50);
-	border-color: rgb(0, 185, 45);
-	color: rgb(0, 130, 0);
-	fill: rgb(0, 130, 0);
+	background-color: var(--color-green-board-item-background);
+	border-color: var(--color-green-board-item-border);
+	color: var(--color-green-board-item-text);
+	fill: var(--color-green-board-item-stroke);
 	cursor: default;
 	outline: none;
-}
-
-.label {
-	background-color: rgb(40, 40, 40);
-	border-color: rgb(35, 35, 35);
-	color: rgb(80, 80, 80);
 }
 
 .icon {

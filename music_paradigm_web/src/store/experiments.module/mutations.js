@@ -42,6 +42,14 @@ export default {
 		state.status.hasCompiledEdition = false;
 	},
 
+	indicateDownloadingTasksZipFile(state) {
+		state.status.isDownloadingTasksZipFile = true;
+	},
+
+	indicateDownloadingTasksZipFileEnd(state) {
+		state.status.isDownloadingTasksZipFile = false;
+	},
+
 	// Setters
 	setSelectedExperiment(state, experiment) {
 		state.selection.content = {};

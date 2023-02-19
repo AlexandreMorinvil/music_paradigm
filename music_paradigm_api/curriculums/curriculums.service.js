@@ -35,7 +35,7 @@ async function create(curriculumParameters) {
             Object.values(err.errors)
                 .filter(fieldError => fieldError.name === 'CastError')
                 .forEach(() => {
-                    err.message = "A proper experiment must be specified for all experiments";
+                    err.message = "A task must be specified for all sessions";
                 });
         else if (err.errmsg)
             if (err.errmsg.includes("1100")) err.message = "A curriculum with this title already exists";

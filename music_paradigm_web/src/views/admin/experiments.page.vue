@@ -16,8 +16,8 @@
 			<experiments-users-logs-widget />
 		</widget-content-frame>
 
-		<widget-content-frame title="Experiments List">
-			<experiments-list-widget />
+		<widget-content-frame title="Tasks List">
+			<tasks-list-widget />
 		</widget-content-frame>
 	</admin-page-content-frame>
 </template>
@@ -28,7 +28,7 @@ import ExperimentsEditor from '@/components/admin/experiments/ExperimentsEditorW
 
 import ExperimentsAdminLogsWidget from '@/components/admin/experiments/widget-admin-logs/experiments-admin-logs.widget.vue';
 import ExperimentsLauncherWidget from '@/components/admin/experiments/widget-launcher/experiments-launcher.widget.vue';
-import ExperimentsListWidget from '@/components/admin/experiments/widget-list/experiments-list.widget.vue';
+import TasksListWidget from '@/components/admin/experiments/widget-list/tasks-list.widget.vue';
 import ExperimentsUsersLogsWidget from '@/components/admin/experiments/widget-users-logs/experiments-users-logs.widget.vue';
 import WidgetContentFrame from '@/components/content-frame/widget-content-frame.component.vue';
 
@@ -40,7 +40,7 @@ export default {
 		ExperimentsLauncherWidget,
 		ExperimentsAdminLogsWidget,
 		ExperimentsUsersLogsWidget,
-		ExperimentsListWidget,
+		TasksListWidget,
 	},
 };
 </script>

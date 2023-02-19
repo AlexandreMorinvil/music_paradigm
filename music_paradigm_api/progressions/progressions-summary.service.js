@@ -71,7 +71,7 @@ async function generateProgressionSummary(curriculum, progression) {
         elements.text = curriculumExperiment.text;
         elements.delayInDays = curriculumExperiment.delayInDays;
         elements.releaseTime = curriculumExperiment.releaseTime;
-        elements.isUniqueIndDay = curriculumExperiment.isUniqueIndDay;
+        elements.isUniqueInDay = curriculumExperiment.isUniqueInDay;
         elements.isCompletionLimited = curriculumExperiment.isCompletionLimited;
 
         elements.startCount = progressionExperiment.startCount || 0;
@@ -130,7 +130,7 @@ async function generateProgressionSummary(curriculum, progression) {
 
         hasBlockingUniqueInDayDoneToday = updateHasBlockingUniqueInDayDoneToday(
             hasBlockingUniqueInDayDoneToday,
-            curriculumExperiment.isUniqueIndDay,
+            curriculumExperiment.isUniqueInDay,
             wasTodayCompleted
         );
     }

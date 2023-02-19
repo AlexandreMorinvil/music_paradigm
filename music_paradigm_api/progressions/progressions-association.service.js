@@ -12,7 +12,7 @@ module.exports = {
  *      {
  *          associativeId: String,
  *          associativeIdOrdinalNumber: Number,
- *          curriculumExperiment: {associativeId: String, title: String, delayInDays: Number, releaseTime: String, isUniqueIndDay: Boolean, ...}, 
+ *          curriculumExperiment: {associativeId: String, title: String, delayInDays: Number, releaseTime: String, isUniqueInDay: Boolean, ...}, 
  *          progressionExperiment:{associativeId: String, associativeIdOrdinalNumber: Number, startCOunt: Number, completionCount: Number, ...}
  *      }
  *  ]                   

@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import '@/styles/color-palette.css';
+
 import OverviewTableSessionDetailsAdjsutmentsComponent from './overview-table-session-details-adjsutments.component.vue';
 import OverviewTableSessionDetailsAvailabilityComponent from './overview-table-session-details-availability.component.vue';
 import OverviewTableSessionDetailsCompletionsComponent from './overview-table-session-details-completions.component.vue';
@@ -100,26 +102,26 @@ export default {
 	left: -10px;
 	border-width: 3px;
 	border-style: solid;
-	background-color: rgb(25, 115, 0);
-	border-color: rgb(20, 110, 0);
+	background-color: var(--color-green-board-tag-background);
+	border-color: var(--color-green-board-tag-border);
 	color: rgba(255, 255, 255, 0.85);
 	box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.1);
 }
 
 .details-container-color {
-	background-color: rgb(45, 45, 145);
-	border-color: rgb(50, 50, 150);
+	background-color: var(--color-blue-board-tag-background);
+	border-color: var(--color-blue-board-tag-border);
 	box-shadow: 5px 5px 5px rgb(15, 15, 15);
 }
 
 .experiment-marker-container-color {
-	background-color: rgb(0, 145, 160);
-	border-color: rgb(0, 150, 165);
+	background-color: var(--color-turquoise-board-tag-background);
+	border-color: var(--color-turquoise-board-tag-border);
 }
 
 .adjusted-container-color {
-	background-color: rgb(170, 110, 0);
-	border-color: rgb(165, 105, 0);
+	background-color: var(--color-orange-board-tag-background);
+	border-color: var(--color-orange-board-tag-border);
 }
 
 .details-text {

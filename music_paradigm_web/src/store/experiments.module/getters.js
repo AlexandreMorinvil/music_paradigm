@@ -23,6 +23,12 @@ export default {
 		return state.experimentsHeadersList;
 	},
 
+	taskHeaderForReference: (state) => (taskReference) => {
+		return state.experimentsHeadersList.find((taskHeader) => {
+			return taskHeader._id == taskReference;
+		}) || null;
+	},
+
 	experimentSelectedParameters: (state) => {
 		return experimentParser.getParameterVariables(state.selection.content);
 	},
@@ -64,7 +70,15 @@ export default {
 		return validator.isExperimentValid(state.edition);
 	},
 
+	hasTaskInTasksHeadersList: (_, getters) => {
+		return !getters.isFetchingExperimentHeadersList && getters.experimentsHeadersList.length > 0;
+	},
+
 	isFetchingExperimentHeadersList: (state) => {
 		return state.status.isFetchingExperimentHeadersList;
+	},
+
+	isDownloadingTasksZipFile: (state) => {
+		return state.status.isDownloadingTasksZipFile;
 	},
 };

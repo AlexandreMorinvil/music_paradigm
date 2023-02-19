@@ -27,7 +27,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('curriculums', ['curriculumsList']),
+		...mapGetters('managementCurriculums', ['curriculumsList']),
 		...mapGetters('users', ['hasSelectedUser', 'userSelectedId', 'userSelectedCurriculum']),
 		wasCurriculumModified() {
 			return this.curriculum !== this.userSelectedCurriculum;

@@ -57,19 +57,20 @@ export default {
 		return {};
 	},
 	computed: {
-		...mapGetters('curriculums', ['isFetchingCurriculumsList', 'curriculumsList', 'curriculumSelectedId']),
+		...mapGetters('managementCurriculums', ['isFetchingCurriculumsList', 'curriculumsList']),
+		...mapGetters('managementCurriculums/selection', ['curriculumSelectionId']),
 		isListLoading() {
 			return this.isFetchingUsersSummaryList;
 		},
 	},
 	methods: {
-		...mapActions('curriculums', ['fetchAllCurriculumHeaders', 'setSelectedCurriculum', 'unsetSelectedCurriculum']),
+		...mapActions('managementCurriculums', ['fetchAllCurriculumHeaders', 'selectCurriculum', 'unsetSelectedCurriculum']),
 		handleRefresh() {
 			this.fetchAllCurriculumHeaders();
 		},
 		handleSelection(curriculumSummary) {
 			if (this.isSelectedCurriculum(curriculumSummary)) this.unsetSelectedCurriculum();
-			else this.setSelectedCurriculum(curriculumSummary._id);
+			else this.selectCurriculum(curriculumSummary._id);
 		},
 		makeTitleDisplay(curriculumSummary) {
 			return curriculumSummary.title;
@@ -87,7 +88,7 @@ export default {
 			return this.isSelectedCurriculum(curriculumSummary) ? 'Unselect' : 'Select';
 		},
 		isSelectedCurriculum(curriculumSummary) {
-			return curriculumSummary && curriculumSummary._id === this.curriculumSelectedId;
+			return curriculumSummary && curriculumSummary._id === this.curriculumSelectionId;
 		},
 	},
 	mounted() {

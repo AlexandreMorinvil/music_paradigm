@@ -1,8 +1,9 @@
 import { authHeader, url, validator } from '@/_helpers';
-import { defaultResponseHandler } from './response-handler';
+import { defaultResponseHandler, zipFileResponseHandler } from './response-handler';
 
 export const experimentsApi = {
 	validateExperiment,
+	downloadTasksZipFile,
 	getListAllHeaders,
 	getDefinition,
 	create,
@@ -10,11 +11,20 @@ export const experimentsApi = {
 	delete: _delete,
 };
 
+// TODO: Put in a file outise the "API"
 function validateExperiment(experiment) {
 	return new Promise((resolve) => {
 		validator.validateExperiment(experiment);
 		resolve();
 	});
+}
+
+function downloadTasksZipFile(mustSave = true) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+	};
+	return fetch(url.experiments('task-list-zip-file'), requestOptions).then(zipFileResponseHandler.bind(null, mustSave));	
 }
 
 function getListAllHeaders() {

@@ -91,7 +91,7 @@ const schema = new Schema(
                     },
 
                     // Specify whether this experiment can be completed the same day as another experiment
-                    isUniqueIndDay: {
+                    isUniqueInDay: {
                         type: Boolean,
                         default: true
                     },
@@ -134,7 +134,7 @@ const schema = new Schema(
 
 // Setter functions
 function setterTitle(title) {
-    if (title) return title.toLowerCase();
+    if (title) return title.trim();
     else return undefined;
 }
 
