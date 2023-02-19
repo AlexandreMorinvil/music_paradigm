@@ -11,7 +11,7 @@
 import WidgetSubsectionContainer from '@/components/admin/widget-subsection.container.vue';
 import { mapGetters } from 'vuex';
 
-import ButtonDeleteCurriculumSessionComponent from './button-delete-curriculum-session.component.vue';
+import ButtonDeleteCurriculumSessionComponent from '../../buttons/button-delete-curriculum-session.component.vue';
 import CurriculumSessionSettingsFormComponent from './curriculum-session-settings-form.component.vue';
 
 export default {

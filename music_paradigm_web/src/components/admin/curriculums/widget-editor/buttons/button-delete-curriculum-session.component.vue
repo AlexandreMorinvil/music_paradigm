@@ -1,6 +1,6 @@
 <template>
     <button v-on:click="handleCurriculumSessionDeletion" class="widget-button red" :class="isButtonActive || 'inactive'">
-        Delete Session
+        Delete Selected Session
     </button>
 </template>
 

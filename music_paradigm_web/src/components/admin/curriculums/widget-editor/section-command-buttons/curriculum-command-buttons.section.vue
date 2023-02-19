@@ -12,9 +12,9 @@
 import '@/styles/widget-template.css';
 import WidgetSectionContainer from '@/components/admin/widget-section.container.vue';
 
-import ButtonCreateCurriculumComponent from './button-create-curriculum.component.vue';
-import ButtonDeleteCurriculumComponent from './button-delete-curriculum.component.vue';
-import ButtonUpdateCurriculumComponent from './button-update-curriculum.component.vue'
+import ButtonCreateCurriculumComponent from '../buttons/button-create-curriculum.component.vue';
+import ButtonDeleteCurriculumComponent from '../buttons/button-delete-curriculum.component.vue';
+import ButtonUpdateCurriculumComponent from '../buttons/button-update-curriculum.component.vue'
 
 export default {
     components: {
