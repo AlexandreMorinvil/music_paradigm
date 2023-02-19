@@ -2,7 +2,7 @@
     <WidgetSubsectionContainer title="Session settings">
         <div v-if="canEditorBeDisplayed" class="session-settings-area">
             <CurriculumSessionSettingsFormComponent />
-            <ButtonDeleteCurriculumSessionComponent />
+            <ButtonDeleteCurriculumSessionComponent class="right-alignment"/>
         </div>
     </WidgetSubsectionContainer>
 </template>
@@ -36,5 +36,9 @@ export default {
 	justify-content: center;
 	align-items: center;
     gap: 20px;
+}
+
+.right-alignment {
+    margin-left: auto;
 }
 </style>

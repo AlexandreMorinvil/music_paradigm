@@ -10,6 +10,10 @@
 					v-on:click="commitAssociativeIdEdition">Edit</button>
 			</div>
 
+			<label for="title">Title </label>
+			<input type="text" v-model="title" name="title" autocomplete="new-title"
+				placeholder="Insert the session title" />
+
 			<label for="log-type">Task </label>
 			<select :class="!taskReference && 'placeholder-option'" name="experiment-reference" v-model="taskReference">
 				<option value="">Select the task of this session</option>
@@ -18,10 +22,6 @@
 					{{ referenceAndName.fullName }}
 				</option>
 			</select>
-
-			<label for="title">Title </label>
-			<input type="text" v-model="title" name="title" autocomplete="new-title"
-				placeholder="Insert the session title" />
 
 			<label for="delay-in-days"> Delay in days </label>
 			<input type="number" v-model="delayInDays" min="0" name="delay-in-days" autocomplete="new-delay"

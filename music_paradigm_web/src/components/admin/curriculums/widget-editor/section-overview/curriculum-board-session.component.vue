@@ -2,6 +2,7 @@
     <div :class="isSessionLinkedToSelectedSession && 'highlighted-session'">
         <div class="session-container" :class="{
             'session-container-shadow': !isSessionLinkedToSelectedSession,
+            'session-with-issue': hasIssue,
             'selected-session': isSelectedSession
         }" v-on:click="handleSessionClick">
             <div>
@@ -29,7 +30,7 @@
 <script>
 import '@/styles/color-palette.css';
 
-import { curriculumGenerator } from '@/modules/curriculums';
+import { curriculumGenerator, curriculumSessionValidator } from '@/modules/curriculums';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -67,6 +68,10 @@ export default {
 
         hasTextIndicator() {
             return Boolean(this.curriculumSession.text) ? "Yes" : "No";
+        },
+
+        hasIssue() {
+            return !curriculumSessionValidator.isCurriculumSessionValid(this.curriculumSession);
         },
 
         isUniqueInDayText() {
@@ -173,6 +178,10 @@ export default {
     border-radius: 10px;
 }
 
+.session-with-issue {
+    background-color: var(--color-yellow-board-item-background);
+    border-color: var(--color-yellow-board-item-border);
+}
 .selected-session {
     background-color: var(--color-green-board-item-background);
     border-color: var(--color-green-board-item-border);
