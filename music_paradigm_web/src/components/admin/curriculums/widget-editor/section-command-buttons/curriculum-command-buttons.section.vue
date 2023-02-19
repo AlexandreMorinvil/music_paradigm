@@ -30,6 +30,10 @@ export default {
 .spaced-buttons {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
+}
+
+button {
+    width: 300px;
 }
 </style>

@@ -95,6 +95,7 @@ export default {
 	setCurriculumEdition(state, curriculum) {
 		state.editionCurriculum = JSON.parse(JSON.stringify(curriculum));
 		delete state.editionCurriculum._id;
+		delete state.editionCurriculum.id;
 	},
 
 	setCurriculumEditionSelectedSessionIndex(state, index) {
