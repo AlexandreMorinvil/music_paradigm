@@ -176,13 +176,6 @@ export default {
 	grid-template-columns: 4fr 1fr;
 }
 
-.form-area {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-}
-
 .label-input-spacing {
 	display: grid;
 	gap: 4px;

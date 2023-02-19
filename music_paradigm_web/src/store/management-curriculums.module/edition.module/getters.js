@@ -57,8 +57,20 @@ export default {
 	curriculumEditionTitle: (state) => {
 		return state.editionCurriculum.title;
 	},
-
+	
 	hasCurriculumEditionSelectedSession: (state) => {
 		return state.selectedSessionIndex >= 0 && state.editionCurriculum.experiments.length > state.selectedSessionIndex;
+	},
+
+	hasMoreThanOneSessionInCurriculumEdition: (state) => {
+		return state.editionCurriculum.experiments.length > 1;
+	},
+
+	isInCurriculumEditionSessionAdditionMode: (state) => {
+		return state.isInCurriculumEditionSessionAdditionMode;
+	},
+
+	needsCurriculumEditionSessionPositionMakers: (_, getters) => {
+		return getters.isInCurriculumEditionSessionAdditionMode;
 	},
 };

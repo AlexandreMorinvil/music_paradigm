@@ -118,7 +118,7 @@ export default {
 .session-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     position: relative;
     width: 200px;
     height: 200px;
@@ -176,6 +176,6 @@ export default {
 .selected-session {
     background-color: var(--color-green-board-item-background);
     border-color: var(--color-green-board-item-border);
-    color: var(--color-green-board-item-text);
+    color: white;
 }
 </style>

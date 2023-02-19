@@ -1,9 +1,10 @@
 <template>
     <div class="session-area">
-        <CurriculumBoardPositionMarkerComponent v-if="canDisplayPositionMarkerBefore" />
+        <CurriculumBoardPositionMarkerComponent v-if="canDisplayPositionMarkerBefore" :index="indexInCurriculum"
+            :isBeforeSession="true" />
         <slot />
-        <CurriculumBoardPositionMarkerComponent v-if="canDisplayPositionMarkerAfter" 
-            :class="mustBeLastSessionOfDay && 'position-outside-day'" />
+        <CurriculumBoardPositionMarkerComponent v-if="canDisplayPositionMarkerAfter" :index="indexInCurriculum"
+            :isBeforeSession="false" :class="mustBeLastSessionOfDay && 'position-outside-day'" />
     </div>
 </template>
 
@@ -78,5 +79,4 @@ export default {
     flex-direction: row;
     align-items: center;
 }
-
 </style>

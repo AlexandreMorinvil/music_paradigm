@@ -1,16 +1,28 @@
-export default {	
+export default {
+	activateCurriculumEditionSessionAdditionMode({ commit }) {
+		commit('activateCurriculumEditionSessionAdditionMode');
+	},
+
+	addCurriculumEditionSession({ commit }, { indexPosition, isAddedBefore }) {
+		commit('addCurriculumEditionSession', { indexPosition, isAddedBefore });
+	},
+
+	deactivateCurriculumEditionSessionAdditionMode({ commit }) {
+		commit('deactivateCurriculumEditionSessionAdditionMode');
+	},
+
 	editCurriculumEditionLogType({ commit }, logType) {
 		commit('editCurriculumEditionLogType', logType);
 	},
-	
+
 	editCurriculumEditionIsSequential({ commit }, isSequential) {
 		commit('editCurriculumEditionIsSequential', isSequential);
 	},
-	
+
 	editCurriculumEditionCurriculumTasks({ commit }, tasks) {
 		commit('editCurriculumEditionCurriculumTasks', tasks);
 	},
-	
+
 	editCurriculumEditionTitle({ commit }, title) {
 		commit('editCurriculumEditionTitle', title);
 	},
@@ -43,19 +55,30 @@ export default {
 		commit('editCurriculumEditionSessionText', text);
 	},
 
-	setCurriculumEdition({ commit }, curriculum) {
-		commit('setCurriculumEdition', curriculum);
-	},
-	setCurriculumEditionSelectedSessionIndex({commit}, index) {
-		commit('setCurriculumEditionSelectedSessionIndex', index);
-	},
-
-	unsetCurriculumEdition({ commit }) {
-		commit('unsetCurriculumEdition');
+	removeCurriculumEditionSession({ commit }) {
+		commit('removeCurriculumEditionSession');
 		commit('unsetCurriculumEditionSelectedSessionIndex');
 	},
 
-	unsetCurriculumEditionSelectedSessionIndex({commit}) {
+	resetCurriculumEdition({ dispatch }) {
+		dispatch('deactivateCurriculumEditionSessionAdditionMode');
+		dispatch('unsetCurriculumEditionSelectedSessionIndex');
+	},
+
+	setCurriculumEdition({ commit }, curriculum) {
+		commit('setCurriculumEdition', curriculum);
+	},
+
+	setCurriculumEditionSelectedSessionIndex({ commit }, index) {
+		commit('setCurriculumEditionSelectedSessionIndex', index);
+	},
+
+	unsetCurriculumEdition({ commit, dispatch }) {
+		commit('unsetCurriculumEdition');
+		dispatch('resetCurriculumEdition');
+	},
+
+	unsetCurriculumEditionSelectedSessionIndex({ commit }) {
 		commit('unsetCurriculumEditionSelectedSessionIndex');
 	},
 };

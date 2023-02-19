@@ -1,14 +1,30 @@
 import { curriculumGenerator, curriculumSessionsEditor } from '@/modules/curriculums';
 
 export default {
+	activateCurriculumEditionSessionAdditionMode(state) {
+		state.isInCurriculumEditionSessionAdditionMode = true;
+	},
+
+	addCurriculumEditionSession(state, { indexPosition, isAddedBefore }) {
+		curriculumSessionsEditor.addCurriculumSessionToList(
+			state.editionCurriculum.experiments,
+			indexPosition,
+			isAddedBefore
+		);
+	},
+
+	deactivateCurriculumEditionSessionAdditionMode(state) {
+		state.isInCurriculumEditionSessionAdditionMode = false;
+	},
+
 	editCurriculumEditionLogType(state, logType) {
 		state.editionCurriculum.logType = logType;
 	},
-	
+
 	editCurriculumEditionIsSequential(state, isSequential) {
 		state.editionCurriculum.isSequential = isSequential;
 	},
-	
+
 	editCurriculumEditionCurriculumTasks(state, tasks) {
 		state.editionCurriculum.experiments = tasks;
 	},
@@ -48,16 +64,23 @@ export default {
 	editCurriculumEditionSessionText(state, text) {
 		state.editionCurriculum.experiments[state.selectedSessionIndex].text = text;
 	},
-	
+
 	editCurriculumEditionTitle(state, title) {
 		state.editionCurriculum.title = title;
 	},
-	
+
+	removeCurriculumEditionSession(state) {
+		curriculumSessionsEditor.removeCurriculumSessionFromList(
+			state.editionCurriculum.experiments,
+			state.selectedSessionIndex,
+		);
+	},
+
 	setCurriculumEdition(state, curriculum) {
 		state.editionCurriculum = JSON.parse(JSON.stringify(curriculum));
 		delete state.editionCurriculum._id;
 	},
-	
+
 	setCurriculumEditionSelectedSessionIndex(state, index) {
 		state.selectedSessionIndex = index;
 	},

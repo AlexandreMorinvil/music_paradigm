@@ -1,5 +1,5 @@
 <template>
-    <div class="curriculum-day-container" :class="mustMakeSpaceForPositionAfterDay && 'margin-after-day'" >
+    <div class="curriculum-day-container" :class="mustMakeSpaceForPositionAfterDay && 'margin-after-day'">
         <div class="curriculum-day-label">
             <div class="label-text"> <b> {{ delayText }} </b></div>
             <div v-if="isDelayDueToUniqueInDay" class="label-precision"> {{ isDelayDueToUniqueInDayText }} </div>
@@ -17,6 +17,7 @@ import '@/styles/color-palette.css';
 import { CurriculumDayWorkload } from '@/modules/curriculums';
 import CurriculumBoardSessionComponent from './curriculum-board-session.component.vue';
 import CurriculumBoardSessionPositionComponent from './curriculum-board-session-position.component.vue';
+import { mapGetters } from 'vuex';
 
 export default {
     components: {
@@ -32,6 +33,9 @@ export default {
         }
     },
     computed: {
+        ...mapGetters('managementCurriculums/edition', [
+            'needsCurriculumEditionSessionPositionMakers',
+        ]),
         curriculumSessionsList() {
             return this.dayWorkload.sessionsList;
         },
@@ -54,7 +58,9 @@ export default {
             return this.dayWorkload.isLastSessionUniqueInDay();
         },
         mustMakeSpaceForPositionAfterDay() {
-            return this.isLastDayOfCurriculum && this.isLastSessionUniqueInDay;
+            return this.needsCurriculumEditionSessionPositionMakers &&
+                this.isLastDayOfCurriculum &&
+                this.isLastSessionUniqueInDay;
         }
     },
     methods: {
@@ -69,6 +75,7 @@ export default {
 .curriculum-day-container {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     position: relative;
     background-color: var(--color-blue-board-tag-background);
     border-color: var(--color-blue-board-tag-border);

@@ -1,13 +1,14 @@
 <template>
-    <div class="position-placeholder-container" v-on:click="handleSessionClick">
+    <div class="position-placeholder-container" v-if="shouldDisplay" v-on:click="handlePositionClick">
         <b>
-            +
+            {{ placeHolderIcon }}
         </b>
     </div>
 </template>
 
 <script>
 import '@/styles/color-palette.css';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     props: {
@@ -16,11 +17,34 @@ export default {
             default() {
                 return -1;
             }
-        }
+        },
+        isBeforeSession: {
+            type: Boolean,
+            default() {
+                return true;
+            }
+        },
+    },
+    computed: {
+        ...mapGetters('managementCurriculums/edition', [
+            'isInCurriculumEditionSessionAdditionMode',
+            'needsCurriculumEditionSessionPositionMakers',
+        ]),
+        shouldDisplay() {
+            return this.needsCurriculumEditionSessionPositionMakers;
+        },
+        placeHolderIcon() {
+            if (this.isInCurriculumEditionSessionAdditionMode) return '+';
+        },
     },
     methods: {
-        handleSessionClick() {
-
+        ...mapActions('managementCurriculums/edition', ['addCurriculumEditionSession']),
+        handlePositionClick() {
+            if (this.isInCurriculumEditionSessionAdditionMode)
+                this.addCurriculumEditionSession({
+                    indexPosition: this.index,
+                    isAddedBefore: this.isBeforeSession,
+                });
         }
     }
 };
