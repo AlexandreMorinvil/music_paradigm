@@ -18,6 +18,6 @@ export default {
 <style scoped>
 .title {
     text-align: center;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 </style>

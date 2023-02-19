@@ -70,7 +70,12 @@ export default {
 		return state.isInCurriculumEditionSessionAdditionMode;
 	},
 
+	isInCurriculumEditionSessionMoveMode: (state) => {
+		return state.isInCurriculumEditionSessionMoveMode;
+	},
+
 	needsCurriculumEditionSessionPositionMakers: (_, getters) => {
-		return getters.isInCurriculumEditionSessionAdditionMode;
+		return getters.isInCurriculumEditionSessionAdditionMode ||
+			getters.isInCurriculumEditionSessionMoveMode;
 	},
 };

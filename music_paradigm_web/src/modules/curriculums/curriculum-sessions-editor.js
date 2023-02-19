@@ -36,14 +36,17 @@ function editCurriculumSessionTaskReference(curriculumSessionsList, indexCurricu
 
 function moveCurriculumSessionInList(
 	curriculumSessionsList,
-	curriculumSessionToMoveIndex,
-	curriculumSessionTargetPositionIndex,
-	isMovedBefore = true) {
-	const curriculumSessionToMove = curriculumSessionsList.splice(curriculumSessionToMoveIndex, 1).pop();
-	if (isMovedBefore)
-		curriculumSessionsList.splice(curriculumSessionTargetPositionIndex, 0, curriculumSessionToMove);
-	else
-		curriculumSessionsList.splice(curriculumSessionTargetPositionIndex + 1, 0, curriculumSessionToMove);
+	indexCurriculumSessionToMove,
+	indexCurriculumSessionTargetPosition) {
+	const curriculumSessionToMove = curriculumSessionsList.splice(indexCurriculumSessionToMove, 1).pop();
+	if (indexCurriculumSessionTargetPosition > indexCurriculumSessionToMove) {
+		curriculumSessionsList.splice(indexCurriculumSessionTargetPosition - 1, 0, curriculumSessionToMove);
+		return indexCurriculumSessionTargetPosition - 1;
+	}
+	else {
+		curriculumSessionsList.splice(indexCurriculumSessionTargetPosition, 0, curriculumSessionToMove);
+		return indexCurriculumSessionTargetPosition;
+	}
 }
 
 function removeCurriculumSessionFromList(curriculumSessionsList, indexCurriculumSessionToRemove) {

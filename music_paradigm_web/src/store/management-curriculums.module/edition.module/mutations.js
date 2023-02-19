@@ -5,6 +5,10 @@ export default {
 		state.isInCurriculumEditionSessionAdditionMode = true;
 	},
 
+	activateCurriculumEditionSessionMoveMode(state) {
+		state.isInCurriculumEditionSessionMoveMode = true;
+	},
+
 	addCurriculumEditionSession(state, { indexPosition, isAddedBefore }) {
 		curriculumSessionsEditor.addCurriculumSessionToList(
 			state.editionCurriculum.experiments,
@@ -15,6 +19,10 @@ export default {
 
 	deactivateCurriculumEditionSessionAdditionMode(state) {
 		state.isInCurriculumEditionSessionAdditionMode = false;
+	},
+
+	deactivateCurriculumEditionSessionMoveMode(state) {
+		state.isInCurriculumEditionSessionMoveMode = false;
 	},
 
 	editCurriculumEditionLogType(state, logType) {
@@ -67,6 +75,14 @@ export default {
 
 	editCurriculumEditionTitle(state, title) {
 		state.editionCurriculum.title = title;
+	},
+
+	moveCurriculumEditionSession(state, indexTargetPosition) {
+		const indexSelectedSessionAdjusted = curriculumSessionsEditor.moveCurriculumSessionInList(
+			state.editionCurriculum.experiments,
+			state.selectedSessionIndex,
+			indexTargetPosition);
+		state.selectedSessionIndex = indexSelectedSessionAdjusted;
 	},
 
 	removeCurriculumEditionSession(state) {

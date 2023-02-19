@@ -2,14 +2,6 @@
 	<div class="form-area">
 		<div class="label-input-spacing" v-if="canFormBeDisplayed">
 
-			<label for="title">Associative ID </label>
-			<div class="associative-id-input-area">
-				<input type="text" v-model="associativeIdInput" name="title" autocomplete="new-associative-id"
-					placeholder="Insert an associative Id" />
-				<button class="widget-button small blue" :class="isAssociativeIdEdited || 'inactive'"
-					v-on:click="commitAssociativeIdEdition">Edit</button>
-			</div>
-
 			<label for="title">Title </label>
 			<input type="text" v-model="title" name="title" autocomplete="new-title"
 				placeholder="Insert the session title" />
@@ -36,6 +28,13 @@
 			<label for="text">Text</label>
 			<textarea v-model="text" name="text" row="2" placeholder="Insert a text to display to the user" />
 
+			<label for="title">Associative ID </label>
+			<div class="associative-id-input-area">
+				<input type="text" v-model="associativeIdInput" name="title" autocomplete="new-associative-id"
+					placeholder="Insert an associative Id" />
+				<button class="widget-button small blue" :class="isAssociativeIdEdited || 'inactive'"
+					v-on:click="commitAssociativeIdEdition">Edit</button>
+			</div>
 		</div>
 	</div>
 </template>

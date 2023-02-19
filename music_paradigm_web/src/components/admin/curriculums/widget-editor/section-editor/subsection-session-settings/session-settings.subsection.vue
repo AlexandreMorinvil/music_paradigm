@@ -2,7 +2,6 @@
     <WidgetSubsectionContainer title="Session settings">
         <div v-if="canEditorBeDisplayed" class="session-settings-area">
             <CurriculumSessionSettingsFormComponent />
-            <ButtonDeleteCurriculumSessionComponent class="right-alignment"/>
         </div>
     </WidgetSubsectionContainer>
 </template>
@@ -11,12 +10,10 @@
 import WidgetSubsectionContainer from '@/components/admin/widget-subsection.container.vue';
 import { mapGetters } from 'vuex';
 
-import ButtonDeleteCurriculumSessionComponent from '../../buttons/button-delete-curriculum-session.component.vue';
 import CurriculumSessionSettingsFormComponent from './curriculum-session-settings-form.component.vue';
 
 export default {
     components: {
-        ButtonDeleteCurriculumSessionComponent,
         CurriculumSessionSettingsFormComponent,
         WidgetSubsectionContainer,
     },
@@ -36,9 +33,5 @@ export default {
 	justify-content: center;
 	align-items: center;
     gap: 20px;
-}
-
-.right-alignment {
-    margin-left: auto;
 }
 </style>

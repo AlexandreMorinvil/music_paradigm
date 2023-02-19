@@ -1,6 +1,12 @@
 export default {
-	activateCurriculumEditionSessionAdditionMode({ commit }) {
+	activateCurriculumEditionSessionAdditionMode({ commit, dispatch }) {
+		dispatch('deactivateCurriculumEditionSessionMoveMode');
 		commit('activateCurriculumEditionSessionAdditionMode');
+	},
+
+	activateCurriculumEditionSessionMoveMode({ commit, dispatch }) {
+		dispatch('deactivateCurriculumEditionSessionAdditionMode');
+		commit('activateCurriculumEditionSessionMoveMode');
 	},
 
 	addCurriculumEditionSession({ commit }, { indexPosition, isAddedBefore }) {
@@ -9,6 +15,10 @@ export default {
 
 	deactivateCurriculumEditionSessionAdditionMode({ commit }) {
 		commit('deactivateCurriculumEditionSessionAdditionMode');
+	},
+
+	deactivateCurriculumEditionSessionMoveMode({ commit }) {
+		commit('deactivateCurriculumEditionSessionMoveMode');
 	},
 
 	editCurriculumEditionLogType({ commit }, logType) {
@@ -60,8 +70,13 @@ export default {
 		commit('unsetCurriculumEditionSelectedSessionIndex');
 	},
 
+	moveCurriculumEditionSession({ commit }, indexTargetPosition) {
+		commit('moveCurriculumEditionSession', indexTargetPosition);
+	},
+
 	resetCurriculumEdition({ dispatch }) {
 		dispatch('deactivateCurriculumEditionSessionAdditionMode');
+		dispatch('deactivateCurriculumEditionSessionMoveMode');
 		dispatch('unsetCurriculumEditionSelectedSessionIndex');
 	},
 

@@ -27,24 +27,45 @@ export default {
     },
     computed: {
         ...mapGetters('managementCurriculums/edition', [
+            'curriculumEditionSelectedSessionIndex',
+            'hasCurriculumEditionSelectedSession',
             'isInCurriculumEditionSessionAdditionMode',
+            'isInCurriculumEditionSessionMoveMode',
             'needsCurriculumEditionSessionPositionMakers',
         ]),
-        shouldDisplay() {
-            return this.needsCurriculumEditionSessionPositionMakers;
+        canPerformSessionMove() {
+            return this.isInCurriculumEditionSessionMoveMode &&
+                this.hasCurriculumEditionSelectedSession &&
+                this.isValidMovePosition;
+        },
+        isValidMovePosition() {
+            return !(this.index === this.curriculumEditionSelectedSessionIndex) &&
+                !(this.index === (this.curriculumEditionSelectedSessionIndex - 1) && !this.isBeforeSession)
         },
         placeHolderIcon() {
             if (this.isInCurriculumEditionSessionAdditionMode) return '+';
+            else if (this.canPerformSessionMove) return '×';
+            return "";
+        },
+        shouldDisplay() {
+            return this.needsCurriculumEditionSessionPositionMakers;
         },
     },
     methods: {
-        ...mapActions('managementCurriculums/edition', ['addCurriculumEditionSession']),
+        ...mapActions('managementCurriculums/edition', [
+            'addCurriculumEditionSession',
+            'moveCurriculumEditionSession',
+        ]),
         handlePositionClick() {
             if (this.isInCurriculumEditionSessionAdditionMode)
                 this.addCurriculumEditionSession({
                     indexPosition: this.index,
                     isAddedBefore: this.isBeforeSession,
                 });
+            else if (this.canPerformSessionMove)
+                this.moveCurriculumEditionSession(
+                    this.index + (this.isBeforeSession ? 0 : 1),
+                );
         }
     }
 };

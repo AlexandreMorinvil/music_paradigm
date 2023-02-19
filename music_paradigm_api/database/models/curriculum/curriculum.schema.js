@@ -134,7 +134,7 @@ const schema = new Schema(
 
 // Setter functions
 function setterTitle(title) {
-    if (title) return title.toLowerCase();
+    if (title) return title.trim();
     else return undefined;
 }
 
