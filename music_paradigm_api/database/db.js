@@ -1,6 +1,6 @@
 const config = require('config.json');
 const mongoose = require('mongoose');
-const init = require('./db.initialiation');
+const initializeDatabase = require('./initialization/initialization');
 
 // MongoDB connection URL
 const mongoUrl = process.env.NODE_ENV == 'production' ?
@@ -35,7 +35,7 @@ module.exports = {
 function handleConnection() {
     console.log(`Database connected!`);
     try {
-        init.createDefaultAdmin();
+        initializeDatabase();
     } catch (error) {
         console.log(`An error occured while trying to initialize the database : ${error}`);
     }

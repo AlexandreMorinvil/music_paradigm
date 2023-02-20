@@ -44,7 +44,7 @@ export default {
         },
         placeHolderIcon() {
             if (this.isInCurriculumEditionSessionAdditionMode) return '+';
-            else if (this.canPerformSessionMove) return '×';
+            else if (this.canPerformSessionMove) return '⊙';
             return "";
         },
         shouldDisplay() {
