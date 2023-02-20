@@ -1,12 +1,8 @@
 <template>
 	<div class="form-area">
-		<div class="label-input-spacing" v-if="canFormBeDisplayed">
+		<form @submit.prevent="" class="label-input-spacing" v-if="canFormBeDisplayed">
 
-			<label for="title">Title </label>
-			<input type="text" v-model="title" name="title" autocomplete="new-title"
-				placeholder="Insert the session title" />
-
-			<label for="log-type">Task </label>
+			<label for="log-type">Task* </label>
 			<select :class="!taskReference && 'placeholder-option'" name="experiment-reference" v-model="taskReference">
 				<option value="">Select the task of this session</option>
 				<option v-for="(referenceAndName, index) in tasksReferenceAndNameList" :key="index"
@@ -14,6 +10,10 @@
 					{{ referenceAndName.fullName }}
 				</option>
 			</select>
+
+			<label for="title">Session title </label>
+			<input type="text" v-model="title" name="title" autocomplete="new-title"
+				placeholder="Insert the session title" />
 
 			<label for="delay-in-days"> Delay in days </label>
 			<input type="number" v-model="delayInDays" min="0" name="delay-in-days" autocomplete="new-delay"
@@ -35,7 +35,7 @@
 				<button class="widget-button small blue" :class="isAssociativeIdEdited || 'inactive'"
 					v-on:click="commitAssociativeIdEdition">Edit</button>
 			</div>
-		</div>
+		</form>
 	</div>
 </template>
 
@@ -178,7 +178,7 @@ export default {
 .label-input-spacing {
 	display: grid;
 	gap: 4px;
-	grid-template-columns: 2fr 3fr;
+	grid-template-columns: 250px 400px;
 }
 
 .placeholder-option {
@@ -192,5 +192,9 @@ label {
 
 option {
 	color: black;
+}
+
+select {
+	min-width: fit-content;
 }
 </style>

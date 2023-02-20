@@ -25,6 +25,9 @@
 	--color-light-grey-board-item-text: rgb(200, 200, 200);
 	--color-light-grey-board-item-stroke: rgb(140, 140, 140);
 
+	--color-red-board-item-background: rgb(200, 35, 0);
+	--color-red-board-item-border: rgb(195, 30, 0);
+
 	--color-yellow-board-item-background: rgb(200, 180, 0);
 	--color-yellow-board-item-border: rgb(195, 175, 0);
 	--color-yellow-board-item-text: rgb(250, 250, 250);

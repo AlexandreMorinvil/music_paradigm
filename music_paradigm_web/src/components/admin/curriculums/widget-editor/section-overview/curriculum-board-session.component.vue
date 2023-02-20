@@ -138,6 +138,7 @@ export default {
     border-color: var(--color-blue-board-item-border);
     color: rgb(240, 240, 240);
     fill: var(--color-blue-board-item-stroke);
+    cursor: pointer;
 }
 
 .session-container-shadow {
@@ -177,14 +178,18 @@ export default {
     box-shadow: 0 0px 10px rgba(112, 223, 57, 0.5);
     border-radius: 10px;
 }
-
 .session-with-issue {
-    background-color: var(--color-yellow-board-item-background);
-    border-color: var(--color-yellow-board-item-border);
+    background-color: var(--color-red-board-item-background);
+    border-color: var(--color-red-board-item-border);
 }
+
 .selected-session {
     background-color: var(--color-green-board-item-background);
     border-color: var(--color-green-board-item-border);
     color: white;
+}
+.selected-session.session-with-issue {
+    background-color: var(--color-yellow-board-item-background);
+    border-color: var(--color-yellow-board-item-border);
 }
 </style>

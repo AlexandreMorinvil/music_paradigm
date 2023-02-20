@@ -1,5 +1,5 @@
 <template>
-    <div class="position-placeholder-container" v-if="shouldDisplay" v-on:click="handlePositionClick">
+    <div v-if="shouldDisplay" v-on:click="handlePositionClick" class="position-placeholder-container">
         <b>
             {{ placeHolderIcon }}
         </b>
@@ -40,7 +40,8 @@ export default {
         },
         isValidMovePosition() {
             return !(this.index === this.curriculumEditionSelectedSessionIndex) &&
-                !(this.index === (this.curriculumEditionSelectedSessionIndex - 1) && !this.isBeforeSession)
+                !(this.index === (this.curriculumEditionSelectedSessionIndex - 1) && !this.isBeforeSession) &&
+                !(this.index === (this.curriculumEditionSelectedSessionIndex + 1) && this.isBeforeSession)
         },
         placeHolderIcon() {
             if (this.isInCurriculumEditionSessionAdditionMode) return '+';
@@ -92,5 +93,6 @@ export default {
     border-color: var(--color-light-grey-board-item-border);
     color: rgb(220, 220, 220);
     fill: var(--color-blue-board-item-stroke);
+    cursor: pointer;
 }
 </style>
