@@ -11,6 +11,7 @@ export const experimentEvents = {
 	EVENT_GO_BACK_REQUET: 'go-back-request',
 	EVENT_ADVANCE_REQUEST: 'advance-request',
 	EVENT_STATE_ENDED: 'state-ended',
+	EVENT_SESSION_ABORTED: 'session-aborted',
 	EVENT_TIMES_UP: 'times-up',
 	EVENT_START_SIGNAL_READY: 'start-signal-ready',
 

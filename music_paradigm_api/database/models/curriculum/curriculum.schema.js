@@ -93,7 +93,7 @@ const schema = new Schema(
                     // Specify whether this experiment can be completed the same day as another experiment
                     isUniqueInDay: {
                         type: Boolean,
-                        default: true
+                        default: true,
                     },
 
                     // Number of times the experiment was completed

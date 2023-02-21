@@ -12,6 +12,8 @@ function generateCurriculumDayWorkloadList(curriculum) {
     const isSequential = curriculum.isSequential;
     const curriculumSessionsList = curriculum.experiments;
 
+    if (curriculumSessionsList.length === 0) return;
+
     let currentDay = 0;
     let dayWorkload = new CurriculumDayWorkload(currentDay, false);
     dayWorkloadList.push(dayWorkload);
@@ -20,8 +22,8 @@ function generateCurriculumDayWorkloadList(curriculum) {
 
     curriculumSessionsList.forEach((curriculumSession, index) => {
 
-        const delayInDays = curriculumSession.delayInDays;
-        const isUniqueInDay = curriculumSession.isUniqueInDay;
+        const delayInDays = Number(curriculumSession.delayInDays);
+        const isUniqueInDay = Boolean(curriculumSession.isUniqueInDay);
         const isFirstSession = index === 0;
 
         let daysLeftBeforeNextSession = 0;
@@ -30,7 +32,7 @@ function generateCurriculumDayWorkloadList(curriculum) {
         else if (isSequential)
             daysLeftBeforeNextSession = delayInDays;
         else
-            daysLeftBeforeNextSession = Math.min(delayInDays - currentDay, 0);
+            daysLeftBeforeNextSession = Math.max(delayInDays - currentDay, 0);
 
         if (daysLeftBeforeNextSession > 0) {
             currentDay += daysLeftBeforeNextSession;

@@ -90,6 +90,8 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		hideFeedbackSmiley,
 		skipStepButton,
 		skipStepButtonMessage,
+		abortSessionButton,
+		abortSessionButtonMessage,
 		successFeedbackMessage,
 		failureFeedbackMessage,
 		footnoteMessage,
@@ -163,6 +165,8 @@ function updateStateSettings(currentState, targetState, isInitialized, generalSe
 		hideFeedbackSmiley: 			typeof hideFeedbackSmiley === 'boolean' 			? hideFeedbackSmiley : generalSettings.hideFeedbackSmiley,
 		skipStepButton: 				typeof skipStepButton === 'string' 					? skipStepButton : '',
 		skipStepButtonMessage: 			typeof skipStepButtonMessage === 'string' 			? skipStepButtonMessage : '',
+		abortSessionButton: 			typeof abortSessionButton === 'string' 				? abortSessionButton : '',
+		abortSessionButtonMessage: 		typeof abortSessionButtonMessage === 'string' 		? abortSessionButtonMessage : '',
 		successFeedbackMessage: 		typeof successFeedbackMessage === 'string' 			? successFeedbackMessage : '',
 		failureFeedbackMessage: 		typeof failureFeedbackMessage === 'string' 			? failureFeedbackMessage : '',
 		footnoteMessage: 				typeof footnoteMessage === 'string' 				? footnoteMessage : '',
@@ -384,7 +388,7 @@ function updateStateOptionsContent(currentState, targetState, cursor, isInitiali
 
 	// Parsing the survey parameters (they do no support short notations through nesting)
 	currentState.optionsContent.surveyInputOptionsValues = (Array.isArray(surveyInputOptionsValues)) ? surveyInputOptionsValues : [];
-	currentState.optionsContent.surveyInputOptionsValues = (Array.isArray(surveyInputOptionsText)) ? surveyInputOptionsText : [];
+	currentState.optionsContent.surveyInputOptionsText = (Array.isArray(surveyInputOptionsText)) ? surveyInputOptionsText : [];
 	currentState.optionsContent.surveyLeftSideText = (Array.isArray(surveyLeftSideText)) ? surveyLeftSideText : [];
 	currentState.optionsContent.surveyRightSideText = (Array.isArray(surveyRightSideText)) ? surveyRightSideText : [];
 

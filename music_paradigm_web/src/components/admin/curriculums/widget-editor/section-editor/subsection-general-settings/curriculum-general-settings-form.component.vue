@@ -1,19 +1,19 @@
 <template>
 	<div class="form-area">
-		<div class="label-input-spacing">
-			<label for="title">Title </label>
+		<form @submit.prevent="" class="label-input-spacing">
+			<label for="title">Curriculum title </label>
 			<input type="text" v-model="title" name="title" autocomplete="new-username" placeholder="Insert new title" />
 
-			<label for="log-type">Log type </label>
+			<label for="log-type">Data aquisition format</label>
 			<select name="log-type" v-model="logType">
 				<option v-for="(type, index) in logTypeOptions" :key="index" :value="setValidLogType(type)">
 					{{ type }}
 				</option>
 			</select>
 
-			<label for="isSequential"> Delays in sequence </label>
+			<label for="isSequential"> Delays start after sessions </label>
 			<input class="checkbox" v-model="isSequential" name="isSequential" type="checkbox" />
-		</div>
+		</form>
 	</div>
 </template>
 
@@ -84,11 +84,15 @@ export default {
 .label-input-spacing {
 	display: grid;
 	gap: 4px;
-	grid-template-columns: 2fr 3fr;
+	grid-template-columns: 250px 400px;
 }
 
 label {
 	min-width: 250px;
 	white-space: nowrap;
+}
+
+select {
+	min-width: fit-content;
 }
 </style>

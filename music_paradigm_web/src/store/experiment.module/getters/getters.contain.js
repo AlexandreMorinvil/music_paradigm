@@ -42,6 +42,10 @@ export default {
 		return Boolean(state.state.settings.skipStepButton) || Boolean(state.state.settings.skipStepButtonMessage);
 	},
 
+	hasAbortSessionButton: (state) => {
+		return Boolean(state.state.settings.abortSessionButton) || Boolean(state.state.settings.abortSessionButtonMessage);
+	},
+
 	hasGoBackOption: (state) => {
 		const hasPreviousInnerStep = state.cursor.current.innerStepIndex > 0;
 		return hasPreviousInnerStep && state.state.settings.canGoBack;
