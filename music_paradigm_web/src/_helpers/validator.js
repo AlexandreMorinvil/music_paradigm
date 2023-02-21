@@ -100,10 +100,6 @@ function validateExperiment(experiment) {
 		throw new Error('The experiment folder name must be a string');
 	}
 
-	if (!(experiment.folder.length > 0)) {
-		throw new Error('The experiment folder name should not be empty');
-	}
-
 	// Verification of the flow
 	if (!Object.prototype.hasOwnProperty.call(experiment, 'flow')) {
 		throw new Error('The experiment does not have a flow');
@@ -243,6 +239,8 @@ function validateBlock(block, index = null) {
 		'hideFeedbackSmiley',
 		'isInSkipableChain',
 		'skipStepButton',
+		'abortSessionButton',
+		'abortSessionButtonMessage',
 		'isSkipStepButtonInFootnote',
 		'skipStepButtonMessage',
 		'successFeedbackMessage',
@@ -377,6 +375,8 @@ function validateAttributeType(key, value) {
 		case 'playingMode':
 		case 'skipStepButton':
 		case 'skipStepButtonMessage':
+		case 'abortSessionButton':
+		case 'abortSessionButtonMessage':
 		case 'successFeedbackMessage':
 		case 'failureFeedbackMessage':
 		case 'footnoteMessage':

@@ -9,7 +9,7 @@ export default {
 	},
 
 	surveyInputOptionsText: (state) => {
-		return state.state.optionsContent.surveyInputOptionsValues;
+		return state.state.optionsContent.surveyInputOptionsText;
 	},
 
 	surveyLeftSideText: (state) => {

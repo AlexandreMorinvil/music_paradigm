@@ -5,7 +5,7 @@
 				<th class="survey-header" v-for="(header, index) in columnHeaders" :key="index">{{ header }}</th>
 			</tr>
 			<tr v-for="rowNumber in rowsCount" :key="rowNumber">
-				<td v-if="hasLeftSideColumn">{{ leftSideText[rowNumber - 1] }}</td>
+				<td v-if="hasLeftSideColumn" class="left-title">{{ leftSideText[rowNumber - 1] }}</td>
 				<td v-for="columnNumber in columnsCount" :key="columnNumber">
 					<input
 						:type="isRadioOptions ? 'radio' : 'checkbox'"
@@ -15,7 +15,7 @@
 						v-model="selectionPerRow[rowNumber - 1]"
 					/>
 				</td>
-				<td v-if="hasRightSideColumn">{{ rightSideText[rowNumber - 1] }}</td>
+				<td v-if="hasRightSideColumn" class="right-title">{{ rightSideText[rowNumber - 1] }}</td>
 			</tr>
 		</table>
 	</div>
@@ -55,7 +55,7 @@ export default {
 		columnHeaders() {
 			const columnTitles = [];
 			if (this.hasLeftSideColumn) columnTitles.push(''); // Add empty title if there is a leftside column
-			for (let i = 0; i < this.columnsCount; i++) columnTitles.push(this.surveyInputOptionsText[i]); // Add the specified column titles
+			for (let i = 0; i < this.columnsCount; i++) columnTitles.push(this.surveyInputOptionsText[i] || ''); // Add the specified column titles
 			if (this.hasRightSideColumn) columnTitles.push(''); // Add enpty title if there is a rightside column
 
 			return columnTitles;
@@ -142,13 +142,21 @@ export default {
 }
 
 .survey-table {
-	width: 90%;
 	margin: 30px 0;
+	max-width: 90%;
 }
 
 .survey-input {
 	width: 1em;
 	height: 1em;
-	margin: 10px;
+	margin: 10px 20px;
+}
+
+.left-title {
+	padding-right: 20px;
+}
+
+.right-title {
+	padding-left: 20px;
 }
 </style>

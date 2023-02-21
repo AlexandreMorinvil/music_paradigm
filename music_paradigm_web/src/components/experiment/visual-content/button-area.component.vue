@@ -17,6 +17,7 @@
 			{{ textSecondaryButton }}
 		</button>
 		<skip-button-component v-if="isSkipButtonInMainOptions" class="task-button" />
+		<AbortSessionButtonComponent v-if="hasAbortSessionButton" class="task-button" />
 	</div>
 </template>
 
@@ -24,10 +25,12 @@
 import '@/styles/experiment-content-template.css';
 import { mapGetters } from 'vuex';
 
+import AbortSessionButtonComponent from '@/components/experiment/element/abort-session-button.component.vue';
 import SkipButtonComponent from '@/components/experiment/element/skip-button.component.vue';
 
 export default {
 	components: {
+		AbortSessionButtonComponent,
 		SkipButtonComponent,
 	},
 	data() {
@@ -44,7 +47,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['isSkipButtonInMainOptions']),
+		...mapGetters('experiment', ['isSkipButtonInMainOptions', 'hasAbortSessionButton']),
 	},
 	methods: {
 		// Main Button

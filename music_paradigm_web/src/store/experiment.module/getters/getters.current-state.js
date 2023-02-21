@@ -124,6 +124,14 @@ export default {
 		return state.state.settings.skipStepButtonMessage || '';
 	},
 
+	abortSessionButton: (state) => {
+		return state.state.settings.abortSessionButton.toLowerCase() || '';
+	},
+
+	abortSessionButtonMessage: (state) => {
+		return state.state.settings.abortSessionButtonMessage || '';
+	},
+
 	footnoteMessage: (state) => {
 		return state.state.settings.footnoteMessage || '';
 	},

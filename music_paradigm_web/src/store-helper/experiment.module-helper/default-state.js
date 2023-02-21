@@ -233,9 +233,11 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			footnoteType: DEFAULT_FOOTNOTE_TYPE,									// Block specific "footnoteType" superseding the general setting
 			logFlag: DEFAULT_LOG_FLAG,												// Block specific "logFlag" superseding the general setting
 			skipStepButton: '', 													// Button to press to skip the next block (is valid only if a button is specified)
+			abortSessionButton: '',													// Button to press to abort the session (is valid only if a button is specified)
 			isSkipStepButtonInFootnote: DEFAULT_IS_SKIP_BUTTON_IN_FOOTNOTE,			// Block specific isSkipStepButtonInFootnote superceeding the general parameter
 			isSkipButtonInMainOptions: DEFAULT_IS_SKIP_BUTTON_IN_MAIN_OPTIONS,		// Block specific isSkipButtonInMainOptions superceeding the general parameter
 			skipStepButtonMessage: '', 												// Message indicated on the skip button if there is a skip button
+			abortSessionButtonMessage: '',											// Message indicated on the abort session button if there is an abort session button
 			successFeedbackMessage: '', 											// Additional message displayed upon sucessfull feedback for all criteras
 			failureFeedbackMessage: '', 											// Additional message displayed upon feedback with at least one failed critera
 			melodyRepetition: 1,													// Number of times a melody is repeated in a block
