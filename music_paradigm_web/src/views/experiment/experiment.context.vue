@@ -1,5 +1,6 @@
 <template>
-	<div id="experiment" class="experiment-context experiment-grid unselectable" :class="{ 'experiment-context-clear': isClearVersion }">
+	<div id="experiment" class="experiment-context experiment-grid unselectable"
+		:class="{ 'experiment-context-clear': isClearVersion }">
 		<keyboard-to-midi-input-mapper-component style="display: none" />
 		<midi-input-to-keyboard-mapper-component style="display: none" />
 
@@ -12,7 +13,8 @@
 		<session-component style="display: none" ref="session" />
 		<time-left-message-component class="time-left-message-position" />
 		<status-bar-component v-show="hasStatusBarVisible" ref="status" class="status-bar-position" />
-		<div id="state-content" class="state-content state-content-position" :class="{ 'state-content-clear': isClearVersion }">
+		<div id="state-content" class="state-content state-content-position"
+			:class="{ 'state-content-clear': isClearVersion }">
 			<experiment-content :lastPressedKey="lastPressedKey" :isSpaceBarPressed="isSpaceBarPressed" />
 		</div>
 	</div>
@@ -98,6 +100,7 @@ export default {
 			'clearState',
 			'endExperimentByTimeUp',
 			'leaveExperiment',
+			'setTimesUpStatus',
 		]),
 		...mapActions('keyboard', ['resetPressedKeyboardKeysLogs', 'resetKeyboardTracking', 'deleteAllPressedKeyboardKeys']),
 		...mapActions('piano', ['resetPlayedNotesLogs', 'resetPianoState', 'releasedAllNotesNotReleasedInLog', 'deleteAllPressedKeys']),
@@ -111,6 +114,11 @@ export default {
 			KeyboardEventBus.$emit(keyboardEvents.EVENT_TRACKER_TERMINATE_REQUEST);
 		},
 		handleTimesUp() {
+			// This action is called in a redundant way (in many places) as a security since we absolutely want
+			// to make sure that the "time's up" status is recorded. (Otherwise, upon clompletion of a session,
+			// the experimentMarker would be deleted, if we do not record properly that the session was simply
+			// concluded by a lack of time).
+			this.setTimesUpStatus();
 			this.endExperimentByTimeUp();
 		},
 		startExperiement() {
@@ -300,7 +308,7 @@ export default {
 
 .time-left-message-position {
 	position: fixed;
-    transform: translateX(-50%);
+	transform: translateX(-50%);
 	left: 50%;
 }
 </style>
