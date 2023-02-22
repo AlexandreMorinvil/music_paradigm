@@ -26,7 +26,7 @@ export default {
 		...mapGetters('soundGenerator', ['isSoundGeneratorInitialized']),
 		textToDisplay() {
 			if (!this.isReadyToStart) return this.$t('views.experiment.preparing.loading');
-			else return this.$t('views.experiment.preparing.ready');
+			else return "";
 		},
 		isReadyToStart() {
 			let isReady = true;
