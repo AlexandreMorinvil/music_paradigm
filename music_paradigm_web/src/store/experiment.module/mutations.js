@@ -108,4 +108,8 @@ export default {
 	trackExperimentTimeIndicated: (state, timeIndicated) => {
 		state.state.record.timeIndicatedInMilliseconds = timeIndicated;
 	},
+
+	setTimesUpStatus: (state) => {
+		state.state.record.isInTimeUp = true;
+	}
 };

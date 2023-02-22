@@ -61,4 +61,7 @@ export default {
 	trackExperimentTimeIndicated: ({ commit }, timeIndicated) => {
 		commit('trackExperimentTimeIndicated', timeIndicated);
 	},
+	setTimesUpStatus: ({ commit }) => {
+		commit('setTimesUpStatus')
+	}
 };

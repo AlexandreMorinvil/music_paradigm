@@ -53,7 +53,10 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('experiment', ['trackExperimentTimeIndicated']),
+		...mapActions('experiment', [
+			'trackExperimentTimeIndicated',
+			'setTimesUpStatus',
+		]),
 		setTime(value) {
 			this.cumulatedTime = value * 1000;
 			this.totalTime = this.cumulatedTime;
@@ -108,6 +111,11 @@ export default {
 			if (value < 0) {
 				this.setTime(0);
 				this.stopTimer();
+				// This action is called in a redundant way (in many places) as a security since we absolutely want
+				// to make sure that the "time's up" status is recorded. (Otherwise, upon clompletion of a session,
+				// the experimentMarker would be deleted, if we do not record properly that the session was simply
+				// concluded by a lack of time).
+				this.setTimesUpStatus(); 
 				ExperimentEventBus.$emit(experimentEvents.EVENT_TIMES_UP);
 			} else {
 				this.seconds = Math.floor((value / 1000) % 60);
