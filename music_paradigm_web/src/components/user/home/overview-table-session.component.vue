@@ -9,7 +9,7 @@
 </template>
 
 <script>
-// import '@/styles/color-palette.css';
+import '@/styles/color-palette.css';
 
 export default {
 	data() {
