@@ -8,22 +8,6 @@ export default {
 		return state.selectedUser.username;
 	},
 
-	userSelectedEmail: (state) => {
-		return state.selectedUser.email;
-	},
-
-	userSelectedFirstName: (state) => {
-		return state.selectedUser.firstName;
-	},
-
-	userSelectedMiddleName: (state) => {
-		return state.selectedUser.middleName;
-	},
-
-	userSelectedLastName: (state) => {
-		return state.selectedUser.lastName;
-	},
-
 	userSelectedTags: (state) => {
 		return state.selectedUser.tags;
 	},

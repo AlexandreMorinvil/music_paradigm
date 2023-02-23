@@ -1,7 +1,8 @@
 export default {
-	// curriculumEditionCurriculum: (state) => {
-	// 	return state.editionCurriculum;
-	// },
+	userEditionIsPasswordSecret: (state) => {
+		return state.editionUser.isPasswordSecret;
+	},
+
 	userEditionUsername: (state) => {
 		return state.editionUser.username;
 	},

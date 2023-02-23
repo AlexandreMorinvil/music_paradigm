@@ -10,7 +10,6 @@
 					<tr>
 						<th>#</th>
 						<th>Username</th>
-						<th>Full Name</th>
 						<th>Tags</th>
 						<th>Curriculum</th>
 						<th>Start Date</th>
@@ -25,7 +24,6 @@
 					<tr v-for="(user, index) in usersSummaryList" :key="user._id" :class="{ selected: isSelectedUser(user) }">
 						<td>{{ index + 1 }}</td>
 						<td>{{ makeUsernameDisplay(user) }}</td>
-						<td>{{ makeFullNameDisplay(user) }}</td>
 						<td style="white-space: pre-line">{{ makeTagsDisplay(user) }}</td>
 						<td>{{ makeCurriculumTitleDisplay(user) }}</td>
 						<td>{{ makeProgressionStartTimeDisplay(user) }}</td>
@@ -77,11 +75,6 @@ export default {
 		},
 		makeUsernameDisplay(user) {
 			return user ? user.username : '';
-		},
-		makeFullNameDisplay(user) {
-			const { firstName, middleName, lastName } = user;
-			if (!(firstName || middleName || lastName)) return '---';
-			return firstName + ' ' + middleName + ' ' + lastName;
 		},
 		makeTagsDisplay(user) {
 			const { tags } = user;

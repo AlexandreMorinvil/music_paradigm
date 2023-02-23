@@ -6,37 +6,12 @@
 			</label>
 			<input type="text" v-model="username" name="username" autocomplete="new-username" placeholder="Insert new username" />
 		</div>
-		<div class="email-area input">
-			<label for="email">
-				Email : <span class="selected-element-text">{{ userSelectedEmailDisplay }}</span>
-			</label>
-			<input type="email" v-model="email" name="email" autocomplete="new-email" placeholder="Insert new email" />
-		</div>
 
 		<div class="password-area input">
 			<label for="password">
 				Password : <span class="selected-element-text">{{ userSelectedPasswordDisplay }}</span>
 			</label>
 			<input type="password" v-model="password" name="password" autocomplete="new-password" placeholder="Insert new password" />
-		</div>
-
-		<div class="firstname-area input">
-			<label for="firstName">
-				First Name : <span class="selected-element-text">{{ userSelectedFirstNameDisplay }}</span>
-			</label>
-			<input type="text" v-model="firstName" name="firstName" autocomplete="new-first-name" placeholder="Insert new first name" />
-		</div>
-		<div class="middlename-area input">
-			<label for="middleName">
-				Middle Name : <span class="selected-element-text">{{ userSelectedMiddleNameDisplay }}</span>
-			</label>
-			<input type="text" v-model="middleName" name="middleName" autocomplete="new-middle-name" placeholder="Insert new middle name" />
-		</div>
-		<div class="lastname-area input">
-			<label for="lastName">
-				Last Name : <span class="selected-element-text">{{ userSelectedLastNameDisplay }} </span>
-			</label>
-			<input type="text" v-model="lastName" name="lastName" autocomplete="new-last-name" placeholder="Insert new last name" />
 		</div>
 
 		<div class="tags-area">
@@ -65,10 +40,6 @@ export default {
 			id: '',
 			username: '',
 			password: '',
-			email: '',
-			firstName: '',
-			middleName: '',
-			lastName: '',
 			tags: [],
 		};
 	},
@@ -77,20 +48,12 @@ export default {
 			'hasSelectedUser',
 			'userSelectedId',
 			'userSelectedUsername',
-			'userSelectedEmail',
-			'userSelectedFirstName',
-			'userSelectedMiddleName',
-			'userSelectedLastName',
 			'userSelectedTags',
 		]),
 		wasFormModified() {
 			return (
 				this.username !== this.userSelectedUsername ||
 				this.password !== '' ||
-				this.email !== this.userSelectedEmail ||
-				this.firstName !== this.userSelectedFirstName ||
-				this.middleName !== this.userSelectedMiddleName ||
-				this.lastName !== this.userSelectedLastName ||
 				!this.areTagArraysEqual
 			);
 		},
@@ -113,20 +76,8 @@ export default {
 		userSelectedUsernameDisplay() {
 			return this.hasSelectedUser ? this.userSelectedUsername || '---' : '';
 		},
-		userSelectedEmailDisplay() {
-			return this.hasSelectedUser ? this.userSelectedEmail || '---' : '';
-		},
 		userSelectedPasswordDisplay() {
 			return this.hasSelectedUser ? '***' : '';
-		},
-		userSelectedFirstNameDisplay() {
-			return this.hasSelectedUser ? this.userSelectedFirstName || '---' : '';
-		},
-		userSelectedMiddleNameDisplay() {
-			return this.hasSelectedUser ? this.userSelectedMiddleName || '---' : '';
-		},
-		userSelectedLastNameDisplay() {
-			return this.hasSelectedUser ? this.userSelectedLastName || '---' : '';
 		},
 		userSelectedTagsDisplay() {
 			if (this.hasSelectedUser) {
@@ -145,10 +96,6 @@ export default {
 			return {
 				username: this.username,
 				password: this.password,
-				email: this.email,
-				firstName: this.firstName,
-				middleName: this.middleName,
-				lastName: this.lastName,
 				tags: this.tags,
 			};
 		},
@@ -164,20 +111,9 @@ export default {
 		assignFormUsername(username) {
 			this.username = username || '';
 		},
-		assignFormEmail(email) {
-			this.email = email || '';
-		},
+
 		assignFormPassword(password) {
 			this.password = password || '';
-		},
-		assignFormFirstName(firstName) {
-			this.firstName = firstName || '';
-		},
-		assignFormMiddleName(middleName) {
-			this.middleName = middleName || '';
-		},
-		assignFormLastName(lastName) {
-			this.lastName = lastName || '';
 		},
 		assignFormTags(tags) {
 			this.tags = Array.isArray(tags) ? JSON.parse(JSON.stringify(tags)) : [];
@@ -185,21 +121,13 @@ export default {
 		assignSelectedToForm() {
 			this.assignFormId(this.userSelectedId);
 			this.assignFormUsername(this.userSelectedUsername);
-			this.assignFormEmail(this.userSelectedEmail);
 			this.assignFormPassword('');
-			this.assignFormFirstName(this.userSelectedFirstName);
-			this.assignFormMiddleName(this.userSelectedMiddleName);
-			this.assignFormLastName(this.userSelectedLastName);
 			this.assignFormTags(this.userSelectedTags);
 		},
 		clearForm() {
 			this.assignFormId('');
 			this.assignFormUsername('');
-			this.assignFormEmail('');
 			this.assignFormPassword('');
-			this.assignFormFirstName('');
-			this.assignFormMiddleName('');
-			this.assignFormLastName('');
 			this.assignFormTags([]);
 		},
 	},
@@ -220,9 +148,8 @@ export default {
 	grid-gap: 10px;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
 	grid-template-areas:
-		'username username username email email email'
+		'username username username'
 		'password password password password password password'
-		'firstname firstname middlename middlename lastname lastname'
 		'tags tags tags tags tags tags';
 }
 
@@ -230,24 +157,9 @@ export default {
 	grid-area: username;
 }
 
-.email-area {
-	grid-area: email;
-}
 
 .password-area {
 	grid-area: password;
-}
-
-.firstname-area {
-	grid-area: firstname;
-}
-
-.middlename-area {
-	grid-area: middlename;
-}
-
-.lastname-area {
-	grid-area: lastname;
 }
 
 .input {

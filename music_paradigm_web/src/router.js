@@ -164,11 +164,6 @@ const router = new Router({
 					component: () => import(/* WebpackChunkName: "admin" */ './views/admin/data.page.vue'),
 				},
 				{
-					path: 'account',
-					name: 'admin.account',
-					component: () => import(/* WebpackChunkName: "admin" */ './views/admin/account.page.vue'),
-				},
-				{
 					path: '',
 					name: 'admin',
 					redirect: { name: 'admin.home' },

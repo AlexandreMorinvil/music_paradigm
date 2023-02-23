@@ -3,6 +3,16 @@
 		<form @submit.prevent="" class="label-input-spacing">
 			<label for="title">Username </label>
 			<input type="text" v-model="username" name="title" autocomplete="new-username" placeholder="Insert username" />
+
+			<label for="title">Password </label>
+			<div class="password-input-area">
+				<input :type="isPasswordSecret ? 'password' : 'text'" v-model="password" name="title"
+					autocomplete="new-password" placeholder="Insert password" />
+				<button class="widget-button small" :class="isPasswordSecret ? 'turquoise' : 'blue'"
+					v-on:click="toogleIsPasswordSecret">
+					{{ isPasswordSecret ? 'Remove secrecy' : 'Make it secret' }}
+				</button>
+			</div>
 		</form>
 	</div>
 </template>
@@ -15,8 +25,26 @@ import { mapGetters, mapMutations } from 'vuex';
 export default {
 	computed: {
 		...mapGetters('managementUsers/edition', [
+			'userEditionIsPasswordSecret',
+			'userEditionPassword',
 			'userEditionUsername',
 		]),
+		isPasswordSecret: {
+			get() {
+				return this.userEditionIsPasswordSecret;
+			},
+			set(value) {
+				this.editUserEditionIsPasswordSecret(value);
+			},
+		},
+		password: {
+			get() {
+				return this.userEditionPassword;
+			},
+			set(value) {
+				this.editUserEditionPassword(value);
+			},
+		},
 		username: {
 			get() {
 				return this.userEditionUsername;
@@ -28,13 +56,24 @@ export default {
 	},
 	methods: {
 		...mapMutations('managementUsers/edition', [
+			'editUserEditionIsPasswordSecret',
+			'editUserEditionPassword',
 			'editUserEditionUsername',
 		]),
+		toogleIsPasswordSecret() {
+			this.isPasswordSecret = !this.isPasswordSecret;
+		}
 	},
 };
 </script>
 
 <style scoped>
+.password-input-area {
+	display: grid;
+	grid-template-columns: 250px 1fr;
+}
+
+
 .form-area {
 	display: flex;
 	flex-direction: column;

@@ -37,6 +37,12 @@ schema.statics.isAdmin = async function (userId) {
     return user.role === roles.admin;
 };
 
+schema.statics.getByIdWithExposablePassword = async function (userId) {
+    const user = await this.findById(userId);
+    user.password = user.exposablePassword;
+    return user;
+};
+
 
 schema.statics.getLastProgression = async function (userId) {
     const user = await this.findOne({ _id: userId });
@@ -61,12 +67,8 @@ schema.statics.getCurriculumAndProgressionObject = async function (userId) {
  * [
  *     {
  *         username: String,
- *         email: String,
  *         role: String,
  *         tags: [String],
- *         firstName: String,
- *         middleName: String,
- *         lastName: String,
  *         
  *         curriculumTitle: String,
  *         
@@ -126,7 +128,7 @@ schema.statics.getListAllSummaries = async function () {
 schema.methods.updateProfile = async function (attributesToUpdate) {
 
     // Update all the user's information except for the password
-    const updateable = ['username', 'email', 'tags', 'firstName', 'middleName', 'lastName'];
+    const updateable = ['username', 'tags'];
     for (const attribute of updateable)
         if (attributesToUpdate.hasOwnProperty(attribute))
             this[attribute] = attributesToUpdate[attribute];

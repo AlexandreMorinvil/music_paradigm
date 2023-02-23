@@ -51,7 +51,7 @@ async function createUser(user, curriculumId, assignedParameters) {
     } catch (err) {
         switch (err.code) {
             case 11000:
-                throw new Error(`The username and/or the email address is already used`);
+                throw new Error(`The username is already used`);
             default:
                 throw err;
         }
@@ -65,7 +65,7 @@ async function updateUserProfile(userId, userUpdate) {
     } catch (err) {
         switch (err.code) {
             case 11000:
-                throw new Error(`The username and/or the email address is already used`);
+                throw new Error(`The username is already used`);
             default:
                 throw err;
         }

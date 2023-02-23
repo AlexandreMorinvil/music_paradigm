@@ -4,7 +4,7 @@
 			<svg class="home-button app-navigation-bar-button" v-on:click="goToHomePage">
 				<use xlink:href="app-sprites.svg#icon-home" />
 			</svg>
-			<p>{{ $t('navigation-bar.welcome', { fullname: fullName }) }}</p>
+			<p>{{ $t('navigation-bar.welcome', { fullname: username }) }}</p>
 		</div>
 
 		<div class="navigation-bar-center navigation-bar-wrapper">
@@ -25,7 +25,7 @@ import '@/styles/navigation-bar-template.css';
 
 export default {
 	computed: {
-		...mapGetters('account', ['isLoggedIn', 'fullName']),
+		...mapGetters('account', ['isLoggedIn', 'username']),
 	},
 	methods: {
 		...mapActions('account', ['logout']),
