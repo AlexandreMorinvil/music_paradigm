@@ -61,13 +61,13 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('users', ['isFetchingUsersSummaryList', 'usersSummaryList', 'userSelectedId']),
+		...mapGetters('managementUsers', ['isFetchingUsersSummaryList', 'usersSummaryList', 'userSelectedId']),
 		isListLoading() {
 			return this.isFetchingUsersSummaryList;
 		},
 	},
 	methods: {
-		...mapActions('users', ['fetchAllUsersSummary', 'setSelectedUser', 'unsetSelectedUser']),
+		...mapActions('managementUsers',['fetchAllUsersSummary', 'setSelectedUser', 'unsetSelectedUser']),
 		handleRefresh() {
 			this.fetchAllUsersSummary();
 		},

@@ -38,7 +38,7 @@ export default {
 		UsersList,
 	},
 	methods: {
-		...mapActions('users', ['createUser']),
+		...mapActions('managementUsers',['createUser']),
 		bundleUserInformation() {
 			return {
 				user: this.$refs.editor.bundleUserFromForm(),

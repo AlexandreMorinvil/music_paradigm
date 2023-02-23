@@ -1,4 +1,4 @@
-import { defaultState } from '@/store-helper/users.module-helper';
+import { User } from "@/modules/users";
 
 export default {
 	status: {
@@ -10,8 +10,8 @@ export default {
 	},
 
 	// Selected user information
-	selectedUser: defaultState.EMPTY_USER(),
+	selectedUser: new User(),
 
 	// Users list
-	usersSummaryList: defaultState.EMPTY_USERS_HEADERS_LIST(),
+	usersSummaryList: [],
 };

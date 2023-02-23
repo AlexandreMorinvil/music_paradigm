@@ -41,7 +41,7 @@
 
 		<div class="tags-area">
 			<div class="tags-label-area">
-				<button v-on:click="addTag()" class="widget-button small blue">Add</button>
+				<button v-on:click="addTag" class="widget-button small blue">Add</button>
 				<label style="display: inline" for="tags">
 					Tag(s) : <span class="selected-element-text"> {{ userSelectedTagsDisplay }} </span>
 				</label>
@@ -73,7 +73,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('users', [
+		...mapGetters('managementUsers', [
 			'hasSelectedUser',
 			'userSelectedId',
 			'userSelectedUsername',

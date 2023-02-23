@@ -52,7 +52,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('users/progressions', ['sessionCompletionCountSelected']),
+		...mapGetters('managementUsers/progressions', ['sessionCompletionCountSelected']),
 		selectedCompletionCount() {
 			return this.sessionCompletionCountSelected;
 		},
@@ -61,7 +61,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('users/progressions', ['setSelectedSessionCompletionCount', 'unsetSelectedSessionCompletionCount']),
+		...mapActions('managementUsers/progressions', ['setSelectedSessionCompletionCount', 'unsetSelectedSessionCompletionCount']),
 		takeSession(session) {
 			if (!session || !session.associativeId) {
 				this.unsetSession();

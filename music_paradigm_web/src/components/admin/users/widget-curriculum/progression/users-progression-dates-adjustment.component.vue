@@ -47,7 +47,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('users/progressions', [
+		...mapGetters('managementUsers/progressions', [
 			'progressionSelectedStartTime',
 			'progressionSelectedStartTimePassed',
 			'progressionSelectedLastProgressionDate',

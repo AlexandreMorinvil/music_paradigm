@@ -1,4 +1,4 @@
-import { defaultState } from '@/store-helper/users.module-helper';
+import { User } from "@/modules/users";
 
 export default {
 	// Status Updates
@@ -48,7 +48,7 @@ export default {
 	},
 
 	unsetSelectedUser(state) {
-		state.selectedUser = defaultState.EMPTY_USER();
+		state.selectedUser = new User();
 	},
 
 	setSummariesList(state, usersSummaryList) {

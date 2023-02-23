@@ -45,8 +45,8 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('users', ['hasSelectedUser', 'userSelectedId', 'userSelectedCurriculum', 'hasCurriculumToSelectedUser']),
-		...mapGetters('users/progressions', ['hasProgressionHistory']),
+		...mapGetters('managementUsers', ['hasSelectedUser', 'userSelectedId', 'userSelectedCurriculum', 'hasCurriculumToSelectedUser']),
+		...mapGetters('managementUsers/progressions', ['hasProgressionHistory']),
 		isCurrentCurriculumAssigned() {
 			return this.userSelectedCurriculum === this.curriculum;
 		},
@@ -56,8 +56,8 @@ export default {
 	},
 	methods: {
 		...mapActions('managementCurriculums', ['fetchAllCurriculumHeaders']),
-		...mapActions('users', ['assignCurriculum']),
-		...mapActions('users/progressions', ['updateParameters', 'updateAdjustments']),
+		...mapActions('managementUsers',['assignCurriculum']),
+		...mapActions('managementUsers/progressions', ['updateParameters', 'updateAdjustments']),
 		bundleUserCurriculumInformation() {
 			return {
 				...this.$refs.userCurriculumForm.bundleCurriculumForm(),

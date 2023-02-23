@@ -51,8 +51,8 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('users', ['userSelectedId']),
-		...mapGetters('users/progressions', ['progressionSelectedImposedParameters']),
+		...mapGetters('managementUsers', ['userSelectedId']),
+		...mapGetters('managementUsers/progressions', ['progressionSelectedImposedParameters']),
 		...mapGetters('managementCurriculums', ['curriculumsList']),
 		currentlyAssignedValues() {
 			return Object.assign({}, this.parameterDefaultValueMap, this.progressionSelectedImposedParameters);

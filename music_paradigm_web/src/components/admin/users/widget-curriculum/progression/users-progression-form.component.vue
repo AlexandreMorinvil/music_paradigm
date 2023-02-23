@@ -60,8 +60,8 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('users', ['userSelectedId']),
-		...mapGetters('users/progressions', [
+		...mapGetters('managementUsers', ['userSelectedId']),
+		...mapGetters('managementUsers/progressions', [
 			'hasProgressionHistory',
 			'progressionSelectedHistory',
 			'hasSelectedProgressionSession',
@@ -91,7 +91,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('users/progressions', ['refreshSelectedUserProgression', 'setSelectedSession', 'unsetSelectedSession']),
+		...mapActions('managementUsers/progressions', ['refreshSelectedUserProgression', 'setSelectedSession', 'unsetSelectedSession']),
 		handleRefresh() {
 			this.isRefreshing = true;
 			this.refreshSelectedUserProgression().finally(() => {

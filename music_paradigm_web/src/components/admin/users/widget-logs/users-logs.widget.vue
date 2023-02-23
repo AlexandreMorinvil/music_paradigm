@@ -34,8 +34,8 @@ export default {
 		return {};
 	},
 	computed: {
-		...mapGetters('users', ['userSelectedId', 'userSelectedUsername', 'hasSelectedUser']),
-		...mapGetters('users/progressions', [
+		...mapGetters('managementUsers', ['userSelectedId', 'userSelectedUsername', 'hasSelectedUser']),
+		...mapGetters('managementUsers/progressions', [
 			'progressionSelectedId',
 			'sessionSelectedAssociativeId',
 			'sessionCompletionCountSelected',

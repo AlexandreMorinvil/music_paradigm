@@ -28,7 +28,7 @@ export default {
 	},
 	computed: {
 		...mapGetters('managementCurriculums', ['curriculumsList']),
-		...mapGetters('users', ['hasSelectedUser', 'userSelectedId', 'userSelectedCurriculum']),
+		...mapGetters('managementUsers', ['hasSelectedUser', 'userSelectedId', 'userSelectedCurriculum']),
 		wasCurriculumModified() {
 			return this.curriculum !== this.userSelectedCurriculum;
 		},
