@@ -3,11 +3,23 @@ export default {
 		return state.editionUser.isPasswordSecret;
 	},
 
-	userEditionUsername: (state) => {
-		return state.editionUser.username;
+	userEditionNote: (state) => {
+		return state.editionUser.note;
 	},
 
 	userEditionPassword: (state) => {
 		return state.editionUser.password;
-	}
+	},
+
+	userEditionTag: (state) => (index) => {
+		return state.editionUser.tags[index];
+	},
+
+	userEditionTags: (state) => {
+		return state.editionUser.tags;
+	},
+
+	userEditionUsername: (state) => {
+		return state.editionUser.username;
+	},
 };

@@ -8,11 +8,13 @@ const { SECRET_PASSWORD_PLACEHOLDER } = require('modules/users/user-password');
 const { NO_PASSWORD_PLACEHOLDER } = require('modules/users/user-password');
 
 // Error messages
-const usernameMinLengthMessage = "The username must have at least one character";
-const usernameMaxLengthMessage = "The username must have a maximum of 100 characters";
+const noteMaxLengthMessage = "The note must have a maximum of 500 characters";
 
 const passwordRequiredMessage = "The password is required"
 const passwordMinLengthMessage = "The password must have a minimum of one character";
+
+const usernameMinLengthMessage = "The username must have at least one character";
+const usernameMaxLengthMessage = "The username must have a maximum of 100 characters";
 const passwordMaxLengthMessage = "The password must have a maximum of 100 characters";
 
 // Schema
@@ -47,6 +49,13 @@ const schema = new Schema(
             type: String,
             default: roles.user,
             enum: ['user', 'admin']
+        },
+
+        note: {
+            type: String,
+            default: "",
+            maxlength: [500, noteMaxLengthMessage],
+            set: setterPassword,
         },
 
         tags: {

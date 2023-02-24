@@ -5,7 +5,6 @@
 			<button v-on:click="handleUnselection" class="widget-button turquoise" :class="{ inactive: !isUnselectButtonActive }">Unselect</button>
 		</div> -->
 
-		<users-editor-form-component class="editor-position inner-widget" ref="editorForm" />
 		<UserDetailsSection />
 
 		<!-- <div class="submission-buttons-position">
@@ -21,13 +20,11 @@ import '@/styles/widget-template.css';
 
 // import { mapActions, mapGetters } from 'vuex';
 
-import UsersEditorFormComponent from './users-editor-form.component.vue';
 import UserDetailsSection from './section-details/user-details.section.vue';
 
 export default {
 	components: {
 		UserDetailsSection,
-		UsersEditorFormComponent,
 	},
 	// data() {
 	// 	return {
