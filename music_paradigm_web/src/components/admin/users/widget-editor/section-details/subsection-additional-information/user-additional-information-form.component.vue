@@ -1,13 +1,21 @@
 <template>
 	<div class="form-area">
 		<form @submit.prevent="" class="label-input-spacing">
+
+			<label for="title">Group </label>
+			<input list="user-group" type="text" v-model="group" name="title" autocomplete="new-group"
+				placeholder="Insert group" />
+			<datalist id="user-group">
+				<option v-for="(group, index) in usersExistingUserGroupsList" :key="index" :value="group" />
+			</datalist>
+
 			<label for="text">Note</label>
 			<textarea v-model="note" name="text" row="2" placeholder="Take notes about the user in this field" />
 
 			<label for="title">Tags </label>
 			<div v-for="(tag, index) in tags" :key="index" class="tag-input-area">
-				<input type="text" v-on:change="() => editUserEditionTag(tag, index)" v-bind="userEditionTags" :name="`tag ${index + 1}`"
-					autocomplete="new-tag" placeholder="Insert tag" />
+				<input type="text" v-on:change="() => editUserEditionTag(tag, index)" v-bind="userEditionTags"
+					:name="`tag ${index + 1}`" autocomplete="new-tag" placeholder="Insert tag" />
 				<button class="widget-button small red" v-on:click="() => deleteTag(index)"> Delete </button>
 			</div>
 			<button class="widget-button small blue grid-right-align" v-on:click="addTag"> Add Tag </button>
@@ -22,10 +30,20 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
 	computed: {
+		...mapGetters('managementUsers', ['usersExistingUserGroupsList']),
 		...mapGetters('managementUsers/edition', [
+			'userEditionGroup',
 			'userEditionNote',
 			'userEditionTags',
 		]),
+		group: {
+			get() {
+				return this.userEditionGroup;
+			},
+			set(value) {
+				this.editUserEditionGroup(value);
+			},
+		},
 		note: {
 			get() {
 				return this.userEditionNote;
@@ -39,11 +57,13 @@ export default {
 		},
 	},
 	methods: {
+		...mapActions('managementUsers', ['getExistingUserGroupsList']),
 		...mapActions('managementUsers/edition', [
 			'addUserEditionTag',
-			'deleteUserEditionTag'
+			'deleteUserEditionTag',
 		]),
 		...mapMutations('managementUsers/edition', [
+			'editUserEditionGroup',
 			'editUserEditionNote',
 			'editUserEditionTag',
 		]),
@@ -54,11 +74,13 @@ export default {
 			this.deleteUserEditionTag(index);
 		},
 	},
+	beforeMount() {
+		this.getExistingUserGroupsList();
+	},
 };
 </script>
 
 <style scoped>
-
 .form-area {
 	display: flex;
 	flex-direction: column;
@@ -79,11 +101,13 @@ export default {
 }
 
 .grid-right-align {
-  grid-column: 2;
+	grid-column: 2;
 }
 
 label {
 	min-width: 250px;
+	padding-right: 20px;
+	text-align: right;
 	white-space: nowrap;
 }
 

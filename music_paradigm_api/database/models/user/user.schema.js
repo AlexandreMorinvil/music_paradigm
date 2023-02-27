@@ -10,25 +10,48 @@ const { NO_PASSWORD_PLACEHOLDER } = require('modules/users/user-password');
 // Error messages
 const noteMaxLengthMessage = "The note must have a maximum of 500 characters";
 
+const groupMaxLengthMessage = "The group must have a maximum of 100 characters";
+
 const passwordRequiredMessage = "The password is required"
+const passwordMaxLengthMessage = "The password must have a maximum of 100 characters";
 const passwordMinLengthMessage = "The password must have a minimum of one character";
 
 const usernameMinLengthMessage = "The username must have at least one character";
 const usernameMaxLengthMessage = "The username must have a maximum of 100 characters";
-const passwordMaxLengthMessage = "The password must have a maximum of 100 characters";
 
 // Schema
 const schema = new Schema(
     {
-        username: {
+        curriculum: {
+            type: Schema.Types.ObjectId,
+            ref: 'Curriculum',
+            default: null
+        },
+
+        group: {
             type: String,
-            default: defaultUsername,
+            default: '',
             sparse: true,
             trim: true,
-            unique: true,
-            minlength: [1, usernameMinLengthMessage],
-            maxlength: [100, usernameMaxLengthMessage],
-            set: setterUsername
+            maxlength: [100, groupMaxLengthMessage],
+        },
+
+        isPasswordSecret: {
+            type: Boolean,
+            default: true,            
+        },
+
+
+        lastLogin: { 
+            type: Date, 
+            default: null
+        },
+        
+        note: {
+            type: String,
+            default: "",
+            maxlength: [500, noteMaxLengthMessage],
+            set: setterPassword,
         },
 
         password: {
@@ -38,36 +61,6 @@ const schema = new Schema(
             minlength: [1, passwordMinLengthMessage],
             maxlength: [100, passwordMaxLengthMessage],
             set: setterPassword,
-        },
-
-        isPasswordSecret: {
-            type: Boolean,
-            default: true,            
-        },
-
-        role: {
-            type: String,
-            default: roles.user,
-            enum: ['user', 'admin']
-        },
-
-        note: {
-            type: String,
-            default: "",
-            maxlength: [500, noteMaxLengthMessage],
-            set: setterPassword,
-        },
-
-        tags: {
-            type: [String],
-            default: [],
-            set: setterTags
-        },
-
-        curriculum: {
-            type: Schema.Types.ObjectId,
-            ref: 'Curriculum',
-            default: null
         },
 
         progressions: {
@@ -80,9 +73,26 @@ const schema = new Schema(
             default: []
         },
 
-        lastLogin: { 
-            type: Date, 
-            default: null
+        role: {
+            type: String,
+            default: roles.user,
+            enum: ['user', 'admin']
+        },
+
+        tags: {
+            type: [String],
+            default: [],
+            set: setterTags
+        },
+
+        username: {
+            type: String,
+            default: defaultUsername,
+            trim: true,
+            unique: true,
+            minlength: [1, usernameMinLengthMessage],
+            maxlength: [100, usernameMaxLengthMessage],
+            set: setterUsername
         },
     },
     {

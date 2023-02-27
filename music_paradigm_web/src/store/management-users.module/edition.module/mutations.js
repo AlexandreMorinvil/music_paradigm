@@ -7,12 +7,16 @@ export default {
 		state.editionUser.tags.splice(index, 1);
 	},
 
-	editUserEditionNote(state, note) {
-		state.editionUser.note = note;
+	editUserEditionGroup(state, group) {
+		state.editionUser.group = group;
 	},
 
 	editUserEditionIsPasswordSecret(state, isPasswordSecret) {
 		state.editionUser.isPasswordSecret = isPasswordSecret;
+	},
+
+	editUserEditionNote(state, note) {
+		state.editionUser.note = note;
 	},
 
 	editUserEditionPassword(state, password) {

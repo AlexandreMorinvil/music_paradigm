@@ -2,57 +2,25 @@ import { authHeader, url } from '@/_helpers';
 import { defaultResponseHandler } from './response-handler';
 
 export const usersApi = {
-	register,
-	getListAllSummaries,
-	getById,
-	update,
-	delete: _delete,
+	assignAdjustments,
 	assignCurriculum,
 	assignParameters,
-	assignAdjustments,
+	delete: _delete,
+	getById,
+	getExistingUserGroupsList,
+	getListAllSummaries,
+	register,
 	resetProgression,
+	update,
 };
 
-function register(user) {
+function assignAdjustments(userId, adjustments) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(user),
+		body: JSON.stringify(adjustments),
 	};
-	return fetch(url.users('register'), requestOptions).then(defaultResponseHandler);
-}
-
-function getListAllSummaries() {
-	const requestOptions = {
-		method: 'GET',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-	};
-	return fetch(url.users(''), requestOptions).then(defaultResponseHandler);
-}
-
-function getById(id) {
-	const requestOptions = {
-		method: 'GET',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-	};
-	return fetch(url.users(id), requestOptions).then(defaultResponseHandler);
-}
-
-function update(id, user) {
-	const requestOptions = {
-		method: 'PUT',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(user),
-	};
-	return fetch(url.users(id), requestOptions).then(defaultResponseHandler);
-}
-
-function _delete(id) {
-	const requestOptions = {
-		method: 'DELETE',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-	};
-	return fetch(url.users(id), requestOptions).then(defaultResponseHandler);
+	return fetch(url.users('assign-adjustments/' + userId), requestOptions).then(defaultResponseHandler);
 }
 
 function assignCurriculum(userId, curriculumInformation) {
@@ -73,13 +41,45 @@ function assignParameters(userId, parameters) {
 	return fetch(url.users('assign-parameters/' + userId), requestOptions).then(defaultResponseHandler);
 }
 
-function assignAdjustments(userId, adjustments) {
+function _delete(id) {
+	const requestOptions = {
+		method: 'DELETE',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+	};
+	return fetch(url.users(id), requestOptions).then(defaultResponseHandler);
+}
+
+function getListAllSummaries() {
+	const requestOptions = {
+		method: 'GET',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+	};
+	return fetch(url.users(''), requestOptions).then(defaultResponseHandler);
+}
+
+function getById(id) {
+	const requestOptions = {
+		method: 'GET',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+	};
+	return fetch(url.users(['get-by-id', id]), requestOptions).then(defaultResponseHandler);
+}
+
+function getExistingUserGroupsList() {
+	const requestOptions = {
+		method: 'GET',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+	};
+	return fetch(url.users('existing-groups-list'), requestOptions).then(defaultResponseHandler);
+}
+
+function register(user) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(adjustments),
+		body: JSON.stringify(user),
 	};
-	return fetch(url.users('assign-adjustments/' + userId), requestOptions).then(defaultResponseHandler);
+	return fetch(url.users('register'), requestOptions).then(defaultResponseHandler);
 }
 
 function resetProgression(userId) {
@@ -88,4 +88,13 @@ function resetProgression(userId) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
 	return fetch(url.users('reset-progression/' + userId), requestOptions).then(defaultResponseHandler);
+}
+
+function update(id, user) {
+	const requestOptions = {
+		method: 'PUT',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(user),
+	};
+	return fetch(url.users(id), requestOptions).then(defaultResponseHandler);
 }

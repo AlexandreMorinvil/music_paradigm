@@ -1,4 +1,9 @@
 export default {
+
+	userEditionGroup: (state) => {
+		return state.editionUser.group;
+	},
+
 	userEditionIsPasswordSecret: (state) => {
 		return state.editionUser.isPasswordSecret;
 	},

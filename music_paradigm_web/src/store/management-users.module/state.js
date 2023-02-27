@@ -2,11 +2,12 @@ import { User } from "@/modules/users";
 
 export default {
 	status: {
-		isFetchingUsersSummaryList: false,
-		isCreating: false,
-		isUpdating: false,
-		isDeleting: false,
 		isAssigningCurriculum: false,
+		isCreating: false,
+		isDeleting: false,
+		isGettingExistingUserGroupsList: false,
+		isFetchingUsersSummaryList: false,
+		isUpdating: false,
 	},
 
 	// Selected user information
@@ -14,4 +15,5 @@ export default {
 
 	// Users list
 	usersSummaryList: [],
+	existingUserGroupsList: [],
 };

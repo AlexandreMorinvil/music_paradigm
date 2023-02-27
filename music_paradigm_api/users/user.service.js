@@ -6,6 +6,7 @@ const userProgressionService = require('users/user-progression.service');
 module.exports = {
     getAll,
     getById,
+    getExistingUserGroupsList,
     createUser,
     updateUserProfile,
     deleteUser,
@@ -33,6 +34,15 @@ async function getById(userId) {
             progression: lastProgression,
             progressionSummary: progressionSummary,
         };
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function getExistingUserGroupsList() {
+    try {
+        const groupsList = await User.getExistingUserGroupsList();
+        return groupsList;
     } catch (err) {
         throw err;
     }

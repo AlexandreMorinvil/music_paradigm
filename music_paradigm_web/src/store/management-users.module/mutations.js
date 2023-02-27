@@ -2,12 +2,12 @@ import { User } from "@/modules/users";
 
 export default {
 	// Status Updates
-	indicateFetchingUserList(state) {
-		state.status.isFetchingUsersSummaryList = true;
+	indicateAssignCurriculumRequest(state) {
+		state.status.isAssigningCurriculum = true;
 	},
 
-	indicateFetchingUserListEnd(state) {
-		state.status.isFetchingUsersSummaryList = false;
+	indicateAssignCurriculumRequestEnd(state) {
+		state.status.isAssigningCurriculum = false;
 	},
 
 	indicateCreateRequest(state) {
@@ -18,6 +18,30 @@ export default {
 		state.status.isCreating = false;
 	},
 
+	indicateDeleteRequest(state) {
+		state.status.isDeleting = true;
+	},
+
+	indicateDeleteRequestEnd(state) {
+		state.status.isDeleting = false;
+	},
+	
+	indicateFetchingUserList(state) {
+		state.status.isFetchingUsersSummaryList = true;
+	},
+
+	indicateFetchingUserListEnd(state) {
+		state.status.isFetchingUsersSummaryList = false;
+	},
+
+	indicateGettingExistingUserGroupsList(state) {
+		state.status.isGettingExistingUserGroupsList = true;
+	},
+
+	indicateGettingExistingUserGroupsListEnd(state) {
+		state.status.isGettingExistingUserGroupsList = false;
+	},
+
 	indicateUpdateRequest(state) {
 		state.status.isUpdating = true;
 	},
@@ -26,32 +50,21 @@ export default {
 		state.status.isUpdating = false;
 	},
 
-	indicateDeleteRequest(state) {
-		state.status.isDeleting = true;
-	},
-
-	indicateDeleteRequestEnd(state) {
-		state.status.isDeleting = false;
-	},
-
-	indicateAssignCurriculumRequest(state) {
-		state.status.isAssigningCurriculum = true;
-	},
-
-	indicateAssignCurriculumRequestEnd(state) {
-		state.status.isAssigningCurriculum = false;
-	},
 
 	// Setters
+	setExistingUserGroupsList(state, groupsList) {
+		state.existingUserGroupsList = groupsList;
+	},
+
 	setSelectedUser(state, user) {
 		state.selectedUser = user;
 	},
 
-	unsetSelectedUser(state) {
-		state.selectedUser = new User();
-	},
-
 	setSummariesList(state, usersSummaryList) {
 		state.usersSummaryList = usersSummaryList;
+	},
+
+	unsetSelectedUser(state) {
+		state.selectedUser = new User();
 	},
 };

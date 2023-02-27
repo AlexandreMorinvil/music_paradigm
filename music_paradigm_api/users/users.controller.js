@@ -5,16 +5,21 @@ const jwtAuthorize = require('jwt/jwt.authorization');
 const role = require('_helpers/role');
 
 // routes
+router.delete('/:id',                   jwtAuthorize(role.admin), _delete);
+
+router.get('/',                         jwtAuthorize(role.admin), getAll);
+router.get('/current',                                            getCurrent);
+router.get('/existing-groups-list',     jwtAuthorize(role.admin), getExistingUserGroupsList);
+router.get('/get-by-id/:id',                      jwtAuthorize(role.admin), getById);
+
 router.post('/register',                jwtAuthorize(role.admin), register);
 router.post('/assign-curriculum/:id',   jwtAuthorize(role.admin), assignCurriculum);
 router.post('/assign-parameters/:id',   jwtAuthorize(role.admin), assignParameters);
 router.post('/assign-adjustments/:id',  jwtAuthorize(role.admin), assignAdjustments);
 router.post('/reset-progression/:id',   jwtAuthorize(role.admin), resetProgression);
-router.get('/',                         jwtAuthorize(role.admin), getAll);
-router.get('/current',                                            getCurrent);
-router.get('/:id',                      jwtAuthorize(role.admin), getById);
+
 router.put('/:id',                      jwtAuthorize(role.admin), update);
-router.delete('/:id',                   jwtAuthorize(role.admin), _delete);
+
 
 module.exports = router;
 
@@ -36,6 +41,13 @@ function getCurrent(req, res, next) {
 function getById(req, res, next) {
     const userId = req.params.id;
     userService.getById(userId)
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
+function getExistingUserGroupsList(req, res, next) {
+    userService.getExistingUserGroupsList()
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());

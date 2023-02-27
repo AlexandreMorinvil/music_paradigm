@@ -1,22 +1,26 @@
 import { usersApi } from '@/api';
 
 export default {
-	unsetSelectedUser({ commit, dispatch }) {
-		commit('unsetSelectedUser');
-		dispatch('progressions/unsetSelectedProgression');
-	},
 
-	setSelectedUser({ commit, dispatch }, userId) {
-		return usersApi.getById(userId).then(
-			(selectedUserDetails) => {
-				const { user, ...progressionDetails } = selectedUserDetails;
-				commit('setSelectedUser', user);
-				dispatch('progressions/setSelectedUserProgression', progressionDetails);
-			},
-			(error) => {
-				dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
-			},
-		);
+	assignCurriculum({ commit, dispatch }, { userId, curriculumParameters }) {
+		commit('indicateAssignCurriculumRequest');
+		return usersApi
+			.assignCurriculum(userId, curriculumParameters)
+			.then(
+				(updatedUserDetails) => {
+					const { user, ...progressionDetails } = updatedUserDetails;
+					commit('setSelectedUser', user);
+					dispatch('progressions/setSelectedUserProgression', progressionDetails);
+					dispatch('alert/setSuccessAlert', 'Curriculum assignation sucessful', { root: true });
+					dispatch('fetchAllUsersSummary');
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateAssignCurriculumRequestEnd');
+			});
 	},
 
 	createUser({ commit, dispatch }, userToCreate) {
@@ -40,25 +44,6 @@ export default {
 			});
 	},
 
-	updateUser({ commit, dispatch }, { id, user }) {
-		commit('indicateUpdateRequest');
-		return usersApi
-			.update(id, user)
-			.then(
-				(updatedUserProfile) => {
-					commit('setSelectedUser', updatedUserProfile);
-					dispatch('alert/setSuccessAlert', 'User update sucessful', { root: true });
-					dispatch('fetchAllUsersSummary');
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { root: true });
-				},
-			)
-			.finally(() => {
-				commit('indicateUpdateRequestEnd');
-			});
-	},
-
 	deleteUser({ commit, dispatch }, userId) {
 		commit('indicateDeleteRequest');
 		return usersApi
@@ -78,27 +63,6 @@ export default {
 			});
 	},
 
-	assignCurriculum({ commit, dispatch }, { userId, curriculumParameters }) {
-		commit('indicateAssignCurriculumRequest');
-		return usersApi
-			.assignCurriculum(userId, curriculumParameters)
-			.then(
-				(updatedUserDetails) => {
-					const { user, ...progressionDetails } = updatedUserDetails;
-					commit('setSelectedUser', user);
-					dispatch('progressions/setSelectedUserProgression', progressionDetails);
-					dispatch('alert/setSuccessAlert', 'Curriculum assignation sucessful', { root: true });
-					dispatch('fetchAllUsersSummary');
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { root: true });
-				},
-			)
-			.finally(() => {
-				commit('indicateAssignCurriculumRequestEnd');
-			});
-	},
-
 	fetchAllUsersSummary({ commit, dispatch }) {
 		commit('indicateFetchingUserList');
 		return usersApi
@@ -114,5 +78,59 @@ export default {
 			.finally(() => {
 				commit('indicateFetchingUserListEnd');
 			});
+	},
+
+	getExistingUserGroupsList({ commit, dispatch }) {
+		commit('indicateGettingExistingUserGroupsList');
+		return usersApi
+			.getExistingUserGroupsList()
+			.then(
+				(userGroupsList) => {
+					commit('setExistingUserGroupsList', userGroupsList);
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateGettingExistingUserGroupsListEnd');
+			});
+	},
+
+	updateUser({ commit, dispatch }, { id, user }) {
+		commit('indicateUpdateRequest');
+		return usersApi
+			.update(id, user)
+			.then(
+				(updatedUserProfile) => {
+					commit('setSelectedUser', updatedUserProfile);
+					dispatch('alert/setSuccessAlert', 'User update sucessful', { root: true });
+					dispatch('fetchAllUsersSummary');
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateUpdateRequestEnd');
+			});
+	},
+
+	setSelectedUser({ commit, dispatch }, userId) {
+		return usersApi.getById(userId).then(
+			(selectedUserDetails) => {
+				const { user, ...progressionDetails } = selectedUserDetails;
+				commit('setSelectedUser', user);
+				dispatch('progressions/setSelectedUserProgression', progressionDetails);
+			},
+			(error) => {
+				dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
+			},
+		);
+	},
+
+	unsetSelectedUser({ commit, dispatch }) {
+		commit('unsetSelectedUser');
+		dispatch('progressions/unsetSelectedProgression');
 	},
 };

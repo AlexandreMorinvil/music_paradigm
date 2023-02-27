@@ -43,6 +43,10 @@ schema.statics.getByIdWithExposablePassword = async function (userId) {
     return user;
 };
 
+schema.statics.getExistingUserGroupsList = async function () {
+    const groupsList = await this.distinct('group');
+    return groupsList;
+};
 
 schema.statics.getLastProgression = async function (userId) {
     const user = await this.findOne({ _id: userId });

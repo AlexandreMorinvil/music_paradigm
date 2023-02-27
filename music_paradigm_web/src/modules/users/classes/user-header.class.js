@@ -2,10 +2,11 @@ export class UserHeader {
     constructor(userHeader = {}) {
         this._id = userHeader._id || null;
 
-        this.username = userHeader.username || '';
-        this.tags = userHeader.tags || [];
         this.curriculumTitle = userHeader.curriculumTitle || null;
+        this.group = user.group || '';
         this.lastLogin = null;
+        this.tags = userHeader.tags || [];
+        this.username = userHeader.username || '';
     }
 
     toObject() {

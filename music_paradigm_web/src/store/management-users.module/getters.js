@@ -1,31 +1,4 @@
 export default {
-	// User values
-	userSelectedId: (state) => {
-		return state.selectedUser._id;
-	},
-
-	userSelectedUsername: (state) => {
-		return state.selectedUser.username;
-	},
-
-	userSelectedTags: (state) => {
-		return state.selectedUser.tags;
-	},
-
-	userSelectedRole: (state) => {
-		return state.selectedUser.role;
-	},
-
-	userSelectedCurriculum: (state) => {
-		return state.selectedUser.curriculum;
-	},
-
-	// List of users
-	usersSummaryList: (state) => {
-		return state.usersSummaryList;
-	},
-
-	// Status
 	hasSelectedUser: (state) => {
 		return Boolean(state.selectedUser._id);
 	},
@@ -36,5 +9,28 @@ export default {
 
 	isFetchingUsersSummaryList: (state) => {
 		return state.status.isFetchingUsersSummaryList;
+	},
+	
+	// TODO : Delete this getter when the code will have been adjusted
+	userSelectedId: (state) => {
+		return state.selectedUser._id;
+	},
+
+	// TODO : Delete this getter when the code will have been adjusted
+	userSelectedUsername: (state) => {
+		return state.selectedUser.username;
+	},
+
+	// TODO : Delete this getter when the code will have been adjusted
+	userSelectedCurriculum: (state) => {
+		return state.selectedUser.curriculum;
+	},
+
+	usersSummaryList: (state) => {
+		return state.usersSummaryList;
+	},
+
+	usersExistingUserGroupsList: (state) => {
+		return state.existingUserGroupsList;
 	},
 };

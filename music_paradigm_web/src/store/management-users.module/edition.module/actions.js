@@ -6,6 +6,10 @@ export default {
 	deleteUserEditionTag({ commit }, index) {
 		commit('deleteUserEditionTag', index);
 	},
+
+	editUserEditionGroup({ commit }, group) {
+		commit('editUserEditionGroup', group);
+	},
 	
 	editUserEditionIsPasswordSecret({ commit }, isPasswordSecret) {
 		commit('editUserEditionIsPasswordSecret', isPasswordSecret);

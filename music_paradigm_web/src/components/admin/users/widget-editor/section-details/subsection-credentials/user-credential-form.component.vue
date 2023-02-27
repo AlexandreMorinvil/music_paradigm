@@ -89,6 +89,8 @@ export default {
 
 label {
 	min-width: 250px;
+	padding-right: 20px;
+	text-align: right;
 	white-space: nowrap;
 }
 
