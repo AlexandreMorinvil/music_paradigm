@@ -1,3 +1,5 @@
+import { User } from "@/modules/users";
+
 export default {
 	addUserEditionTag(state) {
 		state.editionUser.tags.push("");
@@ -29,5 +31,13 @@ export default {
 
 	editUserEditionUsername(state, username) {
 		state.editionUser.username = username;
+	},
+
+	setUserEdition(state, user) {
+		state.editionUser = new User(user);
+	},
+
+	unsetUserEdition(state) {
+		state.editionUser = new User();
 	},
 };

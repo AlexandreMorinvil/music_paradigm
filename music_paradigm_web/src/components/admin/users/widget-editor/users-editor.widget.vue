@@ -6,6 +6,7 @@
 		</div> -->
 
 		<UserDetailsSection />
+		<UserCommandButtonsSection />
 
 		<!-- <div class="submission-buttons-position">
 			<button v-on:click="submitUserToCreate" class="widget-button green">Create</button>
@@ -20,10 +21,12 @@ import '@/styles/widget-template.css';
 
 // import { mapActions, mapGetters } from 'vuex';
 
+import UserCommandButtonsSection from './section-command-buttons/user-command-buttons.section.vue';
 import UserDetailsSection from './section-details/user-details.section.vue';
 
 export default {
 	components: {
+		UserCommandButtonsSection,
 		UserDetailsSection,
 	},
 	// data() {

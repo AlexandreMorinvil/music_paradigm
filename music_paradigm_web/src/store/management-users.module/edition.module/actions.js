@@ -30,4 +30,12 @@ export default {
 	editUserEditionUsername({ commit }, username) {
 		commit('editUserEditionUsername', username);
 	},
+
+	setUserEdition({ commit }, user) {
+		commit('setUserEdition', user);
+	},
+
+	unsetUserEdition({ commit }) {
+		commit('unsetUserEdition');
+	},
 };

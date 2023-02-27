@@ -56,6 +56,7 @@ export default {
 		state.existingUserGroupsList = groupsList;
 	},
 
+	// TODO: Delete once the code will have been adjusted
 	setSelectedUser(state, user) {
 		state.selectedUser = user;
 	},
@@ -64,6 +65,7 @@ export default {
 		state.usersSummaryList = usersSummaryList;
 	},
 
+	// TODO: Delete once the code will have been adjusted
 	unsetSelectedUser(state) {
 		state.selectedUser = new User();
 	},

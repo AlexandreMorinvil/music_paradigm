@@ -65,13 +65,13 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('managementUsers',['fetchAllUsersSummary', 'setSelectedUser', 'unsetSelectedUser']),
+		...mapActions('managementUsers',['fetchAllUsersSummary', 'getSelectedUser', 'unsetSelectedUser']),
 		handleRefresh() {
 			this.fetchAllUsersSummary();
 		},
 		handleSelectUser(id) {
 			if (this.userSelectedId === id) this.unsetSelectedUser();
-			else this.setSelectedUser(id);
+			else this.getSelectedUser(id);
 		},
 		makeUsernameDisplay(user) {
 			return user ? user.username : '';

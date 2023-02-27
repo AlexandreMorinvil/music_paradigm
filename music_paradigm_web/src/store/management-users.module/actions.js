@@ -9,7 +9,7 @@ export default {
 			.then(
 				(updatedUserDetails) => {
 					const { user, ...progressionDetails } = updatedUserDetails;
-					commit('setSelectedUser', user);
+					commit('setSelectedUser', user); // TODO : Delete once the code will have been updated
 					dispatch('progressions/setSelectedUserProgression', progressionDetails);
 					dispatch('alert/setSuccessAlert', 'Curriculum assignation sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
@@ -30,7 +30,10 @@ export default {
 			.then(
 				(selectedUserDetails) => {
 					const { user, ...progressionDetails } = selectedUserDetails;
-					commit('setSelectedUser', user);
+					dispatch('setSelectedUser', user);
+
+					// TODO : Delete once the code will have been updated
+					commit('setSelectedUser', user); 
 					dispatch('progressions/setSelectedUserProgression', progressionDetails);
 					dispatch('alert/setSuccessAlert', 'User creation sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
@@ -80,6 +83,19 @@ export default {
 			});
 	},
 
+	getSelectedUser({ commit, dispatch }, userId) {
+		return usersApi.getById(userId).then(
+			(selectedUserDetails) => {
+				const { user, ...progressionDetails } = selectedUserDetails;
+				commit('setSelectedUser', user);
+				dispatch('progressions/setSelectedUserProgression', progressionDetails);
+			},
+			(error) => {
+				dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
+			},
+		);
+	},
+
 	getExistingUserGroupsList({ commit, dispatch }) {
 		commit('indicateGettingExistingUserGroupsList');
 		return usersApi
@@ -103,7 +119,7 @@ export default {
 			.update(id, user)
 			.then(
 				(updatedUserProfile) => {
-					commit('setSelectedUser', updatedUserProfile);
+					commit('setSelectedUser', updatedUserProfile); // TODO : Delete once the code will have been updated
 					dispatch('alert/setSuccessAlert', 'User update sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},
@@ -116,21 +132,13 @@ export default {
 			});
 	},
 
-	setSelectedUser({ commit, dispatch }, userId) {
-		return usersApi.getById(userId).then(
-			(selectedUserDetails) => {
-				const { user, ...progressionDetails } = selectedUserDetails;
-				commit('setSelectedUser', user);
-				dispatch('progressions/setSelectedUserProgression', progressionDetails);
-			},
-			(error) => {
-				dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
-			},
-		);
+	setSelectedUser({ dispatch }, user) {
+		dispatch('edition/setUserEdition', user);
 	},
 
 	unsetSelectedUser({ commit, dispatch }) {
-		commit('unsetSelectedUser');
-		dispatch('progressions/unsetSelectedProgression');
+		dispatch('edition/unsetUserEdition');
+		commit('unsetSelectedUser'); // TODO : Delete this once the code will have been adjusted
+		dispatch('progressions/unsetSelectedProgression'); // TODO : Update this once the code will have been adjusted
 	},
 };

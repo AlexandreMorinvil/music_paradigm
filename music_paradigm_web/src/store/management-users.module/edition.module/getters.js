@@ -24,6 +24,10 @@ export default {
 		return state.editionUser.tags;
 	},
 
+	userEditionUser: (state) => {
+		return state.editionUser;
+	},
+
 	userEditionUsername: (state) => {
 		return state.editionUser.username;
 	},

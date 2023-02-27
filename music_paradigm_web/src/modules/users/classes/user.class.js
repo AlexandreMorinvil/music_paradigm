@@ -7,7 +7,7 @@ export class User {
         this.isPasswordSecret = typeof user.isPasswordSecret === 'boolean' ? user.isPasswordSecret : true;
         this.lastLogin = null;
         this.note = user.note || '';
-        this.password = user.password || '';
+        this.password = user.exposablePassword || '';
         this.role = user.role || '';
         this.tags = user.tags || [];
         this.username = user.username || '';

@@ -51,7 +51,6 @@ const schema = new Schema(
             type: String,
             default: "",
             maxlength: [500, noteMaxLengthMessage],
-            set: setterPassword,
         },
 
         password: {
@@ -60,6 +59,7 @@ const schema = new Schema(
             required: [true, passwordRequiredMessage],
             minlength: [1, passwordMinLengthMessage],
             maxlength: [100, passwordMaxLengthMessage],
+            select: false,
             set: setterPassword,
         },
 
@@ -76,7 +76,8 @@ const schema = new Schema(
         role: {
             type: String,
             default: roles.user,
-            enum: ['user', 'admin']
+            enum: Object.values(roles),
+            set: setterRole
         },
 
         tags: {
@@ -138,6 +139,11 @@ function setterPassword(password) {
 
     // Otherwise, we set the password to the required value
     else return hashPasswordIfSecret(password);
+}
+
+function setterRole(role) {
+    if (!Object.values(roles).includes(role)) return roles.user;
+    else return role;
 }
 
 function setterTags(tags) {

@@ -22,8 +22,10 @@ schema.statics.authenticate = async function (username, password) {
     return userWithoutPassword;
 };
 
-schema.statics.create = async function (userParameters) {
-    const user = await new model(userParameters);
+schema.statics.create = async function (userToCreate) {
+    delete userToCreate._id;
+    delete userToCreate.id;
+    const user = await new model(userToCreate);
     return user.save();
 };
 
@@ -35,12 +37,6 @@ schema.statics.delete = async function (userId) {
 schema.statics.isAdmin = async function (userId) {
     const user = await this.findById(userId);
     return user.role === roles.admin;
-};
-
-schema.statics.getByIdWithExposablePassword = async function (userId) {
-    const user = await this.findById(userId);
-    user.password = user.exposablePassword;
-    return user;
 };
 
 schema.statics.getExistingUserGroupsList = async function () {
