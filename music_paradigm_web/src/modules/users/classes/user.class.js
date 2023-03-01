@@ -2,6 +2,7 @@ export class User {
     constructor(user = {}) { 
         this._id = user._id || null;
 
+        this.createdAt = user.createdAt ? Date(user.createdAt) : null;
         this.curriculum = user.curriculum || null;
         this.group = user.group || '';
         this.isPasswordSecret = typeof user.isPasswordSecret === 'boolean' ? user.isPasswordSecret : true;
@@ -10,10 +11,8 @@ export class User {
         this.password = user.exposablePassword || user.password || '';
         this.role = user.role || 'user';
         this.tags = user.tags || [];
-        this.username = user.username || '';
-
-        this.createdAt = user.createdAt ? Date(user.createdAt) : null;
         this.updatedAt = user.updatedAt ? Date(user.updatedAt) : null;
+        this.username = user.username || '';
     }
 
     toObject() {

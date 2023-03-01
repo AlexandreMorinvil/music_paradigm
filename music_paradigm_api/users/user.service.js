@@ -113,7 +113,7 @@ async function getExistingUserGroupsList() {
 async function updateUserProfile(userId, userUpdated) {
     try {
         const user = await User.findById(userId);
-        return await user.updateProfile(userUpdated);
+        return await user.updateDetails(userUpdated);
     } catch (err) {
         switch (err.code) {
             case 11000:

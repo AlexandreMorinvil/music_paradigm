@@ -11,21 +11,21 @@ const roles = require('_helpers/role');
 const bcrypt = require('bcryptjs');
 
 schema.statics.authenticate = async function (username, password) {
-    // Fetch user in the database
+    // Get the user from the database
     const user = await this.findOne({ username });
     if (!user) throw new Error();
 
     // Validate password
     if (!bcrypt.compareSync(password, user.passwordHash)) throw new Error();
-    const userWithoutPassword = user.toObject();
-    delete userWithoutPassword.password;
 
-    // Return the user without the password hash
-    return userWithoutPassword;
+    // Return the user
+    user.indicateLogin(user._id);
+    return user.toObject();
 };
 
 schema.statics.create = async function (user) {
     const { _id, id, ...userToCreate } = user;
+    userToCreate.createdAt = Date.now();
     const userCreated = new model(userToCreate);
     return await userCreated.save();
 };
@@ -33,11 +33,6 @@ schema.statics.create = async function (user) {
 schema.statics.delete = async function (userId) {
     const user = await model.findById(userId);
     return await user.remove();
-};
-
-schema.statics.isAdmin = async function (userId) {
-    const user = await this.findById(userId);
-    return user.role === roles.admin;
 };
 
 schema.statics.getExistingUserGroupsList = async function () {
@@ -125,8 +120,23 @@ schema.statics.getListAllSummaries = async function () {
     return usersHeaderList;
 };
 
+schema.statics.indicateLoginToUserById = async function (userId) {
+    return this.findOneAndUpdate({ _id: userId }, { lastLogin: Date.now() });
+};
+
+schema.statics.isAdmin = async function (userId) {
+    const user = await this.findById(userId);
+    return user.role === roles.admin;
+};
+
+
 // Instance methods
-schema.methods.updateProfile = async function (updatedUserDetails) {
+schema.methods.indicateLogin = async function () {
+    this.lastLogin = Date.now();
+    return this.save();
+};
+
+schema.methods.updateDetails = async function (updatedUserDetails) {
 
     // We do not modify the progressions
     const { _id, id, progression, ...updatedUserDetailsToUpdate } = updatedUserDetails;
@@ -136,6 +146,7 @@ schema.methods.updateProfile = async function (updatedUserDetails) {
 
     // Perform the update
     Object.assign(this, updatedUserDetailsToUpdate);
+    this.updatedAt = Date.now();
     return this.save();
 };
 

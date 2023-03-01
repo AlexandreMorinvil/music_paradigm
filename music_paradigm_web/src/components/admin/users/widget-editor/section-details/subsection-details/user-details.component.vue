@@ -4,13 +4,17 @@
 			<span class="label"> User </span>
 			<span> {{ username }} </span>
 
-			<span class="label"> Creation Date </span>
+			<span class="label"> Creation </span>
 			<span class="output"> {{ creationDate }} </span>
 
+			<!-- TODO: Implementing a mechanism to make the users log in each time they load the application
+						Even though they do not necessarily enter their username and password. (Once this mechanism
+						exists and the 'lastLogin' field of a user record is updated accordingly, then it will make
+						sense to expose this output field)
 			<span class="label"> Last Login </span>
-			<span class="output"> {{ lastLoginDate }} </span>
+			<span class="output"> {{ lastLoginDate }} </span> -->
 
-			<span class="label"> Last Details Update </span>
+			<span class="label"> Last Details Modification </span>
 			<span class="output"> {{ updateDate }} </span>
 		</div>
 	</div>
@@ -39,19 +43,18 @@ export default {
 		},
 		lastLoginDate() {
 			return this.isValueDisplayable(this.userSelectionLastLogin) ?
-				this.display(dateHandler.formatDateYearToMinutes(this.userSelectionLastLogin)) :
+				dateHandler.formatDateYearToMinutes(this.userSelectionLastLogin) :
 				FORMATTING_EMPTY_VALUE_PLACEHOLDER;
 		},
 		updateDate() {
-			return this.isValueDisplayable(this.userSelectionUpdatedAt) &&
-				(this.userSelectionUpdatedAt !== this.userSelectionCreatedAt) ?
-				this.display(dateHandler.formatDateYearToMinutes(this.userSelectionUpdatedAt)) :
+			return this.isValueDisplayable(this.userSelectionUpdatedAt) ?
+				dateHandler.formatDateYearToMinutes(this.userSelectionUpdatedAt) :
 				FORMATTING_EMPTY_VALUE_PLACEHOLDER;
 		},
 		username() {
 			return this.isValueDisplayable(this.userSelectionUsername) ?
 				this.userSelectionUsername :
-				'No user selected';
+				'---';
 		},
 	},
 	methods: {

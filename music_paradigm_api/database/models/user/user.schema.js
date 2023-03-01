@@ -19,6 +19,12 @@ const usernameMaxLengthMessage = "The username must have a maximum of 100 charac
 // Schema
 const schema = new Schema(
     {
+        // Using the 'timestamp' option of Mongoose offered inconsistent results, hence th manual addition.
+        createdAt: {
+            type: Date,
+            default: null,
+        },
+
         curriculum: {
             type: Schema.Types.ObjectId,
             ref: 'Curriculum',
@@ -81,6 +87,12 @@ const schema = new Schema(
             set: setterTags
         },
 
+        // Using the 'timestamp' option of Mongoose offered inconsistent results, hence th manual addition.
+        updatedAt: {
+            type: Date,
+            default: null,
+        },
+
         username: {
             type: String,
             default: defaultUsername,
@@ -94,10 +106,6 @@ const schema = new Schema(
     {
         strict: true,
         runValidators: true,
-        timestamps: {
-            createdAt: 'createdAt',
-            updatedAt: 'updatedAt'
-        },
         toJSON: {
             transform: (doc, ret) => {
                 delete ret.password;
