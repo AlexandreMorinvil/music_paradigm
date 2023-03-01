@@ -3,6 +3,10 @@ export default {
 		return Boolean(getters.userSelectionId);
 	},
 
+	userSelectionCreatedAt: (state) => {
+		return state.selectionUser.createdAt;
+	},
+
 	userSelectionGroup: (state) => {
 		return state.selectionUser.group;
 	},
@@ -13,6 +17,10 @@ export default {
 
 	userSelectionIsPasswordSecret: (state) => {
 		return state.selectionUser.isPasswordSecret;
+	},
+
+	userSelectionLastLogin: (state) => {
+		return state.selectionUser.lastLogin;
 	},
 
 	userSelectionNote: (state) => {
@@ -29,6 +37,10 @@ export default {
 
 	userSelectionTags: (state) => {
 		return state.selectionUser.tags;
+	},
+
+	userSelectionUpdatedAt: (state) => {
+		return state.selectionUser.updatedAt;
 	},
 
 	userSelectionUser: (state) => {

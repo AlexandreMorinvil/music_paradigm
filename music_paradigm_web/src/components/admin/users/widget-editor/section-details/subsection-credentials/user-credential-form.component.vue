@@ -1,12 +1,12 @@
 <template>
 	<div class="form-area">
 		<form @submit.prevent="" class="label-input-spacing">
-			<label for="title">Username </label>
-			<input type="text" v-model="username" name="title" autocomplete="new-username" placeholder="Insert username" />
+			<label for="user">Username </label>
+			<input type="text" v-model="username" name="user" autocomplete="new-username" placeholder="Insert username" />
 
-			<label for="title">Password </label>
+			<label for="password">Password </label>
 			<div class="password-input-area">
-				<input :type="isPasswordSecret ? 'password' : 'text'" v-model="password" name="title"
+				<input :type="isPasswordSecret ? 'password' : 'text'" v-model="password" name="password"
 					autocomplete="new-password" placeholder="Insert password" />
 				<button class="widget-button small" :class="isPasswordSecret ? 'turquoise' : 'blue'"
 					v-on:click="toogleIsPasswordSecret">
