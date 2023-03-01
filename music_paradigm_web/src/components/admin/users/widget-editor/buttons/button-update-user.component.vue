@@ -1,6 +1,6 @@
 <template>
-    <button v-on:click="handleCurriculumDeletion" class="widget-button blue" :class="isButtonActive || 'inactive'">
-        Update Curriculum
+    <button v-on:click="handleUserDeletion" class="widget-button blue" :class="isButtonActive || 'inactive'">
+        Update User
     </button>
 </template>
 
@@ -10,21 +10,21 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     computed: {
-        ...mapGetters('managementCurriculums/edition', ['curriculumEditionCurriculum']),
-        ...mapGetters('managementCurriculums/selection', ['curriculumSelectionId', 'hasSelectedCurriculum']),
+        ...mapGetters('managementUsers/edition', ['userEditionUser']),
+        ...mapGetters('managementUsers/selection', ['userSelectionId', 'hasSelectedUser']),
         isButtonActive() {
-            return this.hasSelectedCurriculum;
+            return this.hasSelectedUser;
         },
     },
     methods: {
-        ...mapActions('managementCurriculums', ['updateCurriculum']),
-        handleCurriculumDeletion() {
+        ...mapActions('managementUsers', ['updateUser']),
+        handleUserDeletion() {
             if (!this.isButtonActive) return;
-            const answer = window.confirm('Are your sure you want to edit the curriculum?');
+            const answer = window.confirm('Are your sure you want to edit the user?');
             if (answer) {
-                this.updateCurriculum({
-                    id: this.curriculumSelectionId,
-                    curriculum: this.curriculumEditionCurriculum,
+                this.updateUser({
+                    id: this.userSelectionId,
+                    user: this.userEditionUser,
                 });
             }
         },

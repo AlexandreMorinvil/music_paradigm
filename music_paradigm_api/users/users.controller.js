@@ -10,7 +10,7 @@ router.delete('/:id',                   jwtAuthorize(role.admin), _delete);
 router.get('/',                         jwtAuthorize(role.admin), getAll);
 router.get('/current',                                            getCurrent);
 router.get('/existing-groups-list',     jwtAuthorize(role.admin), getExistingUserGroupsList);
-router.get('/get-by-id/:id',                      jwtAuthorize(role.admin), getById);
+router.get('/get-by-id/:id',            jwtAuthorize(role.admin), getById);
 
 router.post('/register',                jwtAuthorize(role.admin), register);
 router.post('/assign-curriculum/:id',   jwtAuthorize(role.admin), assignCurriculum);
@@ -67,8 +67,12 @@ function register(req, res, next) {
 }
 
 function update(req, res, next) {
+
+    // Parameters
     const userId = req.params.id;
     const userUpdated = req.body;
+    
+    // Processing
     userService.updateUserProfile(userId, userUpdated)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))

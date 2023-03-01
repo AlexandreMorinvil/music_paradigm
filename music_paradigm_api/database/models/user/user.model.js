@@ -4,6 +4,8 @@ schema = require('./user.middleware');
 const curriculumGetters = require('curriculums/curriculums.getters');
 const progressionGetters = require('progressions/progressions.getters');
 const progressionAssociation = require('progressions/progressions-association.service');
+const { SECRET_PASSWORD_PLACEHOLDER } = require('modules/users/user-password');
+
 
 const roles = require('_helpers/role');
 const bcrypt = require('bcryptjs');
@@ -22,11 +24,10 @@ schema.statics.authenticate = async function (username, password) {
     return userWithoutPassword;
 };
 
-schema.statics.create = async function (userToCreate) {
-    delete userToCreate._id;
-    delete userToCreate.id;
-    const user = await new model(userToCreate);
-    return user.save();
+schema.statics.create = async function (user) {
+    const { _id, id, ...userToCreate } = user;
+    const userCreated = new model(userToCreate);
+    return await userCreated.save();
 };
 
 schema.statics.delete = async function (userId) {
@@ -125,17 +126,16 @@ schema.statics.getListAllSummaries = async function () {
 };
 
 // Instance methods
-schema.methods.updateProfile = async function (attributesToUpdate) {
+schema.methods.updateProfile = async function (updatedUserDetails) {
 
-    // Update all the user's information except for the password
-    const updateable = ['username', 'tags'];
-    for (const attribute of updateable)
-        if (attributesToUpdate.hasOwnProperty(attribute))
-            this[attribute] = attributesToUpdate[attribute];
+    // We do not modify the progressions
+    const { _id, id, progression, ...updatedUserDetailsToUpdate } = updatedUserDetails;
 
-    // Handle the password separately : if the value is empty, don't change it
-    if (attributesToUpdate['password']) this['password'] = attributesToUpdate['password']
+    // If the value is the "secret password" keyworad, we don't mofify the field
+    if (updatedUserDetails.password === SECRET_PASSWORD_PLACEHOLDER) delete updatedUserDetails.password;
 
+    // Perform the update
+    Object.assign(this, updatedUserDetailsToUpdate);
     return this.save();
 };
 

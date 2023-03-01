@@ -5,16 +5,13 @@ const roles = require('_helpers/role');
 const stringHandler = require('_helpers/string-handler');
 const bcrypt = require('bcryptjs');
 const { SECRET_PASSWORD_PLACEHOLDER } = require('modules/users/user-password');
-const { NO_PASSWORD_PLACEHOLDER } = require('modules/users/user-password');
 
 // Error messages
-const noteMaxLengthMessage = "The note must have a maximum of 500 characters";
+const noteMaxLengthMessage = "The note must have a maximum of 1000 characters";
 
 const groupMaxLengthMessage = "The group must have a maximum of 100 characters";
 
-const passwordRequiredMessage = "The password is required"
 const passwordMaxLengthMessage = "The password must have a maximum of 100 characters";
-const passwordMinLengthMessage = "The password must have a minimum of one character";
 
 const usernameMinLengthMessage = "The username must have at least one character";
 const usernameMaxLengthMessage = "The username must have a maximum of 100 characters";
@@ -38,28 +35,26 @@ const schema = new Schema(
 
         isPasswordSecret: {
             type: Boolean,
-            default: true,            
+            default: true,
         },
 
 
-        lastLogin: { 
-            type: Date, 
+        lastLogin: {
+            type: Date,
             default: null
         },
-        
+
         note: {
             type: String,
             default: "",
-            maxlength: [500, noteMaxLengthMessage],
+            maxlength: [1000, noteMaxLengthMessage],
         },
 
         password: {
             type: String,
-            default: "music",
-            required: [true, passwordRequiredMessage],
-            minlength: [1, passwordMinLengthMessage],
+            default: '',
+            required: isPasswordRequired,
             maxlength: [100, passwordMaxLengthMessage],
-            select: false,
             set: setterPassword,
         },
 
@@ -97,17 +92,24 @@ const schema = new Schema(
         },
     },
     {
-        strict: false,
+        strict: true,
         runValidators: true,
         timestamps: {
             createdAt: 'createdAt',
             updatedAt: 'updatedAt'
+        },
+        toJSON: {
+            transform: (doc, ret) => {
+                delete ret.password;
+                return ret;
+            }
         }
     }
 );
 
 // Ensure that the virtual properties are also integrated in the schema
-schema.set('toJSON', { virtuals: false });
+schema.set('toJSON', { virtuals: true });
+schema.set('toObject', { virtuals: true });
 
 schema.virtual('passwordHash').get(function () {
     return this.isPasswordSecret ? this.password : bcrypt.hashSync(this.password, 10);
@@ -122,23 +124,16 @@ function defaultUsername() {
     return this.id;
 }
 
+// Required functions
+function isPasswordRequired() {
+    return typeof this.password === 'string' ? false : true
+}
+
 // Setter functions
-function setterPassword(password) {
-
+function setterPassword(password = '') {
     // If the password is secret, we only store the hash
-    const hashPasswordIfSecret = (password = "") => {
-        if (this.isPasswordSecret) return bcrypt.hashSync(password, 10);
-        else return password;
-    }
-
-    // If the value is the "secret password" keyworad, we don't mofify the field
-    if (password === SECRET_PASSWORD_PLACEHOLDER) return;
-
-    // If the value is is the "no password" keyword, we set the password to an empty string
-    else if (password === NO_PASSWORD_PLACEHOLDER) hashPasswordIfSecret("");
-
-    // Otherwise, we set the password to the required value
-    else return hashPasswordIfSecret(password);
+    if (this.isPasswordSecret) return bcrypt.hashSync(password, 10);
+    else return password;
 }
 
 function setterRole(role) {

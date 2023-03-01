@@ -35,6 +35,7 @@ export default {
 					// TODO : Delete once the code will have been updated
 					commit('setSelectedUser', user); 
 					dispatch('progressions/setSelectedUserProgression', progressionDetails);
+
 					dispatch('alert/setSuccessAlert', 'User creation sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},
@@ -87,6 +88,9 @@ export default {
 		return usersApi.getById(userId).then(
 			(selectedUserDetails) => {
 				const { user, ...progressionDetails } = selectedUserDetails;
+				dispatch('setSelectedUser', user);
+
+				// TODO : Delete once the code will have been updated
 				commit('setSelectedUser', user);
 				dispatch('progressions/setSelectedUserProgression', progressionDetails);
 			},
@@ -118,8 +122,11 @@ export default {
 		return usersApi
 			.update(id, user)
 			.then(
-				(updatedUserProfile) => {
-					commit('setSelectedUser', updatedUserProfile); // TODO : Delete once the code will have been updated
+				(updatedUser) => {
+					dispatch('setSelectedUser', updatedUser);
+
+					// TODO : Delete once the code will have been updated
+					commit('setSelectedUser', updatedUser); // TODO : Delete once the code will have been updated
 					dispatch('alert/setSuccessAlert', 'User update sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},
@@ -133,10 +140,12 @@ export default {
 	},
 
 	setSelectedUser({ dispatch }, user) {
+		dispatch('selection/setUserSelection', user);
 		dispatch('edition/setUserEdition', user);
 	},
 
 	unsetSelectedUser({ commit, dispatch }) {
+		dispatch('selection/unsetUserSelection');
 		dispatch('edition/unsetUserEdition');
 		commit('unsetSelectedUser'); // TODO : Delete this once the code will have been adjusted
 		dispatch('progressions/unsetSelectedProgression'); // TODO : Update this once the code will have been adjusted

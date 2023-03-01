@@ -10,7 +10,7 @@
 			</datalist>
 
 			<label for="text">Note</label>
-			<textarea v-model="note" name="text" row="2" placeholder="Take notes about the user in this field" />
+			<textarea v-model="note" maxlength="1000" name="text" row="2" placeholder="Take notes about the user in this field" />
 
 			<label for="title">Tags </label>
 			<div v-for="(tag, index) in tags" :key="index" class="tag-input-area">

@@ -6,6 +6,7 @@ import state from './state';
 // Nested modules
 import { edition } from './edition.module';
 import { progressions } from './progressions.module';
+import { selection } from './selection.module';
 
 export const managementUsers = {
 	namespaced: true,
@@ -15,6 +16,7 @@ export const managementUsers = {
 	mutations,
 	modules: {
 		edition,
-		progressions
+		progressions,
+		selection,
 	}
 };
