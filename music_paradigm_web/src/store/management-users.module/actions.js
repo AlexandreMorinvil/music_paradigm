@@ -15,7 +15,7 @@ export default {
 					dispatch('fetchAllUsersSummary');
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { root: true });
+					dispatch('alert/setErrorAlert', `Curriculum assignation failed : ${error.message}`, { root: true });
 				},
 			)
 			.finally(() => {
@@ -33,7 +33,7 @@ export default {
 					dispatch('setSelectedUser', user);
 
 					// TODO : Delete once the code will have been updated
-					commit('setSelectedUser', user); 
+					commit('setSelectedUser', user);
 					dispatch('progressions/setSelectedUserProgression', progressionDetails);
 
 					dispatch('alert/setSuccessAlert', 'User creation sucessful', { root: true });
@@ -54,12 +54,15 @@ export default {
 			.delete(userId)
 			.then(
 				() => {
+					dispatch('unsetSelectedUser');
+
+					// TODO : Delete once the code will have been updated
 					commit('unsetSelectedUser');
 					dispatch('alert/setSuccessAlert', 'User deletion sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { root: true });
+					dispatch('alert/setErrorAlert', `User deletion failed : ${error.message}`, { root: true });
 				},
 			)
 			.finally(() => {
@@ -131,7 +134,7 @@ export default {
 					dispatch('fetchAllUsersSummary');
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { root: true });
+					dispatch('alert/setErrorAlert', `User update failed : ${error.message}`, { root: true });
 				},
 			)
 			.finally(() => {

@@ -1,6 +1,6 @@
 <template>
-    <button v-on:click="handleCurriculumDeletion" class="widget-button red" :class="isButtonActive || 'inactive'">
-        Delete Curriculum
+    <button v-on:click="handleUserDeletion" class="widget-button red" :class="isButtonActive || 'inactive'">
+        Delete User
     </button>
 </template>
 
@@ -10,17 +10,17 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     computed: {
-        ...mapGetters('managementCurriculums/selection', ['curriculumSelectionId', 'hasSelectedCurriculum']),
+        ...mapGetters('managementUsers/selection', ['userSelectionId', 'hasSelectedUser']),
         isButtonActive() {
-            return this.hasSelectedCurriculum;
+            return this.hasSelectedUser;
         },
     },
     methods: {
-        ...mapActions('managementCurriculums', ['deleteCurriculum']),
-        handleCurriculumDeletion() {
+        ...mapActions('managementUsers', ['deleteUser']),
+        handleUserDeletion() {
             if (!this.isButtonActive) return;
-            const answer = window.confirm('Are your sure you want to delete the curriculum?');
-            if (answer) this.deleteCurriculum(this.curriculumSelectionId);
+            const answer = window.confirm('Are your sure you want to delete the user?');
+            if (answer) this.deleteUser(this.userSelectionId);
         },
     }
 };
