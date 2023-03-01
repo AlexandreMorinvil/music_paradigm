@@ -10,10 +10,11 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
     computed: {
+        ...mapGetters('managementUsers', ['hasUserEditionChange']),
         ...mapGetters('managementUsers/edition', ['userEditionUser']),
         ...mapGetters('managementUsers/selection', ['userSelectionId', 'hasSelectedUser']),
         isButtonActive() {
-            return this.hasSelectedUser;
+            return this.hasSelectedUser && this.hasUserEditionChange;
         },
     },
     methods: {

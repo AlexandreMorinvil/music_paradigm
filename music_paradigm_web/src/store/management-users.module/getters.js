@@ -1,3 +1,5 @@
+import _isEqual from 'lodash/isEqual';
+
 export default {
 	hasSelectedUser: (state) => {
 		return Boolean(state.selectedUser._id);
@@ -7,10 +9,17 @@ export default {
 		return Boolean(state.selectedUser.curriculum);
 	},
 
+	hasUserEditionChange: (_, getters) => {
+		return !_isEqual(
+			getters['selection/userSelectionUser'],
+			getters['edition/userEditionUser'],
+		);
+	},
+
 	isFetchingUsersSummaryList: (state) => {
 		return state.status.isFetchingUsersSummaryList;
 	},
-	
+
 	// TODO : Delete this getter when the code will have been adjusted
 	userSelectedId: (state) => {
 		return state.selectedUser._id;
