@@ -35,10 +35,12 @@ export default {
     margin-bottom: 10px;
 }
 .title-right-side {
+    gap: 5px;
     display: flex;
     justify-content: right;
 }
 .title-left-side {
+    gap: 5px;
     display: flex;
     justify-content: left;
 }

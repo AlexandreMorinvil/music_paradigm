@@ -1,6 +1,7 @@
 <template>
     <WidgetSectionContainer title="User Details">
         <template v-slot:topRight>
+            <ButtonRevertUserChangesComponent class="small"/>
             <ButtonDeselectUserComponent class="small"/>
         </template>
         <UserDetailsSubsection />
@@ -15,10 +16,12 @@ import UserAdditionalInformationSubsection from './subsection-additional-informa
 import UserCredentialSubsection from './subsection-credentials/user-credential.subsection.vue';
 import UserDetailsSubsection from './subsection-details/user-details.subsection.vue';
 import ButtonDeselectUserComponent from '../../buttons/button-deselect-user.component.vue';
+import ButtonRevertUserChangesComponent from '../buttons/button-revert-user-changes.component.vue';
 
 export default {
     components: {
         ButtonDeselectUserComponent,
+        ButtonRevertUserChangesComponent,
         UserAdditionalInformationSubsection,
         UserCredentialSubsection,
         UserDetailsSubsection,

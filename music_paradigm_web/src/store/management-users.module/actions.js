@@ -142,6 +142,10 @@ export default {
 			});
 	},
 
+	revertUserEditions({ dispatch, getters }) {
+		dispatch('edition/setUserEdition', getters['selection/userSelectionUser']);
+	},
+
 	setSelectedUser({ dispatch }, user) {
 		dispatch('selection/setUserSelection', user);
 		dispatch('edition/setUserEdition', user);
