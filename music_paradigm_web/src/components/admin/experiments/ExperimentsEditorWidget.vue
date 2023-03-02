@@ -8,7 +8,7 @@
 
 		<div class="selection-buttons-position">
 			<button v-on:click="handleCopying" class="widget-button blue">Copy to Editor</button>
-			<button v-on:click="handleUnselection" class="widget-button turquoise">Unselect</button>
+			<button v-on:click="handleDeselection" class="widget-button turquoise">Deselect</button>
 		</div>
 
 		<div class="editor-position code-context">
@@ -124,7 +124,7 @@ export default {
 		handleCopying() {
 			this.copySelectionToEdition();
 		},
-		handleUnselection() {
+		handleDeselection() {
 			this.unsetSelectionExperiment();
 		},
 		handleUploadExperiment(event) {

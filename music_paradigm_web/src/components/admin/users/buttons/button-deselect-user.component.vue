@@ -1,6 +1,6 @@
 <template>
     <button v-on:click="handleUserDeletion" class="widget-button turquoise" :class="isButtonActive || 'inactive'">
-        Unselect User
+        Deselect User
     </button>
 </template>
 

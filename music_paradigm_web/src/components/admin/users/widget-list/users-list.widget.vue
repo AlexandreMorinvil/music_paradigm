@@ -144,7 +144,7 @@ export default {
 			return timeLapsed;
 		},
 		makeSelectButtonText(user) {
-			return this.isSelectedUser(user) ? 'Unselect' : 'Select';
+			return this.isSelectedUser(user) ? 'Deselect' : 'Select';
 		},
 		isSelectedUser(user) {
 			return user && user._id === this.userSelectedId;

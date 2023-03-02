@@ -1,7 +1,7 @@
 <template>
     <WidgetSectionContainer title="User Details">
         <template v-slot:topRight>
-            <ButtonUnselectUserComponent class="small"/>
+            <ButtonDeselectUserComponent class="small"/>
         </template>
         <UserDetailsSubsection />
         <UserCredentialSubsection />
@@ -14,11 +14,11 @@ import WidgetSectionContainer from '@/components/admin/widget-section.container.
 import UserAdditionalInformationSubsection from './subsection-additional-information/user-additional-information.subsection.vue';
 import UserCredentialSubsection from './subsection-credentials/user-credential.subsection.vue';
 import UserDetailsSubsection from './subsection-details/user-details.subsection.vue';
-import ButtonUnselectUserComponent from '../../buttons/button-unselect-user.component.vue';
+import ButtonDeselectUserComponent from '../../buttons/button-deselect-user.component.vue';
 
 export default {
     components: {
-        ButtonUnselectUserComponent,
+        ButtonDeselectUserComponent,
         UserAdditionalInformationSubsection,
         UserCredentialSubsection,
         UserDetailsSubsection,

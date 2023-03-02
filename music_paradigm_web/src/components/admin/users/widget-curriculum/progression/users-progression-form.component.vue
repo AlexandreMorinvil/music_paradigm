@@ -22,7 +22,7 @@
 			<div class="session-header">
 				<h4 class="session-title">({{ completeAssociativeId }}) - {{ sessionTitle }}</h4>
 				<button v-on:click="handleRefresh" class="widget-button blue refresh-button">{{ refreshButtonText }}</button>
-				<button v-on:click="unsetSession" class="widget-button turquoise">Unselect</button>
+				<button v-on:click="unsetSession" class="widget-button turquoise">Deselect</button>
 			</div>
 			<progression-session-adjustment-component ref="sessionAdjustments" />
 			<progression-session-progress-component ref="sessionProgress" />

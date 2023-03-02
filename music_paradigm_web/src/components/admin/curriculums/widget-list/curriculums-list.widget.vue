@@ -85,7 +85,7 @@ export default {
 			return curriculumSummary.experiments ? curriculumSummary.experiments.length : 0;
 		},
 		makeSelectButtonText(curriculumSummary) {
-			return this.isSelectedCurriculum(curriculumSummary) ? 'Unselect' : 'Select';
+			return this.isSelectedCurriculum(curriculumSummary) ? 'Deselect' : 'Select';
 		},
 		isSelectedCurriculum(curriculumSummary) {
 			return curriculumSummary && curriculumSummary._id === this.curriculumSelectionId;
