@@ -1,8 +1,6 @@
 <template>
 	<admin-page-content-frame title="Users">
-		<widget-content-frame-component title="User Editor">
-			<users-editor-widget />
-		</widget-content-frame-component>
+		<ManageUserWidget />
 
 		<widget-content-frame-component title="Curriculum Handler" ref="curriculum">
 			<users-curriculum-widget ref="userCurriculum" />
@@ -21,7 +19,7 @@
 <script>
 import AdminPageContentFrame from '@/components/content-frame/admin-page-content-frame.component.vue';
 import UsersCurriculumWidget from '@/components/admin/users/widget-curriculum/users-curriculum.widget.vue';
-import UsersEditorWidget from '@/components/admin/users/widget-editor/users-editor.widget.vue';
+import ManageUserWidget from '@/components/admin/users/widget-manage-user/manage-user.widget.vue';
 import UsersList from '@/components/admin/users/widget-list/users-list.widget.vue';
 import UsersLogsWidget from '@/components/admin/users/widget-logs/users-logs.widget.vue';
 import WidgetContentFrameComponent from '@/components/content-frame/widget-content-frame.component.vue';
@@ -29,11 +27,11 @@ import WidgetContentFrameComponent from '@/components/content-frame/widget-conte
 export default {
 	components: {
 		AdminPageContentFrame: AdminPageContentFrame,
-		WidgetContentFrameComponent,
+		ManageUserWidget,
 		UsersCurriculumWidget,
-		UsersEditorWidget,
 		UsersLogsWidget,
 		UsersList,
+		WidgetContentFrameComponent,
 	},
 };
 </script>
