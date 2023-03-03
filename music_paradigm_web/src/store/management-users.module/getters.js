@@ -16,6 +16,10 @@ export default {
 		);
 	},
 
+	isCreatingUser: (state) => {
+		return state.status.isCreatingUser;
+	},
+
 	isFetchingUsersSummaryList: (state) => {
 		return state.status.isFetchingUsersSummaryList;
 	},

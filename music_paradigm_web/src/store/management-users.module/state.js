@@ -3,10 +3,10 @@ import { User } from "@/modules/users";
 export default {
 	status: {
 		isAssigningCurriculum: false,
-		isCreating: false,
-		isDeleting: false,
-		isGettingExistingUserGroupsList: false,
+		isCreatingUser: false,
+		isDeletingUser: false,
 		isFetchingUsersSummaryList: false,
+		isGettingExistingUserGroupsList: false,
 		isUpdating: false,
 	},
 

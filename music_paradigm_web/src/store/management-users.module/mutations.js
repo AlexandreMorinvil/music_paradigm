@@ -11,19 +11,19 @@ export default {
 	},
 
 	indicateCreateRequest(state) {
-		state.status.isCreating = true;
+		state.status.isCreatingUser = true;
 	},
 
 	indicateCreateRequestEnd(state) {
-		state.status.isCreating = false;
+		state.status.isCreatingUser = false;
 	},
 
 	indicateDeleteRequest(state) {
-		state.status.isDeleting = true;
+		state.status.isDeletingUser = true;
 	},
 
 	indicateDeleteRequestEnd(state) {
-		state.status.isDeleting = false;
+		state.status.isDeletingUser = false;
 	},
 	
 	indicateFetchingUserList(state) {
@@ -43,11 +43,11 @@ export default {
 	},
 
 	indicateUpdateRequest(state) {
-		state.status.isUpdating = true;
+		state.status.isUpdatingUser = true;
 	},
 
 	indicateUpdateRequestEnd(state) {
-		state.status.isUpdating = false;
+		state.status.isUpdatingUser = false;
 	},
 
 

@@ -43,6 +43,7 @@
 }
 
 /* Button */
+/* TODO : Get rid of this section once the buttons of the application will have been changed to the template buttons */ 
 
 .widget-button {
   min-width: auto;
