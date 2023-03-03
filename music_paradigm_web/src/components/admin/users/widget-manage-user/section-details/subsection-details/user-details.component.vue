@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import '@/styles/form-template.css';
-
 import { dateHandler } from '@/_helpers';
 import { FORMATTING_EMPTY_VALUE_PLACEHOLDER } from '@/modules/formatting';
 import { mapGetters } from 'vuex';

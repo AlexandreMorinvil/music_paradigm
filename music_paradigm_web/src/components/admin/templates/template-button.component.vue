@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import '@/styles/form-template.css';
+import '@/styles/field-template.css';
 
 export default {
 	emits: ['click'],

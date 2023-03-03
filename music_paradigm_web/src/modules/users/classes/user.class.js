@@ -12,7 +12,7 @@ export class User {
         this.role = user.role || 'user';
         this.tags = user.tags || [];
         this.updatedAt = user.updatedAt ? user.updatedAt : null;
-        this.username = user.username || 'Place holder';
+        this.username = user.username || '';
     }
 
     toObject() {

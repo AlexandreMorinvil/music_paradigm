@@ -7,16 +7,14 @@ export default {
 	props: {
 		text: {
 			type: String,
-			default() {
-				return '';
-			},
+			default: '',
 		}
 	}
 };
 </script>
 
 <style scoped>
-.form-label{
+.form-label {
 	width: 300px;
 	text-align: right;
 	padding-right: 25px;

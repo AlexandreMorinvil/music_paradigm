@@ -1,34 +1,58 @@
 <template>
 	<div class="form-area">
-		<form @submit.prevent="" class="label-input-spacing">
+		<TemplateFieldsetComponent>
 
-			<label for="title">Group </label>
-			<input list="user-group" type="text" v-model="group" name="title" autocomplete="new-group"
-				placeholder="Insert group" />
-			<datalist id="user-group">
-				<option v-for="(group, index) in usersExistingUserGroupsList" :key="index" :value="group" />
-			</datalist>
+			<TemplateFieldLabelComponent for="title" text="Group" />
+			<TemplateFieldInputComponent v-bind:value="userEditionGroup" v-on:edit="editUserEditionGroup"
+				:datalist="usersExistingUserGroupsList" :inputAttributes="{
+					type: 'text',
+					name: 'group',
+					autocomplete: 'off',
+					placeholder: 'Insert group'
+				}" />
 
-			<label for="text">Note</label>
-			<textarea v-model="note" maxlength="1000" name="text" row="2" placeholder="Take notes about the user in this field" />
+			<TemplateFieldLabelComponent for="text" text="Note" />
+			<TemplateFieldTextareaComponent v-bind:value="userEditionNote" v-on:edit="editUserEditionNote"
+				:textAreaAttributes="{
+					maxlength: 1000,
+					name: 'note',
+					placeholder: 'Take notes about the use in this field',
+					rows: 4
+				}" />
 
-			<label for="title">Tags </label>
-			<div v-for="(tag, index) in tags" :key="index" class="tag-input-area">
-				<input type="text" v-on:change="() => editUserEditionTag(tag, index)" v-bind="userEditionTags"
-					:name="`tag ${index + 1}`" autocomplete="new-tag" placeholder="Insert tag" />
-				<button class="widget-button small red" v-on:click="() => deleteTag(index)"> Delete </button>
+			<TemplateFieldLabelComponent for="title" text="Tags" />
+			<div v-for="(tag, index) in userEditionTags" :key="index" class="tag-input-area">
+				<TemplateFieldInputComponent v-bind:value="tag" v-on:edit="(editedTag) => editTag(editedTag, index)"
+					:inputAttributes="{
+						type: 'text',
+						name: `tag ${index + 1}`,
+						autocomplete: 'off',
+						placeholder: 'Insert tag'
+					}" />
+				<TemplateButtonComponent color="red" isSmall v-on:click="() => deleteTag(index)" text="Delete" />
 			</div>
-			<button class="widget-button small blue grid-right-align" v-on:click="addTag"> Add Tag </button>
-		</form>
+			<TemplateButtonComponent class="grid-right-align" color="blue" isSmall v-on:click="addTag" text="Add Tag" />
+		</TemplateFieldsetComponent>
 	</div>
 </template>
 
 <script>
-import '@/styles/form-template.css';
-
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 
+import TemplateButtonComponent from '@/components/admin/templates/template-button.component.vue';
+import TemplateFieldInputComponent from '@/components/admin/templates/template-field-input.component.vue';
+import TemplateFieldLabelComponent from '@/components/admin/templates/template-field-label.component.vue';
+import TemplateFieldsetComponent from '@/components/admin/templates/template-fieldset.component.vue';
+import TemplateFieldTextareaComponent from '@/components/admin/templates/template-field-textarea.component.vue';
+
 export default {
+	components: {
+		TemplateButtonComponent,
+		TemplateFieldInputComponent,
+		TemplateFieldLabelComponent,
+		TemplateFieldsetComponent,
+		TemplateFieldTextareaComponent,
+	},
 	computed: {
 		...mapGetters('managementUsers', ['usersExistingUserGroupsList']),
 		...mapGetters('managementUsers/edition', [
@@ -73,6 +97,9 @@ export default {
 		deleteTag(index) {
 			this.deleteUserEditionTag(index);
 		},
+		editTag(editedTag, index) {
+			this.editUserEditionTag({ tag: editedTag, index: index })
+		},
 	},
 	beforeMount() {
 		this.getExistingUserGroupsList();
@@ -102,16 +129,5 @@ export default {
 
 .grid-right-align {
 	grid-column: 2;
-}
-
-label {
-	min-width: 250px;
-	padding-right: 20px;
-	text-align: right;
-	white-space: nowrap;
-}
-
-select {
-	min-width: fit-content;
 }
 </style>
