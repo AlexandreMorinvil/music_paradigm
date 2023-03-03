@@ -1,31 +1,40 @@
 <template>
 	<div class="form-area">
-		<div class="label-output-spacing">
-			<span class="label"> User </span>
-			<span> {{ username }} </span>
+		<TemplateFieldsetComponent>
+			<TemplateFieldLabelComponent text="User" />
+			<TemplateFieldOutputComponent :value="username" />
 
-			<span class="label"> Creation </span>
-			<span class="output"> {{ creationDate }} </span>
+			<TemplateFieldLabelComponent text="Creation" />
+			<TemplateFieldOutputComponent :value="creationDate" />
 
 			<!-- TODO: Implementing a mechanism to make the users log in each time they load the application
 						Even though they do not necessarily enter their username and password. (Once this mechanism
 						exists and the 'lastLogin' field of a user record is updated accordingly, then it will make
 						sense to expose this output field)
-			<span class="label"> Last Login </span>
-			<span class="output"> {{ lastLoginDate }} </span> -->
+			<TemplateFieldLabelComponent text="Last Login" />
+			<TemplateFieldOutputComponent :value="lastLoginDate" /> -->
 
-			<span class="label"> Last Details Modification </span>
-			<span class="output"> {{ updateDate }} </span>
-		</div>
+			<TemplateFieldLabelComponent text="Last Details Modification" />
+			<TemplateFieldOutputComponent :value="updateDate" />
+		</TemplateFieldsetComponent>
 	</div>
 </template>
 
 <script>
 import { dateHandler } from '@/_helpers';
-import { FORMATTING_EMPTY_VALUE_PLACEHOLDER } from '@/modules/formatting';
 import { mapGetters } from 'vuex';
 
+
+import TemplateFieldLabelComponent from '@/components/admin/templates/template-field-label.component.vue';
+import TemplateFieldsetComponent from '@/components/admin/templates/template-fieldset.component.vue';
+import TemplateFieldOutputComponent from '@/components/admin/templates/template-field-output.component.vue';
+
 export default {
+	components: {
+		TemplateFieldLabelComponent,
+		TemplateFieldOutputComponent,
+		TemplateFieldsetComponent,
+	},
 	computed: {
 		...mapGetters('managementUsers/selection', [
 			'hasSelectedUser',
@@ -37,22 +46,22 @@ export default {
 		creationDate() {
 			return this.isValueDisplayable(this.userSelectionCreatedAt) ?
 				dateHandler.formatDateYearToMinutes(this.userSelectionCreatedAt) :
-				FORMATTING_EMPTY_VALUE_PLACEHOLDER;
+				null;
 		},
 		lastLoginDate() {
 			return this.isValueDisplayable(this.userSelectionLastLogin) ?
 				dateHandler.formatDateYearToMinutes(this.userSelectionLastLogin) :
-				FORMATTING_EMPTY_VALUE_PLACEHOLDER;
+				null;
 		},
 		updateDate() {
 			return this.isValueDisplayable(this.userSelectionUpdatedAt) ?
 				dateHandler.formatDateYearToMinutes(this.userSelectionUpdatedAt) :
-				FORMATTING_EMPTY_VALUE_PLACEHOLDER;
+				null;
 		},
 		username() {
 			return this.isValueDisplayable(this.userSelectionUsername) ?
 				this.userSelectionUsername :
-				'---';
+				null;
 		},
 	},
 	methods: {
@@ -75,14 +84,6 @@ export default {
 	display: grid;
 	gap: 4px;
 	grid-template-columns: 250px 400px;
-}
-
-.label {
-	grid-column: 1;
-	min-width: 250px;
-	padding-right: 20px;
-	text-align: right;
-	white-space: nowrap;
 }
 
 .output {

@@ -60,25 +60,6 @@ export default {
 			'userEditionNote',
 			'userEditionTags',
 		]),
-		group: {
-			get() {
-				return this.userEditionGroup;
-			},
-			set(value) {
-				this.editUserEditionGroup(value);
-			},
-		},
-		note: {
-			get() {
-				return this.userEditionNote;
-			},
-			set(value) {
-				this.editUserEditionNote(value);
-			},
-		},
-		tags() {
-			return this.userEditionTags;
-		},
 	},
 	methods: {
 		...mapActions('managementUsers', ['getExistingUserGroupsList']),
@@ -113,12 +94,6 @@ export default {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-}
-
-.label-input-spacing {
-	display: grid;
-	gap: 4px;
-	grid-template-columns: 250px 400px;
 }
 
 .tag-input-area {

@@ -1,3 +1,4 @@
-.input-spacing {
+.input-spacing,
+.output-spacing {
     padding: 2.5px 10px;
 }
