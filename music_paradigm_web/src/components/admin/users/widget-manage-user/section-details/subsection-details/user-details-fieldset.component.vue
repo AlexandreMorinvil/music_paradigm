@@ -1,23 +1,21 @@
 <template>
-	<div class="form-area">
-		<TemplateFieldsetComponent>
-			<TemplateFieldLabelComponent text="User" />
-			<TemplateFieldOutputComponent :value="username" />
+	<TemplateFieldsetComponent>
+		<TemplateFieldLabelComponent text="User" />
+		<TemplateFieldOutputComponent :value="username" />
 
-			<TemplateFieldLabelComponent text="Creation" />
-			<TemplateFieldOutputComponent :value="creationDate" />
+		<TemplateFieldLabelComponent text="Creation" />
+		<TemplateFieldOutputComponent :value="creationDate" />
 
-			<!-- TODO: Implementing a mechanism to make the users log in each time they load the application
+		<!-- TODO: Implementing a mechanism to make the users log in each time they load the application
 						Even though they do not necessarily enter their username and password. (Once this mechanism
 						exists and the 'lastLogin' field of a user record is updated accordingly, then it will make
 						sense to expose this output field)
 			<TemplateFieldLabelComponent text="Last Login" />
 			<TemplateFieldOutputComponent :value="lastLoginDate" /> -->
 
-			<TemplateFieldLabelComponent text="Last Details Modification" />
-			<TemplateFieldOutputComponent :value="updateDate" />
-		</TemplateFieldsetComponent>
-	</div>
+		<TemplateFieldLabelComponent text="Last Details Modification" />
+		<TemplateFieldOutputComponent :value="updateDate" />
+	</TemplateFieldsetComponent>
 </template>
 
 <script>
@@ -72,21 +70,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.form-area {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-}
-
-.label-output-spacing {
-	display: grid;
-	gap: 4px;
-	grid-template-columns: 250px 400px;
-}
-
-.output {
-	grid-column: 2;
-}
-</style>
+<style scoped></style>

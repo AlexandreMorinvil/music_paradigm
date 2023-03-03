@@ -1,22 +1,29 @@
 <template>
     <WidgetSubsectionContainer title="Additional Information">
-        <UserAdditionalInformationFormComponent />
+        <div class="centering">
+            <UserAdditionalInformationFieldsetComponent />
+        </div>
     </WidgetSubsectionContainer>
 </template>
 
 <script>
 import WidgetSubsectionContainer from '@/components/admin/widget-subsection.container.vue';
 
-import UserAdditionalInformationFormComponent from './user-additional-information-form.component.vue';
+import UserAdditionalInformationFieldsetComponent from './user-additional-information-fieldset.component.vue';
 
 export default {
     components: {
-        UserAdditionalInformationFormComponent,
+        UserAdditionalInformationFieldsetComponent,
         WidgetSubsectionContainer,
     },
 };
 </script>
 
 <style scoped>
-
+.centering {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 </style>

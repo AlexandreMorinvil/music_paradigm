@@ -1,22 +1,29 @@
 <template>
     <WidgetSubsectionContainer title="Details">
-        <UserDetailsComponent />
+         <div class="centering">
+             <UserDetailsFieldsetComponent />
+         </div>
     </WidgetSubsectionContainer>
 </template>
 
 <script>
 import WidgetSubsectionContainer from '@/components/admin/widget-subsection.container.vue';
 
-import UserDetailsComponent from './user-details.component.vue';
+import UserDetailsFieldsetComponent from './user-details-fieldset.component.vue';
 
 export default {
     components: {
-        UserDetailsComponent,
+        UserDetailsFieldsetComponent,
         WidgetSubsectionContainer,
     },
 };
 </script>
 
 <style scoped>
-
+.centering {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
 </style>

@@ -1,29 +1,27 @@
 <template>
-	<div class="form-area">
-		<TemplateFieldsetComponent>
-			<TemplateFieldLabelComponent text="Username" for="username" />
-			<TemplateFieldInputComponent v-bind:value="userEditionUsername" v-on:edit="editUserEditionUsername"
-				:inputAttributes="{
-					type: 'text',
-					name: 'username',
-					autocomplete: 'off',
-					placeholder: 'Insert username'
-				}" />
+	<TemplateFieldsetComponent>
+		<TemplateFieldLabelComponent text="Username" for="username" />
+		<TemplateFieldInputComponent v-bind:value="userEditionUsername" v-on:edit="editUserEditionUsername"
+			:inputAttributes="{
+				type: 'text',
+				name: 'username',
+				autocomplete: 'off',
+				placeholder: 'Insert username'
+			}" />
 
-			<TemplateFieldLabelComponent text="Password" for="password" />
-			<div class="password-input-area">
-				<TemplateFieldInputComponent v-bind:value="userEditionPassword" v-on:edit="editUserEditionPassword"
-					:inputAttributes="{
-						type: isPasswordSecret ? 'password' : 'text',
-						name: 'password',
-						autocomplete: 'off',
-						placeholder: 'Insert password'
-					}" />
-				<TemplateButtonComponent :color="isPasswordSecret ? 'turquoise' : 'blue'" isSmall
-					v-on:click="toogleIsPasswordSecret" :text="isPasswordSecret ? 'Remove secrecy' : 'Make it secret'" />
-			</div>
-		</TemplateFieldsetComponent>
-	</div>
+		<TemplateFieldLabelComponent text="Password" for="password" />
+		<div class="password-input-area">
+			<TemplateFieldInputComponent v-bind:value="userEditionPassword" v-on:edit="editUserEditionPassword"
+				:inputAttributes="{
+					type: isPasswordSecret ? 'password' : 'text',
+					name: 'password',
+					autocomplete: 'off',
+					placeholder: 'Insert password'
+				}" />
+			<TemplateButtonComponent :color="isPasswordSecret ? 'turquoise' : 'blue'" isSmall
+				v-on:click="toogleIsPasswordSecret" :text="isPasswordSecret ? 'Remove secrecy' : 'Make it secret'" />
+		</div>
+	</TemplateFieldsetComponent>
 </template>
 
 <script>
@@ -73,30 +71,5 @@ export default {
 .password-input-area {
 	display: grid;
 	grid-template-columns: 250px 1fr;
-}
-
-
-.form-area {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-}
-
-.label-input-spacing {
-	display: grid;
-	gap: 4px;
-	grid-template-columns: 250px 400px;
-}
-
-label {
-	min-width: 250px;
-	padding-right: 20px;
-	text-align: right;
-	white-space: nowrap;
-}
-
-select {
-	min-width: fit-content;
 }
 </style>

@@ -1,39 +1,36 @@
 <template>
-	<div class="form-area">
-		<TemplateFieldsetComponent>
+	<TemplateFieldsetComponent>
 
-			<TemplateFieldLabelComponent for="title" text="Group" />
-			<TemplateFieldInputComponent v-bind:value="userEditionGroup" v-on:edit="editUserEditionGroup"
-				:datalist="usersExistingUserGroupsList" :inputAttributes="{
+		<TemplateFieldLabelComponent for="title" text="Group" />
+		<TemplateFieldInputComponent v-bind:value="userEditionGroup" v-on:edit="editUserEditionGroup"
+			:datalist="usersExistingUserGroupsList" :inputAttributes="{
+				type: 'text',
+				name: 'group',
+				autocomplete: 'off',
+				placeholder: 'Insert group'
+			}" />
+
+		<TemplateFieldLabelComponent for="text" text="Note" />
+		<TemplateFieldTextareaComponent v-bind:value="userEditionNote" v-on:edit="editUserEditionNote" :textAreaAttributes="{
+			maxlength: 1000,
+			name: 'note',
+			placeholder: 'Take notes about the use in this field',
+			rows: 4
+		}" />
+
+		<TemplateFieldLabelComponent for="title" text="Tags" />
+		<div v-for="(tag, index) in userEditionTags" :key="index" class="tag-input-area">
+			<TemplateFieldInputComponent v-bind:value="tag" v-on:edit="(editedTag) => editTag(editedTag, index)"
+				:inputAttributes="{
 					type: 'text',
-					name: 'group',
+					name: `tag ${index + 1}`,
 					autocomplete: 'off',
-					placeholder: 'Insert group'
+					placeholder: 'Insert tag'
 				}" />
-
-			<TemplateFieldLabelComponent for="text" text="Note" />
-			<TemplateFieldTextareaComponent v-bind:value="userEditionNote" v-on:edit="editUserEditionNote"
-				:textAreaAttributes="{
-					maxlength: 1000,
-					name: 'note',
-					placeholder: 'Take notes about the use in this field',
-					rows: 4
-				}" />
-
-			<TemplateFieldLabelComponent for="title" text="Tags" />
-			<div v-for="(tag, index) in userEditionTags" :key="index" class="tag-input-area">
-				<TemplateFieldInputComponent v-bind:value="tag" v-on:edit="(editedTag) => editTag(editedTag, index)"
-					:inputAttributes="{
-						type: 'text',
-						name: `tag ${index + 1}`,
-						autocomplete: 'off',
-						placeholder: 'Insert tag'
-					}" />
-				<TemplateButtonComponent color="red" isSmall v-on:click="() => deleteTag(index)" text="Delete" />
-			</div>
-			<TemplateButtonComponent class="grid-right-align" color="blue" isSmall v-on:click="addTag" text="Add Tag" />
-		</TemplateFieldsetComponent>
-	</div>
+			<TemplateButtonComponent color="red" isSmall v-on:click="() => deleteTag(index)" text="Delete" />
+		</div>
+		<TemplateButtonComponent class="grid-right-align" color="blue" isSmall v-on:click="addTag" text="Add Tag" />
+	</TemplateFieldsetComponent>
 </template>
 
 <script>
@@ -89,13 +86,6 @@ export default {
 </script>
 
 <style scoped>
-.form-area {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-}
-
 .tag-input-area {
 	display: grid;
 	grid-template-columns: 4fr 1fr;

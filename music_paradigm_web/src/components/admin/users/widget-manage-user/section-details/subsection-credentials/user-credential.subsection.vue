@@ -1,22 +1,29 @@
 <template>
     <WidgetSubsectionContainer title="Credentials">
-        <UserCredentialFormComponent />
+        <div class="centering">
+            <UserCredentialFieldsetComponent />
+        </div>
     </WidgetSubsectionContainer>
 </template>
 
 <script>
 import WidgetSubsectionContainer from '@/components/admin/widget-subsection.container.vue';
 
-import UserCredentialFormComponent from './user-credential-form.component.vue';
+import UserCredentialFieldsetComponent from './user-credential-fieldset.component.vue';
 
 export default {
     components: {
-        UserCredentialFormComponent,
+        UserCredentialFieldsetComponent,
         WidgetSubsectionContainer,
     },
 };
 </script>
 
 <style scoped>
-
+.centering {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 </style>
