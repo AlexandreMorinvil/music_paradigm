@@ -1,6 +1,6 @@
 <template>
     <TemplateButtonComponent v-on:click="handleButtonPress" isSmall color="turquoise" :isActive="isButtonActive"
-        text="Revert Changes" />
+        :text="text" />
 </template>
 
 <script>
@@ -17,8 +17,11 @@ export default {
         ...mapGetters('managementUsers/selection', ['hasSelectedUser']),
         isButtonActive() {
             if (this.isExecutingUserCommand) return false;
-            return this.hasSelectedUser && this.hasUserEditionChange;
+            return this.hasUserEditionChange;
         },
+        text() {
+            return this.hasSelectedUser ? 'Revert Changes' : 'Clear';
+        }
     },
     methods: {
         ...mapActions('managementUsers', ['revertUserEditions']),
