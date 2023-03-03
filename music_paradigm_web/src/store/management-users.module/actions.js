@@ -24,7 +24,7 @@ export default {
 	},
 
 	createUser({ commit, dispatch }, userToCreate) {
-		commit('indicateCreateRequest');
+		commit('indicateIsCreatingUser');
 		return usersApi
 			.register(userToCreate)
 			.then(
@@ -44,12 +44,12 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateCreateRequestEnd');
+				commit('indicateIsCreatingUserEnd');
 			});
 	},
 
 	deleteUser({ commit, dispatch }, userId) {
-		commit('indicateDeleteRequest');
+		commit('indicateIsDeletingUser');
 		return usersApi
 			.delete(userId)
 			.then(
@@ -66,7 +66,7 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateDeleteRequestEnd');
+				commit('indicateIsDeletingUserEnd');
 			});
 	},
 
@@ -121,7 +121,7 @@ export default {
 	},
 
 	updateUser({ commit, dispatch }, { id, user }) {
-		commit('indicateUpdateRequest');
+		commit('indicateIsUpdatingUser');
 		return usersApi
 			.update(id, user)
 			.then(
@@ -138,7 +138,7 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateUpdateRequestEnd');
+				commit('indicateIsUpdatingUserEnd');
 			});
 	},
 

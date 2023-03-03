@@ -1,23 +1,31 @@
 <template>
-    <button v-on:click="handleUserDeletion" class="widget-button red" :class="isButtonActive || 'inactive'">
-        Delete User
-    </button>
+        <TemplateButtonComponent v-on:click="handleButtonPress" color="red" :isActive="isButtonActive"
+        :isLoading="isButtonLoading" text="Delete User" />
 </template>
 
 <script>
-import '@/styles/widget-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
+import TemplateButtonComponent from '@/components/admin/templates/template-button.component.vue';
+
 export default {
+    components: {
+        TemplateButtonComponent,
+    },
     computed: {
+        ...mapGetters('managementUsers', ['isDeletingUser', 'isExecutingUserCommand']),
         ...mapGetters('managementUsers/selection', ['userSelectionId', 'hasSelectedUser']),
         isButtonActive() {
+            if (!this.isDeletingUser && this.isExecutingUserCommand) return false; // Has other user command running
             return this.hasSelectedUser;
+        },
+        isButtonLoading() {
+            return this.isDeletingUser;
         },
     },
     methods: {
         ...mapActions('managementUsers', ['deleteUser']),
-        handleUserDeletion() {
+        handleButtonPress() {
             if (!this.isButtonActive) return;
             const answer = window.confirm('Are your sure you want to delete the user?');
             if (answer) this.deleteUser(this.userSelectionId);

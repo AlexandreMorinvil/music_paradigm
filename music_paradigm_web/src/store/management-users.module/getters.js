@@ -20,8 +20,20 @@ export default {
 		return state.status.isCreatingUser;
 	},
 
+	isDeletingUser: (state) => {
+		return state.status.isDeletingUser;
+	},
+
+	isExecutingUserCommand: (_, getters) => {
+		return getters.isCreatingUser || getters.isDeletingUser || getters.isUpdatingUser;
+	},
+
 	isFetchingUsersSummaryList: (state) => {
 		return state.status.isFetchingUsersSummaryList;
+	},
+
+	isUpdatingUser: (state) => {
+		return state.status.isUpdatingUser;
 	},
 
 	// TODO : Delete this getter when the code will have been adjusted

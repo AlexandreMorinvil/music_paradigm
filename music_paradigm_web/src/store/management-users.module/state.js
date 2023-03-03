@@ -7,7 +7,7 @@ export default {
 		isDeletingUser: false,
 		isFetchingUsersSummaryList: false,
 		isGettingExistingUserGroupsList: false,
-		isUpdating: false,
+		isUpdatingUser: false,
 	},
 
 	// Selected user information

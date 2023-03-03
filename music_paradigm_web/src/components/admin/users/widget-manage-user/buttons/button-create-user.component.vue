@@ -1,5 +1,5 @@
 <template>
-    <TemplateButtonComponent v-on:click="handleUserCreation" color="green" :isActive="isButtonActive"
+    <TemplateButtonComponent v-on:click="handleButtonPress" color="green" :isActive="isButtonActive"
         :isLoading="isButtonLoading" text="Create User" />
 </template>
 
@@ -13,11 +13,13 @@ export default {
         TemplateButtonComponent,
     },
     computed: {
-        ...mapGetters('managementUsers', ['isCreatingUser']),
+        ...mapGetters('managementUsers', ['isCreatingUser', 'isExecutingUserCommand']),
         ...mapGetters('managementUsers/edition', ['userEditionUser', 'userEditionUsername']),
         ...mapGetters('managementUsers/selection', ['hasSelectedUser', 'userSelectionUsername']),
         isButtonActive() {
-            return !(this.hasSelectedUser && this.userEditionUsername === this.userSelectionUsername);
+            if (!this.isCreatingUser && this.isExecutingUserCommand) return false; // Has other user command running
+            if (this.hasSelectedUser && this.userEditionUsername === this.userSelectionUsername) return false;
+            return true;
         },
         isButtonLoading() {
             return this.isCreatingUser;
@@ -25,7 +27,7 @@ export default {
     },
     methods: {
         ...mapActions('managementUsers', ['createUser']),
-        handleUserCreation() {
+        handleButtonPress() {
             if (!this.isButtonActive) return;
             this.createUser({
                 user: this.userEditionUser,

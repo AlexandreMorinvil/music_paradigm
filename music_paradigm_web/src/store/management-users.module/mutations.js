@@ -10,19 +10,19 @@ export default {
 		state.status.isAssigningCurriculum = false;
 	},
 
-	indicateCreateRequest(state) {
+	indicateIsCreatingUser(state) {
 		state.status.isCreatingUser = true;
 	},
 
-	indicateCreateRequestEnd(state) {
+	indicateIsCreatingUserEnd(state) {
 		state.status.isCreatingUser = false;
 	},
 
-	indicateDeleteRequest(state) {
+	indicateIsDeletingUser(state) {
 		state.status.isDeletingUser = true;
 	},
 
-	indicateDeleteRequestEnd(state) {
+	indicateIsDeletingUserEnd(state) {
 		state.status.isDeletingUser = false;
 	},
 	
@@ -42,11 +42,11 @@ export default {
 		state.status.isGettingExistingUserGroupsList = false;
 	},
 
-	indicateUpdateRequest(state) {
+	indicateIsUpdatingUser(state) {
 		state.status.isUpdatingUser = true;
 	},
 
-	indicateUpdateRequestEnd(state) {
+	indicateIsUpdatingUserEnd(state) {
 		state.status.isUpdatingUser = false;
 	},
 

@@ -1,14 +1,18 @@
 <template>
-    <button v-on:click="handleUserDeletion" class="widget-button turquoise" :class="isButtonActive || 'inactive'">
-        Deselect User
-    </button>
+    <TemplateButtonComponent v-on:click="handleButtonPress" isSmall color="turquoise" :isActive="isButtonActive"
+        text="Deselect User" />
 </template>
 
 <script>
 import '@/styles/widget-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
+import TemplateButtonComponent from '@/components/admin/templates/template-button.component.vue';
+
 export default {
+    components: {
+        TemplateButtonComponent,
+    },
     computed: {
         ...mapGetters('managementUsers/selection', ['hasSelectedUser']),
         isButtonActive() {
@@ -17,7 +21,7 @@ export default {
     },
     methods: {
         ...mapActions('managementUsers', ['unsetSelectedUser']),
-        handleUserDeletion() {
+        handleButtonPress() {
             if (!this.isButtonActive) return;
             this.unsetSelectedUser();
         },
