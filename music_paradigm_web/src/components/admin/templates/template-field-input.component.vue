@@ -2,9 +2,10 @@
 	<div class="template-field-input-area">
 		<input 
 			class="input-spacing" 
+			:class="{ 'edited-text': isEdited }"
 			:list="hasDataList ? datalistReference : ''"
 			:value="value" v-on:input="(event) => edit(event.target.value)" 
-			v-bind="inputAttributes" 
+			v-bind="inputAttributes"
 		/>
 		<datalist :id="datalistReference">
 			<option v-for="(data, index) in datalist" :key="index" :value="data" />
@@ -24,6 +25,10 @@ export default {
 				return [];
 			}
 		},
+		expectedValue: {
+			type: null,
+			default: null,
+		},
 		inputAttributes: {
 			type: Object,
 			default() {
@@ -35,11 +40,20 @@ export default {
 				}
 			}
 		},
-		value: null,
+		value: {
+			type: null,
+			default: null,
+		},
 	},
 	computed: {
 		hasDataList() {
 			return this.datalist.length > 0;
+		},
+		hasExpectedValue() {
+			return this.expectedValue !== null;
+		},
+		isEdited() {
+			return this.hasExpectedValue && this.value !== this.expectedValue;
 		},
 		datalistReference() {
 			return 'datalist-input-' + this.inputAttributes.name;

@@ -1,5 +1,5 @@
 export class User {
-    constructor(user = {}) { 
+    constructor(user = {}) {
         this._id = user._id || null;
 
         this.createdAt = user.createdAt ? user.createdAt : null;
@@ -10,7 +10,7 @@ export class User {
         this.note = user.note || '';
         this.password = user.exposablePassword || user.password || '';
         this.role = user.role || 'user';
-        this.tags = user.tags || [];
+        this.tags = JSON.parse(JSON.stringify(user.tags || []));
         this.updatedAt = user.updatedAt ? user.updatedAt : null;
         this.username = user.username || '';
     }

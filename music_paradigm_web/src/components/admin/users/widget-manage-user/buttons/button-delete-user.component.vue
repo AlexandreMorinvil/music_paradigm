@@ -1,5 +1,5 @@
 <template>
-        <TemplateButtonComponent v-on:click="handleButtonPress" color="red" :isActive="isButtonActive"
+    <TemplateButtonComponent v-on:click="handleButtonPress" color="red" :isActive="isButtonActive"
         :isLoading="isButtonLoading" text="Delete User" />
 </template>
 

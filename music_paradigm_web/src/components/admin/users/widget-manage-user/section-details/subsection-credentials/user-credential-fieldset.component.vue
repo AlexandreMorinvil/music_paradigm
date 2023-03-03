@@ -2,7 +2,7 @@
 	<TemplateFieldsetComponent>
 		<TemplateFieldLabelComponent text="Username" for="username" />
 		<TemplateFieldInputComponent v-bind:value="userEditionUsername" v-on:edit="editUserEditionUsername"
-			:inputAttributes="{
+			:expectedValue="userSelectionUsername" :inputAttributes="{
 				type: 'text',
 				name: 'username',
 				autocomplete: 'off',
@@ -12,7 +12,7 @@
 		<TemplateFieldLabelComponent text="Password" for="password" />
 		<div class="password-input-area">
 			<TemplateFieldInputComponent v-bind:value="userEditionPassword" v-on:edit="editUserEditionPassword"
-				:inputAttributes="{
+				:expectedValue="userSelectionPassword" :inputAttributes="{
 					type: isPasswordSecret ? 'password' : 'text',
 					name: 'password',
 					autocomplete: 'off',
@@ -44,6 +44,10 @@ export default {
 			'userEditionIsPasswordSecret',
 			'userEditionPassword',
 			'userEditionUsername',
+		]),
+		...mapGetters('managementUsers/selection', [
+			'userSelectionPassword',
+			'userSelectionUsername',
 		]),
 		isPasswordSecret: {
 			get() {

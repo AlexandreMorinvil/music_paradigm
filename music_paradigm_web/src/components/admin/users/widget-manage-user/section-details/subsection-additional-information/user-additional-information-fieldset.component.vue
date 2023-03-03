@@ -1,9 +1,8 @@
 <template>
 	<TemplateFieldsetComponent>
-
 		<TemplateFieldLabelComponent for="title" text="Group" />
 		<TemplateFieldInputComponent v-bind:value="userEditionGroup" v-on:edit="editUserEditionGroup"
-			:datalist="usersExistingUserGroupsList" :inputAttributes="{
+			:expectedValue="userSelectionGroup" :datalist="usersExistingUserGroupsList" :inputAttributes="{
 				type: 'text',
 				name: 'group',
 				autocomplete: 'off',
@@ -11,16 +10,18 @@
 			}" />
 
 		<TemplateFieldLabelComponent for="text" text="Note" />
-		<TemplateFieldTextareaComponent v-bind:value="userEditionNote" v-on:edit="editUserEditionNote" :textAreaAttributes="{
-			maxlength: 1000,
-			name: 'note',
-			placeholder: 'Take notes about the use in this field',
-			rows: 4
-		}" />
+		<TemplateFieldTextareaComponent v-bind:value="userEditionNote" v-on:edit="editUserEditionNote"
+			:expectedValue="userSelectionNote" :textAreaAttributes="{
+				maxlength: 1000,
+				name: 'note',
+				placeholder: 'Take notes about the use in this field',
+				rows: 4
+			}" />
 
 		<TemplateFieldLabelComponent for="title" text="Tags" />
 		<div v-for="(tag, index) in userEditionTags" :key="index" class="tag-input-area">
-			<TemplateFieldInputComponent v-bind:value="tag" v-on:edit="(editedTag) => editTag(editedTag, index)"
+			<TemplateFieldInputComponent v-bind:value="userEditionTags[index]"
+				v-on:edit="(editedTag) => editTag(editedTag, index)" :expectedValue="userSelectionTags[index] || ''"
 				:inputAttributes="{
 					type: 'text',
 					name: `tag ${index + 1}`,
@@ -56,6 +57,11 @@ export default {
 			'userEditionGroup',
 			'userEditionNote',
 			'userEditionTags',
+		]),
+		...mapGetters('managementUsers/selection', [
+			'userSelectionGroup',
+			'userSelectionNote',
+			'userSelectionTags',
 		]),
 	},
 	methods: {

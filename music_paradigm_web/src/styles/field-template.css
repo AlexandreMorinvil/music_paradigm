@@ -1,4 +1,11 @@
+@import "color-palette.css";
+
 .input-spacing,
 .output-spacing {
     padding: 2.5px 10px;
+    outline: none;
+}
+
+.edited-text {
+    color: var(--color-edited-text);
 }

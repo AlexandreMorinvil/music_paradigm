@@ -1,6 +1,6 @@
 <template>
-	<textarea class="input-spacing" :value="value" v-on:input="(event) => edit(event.target.value)"
-		v-bind="textAreaAttributes" />
+	<textarea class="input-spacing" :class="{ 'edited-text': isEdited }" :value="value"
+		v-on:input="(event) => edit(event.target.value)" v-bind="textAreaAttributes" />
 </template>
 
 <script>
@@ -9,6 +9,10 @@ import '@/styles/field-template.css';
 export default {
 	emits: ['edit'],
 	props: {
+		expectedValue: {
+			type: null,
+			default: null,
+		},
 		textAreaAttributes: {
 			type: Object,
 			default() {
@@ -22,7 +26,18 @@ export default {
 				}
 			}
 		},
-		value: null,
+		value: {
+			type: null,
+			default: null,
+		},
+	},
+	computed: {
+		hasExpectedValue() {
+			return this.expectedValue !== null;
+		},
+		isEdited() {
+			return this.hasExpectedValue && this.value !== this.expectedValue;
+		},
 	},
 	methods: {
 		edit(value) {
@@ -32,5 +47,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
