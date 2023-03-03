@@ -1,28 +1,46 @@
 <template>
 	<div class="form-area">
-		<form @submit.prevent="" class="label-input-spacing">
-			<label for="user">Username </label>
-			<input type="text" v-model="username" name="user" autocomplete="new-username" placeholder="Insert username" />
+		<TemplateFieldsetComponent>
+			<TemplateFieldLabelComponent text="Username" for="username" />
+			<TemplateFieldInputComponent v-bind:value="userEditionUsername" v-on:edit="editUserEditionUsername"
+				:inputAttributes="{
+					type: 'text',
+					name: 'username',
+					autocomplete: 'off',
+					placeholder: 'Insert username'
+				}" />
 
-			<label for="password">Password </label>
+			<TemplateFieldLabelComponent text="Password" for="password" />
 			<div class="password-input-area">
-				<input :type="isPasswordSecret ? 'password' : 'text'" v-model="password" name="password"
-					autocomplete="new-password" placeholder="Insert password" />
-				<button class="widget-button small" :class="isPasswordSecret ? 'turquoise' : 'blue'"
-					v-on:click="toogleIsPasswordSecret">
-					{{ isPasswordSecret ? 'Remove secrecy' : 'Make it secret' }}
-				</button>
+				<TemplateFieldInputComponent v-bind:value="userEditionPassword" v-on:edit="editUserEditionPassword"
+					:inputAttributes="{
+						type: isPasswordSecret ? 'password' : 'text',
+						name: 'password',
+						autocomplete: 'off',
+						placeholder: 'Insert password'
+					}" />
+				<TemplateButtonComponent :color="isPasswordSecret ? 'turquoise' : 'blue'" isSmall
+					v-on:click="toogleIsPasswordSecret" :text="isPasswordSecret ? 'Remove secrecy' : 'Make it secret'" />
 			</div>
-		</form>
+		</TemplateFieldsetComponent>
 	</div>
 </template>
 
 <script>
-import '@/styles/form-template.css';
-
 import { mapGetters, mapMutations } from 'vuex';
 
+import TemplateButtonComponent from '@/components/admin/templates/template-button.component.vue';
+import TemplateFieldInputComponent from '@/components/admin/templates/template-field-input.component.vue';
+import TemplateFieldLabelComponent from '@/components/admin/templates/template-field-label.component.vue';
+import TemplateFieldsetComponent from '@/components/admin/templates/template-fieldset.component.vue';
+
 export default {
+	components: {
+		TemplateButtonComponent,
+		TemplateFieldInputComponent,
+		TemplateFieldLabelComponent,
+		TemplateFieldsetComponent,
+	},
 	computed: {
 		...mapGetters('managementUsers/edition', [
 			'userEditionIsPasswordSecret',
@@ -35,22 +53,6 @@ export default {
 			},
 			set(value) {
 				this.editUserEditionIsPasswordSecret(value);
-			},
-		},
-		password: {
-			get() {
-				return this.userEditionPassword;
-			},
-			set(value) {
-				this.editUserEditionPassword(value);
-			},
-		},
-		username: {
-			get() {
-				return this.userEditionUsername;
-			},
-			set(value) {
-				this.editUserEditionUsername(value);
 			},
 		},
 	},
