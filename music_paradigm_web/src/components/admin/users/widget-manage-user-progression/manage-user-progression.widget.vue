@@ -1,22 +1,31 @@
 <template>
-	<div id="users-editor" class="widget widget-bg">
-		<users-curriculum-form-component class="curticulum-position inner-widget" ref="userCurriculumForm" />
-		<users-parameters-form-component class="parameters-position inner-widget" ref="userParametersForm" />
-		<users-progression-form-component v-show="mustDisplayProgression" class="progression-position inner-widget" ref="userProgressionForm" />
+	<WidgetContentFrameComponent title="Manage User Curriculum Progression">
+		<div class="widget widget-bg">
+			<UserCurriculumSection />
 
-		<div class="submission-buttons-position">
-			<button v-on:click="handleRevert" class="widget-button blue" :class="{ inactive: !isRevertButtonActive }">Revert</button>
-			<button v-on:click="submitCurriculumToAssign" class="widget-button green" :class="{ inactive: !isCurriculumAssignmentButtonActive }">
-				Assign Curriculum
-			</button>
-			<button v-on:click="submitParametersToUpdate" class="widget-button blue" :class="{ inactive: !isParametersUpdateButtonActive }">
-				Update Parameters
-			</button>
-			<button v-on:click="submitAdjustmentsToUpdate" class="widget-button blue" :class="{ inactive: !isAdjustmentsUpdateButtonActive }">
-				Update Adjustments
-			</button>
+			<users-curriculum-form-component class="curticulum-position inner-widget" ref="userCurriculumForm" />
+			<users-parameters-form-component class="parameters-position inner-widget" ref="userParametersForm" />
+			<users-progression-form-component v-show="mustDisplayProgression" class="progression-position inner-widget"
+				ref="userProgressionForm" />
+
+			<div class="submission-buttons-position">
+				<button v-on:click="handleRevert" class="widget-button blue"
+					:class="{ inactive: !isRevertButtonActive }">Revert</button>
+				<button v-on:click="submitCurriculumToAssign" class="widget-button green"
+					:class="{ inactive: !isCurriculumAssignmentButtonActive }">
+					Assign Curriculum
+				</button>
+				<button v-on:click="submitParametersToUpdate" class="widget-button blue"
+					:class="{ inactive: !isParametersUpdateButtonActive }">
+					Update Parameters
+				</button>
+				<button v-on:click="submitAdjustmentsToUpdate" class="widget-button blue"
+					:class="{ inactive: !isAdjustmentsUpdateButtonActive }">
+					Update Adjustments
+				</button>
+			</div>
 		</div>
-	</div>
+	</WidgetContentFrameComponent>
 </template>
 
 <script>
@@ -25,15 +34,21 @@ import '@/styles/form-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
 import { AdminUsersEventBus, adminUsersEvents } from '@/event-bus/admin-users.event-bus.js';
+import WidgetContentFrameComponent from '@/components/content-frame/widget-content-frame.component.vue';
 import UsersCurriculumFormComponent from './curriculum/users-curriculum-form.component.vue';
 import UsersParametersFormComponent from './parameters/users-parameters-form.component.vue';
 import UsersProgressionFormComponent from './progression/users-progression-form.component.vue';
 
+import UserCurriculumSection from './section-user-curriculum/user-curriculum.section.vue';
+
 export default {
 	components: {
+		UserCurriculumSection,
+
 		UsersCurriculumFormComponent,
 		UsersParametersFormComponent,
 		UsersProgressionFormComponent,
+		WidgetContentFrameComponent,
 	},
 	data() {
 		return {
@@ -56,7 +71,7 @@ export default {
 	},
 	methods: {
 		...mapActions('managementCurriculums', ['fetchAllCurriculumHeaders']),
-		...mapActions('managementUsers',['assignCurriculum']),
+		...mapActions('managementUsers', ['assignCurriculum']),
 		...mapActions('managementUsers/progressions', ['updateParameters', 'updateAdjustments']),
 		bundleUserCurriculumInformation() {
 			return {
@@ -159,5 +174,4 @@ export default {
 		'parameters'
 		'progression'
 		'submission-btn';
-}
-</style>
+}</style>
