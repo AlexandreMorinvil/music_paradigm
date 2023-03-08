@@ -32,7 +32,7 @@ app.use('/log-thorough', require('log/thorough/log.controller'));
 
 app.use('/account', require('account/account.controller'));
 app.use('/experiments', require('experiments/experiments.controller'));
-app.use('/curriculums', require('curriculums/curriculums.controller'));
+app.use('/curriculums', require('api/curriculums/curriculums.controller'));
 app.use('/users', require('users/users.controller'));
 app.use('/experiment-markers', require('experiment-markers/experiment-markers.controller'));
 

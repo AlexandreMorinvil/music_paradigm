@@ -8,5 +8,5 @@ export default {
 		isDeleting: false,
 	},
 	selection: curriculumGenerator.GENERATE_BLANK_CURRICULUM(),
-	curriculumsList: [],
+	curriculumSummariesList: [],
 };

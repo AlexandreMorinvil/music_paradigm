@@ -3,15 +3,15 @@ const Curriculum = db.Curriculum;
 
 module.exports = {
     create,
-    getListAllHeaders,
+    getCurriculumSummariesList,
     getById,
     update,
     delete: _delete
 };
 
-async function getListAllHeaders() {
+async function getCurriculumSummariesList() {
     try {
-        return await Curriculum.getListAllHeaders();
+        return await Curriculum.getCurriculumSummariesList();
     } catch (err) {
         throw err;
     }

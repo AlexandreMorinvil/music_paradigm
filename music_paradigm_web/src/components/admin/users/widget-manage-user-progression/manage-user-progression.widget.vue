@@ -70,7 +70,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('managementCurriculums', ['fetchAllCurriculumHeaders']),
+		...mapActions('managementCurriculums', ['fetchCurriculumSummariesList']),
 		...mapActions('managementUsers', ['assignCurriculum']),
 		...mapActions('managementUsers/progressions', ['updateParameters', 'updateAdjustments']),
 		bundleUserCurriculumInformation() {
@@ -126,7 +126,7 @@ export default {
 		},
 	},
 	beforeMount() {
-		this.fetchAllCurriculumHeaders();
+		this.fetchCurriculumSummariesList();
 	},
 	mounted() {
 		this.$watch(() => this.$refs.userCurriculumForm.wasCurriculumModified, this.evaluateAllButtonsActive, { immediate: true });

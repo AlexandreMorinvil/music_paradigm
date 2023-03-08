@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+
+const CurriculumSummary = require('modules/curriculum/class/curriculum-summary.class');
 const schema = require('./curriculum.middleware');
 
 schema.set('toJSON', { virtuals: true });
@@ -6,38 +8,29 @@ schema.set('toJSON', { virtuals: true });
 // Static methods
 
 /**
- * Get list all headers
- * This function returns  a list of all the curriculum objects to which is added additional information regarding the 
- * parameters included in the experimenrs.
+ * Get curriculum list entries list
+ * This function returns  a list of all the the curriculum list entries. A curriculum list entry is a curriculum objects
+ * to which is added additional information regarding the parameters included in the tasks that are included in the 
+ * curriculum.
  * 
  * @return {Array<Object>} A list of all the curriculum objects with parameter's infomration added.
  */
-schema.statics.getListAllHeaders = async function () {
+schema.statics.getCurriculumSummariesList = async function () {
 
-    // Retreive the list of all curriculum documents.
-    const curriculumDocumentsList = await this
-        .find({})
-        .sort({ updatedAt: -1, createdAt: 1, title: 1 });
-    const curriculumObjectsList = [];
+    // Get the list of all curriculum documents.
+    const curriculumDocumentsList = await this.find({}).sort({ title: 1 });
+    const curriculumSummariesList = [];
 
-    // Append the parameters information to all the curriculum objects. 
-    for (curriculumDocument of curriculumDocumentsList) {
-        
-        let curriculumObject = curriculumDocument.toObject();
-        const { 
-            parameterAcceptsFreeTextValuesMap, 
-            parameterOptionValuesListMap, 
-            parameterDefaultValueMap 
-        } = await curriculumDocument.getParameters();
-
-        curriculumObject['parameterOptionValuesListMap'] = parameterOptionValuesListMap;
-        curriculumObject['parameterDefaultValueMap'] = parameterDefaultValueMap;
-        curriculumObject['parameterAcceptsFreeTextValuesMap'] = parameterAcceptsFreeTextValuesMap;
-        curriculumObjectsList.push(curriculumObject);
-    }
+    // Fill the list of curriculum summaries asynchronously.
+    await Promise.all(curriculumDocumentsList.map(async (curriculumDocument) => {
+        curriculumSummariesList.push(new CurriculumSummary({
+            ...(await curriculumDocument.getParameters()),
+            ...curriculumDocument.toObject(),
+        }));
+    }));
 
     // Returns alist of all the curriculum objects
-    return curriculumObjectsList;
+    return curriculumSummariesList;
 };
 
 // Instance methods

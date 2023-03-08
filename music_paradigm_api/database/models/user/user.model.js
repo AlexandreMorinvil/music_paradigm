@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 schema = require('./user.middleware');
 
-const curriculumGetters = require('curriculums/curriculums.getters');
-const progressionGetters = require('progressions/progressions.getters');
+const curriculumGetters = require('database/models/curriculum/curriculum.getters');
+const progressionGetters = require('database/models/progression/progression.getters');
 const progressionAssociation = require('progressions/progressions-association.service');
 const { SECRET_PASSWORD_PLACEHOLDER } = require('modules/users/user-password');
 
@@ -85,19 +85,20 @@ schema.statics.getCurriculumAndProgressionObject = async function (userId) {
  * ]   
 */
 schema.statics.getListAllSummaries = async function () {
-    const usersList = await this
+    const usersDocumentList = await this
         .find({ role: roles.user })
         .populate({ path: 'curriculum progressions' })
         .sort({ role: 1, username: 1 });
 
     const usersHeaderList = [];
-    usersList.forEach(element => {
+
+    await Promise.all(usersDocumentList.map(async (userDocument) => {
         // Prepare the user summary object
-        const userSummary = element.toObject();
+        const userSummary = userDocument.toObject();
 
         // Extract the populated curriculum and last progression
-        const currentProgression = element.progressions[element.progressions.length - 1];
-        const currentCurriculum = element.curriculum;
+        const currentProgression = userDocument.progressions[userDocument.progressions.length - 1];
+        const currentCurriculum = userDocument.curriculum;
 
         // Add information from the curriculum and the progression
         userSummary.curriculumTitle = curriculumGetters.getTitle(currentCurriculum);
@@ -115,7 +116,7 @@ schema.statics.getListAllSummaries = async function () {
 
         // Add the user to the list of summaries of users
         usersHeaderList.push(userSummary);
-    });
+    }));
 
     return usersHeaderList;
 };
@@ -129,8 +130,42 @@ schema.statics.isAdmin = async function (userId) {
     return user.role === roles.admin;
 };
 
-
 // Instance methods
+schema.methods.getLastProgression = async function () {
+    const user = await model
+        .findById(this._id, { progressions: { $slice: -1 } })
+        .populate({ path: 'progressions' });
+    const lastProgression = user.progressions[0];
+    return lastProgression;
+}
+
+schema.methods.getSummary = async function () {
+    // Prepare the user summary object
+    const userSummary = userDocument.toObject();
+
+    // Extract the populated curriculum and last progression
+    const currentProgression = userDocument.progressions[userDocument.progressions.length - 1];
+    const currentCurriculum = userDocument.curriculum;
+
+    // Add information from the curriculum and the progression
+    userSummary.curriculumTitle = curriculumGetters.getTitle(currentCurriculum);
+    userSummary.progressionStartDate = progressionGetters.getAdvanceStartDate(currentProgression);
+    userSummary.progressionStartTime = progressionGetters.getAdvanceStartTime(currentProgression);
+    userSummary.progressionLastAdvancedDate = progressionGetters.getLastAdvanceDate(currentProgression);
+    userSummary.progressionLastAdvancedTime = progressionGetters.getLastAdvanceTime(currentProgression);
+    userSummary.progressionDuration = progressionGetters.getDuration(currentProgression);
+    Object.assign(userSummary, progressionAssociation.generateProgressionToCurriculumAssociationSummary(currentCurriculum, currentProgression));
+
+    // Remove undesirable attributes
+    delete userSummary.progressions;
+    delete userSummary.curriculum;
+    delete userSummary.password;
+
+    // Add the user to the list of summaries of users
+    usersHeaderList.push(userSummary);
+    return;
+}
+
 schema.methods.indicateLogin = async function () {
     this.lastLogin = Date.now();
     return this.save();
@@ -149,14 +184,6 @@ schema.methods.updateDetails = async function (updatedUserDetails) {
     this.updatedAt = Date.now();
     return this.save();
 };
-
-schema.methods.getLastProgression = async function () {
-    const user = await model
-        .findById(this._id, { progressions: { $slice: -1 } })
-        .populate({ path: 'progressions' });
-    const lastProgression = user.progressions[0];
-    return lastProgression;
-}
 
 // Creating the model
 const model = mongoose.model('User', schema);

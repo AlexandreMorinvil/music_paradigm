@@ -12,7 +12,7 @@ export default {
 					dispatch('alert/setSuccessAlert', 'Curriculum creation sucessful', {
 						root: true,
 					});
-					dispatch('fetchAllCurriculumHeaders');
+					dispatch('fetchCurriculumSummariesList');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
@@ -31,7 +31,7 @@ export default {
 				() => {
 					dispatch('unsetSelectedCurriculum');
 					dispatch('alert/setSuccessAlert', 'Currirulum deletion sucessful', { root: true });
-					dispatch('fetchAllCurriculumHeaders');
+					dispatch('fetchCurriculumSummariesList');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
@@ -42,13 +42,13 @@ export default {
 			});
 	},
 
-	fetchAllCurriculumHeaders({ commit, dispatch }) {
+	fetchCurriculumSummariesList({ commit, dispatch }) {
 		commit('indicateFetchingCurriculumList');
 		return curriculumsApi
 			.getListAllHeaders()
 			.then(
-				(curriculumsList) => {
-					commit('setHeadersList', curriculumsList);
+				(curriculumSummariesList) => {
+					commit('setCurriculumSummariesList', curriculumSummariesList);
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
@@ -85,7 +85,7 @@ export default {
 					dispatch('alert/setSuccessAlert', 'Curriculum update sucessful', {
 						root: true,
 					});
-					dispatch('fetchAllCurriculumHeaders');
+					dispatch('fetchCurriculumSummariesList');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });

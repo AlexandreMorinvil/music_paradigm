@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 schema = require('./progression.middleware');
 
-const progressionSetters = require('progressions/progressions.setters.js');
-const progressionGetters = require('progressions/progressions.getters.js');
+const progressionSetters = require('./progression.setters.js');
+const progressionGetters = require('./progression.getters.js');
 
 schema.set('toJSON', { virtuals: true });
 

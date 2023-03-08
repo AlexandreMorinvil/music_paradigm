@@ -1,3 +1,5 @@
+import { CurriculumSummary } from '@/modules/curriculums';
+
 export default {
 	indicateFetchingCurriculumList(state) {
 		state.status.isFetchingCurriculumsList = true;
@@ -31,7 +33,9 @@ export default {
 		state.status.isDeleting = false;
 	},
 
-	setHeadersList(state, usersHeadersLst) {
-		state.curriculumsList = usersHeadersLst;
+	setCurriculumSummariesList(state, curriculumSummariesList) {
+		state.curriculumSummariesList = curriculumSummariesList.map((curriculumSummary) => {
+			return new CurriculumSummary(curriculumSummary);
+		});
 	},
 };

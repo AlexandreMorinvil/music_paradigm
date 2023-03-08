@@ -1,9 +1,11 @@
 <template>
-	<select class="input-spacing" :class="{ 'edited-text': isEdited }" :value="value"
-		v-on:input="(event) => edit(event.target.value)" v-bind="selectAttributes">
-		<option :value="null"> {{ placeholder }} </option>
-		<option v-for="(option, index) in options" :key="index" :value="option">
-			{{ getDisplayFromValue(option) }}
+	<select class="input-spacing" :class="{
+		'edited-text': isEdited,
+		'placeholder-option': !isEdited && value === null
+	}" :value="value" v-on:change="(event) => edit(event.target.value)" v-bind="selectAttributes">
+		<option v-if="isEmptyAccepted" class='placeholder-option' :value="null"> {{ placeholder }} </option>
+		<option v-for="(element, index) in options" :key="index" :value="getOptionValueFromElement(element)" class='valid-option'>
+			{{ getDisplayedValueFromElement(element) }}
 		</option>
 	</select>
 </template>
@@ -18,7 +20,13 @@ export default {
 			type: null,
 			default: null,
 		},
-		getDisplayFromValue: {
+		getDisplayedValueFromElement: {
+			type: Function,
+			default() {
+				return (value) => value;
+			}
+		},
+		getOptionValueFromElement: {
 			type: Function,
 			default() {
 				return (value) => value;
@@ -67,4 +75,12 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.placeholder-option {
+	color: grey;
+}
+
+.valid-option {
+	color: black;
+}
+</style>
