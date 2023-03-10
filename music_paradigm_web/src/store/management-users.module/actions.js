@@ -29,12 +29,12 @@ export default {
 			.register(userToCreate)
 			.then(
 				(selectedUserDetails) => {
-					const { user, ...progressionDetails } = selectedUserDetails;
+					const { user, ...progressionDetails } = selectedUserDetails; // Update the parameters
 					dispatch('setSelectedUser', user);
+					dispatch('progressions/setSelectedUserProgression', progressionDetails);
 
 					// TODO : Delete once the code will have been updated
 					commit('setSelectedUser', user);
-					dispatch('progressions/setSelectedUserProgression', progressionDetails);
 
 					dispatch('alert/setSuccessAlert', 'User creation sucessful', { root: true });
 					dispatch('fetchAllUsersSummary');
@@ -152,8 +152,10 @@ export default {
 	},
 
 	unsetSelectedUser({ commit, dispatch }) {
+		dispatch('progressions/unsetSelectedUserProgression');
 		dispatch('selection/unsetUserSelection');
 		dispatch('edition/unsetUserEdition');
+
 		commit('unsetSelectedUser'); // TODO : Delete this once the code will have been adjusted
 		dispatch('progressions/unsetSelectedProgression'); // TODO : Update this once the code will have been adjusted
 	},

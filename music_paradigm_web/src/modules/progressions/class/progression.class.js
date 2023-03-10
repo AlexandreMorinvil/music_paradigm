@@ -1,18 +1,14 @@
-export class User {
-    constructor(user = {}) {
-        this._id = user._id || null;
+export class Progression {
+    constructor(progression = {}) {
+        this._id = progression._id || null;
 
-        this.createdAt = user.createdAt ? user.createdAt : null;
-        this.curriculum = user.curriculum || null;
-        this.group = user.group || '';
-        this.isPasswordSecret = typeof user.isPasswordSecret === 'boolean' ? user.isPasswordSecret : true;
-        this.lastLogin = user.lastLogin ? user.lastLogin : null;
-        this.note = user.note || '';
-        this.password = user.exposablePassword || user.password || '';
-        this.role = user.role || 'user';
-        this.tags = JSON.parse(JSON.stringify(user.tags || []));
-        this.updatedAt = user.updatedAt ? user.updatedAt : null;
-        this.username = user.username || '';
+        this.userReference = progression.userReference || null;
+        this.curriculumReference = progression.curriculumReference || null;
+        this.startTime = progression.startTime || null;
+        this.adjustmentStartTimeInDays = progression.adjustmentStartTimeInDays || 0;
+        this.lastProgressionDate = progression.lastProgressionDate || null;
+        this.assignedParameters = progression.assignedParameters || null;
+        this.experiments = JSON.parse(JSON.stringify(progression.experiments || []));
     }
 
     toObject() {

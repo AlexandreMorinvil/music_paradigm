@@ -1,5 +1,9 @@
 export default {
-	setUserSelection({ commit }, user) {
-		commit('setUserSelection', user);
+	setUserProgressionSelection({ commit }, progression) {
+		commit('setUserProgressionSelection', progression);
+	},
+
+	unsetUserProgressionSelection({ commit }) {
+		commit('unsetUserProgressionSelection');
 	},
 };

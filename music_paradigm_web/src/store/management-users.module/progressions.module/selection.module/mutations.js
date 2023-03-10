@@ -1,11 +1,11 @@
-import { User } from "@/modules/users";
+import { Progression } from "@/modules/progressions";
 
 export default {
-	setUserSelection(state, user) {
-		state.selectionUser = new User(user);
+	setUserProgressionSelection(state, progression) {
+		state.selectionUserProgression = new Progression(progression);
 	},
 
-	unsetUserSelection(state) {
-		state.selectionUser = new User();
+	unsetUserProgressionSelection(state) {
+		state.selectionUserProgression = new Progression();
 	},
 };

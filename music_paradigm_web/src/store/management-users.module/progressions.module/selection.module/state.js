@@ -1,5 +1,5 @@
-import { User } from "@/modules/users";
+import { Progression } from "@/modules/progressions";
 
 export default {
-	selectionUser: new User(),
+	selectionUserProgression: new Progression(),
 };

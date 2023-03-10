@@ -2,8 +2,9 @@
     <TemplateFieldsetComponent>
         <TemplateFieldLabelComponent text="Curriculum" />
         <TemplateFieldSelectComponent 
-
-        isEmptyAccepted
+            :value="userProgressionEditionCurriculumReference"
+            v-on:edit="editUserProgressionEditionCurriculumReference"
+            isEmptyAccepted
             :getDisplayedValueFromElement="(curriculumSummary) => curriculumSummary.title"
             :getOptionValueFromElement="(curriculumSummary) => curriculumSummary._id" :options="curriculumSummariesList"
             placeholder="# No Curriculum" />
@@ -12,7 +13,7 @@
 
 <script>
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 import TemplateFieldsetComponent from '@/components/admin/templates/template-fieldset.component.vue';
 import TemplateFieldLabelComponent from '@/components/admin/templates/template-field-label.component.vue';
@@ -26,15 +27,17 @@ export default {
     },
     computed: {
         ...mapGetters('managementCurriculums', ['curriculumSummariesList']),
+        ...mapGetters('managementUsers/progressions/edition', [
+        'userProgressionEditionCurriculumReference'
+        ]),
+        ...mapGetters('managementUsers/progressions/selection', [
+        'userProgressionSelectionCurriculumReference'
+        ]),
     },
     methods: {
-        getCurriculumTitleFromId(id) {
-            const curriculum = this.curriculumsList.find((obj) => {
-                return obj._id === id;
-            });
-            if (curriculum[0]) return curriculum[0].title;
-            else return '';
-        },
+        ...mapMutations('managementUsers/progressions/edition', [
+            'editUserProgressionEditionCurriculumReference'
+        ])
     }
 };
 </script>

@@ -1,9 +1,13 @@
 export default {
-	hasSelectedUser: (_, getters) => {
-		return Boolean(getters.userSelectionId);
+	hasSelectedUserProgression: (_, getters) => {
+		return Boolean(getters.userProgressionSelectionId);
 	},
 
-	userSelectionUsername: (state) => {
-		return state.selectionUser.username;
+	userProgressionSelectionCurriculumReference: (state) => {
+		return state.selectionUserProgression.curriculumReference;
+	},
+
+	userProgressionSelectionId: (state) => {
+		return state.selectionUserProgression._id;
 	},
 };

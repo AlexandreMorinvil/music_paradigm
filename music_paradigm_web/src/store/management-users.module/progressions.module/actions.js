@@ -1,12 +1,23 @@
 import { experimentMarkersApi, usersApi } from '@/api';
 
 export default {
-	// Setters
 	setSelectedUserProgression({ commit, dispatch }, progressionDetails) {
+		dispatch('selection/setUserProgressionSelection', progressionDetails.progression);
+		dispatch('edition/setUserProgressionEdition', progressionDetails.progression);
+
+
+		// TODO: Delete once the code will have been adjusted
 		commit('setSelectedUserProgression', progressionDetails.progression);
 		commit('setSelectedUserProgressionSummary', progressionDetails.progressionSummary);
 		dispatch('unsetSelectedSession');
 	},
+
+	unsetSelectedUserProgression({ dispatch }) {
+		dispatch('selection/unsetUserProgressionSelection');
+		dispatch('edition/unsetUserProgressionEdition');
+	},
+
+	// FIXME : All the code below this line is from before the refactoring. It will be necessary to update it.
 
 	setSelectedSession({ commit, dispatch }, session) {
 		commit('setSelectedSession', session);
