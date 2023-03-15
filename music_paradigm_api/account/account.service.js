@@ -1,7 +1,7 @@
 ﻿const db = require('database/db');
 const jwt = require('jwt/jwt');
-const progressionSummaryService = require('progressions/progressions-summary.service');
-const progressionValidatorService = require('progressions/progressions-validator.service');
+const progressionSummaryService = require('modules/progressions/progressions-summary.service');
+const progressionValidatorService = require('modules/progressions/progressions-validator.service');
 const sessionManager = require('sessions/session.manager');
 const User = db.User;
 

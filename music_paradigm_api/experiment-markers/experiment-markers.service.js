@@ -1,5 +1,5 @@
 ﻿const ExperimentMarker = require('database/db').ExperimentMarker;
-const { generateProgressionSummaryForProgressionId } = require('progressions/progressions-summary.service');
+const { generateProgressionSummaryForProgressionId } = require('modules/progressions/progressions-summary.service');
 
 module.exports = {
     resetTimeIndicated,

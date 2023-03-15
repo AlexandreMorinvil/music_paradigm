@@ -5,20 +5,29 @@
         </template>
         <UserCurriculumSubsection />
         <!-- <UserCurriculumParametersSubsection /> -->
+        <template v-slot:buttons>
+            <ButtonAssignCurriculumComponent class="button" />
+        </template>
     </WidgetSectionContainer>
 </template>
 
 <script>
 import WidgetSectionContainer from '@/components/admin/widget-section.container.vue';
 
+import ButtonAssignCurriculumComponent from './buttons/button-assign-curriculum.component.vue';
 import UserCurriculumSubsection from './curriculum-subsection/user-curriculum.subsection.vue';
 
 export default {
     components: {
+        ButtonAssignCurriculumComponent,
         UserCurriculumSubsection,
         WidgetSectionContainer,
     }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.button {
+    width: 300px;
+}
+</style>

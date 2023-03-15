@@ -1,15 +1,18 @@
 <template>
     <div class="widget-section">
         <div class="title-area">
-            <div class="title-left-side "> 
+            <div class="title-left-side ">
                 <slot name="topLeft" />
             </div>
             <h3 class="title">{{ title }}</h3>
-            <div class="title-right-side"> 
+            <div class="title-right-side">
                 <slot name="topRight" />
             </div>
         </div>
         <slot />
+        <div v-if="hasButtonsArea" class="area-buttons">
+            <slot name="buttons" />
+        </div>
     </div>
 </template>
 
@@ -19,6 +22,11 @@ import '@/styles/widget-template.css';
 export default {
     props: {
         title: "",
+    },
+    computed: {
+        hasButtonsArea() {
+            return Boolean(this.$slots.buttons);
+        } 
     }
 };
 </script>
@@ -34,14 +42,22 @@ export default {
     text-align: center;
     margin-bottom: 10px;
 }
+
 .title-right-side {
     gap: 5px;
     display: flex;
     justify-content: right;
 }
+
 .title-left-side {
     gap: 5px;
     display: flex;
     justify-content: left;
+}
+
+.area-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 </style>

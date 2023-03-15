@@ -1,61 +1,62 @@
 ﻿const User = require('database/db').User;
-const progressionSummaryService = require('progressions/progressions-summary.service');
-const userProgressionService = require('users/user-progression.service');
+const progressionSummaryService = require('modules/progressions/progressions-summary.service');
+const userProgressionService = require('modules/users/user-progressions-handler');
 
 // Exports
 module.exports = {
-    assignAdjustments,
-    assignCurriculum,
-    assignParameters,
+    // TODO : Delete this code once it is transfered to the "progressions" API
+    // assignAdjustments,
+    // assignCurriculum,
+    // assignParameters,
     createUser,
     getAll,
     getById,
     getExistingUserGroupsList,
     deleteUser,
-    resetProgression,
     updateUserProfile,
 };
 
-async function assignAdjustments(userId, assignedAdjustments) {
-    try {
-        const lastProgression = await userProgressionService.updateAdjustments(userId, assignedAdjustments);
-        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
-        return {
-            progression: lastProgression,
-            progressionSummary: progressionSummary,
-        };
-    } catch (err) {
-        throw err;
-    }
-}
+// TODO : Delete this code once it is transfered to the "progressions" API
+// async function assignAdjustments(userId, assignedAdjustments) {
+//     try {
+//         const lastProgression = await userProgressionService.updateAdjustments(userId, assignedAdjustments);
+//         const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
+//         return {
+//             progression: lastProgression,
+//             progressionSummary: progressionSummary,
+//         };
+//     } catch (err) {
+//         throw err;
+//     }
+// }
 
-async function assignCurriculum(userId, curriculumId, assignedParameters) {
-    try {
-        const user = await User.findById(userId);
-        const lastProgression = await userProgressionService.initializeProgression(user, curriculumId, assignedParameters);
-        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
-        return {
-            user: user,
-            progression: lastProgression,
-            progressionSummary: progressionSummary,
-        };
-    } catch (err) {
-        throw err;
-    }
-}
+// async function assignCurriculum(userId, curriculumId, assignedParameters) {
+//     try {
+//         const user = await User.findById(userId);
+//         const lastProgression = await userProgressionService.initializeProgression(user, curriculumId, assignedParameters);
+//         const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
+//         return {
+//             user: user,
+//             progression: lastProgression,
+//             progressionSummary: progressionSummary,
+//         };
+//     } catch (err) {
+//         throw err;
+//     }
+// }
 
-async function assignParameters(userId, assignedParameters) {
-    try {
-        const lastProgression = await userProgressionService.updateParameters(userId, assignedParameters);
-        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
-        return {
-            progression: lastProgression,
-            progressionSummary: progressionSummary,
-        };
-    } catch (err) {
-        throw err;
-    }
-}
+// async function assignParameters(userId, assignedParameters) {
+//     try {
+//         const lastProgression = await userProgressionService.updateParameters(userId, assignedParameters);
+//         const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
+//         return {
+//             progression: lastProgression,
+//             progressionSummary: progressionSummary,
+//         };
+//     } catch (err) {
+//         throw err;
+//     }
+// }
 
 async function createUser(user, assignedParameters) {
     try {
@@ -132,13 +133,3 @@ async function deleteUser(userId) {
     }
 
 }
-
-async function resetProgression(userId, curriculumId) {
-    try {
-        const user = await User.findById(userId);
-        return await user.resetProgression();
-    } catch (err) {
-        throw err;
-    }
-}
-

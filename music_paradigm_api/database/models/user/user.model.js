@@ -3,7 +3,7 @@ schema = require('./user.middleware');
 
 const curriculumGetters = require('database/models/curriculum/curriculum.getters');
 const progressionGetters = require('database/models/progression/progression.getters');
-const progressionAssociation = require('progressions/progressions-association.service');
+const progressionAssociation = require('modules/progressions/progressions-association.service');
 const { SECRET_PASSWORD_PLACEHOLDER } = require('modules/users/user-password');
 
 
@@ -27,7 +27,7 @@ schema.statics.create = async function (user) {
     const { _id, id, ...userToCreate } = user;
     userToCreate.createdAt = Date.now();
     const userCreated = new model(userToCreate);
-    return await userCreated.save();
+    return userCreated.save();
 };
 
 schema.statics.delete = async function (userId) {
