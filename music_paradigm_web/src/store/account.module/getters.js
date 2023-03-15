@@ -19,8 +19,22 @@ export default {
 		return state.status.loggingIn;
 	},
 
-	fullName: (state) => {
-		return state.user.firstName + ' ' + (state.user.middleName ? state.user.middleName + ' ' : '') + state.user.lastName;
+	firstName: (state) => {
+		return state.user.firstName || "";
+	},
+
+	middleName: (state) => {
+		return state.user.middleName || "";
+	},
+
+	lastName: (state) => {
+		return state.user.lastName || "";
+	},
+
+	fullName: (state, getters) => {
+		return getters.firstName ? (getters.firstName + ' ') : '' + 
+			getters.middleName ? (getters.middleName + ' ') : '' + 
+			getters.lastName;
 	},
 
 	isFetchingProgressionSummary: (state) => {
