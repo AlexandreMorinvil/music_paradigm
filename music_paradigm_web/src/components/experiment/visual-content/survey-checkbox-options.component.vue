@@ -139,6 +139,8 @@ export default {
 
 .survey-header {
 	padding-bottom: 25px;
+	padding-left: 20px;
+	padding-right: 20px;
 }
 
 .survey-table {
