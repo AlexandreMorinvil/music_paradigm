@@ -4,11 +4,8 @@ const userProgressionService = require('modules/users/user-progressions-handler'
 
 // Exports
 module.exports = {
-    // TODO : Delete this code once it is transfered to the "progressions" API
-    // assignAdjustments,
-    // assignCurriculum,
-    // assignParameters,
     createUser,
+    createUserWithCurriculum,
     getAll,
     getById,
     getExistingUserGroupsList,
@@ -16,49 +13,23 @@ module.exports = {
     updateUserProfile,
 };
 
-// TODO : Delete this code once it is transfered to the "progressions" API
-// async function assignAdjustments(userId, assignedAdjustments) {
-//     try {
-//         const lastProgression = await userProgressionService.updateAdjustments(userId, assignedAdjustments);
-//         const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
-//         return {
-//             progression: lastProgression,
-//             progressionSummary: progressionSummary,
-//         };
-//     } catch (err) {
-//         throw err;
-//     }
-// }
+async function createUser(user) {
+    try {
+        const userCreated = await User.create(user);
+        return {
+            user: userCreated,
+        };
+    } catch (err) {
+        switch (err.code) {
+            case 11000:
+                throw new Error(`The username is already used`);
+            default:
+                throw err;
+        }
+    }
+}
 
-// async function assignCurriculum(userId, curriculumId, assignedParameters) {
-//     try {
-//         const user = await User.findById(userId);
-//         const lastProgression = await userProgressionService.initializeProgression(user, curriculumId, assignedParameters);
-//         const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
-//         return {
-//             user: user,
-//             progression: lastProgression,
-//             progressionSummary: progressionSummary,
-//         };
-//     } catch (err) {
-//         throw err;
-//     }
-// }
-
-// async function assignParameters(userId, assignedParameters) {
-//     try {
-//         const lastProgression = await userProgressionService.updateParameters(userId, assignedParameters);
-//         const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
-//         return {
-//             progression: lastProgression,
-//             progressionSummary: progressionSummary,
-//         };
-//     } catch (err) {
-//         throw err;
-//     }
-// }
-
-async function createUser(user, assignedParameters) {
+async function createUserWithCurriculum(user, assignedParameters) {
     try {
         const userCreated = await User.create(user);
         // TODO: Improve the handling of this function to not require a "curriculumId" as a separate parameter.
@@ -131,5 +102,4 @@ async function deleteUser(userId) {
     } catch (err) {
         throw err;
     }
-
 }

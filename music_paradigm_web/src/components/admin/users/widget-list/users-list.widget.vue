@@ -65,9 +65,9 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('managementUsers',['fetchAllUsersSummary', 'getSelectedUser', 'unsetSelectedUser']),
+		...mapActions('managementUsers',['fetchUserSummariesList', 'getSelectedUser', 'unsetSelectedUser']),
 		handleRefresh() {
-			this.fetchAllUsersSummary();
+			this.fetchUserSummariesList();
 		},
 		handleSelectUser(id) {
 			if (this.userSelectedId === id) this.unsetSelectedUser();
@@ -151,7 +151,7 @@ export default {
 		},
 	},
 	mounted() {
-		this.fetchAllUsersSummary();
+		this.fetchUserSummariesList();
 	},
 };
 </script>

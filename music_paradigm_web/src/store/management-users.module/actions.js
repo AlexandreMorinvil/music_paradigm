@@ -12,7 +12,7 @@ export default {
 					commit('setSelectedUser', user); // TODO : Delete once the code will have been updated
 					dispatch('progressions/setSelectedUserProgression', progressionDetails);
 					dispatch('alert/setSuccessAlert', 'Curriculum assignation sucessful', { root: true });
-					dispatch('fetchAllUsersSummary');
+					dispatch('fetchUserSummariesList');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', `Curriculum assignation failed : ${error.message}`, { root: true });
@@ -26,7 +26,27 @@ export default {
 	createUser({ commit, dispatch }, userToCreate) {
 		commit('indicateIsCreatingUser');
 		return usersApi
-			.register(userToCreate)
+			.create(userToCreate)
+			.then(
+				(selectedUserDetails) => {
+					const { user } = selectedUserDetails;
+					dispatch('setSelectedUser', user);
+					dispatch('alert/setSuccessAlert', 'User creation sucessful', { root: true });
+					dispatch('fetchUserSummariesList');
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateIsCreatingUserEnd');
+			});
+	},
+
+	createUserWithCurriculum({ commit, dispatch }, userToCreate) {
+		commit('indicateIsCreatingUser');
+		return usersApi
+			.create(userToCreate)
 			.then(
 				(selectedUserDetails) => {
 					const { user, ...progressionDetails } = selectedUserDetails; // Update the parameters
@@ -37,7 +57,7 @@ export default {
 					commit('setSelectedUser', user);
 
 					dispatch('alert/setSuccessAlert', 'User creation sucessful', { root: true });
-					dispatch('fetchAllUsersSummary');
+					dispatch('fetchUserSummariesList');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
@@ -59,7 +79,7 @@ export default {
 					// TODO : Delete once the code will have been updated
 					commit('unsetSelectedUser');
 					dispatch('alert/setSuccessAlert', 'User deletion sucessful', { root: true });
-					dispatch('fetchAllUsersSummary');
+					dispatch('fetchUserSummariesList');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', `User deletion failed : ${error.message}`, { root: true });
@@ -70,7 +90,7 @@ export default {
 			});
 	},
 
-	fetchAllUsersSummary({ commit, dispatch }) {
+	fetchUserSummariesList({ commit, dispatch }) {
 		commit('indicateFetchingUserList');
 		return usersApi
 			.getListAllSummaries()
@@ -131,7 +151,7 @@ export default {
 					// TODO : Delete once the code will have been updated
 					commit('setSelectedUser', updatedUser); // TODO : Delete once the code will have been updated
 					dispatch('alert/setSuccessAlert', 'User update sucessful', { root: true });
-					dispatch('fetchAllUsersSummary');
+					dispatch('fetchUserSummariesList');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', `User update failed : ${error.message}`, { root: true });
