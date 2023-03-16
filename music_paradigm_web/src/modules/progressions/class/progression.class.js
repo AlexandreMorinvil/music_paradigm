@@ -1,14 +1,16 @@
 export class Progression {
     constructor(progression = {}) {
-        this._id = progression._id || null;
+        const progressionToParse = JSON.parse(JSON.stringify(progression || {}));
 
-        this.userReference = progression.userReference || null;
-        this.curriculumReference = progression.curriculumReference || null;
-        this.startTime = progression.startTime || null;
-        this.adjustmentStartTimeInDays = progression.adjustmentStartTimeInDays || 0;
-        this.lastProgressionDate = progression.lastProgressionDate || null;
-        this.assignedParameters = progression.assignedParameters || null;
-        this.experiments = JSON.parse(JSON.stringify(progression.experiments || []));
+        this._id = progressionToParse._id || null;
+
+        this.userReference = progressionToParse.userReference || null;
+        this.curriculumReference = progressionToParse.curriculumReference || null;
+        this.startTime = progressionToParse.startTime || null;
+        this.adjustmentStartTimeInDays = progressionToParse.adjustmentStartTimeInDays || 0;
+        this.lastProgressionDate = progressionToParse.lastProgressionDate || null;
+        this.assignedParameters = progressionToParse.assignedParameters || null;
+        this.experiments = progressionToParse.experiments;
     }
 
     toObject() {

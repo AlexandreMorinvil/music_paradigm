@@ -59,5 +59,10 @@ export default {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    gap: 10px;
+}
+
+.area-buttons > button {
+    width: 300px;
 }
 </style>
