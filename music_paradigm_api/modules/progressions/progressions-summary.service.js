@@ -1,8 +1,11 @@
 const timeHandler = require('_helpers/time-handler')
-const progressionAssociation = require('./progressions-association.service');
-const User = require('database/db').User;
-const Progression = require('database/db').Progression;
 const ExperimentMarker = require('database/db').ExperimentMarker;
+const Progression = require('database/db').Progression;
+const User = require('database/db').User;
+const { 
+    generateProgressionToCurriculumAssociation,
+    indicateExperimentMakersInProgressionAssociation 
+} = require('./progression-curriculum-association');
 
 module.exports = {
     generateProgressionSummaryForProgression,
@@ -16,7 +19,7 @@ async function generateProgressionSummaryForProgression(progressionDocument) {
 }
 
 async function generateProgressionSummaryForProgressionId(progressionId) {
-    let { curriculum, progression } = await Progression.getWithCurriculumById(progressionId);
+    let { curriculum, progression } = await Progression.getProgressionAndCurriculumById(progressionId);
     return generateProgressionSummary(curriculum, progression);
 }
 
@@ -36,8 +39,8 @@ async function generateProgressionSummary(curriculum, progression) {
     else experimentMakers = await ExperimentMarker.findMarkers(progression._id);
 
     // Generate progression to curriculum association
-    let association = progressionAssociation.generateProgressionToCurriculumAssociation(curriculum, progression);
-    association = progressionAssociation.indicateExperimentMakersInProgressionAssociation(association, experimentMakers);
+    let association = generateProgressionToCurriculumAssociation(curriculum, progression);
+    association = indicateExperimentMakersInProgressionAssociation(association, experimentMakers);
 
     // Generate the progression summary
     let dueExperiment = null;

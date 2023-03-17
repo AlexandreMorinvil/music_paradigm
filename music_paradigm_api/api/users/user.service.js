@@ -1,6 +1,8 @@
-﻿const User = require('database/db').User;
+﻿const ProgressionModel = require('database/db').Progression;
+const User = require('database/db').User;
+
 const progressionSummaryService = require('modules/progressions/progressions-summary.service');
-const userProgressionService = require('modules/users/user-progressions-handler');
+const { generateUserSummariesList } = require('modules/users/user-summary-generator');
 
 // Exports
 module.exports = {
@@ -52,7 +54,7 @@ async function createUserWithCurriculum(user, assignedParameters) {
 
 async function getAll() {
     try {
-        return await User.getListAllSummaries();
+        return await generateUserSummariesList();
     } catch (err) {
         throw err;
     }
@@ -61,7 +63,7 @@ async function getAll() {
 async function getById(userId) {
     try {
         const user = await User.findById(userId);
-        const lastProgression = await user.getUserLastProgression();
+        const lastProgression = await ProgressionModel.getLastProgressionOfUser(userId);
         const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
         return {
             user: user,

@@ -1,27 +1,37 @@
 module.exports  = class UserSummary {
-    constructor(userObject = {}) {
+    constructor(parameter = {}) {
         // Deep copy to avoid oject and array shallow copies.
-        const userObjectCopy = JSON.parse(JSON.stringify(userObject));
+        const parameterCopy = JSON.parse(JSON.stringify(parameter));
+
+        // ID
+        this._id = parameterCopy._id || null;
 
         // User information
-        this.group = userObjectCopy.group || '';
-        this.tags = userObjectCopy.tags || [];
-        this.username = userObjectCopy.username || '';
+        this.group = parameterCopy.group || '';
+        this.tags = parameterCopy.tags || [];
+        this.username = parameterCopy.username || '';
         
         // Timestamps
-        this.lastLogin = userObjectCopy.lastLogin || null;
-        this.createdAt = userObjectCopy.createdAt || null;
-        this.updatedAt = userObjectCopy.updatedAt || null;
+        this.lastLogin = parameterCopy.lastLogin || null;
+        this.createdAt = parameterCopy.createdAt || null;
+        this.updatedAt = parameterCopy.updatedAt || null;
         
         // Curriculum information
-        this.curriculumTitle = userObjectCopy.curriculumTitle || null;
+        this.curriculumTitle = parameterCopy.curriculumTitle || null;
 
         // Progression information
-        this.progressionStartDate = userObjectCopy.progressionStartDate || null; 
-        this.progressionStartTime = userObjectCopy.progressionStartTime || null; 
-        this.progressionLastAdvancedDate = userObjectCopy.progressionLastAdvancedDate || null; 
-        this.progressionLastAdvancedTime = userObjectCopy.progressionLastAdvancedTime || null; 
-        this.progressionDuration = userObjectCopy.progressionDuration || null;
+        this.progressionStartDate = parameterCopy.progressionStartDate || null; 
+        this.progressionStartTime = parameterCopy.progressionStartTime || null; 
+        this.progressionLastAdvancedDate = parameterCopy.progressionLastAdvancedDate || null; 
+        this.progressionLastAdvancedTime = parameterCopy.progressionLastAdvancedTime || null; 
+        this.progressionDuration = parameterCopy.progressionDuration || null;
+
+        this.wasProgressionTotalNumberAdjusted = parameterCopy.wasProgressionTotalNumberAdjusted || false;
+        this.inAdvanceCount = parameterCopy.inAdvanceCount || 0;
+        this.isProgressionBlocked = parameterCopy.isProgressionBlocked || null;
+        this.reachedExperimentTitle = parameterCopy.reachedExperimentTitle || null;
+        this.progressionTotalNumber = parameterCopy.progressionTotalNumber || 0;
+        this.curriculumTotalNumber = parameterCopy.curriculumTotalNumber || 0;
     }
 
     toObject() {

@@ -25,8 +25,8 @@ async function assignAdjustments(userId, assignedAdjustments) {
 async function assignCurriculum(userId, curriculumId, assignedParameters) {
     try {
         // Assign new progression to user
-        const newProgression = await ProgressionModel.createProgression(userId, curriculumId, assignedParameters);
         ProgressionModel.deleteNotStartedProgressionsOfUser(userId);
+        const newProgression = await ProgressionModel.createProgression(userId, curriculumId, assignedParameters);
         // TODO: Create a function that works without the ID
         // TODO: Rename the "ProgressionSummary" to another name, not to be confused with the real summaries used for lists
         const progressionSummary = await progressionSummaryService.generateProgressionSummaryForProgression(newProgression); 

@@ -19,7 +19,12 @@ schema.statics.deleteNotStartedProgressionsOfUser = async function (userId) {
     return this.deleteMany({ userReference: userId, startTime: null });
 };
 
-schema.statics.getWithCurriculumById = async function (progressionId) {
+schema.statics.getLastProgressionOfUser = async function (userId) {
+    const lastProgression = await this.findOne({ userReference: userId }, '-createdAt');
+    return lastProgression;
+}
+
+schema.statics.getProgressionAndCurriculumById = async function (progressionId) {
 
     // Fetch the progression and the curriculum    
     const progression = await this.findById(progressionId)
@@ -27,7 +32,7 @@ schema.statics.getWithCurriculumById = async function (progressionId) {
     const { curriculumReference } = progression;
     const curriculum = curriculumReference;
     progression.curriculumReference = curriculum._id; 
-    
+
     return {
         curriculum: curriculum ? curriculum.toObject() : null,
         progression: progression ? progression.toObject() : null,
