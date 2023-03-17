@@ -13,25 +13,34 @@ export default {
         TemplateButtonComponent,
     },
     computed: {
-        ...mapGetters('managementUsers', ['isCreatingUser', 'isExecutingUserCommand']),
-        ...mapGetters('managementUsers/edition', ['userEditionUser', 'userEditionUsername']),
-        ...mapGetters('managementUsers/selection', ['hasSelectedUser', 'userSelectionUsername']),
+        ...mapGetters('managementUsers', [
+            'hasEditedUserUsername',
+            'isCreatingUserWithCurriculum',
+            'isExecutingUserCommand',
+        ]),
+        ...mapGetters('managementUsers/progressions/edition', [
+            'userProgressionEditionCurriculumReference',
+            'userProgressionEditionAssignedParameters',
+        ]),
+        ...mapGetters('managementUsers/edition', ['userEditionUser']),
+        ...mapGetters('managementUsers/selection', ['hasSelectedUser']),
         isButtonActive() {
-            if (!this.isCreatingUser && this.isExecutingUserCommand) return false; // Has other user command running
-            if (this.hasSelectedUser && this.userEditionUsername === this.userSelectionUsername) return false;
+            if (!this.isCreatingUserWithCurriculum && this.isExecutingUserCommand) return false; // Has other user command running
+            if (this.hasSelectedUser && !this.hasEditedUserUsername) return false;
             return true;
         },
         isButtonLoading() {
-            return this.isCreatingUser;
+            return this.isCreatingUserWithCurriculum;
         },
     },
     methods: {
-        ...mapActions('managementUsers', ['createUser']),
+        ...mapActions('managementUsers', ['createUserWithCurriculum']),
         handleButtonPress() {
             if (!this.isButtonActive) return;
-            this.createUser({
+            this.createUserWithCurriculum({
                 user: this.userEditionUser,
-                assignedParameters: {},
+                curriculumId: this.userProgressionEditionCurriculumReference,
+                assignedParameters: this.userProgressionEditionAssignedParameters,
             });
         },
     }

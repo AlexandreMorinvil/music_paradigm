@@ -16,8 +16,17 @@ export default {
 		);
 	},
 
+	hasEditedUserUsername: (_, getters) => {
+		return getters['selection/userSelectionUsername'] !==
+			getters['edition/userEditionUsername'];
+	},
+
 	isCreatingUser: (state) => {
 		return state.status.isCreatingUser;
+	},
+
+	isCreatingUserWithCurriculum: (state) => {
+		return state.status.isCreatingUserWithCurriculum;
 	},
 
 	isDeletingUser: (state) => {
@@ -27,6 +36,7 @@ export default {
 	isExecutingUserCommand: (_, getters) => {
 		return getters['progressions/isExecutingUserProgressionCommand'] ||
 			getters.isCreatingUser ||
+			getters.isCreatingUserWithCurriculum ||
 			getters.isDeletingUser ||
 			getters.isUpdatingUser;
 	},

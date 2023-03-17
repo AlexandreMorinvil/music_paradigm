@@ -13,12 +13,12 @@ export default {
         TemplateButtonComponent,
     },
     computed: {
-        ...mapGetters('managementUsers', ['isCreatingUser', 'isExecutingUserCommand']),
-        ...mapGetters('managementUsers/edition', ['userEditionUser', 'userEditionUsername']),
-        ...mapGetters('managementUsers/selection', ['hasSelectedUser', 'userSelectionUsername']),
+        ...mapGetters('managementUsers', ['hasEditedUserUsername', 'isCreatingUser', 'isExecutingUserCommand']),
+        ...mapGetters('managementUsers/edition', ['userEditionUser']),
+        ...mapGetters('managementUsers/selection', ['hasSelectedUser']),
         isButtonActive() {
             if (!this.isCreatingUser && this.isExecutingUserCommand) return false; // Has other user command running
-            if (this.hasSelectedUser && this.userEditionUsername === this.userSelectionUsername) return false;
+            if (this.hasSelectedUser && !this.hasEditedUserUsername) return false;
             return true;
         },
         isButtonLoading() {

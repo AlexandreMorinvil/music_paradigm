@@ -15,12 +15,15 @@ export default {
     computed: {
         ...mapGetters('managementUsers', ['isExecutingUserCommand']),
         ...mapGetters('managementUsers/progressions', [
-            'hasEditedUserProgressionCurriculumReference', 
+            'hasEditedUserProgressionCurriculumReference',
             'isAssigningCurriculum',
         ]),
         ...mapGetters('managementUsers/progressions/edition', [
             'userProgressionEditionCurriculumReference',
             'userProgressionEditionAssignedParameters',
+        ]),
+        ...mapGetters('managementUsers/progressions/selection', [
+            'hasUserProgressionSelectionCurriculumReference',
         ]),
         ...mapGetters('managementUsers/selection', ['userSelectionId', 'hasSelectedUser']),
         isButtonActive() {
@@ -35,13 +38,15 @@ export default {
         ...mapActions('managementUsers/progressions', ['assignCurriculum']),
         handleButtonPress() {
             if (!this.isButtonActive) return;
-            const answer = window.confirm('Are your sure you want to edit the curriculum of this user?');
-            if (answer) {}
-                this.assignCurriculum({
-                    userId: this.userSelectionId,
-                    curriculumId: this.userProgressionEditionCurriculumReference,
-                    assignedParameters: this.userProgressionEditionAssignedParameters,
-                });
+            if (this.hasUserProgressionSelectionCurriculumReference) {
+                const answer = window.confirm('Are your sure you want to edit the curriculum of this user?');
+                if (!answer) return;
+            }
+            this.assignCurriculum({
+                userId: this.userSelectionId,
+                curriculumId: this.userProgressionEditionCurriculumReference,
+                assignedParameters: this.userProgressionEditionAssignedParameters,
+            });
         },
     }
 };

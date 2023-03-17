@@ -3,6 +3,10 @@ export default {
 		return Boolean(getters.userProgressionSelectionId);
 	},
 
+	hasUserProgressionSelectionCurriculumReference: (state) => {
+		return state.selectionUserProgression.curriculumReference !== null;
+	},
+
 	userProgressionSelectionCurriculumReference: (state) => {
 		return state.selectionUserProgression.curriculumReference;
 	},

@@ -66,10 +66,11 @@ function createUserWithCurriculum(req, res, next) {
 
     // Parameters
     const user = req.body.user;
+    const curriculumId = req.body.curriculumId;
     const assignedParameters = req.body.assignedParameters;
 
     // Processing
-    userService.createUser(user, assignedParameters)
+    userService.createUserWithCurriculum(user, curriculumId, assignedParameters)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());

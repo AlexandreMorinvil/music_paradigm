@@ -10,6 +10,14 @@ export default {
 		state.status.isCreatingUser = false;
 	},
 
+	indicateIsCreatingUserWithCurriculum(state) {
+		state.status.isCreatingUserWithCurriculum = true;
+	},
+
+	indicateIsCreatingUserWithCurriculumEnd(state) {
+		state.status.isCreatingUserWithCurriculum = false;
+	},
+
 	indicateIsDeletingUser(state) {
 		state.status.isDeletingUser = true;
 	},

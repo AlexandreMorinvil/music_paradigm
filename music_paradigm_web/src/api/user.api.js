@@ -2,16 +2,16 @@ import { authHeader, url } from '@/_helpers';
 import { defaultResponseHandler } from './response-handler';
 
 export const usersApi = {
-	create,
-	createWithCurriculum,
-	delete: _delete,
+	createUser,
+	createUserWithCurriculum,
+	deleteUser,
 	getById,
 	getExistingUserGroupsList,
 	getListAllSummaries,
-	update,
+	updateUserProfile,
 };
 
-function create(user) {
+function createUser(user) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -20,13 +20,21 @@ function create(user) {
 	return fetch(url.users('create'), requestOptions).then(defaultResponseHandler);
 }
 
-function createWithCurriculum(user) {
+function createUserWithCurriculum({ user, curriculumId, assignedParameters }) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(user),
+		body: JSON.stringify({ user, curriculumId, assignedParameters }),
 	};
-	return fetch(url.users('create-user-with-curriculum'), requestOptions).then(defaultResponseHandler);
+	return fetch(url.users('create-with-curriculum'), requestOptions).then(defaultResponseHandler);
+}
+
+function deleteUser(id) {
+	const requestOptions = {
+		method: 'DELETE',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+	};
+	return fetch(url.users(id), requestOptions).then(defaultResponseHandler);
 }
 
 function getListAllSummaries() {
@@ -53,19 +61,11 @@ function getExistingUserGroupsList() {
 	return fetch(url.users('existing-groups-list'), requestOptions).then(defaultResponseHandler);
 }
 
-function update(id, user) {
+function updateUserProfile(id, user) {
 	const requestOptions = {
 		method: 'PUT',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(user),
-	};
-	return fetch(url.users(id), requestOptions).then(defaultResponseHandler);
-}
-
-function _delete(id) {
-	const requestOptions = {
-		method: 'DELETE',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
 	return fetch(url.users(id), requestOptions).then(defaultResponseHandler);
 }

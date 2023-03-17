@@ -1,8 +1,9 @@
 ﻿const ProgressionModel = require('database/db').Progression;
-const User = require('database/db').User;
+const UserModel = require('database/db').User;
 
 const { generateProgressionSessionsStatusForUserId } = require('modules/progressions/progression-sessions-status');
 const { generateUserSummariesList } = require('modules/users/user-summary-generator');
+const progressionsService = require('../progressions/progressions.service');
 
 // Exports
 module.exports = {
@@ -17,7 +18,7 @@ module.exports = {
 
 async function createUser(user) {
     try {
-        const userCreated = await User.create(user);
+        const userCreated = await UserModel.create(user);
         return {
             user: userCreated,
         };
@@ -31,24 +32,18 @@ async function createUser(user) {
     }
 }
 
-async function createUserWithCurriculum(user, assignedParameters) {
+async function createUserWithCurriculum(user, curriculumId, assignedParameters) {
     try {
-        const userCreated = await User.create(user);
-        // TODO: Improve the handling of this function to not require a "curriculumId" as a separate parameter.
-        const progressionInitilized = await userProgressionService.initializeProgression(userCreated, user.curriculum, assignedParameters);
-        const progressionSummary = await generateProgressionSessionsStatusForUserId(userCreated._id);
+        const { user: userCreated }  = await createUser(user);
+        const { progression, progressionSummary } =
+            await progressionsService.assignCurriculum(userCreated._id, curriculumId, assignedParameters);
         return {
             user: userCreated,
-            progression: progressionInitilized,
+            progression: progression,
             progressionSummary: progressionSummary,
         };
     } catch (err) {
-        switch (err.code) {
-            case 11000:
-                throw new Error(`The username is already used`);
-            default:
-                throw err;
-        }
+        throw err;
     }
 }
 
@@ -62,7 +57,7 @@ async function getAll() {
 
 async function getById(userId) {
     try {
-        const user = await User.findById(userId);
+        const user = await UserModel.findById(userId);
         const lastProgression = await ProgressionModel.getLastProgressionOfUser(userId);
         const progressionSummary = await generateProgressionSessionsStatusForUserId(userId);
         return {
@@ -77,7 +72,7 @@ async function getById(userId) {
 
 async function getExistingUserGroupsList() {
     try {
-        const groupsList = await User.getExistingUserGroupsList();
+        const groupsList = await UserModel.getExistingUserGroupsList();
         return groupsList;
     } catch (err) {
         throw err;
@@ -86,7 +81,7 @@ async function getExistingUserGroupsList() {
 
 async function updateUserProfile(userId, userUpdated) {
     try {
-        const user = await User.findById(userId);
+        const user = await UserModel.findById(userId);
         return await user.updateDetails(userUpdated);
     } catch (err) {
         switch (err.code) {
@@ -100,7 +95,7 @@ async function updateUserProfile(userId, userUpdated) {
 
 async function deleteUser(userId) {
     try {
-        return await User.delete(userId);
+        return await UserModel.delete(userId);
     } catch (err) {
         throw err;
     }

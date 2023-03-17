@@ -1,4 +1,8 @@
 export default {
+	hasUserProgressionEditionCurriculumReference: (state) => {
+		return state.editionUserProgression.curriculumReference !== null;
+	},
+
 	userProgressionEditionCurriculumReference: (state) => {
 		return state.editionUserProgression.curriculumReference;
 	},

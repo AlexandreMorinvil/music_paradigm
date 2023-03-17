@@ -5,10 +5,10 @@ export default {
 	createUser({ commit, dispatch }, userToCreate) {
 		commit('indicateIsCreatingUser');
 		return usersApi
-			.create(userToCreate)
+			.createUser(userToCreate)
 			.then(
-				(selectedUserDetails) => {
-					const { user } = selectedUserDetails;
+				(response) => {
+					const { user } = response;
 					dispatch('setSelectedUser', user);
 					dispatch('alert/setSuccessAlert', 'User creation sucessful', { root: true });
 					dispatch('fetchUserSummariesList');
@@ -22,13 +22,13 @@ export default {
 			});
 	},
 
-	createUserWithCurriculum({ commit, dispatch }, userToCreate) {
-		commit('indicateIsCreatingUser');
+	createUserWithCurriculum({ commit, dispatch }, { user, curriculumId, assignedParameters }) {
+		commit('indicateIsCreatingUserWithCurriculum');
 		return usersApi
-			.create(userToCreate)
+			.createUserWithCurriculum({ user, curriculumId, assignedParameters })
 			.then(
-				(selectedUserDetails) => {
-					const { user, ...progressionDetails } = selectedUserDetails; // Update the parameters
+				(response) => {
+					const { user, ...progressionDetails } = response;
 					dispatch('setSelectedUser', user);
 					dispatch('progressions/setSelectedUserProgression', progressionDetails);
 
@@ -43,14 +43,14 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateIsCreatingUserEnd');
+				commit('indicateIsCreatingUserWithCurriculumEnd');
 			});
 	},
 
 	deleteUser({ commit, dispatch }, userId) {
 		commit('indicateIsDeletingUser');
 		return usersApi
-			.delete(userId)
+			.deleteUser(userId)
 			.then(
 				() => {
 					dispatch('unsetSelectedUser');
@@ -122,7 +122,7 @@ export default {
 	updateUser({ commit, dispatch }, { id, user }) {
 		commit('indicateIsUpdatingUser');
 		return usersApi
-			.update(id, user)
+			.updateUserProfile(id, user)
 			.then(
 				(updatedUser) => {
 					dispatch('setSelectedUser', updatedUser);
