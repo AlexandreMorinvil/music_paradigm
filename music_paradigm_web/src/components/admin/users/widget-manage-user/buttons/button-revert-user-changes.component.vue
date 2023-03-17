@@ -13,11 +13,11 @@ export default {
         TemplateButtonComponent,
     },
     computed: {
-        ...mapGetters('managementUsers', ['hasUserEditionChange', 'isExecutingUserCommand']),
+        ...mapGetters('managementUsers', ['hasEditedUser', 'isExecutingUserCommand']),
         ...mapGetters('managementUsers/selection', ['hasSelectedUser']),
         isButtonActive() {
             if (this.isExecutingUserCommand) return false;
-            return this.hasUserEditionChange;
+            return this.hasEditedUser;
         },
         text() {
             return this.hasSelectedUser ? 'Revert Changes' : 'Clear';

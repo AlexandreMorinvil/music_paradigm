@@ -1,4 +1,27 @@
+import _isEqual from 'lodash/isEqual';
+
 export default {
+	hasEditedUserProgressionCurriculumReference: (_, getters) => {
+		return getters['selection/userProgressionSelectionCurriculumReference'] !==
+			getters['edition/userProgressionEditionCurriculumReference'];
+	},
+
+	hasEditedUserProgressionAssignedParameters: (_, getters) => {
+		return !_isEqual(
+			getters['selection/userProgressionSelectionAssignedParameters'],
+			getters['edition/userProgressionEditionAssignedParameters'],
+		);
+	},
+
+	isAssigningCurriculum: (state) => {
+		return state.status.isAssigningCurriculum;
+	},
+
+	isExecutingUserProgressionCommand: (_, getters) => {
+		return getters.isAssigningCurriculum;
+	},
+
+	// TODO: All the getters below need to be adjusted/deleted once the code will have been adjusted
 	// Progression parameters
 	progressionSelectedId: (state) => {
 		return state.selectedUserProgression ? state.selectedUserProgression._id : null;

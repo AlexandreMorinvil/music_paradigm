@@ -9,7 +9,7 @@ export default {
 		return Boolean(state.selectedUser.curriculum);
 	},
 
-	hasUserEditionChange: (_, getters) => {
+	hasEditedUser: (_, getters) => {
 		return !_isEqual(
 			getters['selection/userSelectionUser'],
 			getters['edition/userEditionUser'],
@@ -25,7 +25,10 @@ export default {
 	},
 
 	isExecutingUserCommand: (_, getters) => {
-		return getters.isCreatingUser || getters.isDeletingUser || getters.isUpdatingUser;
+		return getters['progressions/isExecutingUserProgressionCommand'] ||
+			getters.isCreatingUser ||
+			getters.isDeletingUser ||
+			getters.isUpdatingUser;
 	},
 
 	isFetchingUsersSummaryList: (state) => {

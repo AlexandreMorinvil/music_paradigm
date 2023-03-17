@@ -13,16 +13,22 @@ export default {
         TemplateButtonComponent,
     },
     computed: {
-        ...mapGetters('managementUsers', ['hasUserEditionChange', 'isExecutingUserCommand', 'isUpdatingUser']),
+        ...mapGetters('managementUsers', ['isExecutingUserCommand']),
+        ...mapGetters('managementUsers/progressions', [
+            'hasEditedUserProgressionCurriculumReference', 
+            'isAssigningCurriculum',
+        ]),
         ...mapGetters('managementUsers/progressions/edition', [
-            'userProgressionEditionCurriculumReference'
+            'userProgressionEditionCurriculumReference',
+            'userProgressionEditionAssignedParameters',
         ]),
         ...mapGetters('managementUsers/selection', ['userSelectionId', 'hasSelectedUser']),
         isButtonActive() {
-            return this.hasSelectedUser && true;
+            if (!this.isAssigningCurriculum && this.isExecutingUserCommand) return false; // Has other user command running
+            return this.hasSelectedUser && this.hasEditedUserProgressionCurriculumReference;
         },
         isButtonLoading() {
-            return false;
+            return this.isAssigningCurriculum;
         },
     },
     methods: {
@@ -30,13 +36,12 @@ export default {
         handleButtonPress() {
             if (!this.isButtonActive) return;
             const answer = window.confirm('Are your sure you want to edit the curriculum of this user?');
-            if (answer) {
+            if (answer) {}
                 this.assignCurriculum({
                     userId: this.userSelectionId,
                     curriculumId: this.userProgressionEditionCurriculumReference,
                     assignedParameters: this.userProgressionEditionAssignedParameters,
                 });
-            }
         },
     }
 };
