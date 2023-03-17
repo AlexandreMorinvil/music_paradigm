@@ -18,7 +18,7 @@ export default {
 	props: {
 		expectedValue: {
 			type: null,
-			default: null,
+			default: undefined,
 		},
 		getDisplayedValueFromElement: {
 			type: Function,
@@ -61,7 +61,7 @@ export default {
 	},
 	computed: {
 		hasExpectedValue() {
-			return this.expectedValue !== null;
+			return this.expectedValue !== undefined;
 		},
 		isEdited() {
 			return this.hasExpectedValue && this.value !== this.expectedValue;

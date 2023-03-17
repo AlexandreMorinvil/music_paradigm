@@ -2,7 +2,7 @@ import { Progression } from '@/modules/progressions'
 
 export default {
 	editUserProgressionEditionCurriculumReference(state, curriculumId) {
-		state.editionUserProgression.curriculumReference = curriculumId;
+		state.editionUserProgression.curriculumReference = curriculumId || null;
 	},
 
 	setUserProgressionEdition(state, progression) {

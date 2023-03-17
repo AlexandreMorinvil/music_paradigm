@@ -3,6 +3,7 @@
         <TemplateFieldLabelComponent text="Curriculum" />
         <TemplateFieldSelectComponent 
             :value="userProgressionEditionCurriculumReference"
+            :expectedValue="userProgressionSelectionCurriculumReference"
             v-on:edit="editUserProgressionEditionCurriculumReference"
             isEmptyAccepted
             :getDisplayedValueFromElement="(curriculumSummary) => curriculumSummary.title"
@@ -28,10 +29,10 @@ export default {
     computed: {
         ...mapGetters('managementCurriculums', ['curriculumSummariesList']),
         ...mapGetters('managementUsers/progressions/edition', [
-        'userProgressionEditionCurriculumReference'
+            'userProgressionEditionCurriculumReference'
         ]),
         ...mapGetters('managementUsers/progressions/selection', [
-        'userProgressionSelectionCurriculumReference'
+            'userProgressionSelectionCurriculumReference'
         ]),
     },
     methods: {
