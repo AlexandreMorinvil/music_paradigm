@@ -13,16 +13,16 @@ function assignAdjustments(userId, adjustments) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(adjustments),
 	};
-	return fetch(url.users('assign-adjustments/' + userId), requestOptions).then(defaultResponseHandler);
+	return fetch(url.progressions('assign-adjustments/' + userId), requestOptions).then(defaultResponseHandler);
 }
 
-function assignCurriculum(userId, curriculumInformation) {
+function assignCurriculum({ userId, curriculumId, assignedParameters }) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(curriculumInformation),
+		body: JSON.stringify({ userId, curriculumId, assignedParameters }),
 	};
-	return fetch(url.users('assign-curriculum/' + userId), requestOptions).then(defaultResponseHandler);
+	return fetch(url.progressions('assign-curriculum/'), requestOptions).then(defaultResponseHandler);
 }
 
 function assignParameters(userId, parameters) {
@@ -31,5 +31,5 @@ function assignParameters(userId, parameters) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify(parameters),
 	};
-	return fetch(url.users('assign-parameters/' + userId), requestOptions).then(defaultResponseHandler);
+	return fetch(url.progressions('assign-parameters/' + userId), requestOptions).then(defaultResponseHandler);
 }

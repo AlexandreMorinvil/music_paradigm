@@ -15,7 +15,7 @@ router.get('/get-by-id/:id',                    jwtAuthorize(role.admin), getByI
 router.post('/create',                          jwtAuthorize(role.admin), createUser);
 router.post('/create-with-curriculum',          jwtAuthorize(role.admin), createUserWithCurriculum);
 
-router.put('/:id',                              jwtAuthorize(role.admin), update);
+router.put('/:id',                              jwtAuthorize(role.admin), updateUserProfile);
 
 
 module.exports = router;
@@ -75,7 +75,7 @@ function createUserWithCurriculum(req, res, next) {
         .finally(() => next());
 }
 
-function update(req, res, next) {
+function updateUserProfile(req, res, next) {
 
     // Parameters
     const userId = req.params.id;

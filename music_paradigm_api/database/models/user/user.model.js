@@ -35,6 +35,12 @@ schema.statics.delete = async function (userId) {
     return await user.remove();
 };
 
+schema.statics.deleteUserLastProgression = async function (userId) {
+    const user = await this.findOne({ _id: userId });
+    if (user) return user.deleteLastProgression();
+    else return null;
+}
+
 schema.statics.getExistingUserGroupsList = async function () {
     const groupsList = await this.distinct('group');
     return groupsList;
@@ -131,7 +137,13 @@ schema.statics.isAdmin = async function (userId) {
 };
 
 // Instance methods
-schema.methods.getLastProgression = async function () {
+schema.methods.deleteLastProgression = async function () {
+    const user = await this.findOne({ _id: userId });
+    if (user) return user.deleteLastProgression();
+    else return null;
+}
+
+schema.methods.getUserLastProgression = async function () {
     const user = await model
         .findById(this._id, { progressions: { $slice: -1 } })
         .populate({ path: 'progressions' });

@@ -2,27 +2,6 @@ import { usersApi } from '@/api';
 
 export default {
 
-	assignCurriculum({ commit, dispatch }, { userId, curriculumParameters }) {
-		commit('indicateAssignCurriculumRequest');
-		return usersApi
-			.assignCurriculum(userId, curriculumParameters)
-			.then(
-				(updatedUserDetails) => {
-					const { user, ...progressionDetails } = updatedUserDetails;
-					commit('setSelectedUser', user); // TODO : Delete once the code will have been updated
-					dispatch('progressions/setSelectedUserProgression', progressionDetails);
-					dispatch('alert/setSuccessAlert', 'Curriculum assignation sucessful', { root: true });
-					dispatch('fetchUserSummariesList');
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', `Curriculum assignation failed : ${error.message}`, { root: true });
-				},
-			)
-			.finally(() => {
-				commit('indicateAssignCurriculumRequestEnd');
-			});
-	},
-
 	createUser({ commit, dispatch }, userToCreate) {
 		commit('indicateIsCreatingUser');
 		return usersApi

@@ -2,7 +2,6 @@ import { User } from "@/modules/users";
 
 export default {
 	status: {
-		isAssigningCurriculum: false,
 		isCreatingUser: false,
 		isDeletingUser: false,
 		isFetchingUsersSummaryList: false,

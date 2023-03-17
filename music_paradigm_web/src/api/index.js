@@ -4,6 +4,7 @@ import { experimentMarkersApi } from './experiment-markers.api';
 import { experimentsApi } from './experiments.api';
 import { logApi } from './log.api';
 import { logsApi } from './logs.api';
+import { progressionsApi } from './progression.api';
 import { resourceApi } from './resource.api';
 import { sessionApi } from './session.api';
 import { usersApi } from './user.api';
@@ -15,6 +16,7 @@ export {
     curriculumsApi,
     logApi,
     logsApi,
+    progressionsApi,
     usersApi,
     sessionApi,
     resourceApi,

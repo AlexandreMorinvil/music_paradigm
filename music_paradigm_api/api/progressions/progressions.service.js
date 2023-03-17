@@ -1,4 +1,7 @@
-const ProgressionsModel = require('database/db').Progression;
+const ProgressionModel = require('database/db').Progression;
+const UserModel = require('database/db').User;
+
+const progressionSummaryService = require('modules/progressions/progressions-summary.service');
 
 module.exports = {
     assignAdjustments,
@@ -21,12 +24,14 @@ async function assignAdjustments(userId, assignedAdjustments) {
 
 async function assignCurriculum(userId, curriculumId, assignedParameters) {
     try {
-        const user = await User.findById(userId);
-        const lastProgression = await userProgressionService.initializeProgression(user, curriculumId, assignedParameters);
-        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
+        // Assign new progression to user
+        const newProgression = await ProgressionModel.createProgression(userId, curriculumId, assignedParameters);
+        ProgressionModel.deleteNotStartedProgressionsOfUser(userId);
+        // TODO: Create a function that works without the ID
+        // TODO: Rename the "ProgressionSummary" to another name, not to be confused with the real summaries used for lists
+        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForProgression(newProgression); 
         return {
-            user: user,
-            progression: lastProgression,
+            progression: newProgression,
             progressionSummary: progressionSummary,
         };
     } catch (err) {

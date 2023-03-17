@@ -5,9 +5,15 @@ const Progression = require('database/db').Progression;
 const ExperimentMarker = require('database/db').ExperimentMarker;
 
 module.exports = {
+    generateProgressionSummaryForProgression,
     generateProgressionSummaryForProgressionId,
     generateProgressionSummaryForUserId,
 };
+
+async function generateProgressionSummaryForProgression(progressionDocument) {
+    const curriculumDocument = await progressionDocument.getCurriculum();
+    return generateProgressionSummary(curriculumDocument, progressionDocument);
+}
 
 async function generateProgressionSummaryForProgressionId(progressionId) {
     let { curriculum, progression } = await Progression.getWithCurriculumById(progressionId);

@@ -14,24 +14,27 @@ export default {
     },
     computed: {
         ...mapGetters('managementUsers', ['hasUserEditionChange', 'isExecutingUserCommand', 'isUpdatingUser']),
-        ...mapGetters('managementUsers/edition', ['userEditionUser']),
+        ...mapGetters('managementUsers/progressions/edition', [
+            'userProgressionEditionCurriculumReference'
+        ]),
         ...mapGetters('managementUsers/selection', ['userSelectionId', 'hasSelectedUser']),
         isButtonActive() {
-            return true; 
+            return this.hasSelectedUser && true;
         },
         isButtonLoading() {
             return false;
         },
     },
     methods: {
-        ...mapActions('managementUsers', ['updateUser']),
+        ...mapActions('managementUsers/progressions', ['assignCurriculum']),
         handleButtonPress() {
             if (!this.isButtonActive) return;
             const answer = window.confirm('Are your sure you want to edit the curriculum of this user?');
             if (answer) {
-                this.updateUser({
-                    id: this.userSelectionId,
-                    user: this.userEditionUser,
+                this.assignCurriculum({
+                    userId: this.userSelectionId,
+                    curriculumId: this.userProgressionEditionCurriculumReference,
+                    assignedParameters: this.userProgressionEditionAssignedParameters,
                 });
             }
         },

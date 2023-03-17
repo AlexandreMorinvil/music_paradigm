@@ -61,7 +61,7 @@ async function getAll() {
 async function getById(userId) {
     try {
         const user = await User.findById(userId);
-        const lastProgression = await user.getLastProgression();
+        const lastProgression = await user.getUserLastProgression();
         const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
         return {
             user: user,

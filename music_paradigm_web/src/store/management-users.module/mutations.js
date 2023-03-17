@@ -2,14 +2,6 @@ import { User } from "@/modules/users";
 
 export default {
 	// Status Updates
-	indicateAssignCurriculumRequest(state) {
-		state.status.isAssigningCurriculum = true;
-	},
-
-	indicateAssignCurriculumRequestEnd(state) {
-		state.status.isAssigningCurriculum = false;
-	},
-
 	indicateIsCreatingUser(state) {
 		state.status.isCreatingUser = true;
 	},

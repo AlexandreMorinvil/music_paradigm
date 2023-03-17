@@ -2,6 +2,14 @@ import { defaultState } from '@/store-helper/users.module-helper/progressions.mo
 
 export default {
 	// Status Updates
+	indicateAssigningCurriculum(state) {
+		state.status.isAssigningCurriculum = true;
+	},
+
+	indicateAssigningCurriculumEnd(state) {
+		state.status.isAssigningCurriculum = false;
+	},
+
 	indicateUpdateParametersRequest(state) {
 		state.status.isUpdatingParameters = true;
 	},

@@ -1,6 +1,26 @@
-import { experimentMarkersApi, usersApi } from '@/api';
+import { experimentMarkersApi, usersApi, progressionsApi } from '@/api';
 
 export default {
+
+	assignCurriculum({ commit, dispatch }, { userId, curriculumId, assignedParameters }) {
+		commit('indicateAssigningCurriculum');
+		return progressionsApi
+			.assignCurriculum({ userId, curriculumId, assignedParameters })
+			.then(
+				(progressionDetails) => {
+					dispatch('setSelectedUserProgression', progressionDetails);
+					dispatch('alert/setSuccessAlert', 'Curriculum assignation sucessful', { root: true });
+					dispatch('managementUsers/fetchUserSummariesList', null, { root: true });
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `Curriculum assignation failed : ${error.message}`, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateAssigningCurriculumEnd');
+			});
+	},
+
 	setSelectedUserProgression({ commit, dispatch }, progressionDetails) {
 		dispatch('selection/setUserProgressionSelection', progressionDetails.progression);
 		dispatch('edition/setUserProgressionEdition', progressionDetails.progression);

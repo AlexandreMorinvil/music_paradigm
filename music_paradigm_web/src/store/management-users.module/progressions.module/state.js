@@ -2,6 +2,7 @@ import { defaultState } from '@/store-helper/users.module-helper/progressions.mo
 
 export default {
 	status: {
+		isAssigningCurriculum: false,
 		isUpdatingParameters: false,
 		isUpdatingAdjustments: false,
 		isResetingProgression: false,
