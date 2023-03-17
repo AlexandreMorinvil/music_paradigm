@@ -1,9 +1,11 @@
-﻿const db = require('database/db');
+﻿const User = require('database/db').User;
+
 const jwt = require('jwt/jwt');
-const progressionSummaryService = require('modules/progressions/progressions-summary.service');
 const progressionValidatorService = require('modules/progressions/progressions-validator.service');
 const sessionManager = require('sessions/session.manager');
-const User = db.User;
+const {
+    generateProgressionSessionsStatusForUserId,
+} = require('modules/progressions/progression-sessions-status');
 
 module.exports = {
     authenticate,
@@ -30,7 +32,7 @@ async function authenticate({ username, password }) {
 
 async function getProgressionSummary(userId) {
     try {
-        return await progressionSummaryService.generateProgressionSummaryForUserId(userId);
+        return await generateProgressionSessionsStatusForUserId(userId);
     } catch (err) {
         throw err;
     }
@@ -38,9 +40,9 @@ async function getProgressionSummary(userId) {
 
 async function getTodayExperiment(userId) {
     try {
-        const { dueExperiment } = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
+        const { dueExperiment } = await generateProgressionSessionsStatusForUserId(userId);
         const { associativeId, associativeIdOrdinalNumber } = dueExperiment;
-        if (!associativeId) throw new Error('There is no due experiment');
+        if (!associativeId) throw new Error('There is no due session');
 
         return await sessionManager.getSessionInformation(userId, associativeId, associativeIdOrdinalNumber);
     } catch (err) {
@@ -50,9 +52,9 @@ async function getTodayExperiment(userId) {
 
 async function getSpecificExperiment(userId, associativeId, associativeIdOrdinalNumber) {
     try {
-        const { history } = await progressionSummaryService.generateProgressionSummaryForUserId(userId, associativeId, associativeIdOrdinalNumber);
+        const { history } = await generateProgressionSessionsStatusForUserId(userId, associativeId, associativeIdOrdinalNumber);
         const isExperimentAvailable = progressionValidatorService.isExperimentAvailable(history, associativeId, associativeIdOrdinalNumber)
-        if (!isExperimentAvailable) throw new Error('There experiment requested is not available');
+        if (!isExperimentAvailable) throw new Error('The session requested is not available');
 
         return await sessionManager.getSessionInformation(userId, associativeId, associativeIdOrdinalNumber);
     } catch (err) {

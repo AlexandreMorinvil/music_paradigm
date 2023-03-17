@@ -1,7 +1,9 @@
 const ProgressionModel = require('database/db').Progression;
-const UserModel = require('database/db').User;
 
-const progressionSummaryService = require('modules/progressions/progressions-summary.service');
+const {
+    generateProgressionSessionsStatusForProgression,
+    generateProgressionSessionsStatusForProgressionId,
+} = require('modules/progressions/progression-sessions-status');
 
 module.exports = {
     assignAdjustments,
@@ -9,10 +11,10 @@ module.exports = {
     assignParameters,
 };
 
-async function assignAdjustments(userId, assignedAdjustments) {
+async function assignAdjustments(progressionId, assignedAdjustments) {
     try {
         const lastProgression = await userProgressionService.updateAdjustments(userId, assignedAdjustments);
-        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
+        const progressionSummary = await generateProgressionSessionsStatusForProgressionId(progressionId);
         return {
             progression: lastProgression,
             progressionSummary: progressionSummary,
@@ -24,12 +26,10 @@ async function assignAdjustments(userId, assignedAdjustments) {
 
 async function assignCurriculum(userId, curriculumId, assignedParameters) {
     try {
-        // Assign new progression to user
         ProgressionModel.deleteNotStartedProgressionsOfUser(userId);
         const newProgression = await ProgressionModel.createProgression(userId, curriculumId, assignedParameters);
-        // TODO: Create a function that works without the ID
-        // TODO: Rename the "ProgressionSummary" to another name, not to be confused with the real summaries used for lists
-        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForProgression(newProgression); 
+        const progressionSummary = 
+            await generateProgressionSessionsStatusForProgression(newProgression); 
         return {
             progression: newProgression,
             progressionSummary: progressionSummary,
@@ -42,7 +42,7 @@ async function assignCurriculum(userId, curriculumId, assignedParameters) {
 async function assignParameters(userId, assignedParameters) {
     try {
         const lastProgression = await userProgressionService.updateParameters(userId, assignedParameters);
-        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
+        const progressionSummary = await generateProgressionSessionsStatusForProgressionId(progressionId);
         return {
             progression: lastProgression,
             progressionSummary: progressionSummary,

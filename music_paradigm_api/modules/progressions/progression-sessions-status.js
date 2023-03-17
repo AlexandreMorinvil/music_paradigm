@@ -2,33 +2,34 @@ const timeHandler = require('_helpers/time-handler')
 const ExperimentMarker = require('database/db').ExperimentMarker;
 const Progression = require('database/db').Progression;
 const User = require('database/db').User;
+
 const { 
     generateProgressionToCurriculumAssociation,
     indicateExperimentMakersInProgressionAssociation 
 } = require('./progression-curriculum-association');
 
 module.exports = {
-    generateProgressionSummaryForProgression,
-    generateProgressionSummaryForProgressionId,
-    generateProgressionSummaryForUserId,
+    generateProgressionSessionsStatusForProgression,
+    generateProgressionSessionsStatusForProgressionId,
+    generateProgressionSessionsStatusForUserId,
 };
 
-async function generateProgressionSummaryForProgression(progressionDocument) {
+async function generateProgressionSessionsStatusForProgression(progressionDocument) {
     const curriculumDocument = await progressionDocument.getCurriculum();
-    return generateProgressionSummary(curriculumDocument, progressionDocument);
+    return generateProgressionSessionsStatus(curriculumDocument, progressionDocument);
 }
 
-async function generateProgressionSummaryForProgressionId(progressionId) {
+async function generateProgressionSessionsStatusForProgressionId(progressionId) {
     let { curriculum, progression } = await Progression.getProgressionAndCurriculumById(progressionId);
-    return generateProgressionSummary(curriculum, progression);
+    return generateProgressionSessionsStatus(curriculum, progression);
 }
 
-async function generateProgressionSummaryForUserId(userId) {
+async function generateProgressionSessionsStatusForUserId(userId) {
     let { curriculum, progression } = await User.getCurriculumAndProgressionObject(userId);
-    return generateProgressionSummary(curriculum, progression);
+    return generateProgressionSessionsStatus(curriculum, progression);
 }
 
-async function generateProgressionSummary(curriculum, progression) {
+async function generateProgressionSessionsStatus(curriculum, progression) {
     let experimentMakers = [];
 
     // Verify parameters

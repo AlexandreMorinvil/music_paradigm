@@ -1,5 +1,7 @@
 ﻿const ExperimentMarker = require('database/db').ExperimentMarker;
-const { generateProgressionSummaryForProgressionId } = require('modules/progressions/progressions-summary.service');
+const { 
+    generateProgressionSessionsStatusForProgressionId 
+} = require('modules/progressions/progression-sessions-status');
 
 module.exports = {
     resetTimeIndicated,
@@ -9,7 +11,7 @@ module.exports = {
 async function resetTimeIndicated(progressionId, associativeId) {
     try {
         await ExperimentMarker.forgetTimeLeft(progressionId, associativeId);
-        const progressionSummary = await generateProgressionSummaryForProgressionId(progressionId);
+        const progressionSummary = await generateProgressionSessionsStatusForProgressionId(progressionId);
         return progressionSummary;
     } catch (err) {
         throw err;
@@ -19,7 +21,7 @@ async function resetTimeIndicated(progressionId, associativeId) {
 async function _delete(progressionId, associativeId) {
     try {
         await ExperimentMarker.deleteMarker(progressionId, associativeId);
-        const progressionSummary = await generateProgressionSummaryForProgressionId(progressionId);
+        const progressionSummary = await generateProgressionSessionsStatusForProgressionId(progressionId);
         return progressionSummary;
     } catch (err) {
         throw err;

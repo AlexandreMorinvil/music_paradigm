@@ -1,7 +1,7 @@
 ﻿const ProgressionModel = require('database/db').Progression;
 const User = require('database/db').User;
 
-const progressionSummaryService = require('modules/progressions/progressions-summary.service');
+const { generateProgressionSessionsStatusForUserId } = require('modules/progressions/progression-sessions-status');
 const { generateUserSummariesList } = require('modules/users/user-summary-generator');
 
 // Exports
@@ -36,7 +36,7 @@ async function createUserWithCurriculum(user, assignedParameters) {
         const userCreated = await User.create(user);
         // TODO: Improve the handling of this function to not require a "curriculumId" as a separate parameter.
         const progressionInitilized = await userProgressionService.initializeProgression(userCreated, user.curriculum, assignedParameters);
-        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userCreated._id);
+        const progressionSummary = await generateProgressionSessionsStatusForUserId(userCreated._id);
         return {
             user: userCreated,
             progression: progressionInitilized,
@@ -64,7 +64,7 @@ async function getById(userId) {
     try {
         const user = await User.findById(userId);
         const lastProgression = await ProgressionModel.getLastProgressionOfUser(userId);
-        const progressionSummary = await progressionSummaryService.generateProgressionSummaryForUserId(userId);
+        const progressionSummary = await generateProgressionSessionsStatusForUserId(userId);
         return {
             user: user,
             progression: lastProgression,

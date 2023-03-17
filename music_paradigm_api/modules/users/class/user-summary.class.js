@@ -3,7 +3,7 @@ module.exports  = class UserSummary {
         // Deep copy to avoid oject and array shallow copies.
         const parameterCopy = JSON.parse(JSON.stringify(parameter));
 
-        // ID
+        // Id
         this._id = parameterCopy._id || null;
 
         // User information
