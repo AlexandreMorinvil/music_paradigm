@@ -3,7 +3,7 @@
 		'edited-text': isEdited,
 		'placeholder-option': !isEdited && value === null
 	}" :value="value" v-on:change="(event) => edit(event.target.value)" v-bind="selectAttributes">
-		<option v-if="isEmptyAccepted" class='placeholder-option' :value="null"> {{ placeholder }} </option>
+		<option v-if="isEmptyAccepted" class='placeholder-option' :value="placeholderValue"> {{ placeholder }} </option>
 		<option v-for="(element, index) in options" :key="index" :value="getOptionValueFromElement(element)" class='valid-option'>
 			{{ getDisplayedValueFromElement(element) }}
 		</option>
@@ -22,15 +22,11 @@ export default {
 		},
 		getDisplayedValueFromElement: {
 			type: Function,
-			default() {
-				return (value) => value;
-			}
+			default: (value) => value,
 		},
 		getOptionValueFromElement: {
 			type: Function,
-			default() {
-				return (value) => value;
-			}
+			default: (value) => value,
 		},
 		isEmptyAccepted: {
 			type: Boolean,
@@ -45,6 +41,10 @@ export default {
 		placeholder: {
 			type: String,
 			default: '',
+		},
+		placeholderValue: {
+			type: String,
+			default: null,
 		},
 		selectAttributes: {
 			type: Object,

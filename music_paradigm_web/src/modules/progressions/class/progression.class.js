@@ -9,8 +9,12 @@ export class Progression {
         this.startTime = progressionToParse.startTime || null;
         this.adjustmentStartTimeInDays = progressionToParse.adjustmentStartTimeInDays || 0;
         this.lastProgressionDate = progressionToParse.lastProgressionDate || null;
-        this.assignedParameters = progressionToParse.assignedParameters || null;
+        this.assignedParameters = progressionToParse.assignedParameters || {};
         this.experiments = progressionToParse.experiments;
+    }
+
+    setAssignedParameterValue(parameterName, value) {
+        return this.assignedParameters[parameterName] = value;
     }
 
     toObject() {

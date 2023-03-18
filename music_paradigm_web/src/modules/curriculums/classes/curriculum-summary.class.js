@@ -20,8 +20,23 @@ export class CurriculumSummary {
         this.parameterAcceptsFreeTextValuesMap = curriculumSummaryCopy.parameterAcceptsFreeTextValuesMap || {};
     }
 
-    toObject() {
-        const { ...object } = this;
-        return object;
+    get parametersList() {
+        const parametersList = [];
+        for (const parameterName in this.parameterOptionValuesListMap)
+            parametersList.push({
+                name: parameterName,
+                optionValuesList: this.parameterOptionValuesListMap[parameterName],
+                defaultValue: this.parameterDefaultValueMap[parameterName],
+                acceptsFreeTextValues: this.parameterAcceptsFreeTextValuesMap[parameterName],
+            })
+        return parametersList;
+    }
+
+    getBlankParametersAssignation() {
+        const unsetParametersAssignation = {};
+        this.parametersList.forEach((parameter) => {
+            unsetParametersAssignation[parameter.name] = null;
+        });
+        return unsetParametersAssignation;
     }
 }

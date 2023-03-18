@@ -1,6 +1,7 @@
 export default {	
 	editUserProgressionEditionCurriculumReference({ commit }, curriculumId) {
 		commit('editUserProgressionEditionCurriculumReference', curriculumId);
+		commit('clearUserProgressionEditionAssignedParameters');
 	},
 
 	setUserProgressionEdition({ commit }, progression) {

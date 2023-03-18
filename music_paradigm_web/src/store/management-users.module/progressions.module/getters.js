@@ -1,4 +1,6 @@
 import _isEqual from 'lodash/isEqual';
+import _isNil from 'lodash/isNil';
+import _omitBy from 'lodash/omitBy';
 
 export default {
 	hasEditedUserProgressionCurriculumReference: (_, getters) => {
@@ -7,10 +9,9 @@ export default {
 	},
 
 	hasEditedUserProgressionAssignedParameters: (_, getters) => {
-		return !_isEqual(
-			getters['selection/userProgressionSelectionAssignedParameters'],
-			getters['edition/userProgressionEditionAssignedParameters'],
-		);
+		const selection = _omitBy(getters['selection/userProgressionSelectionAssignedParameters'], _isNil);
+		const edition = _omitBy(getters['edition/userProgressionEditionAssignedParameters'], _isNil);
+		return !_isEqual(edition, selection);
 	},
 
 	isAssigningCurriculum: (state) => {

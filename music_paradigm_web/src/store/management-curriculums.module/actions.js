@@ -5,7 +5,7 @@ export default {
 	createCurriculum({ commit, dispatch }, curriculum) {
 		commit('indicateCreateRequest');
 		return curriculumsApi
-			.create(curriculum)
+			.createCurriculum(curriculum)
 			.then(
 				(createdCurriculum) => {
 					dispatch('setSelectedCurriculum', createdCurriculum);
@@ -23,10 +23,10 @@ export default {
 			});
 	},
 
-	deleteCurriculum({ commit, dispatch }, id) {
+	deleteCurriculum({ commit, dispatch }, curriculumId) {
 		commit('indicateDeleteRequest');
 		return curriculumsApi
-			.delete(id)
+			.deleteCurriculum(curriculumId)
 			.then(
 				() => {
 					dispatch('unsetSelectedCurriculum');
@@ -45,7 +45,7 @@ export default {
 	fetchCurriculumSummariesList({ commit, dispatch }) {
 		commit('indicateFetchingCurriculumList');
 		return curriculumsApi
-			.getListAllHeaders()
+			.getCurriculumSummariesList()
 			.then(
 				(curriculumSummariesList) => {
 					commit('setCurriculumSummariesList', curriculumSummariesList);
@@ -59,8 +59,8 @@ export default {
 			});
 	},
 
-	selectCurriculum({ dispatch }, id) {
-		return curriculumsApi.getById(id).then(
+	selectCurriculum({ dispatch }, curriculumId) {
+		return curriculumsApi.getCurriculumById(curriculumId).then(
 			(curriculum) => {
 				dispatch('setSelectedCurriculum', curriculum);
 			},
@@ -78,7 +78,7 @@ export default {
 	updateCurriculum({ commit, dispatch }, { id, curriculum }) {
 		commit('indicateUpdateRequest');
 		return curriculumsApi
-			.update(id, curriculum)
+			.updateCurriculum(id, curriculum)
 			.then(
 				(updatedCurriculum) => {
 					dispatch('setSelectedCurriculum', updatedCurriculum);

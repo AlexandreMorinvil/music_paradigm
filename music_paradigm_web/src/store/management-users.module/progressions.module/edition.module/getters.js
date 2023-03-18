@@ -1,17 +1,28 @@
 export default {
-	hasUserProgressionEditionCurriculumReference: (state) => {
-		return state.editionUserProgression.curriculumReference !== null;
+	hasUserProgressionEditionCurriculumReference: (_, getters) => {
+		return Boolean(getters.userProgressionEditionCurriculumReference);
+	},
+
+	userProgressionEditionAssignedParameters: (state) => {
+		return state.editionUserProgression.assignedParameters; 
+	},
+
+	userProgressionEditionCurriculumParameters: (_, getters) => {
+		return getters.userProgressionEditionCurriculumSummary ? 
+			getters.userProgressionEditionCurriculumSummary.parametersList : [];
 	},
 
 	userProgressionEditionCurriculumReference: (state) => {
 		return state.editionUserProgression.curriculumReference;
 	},
 
-	userProgressionEditionAdjustmentStartTimeInDays: (state) => {
-		return state.editionUserProgression.adjustmentStartTimeInDays;
+	userProgressionEditionCurriculumSummary: (_, getters, __, rootGetters) => {
+		const curriculumId = getters.userProgressionEditionCurriculumReference;
+		const curriculumSummariesManager = rootGetters['managementCurriculums/curriculumSummariesManager'];
+		return curriculumSummariesManager.getCurriculumSummaryById(curriculumId);
 	},
 
-	userProgressionEditionAssignedParameters: (state) => {
-		return state.editionUserProgression.assignedParameters;
+	userProgressionEditionAdjustmentStartTimeInDays: (state) => {
+		return state.editionUserProgression.adjustmentStartTimeInDays;
 	},
 };

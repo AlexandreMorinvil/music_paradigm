@@ -1,10 +1,10 @@
 <template>
-    <WidgetSectionContainer title="User Curriculum">
+    <WidgetSectionContainer title="Assigned Curriculum">
         <template v-slot:topRight>
             <!-- <ButtonRevertUserCurriculumChangesComponent class="small"/> -->
         </template>
         <UserCurriculumSubsection />
-        <!-- <UserCurriculumParametersSubsection /> -->
+        <UserCurriculumParametersSubsection />
         <template v-slot:buttons>
             <ButtonCreateUserWithCurriculumComponent v-if="hasCreateUserWithCurriculumButton" />
             <ButtonAssignCurriculumComponent v-if="hasAssignCurriculumButton" />
@@ -18,12 +18,14 @@ import { mapGetters } from 'vuex';
 
 import ButtonAssignCurriculumComponent from './buttons/button-assign-curriculum.component.vue';
 import ButtonCreateUserWithCurriculumComponent from './buttons/button-create-user-with-curriculum.component.vue';
+import UserCurriculumParametersSubsection from './parameters-subsection/user-curriculum-parameters.subsection.vue';
 import UserCurriculumSubsection from './curriculum-subsection/user-curriculum.subsection.vue';
 
 export default {
     components: {
         ButtonAssignCurriculumComponent,
         ButtonCreateUserWithCurriculumComponent,
+        UserCurriculumParametersSubsection,
         UserCurriculumSubsection,
         WidgetSectionContainer,
     },

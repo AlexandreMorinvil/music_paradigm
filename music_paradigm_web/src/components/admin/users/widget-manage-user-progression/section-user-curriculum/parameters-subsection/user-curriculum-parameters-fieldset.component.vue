@@ -1,0 +1,58 @@
+<template>
+    <TemplateFieldsetComponent>
+        <template v-for="parameter in userProgressionEditionCurriculumParameters">
+            <TemplateFieldLabelComponent :text="parameter.name" />
+            <TemplateFieldSelectComponent
+                :value="userProgressionEditionAssignedParameters[parameter.name]"
+                :expectedValue="userProgressionSelectionAssignedParameters[parameter.name]"
+                :isEmptyAccepted="true"
+                v-on:edit="(value) => editAssignedParameterValue(parameter.name, value) " 
+                :options="parameter.optionValuesList"
+                placeholder="TASK DEPENDANT DEFAULT"
+                :selectAttributes="{ name: `parameter-${parameter.name}` }"
+            />
+        </template>
+    </TemplateFieldsetComponent>
+</template>
+
+<script>
+
+import { mapGetters, mapMutations } from 'vuex';
+
+import TemplateFieldsetComponent from '@/components/admin/templates/template-fieldset.component.vue';
+import TemplateFieldLabelComponent from '@/components/admin/templates/template-field-label.component.vue';
+import TemplateFieldSelectComponent from '@/components/admin/templates/template-field-select.component.vue';
+
+export default {
+    components: {
+        TemplateFieldsetComponent,
+        TemplateFieldLabelComponent,
+        TemplateFieldSelectComponent,
+    },
+    computed: {
+        ...mapGetters('managementCurriculums', ['curriculumSummariesList']),
+        ...mapGetters('managementUsers/progressions/edition', [
+            'userProgressionEditionCurriculumParameters', 
+            'userProgressionEditionAssignedParameters'
+        ]),
+        ...mapGetters('managementUsers/progressions/selection', [
+            'userProgressionSelectionAssignedParameters'
+        ]),
+    },
+    methods: {
+        ...mapMutations('managementUsers/progressions/edition', [
+            'editUserProgressionEditionAssignedParameterValue'
+        ]),
+        editAssignedParameterValue(parameterName, value) {
+            this.editUserProgressionEditionAssignedParameterValue({ parameterName, value });
+            // This is used to assure the reactivity of on the "assigned parameters". "assignedParameters" is an
+            // object that maps the parameter name to its value, however, initially, some parameter names may not be
+            // defined on the objects and would only be defined when the object is edited for a first time. Those 
+            // initially not defined parameter names would not update properly unless we force update the component.
+            this.$forceUpdate(); 
+        }
+    }
+};
+</script>
+
+<style scoped></style>

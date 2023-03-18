@@ -1,6 +1,6 @@
 import { CurriculumDayWorkload } from './classes/curriculum-day-workload.class';
 import { CurriculumSummary } from './classes/curriculum-summary.class';
-import { CurriculumSummariesHandler } from './classes/curriculum-summaries-handler.class';
+import { CurriculumSummariesManager } from './classes/curriculum-summaries-manager.class';
 
 import curriculumDailyWorkload from './curriculum-daily-workload';
 import curriculumGenerator from './curriculum-generator';
@@ -9,8 +9,8 @@ import curriculumSessionValidator from './curriculum-session-validator';
 
 export {
     CurriculumDayWorkload,
+    CurriculumSummariesManager,
     CurriculumSummary,
-    CurriculumSummariesHandler,
     curriculumDailyWorkload,
     curriculumGenerator,
     curriculumSessionsEditor,
