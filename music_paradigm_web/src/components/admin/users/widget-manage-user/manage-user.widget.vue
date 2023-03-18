@@ -1,7 +1,7 @@
 <template>
 	<WidgetContentFrameComponent title="Manage User">
 		<div class="widget widget-bg">
-			<UserDetailsSection />
+			<UserProfileSection />
 		</div>
 	</WidgetContentFrameComponent>
 </template>
@@ -10,11 +10,11 @@
 import '@/styles/widget-template.css';
 
 import WidgetContentFrameComponent from '@/components/content-frame/widget-content-frame.component.vue';
-import UserDetailsSection from './section-details/user-details.section.vue';
+import UserProfileSection from './section-profile/user-profile.section.vue';
 
 export default {
 	components: {
-		UserDetailsSection,
+		UserProfileSection,
 		WidgetContentFrameComponent,
 	},
 

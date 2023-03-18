@@ -1,11 +1,11 @@
 <template>
-    <WidgetSectionContainer title="User Details">
+    <WidgetSectionContainer title="User Profile">
         <template v-slot:topRight>
             <ButtonRevertUserChangesComponent class="small" />
             <ButtonDeselectUserComponent class="small" />
         </template>
         
-        <UserDetailsSubsection />
+        <UserDetailsSubsection v-if="hasSelectedUser"/>
         <UserCredentialSubsection />
         <UserAdditionalInformationSubsection />
 
@@ -27,6 +27,7 @@ import ButtonDeleteUserComponent from '../buttons/button-delete-user.component.v
 import ButtonDeselectUserComponent from '../../buttons/button-deselect-user.component.vue';
 import ButtonRevertUserChangesComponent from '../buttons/button-revert-user-changes.component.vue';
 import ButtonUpdateUserComponent from '../buttons/button-update-user.component.vue'
+import { mapGetters } from 'vuex';
 
 export default {
     components: {
@@ -39,6 +40,9 @@ export default {
         UserCredentialSubsection,
         UserDetailsSubsection,
         WidgetSectionContainer,
+    },
+    computed: {
+        ...mapGetters('managementUsers/selection', ['hasSelectedUser']),
     }
 };
 </script>
