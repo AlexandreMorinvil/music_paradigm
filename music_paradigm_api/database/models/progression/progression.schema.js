@@ -48,7 +48,8 @@ const schema = new Schema(
         // Indicate the values for the experiments with parameters
         assignedParameters: {
             type: Object, // { VARIABLE_NAME: IMPOSED_VALUE, ... }
-            default: null
+            default: {},
+            set: setterAssignedParameters
         },
 
         // List of the experiments composing the curriculum
@@ -68,6 +69,8 @@ const schema = new Schema(
     }
 );
 
+schema.set('toJSON', { virtuals: true });
+
 // Virtual properties
 schema.virtual('startTimePassed').get(function () {
     return (new Date()).getTime() - (new Date(this.startTime)).getTime()
@@ -81,6 +84,10 @@ schema.virtual('duration').get(function () {
     return (new Date(this.lastProgressionDate)).getTime() - (new Date(this.startTime)).getTime();
 });
 
-schema.set('toJSON', { virtuals: true });
+// Setters
+function setterAssignedParameters(assignedParameters) {
+    // Remove the parameters which are assigned as "null"
+    return Object.fromEntries(Object.entries(assignedParameters).filter(([_, v]) => v != null));
+}
 
 module.exports = schema;

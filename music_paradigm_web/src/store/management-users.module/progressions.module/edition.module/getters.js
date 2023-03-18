@@ -4,7 +4,7 @@ export default {
 	},
 
 	userProgressionEditionAssignedParameters: (state) => {
-		return state.editionUserProgression.assignedParameters; 
+		return state.editionUserProgression.assignedParameters;
 	},
 
 	userProgressionEditionCurriculumParameters: (_, getters) => {

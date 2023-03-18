@@ -7,13 +7,8 @@ export default {
 		return Boolean(getters.userProgressionSelectionCurriculumReference);
 	},
 
-	userProgressionSelectionAssignedParameters: (state, getters) => {
-		const assignedParameters = state.selectionUserProgression.assignedParameters;
-		const curriculumSummary = getters.userProgressionSelectionCurriculumSummary;
-		if (!curriculumSummary) return assignedParameters;
-		
-		const blankParametersAssingation = curriculumSummary.getBlankParametersAssignation();
-		return Object.assign(blankParametersAssingation, assignedParameters);
+	userProgressionSelectionAssignedParameters: (state) => {
+		return state.selectionUserProgression.assignedParameters;
 	},
 
 	userProgressionSelectionCurriculumParameters: (getters) => {

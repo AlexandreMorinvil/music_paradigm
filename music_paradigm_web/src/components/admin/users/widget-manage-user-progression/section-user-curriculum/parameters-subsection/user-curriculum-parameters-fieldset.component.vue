@@ -4,8 +4,9 @@
             <TemplateFieldLabelComponent :text="parameter.name" />
             <TemplateFieldSelectComponent
                 :value="userProgressionEditionAssignedParameters[parameter.name]"
-                :expectedValue="userProgressionSelectionAssignedParameters[parameter.name]"
+                :expectedValue="getExpectedValue(parameter.name)"
                 :isEmptyAccepted="true"
+                :isEveryValueNew="!hasSelectedUserProgression"
                 v-on:edit="(value) => editAssignedParameterValue(parameter.name, value) " 
                 :options="parameter.optionValuesList"
                 placeholder="TASK DEPENDANT DEFAULT"
@@ -36,6 +37,7 @@ export default {
             'userProgressionEditionAssignedParameters'
         ]),
         ...mapGetters('managementUsers/progressions/selection', [
+            'hasSelectedUserProgression',
             'userProgressionSelectionAssignedParameters'
         ]),
     },
@@ -50,6 +52,13 @@ export default {
             // defined on the objects and would only be defined when the object is edited for a first time. Those 
             // initially not defined parameter names would not update properly unless we force update the component.
             this.$forceUpdate(); 
+        },
+        getExpectedValue(parameterName) {
+            // We transform the undefined values into null values since the TemplateFieldSelectComponent can expect
+            // a null, but not an undefined. (Morever, it is possible for assinged parameters to not be defined if
+            // no specific value is assinged)
+            const expectedValue = this.userProgressionSelectionAssignedParameters[parameterName];
+            return (expectedValue === undefined) ? null : expectedValue;
         }
     }
 };
