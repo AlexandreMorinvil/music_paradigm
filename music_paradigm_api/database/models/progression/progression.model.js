@@ -8,6 +8,11 @@ schema.set('toJSON', { virtuals: true });
 
 
 // Static methods
+schema.statics.assignParametersToProgression = async function (progressionId, assignedParameters) {
+    const progression = await this.findById(progressionId);
+    return progression.assignParameters(assignedParameters);
+};
+
 schema.statics.createProgression = async function (userId, curriculumId, parameters = null, adjustments = null) {
     const newProgression = new this({ userReference: userId, curriculumReference: curriculumId });
     if (parameters) progressionSetters.setParameters(newProgression, parameters);
@@ -20,8 +25,7 @@ schema.statics.deleteNotStartedProgressionsOfUser = async function (userId) {
 };
 
 schema.statics.getLastProgressionOfUser = async function (userId) {
-    const lastProgression = await this.findOne({ userReference: userId }, '-createdAt');
-    return lastProgression;
+    return this.findOne({ userReference: userId }, '-createdAt');
 }
 
 schema.statics.getProgressionAndCurriculumById = async function (progressionId) {

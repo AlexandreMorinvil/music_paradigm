@@ -39,12 +39,12 @@ async function assignCurriculum(userId, curriculumId, assignedParameters) {
     }
 }
 
-async function assignParameters(userId, assignedParameters) {
+async function assignParameters(progressionId, assignedParameters) {
     try {
-        const lastProgression = await userProgressionService.updateParameters(userId, assignedParameters);
-        const progressionSummary = await generateProgressionSessionsStatusForProgressionId(progressionId);
+        const progression = await ProgressionModel.assignParametersToProgression(progressionId, assignedParameters);
+        const progressionSummary = await generateProgressionSessionsStatusForProgression(progression);
         return {
-            progression: lastProgression,
+            progression: progression,
             progressionSummary: progressionSummary,
         };
     } catch (err) {

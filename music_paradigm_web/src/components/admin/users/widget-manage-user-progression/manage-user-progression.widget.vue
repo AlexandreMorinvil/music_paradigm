@@ -72,7 +72,7 @@ export default {
 	methods: {
 		...mapActions('managementCurriculums', ['fetchCurriculumSummariesList']),
 		...mapActions('managementUsers', ['assignCurriculum']),
-		...mapActions('managementUsers/progressions', ['updateParameters', 'updateAdjustments']),
+		...mapActions('managementUsers/progressions', ['assignParameters', 'updateAdjustments']),
 		bundleUserCurriculumInformation() {
 			return {
 				...this.$refs.userCurriculumForm.bundleCurriculumForm(),
@@ -93,7 +93,7 @@ export default {
 		submitParametersToUpdate() {
 			if (!this.isParametersUpdateButtonActive) return;
 			const parameters = this.$refs.userParametersForm.bundleParametersForm();
-			this.updateParameters({ userId: this.userSelectedId, assignedParameters: parameters });
+			this.assignParameters({ userId: this.userSelectedId, assignedParameters: parameters });
 		},
 		submitAdjustmentsToUpdate() {
 			if (!this.isAdjustmentsUpdateButtonActive) return;

@@ -7,8 +7,8 @@ export default {
 		return progressionsApi
 			.assignCurriculum({ userId, curriculumId, assignedParameters })
 			.then(
-				(progressionDetails) => {
-					dispatch('setSelectedUserProgression', progressionDetails);
+				(response) => {
+					dispatch('setSelectedUserProgression', response);
 					dispatch('alert/setSuccessAlert', 'Curriculum assignation sucessful', { root: true });
 					dispatch('managementUsers/fetchUserSummariesList', null, { root: true });
 				},
@@ -18,6 +18,24 @@ export default {
 			)
 			.finally(() => {
 				commit('indicateAssigningCurriculumEnd');
+			});
+	},
+
+	assignParameters({ commit, dispatch }, { progressionId, assignedParameters }) {
+		commit('indicateAssigningParameters');
+		return progressionsApi
+			.assignParameters(progressionId, assignedParameters)
+			.then(
+				(response) => {
+					dispatch('setSelectedUserProgression', response);
+					dispatch('alert/setSuccessAlert', 'Parameter update sucessful', { root: true });
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateAssigningParametersEnd');
 			});
 	},
 
@@ -74,26 +92,6 @@ export default {
 				dispatch('alert/setErrorAlert', `User progression refreshing failed : ${error.message}`, { root: true });
 			},
 		);
-	},
-
-	updateParameters({ commit, dispatch }, { userId, assignedParameters }) {
-		commit('indicateUpdateParametersRequest');
-		return usersApi
-			.assignParameters(userId, assignedParameters)
-			.then(
-				(updatedUserDetails) => {
-					commit('setSelectedUserProgression', updatedUserDetails.progression);
-					commit('setSelectedUserProgressionSummary', updatedUserDetails.progressionSummary);
-					dispatch('alert/setSuccessAlert', 'Parameter update sucessful', { root: true });
-					dispatch('users/fetchAllUsersSummary', null, { root: true });
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { root: true });
-				},
-			)
-			.finally(() => {
-				commit('indicateUpdateParametersRequestEnd');
-			});
 	},
 
 	updateAdjustments({ commit, dispatch }, { userId, assignedAdjustments }) {

@@ -14,7 +14,7 @@
 
 <script>
 
-import { mapGetters, mapMutations } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 import TemplateFieldsetComponent from '@/components/admin/templates/template-fieldset.component.vue';
 import TemplateFieldLabelComponent from '@/components/admin/templates/template-field-label.component.vue';
@@ -36,7 +36,7 @@ export default {
         ]),
     },
     methods: {
-        ...mapMutations('managementUsers/progressions/edition', [
+        ...mapActions('managementUsers/progressions/edition', [
             'editUserProgressionEditionCurriculumReference'
         ])
     }

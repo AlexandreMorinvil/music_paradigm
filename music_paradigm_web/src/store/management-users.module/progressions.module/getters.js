@@ -9,13 +9,18 @@ export default {
 	},
 
 	hasEditedUserProgressionAssignedParameters: (_, getters) => {
-		const selection = _omitBy(getters['selection/userProgressionSelectionAssignedParameters'], _isNil);
-		const edition = _omitBy(getters['edition/userProgressionEditionAssignedParameters'], _isNil);
-		return !_isEqual(edition, selection);
+		return !_isEqual(
+			_omitBy(getters['selection/userProgressionSelectionAssignedParameters'], _isNil),
+			_omitBy(getters['edition/userProgressionEditionAssignedParameters'], _isNil),
+		);
 	},
 
 	isAssigningCurriculum: (state) => {
 		return state.status.isAssigningCurriculum;
+	},
+
+	isAssigningParameters: (state) => {
+		return state.status.isAssigningParameters;
 	},
 
 	isExecutingUserProgressionCommand: (_, getters) => {

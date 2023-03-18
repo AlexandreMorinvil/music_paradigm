@@ -25,11 +25,11 @@ function assignCurriculum({ userId, curriculumId, assignedParameters }) {
 	return fetch(url.progressions('assign-curriculum/'), requestOptions).then(defaultResponseHandler);
 }
 
-function assignParameters(userId, parameters) {
+function assignParameters(progressionId, assignedParameters) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(parameters),
+		body: JSON.stringify({ assignedParameters }),
 	};
-	return fetch(url.progressions('assign-parameters/' + userId), requestOptions).then(defaultResponseHandler);
+	return fetch(url.progressions('assign-parameters/' + progressionId), requestOptions).then(defaultResponseHandler);
 }

@@ -28,11 +28,11 @@ function assignCurriculum(req, res, next) {
 function assignParameters(req, res, next) {
 
     // Parameters
-    const userId = req.params.id;
+    const progressionId = req.params.progressionId;
     const assignedParameters = req.body.assignedParameters;
 
     // Processing
-    progressionsService.assignParameters(userId, assignedParameters)
+    progressionsService.assignParameters(progressionId, assignedParameters)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());

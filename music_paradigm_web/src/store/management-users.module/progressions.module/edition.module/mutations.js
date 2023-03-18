@@ -6,7 +6,11 @@ export default {
 	},
 
 	editUserProgressionEditionAssignedParameterValue(state, { parameterName, value }) {
-		state.editionUserProgression.assignedParameters[parameterName] = value;
+		// Vue cannot detect property addition or deletion, so we assign the new attribute by replacing the object
+		const assignedParameters = state.editionUserProgression.assignedParameters;
+		state.editionUserProgression.assignedParameters = Object.assign(
+			{}, assignedParameters, { [parameterName]: value }
+		);
 	},
 
 	editUserProgressionEditionCurriculumReference(state, curriculumId) {

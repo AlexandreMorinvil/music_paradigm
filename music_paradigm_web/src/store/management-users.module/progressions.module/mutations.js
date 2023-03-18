@@ -10,12 +10,12 @@ export default {
 		state.status.isAssigningCurriculum = false;
 	},
 
-	indicateUpdateParametersRequest(state) {
-		state.status.isUpdatingParameters = true;
+	indicateAssigningParameters(state) {
+		state.status.isAssigningParameters = true;
 	},
 
-	indicateUpdateParametersRequestEnd(state) {
-		state.status.isUpdatingParameters = false;
+	indicateAssigningParametersEnd(state) {
+		state.status.isAssigningParameters = false;
 	},
 
 	indicateUpdateAdjustmentsRequest(state) {
