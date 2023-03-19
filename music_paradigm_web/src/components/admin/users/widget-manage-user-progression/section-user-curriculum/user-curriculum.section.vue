@@ -1,7 +1,7 @@
 <template>
     <WidgetSectionContainer title="Assigned Curriculum">
         <template v-slot:topRight>
-            <!-- <ButtonRevertUserCurriculumChangesComponent class="small"/> -->
+            <ButtonRevertUserCurriculumComponent class="small"/>
         </template>
         <UserCurriculumSubsection />
         <UserCurriculumParametersSubsection />
@@ -20,6 +20,7 @@ import { mapGetters } from 'vuex';
 import ButtonAssignCurriculumComponent from './buttons/button-assign-curriculum.component.vue';
 import ButtonAssignParametersComponent from './buttons/button-assign-parameters.component.vue';
 import ButtonCreateUserWithCurriculumComponent from './buttons/button-create-user-with-curriculum.component.vue';
+import ButtonRevertUserCurriculumComponent from './buttons/button-revert-user-curriculum.component.vue';
 import UserCurriculumParametersSubsection from './parameters-subsection/user-curriculum-parameters.subsection.vue';
 import UserCurriculumSubsection from './curriculum-subsection/user-curriculum.subsection.vue';
 
@@ -28,6 +29,7 @@ export default {
         ButtonAssignCurriculumComponent,
         ButtonAssignParametersComponent,
         ButtonCreateUserWithCurriculumComponent,
+        ButtonRevertUserCurriculumComponent,
         UserCurriculumParametersSubsection,
         UserCurriculumSubsection,
         WidgetSectionContainer,

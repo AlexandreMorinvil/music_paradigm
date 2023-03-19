@@ -39,6 +39,10 @@ export default {
 			});
 	},
 
+	revertUserProgressionEditions({ dispatch, getters }) {
+		dispatch('edition/setUserProgressionEdition', getters['selection/userProgressionSelection']);
+	},
+
 	setSelectedUserProgression({ commit, dispatch }, progressionDetails) {
 		dispatch('selection/setUserProgressionSelection', progressionDetails.progression);
 		dispatch('edition/setUserProgressionEdition', progressionDetails.progression);

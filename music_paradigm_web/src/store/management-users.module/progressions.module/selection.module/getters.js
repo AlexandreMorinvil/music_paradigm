@@ -7,6 +7,10 @@ export default {
 		return Boolean(getters.userProgressionSelectionCurriculumReference);
 	},
 
+	userProgressionSelection: (state) => {
+		return state.selectionUserProgression;
+	},
+
 	userProgressionSelectionAssignedParameters: (state) => {
 		return state.selectionUserProgression.assignedParameters;
 	},

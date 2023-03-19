@@ -3,6 +3,11 @@ import _isNil from 'lodash/isNil';
 import _omitBy from 'lodash/omitBy';
 
 export default {
+	hasEditedUserProgressionCurriculum: (_, getters) => {
+		return getters.hasEditedUserProgressionCurriculumReference ||
+			getters.hasEditedUserProgressionAssignedParameters;
+	},
+
 	hasEditedUserProgressionCurriculumReference: (_, getters) => {
 		return getters['selection/userProgressionSelectionCurriculumReference'] !==
 			getters['edition/userProgressionEditionCurriculumReference'];
