@@ -1,10 +1,10 @@
 <template>
     <WidgetSectionContainer title="Assigned Curriculum">
         <template v-slot:topRight>
-            <ButtonRevertUserCurriculumComponent class="small"/>
+            <ButtonRevertUserCurriculumComponent class="small" />
         </template>
         <UserCurriculumSubsection />
-        <UserCurriculumParametersSubsection />
+        <UserCurriculumParametersSubsection v-show="existsUserProgressionEditionCurriculumParameters" />
         <template v-slot:buttons>
             <ButtonCreateUserWithCurriculumComponent v-show="hasCreateUserWithCurriculumButton" />
             <ButtonAssignCurriculumComponent v-show="hasAssignCurriculumButton" />
@@ -40,7 +40,10 @@ export default {
             'hasEditedUserProgressionAssignedParameters',
             'hasEditedUserProgressionCurriculumReference',
         ]),
-        ...mapGetters('managementUsers/progressions/edition', ['hasUserProgressionEditionCurriculumReference']),
+        ...mapGetters('managementUsers/progressions/edition', [
+            'existsUserProgressionEditionCurriculumParameters',
+            'hasUserProgressionEditionCurriculumReference',
+        ]),
         ...mapGetters('managementUsers/progressions/selection', ['hasSelectedUserProgression']),
         hasAssignCurriculumButton() {
             return this.hasSelectedUser && this.hasEditedUserProgressionCurriculumReference;

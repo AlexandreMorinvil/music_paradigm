@@ -1,4 +1,8 @@
 export default {
+	existsUserProgressionEditionCurriculumParameters: (_, getters) => {
+		return getters.userProgressionEditionCurriculumParameters.length > 0;
+	},
+
 	hasUserProgressionEditionCurriculumReference: (_, getters) => {
 		return Boolean(getters.userProgressionEditionCurriculumReference);
 	},
@@ -8,7 +12,7 @@ export default {
 	},
 
 	userProgressionEditionCurriculumParameters: (_, getters) => {
-		return getters.userProgressionEditionCurriculumSummary ? 
+		return getters.userProgressionEditionCurriculumSummary ?
 			getters.userProgressionEditionCurriculumSummary.parametersList : [];
 	},
 
