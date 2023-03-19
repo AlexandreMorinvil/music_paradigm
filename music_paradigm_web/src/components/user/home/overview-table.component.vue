@@ -13,6 +13,8 @@
 						:index="Number(index)"
 						v-on:start-session="startSession"
 					/>
+
+					<!-- This slot it used to add information when using this component for the users management page -->
 					<slot :session="session" :index="Number(index)"> </slot>
 				</div>
 			</div>

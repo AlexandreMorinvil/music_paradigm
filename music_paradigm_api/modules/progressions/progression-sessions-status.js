@@ -3,9 +3,13 @@ const ExperimentMarker = require('database/db').ExperimentMarker;
 const Progression = require('database/db').Progression;
 const User = require('database/db').User;
 
-const { 
+const ProgressionSessionDetailed = require('modules/progressions/class/progression-session-detailed.class');
+const ProgressionSessionIdentifier = require('modules/progressions/class/progression-session-identifier.class');
+const ProgressionSessionsStatus = require('modules/progressions/class/progression-session-status.class');
+
+const {
     generateProgressionToCurriculumAssociation,
-    indicateExperimentMakersInProgressionAssociation 
+    indicateExperimentMakersInProgressionAssociation
 } = require('./progression-curriculum-association');
 
 module.exports = {
@@ -30,18 +34,18 @@ async function generateProgressionSessionsStatusForUserId(userId) {
 }
 
 async function generateProgressionSessionsStatus(curriculum, progression) {
-    let experimentMakers = [];
+    let taskStateMarkersList = [];
 
     // Verify parameters
     if (!curriculum) return { history: [], dueExperiment: null };
     if (!progression) progression = {};
 
     // Retrieve experiment markers
-    else experimentMakers = await ExperimentMarker.findMarkers(progression._id);
+    else taskStateMarkersList = await ExperimentMarker.findMarkers(progression._id);
 
     // Generate progression to curriculum association
     let association = generateProgressionToCurriculumAssociation(curriculum, progression);
-    association = indicateExperimentMakersInProgressionAssociation(association, experimentMakers);
+    association = indicateExperimentMakersInProgressionAssociation(association, taskStateMarkersList);
 
     // Generate the progression summary
     let dueExperiment = null;
@@ -54,7 +58,7 @@ async function generateProgressionSessionsStatus(curriculum, progression) {
 
     let hasBlockingIncompleteInSequence = false;
     let hasBlockingUniqueInDayDoneToday = false;
-    const progressionHistory = [];
+    const progressionSessionsDetailedList = [];
 
     for (i in curriculum.experiments) {
         // We retrieve the history of the experients completed
@@ -68,71 +72,110 @@ async function generateProgressionSessionsStatus(curriculum, progression) {
         } = association[i];
 
         // Attributes that are relative to the current experiment
-        const elements = {};
-        elements.associativeId = associativeId;
-        elements.associativeIdOrdinalNumber = associativeIdOrdinalNumber;
+        const progressionSessionDetailed = {};
+        progressionSessionDetailed.associativeId = associativeId;
+        progressionSessionDetailed.associativeIdOrdinalNumber = associativeIdOrdinalNumber;
 
-        elements.hasExperimentMarker = hasExperimentMarker;
-        elements.experimentMarkerProgressRatio = experimentMarkerProgressRatio;
-        
-        elements.isInSequentialCurriculum = curriculum.isSequential;
+        progressionSessionDetailed.hasExperimentMarker = hasExperimentMarker;
+        progressionSessionDetailed.experimentMarkerProgressRatio = experimentMarkerProgressRatio;
 
-        elements.title = curriculumExperiment.title;
-        elements.text = curriculumExperiment.text;
-        elements.delayInDays = curriculumExperiment.delayInDays;
-        elements.releaseTime = curriculumExperiment.releaseTime;
-        elements.isUniqueInDay = curriculumExperiment.isUniqueInDay;
-        elements.isCompletionLimited = curriculumExperiment.isCompletionLimited;
+        progressionSessionDetailed.isInSequentialCurriculum = curriculum.isSequential;
 
-        elements.startCount = progressionExperiment.startCount || 0;
-        elements.initialStartDate = progressionExperiment.initialStartDate || null;
-        elements.startDates = progressionExperiment.startDates || [];
-        elements.completionCount = progressionExperiment.completionCount || 0;
-        elements.advanceCompeletionDate = progressionExperiment.advanceCompeletionDate || null;
-        elements.completionDates = progressionExperiment.completionDates || [];
+        progressionSessionDetailed.title = curriculumExperiment.title;
+        progressionSessionDetailed.text = curriculumExperiment.text;
+        progressionSessionDetailed.delayInDays = curriculumExperiment.delayInDays;
+        progressionSessionDetailed.releaseTime = curriculumExperiment.releaseTime;
+        progressionSessionDetailed.isUniqueInDay = curriculumExperiment.isUniqueInDay;
+        progressionSessionDetailed.isCompletionLimited = curriculumExperiment.isCompletionLimited;
 
-        elements.adjustmentDelayInDays = progressionExperiment.adjustmentDelayInDays || 0;
-        elements.adjustmentConsiderCompleted = progressionExperiment.adjustmentConsiderCompleted || false;
-        elements.adjustmentAdditionalCompletionsRequired = progressionExperiment.adjustmentAdditionalCompletionsRequired || 0;
-        elements.adjustmentPreponeAvailability = progressionExperiment.adjustmentPreponeAvailability || false;
-        elements.adjustmentOverlookUniqueInDays = progressionExperiment.adjustmentOverlookUniqueInDays || false;
-        elements.adjustmentImposeReadyToBeDone = progressionExperiment.adjustmentImposeReadyToBeDone || false;
-        elements.adjustmentBlockAvailability = progressionExperiment.adjustmentBlockAvailability || false;
-        elements.adjustmentRemoveCompletionLimit = progressionExperiment.adjustmentRemoveCompletionLimit || false;
+        progressionSessionDetailed.startCount = progressionExperiment.startCount || 0;
+        progressionSessionDetailed.initialStartDate = progressionExperiment.initialStartDate || null;
+        progressionSessionDetailed.startDates = progressionExperiment.startDates || [];
+        progressionSessionDetailed.completionCount = progressionExperiment.completionCount || 0;
+        progressionSessionDetailed.advanceCompeletionDate = progressionExperiment.advanceCompeletionDate || null;
+        progressionSessionDetailed.completionDates = progressionExperiment.completionDates || [];
+
+        progressionSessionDetailed.adjustmentDelayInDays = progressionExperiment.adjustmentDelayInDays || 0;
+        progressionSessionDetailed.adjustmentConsiderCompleted = progressionExperiment.adjustmentConsiderCompleted || false;
+        progressionSessionDetailed.adjustmentAdditionalCompletionsRequired = progressionExperiment.adjustmentAdditionalCompletionsRequired || 0;
+        progressionSessionDetailed.adjustmentPreponeAvailability = progressionExperiment.adjustmentPreponeAvailability || false;
+        progressionSessionDetailed.adjustmentOverlookUniqueInDays = progressionExperiment.adjustmentOverlookUniqueInDays || false;
+        progressionSessionDetailed.adjustmentImposeReadyToBeDone = progressionExperiment.adjustmentImposeReadyToBeDone || false;
+        progressionSessionDetailed.adjustmentBlockAvailability = progressionExperiment.adjustmentBlockAvailability || false;
+        progressionSessionDetailed.adjustmentRemoveCompletionLimit = progressionExperiment.adjustmentRemoveCompletionLimit || false;
 
         // Consider adjustments
-        const adjustedDelayInDays = adjustDelayInDays(curriculumExperiment.delayInDays, elements.adjustmentDelayInDays);
-        const adjustedCompletionCount = adjustCompletionCount(elements.completionCount, elements.adjustmentAdditionalCompletionsRequired, elements.adjustmentConsiderCompleted);
-        const mustPreponeAvailability = adjustMustPreponeAvailability(elements.adjustmentPreponeAvailability, elements.adjustmentImposeReadyToBeDone);
-        const mustIgnoreBlockingUniqueInDay = adjustMustIgnoreBlockingUniqueInDay(elements.adjustmentOverlookUniqueInDays);
-        const mustIgnoreBlockingSequence = adjustMustIgnoreBlockingSequence(elements.adjustmentImposeReadyToBeDone);
-        const mustBeBlocked = adjustMustBlockAvailability(elements.adjustmentBlockAvailability);
-        const mustRemoveCompletionLimits = adjustMustRemoveCompletionLimit(elements.adjustmentRemoveCompletionLimit);
+        const adjustedDelayInDays = adjustDelayInDays(
+            curriculumExperiment.delayInDays,
+            progressionSessionDetailed.adjustmentDelayInDays
+        );
+        const adjustedCompletionCount = adjustCompletionCount(
+            progressionSessionDetailed.completionCount,
+            progressionSessionDetailed.adjustmentAdditionalCompletionsRequired,
+            progressionSessionDetailed.adjustmentConsiderCompleted
+        );
+        const mustPreponeAvailability = adjustMustPreponeAvailability(
+            progressionSessionDetailed.adjustmentPreponeAvailability,
+            progressionSessionDetailed.adjustmentImposeReadyToBeDone
+        );
+        const mustIgnoreBlockingUniqueInDay = adjustMustIgnoreBlockingUniqueInDay(
+            progressionSessionDetailed.adjustmentOverlookUniqueInDays
+        );
+        const mustIgnoreBlockingSequence = adjustMustIgnoreBlockingSequence(
+            progressionSessionDetailed.adjustmentImposeReadyToBeDone
+        );
+        const mustBeBlocked = adjustMustBlockAvailability(
+            progressionSessionDetailed.adjustmentBlockAvailability
+        );
+        const mustRemoveCompletionLimits = adjustMustRemoveCompletionLimit(
+            progressionSessionDetailed.adjustmentRemoveCompletionLimit
+        );
 
         // Computer the status of the experiment in the progression
-        elements.delayPreAvailabilityInDays = getDelayInDaysLeft(adjustedDelayInDays, timeElapsedInDays);
-        elements.delayPreAvailabilityInHours = getDelayInHoursLeft(elements.delayPreAvailabilityInDays, curriculumExperiment.releaseTime);
-        elements.isLockedByCompletionLimit = getIsLockedByCompletionLimit(curriculumExperiment.isCompletionLimited, adjustedCompletionCount, mustRemoveCompletionLimits);
-        elements.wouldBeFree = getWouldBeFreeStatus(elements.delayPreAvailabilityInDays, elements.delayPreAvailabilityInHours, elements.isLockedByCompletionLimit, mustPreponeAvailability);
+        progressionSessionDetailed.delayPreAvailabilityInDays = getDelayInDaysLeft(
+            adjustedDelayInDays,
+            timeElapsedInDays
+        );
+        progressionSessionDetailed.delayPreAvailabilityInHours = getDelayInHoursLeft(
+            progressionSessionDetailed.delayPreAvailabilityInDays,
+            curriculumExperiment.releaseTime
+        );
+        progressionSessionDetailed.isLockedByCompletionLimit = getIsLockedByCompletionLimit(
+            curriculumExperiment.isCompletionLimited,
+            adjustedCompletionCount,
+            mustRemoveCompletionLimits
+        );
+        progressionSessionDetailed.wouldBeFree = getWouldBeFreeStatus(
+            progressionSessionDetailed.delayPreAvailabilityInDays,
+            progressionSessionDetailed.delayPreAvailabilityInHours,
+            progressionSessionDetailed.isLockedByCompletionLimit,
+            mustPreponeAvailability
+        );
 
         // Attributes that are relative to the previous experiments of the chain
-        elements.isDelayedByPreviousSequential = hasBlockingIncompleteInSequence;
-        elements.isDelayedByPreviousUniqueInDay = !mustIgnoreBlockingUniqueInDay && hasBlockingUniqueInDayDoneToday;
-        elements.isAvailable = getIsAvailableStatus(
-            elements.wouldBeFree,
-            elements.isDelayedByPreviousSequential,
-            elements.isDelayedByPreviousUniqueInDay,
+        progressionSessionDetailed.isDelayedByPreviousSequential = hasBlockingIncompleteInSequence;
+        progressionSessionDetailed.isDelayedByPreviousUniqueInDay = !mustIgnoreBlockingUniqueInDay && hasBlockingUniqueInDayDoneToday;
+        progressionSessionDetailed.isAvailable = getIsAvailableStatus(
+            progressionSessionDetailed.wouldBeFree,
+            progressionSessionDetailed.isDelayedByPreviousSequential,
+            progressionSessionDetailed.isDelayedByPreviousUniqueInDay,
             mustIgnoreBlockingSequence,
             mustBeBlocked,
         );
 
         // Add element to the history
-        progressionHistory.push(elements);
+        progressionSessionsDetailedList.push(new ProgressionSessionDetailed(progressionSessionDetailed));
 
         // Update the experiment due today
-        dueExperiment = updateDueExperiment(dueExperiment, elements.isAvailable, adjustedCompletionCount, elements.associativeId, elements.associativeIdOrdinalNumber);
+        dueExperiment = updateDueExperiment(
+            dueExperiment,
+            progressionSessionDetailed.isAvailable,
+            adjustedCompletionCount,
+            progressionSessionDetailed.associativeId,
+            progressionSessionDetailed.associativeIdOrdinalNumber
+        );
 
-        // Update the blocking elements that propagate in the later elements
+        // Update the blocking session that propagate in the later sessions
         hasBlockingIncompleteInSequence = updateHasBlockingIncompleteInSequence(
             hasBlockingIncompleteInSequence,
             adjustedCompletionCount
@@ -144,7 +187,7 @@ async function generateProgressionSessionsStatus(curriculum, progression) {
             wasTodayCompleted
         );
     }
-    return { history: progressionHistory, markers: experimentMakers, dueExperiment: dueExperiment };
+    return new ProgressionSessionsStatus({ progressionSessionsDetailedList, taskStateMarkersList, dueExperiment: dueExperiment });
 }
 
 function adjustStartTime(daysElapsed, adjustmentInDays = 0) {
