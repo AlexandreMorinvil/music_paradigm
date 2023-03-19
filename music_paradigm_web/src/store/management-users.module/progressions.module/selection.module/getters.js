@@ -30,7 +30,27 @@ export default {
 		return curriculumSummariesManager.getCurriculumSummaryById(curriculumId);
 	},
 
+	userProgressionSelectionDuration: (state) => {
+		return state.selectionUserProgression.duration;
+	},
+
 	userProgressionSelectionId: (state) => {
 		return state.selectionUserProgression._id;
+	},
+
+	userProgressionSelectionLastProgressionDate: (state) => {
+		return state.selectionUserProgression.lastProgressionDate;
+	},
+
+	userProgressionSelectionLastProgressionTimePassed: (state) => {
+		return state.selectionUserProgression.lastProgessionTimePassed;
+	},
+
+	userProgressionSelectionStartTime: (state) => {
+		return state.selectionUserProgression.startTime;
+	},
+
+	userProgressionSelectionStartTimePassed: (state) => {
+		return state.selectionUserProgression.startTimePassed;
 	},
 };

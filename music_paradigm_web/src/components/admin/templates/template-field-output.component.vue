@@ -1,6 +1,8 @@
 <template>
 	<div class="template-field-input-area">
-		<span class="output-spacing" v-bind="ouputAttributes"> {{ displayedValue }} </span>
+		<span class="output-spacing" v-bind="ouputAttributes"> {{ displayedValue }}
+			<span v-if="hasComplementaryValue" class="complementary-value">{{ displayedComplementaryValue }}</span>
+		</span>
 	</div>
 </template>
 
@@ -22,10 +24,17 @@ export default {
 			}
 		},
 		value: null,
+		complementaryValue: null,
 	},
 	computed: {
 		displayedValue() {
 			return this.value === null ? this.noValuePLaceHolder : this.value;
+		},
+		displayedComplementaryValue() {
+			return this.hasComplementaryValue ? this.complementaryValue : "";
+		},
+		hasComplementaryValue() {
+			return !(this.complementaryValue === null || this.complementaryValue === undefined);
 		}
 	}
 };
@@ -36,5 +45,9 @@ export default {
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-template-rows: 1fr;
+}
+
+.complementary-value {
+	float: right;
 }
 </style>

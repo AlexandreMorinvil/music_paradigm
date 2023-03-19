@@ -2,6 +2,7 @@ import authHeader from './auth-header';
 import controllerToMidiMapper from './controller-to-midi-mapper';
 import dateHandler from './date-handler';
 import downloadSave from './download-save';
+import durationHandler from './duration-handler';
 import experimentParser from './experiment-parser';
 import fullScreen from './full-screen';
 import gltPerformance from './glt-performance';
@@ -23,6 +24,7 @@ export {
     controllerToMidiMapper,
     dateHandler,
     downloadSave,
+    durationHandler,
     experimentParser,
     fullScreen,
     gltPerformance,

@@ -1,18 +1,18 @@
 <template>
 	<TemplateFieldsetComponent>
 		<TemplateFieldLabelComponent text="Start Date" />
-		<TemplateFieldOutputComponent :value="username" />
-
-		<TemplateFieldLabelComponent text="Total duration so far" />
-		<TemplateFieldOutputComponent :value="creationDate" />
+		<TemplateFieldOutputComponent :value="startDate" :complementaryValue="startTimePassed" />
 
 		<TemplateFieldLabelComponent text="Date of last advance" />
-		<TemplateFieldOutputComponent :value="updateDate" />
+		<TemplateFieldOutputComponent :value="lastProgressionDate" :complementaryValue="lastProgressionTimePassed"/>
+
+		<TemplateFieldLabelComponent text="Total duration" />
+		<TemplateFieldOutputComponent :value="duration" />
 	</TemplateFieldsetComponent>
 </template>
 
 <script>
-import { dateHandler } from '@/_helpers';
+import { dateHandler, durationHandler } from '@/_helpers';
 import { mapGetters } from 'vuex';
 
 
@@ -27,37 +27,51 @@ export default {
 		TemplateFieldsetComponent,
 	},
 	computed: {
-		...mapGetters('managementUsers/selection', [
-			'hasSelectedUser',
-			'userSelectionUsername',
-			'userSelectionCreatedAt',
-			'userSelectionLastLogin',
-			'userSelectionUpdatedAt',
+		...mapGetters('managementUsers/progressions/selection', [
+			'hasSelectedUserProgression',
+			'userProgressionSelectionDuration',
+			'userProgressionSelectionLastProgressionDate',
+			'userProgressionSelectionLastProgressionTimePassed',
+			'userProgressionSelectionStartTime',
+			'userProgressionSelectionStartTimePassed',
 		]),
-		creationDate() {
-			return this.isValueDisplayable(this.userSelectionCreatedAt) ?
-				dateHandler.formatDateYearToMinutes(this.userSelectionCreatedAt) :
+		duration() {
+			return this.isValueDisplayable(this.userProgressionSelectionDuration) ?
+				durationHandler.formatDurationWeekToSecondsFromLargerUnit(this.userProgressionSelectionDuration, 2) :
 				null;
 		},
-		lastLoginDate() {
-			return this.isValueDisplayable(this.userSelectionLastLogin) ?
-				dateHandler.formatDateYearToMinutes(this.userSelectionLastLogin) :
+		lastProgressionDate() {
+			return this.isValueDisplayable(this.userProgressionSelectionLastProgressionDate) ?
+				dateHandler.formatDateYearToMinutes(this.userProgressionSelectionLastProgressionDate) :
 				null;
 		},
-		updateDate() {
-			return this.isValueDisplayable(this.userSelectionUpdatedAt) ?
-				dateHandler.formatDateYearToMinutes(this.userSelectionUpdatedAt) :
+		lastProgressionTimePassed() {
+			return this.isValueDisplayable(this.userProgressionSelectionLastProgressionTimePassed) ?
+				durationHandler.formatDurationWeekToSecondsFromLargerUnit(
+					this.userProgressionSelectionLastProgressionTimePassed,
+					2,
+					true
+				) :
 				null;
 		},
-		username() {
-			return this.isValueDisplayable(this.userSelectionUsername) ?
-				this.userSelectionUsername :
+		startDate() {
+			return this.isValueDisplayable(this.userProgressionSelectionStartTime) ?
+				dateHandler.formatDateYearToMinutes(this.userProgressionSelectionStartTime) :
+				null;
+		},
+		startTimePassed() {
+			return this.isValueDisplayable(this.userProgressionSelectionLastProgressionTimePassed) ?
+				durationHandler.formatDurationWeekToSecondsFromLargerUnit(
+					this.userProgressionSelectionStartTimePassed,
+					2,
+					true
+				) :
 				null;
 		},
 	},
 	methods: {
 		isValueDisplayable(value) {
-			return this.hasSelectedUser && Boolean(value);
+			return this.hasSelectedUserProgression && Boolean(value);
 		},
 	}
 };
