@@ -2,6 +2,7 @@
 	<WidgetContentFrameComponent title="Manage User Curriculum Progression">
 		<div class="widget widget-bg">
 			<UserCurriculumSection />
+			<UserProgressionSection />
 
 			<users-curriculum-form-component class="curticulum-position inner-widget" ref="userCurriculumForm" />
 			<users-parameters-form-component class="parameters-position inner-widget" ref="userParametersForm" />
@@ -40,10 +41,12 @@ import UsersParametersFormComponent from './parameters/users-parameters-form.com
 import UsersProgressionFormComponent from './progression/users-progression-form.component.vue';
 
 import UserCurriculumSection from './section-user-curriculum/user-curriculum.section.vue';
+import UserProgressionSection from './section-user-progression/user-progression.section.vue';
 
 export default {
 	components: {
 		UserCurriculumSection,
+		UserProgressionSection,
 
 		UsersCurriculumFormComponent,
 		UsersParametersFormComponent,

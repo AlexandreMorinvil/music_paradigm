@@ -1,19 +1,12 @@
 <template>
 	<TemplateFieldsetComponent>
-		<TemplateFieldLabelComponent text="User" />
+		<TemplateFieldLabelComponent text="Start Date" />
 		<TemplateFieldOutputComponent :value="username" />
 
-		<TemplateFieldLabelComponent text="Creation" />
+		<TemplateFieldLabelComponent text="Total duration so far" />
 		<TemplateFieldOutputComponent :value="creationDate" />
 
-		<!-- TODO: Implementing a mechanism to make the users log in each time they load the application
-						Even though they do not necessarily enter their username and password. (Once this mechanism
-						exists and the 'lastLogin' field of a user record is updated accordingly, then it will make
-						sense to expose this output field)
-			<TemplateFieldLabelComponent text="Last Login" />
-			<TemplateFieldOutputComponent :value="lastLoginDate" /> -->
-
-		<TemplateFieldLabelComponent text="Last profile modification" />
+		<TemplateFieldLabelComponent text="Date of last advance" />
 		<TemplateFieldOutputComponent :value="updateDate" />
 	</TemplateFieldsetComponent>
 </template>
