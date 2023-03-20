@@ -8,8 +8,11 @@
 </template>
 
 <script>
-import ProgressionOverviewBoardComponent from '@/components/user/home/overview-table.component.vue';
 import { mapActions, mapGetters } from 'vuex';
+
+import ProgressionOverviewBoardComponent from '@/components/user/home/overview-table.component.vue';
+import { ProgressionSessionIdentifier } from '@/modules/progressions';
+
 import ProgressionOverviewBoardSessionDetailsComponent from './overview-board-session-details.component.vue';
 
 export default {
@@ -18,13 +21,19 @@ export default {
         ProgressionOverviewBoardSessionDetailsComponent,
     },
     computed: {
-        ...mapGetters('managementUsers/progressions/sessions', ['progressionSessionsDetailedList'])
+        ...mapGetters('managementUsers/progressions/sessions', ['progressionSessionsDetailedList']),
+        ...mapGetters('managementUsers/progressions/sessions/selection', ['progressionSessionSelection']),
     },
     methods: {
-        ...mapActions('managementUsers/progressions/sessions', ['setSelectedProgressionSession']),
-        ...mapActions('managementUsers/progressions/sessions/selection', ['progressionSessionSelection']),
+        ...mapActions('managementUsers/progressions/sessions', [
+            'setSelectedProgressionSession',
+            'unsetSelectedProgressionSession',
+        ]),
         handleSessionSelection(session) {
-            this.setSelectedProgressionSession(session);
+            if (ProgressionSessionIdentifier.isCorresponding(this.progressionSessionSelection, session))
+                this.unsetSelectedProgressionSession();
+            else 
+                this.setSelectedProgressionSession(session);
         }
     }
 };

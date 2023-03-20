@@ -5,10 +5,7 @@ export class ProgressionSessionDetailed {
         const parameters = JSON.parse(JSON.stringify(progressionSessionsDetailed || {}));
 
         // Id of the pregression session
-        this.identifier = new ProgressionSessionIdentifier(
-            parameters.associativeId ?? parameters.identifier?.associativeId ?? null,
-            parameters.associativeIdOrdinalNumber ?? parameters.identifier?.associativeIdOrdinalNumber ?? null,
-        );
+        this.identifier = new ProgressionSessionIdentifier(parameters.identifier || {});
 
         // Task progression marker details
         this.hasExperimentMarker = parameters.hasExperimentMarker ?? null;
@@ -18,12 +15,12 @@ export class ProgressionSessionDetailed {
         this.isInSequentialCurriculum = parameters.isInSequentialCurriculum ?? null;
 
         // Associated Curriculum session details
-        this.title = parameters.title ?? null; 
-        this.text = parameters.text ?? null; 
-        this.delayInDays = parameters.delayInDays ?? null; 
-        this.releaseTime = parameters.releaseTime ?? null; 
-        this.isUniqueInDay = parameters.isUniqueInDay ?? null; 
-        this.isCompletionLimited = parameters.isCompletionLimited ?? null; 
+        this.title = parameters.title ?? null;
+        this.text = parameters.text ?? null;
+        this.delayInDays = parameters.delayInDays ?? null;
+        this.releaseTime = parameters.releaseTime ?? null;
+        this.isUniqueInDay = parameters.isUniqueInDay ?? null;
+        this.isCompletionLimited = parameters.isCompletionLimited ?? null;
 
         // Progression session details
         this.startCount = parameters.startCount ?? null;
