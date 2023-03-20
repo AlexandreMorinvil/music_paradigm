@@ -42,31 +42,18 @@ export default {
 			'userSelectionUpdatedAt',
 		]),
 		creationDate() {
-			return this.isValueDisplayable(this.userSelectionCreatedAt) ?
-				dateHandler.formatDateYearToMinutes(this.userSelectionCreatedAt) :
-				null;
+			return dateHandler.formatDateYearToMinutes(this.userSelectionCreatedAt);
 		},
 		lastLoginDate() {
-			return this.isValueDisplayable(this.userSelectionLastLogin) ?
-				dateHandler.formatDateYearToMinutes(this.userSelectionLastLogin) :
-				null;
+			return dateHandler.formatDateYearToMinutes(this.userSelectionLastLogin);
 		},
 		updateDate() {
-			return this.isValueDisplayable(this.userSelectionUpdatedAt) ?
-				dateHandler.formatDateYearToMinutes(this.userSelectionUpdatedAt) :
-				null;
+			return dateHandler.formatDateYearToMinutes(this.userSelectionUpdatedAt);
 		},
 		username() {
-			return this.isValueDisplayable(this.userSelectionUsername) ?
-				this.userSelectionUsername :
-				null;
+			return this.userSelectionUsername;
 		},
 	},
-	methods: {
-		isValueDisplayable(value) {
-			return this.hasSelectedUser && Boolean(value);
-		},
-	}
 };
 </script>
 

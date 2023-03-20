@@ -3,6 +3,7 @@ export default {
 };
 
 function formatDurationWeekToSecondsFromLargerUnit(durationInMilliseconds, elementsTotal = 1, mustAppendPreposition = false) {
+    if (!isDurationValid(durationInMilliseconds)) return null;
     const { isPositive, weeks, days, hours, minutes, seconds } = parsedDuration(durationInMilliseconds);
     let timeLapsed = '';
     let elementsCount = 0;
@@ -52,4 +53,8 @@ function parsedDuration(durationInMilliseconds) {
     durationLeft %= 1000 * 60;
     const seconds = Math.floor(Math.abs(durationLeft / 1000));
     return { isPositive: isPositive, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds };
+}
+
+function isDurationValid(duration) {
+    return typeof duration === 'number';
 }

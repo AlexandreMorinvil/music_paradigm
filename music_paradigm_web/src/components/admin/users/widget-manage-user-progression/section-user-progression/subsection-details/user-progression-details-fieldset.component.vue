@@ -36,44 +36,29 @@ export default {
 			'userProgressionSelectionStartTimePassed',
 		]),
 		duration() {
-			return this.isValueDisplayable(this.userProgressionSelectionDuration) ?
-				durationHandler.formatDurationWeekToSecondsFromLargerUnit(this.userProgressionSelectionDuration, 2) :
-				null;
+			return durationHandler.formatDurationWeekToSecondsFromLargerUnit(this.userProgressionSelectionDuration, 2);
 		},
 		lastProgressionDate() {
-			return this.isValueDisplayable(this.userProgressionSelectionLastProgressionDate) ?
-				dateHandler.formatDateYearToMinutes(this.userProgressionSelectionLastProgressionDate) :
-				null;
+			return dateHandler.formatDateYearToMinutes(this.userProgressionSelectionLastProgressionDate);
 		},
 		lastProgressionTimePassed() {
-			return this.isValueDisplayable(this.userProgressionSelectionLastProgressionTimePassed) ?
-				durationHandler.formatDurationWeekToSecondsFromLargerUnit(
+			return durationHandler.formatDurationWeekToSecondsFromLargerUnit(
 					this.userProgressionSelectionLastProgressionTimePassed,
 					2,
 					true
-				) :
-				null;
+				);
 		},
 		startDate() {
-			return this.isValueDisplayable(this.userProgressionSelectionStartTime) ?
-				dateHandler.formatDateYearToMinutes(this.userProgressionSelectionStartTime) :
-				null;
+			return dateHandler.formatDateYearToMinutes(this.userProgressionSelectionStartTime);
 		},
 		startTimePassed() {
-			return this.isValueDisplayable(this.userProgressionSelectionLastProgressionTimePassed) ?
-				durationHandler.formatDurationWeekToSecondsFromLargerUnit(
+			return durationHandler.formatDurationWeekToSecondsFromLargerUnit(
 					this.userProgressionSelectionStartTimePassed,
 					2,
 					true
-				) :
-				null;
+				);
 		},
 	},
-	methods: {
-		isValueDisplayable(value) {
-			return this.hasSelectedUserProgression && Boolean(value);
-		},
-	}
 };
 </script>
 
