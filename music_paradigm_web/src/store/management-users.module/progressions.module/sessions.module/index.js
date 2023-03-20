@@ -6,9 +6,8 @@ import state from './state';
 // Nested modules
 import { edition } from './edition.module';
 import { selection } from './selection.module';
-import { sessions } from './sessions.module';
 
-export const progressions = {
+export const sessions = {
 	namespaced: true,
 	state,
 	getters,
@@ -17,6 +16,5 @@ export const progressions = {
 	modules: {
 		edition,
 		selection,
-		sessions,
 	}
 };

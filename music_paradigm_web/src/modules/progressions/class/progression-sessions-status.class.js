@@ -1,13 +1,13 @@
 import { ProgressionSessionDetailed } from "./progression-session-detailed.class";
 import { ProgressionSessionIdentifier } from "./progression-session-identifier.class";
 
-export class Progression {
+export class ProgressionSessionsStatus {
     constructor(progressionSessionsStatus = {}) {
         const parameters = JSON.parse(JSON.stringify(progressionSessionsStatus || {}));
 
         this.dueSessionIdentifier = this.parseDueSessionIdentifier(parameters.dueSessionIdentifier);
-        this.sessionsProgressionDetailedList = this.parseSessionsProgressionDetailedList(
-            parameters.sessionsProgressionDetailedList
+        this.progressionSessionsDetailedList = this.parseProgressionSessionsDetailedList(
+            parameters.progressionSessionsDetailedList
         );
         this.taskProgressionMarkersList = parameters.taskProgressionMarkersList;
     }
@@ -17,8 +17,8 @@ export class Progression {
         return new ProgressionSessionIdentifier(associativeId, associativeIdOrdinalNumber);
     }
 
-    parseSessionsProgressionDetailedList(sessionsProgressionDetailedList = []) {
-        return sessionsProgressionDetailedList.map((sessionsProgressionDetailed) => {
+    parseProgressionSessionsDetailedList(progressionSessionsDetailedList = []) {
+        return progressionSessionsDetailedList.map((sessionsProgressionDetailed) => {
             return new ProgressionSessionDetailed(sessionsProgressionDetailed);
         })
     }

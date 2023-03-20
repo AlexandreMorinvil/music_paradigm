@@ -14,10 +14,10 @@ module.exports = {
 async function assignAdjustments(progressionId, assignedAdjustments) {
     try {
         const lastProgression = await userProgressionService.updateAdjustments(userId, assignedAdjustments);
-        const progressionSummary = await generateProgressionSessionsStatusForProgressionId(progressionId);
+        const progressionSessionsStatus = await generateProgressionSessionsStatusForProgressionId(progressionId);
         return {
             progression: lastProgression,
-            progressionSummary: progressionSummary,
+            progressionSessionsStatus: progressionSessionsStatus,
         };
     } catch (err) {
         throw err;
@@ -28,11 +28,11 @@ async function assignCurriculum(userId, curriculumId, assignedParameters) {
     try {
         ProgressionModel.deleteNotStartedProgressionsOfUser(userId);
         const newProgression = await ProgressionModel.createProgression(userId, curriculumId, assignedParameters);
-        const progressionSummary = 
+        const progressionSessionsStatus = 
             await generateProgressionSessionsStatusForProgression(newProgression); 
         return {
             progression: newProgression,
-            progressionSummary: progressionSummary,
+            progressionSessionsStatus: progressionSessionsStatus,
         };
     } catch (err) {
         throw err;
@@ -42,10 +42,10 @@ async function assignCurriculum(userId, curriculumId, assignedParameters) {
 async function assignParameters(progressionId, assignedParameters) {
     try {
         const progression = await ProgressionModel.assignParametersToProgression(progressionId, assignedParameters);
-        const progressionSummary = await generateProgressionSessionsStatusForProgression(progression);
+        const progressionSessionsStatus = await generateProgressionSessionsStatusForProgression(progression);
         return {
             progression: progression,
-            progressionSummary: progressionSummary,
+            progressionSessionsStatus: progressionSessionsStatus,
         };
     } catch (err) {
         throw err;

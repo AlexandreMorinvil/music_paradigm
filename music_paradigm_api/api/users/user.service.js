@@ -35,12 +35,12 @@ async function createUser(user) {
 async function createUserWithCurriculum(user, curriculumId, assignedParameters) {
     try {
         const { user: userCreated }  = await createUser(user);
-        const { progression, progressionSummary } =
+        const { progression, progressionSessionsStatus } =
             await progressionsService.assignCurriculum(userCreated._id, curriculumId, assignedParameters);
         return {
             user: userCreated,
             progression: progression,
-            progressionSummary: progressionSummary,
+            progressionSessionsStatus: progressionSessionsStatus,
         };
     } catch (err) {
         throw err;
@@ -59,11 +59,11 @@ async function getById(userId) {
     try {
         const user = await UserModel.findById(userId);
         const lastProgression = await ProgressionModel.getLastProgressionOfUser(userId);
-        const progressionSummary = await generateProgressionSessionsStatusForUserId(userId);
+        const progressionSessionsStatus = await generateProgressionSessionsStatusForUserId(userId);
         return {
             user: user,
             progression: lastProgression,
-            progressionSummary: progressionSummary,
+            progressionSessionsStatus: progressionSessionsStatus,
         };
     } catch (err) {
         throw err;

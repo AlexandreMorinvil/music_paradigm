@@ -39,8 +39,8 @@ export default {
 		state.selectedUserProgression = userProgression;
 	},
 
-	setSelectedUserProgressionSummary(state, progressionSummary) {
-		const { dueExperiment, history, markers } = progressionSummary;
+	setSelectedUserProgressionSummary(state, progressionSessionsStatus) {
+		const { dueExperiment, history, markers } = progressionSessionsStatus;
 		state.selectedUserExperimentMarkers = markers;
 		state.selectedUserProgressionHistory = history;
 		state.selectedUserProgressionDueExperiment = dueExperiment;

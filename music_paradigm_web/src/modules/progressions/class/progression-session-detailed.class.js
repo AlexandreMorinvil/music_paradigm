@@ -1,10 +1,14 @@
+import { ProgressionSessionIdentifier } from "./progression-session-identifier.class";
+
 export class ProgressionSessionDetailed {
     constructor(progressionSessionsDetailed = {}) {
         const parameters = JSON.parse(JSON.stringify(progressionSessionsDetailed || {}));
 
         // Id of the pregression session
-        this.associativeId = parameters.associativeId ?? null;
-        this.associativeIdOrdinalNumber = parameters.associativeIdOrdinalNumber ?? null;
+        this.identifier = new ProgressionSessionIdentifier(
+            parameters.associativeId ?? parameters.identifier?.associativeId ?? null,
+            parameters.associativeIdOrdinalNumber ?? parameters.identifier?.associativeIdOrdinalNumber ?? null,
+        );
 
         // Task progression marker details
         this.hasExperimentMarker = parameters.hasExperimentMarker ?? null;
@@ -49,5 +53,13 @@ export class ProgressionSessionDetailed {
         this.isDelayedByPreviousSequential = parameters.isDelayedByPreviousSequential ?? null;
         this.isDelayedByPreviousUniqueInDay = parameters.isDelayedByPreviousUniqueInDay ?? null;
         this.isAvailable = parameters.isAvailable ?? null;
+    }
+
+    get associativeId() {
+        return this.identifier.associativeId;
+    }
+
+    get associativeIdOrdinalNumber() {
+        return this.identifier.associativeIdOrdinalNumber;
     }
 }

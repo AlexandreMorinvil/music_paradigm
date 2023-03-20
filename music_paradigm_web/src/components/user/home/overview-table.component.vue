@@ -29,7 +29,7 @@ import OverviewTableSessionComponent from '@/components/user/home/overview-table
 
 export default {
 	props: {
-		overWrittingProgressionHistory: {
+		sessionsList: {
 			default() {
 				return null;
 			},
@@ -46,10 +46,10 @@ export default {
 	computed: {
 		...mapGetters('account', ['progressionSummary']),
 		progressionHistory() {
-			return this.overWrittingProgressionHistory || this.progressionSummary;
+			return this.sessionsList || this.progressionSummary;
 		},
 		isRealUser() {
-			return !this.overWrittingProgressionHistory;
+			return !this.sessionsList;
 		},
 	},
 	methods: {

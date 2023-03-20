@@ -11,8 +11,8 @@ module.exports = {
 async function resetTimeIndicated(progressionId, associativeId) {
     try {
         await ExperimentMarker.forgetTimeLeft(progressionId, associativeId);
-        const progressionSummary = await generateProgressionSessionsStatusForProgressionId(progressionId);
-        return progressionSummary;
+        const progressionSessionsStatus = await generateProgressionSessionsStatusForProgressionId(progressionId);
+        return progressionSessionsStatus;
     } catch (err) {
         throw err;
     }
@@ -21,8 +21,8 @@ async function resetTimeIndicated(progressionId, associativeId) {
 async function _delete(progressionId, associativeId) {
     try {
         await ExperimentMarker.deleteMarker(progressionId, associativeId);
-        const progressionSummary = await generateProgressionSessionsStatusForProgressionId(progressionId);
-        return progressionSummary;
+        const progressionSessionsStatus = await generateProgressionSessionsStatusForProgressionId(progressionId);
+        return progressionSessionsStatus;
     } catch (err) {
         throw err;
     }

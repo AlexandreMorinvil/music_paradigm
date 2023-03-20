@@ -28,7 +28,7 @@ const schema = new Schema(
         },
 
         // Indicate the start time of the curriculum. The delays in days are counted starting from that date
-        startTime: {
+        startTime: { // TODO: Should be 'startDate'. However, the modification might cause a lot of sensitive changes.
             type: Date,
             default: null
         },

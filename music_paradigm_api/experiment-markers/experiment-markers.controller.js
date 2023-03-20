@@ -16,7 +16,7 @@ function resetTimeIndicated(req, res, next) {
     const associativeId = req.params.associativeId;
 
     service.resetTimeIndicated(progressionId, associativeId)
-        .then(progressionSummary => res.status(200).json(progressionSummary))
+        .then(progressionSessionsStatus => res.status(200).json(progressionSessionsStatus))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
 }
@@ -27,7 +27,7 @@ function _delete(req, res, next) {
     const associativeId = req.params.associativeId;
     
     service.delete(progressionId, associativeId)
-        .then(progressionSummary => res.status(200).json(progressionSummary))
+        .then(progressionSessionsStatus => res.status(200).json(progressionSessionsStatus))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
 }

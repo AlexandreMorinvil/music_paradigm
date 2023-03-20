@@ -8,7 +8,7 @@
 		<progression-dates-adjustment-component ref="progressionDates" />
 		<overview-table-component
 			v-show="hasHistory"
-			:overWrittingProgressionHistory="history"
+			:sessionsList="history"
 			:sessionToHightlight="session"
 			v-on:sessionSelected="handleSessionSelection"
 		>

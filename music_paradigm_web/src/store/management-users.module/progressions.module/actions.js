@@ -43,14 +43,15 @@ export default {
 		dispatch('edition/setUserProgressionEdition', getters['selection/userProgressionSelection']);
 	},
 
-	setSelectedUserProgression({ commit, dispatch }, progressionDetails) {
-		dispatch('selection/setUserProgressionSelection', progressionDetails.progression);
-		dispatch('edition/setUserProgressionEdition', progressionDetails.progression);
-
+	setSelectedUserProgression({ commit, dispatch }, { progression, progressionSessionsStatus }) {
+		dispatch('sessions/setProgressionSessionsStatus', progressionSessionsStatus);
+		dispatch('selection/setUserProgressionSelection', progression);
+		dispatch('edition/setUserProgressionEdition', progression);
+		
 
 		// TODO: Delete once the code will have been adjusted
-		commit('setSelectedUserProgression', progressionDetails.progression);
-		commit('setSelectedUserProgressionSummary', progressionDetails.progressionSummary);
+		commit('setSelectedUserProgression', progression);
+		commit('setSelectedUserProgressionSummary', progressionSessionsStatus);
 		dispatch('unsetSelectedSession');
 	},
 
@@ -90,7 +91,7 @@ export default {
 		return usersApi.getById(rootGetters['users/userSelectedId']).then(
 			(selectedUserDetails) => {
 				commit('setSelectedUserProgression', selectedUserDetails.progression);
-				commit('setSelectedUserProgressionSummary', selectedUserDetails.progressionSummary);
+				commit('setSelectedUserProgressionSummary', selectedUserDetails.progressionSessionsStatus);
 			},
 			(error) => {
 				dispatch('alert/setErrorAlert', `User progression refreshing failed : ${error.message}`, { root: true });
@@ -105,7 +106,7 @@ export default {
 			.then(
 				(updatedUserDetails) => {
 					commit('setSelectedUserProgression', updatedUserDetails.progression);
-					commit('setSelectedUserProgressionSummary', updatedUserDetails.progressionSummary);
+					commit('setSelectedUserProgressionSummary', updatedUserDetails.progressionSessionsStatus);
 					dispatch('alert/setSuccessAlert', 'Adjustments update sucessful', { root: true });
 					dispatch('users/fetchAllUsersSummary', null, { root: true });
 				},
@@ -123,8 +124,8 @@ export default {
 		return experimentMarkersApi
 			.resetTimeIndicated(getters.progressionSelectedId, associativeId)
 			.then(
-				(progressionSummary) => {
-					commit('setSelectedUserProgressionSummary', progressionSummary);
+				(progressionSessionsStatus) => {
+					commit('setSelectedUserProgressionSummary', progressionSessionsStatus);
 					dispatch('alert/setSuccessAlert', 'Session progress time indicated reset successful', { root: true });
 					dispatch('users/fetchAllUsersSummary', null, { root: true });
 				},
@@ -142,8 +143,8 @@ export default {
 		return experimentMarkersApi
 			.delete(getters.progressionSelectedId, associativeId)
 			.then(
-				(progressionSummary) => {
-					commit('setSelectedUserProgressionSummary', progressionSummary);
+				(progressionSessionsStatus) => {
+					commit('setSelectedUserProgressionSummary', progressionSessionsStatus);
 					dispatch('alert/setSuccessAlert', 'Session progress reset successful', { root: true });
 					dispatch('users/fetchAllUsersSummary', null, { root: true });
 				},

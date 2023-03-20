@@ -1,5 +1,5 @@
 <template>
-    <WidgetSubsectionContainer title="Details">
+    <WidgetSubsectionContainer title="Progression Details">
          <div class="centering">
              <UserProgressionDetailsFieldsetComponent />
          </div>

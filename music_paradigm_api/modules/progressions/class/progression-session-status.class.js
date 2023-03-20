@@ -6,7 +6,7 @@ module.exports  = class ProgressionSessionsStatus {
         const parameters = JSON.parse(JSON.stringify(progressionSessionsStatus || {}));
 
         this.dueSessionIdentifier = this.parseDueSessionIdentifier(parameters.dueSessionIdentifier);
-        this.progressionSessionsDetailedList = this.parseSessionsProgressionDetailedList(
+        this.progressionSessionsDetailedList = this.parseProgressionSessionsDetailedList(
             parameters.progressionSessionsDetailedList
         );
         this.taskStateMarkersList = parameters.taskStateMarkersList;
@@ -22,7 +22,7 @@ module.exports  = class ProgressionSessionsStatus {
         return new ProgressionSessionIdentifier(associativeId, associativeIdOrdinalNumber);
     }
 
-    parseSessionsProgressionDetailedList(progressionSessionsDetailedList = []) {
+    parseProgressionSessionsDetailedList(progressionSessionsDetailedList = []) {
         return progressionSessionsDetailedList.map((sessionsProgressionDetailed) => {
             return new ProgressionSessionDetailed(sessionsProgressionDetailed);
         })
