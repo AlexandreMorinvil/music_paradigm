@@ -3,51 +3,51 @@ export class ProgressionSessionDetailed {
         const parameters = JSON.parse(JSON.stringify(progressionSessionsDetailed || {}));
 
         // Id of the pregression session
-        this.associativeId = parameters.associativeId;
-        this.associativeIdOrdinalNumber = parameters.associativeIdOrdinalNumber;
+        this.associativeId = parameters.associativeId ?? null;
+        this.associativeIdOrdinalNumber = parameters.associativeIdOrdinalNumber ?? null;
 
         // Task progression marker details
-        this.hasExperimentMarker = parameters.hasExperimentMarker;
-        this.experimentMarkerProgressRatio = parameters.experimentMarkerProgressRatio;
+        this.hasExperimentMarker = parameters.hasExperimentMarker ?? null;
+        this.experimentMarkerProgressRatio = parameters.experimentMarkerProgressRatio ?? null;
 
         // Curriculum details
-        this.isInSequentialCurriculum = parameters.isInSequentialCurriculum;
+        this.isInSequentialCurriculum = parameters.isInSequentialCurriculum ?? null;
 
         // Associated Curriculum session details
-        this.title = parameters.title; 
-        this.text = parameters.text; 
-        this.delayInDays = parameters.delayInDays; 
-        this.releaseTime = parameters.releaseTime; 
-        this.isUniqueInDay = parameters.isUniqueInDay; 
-        this.isCompletionLimited = parameters.isCompletionLimited; 
+        this.title = parameters.title ?? null; 
+        this.text = parameters.text ?? null; 
+        this.delayInDays = parameters.delayInDays ?? null; 
+        this.releaseTime = parameters.releaseTime ?? null; 
+        this.isUniqueInDay = parameters.isUniqueInDay ?? null; 
+        this.isCompletionLimited = parameters.isCompletionLimited ?? null; 
 
         // Progression session details
-        this.startCount = parameters.startCount;
-        this.initialStartDate = parameters.initialStartDate;
-        this.startDates = parameters.startDates;
-        this.completionCount = parameters.completionCount;
-        this.advanceCompeletionDate = parameters.advanceCompeletionDate;
-        this.completionDates = parameters.completionDates;
+        this.startCount = parameters.startCount ?? null;
+        this.initialStartDate = parameters.initialStartDate ?? null;
+        this.startDates = parameters.startDates ?? null;
+        this.completionCount = parameters.completionCount ?? null;
+        this.advanceCompeletionDate = parameters.advanceCompeletionDate ?? null;
+        this.completionDates = parameters.completionDates ?? null;
 
         // Progression session adjustments
-        this.adjustmentDelayInDays = parameters.adjustmentDelayInDays;
-        this.adjustmentConsiderCompleted = parameters.adjustmentConsiderCompleted;
-        this.adjustmentAdditionalCompletionsRequired = parameters.adjustmentAdditionalCompletionsRequired;
-        this.adjustmentPreponeAvailability = parameters.adjustmentPreponeAvailability;
-        this.adjustmentOverlookUniqueInDays = parameters.adjustmentOverlookUniqueInDays;
-        this.adjustmentImposeReadyToBeDone = parameters.adjustmentImposeReadyToBeDone;
-        this.adjustmentBlockAvailability = parameters.adjustmentBlockAvailability;
-        this.adjustmentRemoveCompletionLimit = parameters.adjustmentRemoveCompletionLimit;
+        this.adjustmentDelayInDays = parameters.adjustmentDelayInDays ?? null;
+        this.adjustmentConsiderCompleted = parameters.adjustmentConsiderCompleted ?? null;
+        this.adjustmentAdditionalCompletionsRequired = parameters.adjustmentAdditionalCompletionsRequired ?? null;
+        this.adjustmentPreponeAvailability = parameters.adjustmentPreponeAvailability ?? null;
+        this.adjustmentOverlookUniqueInDays = parameters.adjustmentOverlookUniqueInDays ?? null;
+        this.adjustmentImposeReadyToBeDone = parameters.adjustmentImposeReadyToBeDone ?? null;
+        this.adjustmentBlockAvailability = parameters.adjustmentBlockAvailability ?? null;
+        this.adjustmentRemoveCompletionLimit = parameters.adjustmentRemoveCompletionLimit ?? null;
 
         // Progression session availaility details
-        this.delayPreAvailabilityInDays = parameters.delayPreAvailabilityInDays;
-        this.delayPreAvailabilityInHours = parameters.delayPreAvailabilityInHours;
-        this.isLockedByCompletionLimit = parameters.isLockedByCompletionLimit;
-        this.wouldBeFree = parameters.wouldBeFree;
+        this.delayPreAvailabilityInDays = parameters.delayPreAvailabilityInDays ?? null;
+        this.delayPreAvailabilityInHours = parameters.delayPreAvailabilityInHours ?? null;
+        this.isLockedByCompletionLimit = parameters.isLockedByCompletionLimit ?? null;
+        this.wouldBeFree = parameters.wouldBeFree ?? null;
 
         // Progression session current availaility status
-        this.isDelayedByPreviousSequential = parameters.isDelayedByPreviousSequential;
-        this.isDelayedByPreviousUniqueInDay = parameters.isDelayedByPreviousUniqueInDay;
-        this.isAvailable = parameters.isAvailable;
+        this.isDelayedByPreviousSequential = parameters.isDelayedByPreviousSequential ?? null;
+        this.isDelayedByPreviousUniqueInDay = parameters.isDelayedByPreviousUniqueInDay ?? null;
+        this.isAvailable = parameters.isAvailable ?? null;
     }
 }
