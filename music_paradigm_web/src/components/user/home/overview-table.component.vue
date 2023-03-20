@@ -87,7 +87,6 @@ export default {
 	background-color: rgb(80, 80, 80);
 	border: 5px rgb(75, 75, 75) solid;
 	box-shadow: 5px 5px 8px black;
-	margin-bottom: 35px;
 	z-index: 1;
 }
 

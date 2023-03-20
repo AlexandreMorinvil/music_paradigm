@@ -1,5 +1,5 @@
 <template>
-    <WidgetSubsectionContainer title="Progression Overview">
+    <WidgetSubsectionContainer title="Sessions Overview">
         <div class="centering">
             <UserProgressionOverviewBoardComponent />
         </div>

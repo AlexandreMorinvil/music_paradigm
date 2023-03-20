@@ -2,7 +2,7 @@
     <ProgressionOverviewBoardComponent :sessionsList="progressionSessionsDetailedList"
         :sessionToHightlight="progressionSessionSelection" v-on:sessionSelected="handleSessionSelection">
         <template slot-scope="{ session, index }">
-            <ProgressionOverviewBoardSessionDetailsComponent />
+            <ProgressionOverviewBoardSessionDetailsComponent :session="session" :index="index" />
         </template>
     </ProgressionOverviewBoardComponent>
 </template>
@@ -10,7 +10,7 @@
 <script>
 import ProgressionOverviewBoardComponent from '@/components/user/home/overview-table.component.vue';
 import { mapActions, mapGetters } from 'vuex';
-import ProgressionOverviewBoardSessionDetailsComponent from './overview-table-session-details.component.vue';
+import ProgressionOverviewBoardSessionDetailsComponent from './overview-board-session-details.component.vue';
 
 export default {
     components: {

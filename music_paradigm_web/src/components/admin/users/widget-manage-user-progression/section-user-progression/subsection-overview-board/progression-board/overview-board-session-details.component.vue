@@ -8,27 +8,27 @@
 		}"
 	>
 		<div class="associative-id-contanier-box"><b>Ass. ID:</b> {{ completeAssociativeId }}</div>
-		<overview-table-session-details-availability-component :session="sessionContent" ref="availability" />
-		<overview-table-session-details-marker-component :session="sessionContent" ref="marker" />
-		<overview-table-session-details-completions-component :session="sessionContent" ref="adjustments" />
-		<overview-table-session-details-adjsutments-component :session="sessionContent" ref="adjustments" />
+		<OverviewBoardSessionDetailsAvailabilityComponent :session="sessionContent" ref="availability" />
+		<OverviewBoardSessionDetailsMarkerComponent :session="sessionContent" ref="marker" />
+		<OverviewBoardSessionDetailsCompletionsComponent :session="sessionContent" ref="adjustments" />
+		<OverviewBoardSessionDetailsAdjsutmentsComponent :session="sessionContent" ref="adjustments" />
 	</div>
 </template>
 
 <script>
 import '@/styles/color-palette.css';
 
-import OverviewTableSessionDetailsAdjsutmentsComponent from './overview-table-session-details-adjsutments.component.vue';
-import OverviewTableSessionDetailsAvailabilityComponent from './overview-table-session-details-availability.component.vue';
-import OverviewTableSessionDetailsCompletionsComponent from './overview-table-session-details-completions.component.vue';
-import OverviewTableSessionDetailsMarkerComponent from './overview-table-session-details-marker.component.vue';
+import OverviewBoardSessionDetailsAdjsutmentsComponent from './overview-board-session-details-adjsutments.component.vue';
+import OverviewBoardSessionDetailsAvailabilityComponent from './overview-board-session-details-availability.component.vue';
+import OverviewBoardSessionDetailsCompletionsComponent from './overview-board-session-details-completions.component.vue';
+import OverviewBoardSessionDetailsMarkerComponent from './overview-board-session-details-marker.component.vue';
 
 export default {
 	components: {
-		OverviewTableSessionDetailsAvailabilityComponent,
-		OverviewTableSessionDetailsCompletionsComponent,
-		OverviewTableSessionDetailsAdjsutmentsComponent,
-		OverviewTableSessionDetailsMarkerComponent,
+		OverviewBoardSessionDetailsAvailabilityComponent,
+		OverviewBoardSessionDetailsCompletionsComponent,
+		OverviewBoardSessionDetailsAdjsutmentsComponent,
+		OverviewBoardSessionDetailsMarkerComponent,
 	},
 	props: {
 		index: { type: Number, default: -1 },
@@ -84,7 +84,7 @@ export default {
 
 .details-container {
 	position: relative;
-	width: 180px;
+	width: 220px;
 	height: auto;
 	margin: 10px;
 	border-style: solid;
