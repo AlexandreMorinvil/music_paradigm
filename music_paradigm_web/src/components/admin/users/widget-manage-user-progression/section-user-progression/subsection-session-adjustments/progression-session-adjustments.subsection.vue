@@ -1,5 +1,5 @@
 <template>
-    <WidgetSubsectionContainer title="Session Details">
+    <WidgetSubsectionContainer title="Session Adjustments">
          <div class="centering">
              <ProgressionSessionDetailsFieldsetComponent />
          </div>
@@ -9,7 +9,7 @@
 <script>
 import WidgetSubsectionContainer from '@/components/admin/widget-subsection.container.vue';
 
-import ProgressionSessionDetailsFieldsetComponent from './progression-session-details-fieldset.component.vue';
+import ProgressionSessionDetailsFieldsetComponent from './progression-session-adjustments-fieldset.component.vue';
 
 export default {
     components: {

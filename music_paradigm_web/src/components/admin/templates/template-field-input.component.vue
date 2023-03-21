@@ -52,16 +52,20 @@ export default {
 		hasExpectedValue() {
 			return this.expectedValue !== null;
 		},
+		datalistReference() {
+			return 'datalist-input-' + this.inputAttributes.name;
+		},
+		inputType() {
+			return this.inputAttributes?.type ?? 'text';
+		},
 		isEdited() {
 			return this.hasExpectedValue && this.value !== this.expectedValue;
 		},
-		datalistReference() {
-			return 'datalist-input-' + this.inputAttributes.name;
-		}
 	},
 	methods: {
 		edit(value) {
-			this.$emit('edit', value);
+			if (this.inputType === 'number') this.$emit('edit', Number(value));
+			else this.$emit('edit', value);
 		}
 	}
 };

@@ -13,6 +13,6 @@ export default {};
     border-style: none;
     display: grid;
     gap: 4px;
-    grid-template-columns: 300px 400px;
+    grid-template-columns: 400px 400px;
 }
 </style>

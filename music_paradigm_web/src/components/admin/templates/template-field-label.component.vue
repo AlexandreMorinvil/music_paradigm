@@ -15,7 +15,7 @@ export default {
 
 <style scoped>
 .form-label {
-	width: 300px;
+	width: 400px;
 	text-align: right;
 	padding-right: 25px;
 }
