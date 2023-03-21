@@ -10,9 +10,19 @@ export class ProgressionSessionIdentifier {
             this.associativeIdOrdinalNumber === progressionSessionIdentifier.associativeIdOrdinalNumber;
     }
 
+    areLinked(progressionSessionIdentifier) {
+        return this.associativeId === progressionSessionIdentifier.associativeId;
+    }
+
     static isCorresponding(firstSession, secondSession) {
         return new ProgressionSessionIdentifier(firstSession).areEqual(
             new ProgressionSessionIdentifier(secondSession)
+        );
+    }
+
+    static isLinked(fistSessionEntity, secondSessionEntity) {
+        return new ProgressionSessionIdentifier(fistSessionEntity).areLinked(
+            new ProgressionSessionIdentifier(secondSessionEntity)
         );
     }
 }

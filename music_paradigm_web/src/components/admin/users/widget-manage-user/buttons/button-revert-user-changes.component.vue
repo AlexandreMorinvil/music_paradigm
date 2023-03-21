@@ -1,5 +1,5 @@
 <template>
-    <TemplateButtonComponent v-on:click="handleButtonPress" isSmall color="turquoise" :isActive="isButtonActive"
+    <TemplateButtonComponent v-on:click="handleButtonPress" color="turquoise" :isActive="isButtonActive" v-bind="$attrs"
         :text="text" />
 </template>
 

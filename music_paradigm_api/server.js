@@ -35,7 +35,7 @@ app.use('/experiments', require('experiments/experiments.controller'));
 app.use('/curriculums', require('api/curriculums/curriculums.controller'));
 app.use('/users', require('api/users/users.controller'));
 app.use('/progressions', require('api/progressions/progressions.controller'));
-app.use('/experiment-markers', require('experiment-markers/experiment-markers.controller'));
+app.use('/task-state-markers', require('api/task-state-markers/task-state-markers.controller'));
 
 
 // setup routes for file browser

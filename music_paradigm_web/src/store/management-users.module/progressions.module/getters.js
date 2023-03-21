@@ -29,7 +29,9 @@ export default {
 	},
 
 	isExecutingUserProgressionCommand: (_, getters) => {
-		return getters.isAssigningCurriculum;
+		return getters['sessions/isExecutingProgressionSessionCommand'] ||
+			getters.isAssigningCurriculum ||
+			getters.isAssigningParameters;
 	},
 
 	// TODO: All the getters below need to be adjusted/deleted once the code will have been adjusted

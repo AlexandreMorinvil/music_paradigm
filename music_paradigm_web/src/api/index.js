@@ -1,6 +1,6 @@
 import { accountApi } from './account.api';
 import { curriculumsApi } from './curriculums.api';
-import { experimentMarkersApi } from './experiment-markers.api';
+import { taskStateMarkersApi } from './task-state-markers.api';
 import { experimentsApi } from './experiments.api';
 import { logApi } from './log.api';
 import { logsApi } from './logs.api';
@@ -12,7 +12,7 @@ import { usersApi } from './user.api';
 export {
     accountApi,
     experimentsApi,
-    experimentMarkersApi,
+    taskStateMarkersApi,
     curriculumsApi,
     logApi,
     logsApi,

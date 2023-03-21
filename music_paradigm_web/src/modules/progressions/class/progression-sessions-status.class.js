@@ -9,7 +9,7 @@ export class ProgressionSessionsStatus {
         this.progressionSessionsDetailedList = this.parseProgressionSessionsDetailedList(
             parameters.progressionSessionsDetailedList
         );
-        this.taskProgressionMarkersList = parameters.taskProgressionMarkersList;
+        this.taskStateMarkersList = parameters.taskStateMarkersList ?? [];
     }
 
     parseProgressionSessionsDetailedList(progressionSessionsDetailedList = []) {

@@ -1,4 +1,4 @@
-import { experimentMarkersApi, usersApi, progressionsApi } from '@/api';
+import { taskStateMarkersApi, usersApi, progressionsApi } from '@/api';
 
 export default {
 
@@ -116,44 +116,6 @@ export default {
 			)
 			.finally(() => {
 				commit('indicateUpdateAdjustmentsRequestEnd');
-			});
-	},
-
-	resetSessionTimeIndicated({ commit, dispatch, getters }, associativeId) {
-		commit('indicateExperimentMarkerChangeRequest');
-		return experimentMarkersApi
-			.resetTimeIndicated(getters.progressionSelectedId, associativeId)
-			.then(
-				(progressionSessionsStatus) => {
-					commit('setSelectedUserProgressionSummary', progressionSessionsStatus);
-					dispatch('alert/setSuccessAlert', 'Session progress time indicated reset successful', { root: true });
-					dispatch('users/fetchAllUsersSummary', null, { root: true });
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { root: true });
-				},
-			)
-			.finally(() => {
-				commit('indicateExperimentMarkerChangeRequestEnd');
-			});
-	},
-
-	resetSessionProgressKept({ commit, dispatch, getters }, associativeId) {
-		commit('indicateExperimentMarkerChangeRequest');
-		return experimentMarkersApi
-			.delete(getters.progressionSelectedId, associativeId)
-			.then(
-				(progressionSessionsStatus) => {
-					commit('setSelectedUserProgressionSummary', progressionSessionsStatus);
-					dispatch('alert/setSuccessAlert', 'Session progress reset successful', { root: true });
-					dispatch('users/fetchAllUsersSummary', null, { root: true });
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { root: true });
-				},
-			)
-			.finally(() => {
-				commit('indicateExperimentMarkerChangeRequestEnd');
 			});
 	},
 };

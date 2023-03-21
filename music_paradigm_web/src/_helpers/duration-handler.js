@@ -1,5 +1,6 @@
 export default {
     formatDurationWeekToSecondsFromLargerUnit,
+    formatTimerTime,
 };
 
 function formatDurationWeekToSecondsFromLargerUnit(durationInMilliseconds, elementsTotal = 1, mustAppendPreposition = false) {
@@ -40,6 +41,18 @@ function formatDurationWeekToSecondsFromLargerUnit(durationInMilliseconds, eleme
     return timeLapsed;
 }
 
+function formatTimerTime(time) {
+    const { seconds, minutes, hours, days } = parseTimerTime(Number(time));
+
+    if (seconds <= 0 && seconds <= 0 && seconds <= 0 && seconds <= 0) return 'Time reset';
+
+    let display = `${minutes}:${seconds}`;
+    if (hours > 0 || days > 0) display = `:${hours}:${display}`;
+    if (days > 0) display = `:${days}:${display}`;
+
+    return display;
+}
+
 function parsedDuration(durationInMilliseconds) {
     const isPositive = durationInMilliseconds >= 0;
     let durationLeft = durationInMilliseconds;
@@ -53,6 +66,20 @@ function parsedDuration(durationInMilliseconds) {
     durationLeft %= 1000 * 60;
     const seconds = Math.floor(Math.abs(durationLeft / 1000));
     return { isPositive: isPositive, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds };
+}
+
+function parseTimerTime(milliseconds = 0) {
+    const seconds = Math.floor((milliseconds / 1000) % 60);
+    const minutes = Math.floor((milliseconds / 1000 / 60) % 60);
+    const hours = Math.floor((milliseconds / (1000 * 60 * 60)) % 24);
+    const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
+    const numberFormattingOptions = { minimumIntegerDigits: 2, useGrouping: false };
+    return {
+        seconds: seconds.toLocaleString('en-US', numberFormattingOptions),
+        minutes: minutes.toLocaleString('en-US', numberFormattingOptions),
+        hours: hours.toLocaleString('en-US', numberFormattingOptions),
+        days: days.toLocaleString('en-US', numberFormattingOptions),
+    };
 }
 
 function isDurationValid(duration) {

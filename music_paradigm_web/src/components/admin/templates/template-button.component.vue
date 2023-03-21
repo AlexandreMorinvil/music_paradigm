@@ -144,7 +144,7 @@ export default {
 }
 
 .widget-button.red:active,
-.widget-button.red.activated  {
+.widget-button.red.activated {
 	background-color: rgb(80, 0, 0);
 	border-color: rgb(100, 0, 0);
 }
@@ -163,7 +163,7 @@ export default {
 }
 
 .widget-button.orange:active,
-.widget-button.orange.activated  {
+.widget-button.orange.activated {
 	background-color: rgb(160, 40, 0);
 	border-color: rgb(180, 60, 0);
 }

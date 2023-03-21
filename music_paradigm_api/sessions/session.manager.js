@@ -130,8 +130,8 @@ async function concludeSession(userId, associativeId, associativeIdOrdinalNumber
         progression.lastProgressionDate = Date.now();
 
     // Remove the experiment marker if the experiment was completely finished (keep it if it was ended through a timeout)
-    if (!isInTimeUp) await ExperimentMarker.deleteMarker(progression._id, associativeId);
-    else await ExperimentMarker.forgetTimeLeft(progression._id, associativeId);
+    if (!isInTimeUp) await ExperimentMarker.deleteTaskStateMarker(progression._id, associativeId);
+    else await ExperimentMarker.resetSessionTimer(progression._id, associativeId);
 
     // Save changes
     return progression.save();

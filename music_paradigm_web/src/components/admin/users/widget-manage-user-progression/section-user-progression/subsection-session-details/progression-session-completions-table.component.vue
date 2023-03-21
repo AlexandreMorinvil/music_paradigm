@@ -84,6 +84,9 @@ export default {
 </script>
 
 <style scoped>
+table {
+	table-layout: fixed;
+}
 .completion-date {
 	vertical-align: bottom;
 }

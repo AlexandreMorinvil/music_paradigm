@@ -30,14 +30,14 @@ schema.statics.findMarker = async function (progressionReference, associativeId)
     });
 }
 
-schema.statics.deleteMarker = async function (progressionReference, associativeId) {
+schema.statics.deleteTaskStateMarker = async function (progressionReference, associativeId) {
     return this.deleteOne({
         progressionReference: progressionReference,
         associativeId: associativeId
     });
 };
 
-schema.statics.forgetTimeLeft = async function (progressionReference, associativeId) {
+schema.statics.resetSessionTimer = async function (progressionReference, associativeId) {
     return this.updateOne({
         progressionReference: progressionReference,
         associativeId: associativeId

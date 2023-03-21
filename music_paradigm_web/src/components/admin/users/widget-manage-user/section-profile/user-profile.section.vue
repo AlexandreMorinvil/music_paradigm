@@ -1,8 +1,8 @@
 <template>
     <WidgetSectionContainer title="User Profile">
         <template v-slot:topRight>
-            <ButtonRevertUserChangesComponent class="small" />
-            <ButtonDeselectUserComponent class="small" />
+            <ButtonRevertUserChangesComponent :isSmall="true" />
+            <ButtonDeselectUserComponent :isSmall="true" />
         </template>
         
         <UserDetailsSubsection v-if="hasSelectedUser"/>

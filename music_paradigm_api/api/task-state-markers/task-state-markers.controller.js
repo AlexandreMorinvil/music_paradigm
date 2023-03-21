@@ -2,31 +2,35 @@
 const router = express.Router();
 const jwtAuthorize = require('jwt/jwt.authorization');
 const role = require('_helpers/role');
-const service = require('./experiment-markers.service');
+const service = require('./task-state-markers.service');
 
 // routes
-router.post('/:progressionId/:associativeId',   jwtAuthorize(role.admin), resetTimeIndicated);
-router.delete('/:progressionId/:associativeId', jwtAuthorize(role.admin), _delete);
+router.post('/reset-timer/:progressionId/:associativeId',   jwtAuthorize(role.admin), resetSessionTimer);
+router.delete('/delete/:progressionId/:associativeId', jwtAuthorize(role.admin), deleteTaskStateMarker);
 
 module.exports = router;
 
-function resetTimeIndicated(req, res, next) {
+function resetSessionTimer(req, res, next) {
 
+    // Parameters
     const progressionId = req.params.progressionId;
     const associativeId = req.params.associativeId;
 
-    service.resetTimeIndicated(progressionId, associativeId)
+    // Processing
+    service.resetSessionTimer(progressionId, associativeId)
         .then(progressionSessionsStatus => res.status(200).json(progressionSessionsStatus))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
 }
 
-function _delete(req, res, next) {
-
+function deleteTaskStateMarker(req, res, next) {
+    
+    // Parameters 
     const progressionId = req.params.progressionId;
     const associativeId = req.params.associativeId;
     
-    service.delete(progressionId, associativeId)
+    // Processing
+    service.deleteTaskStateMarker(progressionId, associativeId)
         .then(progressionSessionsStatus => res.status(200).json(progressionSessionsStatus))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
