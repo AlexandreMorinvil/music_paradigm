@@ -12,7 +12,8 @@
 			<tbody>
 				<tr v-for="(startDatesDetails, completionDate, completionCount) in startDatesListByEndDateMap"
 					v-bind:key="completionCount" :class="{ selected: isSelectedCompletionCount(completionCount) }"
-					v-on:click="handleCompletionCountSelection(completionCount)">
+					v-on:click="handleCompletionCountSelection(completionCount)"
+					class="clickable">
 
 					<td>
 						<div v-for="({ startDate, startCount }, subIndex) in startDatesDetails" v-bind:key="subIndex">
@@ -21,8 +22,9 @@
 						</div>
 					</td>
 					<td class="completion-date">
-						<TemplateFieldOutputComponent :value="completionDate" :formatValueFunction="formatDate"
-							:complementaryValue="completionCount" :formatComplementaryValueFunction="formatCount" />
+						<TemplateFieldOutputComponent :value="JSON.parse(completionDate)" :formatValueFunction="formatDate"
+							:complementaryValue="completionCount" :formatComplementaryValueFunction="formatCount"
+							:allowLoneComplementaryValue="true" />
 					</td>
 				</tr>
 			</tbody>
@@ -60,11 +62,11 @@ export default {
 	},
 	methods: {
 		...mapActions('managementUsers/progressions/sessions/selection', [
-			'setSessionCompletionCountSelection', 
+			'setSessionCompletionCountSelection',
 			'unsetSessionCompletionCountSelection'
 		]),
 		formatDate(date) {
-			return dateHandler.formatDateYearToSeconds(Date(date));
+			return dateHandler.formatDateYearToSeconds(date);
 		},
 		formatCount(count) {
 			if (count === null || count === undefined) return null;
@@ -84,5 +86,9 @@ export default {
 <style scoped>
 .completion-date {
 	vertical-align: bottom;
+}
+
+.clickable {
+	cursor: pointer;
 }
 </style>

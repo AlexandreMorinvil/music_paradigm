@@ -17,104 +17,112 @@ export default {
 		return selectedSession || new ProgressionSessionDetailed();
 	},
 
-	progressionSessionAdjustmentDelayInDays: (_, getters) => {
-		return getters.progressionSessionSelection.adjustmentDelayInDays;
-	},
-
-	progressionSessionAdjustmentConsiderCompleted: (_, getters) => {
-		return getters.progressionSessionSelection.adjustmentConsiderCompleted;
-	},
-
-	progressionSessionAdjustmentAdditionalCompletionsRequired: (_, getters) => {
+	progressionSessionSelectionAdjustmentAdditionalCompletionsRequired: (_, getters) => {
 		return getters.progressionSessionSelection.adjustmentAdditionalCompletionsRequired;
 	},
 
-	progressionSessionAdjustmentPreponeAvailability: (_, getters) => {
-		return getters.progressionSessionSelection.adjustmentPreponeAvailability;
-	},
-
-	progressionSessionAdjustmentOverlookUniqueInDays: (_, getters) => {
-		return getters.progressionSessionSelection.adjustmentOverlookUniqueInDays;
-	},
-
-	progressionSessionAdjustmentImposeReadyToBeDone: (_, getters) => {
-		return getters.progressionSessionSelection.adjustmentImposeReadyToBeDone;
-	},
-
-	progressionSessionAdjustmentBlockAvailability: (_, getters) => {
+	progressionSessionSelectionAdjustmentBlockAvailability: (_, getters) => {
 		return getters.progressionSessionSelection.adjustmentBlockAvailability;
 	},
 
-	progressionSessionAdjustmentRemoveCompletionLimit: (_, getters) => {
+	progressionSessionSelectionAdjustmentConsiderCompleted: (_, getters) => {
+		return getters.progressionSessionSelection.adjustmentConsiderCompleted;
+	},
+
+	progressionSessionSelectionAdjustmentDelayInDays: (_, getters) => {
+		return getters.progressionSessionSelection.adjustmentDelayInDays;
+	},
+
+	progressionSessionSelectionAdjustmentImposeReadyToBeDone: (_, getters) => {
+		return getters.progressionSessionSelection.adjustmentImposeReadyToBeDone;
+	},
+
+	progressionSessionSelectionAdjustmentOverlookUniqueInDays: (_, getters) => {
+		return getters.progressionSessionSelection.adjustmentOverlookUniqueInDays;
+	},
+
+	progressionSessionSelectionAdjustmentPreponeAvailability: (_, getters) => {
+		return getters.progressionSessionSelection.adjustmentPreponeAvailability;
+	},
+
+	progressionSessionSelectionAdjustmentRemoveCompletionLimit: (_, getters) => {
 		return getters.progressionSessionSelection.adjustmentRemoveCompletionLimit;
-	},
-
-	progressionSessionSelectionTitle: (_, getters) => {
-		return getters.progressionSessionSelection.title;
-	},
-
-	progressionSessionSelectionText: (_, getters) => {
-		return getters.progressionSessionSelection.text;
-	},
-
-	progressionSessionSelectionDelayInDays: (_, getters) => {
-		return getters.progressionSessionSelection.delayInDays;
-	},
-
-	progressionSessionSelectionReleaseTime: (_, getters) => {
-		return getters.progressionSessionSelection.releaseTime;
-	},
-
-	progressionSessionSelectionIsUniqueInDay: (_, getters) => {
-		return getters.progressionSessionSelection.isUniqueInDay;
-	},
-
-	progressionSessionSelectionIsCompletionLimited: (_, getters) => {
-		return getters.progressionSessionSelection.isCompletionLimited;
-	},
-
-	progressionSessionSelectionStartCount: (_, getters) => {
-		return getters.progressionSessionSelection.startCount;
-	},
-
-	progressionSessionSelectionInitialStartDate: (_, getters) => {
-		return getters.progressionSessionSelection.initialStartDate;
-	},
-
-	progressionSessionSelectionStartDates: (_, getters) => {
-		return getters.progressionSessionSelection.startDates || [];
-	},
-
-	progressionSessionSelectionCompletionCount: (_, getters) => {
-		return getters.progressionSessionSelection.completionCount;
 	},
 
 	progressionSessionSelectionAdvanceCompeletionDate: (_, getters) => {
 		return getters.progressionSessionSelection.advanceCompeletionDate;
 	},
 
+	progressionSessionSelectionAssociativeId: (_, getters) => {
+		return getters.progressionSessionSelection.associativeId;
+	},
+
+	progressionSessionSelectionAssociativeIdOrdinalNumber: (_, getters) => {
+		return getters.progressionSessionSelection.associativeIdOrdinalNumber;
+	},
+
+	progressionSessionSelectionCompletionCount: (_, getters) => {
+		return getters.progressionSessionSelection.completionCount;
+	},
+
 	progressionSessionSelectionCompletionDates: (_, getters) => {
 		return getters.progressionSessionSelection.completionDates || [];
 	},
 
-	progressionSessionDelayPreAvailabilityInDays: (_, getters) => {
+	progressionSessionSelectionDelayInDays: (_, getters) => {
+		return getters.progressionSessionSelection.delayInDays;
+	},
+
+	progressionSessionSelectionDelayPreAvailabilityInDays: (_, getters) => {
 		return getters.progressionSessionSelection.delayPreAvailabilityInDays;
 	},
 
-	progressionSessionIsLockedByCompletionLimit: (_, getters) => {
-		return getters.progressionSessionSelection.isLockedByCompletionLimit;
+	progressionSessionSelectionInitialStartDate: (_, getters) => {
+		return getters.progressionSessionSelection.initialStartDate;
 	},
 
-	progressionSessionIsDelayedByPreviousSequential: (_, getters) => {
+	progressionSessionSelectionIsCompletionLimited: (_, getters) => {
+		return getters.progressionSessionSelection.isCompletionLimited;
+	},
+
+	progressionSessionSelectionIsUniqueInDay: (_, getters) => {
+		return getters.progressionSessionSelection.isUniqueInDay;
+	},
+
+	progressionSessionSelectionIsAvailable: (_, getters) => {
+		return getters.progressionSessionSelection.isAvailable;
+	},
+
+	progressionSessionSelectionIsDelayedByPreviousSequential: (_, getters) => {
 		return getters.progressionSessionSelection.isDelayedByPreviousSequential;
 	},
 
-	progressionSessionIsDelayedByPreviousUniqueInDay: (_, getters) => {
+	progressionSessionSelectionIsDelayedByPreviousUniqueInDay: (_, getters) => {
 		return getters.progressionSessionSelection.isDelayedByPreviousUniqueInDay;
 	},
 
-	progressionSessionIsAvailable: (_, getters) => {
-		return getters.progressionSessionSelection.isAvailable;
+	progressionSessionSelectionIsLockedByCompletionLimit: (_, getters) => {
+		return getters.progressionSessionSelection.isLockedByCompletionLimit;
+	},
+	
+	progressionSessionSelectionReleaseTime: (_, getters) => {
+		return getters.progressionSessionSelection.releaseTime;
+	},
+	
+	progressionSessionSelectionStartCount: (_, getters) => {
+		return getters.progressionSessionSelection.startCount;
+	},
+	
+	progressionSessionSelectionStartDates: (_, getters) => {
+		return getters.progressionSessionSelection.startDates || [];
+	},
+
+	progressionSessionSelectionText: (_, getters) => {
+		return getters.progressionSessionSelection.text;
+	},
+
+	progressionSessionSelectionTitle: (_, getters) => {
+		return getters.progressionSessionSelection.title;
 	},
 
 	sessionCompletionCountSelection: (state) => {

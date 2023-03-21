@@ -1,18 +1,21 @@
 <template>
 	<TemplateFieldsetComponent>
-		<TemplateFieldLabelComponent text="Session" />
-		<TemplateFieldOutputComponent :value="startDate" :complementaryValue="startTimePassed" />
+		<TemplateFieldLabelComponent text="Associative Id" />
+		<TemplateFieldOutputComponent :value="progressionSessionSelectionAssociativeId"
+			:complementaryValue="progressionSessionSelectionAssociativeIdOrdinalNumber" />
 
+			<TemplateFieldLabelComponent text="Title" />
+		<TemplateFieldOutputComponent :value="progressionSessionSelectionTitle" />
+
+		<!-- TODO: Implement an optimized way to retrieve the full name of the task, if possible, so that we can 
+			display it here. 
 		<TemplateFieldLabelComponent text="Task" />
-		<TemplateFieldOutputComponent :value="lastProgressionDate" :complementaryValue="lastProgressionTimePassed"/>
-
-		<TemplateFieldLabelComponent text="Is completed" />
-		<TemplateFieldOutputComponent :value="duration" />
+		<TemplateFieldOutputComponent :value="" /> -->
 	</TemplateFieldsetComponent>
 </template>
 
 <script>
-import { dateHandler, durationHandler } from '@/_helpers';
+// import { dateHandler, durationHandler } from '@/_helpers';
 import { mapGetters } from 'vuex';
 
 
@@ -27,37 +30,11 @@ export default {
 		TemplateFieldsetComponent,
 	},
 	computed: {
-		...mapGetters('managementUsers/progressions/selection', [
-			'hasSelectedUserProgression',
-			'userProgressionSelectionDuration',
-			'userProgressionSelectionLastProgressionDate',
-			'userProgressionSelectionLastProgressionTimePassed',
-			'userProgressionSelectionStartTime',
-			'userProgressionSelectionStartTimePassed',
+		...mapGetters('managementUsers/progressions/sessions/selection', [
+			'progressionSessionSelectionAssociativeId',
+			'progressionSessionSelectionAssociativeIdOrdinalNumber',
+			'progressionSessionSelectionTitle',
 		]),
-		duration() {
-			return durationHandler.formatDurationWeekToSecondsFromLargerUnit(this.userProgressionSelectionDuration, 2);
-		},
-		lastProgressionDate() {
-			return dateHandler.formatDateYearToMinutes(this.userProgressionSelectionLastProgressionDate);
-		},
-		lastProgressionTimePassed() {
-			return durationHandler.formatDurationWeekToSecondsFromLargerUnit(
-					this.userProgressionSelectionLastProgressionTimePassed,
-					2,
-					true
-				);
-		},
-		startDate() {
-			return dateHandler.formatDateYearToMinutes(this.userProgressionSelectionStartTime);
-		},
-		startTimePassed() {
-			return durationHandler.formatDurationWeekToSecondsFromLargerUnit(
-					this.userProgressionSelectionStartTimePassed,
-					2,
-					true
-				);
-		},
 	},
 };
 </script>
