@@ -13,6 +13,14 @@ import { FORMATTING_EMPTY_VALUE_PLACEHOLDER } from '@/modules/formatting';
 
 export default {
 	props: {
+		formatComplementaryValueFunction: {
+			type: Function,
+			default: (value) => value,
+		},
+		formatValueFunction: {
+			type: Function,
+			default: (value) => value,
+		},
 		noValuePLaceHolder: {
 			type: String,
 			default: FORMATTING_EMPTY_VALUE_PLACEHOLDER,
@@ -28,10 +36,10 @@ export default {
 	},
 	computed: {
 		displayedValue() {
-			return this.value === null ? this.noValuePLaceHolder : this.value;
+			return this.value === null ? this.noValuePLaceHolder : this.formatValueFunction(this.value);
 		},
 		displayedComplementaryValue() {
-			return this.hasComplementaryValue ? this.complementaryValue : "";
+			return this.hasComplementaryValue ? this.formatComplementaryValueFunction(this.complementaryValue) : "";
 		},
 		hasComplementaryValue() {
 			return !(this.complementaryValue === null || this.complementaryValue === undefined);

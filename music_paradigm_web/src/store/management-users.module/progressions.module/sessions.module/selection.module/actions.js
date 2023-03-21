@@ -1,9 +1,20 @@
 export default {
-	setProgressionSessionSelection({ commit }, session) {
+	setProgressionSessionSelection({ commit, dispatch }, session) {
+		dispatch('unsetSessionCompletionCountSelection');
 		commit('setProgressionSessionSelection', session);
 	},
 
-	unsetProgressionSessionSelection({ commit }) {
+	setSessionCompletionCountSelection({ commit, dispatch }, coumpletionCount) {
+		dispatch('unsetSessionCompletionCountSelection');
+		commit('setSessionCompletionCountSelection', coumpletionCount);
+	},
+
+	unsetProgressionSessionSelection({ commit, dispatch }) {
+		dispatch('unsetSessionCompletionCountSelection');
 		commit('unsetProgressionSessionSelection');
+	},
+
+	unsetSessionCompletionCountSelection({ commit }) {
+		commit('unsetSessionCompletionCountSelection');
 	},
 };

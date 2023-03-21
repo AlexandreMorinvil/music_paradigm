@@ -65,5 +65,7 @@ function formatDateYearToSecondsWithWeekday(date) {
 }
 
 function isValidDate(date) {
-    return Boolean(date);
+    if (!date) return false;
+    else if (date.getTime) return !isNaN(date.getTime());
+    else return !isNaN(new Date(date).getTime());
 }

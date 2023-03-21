@@ -73,14 +73,17 @@ schema.set('toJSON', { virtuals: true });
 
 // Virtual properties
 schema.virtual('startTimePassed').get(function () {
+    if (!this.startTime) return null;
     return (new Date()).getTime() - (new Date(this.startTime)).getTime()
 });
 
 schema.virtual('lastProgessionTimePassed').get(function () {
+    if (!this.lastProgressionDate) return null;
     return (new Date()).getTime() - (new Date(this.lastProgressionDate)).getTime()
 });
 
 schema.virtual('duration').get(function () {
+    if (!this.lastProgressionDate || !this.startTime) return null;
     return (new Date(this.lastProgressionDate)).getTime() - (new Date(this.startTime)).getTime();
 });
 

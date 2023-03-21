@@ -1,11 +1,19 @@
-import { ProgressionSessionDetailed } from "@/modules/progressions";
+import { ProgressionSessionIdentifier } from "@/modules/progressions";
 
 export default {
 	setProgressionSessionSelection(state, session) {
-		state.selectionProgressionSession = new ProgressionSessionDetailed(session);
+		state.selectionProgressionSessionIdentifier = new ProgressionSessionIdentifier(session);
 	},
 
 	unsetProgressionSessionSelection(state) {
-		state.selectionProgressionSession = new ProgressionSessionDetailed();
+		state.selectionProgressionSessionIdentifier = new ProgressionSessionIdentifier();
+	},
+
+	setSessionCompletionCountSelection(state, coumpletionCount) {
+		state.selectionSessionCompletionCount = coumpletionCount;
+	},
+
+	unsetSessionCompletionCountSelection(state) {
+		state.selectionSessionCompletionCount = null;
 	},
 };

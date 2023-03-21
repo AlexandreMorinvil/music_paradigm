@@ -1,5 +1,6 @@
-import { ProgressionSessionDetailed } from "@/modules/progressions";
+import { ProgressionSessionIdentifier } from "@/modules/progressions";
 
 export default {
-	selectionProgressionSession: new ProgressionSessionDetailed(),
+	selectionProgressionSessionIdentifier: new ProgressionSessionIdentifier(),
+	selectionSessionCompletionCount: null,
 };

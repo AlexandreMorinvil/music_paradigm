@@ -5,7 +5,7 @@
         </template>
         <UserProgressionDetailsSubsection />
         <UserProgressionOverviewBoardSubsection />
-        <!-- PROBRESSION SESSIONS DETAILS SUBSECTION v-if = A session is selected -->
+        <ProgressionSessionDetailsSubsection />
         <!-- PROBRESSION SESSIONS ADJUSTMENTS SUBSECTION v-if = A session is selected -->
         <template v-slot:buttons>
         <!--  -->
@@ -16,11 +16,13 @@
 <script>
 import WidgetSectionContainer from '@/components/admin/widget-section.container.vue';
 
+import ProgressionSessionDetailsSubsection from './subsection-session-details/progression-session-details.subsection.vue';
 import UserProgressionDetailsSubsection from './subsection-details/user-progression-details.subsection.vue';
 import UserProgressionOverviewBoardSubsection from './subsection-overview-board/user-progression-overview-board.subsection.vue';
 
 export default {
     components: {
+        ProgressionSessionDetailsSubsection,
         UserProgressionDetailsSubsection,
         UserProgressionOverviewBoardSubsection,
         WidgetSectionContainer,
