@@ -33,11 +33,16 @@ export default {
 		return state.status.isDeletingUser;
 	},
 
+	isFetchingUser: (state) => {
+		return state.status.isFetchingUser;
+	},
+
 	isExecutingUserCommand: (_, getters) => {
 		return getters['progressions/isExecutingUserProgressionCommand'] ||
 			getters.isCreatingUser ||
 			getters.isCreatingUserWithCurriculum ||
 			getters.isDeletingUser ||
+			getters.isFetchingUser ||
 			getters.isUpdatingUser;
 	},
 
@@ -57,11 +62,6 @@ export default {
 	// TODO : Delete this getter when the code will have been adjusted
 	userSelectedUsername: (state) => {
 		return state.selectedUser.username;
-	},
-
-	// TODO : Delete this getter when the code will have been adjusted
-	userSelectedCurriculum: (state) => {
-		return state.selectedUser.curriculum;
 	},
 
 	usersSummaryList: (state) => {

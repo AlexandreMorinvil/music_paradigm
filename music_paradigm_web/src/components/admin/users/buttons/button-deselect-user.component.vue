@@ -1,6 +1,6 @@
 <template>
     <TemplateButtonComponent v-on:click="handleButtonPress" color="turquoise" :isActive="isButtonActive"
-        v-bind="$attrs" text="Deselect User" />
+        v-bind="$attrs" text="Deselect" />
 </template>
 
 <script>
@@ -14,8 +14,10 @@ export default {
         TemplateButtonComponent,
     },
     computed: {
+        ...mapGetters('managementUsers', ['isExecutingUserCommand']),
         ...mapGetters('managementUsers/selection', ['hasSelectedUser']),
         isButtonActive() {
+            if (this.isExecutingUserCommand) return false;
             return this.hasSelectedUser;
         },
     },

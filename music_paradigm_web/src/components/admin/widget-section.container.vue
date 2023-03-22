@@ -1,7 +1,7 @@
 <template>
     <div class="widget-section">
         <div class="title-area">
-            <div class="title-left-side ">
+            <div class="title-left-side">
                 <slot name="topLeft" />
             </div>
             <h3 class="title">{{ title }}</h3>
@@ -54,6 +54,11 @@ export default {
     display: flex;
     justify-content: left;
 }
+
+.title-left-side > button,
+.title-right-side > button {
+    width: 135px;
+} 
 
 .area-buttons {
     display: flex;

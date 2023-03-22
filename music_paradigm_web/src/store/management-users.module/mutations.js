@@ -26,6 +26,14 @@ export default {
 		state.status.isDeletingUser = false;
 	},
 	
+	indicateFetchingUser(state) {
+		state.status.isFetchingUser = true;
+	},
+
+	indicateFetchingUserEnd(state) {
+		state.status.isFetchingUser = false;
+	},
+
 	indicateFetchingUserList(state) {
 		state.status.isFetchingUsersSummaryList = true;
 	},

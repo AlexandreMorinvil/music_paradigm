@@ -1,6 +1,6 @@
 <template>
     <TemplateButtonComponent v-on:click="handleButtonPress" color="blue" :isActive="isButtonActive"
-        :isLoading="isButtonLoading" v-bind="$attrs" text="Update User" />
+        :isLoading="isButtonLoading" v-bind="$attrs" text="Refresh" />
 </template>
 
 <script>
@@ -13,28 +13,22 @@ export default {
         TemplateButtonComponent,
     },
     computed: {
-        ...mapGetters('managementUsers', ['hasEditedUser', 'isExecutingUserCommand', 'isUpdatingUser']),
+        ...mapGetters('managementUsers', ['isExecutingUserCommand', 'isFetchingUser']),
         ...mapGetters('managementUsers/edition', ['userEditionUser']),
         ...mapGetters('managementUsers/selection', ['userSelectionId', 'hasSelectedUser']),
         isButtonActive() {
-            if (!this.isUpdatingUser && this.isExecutingUserCommand) return false; // Has other user command running
-            return this.hasSelectedUser && this.hasEditedUser;
+            if (!this.isFetchingUser && this.isExecutingUserCommand) return false; // Has other user command running
+            return this.hasSelectedUser;
         },
         isButtonLoading() {
-            return this.isUpdatingUser;
+            return this.isFetchingUser;
         },
     },
     methods: {
-        ...mapActions('managementUsers', ['updateUser']),
+        ...mapActions('managementUsers', ['refreshSelectedUserProfile']),
         handleButtonPress() {
             if (!this.isButtonActive) return;
-            const answer = window.confirm('Are your sure you want to edit the user?');
-            if (answer) {
-                this.updateUser({
-                    id: this.userSelectionId,
-                    user: this.userEditionUser,
-                });
-            }
+            this.refreshSelectedUserProfile();
         },
     }
 };

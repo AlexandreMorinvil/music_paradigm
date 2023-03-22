@@ -10,7 +10,7 @@ router.delete('/:id',                           jwtAuthorize(role.admin), _delet
 router.get('/',                                 jwtAuthorize(role.admin), getAll);
 router.get('/current',                                                    getCurrent);
 router.get('/existing-groups-list',             jwtAuthorize(role.admin), getExistingUserGroupsList);
-router.get('/get-by-id/:id',                    jwtAuthorize(role.admin), getById);
+router.get('/get-by-id/:id',                    jwtAuthorize(role.admin), getUserById);
 
 router.post('/create',                          jwtAuthorize(role.admin), createUser);
 router.post('/create-with-curriculum',          jwtAuthorize(role.admin), createUserWithCurriculum);
@@ -29,15 +29,15 @@ function getAll(req, res, next) {
 
 function getCurrent(req, res, next) {
     const userId = req.user.sub;
-    userService.getById(userId)
+    userService.getUserById(userId)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
 }
 
-function getById(req, res, next) {
+function getUserById(req, res, next) {
     const userId = req.params.id;
-    userService.getById(userId)
+    userService.getUserById(userId)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());

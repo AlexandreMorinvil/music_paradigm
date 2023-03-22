@@ -10,7 +10,7 @@ module.exports = {
     createUser,
     createUserWithCurriculum,
     getAll,
-    getById,
+    getUserById,
     getExistingUserGroupsList,
     deleteUser,
     updateUserProfile,
@@ -55,7 +55,7 @@ async function getAll() {
     }
 }
 
-async function getById(userId) {
+async function getUserById(userId) {
     try {
         const user = await UserModel.findById(userId);
         const lastProgression = await ProgressionModel.getLastProgressionOfUser(userId);

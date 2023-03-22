@@ -5,13 +5,14 @@ export default {
 		isCreatingUser: false,
 		isCreatingUserWithCurriculum: false,
 		isDeletingUser: false,
+		isFetchingUser: false,
 		isFetchingUsersSummaryList: false,
 		isGettingExistingUserGroupsList: false,
 		isUpdatingUser: false,
 	},
 
 	// Selected user information
-	selectedUser: new User(),
+	selectedUser: new User(), // TODO: To delete once the code will have been adjusted 
 
 	// Users list
 	usersSummaryList: [],

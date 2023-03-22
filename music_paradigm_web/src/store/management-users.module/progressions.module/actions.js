@@ -88,7 +88,7 @@ export default {
 
 	// API actions
 	refreshSelectedUserProgression({ commit, dispatch, rootGetters }) {
-		return usersApi.getById(rootGetters['users/userSelectedId']).then(
+		return usersApi.getUserById(rootGetters['users/userSelectedId']).then(
 			(selectedUserDetails) => {
 				commit('setSelectedUserProgression', selectedUserDetails.progression);
 				commit('setSelectedUserProgressionSummary', selectedUserDetails.progressionSessionsStatus);

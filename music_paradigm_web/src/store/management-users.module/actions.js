@@ -86,15 +86,15 @@ export default {
 			});
 	},
 
-	getSelectedUser({ commit, dispatch }, userId) {
-		return usersApi.getById(userId).then(
+	fetchAndSelectUserById({ commit, dispatch }, userId) {
+		return usersApi.getUserById(userId).then(
 			(selectedUserDetails) => {
 				const { user, ...progressionDetails } = selectedUserDetails;
 				dispatch('setSelectedUser', user);
+				dispatch('progressions/setSelectedUserProgression', progressionDetails);
 
 				// TODO : Delete once the code will have been updated
 				commit('setSelectedUser', user);
-				dispatch('progressions/setSelectedUserProgression', progressionDetails);
 			},
 			(error) => {
 				dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
@@ -138,6 +138,23 @@ export default {
 			)
 			.finally(() => {
 				commit('indicateIsUpdatingUserEnd');
+			});
+	},
+
+	refreshSelectedUserProfile({ commit, dispatch, getters }) {
+		commit('indicateFetchingUser');
+		return usersApi
+			.getUserById(getters['selection/userSelectionId'])
+			.then(
+				({ user }) => {
+					dispatch('setSelectedUser', user);
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `User profile refresh failed : ${error.message}`, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateFetchingUserEnd');
 			});
 	},
 

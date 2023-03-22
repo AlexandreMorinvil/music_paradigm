@@ -1,6 +1,6 @@
 <template>
     <TemplateButtonComponent v-on:click="handleButtonPress" color="green" :isActive="isButtonActive"
-        :isLoading="isButtonLoading" text="Create User" />
+        :isLoading="isButtonLoading" v-bind="$attrs" text="Create User" />
 </template>
 
 <script>
