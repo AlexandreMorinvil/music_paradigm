@@ -5,10 +5,7 @@ module.exports = class ProgressionSessionDetailed {
         const parameters = JSON.parse(JSON.stringify(progressionSessionsDetailed || {}));
 
         // Id of the pregression session
-        this.identifier = new ProgressionSessionIdentifier(
-            parameters.associativeId ?? null,
-            parameters.associativeIdOrdinalNumber ?? null,
-        );
+        this.identifier = new ProgressionSessionIdentifier(parameters ?? {});
         this.associativeId = parameters.associativeId ?? null; // TODO: Remove and only use the identifier
         this.associativeIdOrdinalNumber = parameters.associativeIdOrdinalNumber ?? null; // TODO: Remove and only use the identifier
 

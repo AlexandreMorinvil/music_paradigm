@@ -21,6 +21,10 @@ export default {
 		return selectedSession || new ProgressionSessionDetailed();
 	},
 
+	progressionSessionSelectionAdjustments: (_, getters) => {
+		return getters.progressionSessionSelection.getAdjustments();
+	},
+
 	progressionSessionSelectionAdjustmentAdditionalCompletionsRequired: (_, getters) => {
 		return getters.progressionSessionSelection.adjustmentAdditionalCompletionsRequired;
 	},
@@ -63,6 +67,10 @@ export default {
 
 	progressionSessionSelectionCompletionDates: (_, getters) => {
 		return getters.progressionSessionSelection.completionDates || [];
+	},
+
+	progressionSessionSelectionIdentifier: (_, getters) => {
+		return getters.progressionSessionSelection.identifier;
 	},
 	
 	progressionSessionSelectionStartDates: (_, getters) => {

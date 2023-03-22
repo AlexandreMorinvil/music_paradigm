@@ -1,4 +1,8 @@
 export default {
+	progressionSessionEditionAdjustments: (state) => {
+		return state.editionUserProgression.getAdjustments();
+	},
+
 	progressionSessionEditionAdjustmentAdditionalCompletionsRequired: (state) => {
 		return state.editionUserProgression.adjustmentAdditionalCompletionsRequired;
 	},

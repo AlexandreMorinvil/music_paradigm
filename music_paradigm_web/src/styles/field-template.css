@@ -6,6 +6,14 @@
     outline: none;
 }
 
-.edited-text {
+.edited-text,
+.edited-input {
+    color: var(--color-edited-text);
+    outline-color: var(--color-edited-text);
+    outline-style: double;
+}
+
+.selected-text,
+.selected-input {
     color: var(--color-edited-text);
 }

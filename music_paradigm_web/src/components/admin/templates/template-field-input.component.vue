@@ -1,12 +1,7 @@
 <template>
 	<div class="template-field-input-area">
-		<input 
-			class="input-spacing" 
-			:class="{ 'edited-text': isEdited }"
-			:list="hasDataList ? datalistReference : ''"
-			:value="value" v-on:input="(event) => edit(event.target.value)" 
-			v-bind="inputAttributes"
-		/>
+		<input class="input-spacing" :class="{ 'edited-text': isEdited }" :list="hasDataList ? datalistReference : ''"
+			:value="value" v-on:input="(event) => edit(event.target.value)" v-bind="inputAttributes" />
 		<datalist :id="datalistReference">
 			<option v-for="(data, index) in datalist" :key="index" :value="data" />
 		</datalist>
@@ -72,6 +67,10 @@ export default {
 </script>
 
 <style scoped>
+input {
+	width: 100%;
+}
+
 .template-field-input-area {
 	display: grid;
 	grid-template-columns: 1fr;

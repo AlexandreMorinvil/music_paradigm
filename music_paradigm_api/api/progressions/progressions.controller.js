@@ -4,10 +4,12 @@ const jwtAuthorize = require('jwt/jwt.authorization');
 const role = require('_helpers/role');
 const progressionsService = require('./progressions.service');
 
+const ProgressionSessionIdentifier = require('modules/progressions/class/progression-session-identifier.class');
+
 // routes
-router.post('/assign-curriculum/',                  jwtAuthorize(role.admin), assignCurriculum);
-router.post('/assign-parameters/:progressionId',    jwtAuthorize(role.admin), assignParameters);
-router.post('/assign-adjustments/:progressionId',   jwtAuthorize(role.admin), assignAdjustments);
+router.post('/assign-curriculum/',                          jwtAuthorize(role.admin), assignCurriculum);
+router.post('/assign-parameters/:progressionId',            jwtAuthorize(role.admin), assignParameters);
+router.post('/assign-session-adjustments/:progressionId',   jwtAuthorize(role.admin), assignSessionAdjustments);
 
 module.exports = router;
 
@@ -38,14 +40,15 @@ function assignParameters(req, res, next) {
         .finally(() => next());
 }
 
-function assignAdjustments(req, res, next) {
+function assignSessionAdjustments(req, res, next) {
 
     // Parameters
-    const userId = req.params.id;
-    const assignedAdjustments = req.body;
+    const progressionId = req.params.progressionId;
+    const sessionIdentifier = new ProgressionSessionIdentifier(req.body.sessionIdentifier); 
+    const adjustments = req.body.adjustments;
 
     // Processing
-    progressionsService.assignAdjustments(userId, assignedAdjustments)
+    progressionsService.assignSessionAdjustments(progressionId, sessionIdentifier, adjustments)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());

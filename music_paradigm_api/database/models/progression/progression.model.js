@@ -6,17 +6,20 @@ const progressionGetters = require('./progression.getters.js');
 
 schema.set('toJSON', { virtuals: true });
 
-
 // Static methods
+schema.statics.assignSessionAdjustmentsToProgression = async function (progressionId, sessionIdentifier, adjustments) {
+    const progression = await this.findById(progressionId);
+    return progression.assignSessionAdjustments(sessionIdentifier, adjustments);
+};
+
 schema.statics.assignParametersToProgression = async function (progressionId, assignedParameters) {
     const progression = await this.findById(progressionId);
     return progression.assignParameters(assignedParameters);
 };
 
-schema.statics.createProgression = async function (userId, curriculumId, parameters = null, adjustments = null) {
+schema.statics.createProgression = async function (userId, curriculumId, parameters = null) {
     const newProgression = new this({ userReference: userId, curriculumReference: curriculumId });
     if (parameters) progressionSetters.setParameters(newProgression, parameters);
-    if (adjustments) progressionSetters.setAdjustements(newProgression, adjustments);
     return newProgression.save();
 };
 
@@ -44,8 +47,8 @@ schema.statics.getProgressionAndCurriculumById = async function (progressionId) 
 };
 
 // Instance methods
-schema.methods.assignAdjustments = async function (adjustments) {
-    if (adjustments) progressionSetters.setAdjustements(this, adjustments);
+schema.methods.assignSessionAdjustments = async function (sessionIdentifier, adjustments) {
+    progressionSetters.setSessionAdjustements(this, sessionIdentifier, adjustments);
     return this.save();
 };
 

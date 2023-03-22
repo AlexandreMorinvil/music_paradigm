@@ -59,4 +59,17 @@ export class ProgressionSessionDetailed {
     get associativeIdOrdinalNumber() {
         return this.identifier.associativeIdOrdinalNumber;
     }
+
+    getAdjustments() {
+        return {
+            adjustmentDelayInDays:                      this.adjustmentDelayInDays,
+            adjustmentConsiderCompleted:                this.adjustmentConsiderCompleted,
+            adjustmentAdditionalCompletionsRequired:    this.adjustmentAdditionalCompletionsRequired,
+            adjustmentPreponeAvailability:              this.adjustmentPreponeAvailability,
+            adjustmentOverlookUniqueInDays:             this.adjustmentOverlookUniqueInDays,
+            adjustmentImposeReadyToBeDone:              this.adjustmentImposeReadyToBeDone,
+            adjustmentBlockAvailability:                this.adjustmentBlockAvailability,
+            adjustmentRemoveCompletionLimit:            this.adjustmentRemoveCompletionLimit,
+        }
+    }
 }

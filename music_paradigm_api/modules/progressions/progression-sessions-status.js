@@ -4,7 +4,6 @@ const Progression = require('database/db').Progression;
 const User = require('database/db').User;
 
 const ProgressionSessionDetailed = require('modules/progressions/class/progression-session-detailed.class');
-const ProgressionSessionIdentifier = require('modules/progressions/class/progression-session-identifier.class');
 const ProgressionSessionsStatus = require('modules/progressions/class/progression-session-status.class');
 
 const {
@@ -154,7 +153,7 @@ async function generateProgressionSessionsStatus(curriculum, progression) {
 
         // Attributes that are relative to the previous experiments of the chain
         progressionSessionDetailed.isDelayedByPreviousSequential = hasBlockingIncompleteInSequence;
-        progressionSessionDetailed.isDelayedByPreviousUniqueInDay = !mustIgnoreBlockingUniqueInDay && hasBlockingUniqueInDayDoneToday;
+        progressionSessionDetailed.isDelayedByPreviousUniqueInDay = hasBlockingUniqueInDayDoneToday;
         progressionSessionDetailed.isAvailable = getIsAvailableStatus(
             progressionSessionDetailed.wouldBeFree,
             progressionSessionDetailed.isDelayedByPreviousSequential,
@@ -183,7 +182,7 @@ async function generateProgressionSessionsStatus(curriculum, progression) {
 
         hasBlockingUniqueInDayDoneToday = updateHasBlockingUniqueInDayDoneToday(
             hasBlockingUniqueInDayDoneToday,
-            curriculumExperiment.isUniqueInDay,
+            !mustIgnoreBlockingUniqueInDay && curriculumExperiment.isUniqueInDay,
             wasTodayCompleted
         );
     }

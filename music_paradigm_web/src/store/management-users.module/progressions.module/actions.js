@@ -98,24 +98,4 @@ export default {
 			},
 		);
 	},
-
-	updateAdjustments({ commit, dispatch }, { userId, assignedAdjustments }) {
-		commit('indicateUpdateAdjustmentsRequest');
-		return usersApi
-			.assignAdjustments(userId, assignedAdjustments)
-			.then(
-				(updatedUserDetails) => {
-					commit('setSelectedUserProgression', updatedUserDetails.progression);
-					commit('setSelectedUserProgressionSummary', updatedUserDetails.progressionSessionsStatus);
-					dispatch('alert/setSuccessAlert', 'Adjustments update sucessful', { root: true });
-					dispatch('users/fetchAllUsersSummary', null, { root: true });
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', error.message, { root: true });
-				},
-			)
-			.finally(() => {
-				commit('indicateUpdateAdjustmentsRequestEnd');
-			});
-	},
 };

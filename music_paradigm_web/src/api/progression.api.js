@@ -2,18 +2,21 @@ import { authHeader, url } from '@/_helpers';
 import { defaultResponseHandler } from './response-handler';
 
 export const progressionsApi = {
-	assignAdjustments,
 	assignCurriculum,
 	assignParameters,
+	assignSessionAdjustments,
 };
 
-function assignAdjustments(userId, adjustments) {
+function assignSessionAdjustments(progressionId, sessionIdentifier, adjustments) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(adjustments),
+		body: JSON.stringify({
+			sessionIdentifier: sessionIdentifier,
+			adjustments: adjustments,
+		}),
 	};
-	return fetch(url.progressions('assign-adjustments/' + userId), requestOptions).then(defaultResponseHandler);
+	return fetch(url.progressions(['assign-session-adjustments', progressionId]), requestOptions).then(defaultResponseHandler);
 }
 
 function assignCurriculum({ userId, curriculumId, assignedParameters }) {
@@ -31,5 +34,5 @@ function assignParameters(progressionId, assignedParameters) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ assignedParameters }),
 	};
-	return fetch(url.progressions('assign-parameters/' + progressionId), requestOptions).then(defaultResponseHandler);
+	return fetch(url.progressions(['assign-parameters', progressionId]), requestOptions).then(defaultResponseHandler);
 }

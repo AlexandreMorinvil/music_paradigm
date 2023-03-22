@@ -1,6 +1,24 @@
-import { taskStateMarkersApi } from '@/api';
+import { progressionsApi, taskStateMarkersApi } from '@/api';
 
 export default {
+	assignSessionAdjustments({ commit, dispatch }, { progressionId, sessionIdentifier, adjustments }) {
+		commit('indicateAssigningAdjustments');
+		return progressionsApi
+			.assignSessionAdjustments(progressionId, sessionIdentifier, adjustments)
+			.then(
+				({ progressionSessionsStatus }) => {
+					dispatch('setProgressionSessionsStatus', progressionSessionsStatus);
+					dispatch('alert/setSuccessAlert', 'Session adjustments update sucessful', { root: true });
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateAssigningAdjustmentsEnd');
+			});
+	},
+	
 	deleteTaskStateMarker({ commit, dispatch }, { progressionId, associativeId }) {
 		commit('indicateDeletingTaskStateMarker');
 		return taskStateMarkersApi

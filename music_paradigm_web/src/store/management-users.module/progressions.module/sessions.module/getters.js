@@ -1,8 +1,21 @@
 import { ProgressionSessionIdentifier } from "@/modules/progressions";
+import _isEqual from 'lodash/isEqual';
+import _omitBy from 'lodash/omitBy';
 
 export default {
+	hasEditedProgressionSessionAdjustments: (_, getters) => {
+		return !_isEqual(
+			_omitBy(getters['selection/progressionSessionSelectionAdjustments']),
+			_omitBy(getters['edition/progressionSessionEditionAdjustments']),
+		);
+	},
+
 	hasProgressionSessionsLinkedForSession: (_, getters) => (session) => {
 		return getters.progressionSessionsLinkedForSession(session).length > 1;
+	},
+
+	isAssigningSessionAdjustments: (state) => {
+		return state.status.isAssigningSessionAdjustments;
 	},
 
 	isDeletingTaskStateMarker: (state) => {
