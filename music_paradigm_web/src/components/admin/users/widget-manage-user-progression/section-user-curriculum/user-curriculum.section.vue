@@ -35,6 +35,7 @@ export default {
         WidgetSectionContainer,
     },
     computed: {
+        ...mapGetters('managementUsers', ['hasEditedUserUsername']),
         ...mapGetters('managementUsers/selection', ['hasSelectedUser']),
         ...mapGetters('managementUsers/progressions', [
             'hasEditedUserProgressionAssignedParameters',
@@ -54,7 +55,8 @@ export default {
                 this.hasEditedUserProgressionAssignedParameters;
         },
         hasCreateUserWithCurriculumButton() {
-            return !this.hasSelectedUser && this.hasUserProgressionEditionCurriculumReference;
+            return this.hasUserProgressionEditionCurriculumReference &&
+                (!this.hasSelectedUser || this.hasEditedUserUsername);
         }
     }
 };
