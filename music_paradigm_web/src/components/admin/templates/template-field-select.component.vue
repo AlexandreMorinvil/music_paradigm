@@ -1,20 +1,29 @@
 <template>
-	<select class="input-spacing" :class="{
-		'edited-text': isEdited,
-		'placeholder-option': !isEdited && value === null
-	}" :value="valueConsideringEmpties" v-on:change="(event) => edit(event.target.value)" v-bind="selectAttributes">
-		<option v-if="isEmptyAccepted" class='placeholder-option' :value="NO_VALUE"> {{ placeholder }} </option>
-		<option v-for="(element, index) in options" :key="index" :value="getOptionValueFromElement(element)"
-			class='valid-option'>
-			{{ getDisplayedValueFromElement(element) }}
-		</option>
-	</select>
+	<div class="template-field-input-area">
+		<select class="input-spacing" :class="{
+			'edited-text': isEdited,
+			'placeholder-option': !isEdited && value === null
+		}" :value="valueConsideringEmpties" v-on:change="(event) => edit(event.target.value)" v-bind="selectAttributes"
+			:disabled="isDissabled">
+			<option v-if="isEmptyAccepted" class='placeholder-option' :value="NO_VALUE"> {{ placeholder }} </option>
+			<option v-for="(element, index) in options" :key="index" :value="getOptionValueFromElement(element)"
+				class='valid-option'>
+				{{ getDisplayedValueFromElement(element) }}
+			</option>
+		</select>
+		<LoaderSuspensionPoints v-if="isLoading" class="select-loader" />
+	</div>
 </template>
 
 <script>
 import '@/styles/field-template.css';
 
+import LoaderSuspensionPoints from '../../visual-helpers/loader-suspension-points.vue'
+
 export default {
+	components: {
+		LoaderSuspensionPoints
+	},
 	emits: ['edit'],
 	props: {
 		expectedValue: {
@@ -34,6 +43,10 @@ export default {
 			default: true,
 		},
 		isEveryValueNew: {
+			type: Boolean,
+			default: false,
+		},
+		isLoading: {
 			type: Boolean,
 			default: false,
 		},
@@ -69,6 +82,9 @@ export default {
 		hasExpectedValue() {
 			return this.expectedValue !== undefined;
 		},
+		isDissabled() {
+			return this.isLoading;
+		},
 		isEdited() {
 			if (this.isEveryValueNew) return true;
 			return this.hasExpectedValue && this.value !== this.expectedValue;
@@ -91,11 +107,28 @@ export default {
 </script>
 
 <style scoped>
+select {
+	width: 100%;
+}
+.template-field-input-area {
+	position: relative;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr;
+}
 .placeholder-option {
 	color: grey;
 }
 
 .valid-option {
 	color: black;
+}
+
+/* Loader */
+.select-loader {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 </style>
