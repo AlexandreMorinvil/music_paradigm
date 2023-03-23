@@ -1,6 +1,7 @@
 <template>
 	<div class="template-field-input-area">
-		<span class="output-spacing" v-bind="ouputAttributes"> {{ displayedValue }}
+		<span class="output-spacing" :class="{ 'selected-text': showAsSelected }" v-bind="ouputAttributes"> {{
+			displayedValue }}
 			<span v-if="hasComplementaryValue" class="complementary-value">{{ displayedComplementaryValue }}</span>
 		</span>
 	</div>
@@ -35,6 +36,10 @@ export default {
 				return {}
 			}
 		},
+		mustHighlightAsSelected: {
+			type: Boolean,
+			default: false,
+		},
 		value: null,
 		complementaryValue: null,
 	},
@@ -52,6 +57,9 @@ export default {
 			return (this.hasValue || this.allowLoneComplementaryValue) &&
 				this.complementaryValue !== null &&
 				this.complementaryValue !== undefined;
+		},
+		showAsSelected() {
+			return this.mustHighlightAsSelected;
 		},
 	}
 };

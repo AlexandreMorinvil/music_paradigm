@@ -15,5 +15,5 @@
 
 .selected-text,
 .selected-input {
-    color: var(--color-edited-text);
+    color: var(--color-selected-text);
 }

@@ -1,7 +1,7 @@
 <template>
 	<TemplateFieldsetComponent>
 		<TemplateFieldLabelComponent text="User" />
-		<TemplateFieldOutputComponent :value="username" />
+		<TemplateFieldOutputComponent :value="username" mustHighlightAsSelected />
 
 		<TemplateFieldLabelComponent text="Creation" />
 		<TemplateFieldOutputComponent :value="creationDate" />
