@@ -1,0 +1,22 @@
+<template>
+	<label class="form-label"> {{ text }} </label>
+</template>
+
+<script>
+export default {
+	props: {
+		text: {
+			type: String,
+			default: '',
+		}
+	}
+};
+</script>
+
+<style scoped>
+.form-label {
+	width: 400px;
+	text-align: right;
+	padding-right: 25px;
+}
+</style>

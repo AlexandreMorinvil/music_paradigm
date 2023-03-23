@@ -16,13 +16,13 @@ import { keyboard } from './keyboard.module';
 import { log } from './log.module';
 import { logs } from './logs.module';
 import { managementCurriculums } from './management-curriculums.module';
+import { managementUsers } from './management-users.module';
 import { piano } from './piano.module';
 import { pvt } from './pvt.module';
 import { question } from './question.module';
 import { session } from './session.module';
 import { soundGenerator } from './sound-generator.module';
 import { survey } from './survey.module';
-import { users } from './users.module';
 import { writting } from './writting.module';
 
 Vue.use(Vuex);
@@ -43,13 +43,13 @@ export default new Vuex.Store({
 		log,
 		logs,
 		managementCurriculums,
+		managementUsers,
 		piano,
 		pvt,
 		question,
 		session,
 		soundGenerator,
 		survey,
-		users,
 		writting,
 	},
 });

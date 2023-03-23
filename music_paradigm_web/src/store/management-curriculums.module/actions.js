@@ -5,14 +5,14 @@ export default {
 	createCurriculum({ commit, dispatch }, curriculum) {
 		commit('indicateCreateRequest');
 		return curriculumsApi
-			.create(curriculum)
+			.createCurriculum(curriculum)
 			.then(
 				(createdCurriculum) => {
 					dispatch('setSelectedCurriculum', createdCurriculum);
 					dispatch('alert/setSuccessAlert', 'Curriculum creation sucessful', {
 						root: true,
 					});
-					dispatch('fetchAllCurriculumHeaders');
+					dispatch('fetchCurriculumSummariesList');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
@@ -23,15 +23,15 @@ export default {
 			});
 	},
 
-	deleteCurriculum({ commit, dispatch }, id) {
+	deleteCurriculum({ commit, dispatch }, curriculumId) {
 		commit('indicateDeleteRequest');
 		return curriculumsApi
-			.delete(id)
+			.deleteCurriculum(curriculumId)
 			.then(
 				() => {
 					dispatch('unsetSelectedCurriculum');
 					dispatch('alert/setSuccessAlert', 'Currirulum deletion sucessful', { root: true });
-					dispatch('fetchAllCurriculumHeaders');
+					dispatch('fetchCurriculumSummariesList');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
@@ -42,13 +42,13 @@ export default {
 			});
 	},
 
-	fetchAllCurriculumHeaders({ commit, dispatch }) {
+	fetchCurriculumSummariesList({ commit, dispatch }) {
 		commit('indicateFetchingCurriculumList');
 		return curriculumsApi
-			.getListAllHeaders()
+			.getCurriculumSummariesList()
 			.then(
-				(curriculumsList) => {
-					commit('setHeadersList', curriculumsList);
+				(curriculumSummariesList) => {
+					commit('setCurriculumSummariesList', curriculumSummariesList);
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
@@ -59,8 +59,8 @@ export default {
 			});
 	},
 
-	selectCurriculum({ dispatch }, id) {
-		return curriculumsApi.getById(id).then(
+	selectCurriculum({ dispatch }, curriculumId) {
+		return curriculumsApi.getCurriculumById(curriculumId).then(
 			(curriculum) => {
 				dispatch('setSelectedCurriculum', curriculum);
 			},
@@ -78,14 +78,14 @@ export default {
 	updateCurriculum({ commit, dispatch }, { id, curriculum }) {
 		commit('indicateUpdateRequest');
 		return curriculumsApi
-			.update(id, curriculum)
+			.updateCurriculum(id, curriculum)
 			.then(
 				(updatedCurriculum) => {
 					dispatch('setSelectedCurriculum', updatedCurriculum);
 					dispatch('alert/setSuccessAlert', 'Curriculum update sucessful', {
 						root: true,
 					});
-					dispatch('fetchAllCurriculumHeaders');
+					dispatch('fetchCurriculumSummariesList');
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });

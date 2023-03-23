@@ -156,7 +156,7 @@ export default {
 			return this.isExclusionModeActivated ? 'Cancel' : 'Exclusion';
 		},
 		refreshButtonText() {
-			return this.hasSelectedLog ? 'Unselect Log' : 'Refresh';
+			return this.hasSelectedLog ? 'Deselect Log' : 'Refresh';
 		},
 		selectedLogId() {
 			return this.selectedUserThoroughLog._id || null;
@@ -217,14 +217,14 @@ export default {
 		},
 		toggleExclusionMode() {
 			if (this.isDownloading) return;
-			this.unselectLog();
+			this.deselectLog();
 			this.isExclusionModeActivated = !this.isExclusionModeActivated;
 			if (this.isExclusionModeActivated) this.isSelectionModeActivated = false;
 			this.emptySpecificLogsRules();
 		},
 		toggleSelectionMode() {
 			if (this.isDownloading) return;
-			this.unselectLog();
+			this.deselectLog();
 			this.isSelectionModeActivated = !this.isSelectionModeActivated;
 			if (this.isSelectionModeActivated) this.isExclusionModeActivated = false;
 			this.emptySpecificLogsRules();
@@ -248,7 +248,7 @@ export default {
 					this.isFetchingSpecificLog = false;
 				});
 		},
-		unselectLog() {
+		deselectLog() {
 			this.clearSelectedUserThoroughLog();
 		},
 		cleanUp() {

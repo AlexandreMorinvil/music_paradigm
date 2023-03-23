@@ -1,7 +1,6 @@
 module.exports = {
     fixSpaces,
     capitalizeFirstLetters,
-    isEmailString
 };
 
 function fixSpaces(str) {
@@ -14,9 +13,4 @@ function capitalizeFirstLetters(str) {
         splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
     }
     return splitStr.join(' ');
-}
-
-function isEmailString(email) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
 }

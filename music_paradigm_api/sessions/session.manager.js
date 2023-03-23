@@ -2,6 +2,7 @@ const User = require('database/db').User;
 const Curriculum = require('database/db').Curriculum;
 const Experiment = require('database/db').Experiment;
 const ExperimentMarker = require('database/db').ExperimentMarker;
+const ProgressionModel = require('database/db').Progression;
 
 module.exports = {
     getSessionInformation,
@@ -16,7 +17,7 @@ module.exports = {
 async function getSessionInformation(userId, associativeId, associativeIdOrdinalNumber) {
 
     const user = await User.findById(userId);
-    const progression = await User.getLastProgression(userId);
+    const progression = await ProgressionModel.getActiveProgressionByUserId(userId);
     const curriculum = await Curriculum.findById(progression.curriculumReference);
     const experimentDoneInProgression = progression.getExperimentAssociated(associativeId, associativeIdOrdinalNumber) || {};
     const experimentPlanedInCurriculum = curriculum.getExperimentAssociated(associativeId);
@@ -62,7 +63,7 @@ async function getSessionInformation(userId, associativeId, associativeIdOrdinal
 
 async function initializeSession(userId, associativeId, associativeIdOrdinalNumber) {
 
-    const progression = await User.getLastProgression(userId);
+    const progression = await ProgressionModel.getActiveProgressionByUserId(userId);
     const curriculum = await Curriculum.findById(progression.curriculumReference);
     const experimentPlanedInCurriculum = await curriculum.getExperimentAssociated(associativeId);
     let experimentDoneInProgression = progression.getExperimentAssociated(associativeId, associativeIdOrdinalNumber);
@@ -97,7 +98,7 @@ async function initializeSession(userId, associativeId, associativeIdOrdinalNumb
 
 async function concludeSession(userId, associativeId, associativeIdOrdinalNumber, isInTimeUp) {
 
-    const progression = await User.getLastProgression(userId);
+    const progression = await ProgressionModel.getActiveProgressionByUserId(userId);
     const curriculum = await Curriculum.findById(progression.curriculumReference);
     const experimentPlanedInCurriculum = await curriculum.getExperimentAssociated(associativeId);
     let experimentDoneInProgression = progression.getExperimentAssociated(associativeId, associativeIdOrdinalNumber);
@@ -129,8 +130,8 @@ async function concludeSession(userId, associativeId, associativeIdOrdinalNumber
         progression.lastProgressionDate = Date.now();
 
     // Remove the experiment marker if the experiment was completely finished (keep it if it was ended through a timeout)
-    if (!isInTimeUp) await ExperimentMarker.deleteMarker(progression._id, associativeId);
-    else await ExperimentMarker.forgetTimeLeft(progression._id, associativeId);
+    if (!isInTimeUp) await ExperimentMarker.deleteTaskStateMarker(progression._id, associativeId);
+    else await ExperimentMarker.resetSessionTimer(progression._id, associativeId);
 
     // Save changes
     return progression.save();
@@ -139,7 +140,7 @@ async function concludeSession(userId, associativeId, associativeIdOrdinalNumber
 async function saveSessionState(userId, associativeId, cursor, state, timeIndicated, progressRatio) {
 
     // Update or create the marker
-    const progression = await User.getLastProgression(userId);
+    const progression = await ProgressionModel.getActiveProgressionByUserId(userId);
     if (!progression) return;
     const experimentMarker = await ExperimentMarker.findMarker(progression._id, associativeId);
 

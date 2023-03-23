@@ -1,30 +1,29 @@
 const mongoose = require('mongoose');
 schema = require('./user.middleware');
 
-const curriculumGetters = require('curriculums/curriculums.getters');
-const progressionGetters = require('progressions/progressions.getters');
-const progressionAssociation = require('progressions/progressions-association.service');
+const { SECRET_PASSWORD_PLACEHOLDER } = require('modules/users/user-password');
 
 const roles = require('_helpers/role');
 const bcrypt = require('bcryptjs');
 
 schema.statics.authenticate = async function (username, password) {
-    // Fetch user in the database
+    // Get the user from the database
     const user = await this.findOne({ username });
     if (!user) throw new Error();
 
     // Validate password
     if (!bcrypt.compareSync(password, user.passwordHash)) throw new Error();
-    const userWithoutPassword = user.toObject();
-    delete userWithoutPassword.password;
 
-    // Return the user without the password hash
-    return userWithoutPassword;
+    // Return the user
+    user.indicateLogin(user._id);
+    return user.toObject();
 };
 
-schema.statics.create = async function (userParameters) {
-    const user = await new model(userParameters);
-    return user.save();
+schema.statics.create = async function (user) {
+    const { _id, id, ...userToCreate } = user;
+    userToCreate.createdAt = Date.now();
+    const userCreated = new model(userToCreate);
+    return userCreated.save();
 };
 
 schema.statics.delete = async function (userId) {
@@ -32,11 +31,16 @@ schema.statics.delete = async function (userId) {
     return await user.remove();
 };
 
-schema.statics.isAdmin = async function (userId) {
-    const user = await this.findById(userId);
-    return user.role === roles.admin;
-};
+schema.statics.deleteUserLastProgression = async function (userId) {
+    const user = await this.findOne({ _id: userId });
+    if (user) return user.deleteLastProgression();
+    else return null;
+}
 
+schema.statics.getExistingUserGroupsList = async function () {
+    const groupsList = await this.distinct('group');
+    return groupsList;
+};
 
 schema.statics.getLastProgression = async function (userId) {
     const user = await this.findOne({ _id: userId });
@@ -44,106 +48,40 @@ schema.statics.getLastProgression = async function (userId) {
     else return null;
 };
 
-schema.statics.getCurriculumAndProgressionObject = async function (userId) {
-    const curriculumAndProgression = await this
-        .findById(userId, { curriculum: 1, progressions: { $slice: -1 } })
-        .populate({ path: 'curriculum progressions' });
-    const { curriculum, progressions } = curriculumAndProgression;
-    return {
-        curriculum: curriculum ? curriculum.toObject() : null,
-        progression: progressions[0] ? progressions[0].toObject() : null,
-    }
+schema.statics.indicateLoginToUserById = async function (userId) {
+    return this.findOneAndUpdate({ _id: userId }, { lastLogin: Date.now() });
 };
 
-
-/**
- * @return {Array} 
- * [
- *     {
- *         username: String,
- *         email: String,
- *         role: String,
- *         tags: [String],
- *         firstName: String,
- *         middleName: String,
- *         lastName: String,
- *         
- *         curriculumTitle: String,
- *         
- *         progressionStartDate: Date,
- *         progressionStartTime: Number,
- *         progressionLastAdvancedDate: Date,
- *         progressionLastAdvancedTime: Number,
- *         
- *         wasProgressionTotalNumberAdjusted: Boolean,
- *         reachedExperimentTitle: String,
- *         progressionTotalNumber: Number,
- *         curriculumTotalNumber: Number,
- *         
- *         lastLogin: Date,
- *         createdAt: Date,
- *         updatedAt: Date,
- *     }
- * ]   
-*/
-schema.statics.getListAllSummaries = async function () {
-    const usersList = await this
-        .find({ role: roles.user })
-        .populate({ path: 'curriculum progressions' })
-        .sort({ role: 1, username: 1 });
-
-    const usersHeaderList = [];
-    usersList.forEach(element => {
-        // Prepare the user summary object
-        const userSummary = element.toObject();
-
-        // Extract the populated curriculum and last progression
-        const currentProgression = element.progressions[element.progressions.length - 1];
-        const currentCurriculum = element.curriculum;
-
-        // Add information from the curriculum and the progression
-        userSummary.curriculumTitle = curriculumGetters.getTitle(currentCurriculum);
-        userSummary.progressionStartDate = progressionGetters.getAdvanceStartDate(currentProgression);
-        userSummary.progressionStartTime = progressionGetters.getAdvanceStartTime(currentProgression);
-        userSummary.progressionLastAdvancedDate = progressionGetters.getLastAdvanceDate(currentProgression);
-        userSummary.progressionLastAdvancedTime = progressionGetters.getLastAdvanceTime(currentProgression);
-        userSummary.progressionDuration = progressionGetters.getDuration(currentProgression);
-        Object.assign(userSummary, progressionAssociation.generateProgressionToCurriculumAssociationSummary(currentCurriculum, currentProgression));
-
-        // Remove undesirable attributes
-        delete userSummary.progressions;
-        delete userSummary.curriculum;
-        delete userSummary.password;
-
-        // Add the user to the list of summaries of users
-        usersHeaderList.push(userSummary);
-    });
-
-    return usersHeaderList;
+schema.statics.isAdmin = async function (userId) {
+    const user = await this.findById(userId);
+    return user.role === roles.admin;
 };
 
 // Instance methods
-schema.methods.updateProfile = async function (attributesToUpdate) {
+schema.methods.deleteLastProgression = async function () {
+    const user = await this.findOne({ _id: userId });
+    if (user) return user.deleteLastProgression();
+    else return null;
+}
 
-    // Update all the user's information except for the password
-    const updateable = ['username', 'email', 'tags', 'firstName', 'middleName', 'lastName'];
-    for (const attribute of updateable)
-        if (attributesToUpdate.hasOwnProperty(attribute))
-            this[attribute] = attributesToUpdate[attribute];
-
-    // Handle the password separately : if the value is empty, don't change it
-    if (attributesToUpdate['password']) this['password'] = attributesToUpdate['password']
-
+schema.methods.indicateLogin = async function () {
+    this.lastLogin = Date.now();
     return this.save();
 };
 
-schema.methods.getLastProgression = async function () {
-    const user = await model
-        .findById(this._id, { progressions: { $slice: -1 } })
-        .populate({ path: 'progressions' });
-    const lastProgression = user.progressions[0];
-    return lastProgression;
-}
+schema.methods.updateDetails = async function (updatedUserDetails) {
+
+    // We do not modify the progressions
+    const { _id, id, progression, ...updatedUserDetailsToUpdate } = updatedUserDetails;
+
+    // If the value is the "secret password" keyworad, we don't mofify the field
+    if (updatedUserDetails.password === SECRET_PASSWORD_PLACEHOLDER) delete updatedUserDetails.password;
+
+    // Perform the update
+    Object.assign(this, updatedUserDetailsToUpdate);
+    this.updatedAt = Date.now();
+    return this.save();
+};
 
 // Creating the model
 const model = mongoose.model('User', schema);
