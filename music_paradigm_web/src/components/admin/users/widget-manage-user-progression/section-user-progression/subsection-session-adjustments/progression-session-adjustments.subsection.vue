@@ -4,7 +4,7 @@
             <ProgressionSessionDetailsFieldsetComponent />
         </div>
         <template v-slot:buttons>
-            <ButtonAssignSessionAdjustmentsComponent />
+            <ButtonAssignSessionAdjustmentsComponent :hideIfInactive="true" />
         </template>
     </WidgetSubsectionContainer>
 </template>

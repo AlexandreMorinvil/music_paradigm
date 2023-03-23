@@ -1,6 +1,6 @@
 <template>
     <TemplateButtonComponent v-on:click="handleButtonPress" color="blue" :isActive="isButtonActive"
-        :isLoading="isButtonLoading" v-bind="$attrs" text="Refresh" />
+        :isLoading="isButtonLoading" :isFrozen="isButtonFrozen" v-bind="$attrs" text="Refresh" />
 </template>
 
 <script>
@@ -15,8 +15,10 @@ export default {
     computed: {
         ...mapGetters('managementUsers', ['isExecutingUserCommand', 'isFetchingUser']),
         ...mapGetters('managementUsers/selection', ['hasSelectedUser']),
+        isButtonFrozen() {
+            return !this.isFetchingUser && this.isExecutingUserCommand; // Has other user command running
+        },
         isButtonActive() {
-            if (!this.isFetchingUser && this.isExecutingUserCommand) return false; // Has other user command running
             return this.hasSelectedUser;
         },
         isButtonLoading() {

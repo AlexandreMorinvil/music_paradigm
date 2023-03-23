@@ -1,14 +1,14 @@
 <template>
     <WidgetSectionContainer title="Progression in Curriculum">
         <template v-slot:topLeft>
-            <ButtonRefreshUserProgressionComponent :isSmall="true" />
+            <ButtonRefreshUserProgressionComponent :isSmall="true" :hideIfInactive="true" />
         </template>
 
         <UserProgressionDetailsSubsection />
         <UserProgressionOverviewBoardSubsection />
         <ProgressionSessionDetailsSubsection />
         <ProgressionSessionAdjustmentsSubsection />
-        
+
     </WidgetSectionContainer>
 </template>
 

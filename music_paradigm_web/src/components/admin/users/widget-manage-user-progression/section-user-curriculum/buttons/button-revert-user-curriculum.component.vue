@@ -1,6 +1,6 @@
 <template>
     <TemplateButtonComponent v-on:click="handleButtonPress" isSmall color="turquoise" :isActive="isButtonActive"
-        :text="text" />
+        :isFrozen="isButtonFrozen" v-bind="$attrs" :text="text" />
 </template>
 
 <script>
@@ -16,8 +16,10 @@ export default {
         ...mapGetters('managementUsers', ['isExecutingUserCommand']),
         ...mapGetters('managementUsers/progressions', ['hasEditedUserProgressionCurriculum']),
         ...mapGetters('managementUsers/progressions/selection', ['hasSelectedUserProgression']),
+        isButtonFrozen() {
+            return this.isExecutingUserCommand;
+        },
         isButtonActive() {
-            if (this.isExecutingUserCommand) return false;
             return this.hasEditedUserProgressionCurriculum;
         },
         text() {

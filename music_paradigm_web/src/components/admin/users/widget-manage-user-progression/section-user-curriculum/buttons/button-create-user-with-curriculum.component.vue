@@ -1,6 +1,6 @@
 <template>
     <TemplateButtonComponent v-on:click="handleButtonPress" color="green" :isActive="isButtonActive"
-        :isLoading="isButtonLoading" text="Create User With Curriculum" />
+        :isLoading="isButtonLoading" :isFrozen="isButtonFrozen" v-bind="$attrs" text="Create User With Curriculum" />
 </template>
 
 <script>
@@ -19,15 +19,18 @@ export default {
             'isExecutingUserCommand',
         ]),
         ...mapGetters('managementUsers/progressions/edition', [
+            'hasUserProgressionEditionCurriculumReference',
             'userProgressionEditionCurriculumReference',
             'userProgressionEditionAssignedParameters',
         ]),
         ...mapGetters('managementUsers/edition', ['userEditionUser']),
         ...mapGetters('managementUsers/selection', ['hasSelectedUser']),
+        isButtonFrozen() {
+            return !this.isCreatingUserWithCurriculum && this.isExecutingUserCommand; // Has other user command running
+        },
         isButtonActive() {
-            if (!this.isCreatingUserWithCurriculum && this.isExecutingUserCommand) return false; // Has other user command running
             if (this.hasSelectedUser && !this.hasEditedUserUsername) return false;
-            return true;
+            return this.hasUserProgressionEditionCurriculumReference;
         },
         isButtonLoading() {
             return this.isCreatingUserWithCurriculum;

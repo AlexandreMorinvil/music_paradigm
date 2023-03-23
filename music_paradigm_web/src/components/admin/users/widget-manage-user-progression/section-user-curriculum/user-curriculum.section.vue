@@ -1,20 +1,20 @@
 <template>
     <WidgetSectionContainer title="Assigned Curriculum">
         <template v-slot:topLeft>
-            <ButtonRefreshUserProgressionComponent :isSmall="true" />
+            <ButtonRefreshUserProgressionComponent :isSmall="true" :hideIfInactive="true" />
         </template>
 
         <template v-slot:topRight>
-            <ButtonRevertUserCurriculumComponent :isSmall="true" />
+            <ButtonRevertUserCurriculumComponent :isSmall="true" :hideIfInactive="true" />
         </template>
 
         <UserCurriculumSubsection />
         <UserCurriculumParametersSubsection v-show="existsUserProgressionEditionCurriculumParameters" />
 
         <template v-slot:buttons>
-            <ButtonCreateUserWithCurriculumComponent v-show="hasCreateUserWithCurriculumButton" />
-            <ButtonAssignCurriculumComponent v-show="hasAssignCurriculumButton" />
-            <ButtonAssignParametersComponent v-show="hasAssingParametersButton" />
+            <ButtonCreateUserWithCurriculumComponent :hideIfInactive="true" />
+            <ButtonAssignCurriculumComponent :hideIfInactive="true" />
+            <ButtonAssignParametersComponent :hideIfInactive="true" />
         </template>
     </WidgetSectionContainer>
 </template>
@@ -43,29 +43,10 @@ export default {
         WidgetSectionContainer,
     },
     computed: {
-        ...mapGetters('managementUsers', ['hasEditedUserUsername']),
-        ...mapGetters('managementUsers/selection', ['hasSelectedUser']),
-        ...mapGetters('managementUsers/progressions', [
-            'hasEditedUserProgressionAssignedParameters',
-            'hasEditedUserProgressionCurriculumReference',
-        ]),
         ...mapGetters('managementUsers/progressions/edition', [
             'existsUserProgressionEditionCurriculumParameters',
-            'hasUserProgressionEditionCurriculumReference',
         ]),
         ...mapGetters('managementUsers/progressions/selection', ['hasSelectedUserProgression']),
-        hasAssignCurriculumButton() {
-            return this.hasSelectedUser && this.hasEditedUserProgressionCurriculumReference;
-        },
-        hasAssingParametersButton() {
-            return !this.hasAssignCurriculumButton &&
-                this.hasSelectedUserProgression &&
-                this.hasEditedUserProgressionAssignedParameters;
-        },
-        hasCreateUserWithCurriculumButton() {
-            return this.hasUserProgressionEditionCurriculumReference &&
-                (!this.hasSelectedUser || this.hasEditedUserUsername);
-        }
     }
 };
 </script>

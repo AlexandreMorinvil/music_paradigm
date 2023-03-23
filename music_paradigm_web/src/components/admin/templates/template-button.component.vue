@@ -1,7 +1,7 @@
 <template>
-	<button class="widget-button" :class="{
+	<button v-show="!mustHide" class="widget-button" :class="{
 		[color]: isActive,
-		inactive: !isActive,
+		inactive: !isActive || isFrozen,
 		activated: isLoading,
 		small: isSmall
 	}" v-on:click="(event) => handleClick(event)">
@@ -25,9 +25,17 @@ export default {
 			type: String,
 			default: 'blue',
 		},
+		hideIfInactive: {
+			type: Boolean,
+			default: false,
+		},
 		isActive: {
 			type: Boolean,
 			default: true,
+		},
+		isFrozen: {
+			type: Boolean,
+			default: false,
 		},
 		isLoading: {
 			type: Boolean,
@@ -42,9 +50,15 @@ export default {
 			default: '',
 		},
 	},
+	computed: {
+		mustHide() {
+			return this.hideIfInactive && !this.isActive;	
+		},
+	},
 	methods: {
 		handleClick(event) {
 			if (!this.isActive) return;
+			if (this.isFrozen) return;
 			if (this.isLoading) return;
 			this.$emit('click', event);
 		}

@@ -1,6 +1,6 @@
 <template>
     <TemplateButtonComponent v-on:click="handleButtonPress" color="red" :isActive="isButtonActive"
-        :isLoading="isButtonLoading" v-bind="$attrs" text="Reset Task Progress" />
+        :isLoading="isButtonLoading" :isFrozen="isButtonFrozen" v-bind="$attrs" text="Reset Task Progress" />
 </template>
 
 <script>
@@ -32,8 +32,10 @@ export default {
         hasLinkedSessions() {
             return this.hasProgressionSessionsLinkedForSession(this.progressionSessionSelection);
         },
+        isButtonFrozen() {
+            return !this.isDeletingTaskStateMarker && this.isExecutingUserCommand; // Has other user command running
+        },
         isButtonActive() {
-            if (!this.isDeletingTaskStateMarker && this.isExecutingUserCommand) return false; // Has other user command running
             return this.hasSelectedUserProgression &&
                 this.hasSelectedProgressionSession &&
                 this.hasProgressionSessionSelectionTaskStateMarker;

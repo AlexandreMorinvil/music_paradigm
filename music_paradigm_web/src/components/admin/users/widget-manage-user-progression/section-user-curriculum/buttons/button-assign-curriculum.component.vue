@@ -1,6 +1,6 @@
 <template>
     <TemplateButtonComponent v-on:click="handleButtonPress" color="blue" :isActive="isButtonActive"
-        :isLoading="isButtonLoading" text="Assign Curriculum" />
+        :isLoading="isButtonLoading" :isFrozen="isButtonFrozen" v-bind="$attrs" text="Assign Curriculum" />
 </template>
 
 <script>
@@ -26,8 +26,10 @@ export default {
             'hasUserProgressionSelectionCurriculumReference',
         ]),
         ...mapGetters('managementUsers/selection', ['userSelectionId', 'hasSelectedUser']),
+        isButtonFrozen() {
+            return !this.isAssigningCurriculum && this.isExecutingUserCommand; // Has other user command running
+        },
         isButtonActive() {
-            if (!this.isAssigningCurriculum && this.isExecutingUserCommand) return false; // Has other user command running
             return this.hasSelectedUser && this.hasEditedUserProgressionCurriculumReference;
         },
         isButtonLoading() {

@@ -1,6 +1,6 @@
 <template>
     <TemplateButtonComponent v-on:click="handleButtonPress" color="blue" :isActive="isButtonActive"
-        :isLoading="isButtonLoading" text="Assign Parameters" />
+        :isLoading="isButtonLoading" :isFrozen="isButtonFrozen" v-bind="$attrs" text="Assign Parameters" />
 </template>
 
 <script>
@@ -25,8 +25,10 @@ export default {
             'hasSelectedUserProgression',
             'userProgressionSelectionId',
         ]),
+        isButtonFrozen() {
+            return !this.isAssigningParameters && this.isExecutingUserCommand; // Has other user command running
+        },
         isButtonActive() {
-            if (!this.isAssigningParameters && this.isExecutingUserCommand) return false; // Has other user command running
             return this.hasSelectedUserProgression && this.hasEditedUserProgressionAssignedParameters;
         },
         isButtonLoading() {

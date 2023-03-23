@@ -1,12 +1,12 @@
 <template>
     <WidgetSectionContainer title="User Profile">
         <template v-slot:topLeft>
-            <ButtonRefreshUserComponent :isSmall="true" />
+            <ButtonRefreshUserComponent :isSmall="true" :hideIfInactive="true" />
         </template>
 
         <template v-slot:topRight>
-            <ButtonDeselectUserComponent :isSmall="true" />
-            <ButtonRevertUserChangesComponent :isSmall="true" />
+            <ButtonRevertUserChangesComponent :isSmall="true" :hideIfInactive="true" />
+            <ButtonDeselectUserComponent :isSmall="true" :hideIfInactive="true" />
         </template>
 
         <UserDetailsSubsection v-if="hasSelectedUser" />
@@ -14,9 +14,9 @@
         <UserAdditionalInformationSubsection />
 
         <template v-slot:buttons>
-            <ButtonCreateUserComponent />
-            <ButtonUpdateUserComponent />
-            <ButtonDeleteUserComponent />
+            <ButtonCreateUserComponent :hideIfInactive="true" />
+            <ButtonUpdateUserComponent :hideIfInactive="true" />
+            <ButtonDeleteUserComponent :hideIfInactive="true" />
         </template>
     </WidgetSectionContainer>
 </template>
