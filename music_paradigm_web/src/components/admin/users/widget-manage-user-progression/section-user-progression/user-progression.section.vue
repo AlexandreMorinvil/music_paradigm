@@ -6,8 +6,8 @@
 
         <UserProgressionDetailsSubsection />
         <UserProgressionOverviewBoardSubsection />
-        <ProgressionSessionDetailsSubsection />
-        <ProgressionSessionAdjustmentsSubsection />
+        <ProgressionSessionDetailsSubsection v-if="hasSelectedProgressionSession"/>
+        <ProgressionSessionAdjustmentsSubsection v-if="hasSelectedProgressionSession"/>
 
     </WidgetSectionContainer>
 </template>
@@ -20,6 +20,7 @@ import ProgressionSessionAdjustmentsSubsection from './subsection-session-adjust
 import ProgressionSessionDetailsSubsection from './subsection-session-details/progression-session-details.subsection.vue';
 import UserProgressionDetailsSubsection from './subsection-details/user-progression-details.subsection.vue';
 import UserProgressionOverviewBoardSubsection from './subsection-overview-board/user-progression-overview-board.subsection.vue';
+import { mapGetters } from 'vuex';
 
 export default {
     components: {
@@ -29,6 +30,9 @@ export default {
         UserProgressionDetailsSubsection,
         UserProgressionOverviewBoardSubsection,
         WidgetSectionContainer,
+    },
+    computed: {
+        ...mapGetters('managementUsers/progressions/sessions/selection', ['hasSelectedProgressionSession'])
     },
 };
 </script>

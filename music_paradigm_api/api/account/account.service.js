@@ -1,4 +1,4 @@
-﻿const User = require('database/db').User;
+﻿const UserModel = require('database/db').User;
 
 const jwt = require('jwt/jwt');
 const progressionValidatorService = require('modules/progressions/progressions-validator.service');
@@ -16,10 +16,10 @@ module.exports = {
 
 async function authenticate({ username, password }) {
     try {
-        const userWithoutPassword = await User.authenticate(username, password);
-        const token = jwt.generateToken(userWithoutPassword);
+        const user = await UserModel.authenticate(username, password);
+        const token = jwt.generateToken(user);
         return {
-            ...userWithoutPassword,
+            ...user,
             token
         };
     } catch (err) {

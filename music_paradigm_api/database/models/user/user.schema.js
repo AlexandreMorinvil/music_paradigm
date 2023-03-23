@@ -25,12 +25,6 @@ const schema = new Schema(
             default: null,
         },
 
-        curriculum: {
-            type: Schema.Types.ObjectId,
-            ref: 'Curriculum',
-            default: null
-        },
-
         group: {
             type: String,
             default: '',
@@ -62,16 +56,6 @@ const schema = new Schema(
             required: isPasswordRequired,
             maxlength: [100, passwordMaxLengthMessage],
             set: setterPassword,
-        },
-
-        progressions: {
-            type: [
-                {
-                    type: Schema.Types.ObjectId,
-                    ref: 'Progression',
-                }
-            ],
-            default: []
         },
 
         role: {

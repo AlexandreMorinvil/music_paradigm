@@ -30,7 +30,7 @@ app.use('/log-simple', require('log/simple/log.controller'));
 app.use('/log-thorough', require('log/thorough/log.controller'));
 
 
-app.use('/account', require('account/account.controller'));
+app.use('/account', require('api/account/account.controller'));
 app.use('/experiments', require('experiments/experiments.controller'));
 app.use('/curriculums', require('api/curriculums/curriculums.controller'));
 app.use('/users', require('api/users/users.controller'));

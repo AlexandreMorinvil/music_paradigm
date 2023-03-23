@@ -27,8 +27,18 @@ schema.statics.deleteNotStartedProgressionsOfUser = async function (userId) {
     return this.deleteMany({ userReference: userId, startTime: null });
 };
 
-schema.statics.getLastProgressionOfUser = async function (userId) {
+schema.statics.getActiveProgressionByUserId = async function (userId) {
     return this.findOne({ userReference: userId }, '-createdAt');
+}
+
+schema.statics.getActiveProgressionAndCurriculumByUserId = async function (userId) {
+    const progression = await model.getActiveProgressionByUserId(userId);
+    const curriculum = progression ? (await progression.getCurriculum()) : null;
+
+    return {
+        curriculum: curriculum ?? null,
+        progression: progression ?? null,
+    };
 }
 
 schema.statics.getProgressionAndCurriculumById = async function (progressionId) {
@@ -36,13 +46,12 @@ schema.statics.getProgressionAndCurriculumById = async function (progressionId) 
     // Fetch the progression and the curriculum    
     const progression = await this.findById(progressionId)
         .populate({ path: 'curriculumReference' });
-    const { curriculumReference } = progression;
-    const curriculum = curriculumReference;
+    const curriculum = progression.curriculumReference;
     progression.curriculumReference = curriculum._id; 
 
     return {
-        curriculum: curriculum ? curriculum.toObject() : null,
-        progression: progression ? progression.toObject() : null,
+        curriculum: curriculum ?? null,
+        progression: progression ?? null,
     }
 };
 
@@ -58,9 +67,11 @@ schema.methods.assignParameters = async function (parameters) {
 };
 
 schema.methods.getCurriculum = async function () {
+    
     await model.populate(this, { path: 'curriculumReference' });
     const curriculum = this.curriculumReference;
     this.curriculumReference = curriculum._id;
+
     return curriculum;
 };
 

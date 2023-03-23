@@ -1,7 +1,7 @@
 ﻿const ProgressionModel = require('database/db').Progression;
 const UserModel = require('database/db').User;
 
-const { generateProgressionSessionsStatusForUserId } = require('modules/progressions/progression-sessions-status');
+const { generateProgressionSessionsStatusForProgression } = require('modules/progressions/progression-sessions-status');
 const { generateUserSummariesList } = require('modules/users/user-summary-generator');
 const progressionsService = require('../progressions/progressions.service');
 
@@ -58,8 +58,8 @@ async function getAll() {
 async function getUserById(userId) {
     try {
         const user = await UserModel.findById(userId);
-        const lastProgression = await ProgressionModel.getLastProgressionOfUser(userId);
-        const progressionSessionsStatus = await generateProgressionSessionsStatusForUserId(userId);
+        const lastProgression = await ProgressionModel.getActiveProgressionByUserId(userId);
+        const progressionSessionsStatus = await generateProgressionSessionsStatusForProgression(lastProgression);
         return {
             user: user,
             progression: lastProgression,

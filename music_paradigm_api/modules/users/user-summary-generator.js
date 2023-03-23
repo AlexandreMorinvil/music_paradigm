@@ -33,7 +33,7 @@ async function generateUserSummaryFromId(userId) {
 
 async function generateUserSummary(userDocument) {
 
-    const currentProgression = (await ProgressionModel.getLastProgressionOfUser(userDocument._id)) || null;
+    const currentProgression = (await ProgressionModel.getActiveProgressionByUserId(userDocument._id)) || null;
     const currentCurriculum = currentProgression ? await currentProgression.getCurriculum() : null;
 
     return new UserSummary({

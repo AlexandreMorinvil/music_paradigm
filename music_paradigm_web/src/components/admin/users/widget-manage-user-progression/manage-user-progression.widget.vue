@@ -2,14 +2,15 @@
 	<WidgetContentFrameComponent title="Manage User's Curriculum Progression">
 		<div class="widget widget-bg">
 			<UserCurriculumSection />
-			<UserProgressionSection />
+			<UserProgressionSection v-if="hasSelectedUserProgression" />
 		</div>
 	</WidgetContentFrameComponent>
 </template>
 
 <script>
-import '@/styles/widget-template.css';
+import { mapGetters } from 'vuex';
 
+import '@/styles/widget-template.css';
 import WidgetContentFrameComponent from '@/components/content-frame/widget-content-frame.component.vue';
 
 import UserCurriculumSection from './section-user-curriculum/user-curriculum.section.vue';
@@ -21,6 +22,9 @@ export default {
 		UserProgressionSection,
 		WidgetContentFrameComponent,
 	},
+	computed: {
+		...mapGetters('managementUsers/progressions/selection', ['hasSelectedUserProgression'])
+	}
 };
 </script>
 

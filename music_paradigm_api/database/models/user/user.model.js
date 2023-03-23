@@ -48,17 +48,6 @@ schema.statics.getLastProgression = async function (userId) {
     else return null;
 };
 
-schema.statics.getCurriculumAndProgressionObject = async function (userId) {
-    const curriculumAndProgression = await this
-        .findById(userId, { curriculum: 1, progressions: { $slice: -1 } })
-        .populate({ path: 'curriculum progressions' });
-    const { curriculum, progressions } = curriculumAndProgression;
-    return {
-        curriculum: curriculum ? curriculum.toObject() : null,
-        progression: progressions[0] ? progressions[0].toObject() : null,
-    }
-};
-
 schema.statics.indicateLoginToUserById = async function (userId) {
     return this.findOneAndUpdate({ _id: userId }, { lastLogin: Date.now() });
 };
@@ -73,14 +62,6 @@ schema.methods.deleteLastProgression = async function () {
     const user = await this.findOne({ _id: userId });
     if (user) return user.deleteLastProgression();
     else return null;
-}
-
-schema.methods.getUserLastProgression = async function () {
-    const user = await model
-        .findById(this._id, { progressions: { $slice: -1 } })
-        .populate({ path: 'progressions' });
-    const lastProgression = user.progressions[0];
-    return lastProgression;
 }
 
 schema.methods.indicateLogin = async function () {

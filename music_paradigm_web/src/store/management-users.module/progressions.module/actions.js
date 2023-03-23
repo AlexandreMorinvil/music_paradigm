@@ -60,6 +60,7 @@ export default {
 	},
 
 	setSelectedUserProgression({ commit, dispatch }, { progression, progressionSessionsStatus }) {
+		dispatch('sessions/unsetSelectedProgressionSession');
 		dispatch('sessions/setProgressionSessionsStatus', progressionSessionsStatus);
 		dispatch('selection/setUserProgressionSelection', progression);
 		dispatch('edition/setUserProgressionEdition', progression);
@@ -72,6 +73,7 @@ export default {
 	},
 
 	unsetSelectedUserProgression({ dispatch }) {
+		dispatch('sessions/unsetSelectedProgressionSession');
 		dispatch('selection/unsetUserProgressionSelection');
 		dispatch('edition/unsetUserProgressionEdition');
 	},

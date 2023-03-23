@@ -12,8 +12,7 @@
 			<tbody>
 				<tr v-for="(startDatesDetails, completionDate, completionCount) in startDatesListByEndDateMap"
 					v-bind:key="completionCount" :class="{ selected: isSelectedCompletionCount(completionCount) }"
-					v-on:click="handleCompletionCountSelection(completionCount)"
-					class="clickable">
+					v-on:click="handleCompletionCountSelection(completionCount)" class="clickable">
 
 					<td>
 						<div v-for="({ startDate, startCount }, subIndex) in startDatesDetails" v-bind:key="subIndex">
@@ -22,9 +21,9 @@
 						</div>
 					</td>
 					<td class="completion-date">
-						<TemplateFieldOutputComponent :value="JSON.parse(completionDate)" :formatValueFunction="formatDate"
-							:complementaryValue="completionCount" :formatComplementaryValueFunction="formatCount"
-							:allowLoneComplementaryValue="true" />
+						<TemplateFieldOutputComponent :value="interpretCompletionDate(completionDate)"
+							:formatValueFunction="formatDate" :complementaryValue="completionCount"
+							:formatComplementaryValueFunction="formatCount" :allowLoneComplementaryValue="true" />
 					</td>
 				</tr>
 			</tbody>
@@ -76,6 +75,9 @@ export default {
 			if (this.isSelectedCompletionCount(count)) this.unsetSessionCompletionCountSelection();
 			else this.setSessionCompletionCountSelection(count);
 		},
+		interpretCompletionDate(completionDate) {
+			return completionDate === 'null' ? null : completionDate;
+		},
 		isSelectedCompletionCount(count) {
 			return count === this.sessionCompletionCountSelection;
 		},
@@ -87,6 +89,7 @@ export default {
 table {
 	table-layout: fixed;
 }
+
 .completion-date {
 	vertical-align: bottom;
 }

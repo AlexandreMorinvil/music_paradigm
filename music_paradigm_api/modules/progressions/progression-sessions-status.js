@@ -1,7 +1,6 @@
 const timeHandler = require('_helpers/time-handler')
 const ExperimentMarker = require('database/db').ExperimentMarker;
 const Progression = require('database/db').Progression;
-const User = require('database/db').User;
 
 const ProgressionSessionDetailed = require('modules/progressions/class/progression-session-detailed.class');
 const ProgressionSessionsStatus = require('modules/progressions/class/progression-session-status.class');
@@ -17,9 +16,9 @@ module.exports = {
     generateProgressionSessionsStatusForUserId,
 };
 
-async function generateProgressionSessionsStatusForProgression(progressionDocument) {
-    const curriculumDocument = await progressionDocument.getCurriculum();
-    return generateProgressionSessionsStatus(curriculumDocument, progressionDocument);
+async function generateProgressionSessionsStatusForProgression(progression) {
+    const curriculum = progression ? await progression.getCurriculum() : null;
+    return generateProgressionSessionsStatus(curriculum, progression);
 }
 
 async function generateProgressionSessionsStatusForProgressionId(progressionId) {
@@ -28,7 +27,7 @@ async function generateProgressionSessionsStatusForProgressionId(progressionId) 
 }
 
 async function generateProgressionSessionsStatusForUserId(userId) {
-    let { curriculum, progression } = await User.getCurriculumAndProgressionObject(userId);
+    let { curriculum, progression } = await Progression.getActiveProgressionAndCurriculumByUserId(userId);
     return generateProgressionSessionsStatus(curriculum, progression);
 }
 
@@ -36,7 +35,7 @@ async function generateProgressionSessionsStatus(curriculum, progression) {
     let taskStateMarkersList = [];
 
     // Verify parameters
-    if (!curriculum) return { history: [], dueExperiment: null };
+    if (!curriculum) return new ProgressionSessionsStatus();
     if (!progression) progression = {};
 
     // Retrieve experiment markers

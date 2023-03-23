@@ -3,10 +3,11 @@ const router = express.Router();
 const accountService = require('./account.service');
 
 // routes
-router.post('/authenticate', authenticate);
 router.get('/progression-summary', getProressionSummary);
 router.get('/due-experiment', getTodayExperiment);
 router.get('/specific-experiment/:associativeId/:associativeIdOrdinalNumber', getSpecificExperiment);
+
+router.post('/authenticate', authenticate);
 
 module.exports = router;
 
