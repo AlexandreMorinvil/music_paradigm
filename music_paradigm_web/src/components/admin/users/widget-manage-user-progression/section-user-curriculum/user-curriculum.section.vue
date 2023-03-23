@@ -1,10 +1,16 @@
 <template>
     <WidgetSectionContainer title="Assigned Curriculum">
-        <template v-slot:topRight>
-            <ButtonRevertUserCurriculumComponent class="small" />
+        <template v-slot:topLeft>
+            <ButtonRefreshUserProgressionComponent :isSmall="true" />
         </template>
+
+        <template v-slot:topRight>
+            <ButtonRevertUserCurriculumComponent :isSmall="true" />
+        </template>
+
         <UserCurriculumSubsection />
         <UserCurriculumParametersSubsection v-show="existsUserProgressionEditionCurriculumParameters" />
+
         <template v-slot:buttons>
             <ButtonCreateUserWithCurriculumComponent v-show="hasCreateUserWithCurriculumButton" />
             <ButtonAssignCurriculumComponent v-show="hasAssignCurriculumButton" />
@@ -20,6 +26,7 @@ import { mapGetters } from 'vuex';
 import ButtonAssignCurriculumComponent from './buttons/button-assign-curriculum.component.vue';
 import ButtonAssignParametersComponent from './buttons/button-assign-parameters.component.vue';
 import ButtonCreateUserWithCurriculumComponent from './buttons/button-create-user-with-curriculum.component.vue';
+import ButtonRefreshUserProgressionComponent from '../buttons/button-refresh-user-progression.component.vue';
 import ButtonRevertUserCurriculumComponent from './buttons/button-revert-user-curriculum.component.vue';
 import UserCurriculumParametersSubsection from './parameters-subsection/user-curriculum-parameters.subsection.vue';
 import UserCurriculumSubsection from './curriculum-subsection/user-curriculum.subsection.vue';
@@ -29,6 +36,7 @@ export default {
         ButtonAssignCurriculumComponent,
         ButtonAssignParametersComponent,
         ButtonCreateUserWithCurriculumComponent,
+        ButtonRefreshUserProgressionComponent,
         ButtonRevertUserCurriculumComponent,
         UserCurriculumParametersSubsection,
         UserCurriculumSubsection,

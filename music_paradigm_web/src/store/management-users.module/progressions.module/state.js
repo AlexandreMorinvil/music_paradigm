@@ -4,6 +4,7 @@ export default {
 	status: {
 		isAssigningCurriculum: false,
 		isAssigningParameters: false,
+		isFetchingUserProgression: false,
 		isUpdatingAdjustments: false,
 		isResetingProgression: false,
 		isChangingExperimentMarker: false,

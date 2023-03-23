@@ -31,7 +31,12 @@ export default {
 	isExecutingUserProgressionCommand: (_, getters) => {
 		return getters['sessions/isExecutingProgressionSessionCommand'] ||
 			getters.isAssigningCurriculum ||
-			getters.isAssigningParameters;
+			getters.isAssigningParameters ||
+			getters.isFetchingUserProgression;
+	},
+
+	isFetchingUserProgression: (state) => {
+		return state.status.isFetchingUserProgression;
 	},
 
 	// TODO: All the getters below need to be adjusted/deleted once the code will have been adjusted

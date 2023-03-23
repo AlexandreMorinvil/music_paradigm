@@ -5,6 +5,7 @@ export const progressionsApi = {
 	assignCurriculum,
 	assignParameters,
 	assignSessionAdjustments,
+	getProgressionById,
 };
 
 function assignSessionAdjustments(progressionId, sessionIdentifier, adjustments) {
@@ -35,4 +36,12 @@ function assignParameters(progressionId, assignedParameters) {
 		body: JSON.stringify({ assignedParameters }),
 	};
 	return fetch(url.progressions(['assign-parameters', progressionId]), requestOptions).then(defaultResponseHandler);
+}
+
+function getProgressionById(progressionId) {
+	const requestOptions = {
+		method: 'GET',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+	};
+	return fetch(url.progressions(['get-by-id', progressionId]), requestOptions).then(defaultResponseHandler);
 }

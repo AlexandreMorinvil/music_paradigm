@@ -2,13 +2,13 @@ const ProgressionModel = require('database/db').Progression;
 
 const {
     generateProgressionSessionsStatusForProgression,
-    generateProgressionSessionsStatusForProgressionId,
 } = require('modules/progressions/progression-sessions-status');
 
 module.exports = {
     assignCurriculum,
     assignParameters,
     assignSessionAdjustments,
+    getProgressionById,
 };
 
 async function assignCurriculum(userId, curriculumId, assignedParameters) {
@@ -46,6 +46,19 @@ async function assignSessionAdjustments(progressionId, sessionIdentifier, adjust
             sessionIdentifier,
             adjustments,
         );
+        const progressionSessionsStatus = await generateProgressionSessionsStatusForProgression(progression);
+        return {
+            progression: progression,
+            progressionSessionsStatus: progressionSessionsStatus,
+        };
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function getProgressionById(progressionId) {
+    try {
+        const progression = await ProgressionModel.findById(progressionId);
         const progressionSessionsStatus = await generateProgressionSessionsStatusForProgression(progression);
         return {
             progression: progression,

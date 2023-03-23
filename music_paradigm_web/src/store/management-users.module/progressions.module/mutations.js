@@ -17,10 +17,19 @@ export default {
 	indicateAssigningParametersEnd(state) {
 		state.status.isAssigningParameters = false;
 	},
+	
+	indicateFetchingUserProgression(state) {
+		state.status.isFetchingUserProgression = true;
+	},
+
+	indicateFetchingUserProgressionEnd(state) {
+		state.status.isFetchingUserProgression = false;
+	},
 
 	indicateUpdateAdjustmentsRequest(state) {
 		state.status.isUpdatingAdjustments = true;
 	},
+
 
 	indicateUpdateAdjustmentsRequestEnd(state) {
 		state.status.isUpdatingAdjustments = false;

@@ -39,6 +39,22 @@ export default {
 			});
 	},
 
+	refreshSelectedUserProgression({ commit, dispatch, getters }) {
+		commit('indicateFetchingUserProgression');
+		return progressionsApi
+			.getProgressionById(getters['selection/userProgressionSelectionId'])
+			.then(
+				(response) => {
+					dispatch('setSelectedUserProgression', response);
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `User curriculum progression refreshing failed : ${error.message}`, { root: true });
+				},
+			).finally(() => {
+				commit('indicateFetchingUserProgressionEnd');
+			});
+	},
+
 	revertUserProgressionEditions({ dispatch, getters }) {
 		dispatch('edition/setUserProgressionEdition', getters['selection/userProgressionSelection']);
 	},
@@ -47,7 +63,7 @@ export default {
 		dispatch('sessions/setProgressionSessionsStatus', progressionSessionsStatus);
 		dispatch('selection/setUserProgressionSelection', progression);
 		dispatch('edition/setUserProgressionEdition', progression);
-		
+
 
 		// TODO: Delete once the code will have been adjusted
 		commit('setSelectedUserProgression', progression);
@@ -84,18 +100,5 @@ export default {
 
 	unsetSelectedSessionCompletionCount({ commit }) {
 		commit('unsetSelectedSessionCompletionCount');
-	},
-
-	// API actions
-	refreshSelectedUserProgression({ commit, dispatch, rootGetters }) {
-		return usersApi.getUserById(rootGetters['users/userSelectedId']).then(
-			(selectedUserDetails) => {
-				commit('setSelectedUserProgression', selectedUserDetails.progression);
-				commit('setSelectedUserProgressionSummary', selectedUserDetails.progressionSessionsStatus);
-			},
-			(error) => {
-				dispatch('alert/setErrorAlert', `User progression refreshing failed : ${error.message}`, { root: true });
-			},
-		);
 	},
 };

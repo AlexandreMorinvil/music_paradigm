@@ -13,21 +13,22 @@ export default {
         TemplateButtonComponent,
     },
     computed: {
-        ...mapGetters('managementUsers', ['isExecutingUserCommand', 'isFetchingUser']),
-        ...mapGetters('managementUsers/selection', ['hasSelectedUser']),
+        ...mapGetters('managementUsers', ['isExecutingUserCommand']),
+        ...mapGetters('managementUsers/progressions', ['isFetchingUserProgression']),
+        ...mapGetters('managementUsers/progressions/selection', ['hasSelectedUserProgression']),
         isButtonActive() {
-            if (!this.isFetchingUser && this.isExecutingUserCommand) return false; // Has other user command running
-            return this.hasSelectedUser;
+            if (!this.isFetchingUserProgression && this.isExecutingUserCommand) return false; // Has other user command running
+            return this.hasSelectedUserProgression;
         },
         isButtonLoading() {
-            return this.isFetchingUser;
+            return this.isFetchingUserProgression;
         },
     },
     methods: {
-        ...mapActions('managementUsers', ['refreshSelectedUserProfile']),
+        ...mapActions('managementUsers/progressions', ['refreshSelectedUserProgression']),
         handleButtonPress() {
             if (!this.isButtonActive) return;
-            this.refreshSelectedUserProfile();
+            this.refreshSelectedUserProgression();
         },
     }
 };

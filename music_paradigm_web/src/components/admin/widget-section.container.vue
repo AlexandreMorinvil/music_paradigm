@@ -57,6 +57,7 @@ export default {
 
 .title-left-side > button,
 .title-right-side > button {
+    height: 45px;
     width: 135px;
 } 
 
