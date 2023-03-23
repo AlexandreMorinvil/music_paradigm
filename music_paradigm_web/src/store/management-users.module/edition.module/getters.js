@@ -1,4 +1,7 @@
 export default {
+	userEdition: (state) => {
+		return state.editionUser;
+	},
 
 	userEditionGroup: (state) => {
 		return state.editionUser.group;
@@ -22,10 +25,6 @@ export default {
 
 	userEditionTags: (state) => {
 		return state.editionUser.tags;
-	},
-
-	userEditionUser: (state) => {
-		return state.editionUser;
 	},
 
 	userEditionUsername: (state) => {

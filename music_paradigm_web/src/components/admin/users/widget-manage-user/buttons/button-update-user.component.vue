@@ -14,7 +14,7 @@ export default {
     },
     computed: {
         ...mapGetters('managementUsers', ['hasEditedUser', 'isExecutingUserCommand', 'isUpdatingUser']),
-        ...mapGetters('managementUsers/edition', ['userEditionUser']),
+        ...mapGetters('managementUsers/edition', ['userEdition']),
         ...mapGetters('managementUsers/selection', ['userSelectionId', 'hasSelectedUser']),
         isButtonFrozen() {
             return !this.isUpdatingUser && this.isExecutingUserCommand; // Has other user command running
@@ -34,7 +34,7 @@ export default {
             if (answer) {
                 this.updateUser({
                     id: this.userSelectionId,
-                    user: this.userEditionUser,
+                    user: this.userEdition,
                 });
             }
         },

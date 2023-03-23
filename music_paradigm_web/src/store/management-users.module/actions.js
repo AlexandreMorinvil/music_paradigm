@@ -3,7 +3,7 @@ import { usersApi } from '@/api';
 export default {
 
 	createUser({ commit, dispatch }, userToCreate) {
-		commit('indicateIsCreatingUser');
+		commit('indicateIsCreatingUser', true);
 		return usersApi
 			.createUser(userToCreate)
 			.then(
@@ -18,12 +18,12 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateIsCreatingUserEnd');
+				commit('indicateIsCreatingUser', false);
 			});
 	},
 
 	createUserWithCurriculum({ commit, dispatch }, { user, curriculumId, assignedParameters }) {
-		commit('indicateIsCreatingUserWithCurriculum');
+		commit('indicateIsCreatingUserWithCurriculum', true);
 		return usersApi
 			.createUserWithCurriculum({ user, curriculumId, assignedParameters })
 			.then(
@@ -31,10 +31,6 @@ export default {
 					const { user, ...progressionDetails } = response;
 					dispatch('setSelectedUser', user);
 					dispatch('progressions/setSelectedUserProgression', progressionDetails);
-
-					// TODO : Delete once the code will have been updated
-					commit('setSelectedUser', user);
-
 					dispatch('alert/setSuccessAlert', 'User creation sucessful', { root: true });
 					dispatch('fetchUserSummariesList');
 				},
@@ -43,20 +39,17 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateIsCreatingUserWithCurriculumEnd');
+				commit('indicateIsCreatingUserWithCurriculum', false);
 			});
 	},
 
 	deleteUser({ commit, dispatch }, userId) {
-		commit('indicateIsDeletingUser');
+		commit('indicateIsDeletingUser', true);
 		return usersApi
 			.deleteUser(userId)
 			.then(
 				() => {
 					dispatch('unsetSelectedUser');
-
-					// TODO : Delete once the code will have been updated
-					commit('unsetSelectedUser');
 					dispatch('alert/setSuccessAlert', 'User deletion sucessful', { root: true });
 					dispatch('fetchUserSummariesList');
 				},
@@ -65,12 +58,12 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateIsDeletingUserEnd');
+				commit('indicateIsDeletingUser', false);
 			});
 	},
 
 	fetchUserSummariesList({ commit, dispatch }) {
-		commit('indicateFetchingUserList');
+		commit('indicateFetchingUserList', true);
 		return usersApi
 			.getListAllSummaries()
 			.then(
@@ -82,7 +75,7 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateFetchingUserListEnd');
+				commit('indicateFetchingUserList', false);
 			});
 	},
 
@@ -92,9 +85,6 @@ export default {
 				const { user, ...progressionDetails } = selectedUserDetails;
 				dispatch('setSelectedUser', user);
 				dispatch('progressions/setSelectedUserProgression', progressionDetails);
-
-				// TODO : Delete once the code will have been updated
-				commit('setSelectedUser', user);
 			},
 			(error) => {
 				dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
@@ -103,7 +93,7 @@ export default {
 	},
 
 	getExistingUserGroupsList({ commit, dispatch }) {
-		commit('indicateGettingExistingUserGroupsList');
+		commit('indicateGettingExistingUserGroupsList', true);
 		return usersApi
 			.getExistingUserGroupsList()
 			.then(
@@ -115,20 +105,17 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateGettingExistingUserGroupsListEnd');
+				commit('indicateGettingExistingUserGroupsList', false);
 			});
 	},
 
 	updateUser({ commit, dispatch }, { id, user }) {
-		commit('indicateIsUpdatingUser');
+		commit('indicateIsUpdatingUser', true);
 		return usersApi
 			.updateUserProfile(id, user)
 			.then(
 				(updatedUser) => {
 					dispatch('setSelectedUser', updatedUser);
-
-					// TODO : Delete once the code will have been updated
-					commit('setSelectedUser', updatedUser); // TODO : Delete once the code will have been updated
 					dispatch('alert/setSuccessAlert', 'User update sucessful', { root: true });
 					dispatch('fetchUserSummariesList');
 				},
@@ -137,12 +124,12 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateIsUpdatingUserEnd');
+				commit('indicateIsUpdatingUser', false);
 			});
 	},
 
 	refreshSelectedUserProfile({ commit, dispatch, getters }) {
-		commit('indicateFetchingUser');
+		commit('indicateFetchingUser', true);
 		return usersApi
 			.getUserById(getters['selection/userSelectionId'])
 			.then(
@@ -154,12 +141,12 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateFetchingUserEnd');
+				commit('indicateFetchingUser', false);
 			});
 	},
 
 	revertUserEditions({ dispatch, getters }) {
-		dispatch('edition/setUserEdition', getters['selection/userSelectionUser']);
+		dispatch('edition/setUserEdition', getters['selection/userSelection']);
 	},
 
 	setSelectedUser({ dispatch }, user) {
@@ -167,12 +154,9 @@ export default {
 		dispatch('edition/setUserEdition', user);
 	},
 
-	unsetSelectedUser({ commit, dispatch }) {
+	unsetSelectedUser({ dispatch }) {
 		dispatch('progressions/unsetSelectedUserProgression');
 		dispatch('selection/unsetUserSelection');
 		dispatch('edition/unsetUserEdition');
-
-		commit('unsetSelectedUser'); // TODO : Delete this once the code will have been adjusted
-		dispatch('progressions/unsetSelectedProgression'); // TODO : Update this once the code will have been adjusted
 	},
 };

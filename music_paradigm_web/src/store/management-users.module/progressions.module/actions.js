@@ -1,9 +1,9 @@
-import { taskStateMarkersApi, usersApi, progressionsApi } from '@/api';
+import { progressionsApi } from '@/api';
 
 export default {
 
 	assignCurriculum({ commit, dispatch }, { userId, curriculumId, assignedParameters }) {
-		commit('indicateAssigningCurriculum');
+		commit('indicateAssigningCurriculum', true);
 		return progressionsApi
 			.assignCurriculum({ userId, curriculumId, assignedParameters })
 			.then(
@@ -17,12 +17,12 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateAssigningCurriculumEnd');
+				commit('indicateAssigningCurriculum', false);
 			});
 	},
 
 	assignParameters({ commit, dispatch }, { progressionId, assignedParameters }) {
-		commit('indicateAssigningParameters');
+		commit('indicateAssigningParameters', true);
 		return progressionsApi
 			.assignParameters(progressionId, assignedParameters)
 			.then(
@@ -35,12 +35,12 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateAssigningParametersEnd');
+				commit('indicateAssigningParameters', false);
 			});
 	},
 
 	refreshSelectedUserProgression({ commit, dispatch, getters }) {
-		commit('indicateFetchingUserProgression');
+		commit('indicateFetchingUserProgression', true);
 		return progressionsApi
 			.getProgressionById(getters['selection/userProgressionSelectionId'])
 			.then(
@@ -51,7 +51,7 @@ export default {
 					dispatch('alert/setErrorAlert', `User curriculum progression refreshing failed : ${error.message}`, { root: true });
 				},
 			).finally(() => {
-				commit('indicateFetchingUserProgressionEnd');
+				commit('indicateFetchingUserProgression', false);
 			});
 	},
 
@@ -59,48 +59,16 @@ export default {
 		dispatch('edition/setUserProgressionEdition', getters['selection/userProgressionSelection']);
 	},
 
-	setSelectedUserProgression({ commit, dispatch }, { progression, progressionSessionsStatus }) {
+	setSelectedUserProgression({ dispatch }, { progression, progressionSessionsStatus }) {
 		dispatch('sessions/unsetSelectedProgressionSession');
 		dispatch('sessions/setProgressionSessionsStatus', progressionSessionsStatus);
 		dispatch('selection/setUserProgressionSelection', progression);
 		dispatch('edition/setUserProgressionEdition', progression);
-
-
-		// TODO: Delete once the code will have been adjusted
-		commit('setSelectedUserProgression', progression);
-		commit('setSelectedUserProgressionSummary', progressionSessionsStatus);
-		dispatch('unsetSelectedSession');
 	},
 
 	unsetSelectedUserProgression({ dispatch }) {
 		dispatch('sessions/unsetSelectedProgressionSession');
 		dispatch('selection/unsetUserProgressionSelection');
 		dispatch('edition/unsetUserProgressionEdition');
-	},
-
-	// FIXME : All the code below this line is from before the refactoring. It will be necessary to update it.
-
-	setSelectedSession({ commit, dispatch }, session) {
-		commit('setSelectedSession', session);
-		dispatch('unsetSelectedSessionCompletionCount');
-	},
-
-	setSelectedSessionCompletionCount({ commit }, completionCount) {
-		commit('setSelectedSessionCompletionCount', completionCount);
-	},
-
-	// Actions to unset values
-	unsetSelectedProgression({ commit, dispatch }) {
-		commit('unsetSelectedUserProgression');
-		dispatch('unsetSelectedSession');
-	},
-
-	unsetSelectedSession({ commit, dispatch }) {
-		commit('unsetSelectedSession');
-		dispatch('unsetSelectedSessionCompletionCount');
-	},
-
-	unsetSelectedSessionCompletionCount({ commit }) {
-		commit('unsetSelectedSessionCompletionCount');
 	},
 };

@@ -11,8 +11,8 @@ export default {
 
 	hasEditedUser: (_, getters) => {
 		return !_isEqual(
-			getters['selection/userSelectionUser'],
-			getters['edition/userEditionUser'],
+			getters['selection/userSelection'],
+			getters['edition/userEdition'],
 		);
 	},
 

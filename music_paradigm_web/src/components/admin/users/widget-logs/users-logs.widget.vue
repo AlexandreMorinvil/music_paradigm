@@ -34,31 +34,37 @@ export default {
 		return {};
 	},
 	computed: {
-		...mapGetters('managementUsers', ['userSelectedId', 'userSelectedUsername', 'hasSelectedUser']),
-		...mapGetters('managementUsers/progressions', [
-			'progressionSelectedId',
-			'sessionSelectedAssociativeId',
-			'sessionCompletionCountSelected',
+		...mapGetters('managementUsers/selection', [
+			'hasSelectedUser',
+			'userSelectionId', 
+			'userSelectionUsername', 
+		]),
+		...mapGetters('managementUsers/progressions/selection', [
+			'userProgressionSelectionId',
+		]),
+		...mapGetters('managementUsers/progressions/sessions/selection', [
 			'hasSelectedProgressionSession',
 			'hasSelectedSessionCompletionCount',
+			'progressionSessionSelectionAssociativeId',
+			'sessionCompletionCountSelection',
 		]),
 		userRuleDisplay() {
-			return this.userSelectedUsername;
+			return this.userSelectionUsername;
 		},
 		associativeIdRuleDisplay() {
-			return this.sessionSelectedAssociativeId;
+			return this.progressionSessionSelectionAssociativeId;
 		},
 		completionCountRuleDisplay() {
-			return this.sessionCompletionCountSelected;
+			return this.sessionCompletionCountSelection;
 		},
 		userRule() {
-			return [this.userSelectedId];
+			return [this.userSelectionId];
 		},
 		associativeIdRule() {
-			return this.sessionSelectedAssociativeId ? [this.sessionSelectedAssociativeId] : null;
+			return this.progressionSessionSelectionAssociativeId ? [this.progressionSessionSelectionAssociativeId] : null;
 		},
 		completionCountRule() {
-			return typeof this.sessionCompletionCountSelected === 'number' ? [this.sessionCompletionCountSelected] : null;
+			return typeof this.sessionCompletionCountSelection === 'number' ? [this.sessionCompletionCountSelection] : null;
 		},
 		rules() {
 			return {

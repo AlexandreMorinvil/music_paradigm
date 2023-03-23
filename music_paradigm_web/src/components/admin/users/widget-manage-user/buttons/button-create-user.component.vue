@@ -14,7 +14,7 @@ export default {
     },
     computed: {
         ...mapGetters('managementUsers', ['hasEditedUserUsername', 'isCreatingUser', 'isExecutingUserCommand']),
-        ...mapGetters('managementUsers/edition', ['userEditionUser']),
+        ...mapGetters('managementUsers/edition', ['userEdition']),
         ...mapGetters('managementUsers/selection', ['hasSelectedUser']),
         isButtonFrozen() {
             return !this.isCreatingUser && this.isExecutingUserCommand; // Has other user command running
@@ -32,7 +32,7 @@ export default {
         handleButtonPress() {
             if (!this.isButtonActive) return;
             this.createUser({
-                user: this.userEditionUser,
+                user: this.userEdition,
                 assignedParameters: {},
             });
         },

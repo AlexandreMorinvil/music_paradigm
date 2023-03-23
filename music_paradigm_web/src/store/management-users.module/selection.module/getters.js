@@ -3,6 +3,10 @@ export default {
 		return Boolean(getters.userSelectionId);
 	},
 
+	userSelection: (state) => {
+		return state.selectionUser;
+	},
+
 	userSelectionCreatedAt: (state) => {
 		return state.selectionUser.createdAt;
 	},
@@ -41,10 +45,6 @@ export default {
 
 	userSelectionUpdatedAt: (state) => {
 		return state.selectionUser.updatedAt;
-	},
-
-	userSelectionUser: (state) => {
-		return state.selectionUser;
 	},
 
 	userSelectionUsername: (state) => {

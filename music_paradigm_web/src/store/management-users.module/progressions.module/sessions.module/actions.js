@@ -2,7 +2,7 @@ import { progressionsApi, taskStateMarkersApi } from '@/api';
 
 export default {
 	assignSessionAdjustments({ commit, dispatch }, { progressionId, sessionIdentifier, adjustments }) {
-		commit('indicateAssigningAdjustments');
+		commit('indicateAssigningAdjustments', true);
 		return progressionsApi
 			.assignSessionAdjustments(progressionId, sessionIdentifier, adjustments)
 			.then(
@@ -15,12 +15,12 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateAssigningAdjustmentsEnd');
+				commit('indicateAssigningAdjustments', false);
 			});
 	},
 	
 	deleteTaskStateMarker({ commit, dispatch }, { progressionId, associativeId }) {
-		commit('indicateDeletingTaskStateMarker');
+		commit('indicateDeletingTaskStateMarker', true);
 		return taskStateMarkersApi
 			.deleteTaskStateMarker(progressionId, associativeId)
 			.then(
@@ -33,12 +33,12 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateDeletingTaskStateMarkerEnd');
+				commit('indicateDeletingTaskStateMarker', false);
 			});
 	},
 
 	resetSessionTimer({ commit, dispatch }, { progressionId, associativeId }) {
-		commit('indicateResettingSessionTimer');
+		commit('indicateResettingSessionTimer', true);
 		return taskStateMarkersApi
 			.resetSessionTimer(progressionId, associativeId)
 			.then(
@@ -51,7 +51,7 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateResettingSessionTimerEnd');
+				commit('indicateResettingSessionTimer', false);
 			});
 	},
 

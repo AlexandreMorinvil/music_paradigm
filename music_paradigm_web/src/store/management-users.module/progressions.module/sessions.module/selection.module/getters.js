@@ -5,6 +5,10 @@ export default {
 		return Boolean(getters.progressionSessionSelection.associativeId);
 	},
 
+	hasSelectedSessionCompletionCount: (state) => {
+		return state.selectionSessionCompletionCount !== null;
+	},
+
 	hasProgressionSessionSelectionTaskStateMarker: (_, getters) => {
 		return Boolean(getters.progressionSessionSelectionTaskStateMarker.associativeId);
 	},

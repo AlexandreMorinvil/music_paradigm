@@ -1,28 +1,16 @@
 import { ProgressionSessionsStatus } from '@/modules/progressions'
 
 export default {
-	indicateAssigningAdjustments(state) {
-		state.status.isAssigningSessionAdjustments = true;
+	indicateAssigningAdjustments(state, isActive) {
+		state.status.isAssigningSessionAdjustments = isActive;
 	},
 
-	indicateAssigningAdjustmentsEnd(state) {
-		state.status.isAssigningSessionAdjustments = false;
+	indicateDeletingTaskStateMarker(state, isActive) {
+		state.status.isDeletingTaskStateMarker = isActive;
 	},
 
-	indicateDeletingTaskStateMarker(state) {
-		state.status.isDeletingTaskStateMarker = true;
-	},
-
-	indicateDeletingTaskStateMarkerEnd(state) {
-		state.status.isDeletingTaskStateMarker = false;
-	},
-
-	indicateResettingSessionTimer(state) {
-		state.status.isResettingSessionTimer = true;
-	},
-
-	indicateResettingSessionTimerEnd(state) {
-		state.status.isResettingSessionTimer = false;
+	indicateResettingSessionTimer(state, isActive) {
+		state.status.isResettingSessionTimer = isActive;
 	},
 
 	setProgressionSessionsStatus(state, progressionSessionsStatus) {

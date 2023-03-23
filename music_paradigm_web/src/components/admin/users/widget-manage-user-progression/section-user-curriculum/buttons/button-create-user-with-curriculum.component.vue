@@ -23,7 +23,7 @@ export default {
             'userProgressionEditionCurriculumReference',
             'userProgressionEditionAssignedParameters',
         ]),
-        ...mapGetters('managementUsers/edition', ['userEditionUser']),
+        ...mapGetters('managementUsers/edition', ['userEdition']),
         ...mapGetters('managementUsers/selection', ['hasSelectedUser']),
         isButtonFrozen() {
             return !this.isCreatingUserWithCurriculum && this.isExecutingUserCommand; // Has other user command running
@@ -41,7 +41,7 @@ export default {
         handleButtonPress() {
             if (!this.isButtonActive) return;
             this.createUserWithCurriculum({
-                user: this.userEditionUser,
+                user: this.userEdition,
                 curriculumId: this.userProgressionEditionCurriculumReference,
                 assignedParameters: this.userProgressionEditionAssignedParameters,
             });
