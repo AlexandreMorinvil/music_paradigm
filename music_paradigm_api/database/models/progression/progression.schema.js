@@ -28,7 +28,7 @@ const schema = new Schema(
         },
 
         // Indicate the start time of the curriculum. The delays in days are counted starting from that date
-        startTime: {
+        startTime: { // TODO: Should be 'startDate'. However, the modification might cause a lot of sensitive changes.
             type: Date,
             default: null
         },
@@ -48,7 +48,8 @@ const schema = new Schema(
         // Indicate the values for the experiments with parameters
         assignedParameters: {
             type: Object, // { VARIABLE_NAME: IMPOSED_VALUE, ... }
-            default: null
+            default: {},
+            set: setterAssignedParameters
         },
 
         // List of the experiments composing the curriculum
@@ -68,19 +69,28 @@ const schema = new Schema(
     }
 );
 
+schema.set('toJSON', { virtuals: true });
+
 // Virtual properties
 schema.virtual('startTimePassed').get(function () {
+    if (!this.startTime) return null;
     return (new Date()).getTime() - (new Date(this.startTime)).getTime()
 });
 
 schema.virtual('lastProgessionTimePassed').get(function () {
+    if (!this.lastProgressionDate) return null;
     return (new Date()).getTime() - (new Date(this.lastProgressionDate)).getTime()
 });
 
 schema.virtual('duration').get(function () {
+    if (!this.lastProgressionDate || !this.startTime) return null;
     return (new Date(this.lastProgressionDate)).getTime() - (new Date(this.startTime)).getTime();
 });
 
-schema.set('toJSON', { virtuals: true });
+// Setters
+function setterAssignedParameters(assignedParameters) {
+    // Remove the parameters which are assigned as "null"
+    return Object.fromEntries(Object.entries(assignedParameters).filter(([_, v]) => v != null));
+}
 
 module.exports = schema;

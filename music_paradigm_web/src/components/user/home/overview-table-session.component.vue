@@ -137,8 +137,8 @@ export default {
 
 <style scoped>
 .session-container {
-	width: 200px;
-	height: 200px;
+	width: 220px;
+	height: 220px;
 	margin: 10px;
 	background-color: gray;
 	box-shadow: 5px 5px 5px rgb(15, 15, 15);

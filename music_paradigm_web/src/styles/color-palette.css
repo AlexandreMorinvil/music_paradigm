@@ -45,4 +45,8 @@
 
     --color-turquoise-board-tag-background: rgb(0, 145, 160);
     --color-turquoise-board-tag-border: rgb(0, 150, 165);
+
+	/* Text colors */
+	--color-edited-text: rgb(25, 25, 220);
+	--color-selected-text: rgb(25, 210, 25);
 }

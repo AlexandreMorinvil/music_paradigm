@@ -10,7 +10,6 @@
 					<tr>
 						<th>#</th>
 						<th>Username</th>
-						<th>Full Name</th>
 						<th>Tags</th>
 						<th>Curriculum</th>
 						<th>Start Date</th>
@@ -25,7 +24,6 @@
 					<tr v-for="(user, index) in usersSummaryList" :key="user._id" :class="{ selected: isSelectedUser(user) }">
 						<td>{{ index + 1 }}</td>
 						<td>{{ makeUsernameDisplay(user) }}</td>
-						<td>{{ makeFullNameDisplay(user) }}</td>
 						<td style="white-space: pre-line">{{ makeTagsDisplay(user) }}</td>
 						<td>{{ makeCurriculumTitleDisplay(user) }}</td>
 						<td>{{ makeProgressionStartTimeDisplay(user) }}</td>
@@ -61,27 +59,22 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('users', ['isFetchingUsersSummaryList', 'usersSummaryList', 'userSelectedId']),
+		...mapGetters('managementUsers', ['isFetchingUsersSummaryList', 'usersSummaryList', 'userSelectedId']),
 		isListLoading() {
 			return this.isFetchingUsersSummaryList;
 		},
 	},
 	methods: {
-		...mapActions('users', ['fetchAllUsersSummary', 'setSelectedUser', 'unsetSelectedUser']),
+		...mapActions('managementUsers',['fetchUserSummariesList', 'fetchAndSelectUserById', 'unsetSelectedUser']),
 		handleRefresh() {
-			this.fetchAllUsersSummary();
+			this.fetchUserSummariesList();
 		},
 		handleSelectUser(id) {
 			if (this.userSelectedId === id) this.unsetSelectedUser();
-			else this.setSelectedUser(id);
+			else this.fetchAndSelectUserById(id);
 		},
 		makeUsernameDisplay(user) {
 			return user ? user.username : '';
-		},
-		makeFullNameDisplay(user) {
-			const { firstName, middleName, lastName } = user;
-			if (!(firstName || middleName || lastName)) return '---';
-			return firstName + ' ' + middleName + ' ' + lastName;
 		},
 		makeTagsDisplay(user) {
 			const { tags } = user;
@@ -151,14 +144,14 @@ export default {
 			return timeLapsed;
 		},
 		makeSelectButtonText(user) {
-			return this.isSelectedUser(user) ? 'Unselect' : 'Select';
+			return this.isSelectedUser(user) ? 'Deselect' : 'Select';
 		},
 		isSelectedUser(user) {
 			return user && user._id === this.userSelectedId;
 		},
 	},
 	mounted() {
-		this.fetchAllUsersSummary();
+		this.fetchUserSummariesList();
 	},
 };
 </script>

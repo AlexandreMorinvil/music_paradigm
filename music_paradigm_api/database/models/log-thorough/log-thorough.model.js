@@ -65,6 +65,7 @@ function makeLogReference(logHeader) {
     const {
         progressionId,
         associativeId,
+        associativeIdOrdinalNumber,
         logLabel,
         completionCount
     } = logHeader;
@@ -72,6 +73,7 @@ function makeLogReference(logHeader) {
     return {
         progressionId: progressionId,
         associativeId: associativeId,
+        associativeIdOrdinalNumber: associativeIdOrdinalNumber,
         logLabel: logLabel,
         completionCount: completionCount,
     }

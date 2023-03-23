@@ -7,10 +7,6 @@ function EMPTY_USER() {
 	return {
 		_id: null,
 		username: '',
-		email: '',
-		firstName: '',
-		middleName: '',
-		lastName: '',
 		role: '',
 		curriculum: null,
 		progressions: [],

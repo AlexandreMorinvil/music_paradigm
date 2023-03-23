@@ -86,7 +86,7 @@ export default {
             return experimentSummary.folder;
         },
         makeSelectButtonText(experimentSummary) {
-            return this.isSelectedExperiment(experimentSummary) ? 'Unselect' : 'Select';
+            return this.isSelectedExperiment(experimentSummary) ? 'Deselect' : 'Select';
         },
         isSelectedExperiment(experimentSummary) {
             return experimentSummary && experimentSummary._id === this.selectedId;

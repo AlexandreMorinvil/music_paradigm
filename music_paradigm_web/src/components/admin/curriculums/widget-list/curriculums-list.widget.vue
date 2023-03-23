@@ -64,9 +64,9 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('managementCurriculums', ['fetchAllCurriculumHeaders', 'selectCurriculum', 'unsetSelectedCurriculum']),
+		...mapActions('managementCurriculums', ['fetchCurriculumSummariesList', 'selectCurriculum', 'unsetSelectedCurriculum']),
 		handleRefresh() {
-			this.fetchAllCurriculumHeaders();
+			this.fetchCurriculumSummariesList();
 		},
 		handleSelection(curriculumSummary) {
 			if (this.isSelectedCurriculum(curriculumSummary)) this.unsetSelectedCurriculum();
@@ -82,17 +82,17 @@ export default {
 			return curriculumSummary.logType;
 		},
 		makeExperimentsCountDisplay(curriculumSummary) {
-			return curriculumSummary.experiments ? curriculumSummary.experiments.length : 0;
+			return curriculumSummary.sessionsList ? curriculumSummary.sessionsList.length : 0;
 		},
 		makeSelectButtonText(curriculumSummary) {
-			return this.isSelectedCurriculum(curriculumSummary) ? 'Unselect' : 'Select';
+			return this.isSelectedCurriculum(curriculumSummary) ? 'Deselect' : 'Select';
 		},
 		isSelectedCurriculum(curriculumSummary) {
 			return curriculumSummary && curriculumSummary._id === this.curriculumSelectionId;
 		},
 	},
 	mounted() {
-		this.fetchAllCurriculumHeaders();
+		this.fetchCurriculumSummariesList();
 	},
 };
 </script>

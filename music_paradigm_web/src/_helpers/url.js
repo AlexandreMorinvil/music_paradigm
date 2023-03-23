@@ -3,12 +3,13 @@ import config from '@/config';
 const staticDirectory = '/static/';
 const experimentResourceDirectory = '/experiment-resources/';
 
-const sessions = '/sessions/';
 const account = '/account/';
-const experiments = '/experiments/';
 const curriculums = '/curriculums/';
+const experiments = '/experiments/';
+const experimentMarkers = '/task-state-markers/';
+const progressions = '/progressions/'
+const sessions = '/sessions/';
 const users = '/users/';
-const experimentMarkers = '/experiment-markers/';
 
 const logSimple = '/log-simple/';
 const logThorough = '/log-thorough/';
@@ -34,20 +35,14 @@ export default {
 	},
 
 	// API calls
-	sessions: function (parameters) {
-		return addSlugs(config.apiUrl, sessions, parameters);
-	},
 	account: function (parameters) {
 		return addSlugs(config.apiUrl, account, parameters);
-	},
-	experiments: function (parameters) {
-		return addSlugs(config.apiUrl, experiments, parameters);
 	},
 	curriculums: function (parameters) {
 		return addSlugs(config.apiUrl, curriculums, parameters);
 	},
-	users: function (parameters) {
-		return addSlugs(config.apiUrl, users, parameters);
+	experiments: function (parameters) {
+		return addSlugs(config.apiUrl, experiments, parameters);
 	},
 	experimentMarkers: function (parameters) {
 		return addSlugs(config.apiUrl, experimentMarkers, parameters);
@@ -58,7 +53,16 @@ export default {
 	logThorough: function (parameters) {
 		return addSlugs(config.apiUrl, logThorough, parameters);
 	},
+	progressions: function (parameters) {
+		return addSlugs(config.apiUrl, progressions, parameters);
+	},
+	sessions: function (parameters) {
+		return addSlugs(config.apiUrl, sessions, parameters);
+	},
 	storage: function (parameters) {
 		return addSlugs(config.apiUrl, storage, parameters);
+	},
+	users: function (parameters) {
+		return addSlugs(config.apiUrl, users, parameters);
 	},
 };

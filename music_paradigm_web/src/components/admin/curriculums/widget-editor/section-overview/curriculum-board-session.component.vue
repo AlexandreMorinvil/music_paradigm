@@ -125,8 +125,8 @@ export default {
     flex-direction: column;
     justify-content: space-around;
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 220px;
+    height: 220px;
     margin: 10px;
     background-color: gray;
     border-style: solid;

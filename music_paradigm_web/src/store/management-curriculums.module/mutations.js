@@ -31,7 +31,7 @@ export default {
 		state.status.isDeleting = false;
 	},
 
-	setHeadersList(state, usersHeadersLst) {
-		state.curriculumsList = usersHeadersLst;
+	setCurriculumSummariesList(state, curriculumSummariesList) {
+		state.curriculumSummariesManager.setCurriculumSummariesList(curriculumSummariesList);
 	},
 };
