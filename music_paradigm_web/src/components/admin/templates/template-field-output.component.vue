@@ -48,10 +48,10 @@ export default {
 			return this.hasValue ? this.formatValueFunction(this.value) : this.noValuePLaceHolder;
 		},
 		displayedComplementaryValue() {
-			return this.hasComplementaryValue ? this.formatComplementaryValueFunction(this.complementaryValue) : "";
+			return this.hasComplementaryValue ? this.formatComplementaryValueFunction(this.complementaryValue) : '';
 		},
 		hasValue() {
-			return this.value !== null && this.value !== undefined;
+			return this.value !== null && this.value !== undefined && this.value !== '';
 		},
 		hasComplementaryValue() {
 			return (this.hasValue || this.allowLoneComplementaryValue) &&

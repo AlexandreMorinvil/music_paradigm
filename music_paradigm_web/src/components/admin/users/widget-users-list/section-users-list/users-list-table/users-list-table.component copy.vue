@@ -1,44 +1,40 @@
 <template>
-	<div id="experiments-workshop" class="widget widget-bg">
-		<div class="options-position">
-			<button v-on:click="handleRefresh" class="widget-button blue">Refresh</button>
-		</div>
-		<div class="board-position widget-table-context">
-			<loader v-if="isListLoading" class="loader"></loader>
-			<table v-else class="widget-table">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Username</th>
-						<th>Tags</th>
-						<th>Curriculum</th>
-						<th>Start Date</th>
-						<th>Progression<br />Duration</th>
-						<th>Last <br />Advance</th>
-						<th>Reached</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
+	<div class="board-position widget-table-context">
+		<loader v-if="isListLoading" class="loader"></loader>
+		<table v-else class="widget-table">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Username</th>
+					<th>Tags</th>
+					<th>Curriculum</th>
+					<th>Start Date</th>
+					<th>Progression<br />Duration</th>
+					<th>Last <br />Advance</th>
+					<th>Reached</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
 
-				<tbody>
-					<tr v-for="(user, index) in usersSummaryList" :key="user._id" :class="{ selected: isSelectedUser(user) }">
-						<td>{{ index + 1 }}</td>
-						<td>{{ makeUsernameDisplay(user) }}</td>
-						<td style="white-space: pre-line">{{ makeTagsDisplay(user) }}</td>
-						<td>{{ makeCurriculumTitleDisplay(user) }}</td>
-						<td>{{ makeProgressionStartTimeDisplay(user) }}</td>
-						<td>{{ makeProgressionDurationDisplay(user) }}</td>
-						<td>{{ makeProgressionLastAdvanceTimeDisplay(user) }}</td>
-						<td>{{ makeProgressionDisplay(user) }}</td>
-						<td class="widget-table-actions-buttons">
-							<button v-on:click="handleSelectUser(user._id)" class="widget-button button small" :class="isSelectedUser(user) ? 'turquoise' : 'blue'">
-								{{ makeSelectButtonText(user) }}
-							</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+			<tbody>
+				<tr v-for="(user, index) in usersSummaryList" :key="user._id" :class="{ selected: isSelectedUser(user) }">
+					<td>{{ index + 1 }}</td>
+					<td>{{ makeUsernameDisplay(user) }}</td>
+					<td style="white-space: pre-line">{{ makeTagsDisplay(user) }}</td>
+					<td>{{ makeCurriculumTitleDisplay(user) }}</td>
+					<td>{{ makeProgressionStartTimeDisplay(user) }}</td>
+					<td>{{ makeProgressionDurationDisplay(user) }}</td>
+					<td>{{ makeProgressionLastAdvanceTimeDisplay(user) }}</td>
+					<td>{{ makeProgressionDisplay(user) }}</td>
+					<td class="widget-table-actions-buttons">
+						<button v-on:click="handleSelectUser(user._id)" class="widget-button button small"
+							:class="isSelectedUser(user) ? 'turquoise' : 'blue'">
+							{{ makeSelectButtonText(user) }}
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </template>
 
@@ -65,7 +61,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('managementUsers',['fetchUserSummariesList', 'fetchAndSelectUserById', 'unsetSelectedUser']),
+		...mapActions('managementUsers', ['fetchUserSummariesList', 'fetchAndSelectUserById', 'unsetSelectedUser']),
 		handleRefresh() {
 			this.fetchUserSummariesList();
 		},
