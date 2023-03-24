@@ -1,6 +1,10 @@
 import _isEqual from 'lodash/isEqual';
 
 export default {
+	fetchingAndSelectingUserId: (state) => {
+		return state.status.fetchingAndSelectingUserId;
+	},
+
 	hasSelectedUser: (state) => {
 		return Boolean(state.selectedUser._id);
 	},
@@ -39,6 +43,7 @@ export default {
 
 	isExecutingUserCommand: (_, getters) => {
 		return getters['progressions/isExecutingUserProgressionCommand'] ||
+			!!getters.fetchingAndSelectingUserId ||
 			getters.isCreatingUser ||
 			getters.isCreatingUserWithCurriculum ||
 			getters.isDeletingUser ||

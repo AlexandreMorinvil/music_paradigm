@@ -9,18 +9,24 @@ export class ListTable {
         return [];
     }
 
-    constructor(list, ListTableEntityClass) {
+    constructor(list, ListTableEntityClass, parameters = {}) {
         this.ListTableEntityClass = ListTableEntityClass ?? ListTableEntity;
         this.entitiesList = this.convertToTableEntitiesList(list);
-        this._selectedColumnsList = [];
+        this._selectedColumnsList = parameters.selectedColumnsList ?? this.presentByDefaultColumnsList ?? [];
     }
 
     get alwaysPresentColumnsList() {
         return this.possibleColumnsList.filter((column) => column.isAlwaysPresent);
     }
 
+    get presentByDefaultColumnsList() {
+        return this.possibleColumnsList.filter((column) => {
+            return column.isAlwaysPresent || column.isPresentByDefault;
+        });
+    }
+
     get selectedColumnsList() {
-        return this.sortColumnsOrder([
+        return this.sortAndDuplicateColumns([
             ...this.alwaysPresentColumnsList,
             ...this._selectedColumnsList,
         ]);
@@ -31,9 +37,17 @@ export class ListTable {
         return entitiesList.map((entity) => new this.ListTableEntityClass(entity))
     }
 
-    sortColumnsOrder(columnsList) {
+    removeDuplicateColumns(columnsList) {
+        return [...new Set(columnsList)];
+    }
+
+    sortColumns(columnsList) {
         return columnsList.sort((columnA, columnB) => {
             return columnA.orderPriority - columnB.orderPriority;
         });
+    }
+
+    sortAndDuplicateColumns(columnsList) {
+        return this.removeDuplicateColumns(this.sortColumns(columnsList));
     }
 }

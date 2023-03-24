@@ -146,9 +146,6 @@ export default {
 			return user && user._id === this.userSelectedId;
 		},
 	},
-	mounted() {
-		this.fetchUserSummariesList();
-	},
 };
 </script>
 

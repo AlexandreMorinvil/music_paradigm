@@ -5,6 +5,7 @@ import { UsersListTableEntity } from "./user-list-table-entity.class";
 const possibleColumnsList = [
     new ListTableColumn({
         key: 'curriculum',
+        isPresentByDefault: true,
         title: 'Curriculum',
         type: String,
     }),
@@ -25,14 +26,11 @@ const possibleColumnsList = [
         title: 'Duration Start to Last Advance',
     }),
     new ListTableColumn({
-        key: 'startDate',
-        title: 'Date Start',
-        type: Date,
-    }),
-    new ListTableColumn({
         key: 'tags',
+        isPresentByDefault: true,
         title: 'Tags',
         type: Array,
+        formatFunction: (list) => list.join('\n'),
     }),
     new ListTableColumn({
         key: 'reachedSessionTitle',
@@ -57,7 +55,7 @@ export class UsersListTable extends ListTable {
         return possibleColumnsList;
     }
 
-    constructor(list) {
-        super(list, UsersListTableEntity);
+    constructor(list, parameters = {}) {
+        super(list, UsersListTableEntity, parameters);
     }
 }

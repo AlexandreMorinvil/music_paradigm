@@ -1,6 +1,6 @@
 <template>
-    <TemplateButtonComponent v-on:click="handleButtonPress" color="blue" :isActive="isButtonActive" :isLoading="isLoading"
-        :isFrozen="isButtonFrozen" v-bind="$attrs" text="Select" />
+    <TemplateButtonComponent v-on:click="handleButtonPress" color="blue" :isActive="isButtonActive"
+        :isLoading="isLoading" :isFrozen="isButtonFrozen" v-bind="$attrs" text="Select" />
 </template>
 
 <script>
@@ -15,7 +15,7 @@ export default {
     },
     props: {
         entity: {
-            type: null,
+            type: Object,
             default: null,
         },
         userId: {
@@ -24,25 +24,37 @@ export default {
         }
     },
     computed: {
-        ...mapGetters('managementUsers', ['isExecutingUserCommand', 'isFetchingUser']),
-        arguments() {
-            return this.entity?._id ?? this.userId ?? null;
-        },
+        ...mapGetters('managementUsers', [
+            'fetchingAndSelectingUserId',
+            'isExecutingUserCommand',
+        ]),
+        ...mapGetters('managementUsers/selection', [
+            'userSelectionId',
+        ]),
         isLoading() {
-            return this.isFetchingUser;
+            return Boolean(this.userIdParameter) && this.fetchingAndSelectingUserId === this.userIdParameter;
         },
         isButtonFrozen() {
-            return !this.isFetchingUser && this.isExecutingUserCommand;
+            // Fetching other user
+            if (!!this.fetchingAndSelectingUserId && this.fetchingAndSelectingUserId !== this.userIdParameter) return true;
+            // Executing other user command
+            return !this.fetchingAndSelectingUserId && this.isExecutingUserCommand;
         },
         isButtonActive() {
-            return true;
+            return Boolean(this.userIdParameter) && !this.isSelected;
+        },
+        isSelected() {
+            return this.userIdParameter === this.userSelectionId;
+        },
+        userIdParameter() {
+            return this.entity?._id ?? this.userId ?? null;
         },
     },
     methods: {
         ...mapActions('managementUsers', ['fetchAndSelectUserById']),
         handleButtonPress() {
             if (!this.isButtonActive) return;
-            this.fetchAndSelectUserById(this.arguments);
+            this.fetchAndSelectUserById(this.userIdParameter);
         },
     }
 };

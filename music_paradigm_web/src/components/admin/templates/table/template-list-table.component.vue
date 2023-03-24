@@ -18,9 +18,8 @@
 					<td v-for="column in listTable.selectedColumnsList">
 						<TemplateFieldCheckboxInputComponent :value="entity.getValueToDisplay(column)" />
 					</td>
-					<td v-if="hasActionButtons" class="action-cells">
-						<slot name="actionButtons" :entity="entity" />
-						<slot :entity="entity" />
+					<td class="action-cells">
+						<slot :entity="entity" :isSelected="isSelected(entity)" />
 					</td>
 				</tr>
 			</tbody>
@@ -78,7 +77,7 @@ export default {
 	},
 	methods: {
 		isSelected(entity) {
-			return this.selectedEntitiesList.find((selection) => {
+			return !!this.selectedEntitiesList.find((selection) => {
 				return entity.isEqual(selection) || false;
 			});
 		},

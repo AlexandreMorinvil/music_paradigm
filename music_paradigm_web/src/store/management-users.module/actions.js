@@ -80,16 +80,21 @@ export default {
 	},
 
 	fetchAndSelectUserById({ commit, dispatch }, userId) {
-		return usersApi.getUserById(userId).then(
-			(selectedUserDetails) => {
-				const { user, ...progressionDetails } = selectedUserDetails;
-				dispatch('setSelectedUser', user);
-				dispatch('progressions/setSelectedUserProgression', progressionDetails);
-			},
-			(error) => {
-				dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
-			},
-		);
+		commit('indicateFetchingAndSelectingUserById', userId);
+		return usersApi
+			.getUserById(userId)
+			.then(
+				(selectedUserDetails) => {
+					const { user, ...progressionDetails } = selectedUserDetails;
+					dispatch('setSelectedUser', user);
+					dispatch('progressions/setSelectedUserProgression', progressionDetails);
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `User selection failed : ${error.message}`, { root: true });
+				},
+			).finally(() => {
+				commit('indicateFetchingAndSelectingUserById', null);
+			});
 	},
 
 	getExistingUserGroupsList({ commit, dispatch }) {

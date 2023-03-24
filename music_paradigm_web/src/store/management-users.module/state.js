@@ -5,6 +5,7 @@ export default {
 		isCreatingUser: false,
 		isCreatingUserWithCurriculum: false,
 		isDeletingUser: false,
+		fetchingAndSelectingUserId: null,
 		isFetchingUser: false,
 		isFetchingUsersSummaryList: false,
 		isGettingExistingUserGroupsList: false,

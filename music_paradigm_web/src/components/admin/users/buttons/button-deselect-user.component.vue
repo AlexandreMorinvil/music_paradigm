@@ -13,14 +13,35 @@ export default {
     components: {
         TemplateButtonComponent,
     },
+    props: {
+        entity: {
+            type: Object,
+            default: null,
+        },
+        userId: {
+            type: null,
+            default: null,
+        }
+    },
     computed: {
-        ...mapGetters('managementUsers', ['isExecutingUserCommand']),
-        ...mapGetters('managementUsers/selection', ['hasSelectedUser']),
+        ...mapGetters('managementUsers', [
+            'isExecutingUserCommand'
+        ]),
+        ...mapGetters('managementUsers/selection', [
+            'hasSelectedUser',
+            'userSelectionId',
+        ]),
         isButtonFrozen() {
             return this.isExecutingUserCommand;
         },
         isButtonActive() {
-            return this.hasSelectedUser;
+            return this.userIdParameter ? this.isSelected : this.hasSelectedUser;
+        },
+        userIdParameter() {
+            return this.entity?._id || this.userId || null;
+        },
+        isSelected() {
+            return this.userIdParameter === this.userSelectionId;
         },
     },
     methods: {
