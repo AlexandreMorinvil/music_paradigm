@@ -3,7 +3,6 @@
 		<div class="widget widget-bg">
 			<UsersListSection />
 		</div>
-		<UsersListTableComponentCopy />
 	</WidgetContentFrameComponent>
 </template>
 
@@ -14,12 +13,8 @@ import WidgetContentFrameComponent from '@/components/content-frame/widget-conte
 
 import UsersListSection from './section-users-list/users-list.section.vue';
 
-// TODO: Delete this component when the code will have been adjusted
-import UsersListTableComponentCopy from './section-users-list/users-list-table/users-list-table.component copy.vue'; 
-
 export default {
 	components: {
-		UsersListTableComponentCopy,
 		UsersListSection,
 		WidgetContentFrameComponent,
 	},

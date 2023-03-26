@@ -57,5 +57,6 @@ export class UsersListTable extends ListTable {
 
     constructor(list, parameters = {}) {
         super(list, UsersListTableEntity, parameters);
+        this.title = 'Users';
     }
 }

@@ -10,6 +10,7 @@ export class ListTable {
     }
 
     constructor(list, ListTableEntityClass, parameters = {}) {
+        this.title = 'List';
         this.ListTableEntityClass = ListTableEntityClass ?? ListTableEntity;
         this.entitiesList = this.convertToTableEntitiesList(list);
         this._selectedColumnsList = parameters.selectedColumnsList ?? this.presentByDefaultColumnsList ?? [];

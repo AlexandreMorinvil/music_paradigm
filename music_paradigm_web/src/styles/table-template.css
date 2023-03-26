@@ -1,0 +1,121 @@
+.table-context {
+  background-color: #161616;
+  width: 100%;
+  max-height: 750px;
+  display: block;
+  overflow-y: auto;
+}
+
+.table-context table,
+.table-context th,
+.table-context td {
+  border-collapse: collapse;
+}
+
+.table-context table {
+  color: rgb(200, 200, 200);
+  width: 100%;
+}
+
+.table-context thead {
+  background-color: rgb(25, 25, 30);
+  font-size: 0.9em;
+  overflow-y: auto;
+}
+
+.table-context tbody {
+  font-size: 0.8em;
+}
+
+.table-context tbody>tr:nth-child(odd) {
+  background-color: rgb(45, 45, 50);
+}
+
+.table-context tbody>tr:nth-child(even) {
+  background-color: rgb(30, 30, 35);
+}
+
+.table-context tbody>tr:hover {
+  background-color: rgb(100, 100, 105);
+  color: white;
+}
+
+.table-context tbody>tr.selected {
+  background-color: rgb(100, 200, 50);
+  color: white;
+}
+
+.table-context tbody>tr.wrong {
+  background-color: rgb(200, 100, 50);
+  color: black;
+}
+
+.table-context th,
+.table-context thead {
+  z-index: 1;
+  padding: 5px;
+  position: sticky;
+  top: 0;
+}
+
+.table-context td {
+  padding: 10px;
+  text-align: center;
+}
+
+.table-context th,
+.table-context td {
+  height: 70px;
+}
+
+/* List table only */
+.list-table-template tbody,
+.list-table-template thead {
+  border-left: solid rgb(40, 40, 45) 1px;
+  border-right: solid rgb(40, 40, 45) 1px;
+}
+
+/* Title header */
+.table-title-header {
+  display: flex;
+  align-items: center;
+  background-color: rgb(180, 180, 185);
+  border-radius: 10px 10px 0 0;
+  color: rgb(25, 25, 25);
+  height: 80px;
+  padding: 30px;
+  border: solid rgb(160, 160, 165) 2px;
+}
+
+.table-results-footer {
+  display: flex;
+  align-items: center;
+  background-color: rgb(180, 180, 185);
+  border-radius: 0 0 10px 10px;
+  color: rgb(25, 25, 25);
+  height: 80px;
+  padding: 30px;
+  border: solid rgb(160, 160, 165) 2px;
+}
+
+/* Scroll bar */
+/* width */
+.table-context::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.table-context::-webkit-scrollbar-track {
+  background: #161616;
+  border-right: solid rgb(40, 40, 45) 1px;
+}
+
+/* Handle */
+.table-context::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+.table-context::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

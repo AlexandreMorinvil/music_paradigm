@@ -1,46 +1,56 @@
 <template>
-	<div class="table-area widget-table-context">
-		<LoaderCircularComponent v-if="isLoading" class="loader" />
-		<table v-else class="widget-table">
+	<div>
 
-			<thead>
-				<tr>
-					<th class="count-column">#</th>
-					<th v-for="column in listTable.selectedColumnsList">{{ column.title }}</th>
-					<th v-if="hasActionButtons" class="action-column-title">Actions</th>
-				</tr>
-			</thead>
+		<TemplateListTableTitleComponent :title="listTable.title" />
+		<div class="table-area table-context list-table-template">
+			<LoaderCircularComponent v-if="isLoading" class="loader" />
+			<table v-else class="table-template">
 
-			<tbody>
-				<tr v-for="(entity, index) in listTable.entitiesList" :key="entity._id"
-					:class="{ selected: isSelected(entity) }">
-					<td>{{ index + 1 }}</td>
-					<td v-for="column in listTable.selectedColumnsList">
-						<TemplateFieldCheckboxInputComponent :value="entity.getValueToDisplay(column)" />
-					</td>
-					<td class="action-cells">
-						<slot :entity="entity" :isSelected="isSelected(entity)" />
-					</td>
-				</tr>
-			</tbody>
+				<thead>
+					<tr>
+						<th class="count-column">#</th>
+						<th v-for="column in listTable.selectedColumnsList">{{ column.title }}</th>
+						<th v-if="hasActionButtons">Actions</th>
+					</tr>
+				</thead>
 
-		</table>
+				<tbody>
+					<tr v-for="(entity, index) in listTable.entitiesList" :key="entity._id"
+						:class="{ selected: isSelected(entity) }">
+						<td>{{ index + 1 }}</td>
+						<td v-for="column in listTable.selectedColumnsList">
+							<TemplateFieldCheckboxInputComponent :value="entity.getValueToDisplay(column)" />
+						</td>
+						<td class="action-cells">
+							<slot :entity="entity" :isSelected="isSelected(entity)" />
+						</td>
+					</tr>
+				</tbody>
+
+			</table>
+		</div>
+		<TemplateListTableFooterComponent />
 	</div>
 </template>
 
 <script>
-import '@/styles/widget-template.css';
+import '@/styles/table-template.css';
 
-import LoaderCircularComponent from '@/components/visual-helpers/loader-circular.component.vue';
 import { ListTable } from '@/modules/list-tables';
-
+import LoaderCircularComponent from '@/components/visual-helpers/loader-circular.component.vue';
 import TemplateFieldCheckboxInputComponent from '@/components/admin/templates/template-field-output.component.vue';
+
+import TemplateListTableFooterComponent from './template-list-table-footer.component.vue';
+import TemplateListTableTitleComponent from './template-list-table-title.component.vue';
+
 
 export default {
 	emits: ['select'],
 	components: {
 		LoaderCircularComponent,
 		TemplateFieldCheckboxInputComponent,
+		TemplateListTableFooterComponent,
+		TemplateListTableTitleComponent,
 	},
 	props: {
 		isLoading: {
@@ -87,17 +97,11 @@ export default {
 
 <style scoped>
 .table-area {
-	display: flex;
-	justify-content: center;
 	white-space: pre-line;
 }
 
 .count-column {
-	width: 50px;
-}
-
-.action-column-title {
-	z-index: 1;
+	width: 75px;
 }
 
 .action-cells {
@@ -107,5 +111,6 @@ export default {
 .loader {
 	width: 250px;
 	height: 250px;
+	margin: auto;
 }
 </style>
