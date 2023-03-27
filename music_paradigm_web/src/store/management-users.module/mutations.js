@@ -13,6 +13,10 @@ export default {
 		state.status.isDeletingUser = isActive;
 	},
 
+	indicateFetchingAndSelectingUserById(state, userId) {
+		state.status.fetchingAndSelectingUserId = userId;
+	},
+
 	indicateFetchingUser(state, isActive) {
 		state.status.isFetchingUser = isActive;
 	},

@@ -138,7 +138,7 @@ function setterTags(tags) {
     for (let i in tags)
         if (tags[i])
             tagsFormated.push(stringHandler.fixSpaces(tags[i].toLowerCase()));
-    return [...new Set(tagsFormated)];
+    return [...new Set(tagsFormated)].sort();
 }
 
 function setterUsername(username) {
