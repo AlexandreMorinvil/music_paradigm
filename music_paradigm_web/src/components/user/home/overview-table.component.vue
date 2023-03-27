@@ -1,6 +1,6 @@
 <template>
 	<div class="englobing-box">
-		<div class="table-context">
+		<div class="board-context">
 			<div class="table-inside-context content-flex">
 				<div
 					v-for="(session, index) in progressionHistory"
@@ -82,7 +82,7 @@ export default {
 	color: rgb(230, 230, 230);
 }
 
-.table-context {
+.board-context {
 	padding: 20px;
 	background-color: rgb(80, 80, 80);
 	border: 5px rgb(75, 75, 75) solid;

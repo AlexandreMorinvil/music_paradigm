@@ -1,7 +1,7 @@
 <template>
 	<div class="table-results-footer">
 		<span>
-			Showing X items
+			Showing {{ entitiesCount }} item(s)
 		</span>
 	</div>
 </template>
@@ -10,7 +10,15 @@
 import '@/styles/table-template.css';
 
 export default {
-	props: {},
+	props: {
+		entitiesCount: {
+			type: Number,
+			default: null,
+		},
+	},
+	computed: {
+		
+	}
 };
 </script>
 

@@ -1,11 +1,11 @@
 export class ListTableEntity {
     constructor(entity) {
-        this._id = entity?._id;
+        this._id = entity?._id ?? null;
         this.entity = entity ?? {};
     }
 
     getValueToDisplay(column) {
-        const value = this.entity[column.key];
+        const value = this.entity[column.key] ?? this[column.key] ?? null;
 
         if (value === null || value === undefined || value === '') return null; 
         switch (column.type) {

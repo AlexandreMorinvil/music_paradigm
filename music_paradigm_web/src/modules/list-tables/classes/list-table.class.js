@@ -20,6 +20,10 @@ export class ListTable {
         return this.possibleColumnsList.filter((column) => column.isAlwaysPresent);
     }
 
+    get entitiesCount() {
+        return this.entitiesList.length;
+    }
+
     get presentByDefaultColumnsList() {
         return this.possibleColumnsList.filter((column) => {
             return column.isAlwaysPresent || column.isPresentByDefault;
