@@ -11,7 +11,8 @@
 			</div>
 		</div>
 		<div class="options-area">
-			<i class="bi bi-pencil-square" />
+			<i class="bi" :class="hasEditorExpanded ? 'bi-caret-up-square' : 'bi-pencil-square'"
+				v-on:click="() => $emit('editor')" />
 			<i class="bi" :class="isExpanded ? 'bi-arrows-collapse' : 'bi-arrows-expand'"
 				v-on:click="() => $emit('expand')" />
 		</div>
@@ -25,11 +26,15 @@ import '@/styles/table-template.css';
 import LoaderCircularComponent from '@/components/visual-helpers/loader-circular.component.vue';
 
 export default {
-	emits: ['expand'],
+	emits: ['editor', 'expand'],
 	components: {
 		LoaderCircularComponent,
 	},
 	props: {
+		hasEditorExpanded: {
+			type: Boolean,
+			default: false,
+		},
 		isExpanded: {
 			type: Boolean,
 			default: false,

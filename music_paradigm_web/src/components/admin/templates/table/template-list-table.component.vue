@@ -1,7 +1,8 @@
 <template>
 	<div>
-		<TemplateListTableTitleComponent :title="listTable.title" :isExpanded="isExpanded" :isLoading="isLoading"
-			v-on:expand="toggleExpansion" />
+		<TemplateListTableTitleComponent :title="listTable.title" :hasEditorExpanded="hasEditorExpanded"
+			:isExpanded="isExpanded" :isLoading="isLoading" v-on:expand="toggleExpansion" v-on:editor="toggleEditor" />
+		<TemplateListTableEditorComponent v-show="hasEditorExpanded" />
 		<div class="table-area table-context list-table-template" :class="{ 'collapsed-size': !isExpanded }">
 			<table class="table-template">
 
@@ -39,6 +40,7 @@ import { ListTable } from '@/modules/list-tables';
 import LoaderSuspensionPointsComponent from '@/components/visual-helpers/loader-suspension-points.vue';
 import TemplateFieldCheckboxInputComponent from '@/components/admin/templates/template-field-output.component.vue';
 
+import TemplateListTableEditorComponent from './template-list-table-editor.component.vue';
 import TemplateListTableFooterComponent from './template-list-table-footer.component.vue';
 import TemplateListTableTitleComponent from './template-list-table-title.component.vue';
 
@@ -48,6 +50,7 @@ export default {
 	components: {
 		LoaderSuspensionPointsComponent,
 		TemplateFieldCheckboxInputComponent,
+		TemplateListTableEditorComponent,
 		TemplateListTableFooterComponent,
 		TemplateListTableTitleComponent,
 	},
@@ -75,6 +78,7 @@ export default {
 	},
 	data() {
 		return {
+			hasEditorExpanded: false,
 			isExpanded: false,
 		};
 	},
@@ -97,6 +101,9 @@ export default {
 			return !!this.selectedEntitiesList.find((selection) => {
 				return entity.isEqual(selection) || false;
 			});
+		},
+		toggleEditor() {
+			this.hasEditorExpanded = !this.hasEditorExpanded;
 		},
 		toggleExpansion() {
 			this.isExpanded = !this.isExpanded;
