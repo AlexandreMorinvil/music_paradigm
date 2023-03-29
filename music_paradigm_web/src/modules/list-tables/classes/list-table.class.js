@@ -4,16 +4,15 @@ import { ListTableEntity } from "./list-table-entity.class";
 
 export class ListTable {
 
-    // To implement by children classes
-    get possibleColumnsList() {
-        return [];
-    }
-
     constructor(list, ListTableEntityClass, parameters = {}) {
         this.title = 'List';
         this.ListTableEntityClass = ListTableEntityClass ?? ListTableEntity;
         this.entitiesList = this.convertToTableEntitiesList(list);
-        this._selectedColumnsList = parameters.selectedColumnsList ?? this.presentByDefaultColumnsList ?? [];
+        this.selectedColumnsList = this.generateSelectedColumnsList(
+            parameters.selectedColumnsList ??
+            this.presentByDefaultColumnsList ??
+            []
+        );
     }
 
     get alwaysPresentColumnsList() {
@@ -30,16 +29,32 @@ export class ListTable {
         });
     }
 
-    get selectedColumnsList() {
-        return this.sortAndDuplicateColumns([
-            ...this.alwaysPresentColumnsList,
-            ...this._selectedColumnsList,
-        ]);
+    // To implement by children classes
+    get possibleColumnsList() {
+        return [];
     }
 
     convertToTableEntitiesList(entities = []) {
         let entitiesList = Array.isArray(entities) ? entities : [entities];
         return entitiesList.map((entity) => new this.ListTableEntityClass(entity))
+    }
+
+    editSelectedColumn(index, newColumnKey) {
+        const newColumn = this.getColumnByKey(newColumnKey);
+        if (!newColumn) return;
+        this.selectedColumnsList.splice(index, 1, newColumn);
+    }
+
+    generateSelectedColumnsList(additionalSelectedColumnsList = []) {
+        return this.sortAndRemoveDuplicateColumns([
+            ...this.selectedColumnsList ?? [],
+            ...this.alwaysPresentColumnsList,
+            ...additionalSelectedColumnsList
+        ]);
+    }
+
+    getColumnByKey(columnKey) {
+        return this.possibleColumnsList.find((possibleColumn) => possibleColumn.key === columnKey);
     }
 
     removeDuplicateColumns(columnsList) {
@@ -52,7 +67,7 @@ export class ListTable {
         });
     }
 
-    sortAndDuplicateColumns(columnsList) {
+    sortAndRemoveDuplicateColumns(columnsList) {
         return this.removeDuplicateColumns(this.sortColumns(columnsList));
     }
 }

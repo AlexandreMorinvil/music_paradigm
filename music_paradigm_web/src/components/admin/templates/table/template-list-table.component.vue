@@ -3,10 +3,10 @@
 		<TemplateListTableTitleComponent :title="listTable.title" :hasEditorExpanded="hasEditorExpanded"
 			:isExpanded="isExpanded" :isLoading="isLoading" v-on:expand="toggleExpansion" v-on:editor="toggleEditor" />
 
-		<TemplateListTableEditorComponent v-show="hasEditorExpanded" />
+		<TemplateListTableEditorComponent v-show="hasEditorExpanded" :listTable="listTable" v-on:update="updateTable" />
 
 		<div class="table-area table-context list-table-template" :class="{ 'collapsed-size': !isExpanded }">
-			<TemplateListTableCellsComponent :listTable="listTable">
+			<TemplateListTableCellsComponent :listTable="listTable" ref="cells" >
 				<slot slot-scope="{ entity }" :entity="entity" />
 			</TemplateListTableCellsComponent>
 		</div>
@@ -19,17 +19,14 @@
 import '@/styles/table-template.css';
 
 import { ListTable } from '@/modules/list-tables';
-import LoaderSuspensionPointsComponent from '@/components/visual-helpers/loader-suspension-points.vue';
 
+import TemplateListTableEditorComponent from './editor/template-list-table-editor.component.vue';
 import TemplateListTableCellsComponent from './template-list-table-cells.component.vue';
-import TemplateListTableEditorComponent from './template-list-table-editor.component.vue';
 import TemplateListTableFooterComponent from './template-list-table-footer.component.vue';
 import TemplateListTableTitleComponent from './template-list-table-title.component.vue';
 
-
 export default {
 	components: {
-		LoaderSuspensionPointsComponent,
 		TemplateListTableCellsComponent,
 		TemplateListTableEditorComponent,
 		TemplateListTableFooterComponent,
@@ -74,7 +71,10 @@ export default {
 		},
 		toggleExpansion() {
 			this.isExpanded = !this.isExpanded;
-		}
+		},
+		updateTable() {
+			this.$refs.cells.$forceUpdate();
+		},
 	},
 };
 </script>

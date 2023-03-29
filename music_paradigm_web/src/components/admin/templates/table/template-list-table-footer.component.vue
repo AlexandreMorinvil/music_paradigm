@@ -30,7 +30,8 @@ export default {
 	border: solid rgb(210, 210, 215) 2px;
 	border-radius: 0 0 10px 10px;
 	color: rgb(25, 25, 25);
-	height: 70px;
+	height: 60px;
 	padding: 30px;
+	font-size: 0.85em;
 }
 </style>

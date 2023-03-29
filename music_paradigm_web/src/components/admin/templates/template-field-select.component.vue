@@ -2,7 +2,8 @@
 	<div class="template-field-input-area">
 		<select class="input-spacing" :class="{
 			'edited-text': isEdited,
-			'placeholder-option': !isEdited && value === null
+			'placeholder-option': !isEdited && value === null,
+			'dissabled-text': isDissabled
 		}" :value="valueConsideringEmpties" v-on:change="(event) => edit(event.target.value)" v-bind="selectAttributes"
 			:disabled="isDissabled">
 			<option v-if="isEmptyAccepted" class='placeholder-option' :value="NO_VALUE"> {{ placeholder }} </option>
@@ -46,6 +47,10 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		isForcedDisabled: {
+			type: Boolean,
+			default: false,
+		},
 		isLoading: {
 			type: Boolean,
 			default: false,
@@ -83,7 +88,7 @@ export default {
 			return this.expectedValue !== undefined;
 		},
 		isDissabled() {
-			return this.isLoading;
+			return this.isForcedDisabled || this.isLoading;
 		},
 		isEdited() {
 			if (this.isEveryValueNew) return true;
@@ -110,18 +115,24 @@ export default {
 select {
 	width: 100%;
 }
+
 .template-field-input-area {
 	position: relative;
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-template-rows: 1fr;
 }
+
 .placeholder-option {
 	color: grey;
 }
 
 .valid-option {
 	color: black;
+}
+
+.dissabled-text {
+	color: grey;
 }
 
 /* Loader */

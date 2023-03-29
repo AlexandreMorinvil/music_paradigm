@@ -45,9 +45,6 @@ export default {
 	beforeMount() {
 		this.fetchUserSummariesList();
 	},
-	mounted() {
-		console.log('UID: ', this._uid);
-	}
 };
 </script>
 
