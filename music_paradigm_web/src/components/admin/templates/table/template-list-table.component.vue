@@ -1,7 +1,8 @@
 <template>
 	<div>
-		<TemplateListTableTitleComponent :title="listTable.title" :isLoading="isLoading" />
-		<div class="table-area table-context list-table-template">
+		<TemplateListTableTitleComponent :title="listTable.title" :isExpanded="isExpanded" :isLoading="isLoading"
+			v-on:expand="toggleExpansion" />
+		<div class="table-area table-context list-table-template" :class="{ 'collapsed-size': !isExpanded }">
 			<table class="table-template">
 
 				<thead>
@@ -12,8 +13,7 @@
 					</tr>
 				</thead>
 
-				<LoaderSuspensionPointsComponent v-if="isLoading && !hasData" class="loader" />
-				<tbody v-else>
+				<tbody>
 					<tr v-for="(entity, index) in listTable.entitiesList" :key="entity._id"
 						:class="{ selected: isSelected(entity) }">
 						<td>{{ index + 1 }}</td>
@@ -73,6 +73,11 @@ export default {
 			default: null,
 		},
 	},
+	data() {
+		return {
+			isExpanded: false,
+		};
+	},
 	computed: {
 		hasActionButtons() {
 			return true || Boolean(this.$slots.actionButtons);
@@ -93,11 +98,18 @@ export default {
 				return entity.isEqual(selection) || false;
 			});
 		},
+		toggleExpansion() {
+			this.isExpanded = !this.isExpanded;
+		}
 	},
 };
 </script>
 
 <style scoped>
+.collapsed-size {
+	max-height: 750px;
+}
+
 .table-area {
 	white-space: pre-line;
 	display: flex;
@@ -116,7 +128,7 @@ export default {
 	white-space: normal;
 }
 
-.loader {
+.list-table-loader {
 	margin: 30px;
 }
 </style>

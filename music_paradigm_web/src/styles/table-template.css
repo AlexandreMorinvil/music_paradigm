@@ -3,7 +3,6 @@
 .table-context {
   background-color: #161616;
   width: 100%;
-  max-height: 750px;
   display: block;
   overflow-y: auto;
 }
@@ -75,18 +74,6 @@
 .list-table-template thead {
   border-left: solid rgb(40, 40, 45) 1px;
   border-right: solid rgb(40, 40, 45) 1px;
-}
-
-/* Title header */
-.table-results-footer {
-  display: flex;
-  align-items: center;
-	background-color: rgb(225, 225, 230);
-	border: solid rgb(210, 210, 215) 2px;
-  border-radius: 0 0 10px 10px;
-  color: rgb(25, 25, 25);
-  height: 80px;
-  padding: 30px;
 }
 
 /* Scroll bar */
