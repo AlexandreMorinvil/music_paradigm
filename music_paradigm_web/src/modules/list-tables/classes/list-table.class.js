@@ -15,6 +15,10 @@ export class ListTable {
         );
     }
 
+    get alwaysPresentColumnsCount() {
+        return this.alwaysPresentColumnsList.length;
+    }
+
     get alwaysPresentColumnsList() {
         return this.possibleColumnsList.filter((column) => column.isAlwaysPresent);
     }
@@ -34,14 +38,21 @@ export class ListTable {
         return [];
     }
 
+    addColumn() {
+        this.selectedColumnsList.push(new ListTableEntity());
+    }
+
     convertToTableEntitiesList(entities = []) {
         let entitiesList = Array.isArray(entities) ? entities : [entities];
         return entitiesList.map((entity) => new this.ListTableEntityClass(entity))
     }
 
-    editSelectedColumn(index, newColumnKey) {
-        const newColumn = this.getColumnByKey(newColumnKey);
-        if (!newColumn) return;
+    deleteColumn(index) {
+        this.selectedColumnsList.splice(index, 1);
+    }
+
+    editSelectedColumns(index, newColumnKey) {
+        const newColumn = this.getColumnByKey(newColumnKey) ?? new ListTableEntity();
         this.selectedColumnsList.splice(index, 1, newColumn);
     }
 
@@ -59,6 +70,10 @@ export class ListTable {
 
     removeDuplicateColumns(columnsList) {
         return [...new Set(columnsList)];
+    }
+
+    setEntitiesListFromList(list) {
+        this.entitiesList = this.convertToTableEntitiesList(list);
     }
 
     sortColumns(columnsList) {

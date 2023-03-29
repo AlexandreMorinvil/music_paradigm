@@ -3,24 +3,25 @@
 		<h4>Columns</h4>
 		<TemplateFieldsetComponent>
 			<template v-for="(column, index) in selectedColumnsList">
+
 				<TemplateFieldLabelComponent :for="`column-${index + 1}`" :text="`Column ${index + 1}`" />
-				<TemplateFieldSelectComponent :value="column.key" v-on:edit="(value) => editColumn(index, value)"
-					isEmptyAccepted :getDisplayedValueFromElement="(column) => column.title"
-					:isForcedDisabled="column.isAlwaysPresent" :getOptionValueFromElement="(column) => column.key"
-					:options="possibleColumnsList" placeholder="# No column" />
-				<!-- <div v-for="(tag, index) in userEditionTags" :key="index" class="tag-input-area">
-					<TemplateFieldInputComponent v-bind:value="userEditionTags[index]"
-					v-on:edit="(editedTag) => editTag(editedTag, index)" :expectedValue="userSelectionTags[index] || ''"
-					:inputAttributes="{
-						type: 'text',
-						name: `tag ${index + 1}`,
-						autocomplete: 'off',
-						placeholder: 'Insert tag'
-					}" />
-					<TemplateButtonComponent color="red" isSmall v-on:click="() => deleteTag(index)" text="Delete" />
-					</div>
-					<TemplateButtonComponent class="grid-right-align" color="blue" isSmall v-on:click="addTag" text="Add Tag" /> -->
+
+				<div class="column-input-area">
+					<TemplateFieldSelectComponent :value="column.key" v-on:edit="(value) => editColumn(index, value)"
+						isEmptyAccepted :getDisplayedValueFromElement="(column) => column.title"
+						:isForcedDisabled="isMandatoryColumnIndex(index)"
+						:getOptionValueFromElement="(column) => column.key" :options="possibleColumnsList"
+						placeholder="# No column" />
+
+					<TemplateButtonComponent v-if="!isMandatoryColumnIndex(index)" color="red" isSmall
+						v-on:click="() => deleteColumn(index)" text="Delete" />
+				</div>
+
 			</template>
+
+			<TemplateButtonComponent class="grid-right-align" color="blue" isSmall v-on:click="addColumn"
+				text="Add Column" />
+
 		</TemplateFieldsetComponent>
 	</div>
 </template>
@@ -60,12 +61,24 @@ export default {
 		},
 	},
 	methods: {
-		editColumn(index, newColumnKey) {
-			this.listTable.editSelectedColumn(index, newColumnKey);
+		addColumn() {
+			this.listTable.addColumn();
 			this.update();
+		},
+		deleteColumn(index) {
+			this.listTable.deleteColumn(index);
+			this.update();
+		},
+		editColumn(index, newColumnKey) {
+			this.listTable.editSelectedColumns(index, newColumnKey);
+			this.update();
+		},
+		isMandatoryColumnIndex(index) {
+			return index < this.listTable.alwaysPresentColumnsCount;
 		},
 		update() {
 			this.$emit('update');
+			this.$forceUpdate();
 		},
 	}
 };
@@ -81,6 +94,15 @@ export default {
 	border-radius: 10px;
 	color: rgb(25, 25, 25);
 	padding: 10px;
+}
+
+.column-input-area {
+	display: grid;
+	grid-template-columns: 4fr 1fr;
+}
+
+.grid-right-align {
+	grid-column: 2;
 }
 
 h4 {

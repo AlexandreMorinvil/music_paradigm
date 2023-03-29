@@ -6,7 +6,7 @@
 		<TemplateListTableEditorComponent v-show="hasEditorExpanded" :listTable="listTable" v-on:update="updateTable" />
 
 		<div class="table-area table-context list-table-template" :class="{ 'collapsed-size': !isExpanded }">
-			<TemplateListTableCellsComponent :listTable="listTable" ref="cells" >
+			<TemplateListTableCellsComponent :listTable="listTable" ref="cells">
 				<slot slot-scope="{ entity }" :entity="entity" />
 			</TemplateListTableCellsComponent>
 		</div>
@@ -58,12 +58,9 @@ export default {
 		return {
 			hasEditorExpanded: false,
 			isExpanded: false,
+			isInitilized: false,
+			listTable: new this.ListTableClass(this.list),
 		};
-	},
-	computed: {
-		listTable() {
-			return new this.ListTableClass(this.list);
-		},
 	},
 	methods: {
 		toggleEditor() {
@@ -76,6 +73,15 @@ export default {
 			this.$refs.cells.$forceUpdate();
 		},
 	},
+	watch: {
+		list: {
+			immediate: true,
+			deep: true,
+			handler: function () {
+				this.listTable.setEntitiesListFromList(this.list);
+			}
+		}
+	}
 };
 </script>
 
