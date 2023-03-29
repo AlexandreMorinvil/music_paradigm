@@ -21,7 +21,7 @@ export default {
 
 <style scoped>
 .table-editor-area {
-	background-color: rgb(195, 195, 200);
+	background-color: rgb(200, 200, 205);
 	border: solid rgb(190, 190, 195) 3px;
 	color: rgb(25, 25, 25);
 	height: 70px;
