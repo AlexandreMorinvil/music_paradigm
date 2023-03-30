@@ -1,4 +1,4 @@
-import { User } from "@/modules/users";
+import { User, UserSummariesManager } from "@/modules/users";
 
 export default {
 	status: {
@@ -16,6 +16,7 @@ export default {
 	selectedUser: new User(), // TODO: To delete once the code will have been adjusted 
 
 	// Users list
+	userSummariesListManager: new UserSummariesManager(),
 	usersSummaryList: [],
 	existingUserGroupsList: [],
 };

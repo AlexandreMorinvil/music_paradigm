@@ -70,7 +70,7 @@ export default {
 	},
 
 	usersSummaryList: (state) => {
-		return state.usersSummaryList;
+		return state.userSummariesListManager.userSummariesList;
 	},
 
 	usersExistingUserGroupsList: (state) => {

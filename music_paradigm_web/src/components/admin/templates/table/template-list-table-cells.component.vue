@@ -4,7 +4,9 @@
 		<thead>
 			<tr>
 				<th class="count-column">#</th>
-				<th v-for="(column, index) in selectedColumnsList" :key="index">{{ column.title }}</th>
+				<th v-for="(column, index) in selectedColumnsList" :key="index">
+					<TemplateFieldOutputComponent :value="column.columnTitle" />
+				</th>
 				<th v-if="hasActionButtons">Actions</th>
 			</tr>
 		</thead>
