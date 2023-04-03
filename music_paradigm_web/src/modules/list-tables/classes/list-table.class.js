@@ -77,6 +77,13 @@ export class ListTable {
         });
     }
 
+    getFilterImposedColorOfEntity(entity) {
+        let initialImposedColor = null;
+        return this.filtersList.reduce((currentImposedColor, filter) => {
+            return filter.getImposedColor(entity) ?? currentImposedColor;
+        }, initialImposedColor);
+    }
+
     generateFiltersList(filtersList = []) {
         return filtersList.map(filter => new ListTableFilter(filter));
     }

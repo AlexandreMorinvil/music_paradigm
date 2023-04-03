@@ -31,8 +31,8 @@ export class ListTableFilterCondition {
 
     isRespected(entity) {
         const value = entity.getValueByColumnKey(this.columnKey);
-        if (value === null || value === undefined || value === '') return false;
-        else return this.applyCondition(value);
+        const isConditionApplied = this.applyCondition(value);
+        return this.operatorNegator ? !isConditionApplied : isConditionApplied;
     }
 
     getStringDescription() {
@@ -90,7 +90,7 @@ export class ListTableFilterCondition {
 
     __endsWith(value) {
         const valueToConsider = Array.isArray(value) ? value[value.length] : value;
-        return String(valueToConsider  ?? '').endsWith(String(this.comparativeValue));
+        return String(valueToConsider ?? '').endsWith(String(this.comparativeValue));
     }
 
     __contains(value) {

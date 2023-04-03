@@ -12,7 +12,8 @@
 		</thead>
 
 		<tbody>
-			<tr v-for="(entity, index) in entitiesList" :key="entity._id" :class="{ selected: isSelected(entity) }">
+			<tr v-for="(entity, index) in entitiesList" :key="entity._id" :class="{ selected: isSelected(entity) }"
+				:style="getImposedColorStyle(entity)">
 				<td>{{ index + 1 }}</td>
 				<td v-for="column in selectedColumnsList">
 					<TemplateFieldOutputComponent :value="entity.getValueToDisplay(column)" />
@@ -29,6 +30,7 @@
 <script>
 import '@/styles/table-template.css';
 
+import { colorHandler } from '@/_helpers';
 import { ListTable } from '@/modules/list-tables';
 import TemplateFieldOutputComponent from '@/components/admin/templates/template-field-output.component.vue';
 
@@ -70,6 +72,13 @@ export default {
 		},
 	},
 	methods: {
+		getImposedColorStyle(entity) {
+			const imposedColor = this.listTable.getFilterImposedColorOfEntity(entity);
+			return imposedColor ? {
+				'background-color': imposedColor,
+				color: colorHandler.invertHexadecimalFormatColor(imposedColor),
+			} : null;
+		},
 		isSelected(entity) {
 			return !!this.selectedEntitiesList.find((selection) => {
 				return entity.isEqual(selection) || false;

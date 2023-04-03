@@ -30,6 +30,11 @@ export class ListTableFilter {
         return this.conditionsList.map(condition => condition.getStringDescription()).join('\n');
     }
 
+    getImposedColor(entity) {
+        if (this.effectType !== FilterEffectType.color) return null;
+        return this.isAppliedTo(entity) ? this.effectParameter : null;
+    }
+
     isAppliedTo(entity) {
         let areChainedConditionsRespected = true;
         let previousChainingOperator = ChainingOperator.and;
