@@ -57,7 +57,7 @@ export default {
 	},
 	computed: {
 		entitiesList() {
-			return this.listTable.entitiesList;
+			return this.listTable.filteredEnitiesList;
 		},
 		hasActionButtons() {
 			return true || Boolean(this.$slots.actionButtons);

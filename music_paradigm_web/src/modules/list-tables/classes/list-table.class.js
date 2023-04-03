@@ -1,6 +1,5 @@
-import _pick from 'lodash/pick';
-
 import { ListTableEntity } from "./list-table-entity.class";
+import { ListTableFilter } from "./list-table-filter.class";
 
 export class ListTable {
 
@@ -8,6 +7,7 @@ export class ListTable {
         this.title = 'List';
         this.ListTableEntityClass = ListTableEntityClass ?? ListTableEntity;
         this.entitiesList = this.convertToTableEntitiesList(list);
+        this.filtersList = this.generateFiltersList(parameters.filtersList);
         this.selectedColumnsList = this.generateSelectedColumnsList(
             parameters.selectedColumnsList ??
             this.presentByDefaultColumnsList ??
@@ -27,6 +27,14 @@ export class ListTable {
         return this.entitiesList.length;
     }
 
+    get filteredEnitiesCount() {
+        return this.filteredEnitiesList.length;
+    }
+
+    get filteredEnitiesList() {
+        return this.filterEntitiesList(this.entitiesList);
+    }
+
     get presentByDefaultColumnsList() {
         return this.possibleColumnsList.filter((column) => {
             return column.isAlwaysPresent || column.isPresentByDefault;
@@ -42,6 +50,10 @@ export class ListTable {
         this.selectedColumnsList.push(new ListTableEntity());
     }
 
+    addFilter() {
+        this.filtersList.push(new ListTableFilter());
+    }
+
     convertToTableEntitiesList(entities = []) {
         let entitiesList = Array.isArray(entities) ? entities : [entities];
         return entitiesList.map((entity) => new this.ListTableEntityClass(entity))
@@ -54,6 +66,19 @@ export class ListTable {
     editSelectedColumns(index, newColumnKey) {
         const newColumn = this.getColumnByKey(newColumnKey) ?? new ListTableEntity();
         this.selectedColumnsList.splice(index, 1, newColumn);
+    }
+
+    filterEntitiesList(entitiesList) {
+        return entitiesList.filter((entity) => {
+            let initialIsKeptValue = true;
+            return this.filtersList.reduce((isKeptByPreviousFilters, filter) => {
+                return isKeptByPreviousFilters && !filter.shouldRemoveEntity(entity);
+            }, initialIsKeptValue);
+        });
+    }
+
+    generateFiltersList(filtersList = []) {
+        return filtersList.map(filter => new ListTableFilter(filter));
     }
 
     generateSelectedColumnsList(additionalSelectedColumnsList = []) {

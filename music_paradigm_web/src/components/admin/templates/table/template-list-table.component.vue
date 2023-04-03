@@ -6,7 +6,7 @@
 		<TemplateListTableEditorComponent v-show="hasEditorExpanded" :listTable="listTable" v-on:update="updateTable" />
 
 		<div class="table-area table-context list-table-template" :class="{ 'collapsed-size': !isExpanded }">
-			<TemplateListTableCellsComponent :listTable="listTable" ref="cells">
+			<TemplateListTableCellsComponent :listTable="listTable" :selection="selection" ref="cells">
 				<slot slot-scope="{ entity }" :entity="entity" />
 			</TemplateListTableCellsComponent>
 		</div>

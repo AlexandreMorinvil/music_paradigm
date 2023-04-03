@@ -113,6 +113,7 @@ export default {
 
 <style scoped>
 select {
+	text-overflow: ellipsis;
 	width: 100%;
 }
 

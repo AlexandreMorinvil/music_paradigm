@@ -28,22 +28,22 @@
   font-size: 0.8em;
 }
 
-.table-context tbody>tr:nth-child(odd) {
-  background-color: rgb(45, 45, 50);
-}
-
-.table-context tbody>tr:nth-child(even) {
-  background-color: rgb(30, 30, 35);
+.table-context tbody>tr {
+  background-color: rgb(50, 50, 55);
+  border-bottom: 0.5px solid rgb(25, 25, 30);
+  border-top: 0.5px solid rgb(25, 25, 30);
 }
 
 .table-context tbody>tr:hover {
-  background-color: rgb(100, 100, 105);
-  color: white;
+  filter: brightness(125%);
 }
 
 .table-context tbody>tr.selected {
-  background-color: rgb(100, 200, 50);
-  color: white;
+  filter: brightness(125%);
+  border-left: 5px solid rgb(100, 200, 50);
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 
 .table-context tbody>tr.wrong {

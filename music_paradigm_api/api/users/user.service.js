@@ -57,7 +57,7 @@ async function getAll() {
 
 async function getUserById(userId) {
     try {
-        const user = await UserModel.findById(userId);
+        const user = await UserModel.findById(userId).lean();
         const lastProgression = await ProgressionModel.getActiveProgressionByUserId(userId);
         const progressionSessionsStatus = await generateProgressionSessionsStatusForProgression(lastProgression);
         return {

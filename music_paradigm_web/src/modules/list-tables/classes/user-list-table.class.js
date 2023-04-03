@@ -64,7 +64,7 @@ const possibleColumnsList = [
         title: 'Duration of progress',
         columnTitle: 'Progress duration',
         type: Number,
-        formatFunction: durationHandler.formatDurationWeekToSecondsFromLargerUnit,
+        formatFunction: (value) => durationHandler.formatDurationWeekToSecondsFromLargerUnit(value, 2),
     }),
     new ListTableColumn({
         key: 'isAdvanceResultOfConsiderCompletedAdjustmentSessions',
@@ -90,14 +90,14 @@ const possibleColumnsList = [
         title: 'Time lapsed since last advance',
         columnTitle: 'Since last advance',
         type: Number,
-        formatFunction: durationHandler.formatDurationWeekToSecondsFromLargerUnit,
+        formatFunction: (value) => durationHandler.formatDurationWeekToSecondsFromLargerUnit(value, 2),
     }),
     new ListTableColumn({
         key: 'progressionStartTime',
         title: 'Time lapsed since start',
         columnTitle: 'Since start',
         type: Number,
-        formatFunction: durationHandler.formatDurationWeekToSecondsFromLargerUnit,
+        formatFunction: (value) => durationHandler.formatDurationWeekToSecondsFromLargerUnit(value, 2),
     }),
     new ListTableColumn({
         key: 'reachedSessionTitle',
