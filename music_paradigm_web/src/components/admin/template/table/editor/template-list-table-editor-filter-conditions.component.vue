@@ -32,9 +32,9 @@
 <script>
 import { ListTable, ListTableFilter, ChainingOperator, ConditionOperator } from '@/modules/list-tables';
 
-import TemplateButtonComponent from '@/components/admin/templates/template-button.component.vue';
-import TemplateFieldInputComponent from '@/components/admin/templates/template-field-input.component.vue';
-import TemplateFieldSelectComponent from '@/components/admin/templates/template-field-select.component.vue';
+import TemplateButtonComponent from '@/components/admin/template/template-button.component.vue';
+import TemplateFieldInputComponent from '@/components/admin/template/template-field-input.component.vue';
+import TemplateFieldSelectComponent from '@/components/admin/template/template-field-select.component.vue';
 
 export default {
 	emits: ['update'],

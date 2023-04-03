@@ -32,7 +32,7 @@ import '@/styles/table-template.css';
 
 import { colorHandler } from '@/_helpers';
 import { ListTable } from '@/modules/list-tables';
-import TemplateFieldOutputComponent from '@/components/admin/templates/template-field-output.component.vue';
+import TemplateFieldOutputComponent from '@/components/admin/template/template-field-output.component.vue';
 
 export default {
 	emits: ['select'],

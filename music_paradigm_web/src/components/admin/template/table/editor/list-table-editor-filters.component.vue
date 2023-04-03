@@ -15,7 +15,7 @@
 <script>
 import { ListTable } from '@/modules/list-tables';
 
-import TemplateButtonComponent from '@/components/admin/templates/template-button.component.vue';
+import TemplateButtonComponent from '@/components/admin/template/template-button.component.vue';
 
 import TemplateListTableEditorFilterConditionsComponent from './template-list-table-editor-filter-conditions.component.vue';
 import TemplateListTableEditorFilterEffectComponent from './template-list-table-editor-filter-effect.component.vue';

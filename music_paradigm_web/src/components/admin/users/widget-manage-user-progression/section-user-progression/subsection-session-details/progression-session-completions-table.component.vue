@@ -38,7 +38,7 @@ import '@/styles/form-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
 import { sessionStartCompletionAssociator } from '@/modules/progressions';
-import TemplateFieldOutputComponent from '@/components/admin/templates/template-field-output.component.vue';
+import TemplateFieldOutputComponent from '@/components/admin/template/template-field-output.component.vue';
 import { dateHandler } from '@/_helpers';
 
 

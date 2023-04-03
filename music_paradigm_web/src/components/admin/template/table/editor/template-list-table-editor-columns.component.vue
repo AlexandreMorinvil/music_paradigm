@@ -29,11 +29,11 @@
 <script>
 import { ListTable } from '@/modules/list-tables';
 
-import TemplateButtonComponent from '@/components/admin/templates/template-button.component.vue';
-import TemplateFieldInputComponent from '@/components/admin/templates/template-field-input.component.vue';
-import TemplateFieldLabelComponent from '@/components/admin/templates/template-field-label.component.vue';
-import TemplateFieldSelectComponent from '@/components/admin/templates/template-field-select.component.vue';
-import TemplateFieldsetComponent from '@/components/admin/templates/template-fieldset.component.vue';
+import TemplateButtonComponent from '@/components/admin/template/template-button.component.vue';
+import TemplateFieldInputComponent from '@/components/admin/template/template-field-input.component.vue';
+import TemplateFieldLabelComponent from '@/components/admin/template/template-field-label.component.vue';
+import TemplateFieldSelectComponent from '@/components/admin/template/template-field-select.component.vue';
+import TemplateFieldsetComponent from '@/components/admin/template/template-fieldset.component.vue';
 
 export default {
 	emits: ['update'],

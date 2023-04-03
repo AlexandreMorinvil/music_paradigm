@@ -17,9 +17,9 @@
 
 import { mapActions, mapGetters } from 'vuex';
 
-import TemplateFieldsetComponent from '@/components/admin/templates/template-fieldset.component.vue';
-import TemplateFieldLabelComponent from '@/components/admin/templates/template-field-label.component.vue';
-import TemplateFieldSelectComponent from '@/components/admin/templates/template-field-select.component.vue';
+import TemplateFieldsetComponent from '@/components/admin/template/template-fieldset.component.vue';
+import TemplateFieldLabelComponent from '@/components/admin/template/template-field-label.component.vue';
+import TemplateFieldSelectComponent from '@/components/admin/template/template-field-select.component.vue';
 
 export default {
     components: {

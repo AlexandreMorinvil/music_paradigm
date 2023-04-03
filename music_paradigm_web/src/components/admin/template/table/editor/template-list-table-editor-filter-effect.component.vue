@@ -11,8 +11,8 @@
 <script>
 import { ListTable, ListTableFilter, FilterEffectType } from '@/modules/list-tables';
 
-import TemplateFieldSelectComponent from '@/components/admin/templates/template-field-select.component.vue';
-import TemplateFieldInputColorComponent from '@/components/admin/templates/template-field-input-color.component.vue';
+import TemplateFieldSelectComponent from '@/components/admin/template/template-field-select.component.vue';
+import TemplateFieldInputColorComponent from '@/components/admin/template/template-field-input-color.component.vue';
 
 
 export default {
