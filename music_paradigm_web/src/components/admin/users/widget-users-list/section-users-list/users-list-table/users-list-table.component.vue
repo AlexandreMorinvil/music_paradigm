@@ -1,5 +1,6 @@
 <template>
-	<TemplateListTable :ListTableClass="ListTableClass" :isLoading="isLoading" :list="list" :selection="selection">
+	<TemplateListTable :ListTableClass="ListTableClass" :isLoading="isLoading" :list="list"
+		:refreshFunction="fetchUserSummariesList" :selection="selection">
 		<div slot-scope="{ entity }">
 			<ButtonSelectUserComponent isSmall :entity="entity" hideIfInactive />
 			<ButtonDeselectUserComponent isSmall :entity="entity" hideIfInactive />

@@ -1,7 +1,8 @@
 <template>
 	<div>
 		<TemplateListTableTitleComponent :title="listTable.title" :hasEditorExpanded="hasEditorExpanded"
-			:isExpanded="isExpanded" :isLoading="isLoading" v-on:expand="toggleExpansion" v-on:editor="toggleEditor" />
+			:isExpanded="isExpanded" :isLoading="isLoading" :refreshFunction="refreshFunction" v-on:expand="toggleExpansion"
+			v-on:editor="toggleEditor" />
 
 		<TemplateListTableEditorComponent v-show="hasEditorExpanded" :listTable="listTable" v-on:update="updateTable" />
 
@@ -48,6 +49,10 @@ export default {
 			default() {
 				return ListTable;
 			},
+		},
+		refreshFunction: {
+			type: Function,
+			default: () => { }
 		},
 		selection: {
 			type: null,

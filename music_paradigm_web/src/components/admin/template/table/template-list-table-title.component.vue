@@ -11,6 +11,7 @@
 			</div>
 		</div>
 		<div class="options-area">
+			<i class="bi bi-arrow-repeat" v-on:click="refreshListTable" :class="{ 'disabled-icon': isLoading }" />
 			<i class="bi" :class="hasEditorExpanded ? 'bi-caret-up-square' : 'bi-pencil-square'"
 				v-on:click="() => $emit('editor')" />
 			<i class="bi" :class="isExpanded ? 'bi-arrows-collapse' : 'bi-arrows-expand'"
@@ -43,11 +44,21 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		refreshFunction: {
+			type: Function,
+			default: () => { }
+		},
 		title: {
 			type: String,
 			default: 'Title',
 		},
 	},
+	methods: {
+		refreshListTable() {
+			if (this.isLoading) return;
+			else this.refreshFunction();
+		}
+	}
 };
 </script>
 
@@ -96,6 +107,10 @@ export default {
 	width: 30px;
 	height: 30px;
 	border-width: 4px;
+}
+
+.disabled-icon {
+	color: gray;
 }
 
 i {
