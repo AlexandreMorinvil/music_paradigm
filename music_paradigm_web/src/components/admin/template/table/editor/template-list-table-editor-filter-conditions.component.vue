@@ -4,7 +4,7 @@
 
 			<TemplateFieldSelectComponent :value="condition.columnKey" v-on:edit="(value) => setColumnKey(condition, value)"
 				isEmptyAccepted :getDisplayedValueFromElement="(column) => column.title"
-				:getOptionValueFromElement="(column) => column.key" :options="possibleColumnsList"
+				:getOptionValueFromElement="(column) => column.key" :options="possibleColumnsList" :isNullValid="false"
 				placeholder="# No column" />
 
 			<TemplateFieldSelectComponent :value="condition.operatorNegator"

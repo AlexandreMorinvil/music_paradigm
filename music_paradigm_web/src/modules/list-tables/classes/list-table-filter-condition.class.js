@@ -29,18 +29,23 @@ export class ListTableFilterCondition {
         this.conditionsList.columnKey = columnKey;
     }
 
-    isRespected(entity) {
-        const value = entity.getValueByColumnKey(this.columnKey);
-        const isConditionApplied = this.applyCondition(value);
-        return this.operatorNegator ? !isConditionApplied : isConditionApplied;
-    }
-
     getStringDescription() {
         return 'Value ' +
             this.operatorNegator ? 'NOT ' : '' +
             `${this.operator} ` +
             `${this.comparativeValue} ` +
             this.chainingOperator ?? '';
+    }
+
+    isRespected(entity) {
+        const value = entity.getValueByColumnKey(this.columnKey);
+        const isConditionApplied = this.applyCondition(value);
+        return this.operatorNegator ? !isConditionApplied : isConditionApplied;
+    }
+
+    isValid() {
+        const isColumnKeyDefined = Boolean(this.columnKey);
+        return isColumnKeyDefined;
     }
 
     setChainingOperator(chainingOperator) {

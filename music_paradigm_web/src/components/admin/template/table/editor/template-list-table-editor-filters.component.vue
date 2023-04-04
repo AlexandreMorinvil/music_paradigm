@@ -8,7 +8,7 @@
 			<TemplateListTableEditorFilterEffectComponent v-on:update="update" :listTable="listTable" :filter="filter"/>
 		</div>
 
-		<TemplateButtonComponent color="blue" isSmall v-on:click="addFilter" text="Add Filter" />
+		<TemplateButtonComponent color="blue" isSmall v-on:click="addFilter" text="Add Filter" class="button-width" />
 	</div>
 </template>
 
@@ -69,6 +69,7 @@ export default {
 	border-radius: 10px;
 	color: rgb(25, 25, 25);
 	padding: 10px;
+	gap: 5px;
 }
 
 .litst-table-filter-box {
@@ -77,11 +78,15 @@ export default {
 	justify-content: center;
 	align-items: center;
 	flex-wrap: wrap;
-	padding: 20px;
+	padding: 15px;
 	background-color: rgb(215, 215, 220);
 	border: solid rgb(200, 200, 205) 2px;
 	border-radius: 10px;
-	gap: 10px;
+	gap: 5px;
+}
+
+.button-width {
+	width: 150px;
 }
 
 h4 {

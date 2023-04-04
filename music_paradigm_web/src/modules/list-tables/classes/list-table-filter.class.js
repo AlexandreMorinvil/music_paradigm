@@ -10,6 +10,13 @@ export class ListTableFilter {
         this.effectParameter = parameter?.effectParameter ?? null;
     }
 
+    get isValid() {
+        if (this.conditionsList.length === 0) return false;
+        return this.conditionsList.reduce((isCumulationValid, condition) => {
+            return isCumulationValid && condition.isValid();
+        }, true);
+    }
+
     adjustChainedConditions() {
         const firstConditionWithoutChainingIndex = this.conditionsList.findIndex((condition) => {
             return !condition.chainingOperator;
@@ -36,6 +43,7 @@ export class ListTableFilter {
     }
 
     isAppliedTo(entity) {
+        if (!this.isValid) return false;
         let areChainedConditionsRespected = true;
         let previousChainingOperator = ChainingOperator.and;
         this.conditionsList.forEach(condition => {

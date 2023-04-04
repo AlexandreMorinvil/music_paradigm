@@ -3,7 +3,8 @@
 		<select class="input-spacing" :class="{
 			'edited-text': isEdited,
 			'placeholder-option': !isEdited && value === null,
-			'dissabled-text': isDissabled
+			'dissabled-text': isDissabled,
+			'invalid-input': isInvalid,
 		}" :value="valueConsideringEmpties" v-on:change="(event) => edit(event.target.value)" v-bind="selectAttributes"
 			:disabled="isDissabled">
 			<option v-if="isEmptyAccepted" class='placeholder-option' :value="NO_VALUE"> {{ placeholder }} </option>
@@ -40,6 +41,10 @@ export default {
 			default: (value) => value,
 		},
 		isEmptyAccepted: {
+			type: Boolean,
+			default: true,
+		},
+		isNullValid: {
 			type: Boolean,
 			default: true,
 		},
@@ -87,6 +92,9 @@ export default {
 		hasExpectedValue() {
 			return this.expectedValue !== undefined;
 		},
+		hasNoValue() {
+			return this.value === null || this.value === undefined;
+		},
 		isDissabled() {
 			return this.isForcedDisabled || this.isLoading;
 		},
@@ -94,11 +102,14 @@ export default {
 			if (this.isEveryValueNew) return true;
 			return this.hasExpectedValue && this.value !== this.expectedValue;
 		},
+		isInvalid() {
+			return this.hasNoValue && !this.isNullValid;
+		},
 		valueConsideringEmpties() {
 			// This manipulation on the value is necessary to properly handle the "null" values with the select element.
 			// Otherwise, the HTML select element alone can only asign string and empty string values, so we add this 
 			// NO_VALUE string to represent the "null" and "undefined" values.
-			if (this.value === null || this.value === undefined) return this.NO_VALUE;
+			if (this.hasNoValue) return this.NO_VALUE;
 			return this.value;
 		},
 	},
