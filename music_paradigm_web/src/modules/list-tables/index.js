@@ -12,7 +12,7 @@ export {
     ListTableFilter,
     UsersListTable,
 
-    // Interefaces
+    // Interfaces
     ChainingOperator,
     ConditionOperator,
     FilterEffectType,

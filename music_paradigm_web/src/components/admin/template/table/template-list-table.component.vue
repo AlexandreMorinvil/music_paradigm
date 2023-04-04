@@ -11,7 +11,7 @@
 			</TemplateListTableCellsComponent>
 		</div>
 
-		<TemplateListTableFooterComponent :entitiesCount="listTable.entitiesCount" />
+		<TemplateListTableFooterComponent :listTable="listTable" :isLoading="isLoading" />
 	</div>
 </template>
 

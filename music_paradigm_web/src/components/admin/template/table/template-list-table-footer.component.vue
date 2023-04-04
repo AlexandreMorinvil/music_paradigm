@@ -1,7 +1,7 @@
 <template>
 	<div class="table-results-footer">
 		<span>
-			Showing {{ entitiesCount }} item(s)
+			{{ entitiesCountMessage }}
 		</span>
 	</div>
 </template>
@@ -9,15 +9,39 @@
 <script>
 import '@/styles/table-template.css';
 
+import { ListTable } from '@/modules/list-tables';
+
 export default {
 	props: {
-		entitiesCount: {
-			type: Number,
-			default: null,
+		listTable: {
+			type: ListTable,
+			default() {
+				return new ListTable();
+			},
+		},
+		isLoading: {
+			type: Boolean,
+			default: false,
 		},
 	},
 	computed: {
-
+		entitiesCount() {
+			return this.listTable.entitiesCount;
+		},
+		keptEnitiesCount() {
+			return this.listTable.keptEnitiesCount;
+		},
+		entitiesCountMessage() {
+			if (this.entitiesCount === 0) {
+				if (this.isLoading) return 'Loading items...';
+				else return 'No items';
+			}
+			else {
+				if (this.keptEnitiesCount === this.entitiesCount)
+					return `Showing all ${this.entitiesCount} item(s)`;
+				else return `Showing ${this.keptEnitiesCount} out of ${this.entitiesCount} item(s)`;
+			}
+		},
 	}
 };
 </script>

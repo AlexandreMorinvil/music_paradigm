@@ -31,16 +31,16 @@ export class ListTable {
         return this.entitiesList.length;
     }
 
-    get filteredEnitiesCount() {
-        return this.filteredSortedEntitiesList.length;
-    }
-
     get filteredSortedEntitiesList() {
         return this.sortEntities(
             this.filterEntitiesList(this.entitiesList),
             this.sortColumnKey,
             this.isReverSort,
         );
+    }
+
+    get keptEnitiesCount() {
+        return this.filteredSortedEntitiesList.length;
     }
 
     get presentByDefaultColumnsList() {
