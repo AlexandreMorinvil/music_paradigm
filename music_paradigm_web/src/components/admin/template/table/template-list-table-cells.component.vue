@@ -6,6 +6,10 @@
 				<th class="count-column">#</th>
 				<th v-for="(column, index) in selectedColumnsList" :key="index">
 					<TemplateFieldOutputComponent :value="column.columnTitle" />
+					<i v-if="isColumnUsedForSorting(column)" class="clickable-sort-icon bi"
+						:class="listTable.isReverSort ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"
+						v-on:click="() => toggleSortForColumn(column)" />
+					<i v-else class="clickable-sort-icon bi bi-dot" v-on:click="() => toggleSortForColumn(column)" />
 				</th>
 				<th v-if="hasActionButtons">Actions</th>
 			</tr>
@@ -59,7 +63,7 @@ export default {
 	},
 	computed: {
 		entitiesList() {
-			return this.listTable.filteredEnitiesList;
+			return this.listTable.filteredSortedEntitiesList;
 		},
 		hasActionButtons() {
 			return true || Boolean(this.$slots.actionButtons);
@@ -79,11 +83,17 @@ export default {
 				color: colorHandler.invertHexadecimalFormatColor(imposedColor),
 			} : null;
 		},
+		isColumnUsedForSorting(column) {
+			return this.listTable.isColumnUsedForSorting(column);
+		},
 		isSelected(entity) {
 			return !!this.selectedEntitiesList.find((selection) => {
 				return entity.isEqual(selection) || false;
 			});
 		},
+		toggleSortForColumn(column) {
+			this.listTable.toggleSortForColumn(column);
+		}
 	},
 };
 </script>
@@ -99,5 +109,9 @@ export default {
 
 .action-cells {
 	white-space: normal;
+}
+
+.clickable-sort-icon {
+	cursor: pointer;
 }
 </style>

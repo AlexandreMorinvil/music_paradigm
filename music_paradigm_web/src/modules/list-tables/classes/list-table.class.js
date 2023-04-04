@@ -1,6 +1,8 @@
 import { ListTableEntity } from "./list-table-entity.class";
 import { ListTableFilter } from "./list-table-filter.class";
 
+import sorting from "../sorting";
+
 export class ListTable {
 
     constructor(list, ListTableEntityClass, parameters = {}) {
@@ -13,6 +15,8 @@ export class ListTable {
             this.presentByDefaultColumnsList ??
             []
         );
+        this.sortColumnKey = this.getDefaultSortColumnKey();
+        this.isReverSort = false;
     }
 
     get alwaysPresentColumnsCount() {
@@ -28,11 +32,15 @@ export class ListTable {
     }
 
     get filteredEnitiesCount() {
-        return this.filteredEnitiesList.length;
+        return this.filteredSortedEntitiesList.length;
     }
 
-    get filteredEnitiesList() {
-        return this.filterEntitiesList(this.entitiesList);
+    get filteredSortedEntitiesList() {
+        return this.sortEntities(
+            this.filterEntitiesList(this.entitiesList),
+            this.sortColumnKey,
+            this.isReverSort,
+        );
     }
 
     get presentByDefaultColumnsList() {
@@ -77,6 +85,13 @@ export class ListTable {
         });
     }
 
+    getDefaultSortColumnKey() {
+        const defaultSortColumn = this.selectedColumnsList.find((column) => {
+            return column.isDefaultSortColumn;
+        }) ?? this.selectedColumnsList[0];
+        return defaultSortColumn?.key ?? null;
+    }
+
     getFilterImposedColorOfEntity(entity) {
         let initialImposedColor = null;
         return this.filtersList.reduce((currentImposedColor, filter) => {
@@ -100,6 +115,10 @@ export class ListTable {
         return this.possibleColumnsList.find((possibleColumn) => possibleColumn.key === columnKey);
     }
 
+    isColumnUsedForSorting(column) {
+        return this.sortColumnKey === column.key;
+    }
+
     removeDuplicateColumns(columnsList) {
         return [...new Set(columnsList)];
     }
@@ -108,13 +127,42 @@ export class ListTable {
         this.entitiesList = this.convertToTableEntitiesList(list);
     }
 
+    sortAndRemoveDuplicateColumns(columnsList) {
+        return this.removeDuplicateColumns(this.sortColumns(columnsList));
+    }
+
     sortColumns(columnsList) {
         return columnsList.sort((columnA, columnB) => {
             return columnA.orderPriority - columnB.orderPriority;
         });
     }
 
-    sortAndRemoveDuplicateColumns(columnsList) {
-        return this.removeDuplicateColumns(this.sortColumns(columnsList));
+    sortEntities(entitiesList, columnKey, isReverSort) {
+
+        if (!columnKey) return entitiesList;
+        const column = this.getColumnByKey(columnKey);
+        const compareForSortFunction = column.compareForSortFunction ?? sorting.compareForDefaultSort;
+
+        const sortedEntitiesList = entitiesList.sort((entityA, entityB) => {
+            const valueA = entityA.getValueByColumnKey(columnKey);
+            const valueB = entityB.getValueByColumnKey(columnKey);
+            return compareForSortFunction(valueA, valueB);
+        });
+
+        return isReverSort ? sortedEntitiesList.reverse() : sortedEntitiesList;
+    }
+
+    toggleSortForColumn(column) {
+        const columnKey = column.key;
+        if (this.sortColumnKey === columnKey) {
+            if (this.isReverSort) {
+                this.sortColumnKey = this.getDefaultSortColumnKey();
+                this.isReverSort = false;
+            } else
+                this.isReverSort = true;
+        } else {
+            this.sortColumnKey = columnKey;
+            this.isReverSort = false;
+        }
     }
 }
