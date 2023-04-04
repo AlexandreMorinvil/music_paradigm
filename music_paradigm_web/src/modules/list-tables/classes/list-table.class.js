@@ -10,7 +10,7 @@ export class ListTable {
         this.ListTableEntityClass = ListTableEntityClass ?? ListTableEntity;
         this.entitiesList = this.convertToTableEntitiesList(list);
         this.filtersList = this.generateFiltersList(parameters.filtersList);
-        this.selectedColumnsList = this.generateSelectedColumnsList(
+        this.selectedColumnsList = this.generateInitialSelectedColumnsList(
             parameters.selectedColumnsList ??
             this.presentByDefaultColumnsList ??
             []
@@ -103,7 +103,7 @@ export class ListTable {
         return filtersList.map(filter => new ListTableFilter(filter));
     }
 
-    generateSelectedColumnsList(additionalSelectedColumnsList = []) {
+    generateInitialSelectedColumnsList(additionalSelectedColumnsList = []) {
         return this.sortAndRemoveDuplicateColumns([
             ...this.selectedColumnsList ?? [],
             ...this.alwaysPresentColumnsList,
@@ -121,6 +121,10 @@ export class ListTable {
 
     removeDuplicateColumns(columnsList) {
         return [...new Set(columnsList)];
+    }
+
+    setSelectedColumnsToDefault() {
+        this.selectedColumnsList = this.presentByDefaultColumnsList;
     }
 
     setEntitiesListFromList(list) {

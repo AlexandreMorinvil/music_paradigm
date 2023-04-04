@@ -1,6 +1,12 @@
 <template>
 	<div class="table-editor-columns-area">
-		<h4>Columns</h4>
+		<div class="table-editor-columns-header">
+			<div />
+			<h4>Columns</h4>
+			<div class="table-editor-buttons-area">
+				<i class="bi bi-arrow-counterclockwise" v-on:click="setColumnsToDefault" />
+			</div>
+		</div>
 		<TemplateFieldsetComponent>
 			<template v-for="(column, index) in selectedColumnsList">
 
@@ -76,6 +82,10 @@ export default {
 		isMandatoryColumnIndex(index) {
 			return index < this.listTable.alwaysPresentColumnsCount;
 		},
+		setColumnsToDefault() {
+			this.listTable.setSelectedColumnsToDefault();
+			this.update();
+		},
 		update() {
 			this.$emit('update');
 			this.$forceUpdate();
@@ -105,7 +115,31 @@ export default {
 	grid-column: 2;
 }
 
+.table-editor-columns-header {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	align-self: stretch;
+}
+
+.table-editor-buttons-area {
+	display: flex;
+	justify-content: right;
+}
+
 h4 {
 	text-align: center;
+}
+
+i {
+	margin-left: auto;
+	-webkit-text-stroke: 1px;
+}
+
+i:hover {
+	filter: opacity(75%);
+}
+
+i:active {
+	filter: opacity(50%);
 }
 </style>
