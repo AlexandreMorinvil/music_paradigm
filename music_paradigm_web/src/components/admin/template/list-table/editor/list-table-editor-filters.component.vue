@@ -2,11 +2,8 @@
 	<div class="table-editor-columns-area">
 		<h4>Filters</h4>
 
-		<div v-for="(filter, index) in filtersList" :key="index" class="litst-table-filter-box">
-			<ListTableEditorFilterConditionsComponent v-on:update="update" :listTable="listTable"
-				:filter="filter" />
-			<ListTableEditorFilterEffectComponent v-on:update="update" :listTable="listTable" :filter="filter"/>
-		</div>
+		<ListTableEditorFilterComponent v-for="(filter, index) in filtersList" :key="index" v-on:update="update"
+			:listTable="listTable" :filter="filter" />
 
 		<TemplateButtonComponent color="blue" isSmall v-on:click="addFilter" text="Add Filter" class="button-width" />
 	</div>
@@ -17,15 +14,13 @@ import { ListTable } from '@/modules/list-tables';
 
 import TemplateButtonComponent from '@/components/admin/template/template-button.component.vue';
 
-import ListTableEditorFilterConditionsComponent from './list-table-editor-filter-conditions.component.vue';
-import ListTableEditorFilterEffectComponent from './list-table-editor-filter-effect.component.vue';
+import ListTableEditorFilterComponent from './list-table-editor-filter.component.vue';
 
 export default {
 	emits: ['update'],
 	components: {
 		TemplateButtonComponent,
-		ListTableEditorFilterConditionsComponent,
-		ListTableEditorFilterEffectComponent,
+		ListTableEditorFilterComponent,
 	},
 	props: {
 		listTable: {

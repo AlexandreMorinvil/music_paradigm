@@ -7,7 +7,7 @@ export class ListTableFilter {
     constructor(parameter = {}) {
         this.conditionsList = parameter?.conditionsList ?? [new ListTableFilterCondition()];
         this.effectType = parameter?.effectType ?? FilterEffectType.ignore;
-        this.effectParameter = parameter?.effectParameter ?? null;
+        this.effectColor = parameter?.effectColor ?? '#8DE8D4';
     }
 
     get isValid() {
@@ -15,6 +15,10 @@ export class ListTableFilter {
         return this.conditionsList.reduce((isCumulationValid, condition) => {
             return isCumulationValid && condition.isValid();
         }, true);
+    }
+
+    get usesEffectColor() {
+        return this.effectType === FilterEffectType.color;
     }
 
     adjustChainedConditions() {
@@ -33,13 +37,35 @@ export class ListTableFilter {
         this.conditionsList[index].editColumn(columnKey);
     }
 
-    getConditionsDescription() {
-        return this.conditionsList.map(condition => condition.getStringDescription()).join('\n');
+    getStringDescription() {
+        if (!this.isValid) return 'INVALID';
+        let stringDescription = '';
+        let isOrParentesisOpened = false;
+        this.conditionsList.forEach((condition) => {
+            const isChainedByAnd = condition.chainingOperator === ChainingOperator.and;
+            if (isChainedByAnd && !isOrParentesisOpened) {
+                stringDescription += '( ';
+                isOrParentesisOpened = true;
+            }
+            stringDescription += condition.getStringDescription();
+            stringDescription += ' ';
+            if (!isChainedByAnd && isOrParentesisOpened) {
+                stringDescription += ') ';
+                isOrParentesisOpened = false;
+            }
+            stringDescription += (condition.chainingOperator ?? '');
+            stringDescription += isChainedByAnd ? ' ' : '\n ';
+        });
+        stringDescription += 'DO ';
+        stringDescription += this.effectType;
+        stringDescription += ' ';
+
+        return stringDescription.trim();
     }
 
     getImposedColor(entity) {
         if (this.effectType !== FilterEffectType.color) return null;
-        return this.isAppliedTo(entity) ? this.effectParameter : null;
+        return this.isAppliedTo(entity) ? this.effectColor : null;
     }
 
     isAppliedTo(entity) {
@@ -61,8 +87,8 @@ export class ListTableFilter {
         this.effectType = effectType;
     }
 
-    setEffectParameter(effectParameter) {
-        this.effectParameter = effectParameter;
+    setEffectColor(effectColor) {
+        this.effectColor = effectColor;
     }
 
     shouldRemoveEntity(entity) {

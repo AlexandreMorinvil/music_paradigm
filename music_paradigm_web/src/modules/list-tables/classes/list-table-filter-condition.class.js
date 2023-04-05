@@ -37,11 +37,11 @@ export class ListTableFilterCondition {
     }
 
     getStringDescription() {
-        return 'Value ' +
-            this.operatorNegator ? 'IS NOT ' : 'IS ' +
+        const stringDescription = `"${this.columnKey}" ` +
+            (this.operatorNegator ? 'IS NOT ' : 'IS ') +
             `${this.operator} ` +
-            this.usesComparativeValue ? `${this.comparativeValue} ` : '' +
-            this.chainingOperator ?? 'DO ';
+            (this.usesComparativeValue ? `"${this.comparativeValue}" ` : '');
+        return stringDescription.trim();
     }
 
     isRespected(entity) {
