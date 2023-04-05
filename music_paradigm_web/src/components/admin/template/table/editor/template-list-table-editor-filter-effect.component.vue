@@ -3,8 +3,9 @@
 		<TemplateFieldSelectComponent :value="effectType" v-on:edit="(value) => setEffectType(value)" isEmptyAccepted
 			:options="filterEffectTypes" placeholder="NOTHING" />
 
-		<TemplateFieldInputColorComponent :value="effectParameter" v-on:edit="(value) => setEffectParameter(value)"
-			class="effect-parameter" />
+		<TemplateFieldInputColorComponent v-if="hasEffectParameter" :value="effectParameter"
+			v-on:edit="(value) => setEffectParameter(value)" class="effect-parameter" />
+		<div v-else />
 	</div>
 </template>
 
@@ -36,14 +37,17 @@ export default {
 		},
 	},
 	computed: {
-		filterEffectTypes() {
-			return Object.values(FilterEffectType);
-		},
 		effectType() {
 			return this.filter.effectType;
 		},
 		effectParameter() {
 			return this.filter.effectParameter;
+		},
+		filterEffectTypes() {
+			return Object.values(FilterEffectType);
+		},
+		hasEffectParameter() {
+			return this.filter.effectType === FilterEffectType.color;
 		},
 	},
 	methods: {

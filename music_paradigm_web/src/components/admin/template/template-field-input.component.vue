@@ -1,7 +1,10 @@
 <template>
 	<div class="template-field-input-area">
-		<input class="input-spacing" :class="{ 'edited-text': isEdited }" :list="hasDataList ? datalistReference : ''"
-			:value="value" v-on:input="(event) => edit(event.target.value)" v-bind="inputAttributes" />
+		<input class="input-spacing" :class="{
+			'edited-text': isEdited,
+			'invalid-input': isInvalid,
+		}" :list="hasDataList ? datalistReference : ''" :value="value" v-on:input="(event) => edit(event.target.value)"
+			v-bind="inputAttributes" />
 		<datalist :id="datalistReference">
 			<option v-for="(data, index) in datalist" :key="index" :value="data" />
 		</datalist>
@@ -35,6 +38,10 @@ export default {
 				}
 			}
 		},
+		isNullValid: {
+			type: Boolean,
+			default: true,
+		},
 		value: {
 			type: null,
 			default: null,
@@ -47,6 +54,9 @@ export default {
 		hasExpectedValue() {
 			return this.expectedValue !== null;
 		},
+		hasNoValue() {
+			return this.value === null || this.value === undefined || this.value === '';
+		},
 		datalistReference() {
 			return 'datalist-input-' + this.inputAttributes.name;
 		},
@@ -55,6 +65,9 @@ export default {
 		},
 		isEdited() {
 			return this.hasExpectedValue && this.value !== this.expectedValue;
+		},
+		isInvalid() {
+			return this.hasNoValue && !this.isNullValid;
 		},
 	},
 	methods: {

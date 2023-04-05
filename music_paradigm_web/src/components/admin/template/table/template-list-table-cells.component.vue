@@ -80,7 +80,7 @@ export default {
 			const imposedColor = this.listTable.getFilterImposedColorOfEntity(entity);
 			return imposedColor ? {
 				'background-color': imposedColor,
-				color: colorHandler.invertHexadecimalFormatColor(imposedColor),
+				color: colorHandler.generateColorForTextOnBackgroundColor(imposedColor),
 			} : null;
 		},
 		isColumnUsedForSorting(column) {

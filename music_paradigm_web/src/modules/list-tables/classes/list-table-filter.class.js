@@ -66,6 +66,7 @@ export class ListTableFilter {
     }
 
     shouldRemoveEntity(entity) {
+        if (!this.isValid) return false;
         if (![FilterEffectType.ignore, FilterEffectType.consider].includes(this.effectType)) return false;
         const isFilterApplied = this.isAppliedTo(entity);
         if (this.effectType === FilterEffectType.ignore) return isFilterApplied;

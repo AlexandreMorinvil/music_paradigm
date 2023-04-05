@@ -9,6 +9,13 @@ export class ListTableFilterCondition {
         this.chainingOperator = parameter?.chainingOperator ?? null;
     }
 
+    get usesComparativeValue() {
+        return ![
+            ConditionOperator.isTrue,
+            ConditionOperator.isDefined,
+        ].includes(this.operator);
+    }
+
     applyCondition(value) {
         switch (this.operator) {
             case ConditionOperator.isEqual: return this.__isEqual(value);
@@ -31,10 +38,10 @@ export class ListTableFilterCondition {
 
     getStringDescription() {
         return 'Value ' +
-            this.operatorNegator ? 'NOT ' : '' +
+            this.operatorNegator ? 'IS NOT ' : 'IS ' +
             `${this.operator} ` +
-            `${this.comparativeValue} ` +
-            this.chainingOperator ?? '';
+            this.usesComparativeValue ? `${this.comparativeValue} ` : '' +
+            this.chainingOperator ?? 'DO ';
     }
 
     isRespected(entity) {
@@ -45,7 +52,8 @@ export class ListTableFilterCondition {
 
     isValid() {
         const isColumnKeyDefined = Boolean(this.columnKey);
-        return isColumnKeyDefined;
+        const comparativeValueValid = Boolean(this.comparativeValue) && this.usesComparativeValue;
+        return isColumnKeyDefined && comparativeValueValid;
     }
 
     setChainingOperator(chainingOperator) {
@@ -103,7 +111,7 @@ export class ListTableFilterCondition {
     }
 
     __isTrue(value) {
-        return Boolean(value);
+        return value === true;
     }
 
     __isDefined(value) {

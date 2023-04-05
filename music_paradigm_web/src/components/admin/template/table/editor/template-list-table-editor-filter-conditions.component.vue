@@ -15,12 +15,13 @@
 			<TemplateFieldSelectComponent :value="condition.operator" v-on:edit="(value) => setOperator(condition, value)"
 				:isEmptyAccepted="false" :options="operatorsList" />
 
-			<TemplateFieldInputComponent v-bind:value="condition.comparativeValue"
+			<TemplateFieldInputComponent v-if="condition.usesComparativeValue" v-bind:value="condition.comparativeValue"
 				v-on:edit="(value) => setComparativeValue(condition, value)" :inputAttributes="{
 					type: 'text',
 					autocomplete: 'off',
 					placeholder: 'Comparation value',
-				}" />
+				}" :isNullValid="false" />
+			<div v-else />
 
 			<TemplateFieldSelectComponent :value="condition.chainingOperator"
 				v-on:edit="(value) => setChainingOperator(condition, value)" isEmptyAccepted
