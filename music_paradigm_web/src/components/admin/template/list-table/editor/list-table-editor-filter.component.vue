@@ -1,18 +1,32 @@
 <template>
-	<div class="litst-table-filter-box" :class="{ 'active-filter-box': isActive }">
-		<div>
-			<i class="bi bi-caret-down-fill" />
-			<i class="bi bi-caret-up-fill" />
-			<i class="bi bi-trash3" />
-			<i class="bi bi-pencil-square" />
-			<i class="bi bi-square" />
+	<div class="filter-contaier" :class="{
+		'active-filter-box': isActive,
+		'edition-mode': isInEditionMode,
+		'display-mode': !isInEditionMode
+	}">
+		<div class="filters-management-buttons">
+			<i class="bi bi-caret-up-fill button-icon" />
+			<i class="bi bi-caret-down-fill button-icon" />
+			<i class="bi bi-trash3 button-icon" />
 		</div>
 		<div>
-			<ListTableEditorFilterConditionsComponent v-on:update="update" :listTable="listTable" :filter="filter" />
-			<ListTableEditorFilterEffectComponent v-on:update="update" :listTable="listTable" :filter="filter" />
+			<div v-if="isInEditionMode">
+				<div class="edit-condition-effect-area">
+					<ListTableEditorFilterConditionsComponent v-on:update="update" :listTable="listTable"
+						:filter="filter" />
+					<ListTableEditorFilterEffectComponent v-on:update="update" :listTable="listTable" :filter="filter" />
+				</div>
+				<div class="edit-buttons-area">
+					<TemplateButtonComponent color="blue" isSmall v-on:click="emitRequestToEndEdit" text="Confirm"
+						class="confirm-button" />
+				</div>
+			</div>
+			<div v-else v-on:click="emitRequestToEdit">
+				<listTableEditorFilterDescriptionComponent class="clickable-area" :filter="filter" />
+			</div>
 		</div>
-		<div>
-			<listTableEditorFilterDescriptionComponent :filter="filter" />
+		<div class="filter-activation-button">
+			<i class="bi button-icon" :class="true ? 'bi-square' : 'bi-check-square'" />
 		</div>
 	</div>
 </template>
@@ -27,7 +41,7 @@ import listTableEditorFilterDescriptionComponent from './list-table-editor-filte
 import ListTableEditorFilterEffectComponent from './list-table-editor-filter-effect.component.vue';
 
 export default {
-	emits: ['update'],
+	emits: ['update', 'requestToEdit', 'requestEndEdit'],
 	components: {
 		TemplateButtonComponent,
 		ListTableEditorFilterConditionsComponent,
@@ -41,9 +55,9 @@ export default {
 				return new ListTableFilter();
 			},
 		},
-		index: {
-			type: Number,
-			default: null,
+		isInEditionMode: {
+			type: Boolean,
+			default: false,
 		},
 		listTable: {
 			type: ListTable,
@@ -58,6 +72,12 @@ export default {
 		},
 	},
 	methods: {
+		emitRequestToEdit() {
+			this.$emit('requestToEdit');
+		},
+		emitRequestToEndEdit() {
+			this.$emit('requestEndEdit');
+		},
 		update() {
 			this.$emit('update');
 			this.$forceUpdate();
@@ -67,12 +87,19 @@ export default {
 </script>
 
 <style scoped>
-.litst-table-filter-box {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	flex-wrap: wrap;
+.clickable-area {
+	cursor: pointer;
+}
+
+.edition-mode {}
+
+.display-mode {
+	width: 1000px;
+}
+
+.filter-contaier {
+	display: grid;
+	grid-template-columns: auto 1fr auto;
 	padding: 15px;
 	background-color: rgb(215, 215, 220);
 	border: solid rgb(200, 200, 205) 2px;
@@ -80,8 +107,53 @@ export default {
 	gap: 5px;
 }
 
+.filters-management-buttons {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 15px;
+	margin-right: 15px;
+}
+
+.filter-activation-button {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-left: 15px;
+}
+
 .litst-table-filter-box.active-filter-box {
 	background-color: rgb(195, 210, 195);
 	border-color: rgb(110, 190, 110);
+}
+
+.edit-condition-effect-area {
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+}
+
+.edit-buttons-area {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 10px;
+}
+
+.confirm-button {
+	width: 150px;
+}
+.button-icon.disabled-icon {
+	color: gray;
+	filter: opacity(100%);
+}
+
+i:hover.button-icon {
+	filter: opacity(75%);
+}
+
+i:active.button-icon {
+	filter: opacity(50%);
 }
 </style>

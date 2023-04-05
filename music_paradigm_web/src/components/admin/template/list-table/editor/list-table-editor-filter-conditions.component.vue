@@ -19,7 +19,7 @@
 				v-on:edit="(value) => setComparativeValue(condition, value)" :inputAttributes="{
 					type: 'text',
 					autocomplete: 'off',
-					placeholder: 'Comparation value',
+					placeholder: 'Comparison value',
 				}" :isNullValid="false" />
 			<div v-else />
 
@@ -115,6 +115,6 @@ export default {
 <style scoped>
 .filter-condition-grid {
 	display: grid;
-	grid-template-columns: 300px auto auto 300px auto;
+	grid-template-columns: 300px 70px auto 300px auto;
 }
 </style>

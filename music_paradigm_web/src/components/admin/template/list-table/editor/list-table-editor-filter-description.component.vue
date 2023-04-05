@@ -1,6 +1,6 @@
 <template>
 	<div class="litst-table-filter-description-box">
-		<span :style="{ 'white-space': 'pre' }"> {{ textDescription }} <div v-if="usesEffectColor" 
+		<span :style="{ 'white-space': 'pre-line' }"> {{ textDescription }} <div v-if="usesEffectColor" 
 			:style="{ 'background-color': effectColor }" 
 			class="filter-color-box" />
 		</span>

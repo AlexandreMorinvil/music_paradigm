@@ -70,7 +70,7 @@ export default {
 <style scoped>
 .filter-effect-grid {
 	display: grid;
-	grid-template-columns: auto 50px;
+	grid-template-columns: 300px 70px;
 	width: auto;
 }
 </style>

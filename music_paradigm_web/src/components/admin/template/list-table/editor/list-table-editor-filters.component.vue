@@ -3,7 +3,9 @@
 		<h4>Filters</h4>
 
 		<ListTableEditorFilterComponent v-for="(filter, index) in filtersList" :key="index" v-on:update="update"
-			:listTable="listTable" :filter="filter" />
+			:isInEditionMode="isSelected(index)" :listTable="listTable" :filter="filter"
+			v-on:requestToEdit="() => handleFilterSelection(index)"
+			v-on:requestEndEdit="() => handleFilterSelection(index)" />
 
 		<TemplateButtonComponent color="blue" isSmall v-on:click="addFilter" text="Add Filter" class="button-width" />
 	</div>
@@ -30,6 +32,11 @@ export default {
 			},
 		},
 	},
+	data() {
+		return {
+			selectedFilterIndex: null,
+		};
+	},
 	computed: {
 		filtersList() {
 			return this.listTable.filtersList;
@@ -45,6 +52,13 @@ export default {
 		},
 		editFilter(filter, index, columnKey) {
 			filter.setFilters(index, columnKey);
+		},
+		isSelected(index) {
+			return this.selectedFilterIndex === index;
+		},
+		handleFilterSelection(index) {
+			if (this.selectedFilterIndex === index) this.selectedFilterIndex = null;
+			else this.selectedFilterIndex = index;
 		},
 		update() {
 			this.$emit('update');
