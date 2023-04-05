@@ -71,6 +71,6 @@ export class ListTableFilter {
         const isFilterApplied = this.isAppliedTo(entity);
         if (this.effectType === FilterEffectType.ignore) return isFilterApplied;
         else if (this.effectType === FilterEffectType.consider) return !isFilterApplied;
-        return false; // SHould not happen;
+        else throw Error(`Effect type consider or ignore was expected. Got ${this.effectType}`);
     }
 }

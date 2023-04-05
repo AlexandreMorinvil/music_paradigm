@@ -1,21 +1,21 @@
 <template>
 	<div class="table-editor-area">
-		<TemplateListTableEditorColumnsComponent :listTable="listTable" v-on:update="updateTable" />
-		<templateListTableEditorFiltersComponent :listTable="listTable" v-on:update="updateTable" />
+		<ListTableEditorColumnsComponent :listTable="listTable" v-on:update="updateTable" />
+		<ListTableEditorFiltersComponent :listTable="listTable" v-on:update="updateTable" />
 	</div>
 </template>
 
 <script>
 import { ListTable } from '@/modules/list-tables';
 
-import TemplateListTableEditorColumnsComponent from './template-list-table-editor-columns.component.vue';
-import templateListTableEditorFiltersComponent from './template-list-table-editor-filters.component.vue';
+import ListTableEditorColumnsComponent from './list-table-editor-columns.component.vue';
+import ListTableEditorFiltersComponent from './list-table-editor-filters.component.vue';
 
 export default {
 	emits: ['update'],
 	components: {
-		TemplateListTableEditorColumnsComponent,
-		templateListTableEditorFiltersComponent,
+		ListTableEditorColumnsComponent,
+		ListTableEditorFiltersComponent,
 	},
 	props: {
 		listTable: {

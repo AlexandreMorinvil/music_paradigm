@@ -52,8 +52,8 @@ export class ListTableFilterCondition {
 
     isValid() {
         const isColumnKeyDefined = Boolean(this.columnKey);
-        const comparativeValueValid = Boolean(this.comparativeValue) && this.usesComparativeValue;
-        return isColumnKeyDefined && comparativeValueValid;
+        const isComparativeValueValid = this.usesComparativeValue ? Boolean(this.comparativeValue) : true;
+        return isColumnKeyDefined && isComparativeValueValid;
     }
 
     setChainingOperator(chainingOperator) {

@@ -1,18 +1,18 @@
 <template>
 	<div>
-		<TemplateListTableTitleComponent :title="listTable.title" :hasEditorExpanded="hasEditorExpanded"
+		<ListTableTitleComponent :title="listTable.title" :hasEditorExpanded="hasEditorExpanded"
 			:isExpanded="isExpanded" :isLoading="isLoading" :refreshFunction="refreshFunction" v-on:expand="toggleExpansion"
 			v-on:editor="toggleEditor" />
 
-		<TemplateListTableEditorComponent v-show="hasEditorExpanded" :listTable="listTable" v-on:update="updateTable" />
+		<ListTableEditorComponent v-show="hasEditorExpanded" :listTable="listTable" v-on:update="updateTable" />
 
 		<div class="table-area table-context list-table-template" :class="{ 'collapsed-size': !isExpanded }">
-			<TemplateListTableCellsComponent :listTable="listTable" :selection="selection" ref="cells">
+			<ListTableCellsComponent :listTable="listTable" :selection="selection" ref="cells">
 				<slot slot-scope="{ entity }" :entity="entity" />
-			</TemplateListTableCellsComponent>
+			</ListTableCellsComponent>
 		</div>
 
-		<TemplateListTableFooterComponent :listTable="listTable" :isLoading="isLoading" />
+		<ListTableFooterComponent :listTable="listTable" :isLoading="isLoading" />
 	</div>
 </template>
 
@@ -21,17 +21,17 @@ import '@/styles/table-template.css';
 
 import { ListTable } from '@/modules/list-tables';
 
-import TemplateListTableEditorComponent from './editor/template-list-table-editor.component.vue';
-import TemplateListTableCellsComponent from './template-list-table-cells.component.vue';
-import TemplateListTableFooterComponent from './template-list-table-footer.component.vue';
-import TemplateListTableTitleComponent from './template-list-table-title.component.vue';
+import ListTableCellsComponent from './list-table-cells.component.vue';
+import ListTableEditorComponent from './editor/list-table-editor.component.vue';
+import ListTableFooterComponent from './list-table-footer.component.vue';
+import ListTableTitleComponent from './list-table-title.component.vue';
 
 export default {
 	components: {
-		TemplateListTableCellsComponent,
-		TemplateListTableEditorComponent,
-		TemplateListTableFooterComponent,
-		TemplateListTableTitleComponent,
+		ListTableCellsComponent,
+		ListTableEditorComponent,
+		ListTableFooterComponent,
+		ListTableTitleComponent,
 	},
 	props: {
 		isLoading: {
