@@ -1,4 +1,5 @@
 import authHeader from './auth-header';
+import colorHandler from './color-handler';
 import controllerToMidiMapper from './controller-to-midi-mapper';
 import dateHandler from './date-handler';
 import downloadSave from './download-save';
@@ -21,6 +22,7 @@ import validator from './validator';
 
 export {
     authHeader,
+    colorHandler,
     controllerToMidiMapper,
     dateHandler,
     downloadSave,

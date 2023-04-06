@@ -60,10 +60,10 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import TemplateFieldCheckboxInputComponent from '@/components/admin/templates/template-field-checkbox-input.component.vue';
-import TemplateFieldInputComponent from '@/components/admin/templates/template-field-input.component.vue';
-import TemplateFieldLabelComponent from '@/components/admin/templates/template-field-label.component.vue';
-import TemplateFieldsetComponent from '@/components/admin/templates/template-fieldset.component.vue';
+import TemplateFieldCheckboxInputComponent from '@/components/admin/template/template-field-checkbox-input.component.vue';
+import TemplateFieldInputComponent from '@/components/admin/template/template-field-input.component.vue';
+import TemplateFieldLabelComponent from '@/components/admin/template/template-field-label.component.vue';
+import TemplateFieldsetComponent from '@/components/admin/template/template-fieldset.component.vue';
 
 export default {
 	components: {

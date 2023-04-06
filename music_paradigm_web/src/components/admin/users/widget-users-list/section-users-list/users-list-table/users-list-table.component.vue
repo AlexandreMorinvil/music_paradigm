@@ -1,5 +1,6 @@
 <template>
-	<TemplateListTable :ListTableClass="ListTableClass" :isLoading="isLoading" :list="list" :selection="selection">
+	<TemplateListTable :ListTableClass="ListTableClass" :isLoading="isLoading" :list="list"
+		:refreshFunction="fetchUserSummariesList" :selection="selection">
 		<div slot-scope="{ entity }">
 			<ButtonSelectUserComponent isSmall :entity="entity" hideIfInactive />
 			<ButtonDeselectUserComponent isSmall :entity="entity" hideIfInactive />
@@ -15,7 +16,7 @@ import { mapActions, mapGetters } from 'vuex';
 import { UsersListTable } from '@/modules/list-tables';
 import ButtonDeselectUserComponent from '@/components/admin/users/buttons/button-deselect-user.component.vue';
 import ButtonSelectUserComponent from '@/components/admin/users/buttons/button-select-user.component.vue';
-import TemplateListTable from '@/components/admin/templates/table/template-list-table.component.vue';
+import TemplateListTable from '@/components/admin/template/list-table/template-list-table.component.vue';
 
 export default {
 	components: {

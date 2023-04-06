@@ -37,7 +37,7 @@ export default {
 		state.existingUserGroupsList = groupsList;
 	},
 
-	setSummariesList(state, usersSummaryList) {
-		state.usersSummaryList = usersSummaryList;
+	setUserSummariesList(state, userSummariesList) {
+		state.userSummariesListManager.setUsersSummariesList(userSummariesList);
 	},
 };

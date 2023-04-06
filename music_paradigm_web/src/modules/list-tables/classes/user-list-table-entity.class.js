@@ -5,7 +5,8 @@ export class UsersListTableEntity extends ListTableEntity {
         super(user);
     }
 
-    get curriculum() {
-        return this.entity.curriculumTitle;
+    get progressionCompletedSessionsFraction() {
+        const { progressionCompletedSessionsCount: completed, curriculumSessionsCount: total } = this.entity;
+        return [completed, total];
     }
 }

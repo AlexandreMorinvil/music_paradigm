@@ -48,7 +48,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 import { durationHandler } from '@/_helpers';
 import { ProgressionSessionIdentifier } from '@/modules/progressions';
-import TemplateFieldOutputComponent from '@/components/admin/templates/template-field-output.component.vue';
+import TemplateFieldOutputComponent from '@/components/admin/template/template-field-output.component.vue';
 
 import ButtonResetSessionTimerComponent from '../buttons/button-reset-session-timer.component.vue';
 import ButtonResetSessionTaskProgressionComponent from '../buttons/button-reset-session-task-progression.component.vue';

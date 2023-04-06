@@ -91,9 +91,9 @@ function indicateExperimentMakersInProgressionAssociation(associations, experime
  * @param  {Object} progression 
  * @return {Object} Summary of the progression of the user considering his curriculum :
  *  {
- *      reachedExperimentTitle: String,
- *      progressionTotalNumber: Number,
- *      curriculumTotalNumber: Number
+ *      reachedSessionTitle: String,
+ *      progressionCompletedSessionsCount: Number,
+ *      curriculumSessionsCount: Number
  *  }
  *                      
 */
@@ -101,10 +101,10 @@ function generateProgressionToCurriculumAssociationSummary(curriculum, progressi
 
     // If the user doesn't have a curriculum assigned or a progression started, we return an unstarted progression summary
     if (!(curriculum && progression)) return {
-        wasProgressionTotalNumberAdjusted: false,
-        reachedExperimentTitle: "---",
-        progressionTotalNumber: 0,
-        curriculumTotalNumber: 0,
+        isAdvanceResultOfConsiderCompletedAdjustmentSessions: false,
+        reachedSessionTitle: null,
+        progressionCompletedSessionsCount: 0,
+        curriculumSessionsCount: 0,
     }
 
     // Otherwise, we produce a progression summary
@@ -116,7 +116,7 @@ function generateProgressionToCurriculumAssociationSummary(curriculum, progressi
 
     // Indicate whether the count was altered through an ajustment. This could either be that
     // a session is adjusted to be considered adjusted while it wasn't.
-    let wasProgressionTotalNumberAdjusted = false;
+    let isAdvanceResultOfConsiderCompletedAdjustmentSessions = false;
 
 
     // When a session supposed to be available later was completed before it's turn was reached,
@@ -140,7 +140,7 @@ function generateProgressionToCurriculumAssociationSummary(curriculum, progressi
                 return true;
             }
         } else if (progressionExperiment.adjustmentConsiderCompleted) {
-            wasProgressionTotalNumberAdjusted = true;
+            isAdvanceResultOfConsiderCompletedAdjustmentSessions = true;
             return true;
         }
 
@@ -153,13 +153,17 @@ function generateProgressionToCurriculumAssociationSummary(curriculum, progressi
         hasReachedEndOfProgress = true;
         return false;
     });
-    const reachedExperiment = (completedExperiments.length < association.length) ? association[completedExperiments.length].curriculumExperiment.title : "";
+
+    const reachedSession = (completedExperiments.length < association.length) ? 
+        association[completedExperiments.length].curriculumExperiment.title : 
+        null;
+        
     return {
-        wasProgressionTotalNumberAdjusted: wasProgressionTotalNumberAdjusted,
+        isAdvanceResultOfConsiderCompletedAdjustmentSessions: isAdvanceResultOfConsiderCompletedAdjustmentSessions,
         inAdvanceCount: inAdvanceCount,
         isProgressionBlocked: isProgressionBlocked,
-        reachedExperimentTitle: reachedExperiment,
-        progressionTotalNumber: completedExperiments.length,
-        curriculumTotalNumber: association.length
+        reachedSessionTitle: reachedSession,
+        progressionCompletedSessionsCount: completedExperiments.length,
+        curriculumSessionsCount: association.length
     }
 }

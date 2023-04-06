@@ -4,8 +4,12 @@ export class ListTableEntity {
         this.entity = entity ?? {};
     }
 
+    getValueByColumnKey(columnKey) {
+        return this[columnKey] ?? this.entity[columnKey] ?? null;
+    }
+
     getValueToDisplay(column) {
-        const value = this.entity[column.key] ?? this[column.key] ?? null;
+        const value = this.getValueByColumnKey(column.key);
 
         if (value === null || value === undefined || value === '') return null; 
         switch (column.type) {

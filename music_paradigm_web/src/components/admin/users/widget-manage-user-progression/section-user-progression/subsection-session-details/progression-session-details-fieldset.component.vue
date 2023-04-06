@@ -19,9 +19,9 @@
 import { mapGetters } from 'vuex';
 
 
-import TemplateFieldLabelComponent from '@/components/admin/templates/template-field-label.component.vue';
-import TemplateFieldsetComponent from '@/components/admin/templates/template-fieldset.component.vue';
-import TemplateFieldOutputComponent from '@/components/admin/templates/template-field-output.component.vue';
+import TemplateFieldLabelComponent from '@/components/admin/template/template-field-label.component.vue';
+import TemplateFieldsetComponent from '@/components/admin/template/template-fieldset.component.vue';
+import TemplateFieldOutputComponent from '@/components/admin/template/template-field-output.component.vue';
 
 export default {
 	components: {

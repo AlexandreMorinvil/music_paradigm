@@ -67,8 +67,8 @@ export default {
 		return usersApi
 			.getListAllSummaries()
 			.then(
-				(usersSummaryList) => {
-					commit('setSummariesList', usersSummaryList);
+				(userSummariesList) => {
+					commit('setUserSummariesList', userSummariesList);
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });

@@ -13,6 +13,11 @@
     outline-style: double;
 }
 
+.invalid-input {
+    border-width: 3px;
+    border-color: red;
+}
+
 .selected-text,
 .selected-input {
     color: var(--color-selected-text);

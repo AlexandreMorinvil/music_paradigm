@@ -13,27 +13,21 @@ const {
 // Exports
 module.exports = {
     generateUserSummariesList,
-    generateUserSummaryFromId,
     generateUserSummary,
 };
 
 async function generateUserSummariesList() {
-    const usersDocumentList = await UserModel.find({ role: roles.user });
     const userSummariesList = [];
-    await Promise.all(usersDocumentList.map(async (userDocument) => {
-        userSummariesList.push(await generateUserSummary(userDocument));
+    const usersObjectList = await UserModel.find({ role: roles.user }).lean();
+    await Promise.all(usersObjectList.map(async (usersObject) => {
+        userSummariesList.push(await generateUserSummary(usersObject));
     }));
     return userSummariesList;
 };
 
-async function generateUserSummaryFromId(userId) {
-    const userDocument = await UserModel.findOne({ _id: userId });
-    return generateUserSummary(userDocument);
-}
+async function generateUserSummary(user) {
 
-async function generateUserSummary(userDocument) {
-
-    const currentProgression = (await ProgressionModel.getActiveProgressionByUserId(userDocument._id)) || null;
+    const currentProgression = (await ProgressionModel.getActiveProgressionByUserId(user._id)) || null;
     const currentCurriculum = currentProgression ? await currentProgression.getCurriculum() : null;
 
     return new UserSummary({
@@ -44,6 +38,6 @@ async function generateUserSummary(userDocument) {
         progressionLastAdvancedTime: progressionGetters.getLastAdvanceTime(currentProgression),
         progressionDuration: progressionGetters.getDuration(currentProgression),
         ...generateProgressionToCurriculumAssociationSummary(currentCurriculum, currentProgression),
-        ...userDocument.toObject(),
+        ...user,
     })
 }

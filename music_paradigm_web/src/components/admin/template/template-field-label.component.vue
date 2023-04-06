@@ -1,8 +1,10 @@
 <template>
-	<label class="form-label"> {{ text }} </label>
+	<label class="form-label output-spacing"> {{ text }} </label>
 </template>
 
 <script>
+import '@/styles/field-template.css';
+
 export default {
 	props: {
 		text: {

@@ -6,7 +6,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import TemplateButtonComponent from '@/components/admin/templates/template-button.component.vue';
+import TemplateButtonComponent from '@/components/admin/template/template-button.component.vue';
 
 export default {
     components: {
