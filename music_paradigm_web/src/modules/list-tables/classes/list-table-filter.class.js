@@ -5,6 +5,7 @@ import { ChainingOperator, FilterEffectType } from "../interfaces/filter.interfa
 export class ListTableFilter {
 
     constructor(parameter = {}) {
+        this.isActivated = parameter?.isActivated ?? true;
         this.conditionsList = parameter?.conditionsList ?? [new ListTableFilterCondition()];
         this.effectType = parameter?.effectType ?? FilterEffectType.ignore;
         this.effectColor = parameter?.effectColor ?? '#8DE8D4';
@@ -38,7 +39,7 @@ export class ListTableFilter {
     }
 
     getStringDescription() {
-        if (!this.isValid) return 'INVALID';
+        if (!this.isValid) return 'INCOMPLETE FILTER';
         let stringDescription = '';
         let isOrParentesisOpened = false;
         this.conditionsList.forEach((condition) => {
@@ -64,6 +65,7 @@ export class ListTableFilter {
     }
 
     getImposedColor(entity) {
+        if (!this.isActivated) return null;
         if (this.effectType !== FilterEffectType.color) return null;
         return this.isAppliedTo(entity) ? this.effectColor : null;
     }
@@ -93,10 +95,15 @@ export class ListTableFilter {
 
     shouldRemoveEntity(entity) {
         if (!this.isValid) return false;
+        if (!this.isActivated) return false;
         if (![FilterEffectType.ignore, FilterEffectType.consider].includes(this.effectType)) return false;
         const isFilterApplied = this.isAppliedTo(entity);
         if (this.effectType === FilterEffectType.ignore) return isFilterApplied;
         else if (this.effectType === FilterEffectType.consider) return !isFilterApplied;
         else throw Error(`Effect type consider or ignore was expected. Got ${this.effectType}`);
+    }
+
+    toggleActivation() {
+        this.isActivated = !this.isActivated;
     }
 }

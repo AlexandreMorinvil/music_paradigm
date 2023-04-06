@@ -106,7 +106,6 @@ export default {
 		},
 		update() {
 			this.$emit('update');
-			this.$forceUpdate();
 		},
 	}
 };
@@ -115,6 +114,6 @@ export default {
 <style scoped>
 .filter-condition-grid {
 	display: grid;
-	grid-template-columns: 300px 70px auto 300px auto;
+	grid-template-columns: 300px 70px auto 300px 70px;
 }
 </style>

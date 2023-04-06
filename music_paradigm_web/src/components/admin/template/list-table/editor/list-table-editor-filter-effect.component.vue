@@ -61,7 +61,6 @@ export default {
 		},
 		update() {
 			this.$emit('update');
-			this.$forceUpdate();
 		},
 	}
 };

@@ -3,9 +3,12 @@
 		<h4>Filters</h4>
 
 		<ListTableEditorFilterComponent v-for="(filter, index) in filtersList" :key="index" v-on:update="update"
-			:isInEditionMode="isSelected(index)" :listTable="listTable" :filter="filter"
-			v-on:requestToEdit="() => handleFilterSelection(index)"
-			v-on:requestEndEdit="() => handleFilterSelection(index)" />
+			:isInEditionMode="isSelected(index)" :listTable="listTable" :index="index" 
+			v-on:delete="(index) => deleteFilter(index)"
+			v-on:moveFilterDown="(index) => moveFilterDown(index)"
+			v-on:moveFilterUp="(index) => moveFilterUp(index)" 
+			v-on:requestEdit="(index) => handleFilterSelection(index)"
+			v-on:requestEditStop="(index) => handleFilterDeselection(index)" />
 
 		<TemplateButtonComponent color="blue" isSmall v-on:click="addFilter" text="Add Filter" class="button-width" />
 	</div>
@@ -50,19 +53,32 @@ export default {
 			this.listTable.addFilter();
 			this.update();
 		},
-		editFilter(filter, index, columnKey) {
-			filter.setFilters(index, columnKey);
+		deleteFilter(index) {
+			this.listTable.deleteFilter(index);
+			this.update();
 		},
 		isSelected(index) {
 			return this.selectedFilterIndex === index;
 		},
 		handleFilterSelection(index) {
-			if (this.selectedFilterIndex === index) this.selectedFilterIndex = null;
-			else this.selectedFilterIndex = index;
+			this.selectedFilterIndex = index;
+		},
+		handleFilterDeselection(index) {
+			if (index === this.selectedFilterIndex) this.selectedFilterIndex = null;
+			else if (index === null || index === undefined) this.selectedFilterIndex = null;
+		},
+		moveFilterDown(index) {
+			const newIndex = this.listTable.moveFilterDown(index);
+			if (this.selectedFilterIndex = index) this.selectedFilterIndex = newIndex;
+			this.update();
+		},
+		moveFilterUp(index) {
+			const newIndex = this.listTable.moveFilterUp(index);
+			if (this.selectedFilterIndex = index) this.selectedFilterIndex = newIndex;
+			this.update();
 		},
 		update() {
 			this.$emit('update');
-			this.$forceUpdate();
 		},
 	}
 };

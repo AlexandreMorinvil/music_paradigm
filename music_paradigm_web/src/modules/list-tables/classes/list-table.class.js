@@ -31,6 +31,10 @@ export class ListTable {
         return this.entitiesList.length;
     }
 
+    get filtersCount() {
+        return this.filtersList.length;
+    }
+
     get filteredSortedEntitiesList() {
         return this.sortEntities(
             this.filterEntitiesList(this.entitiesList),
@@ -71,6 +75,11 @@ export class ListTable {
         this.selectedColumnsList.splice(index, 1);
     }
 
+    deleteFilter(index = null) {
+        if (index === null) return;
+        this.filtersList.splice(index, 1);
+    }
+
     editSelectedColumns(index, newColumnKey) {
         const newColumn = this.getColumnByKey(newColumnKey) ?? new ListTableEntity();
         this.selectedColumnsList.splice(index, 1, newColumn);
@@ -90,6 +99,10 @@ export class ListTable {
             return column.isDefaultSortColumn;
         }) ?? this.selectedColumnsList[0];
         return defaultSortColumn?.key ?? null;
+    }
+
+    getFilterAtIndex(index = null) {
+        return this.filtersList[index];
     }
 
     getFilterImposedColorOfEntity(entity) {
@@ -117,6 +130,22 @@ export class ListTable {
 
     isColumnUsedForSorting(column) {
         return this.sortColumnKey === column.key;
+    }
+
+    moveFilterDown(index = null) {
+        if (index === null) return;
+        if (index === this.filtersList.length - 1) return;
+        const filterToMoveDown = this.filtersList.splice(index, 1)[0];
+        this.filtersList.splice(index + 1, 0, filterToMoveDown);
+        return index + 1;
+    }
+
+    moveFilterUp(index = null) {
+        if (index === null) return index;
+        if (index === 0) return index;
+        const filterToMoveUp = this.filtersList.splice(index, 1)[0];
+        this.filtersList.splice(index - 1, 0, filterToMoveUp);
+        return index - 1;
     }
 
     removeDuplicateColumns(columnsList) {
@@ -168,5 +197,11 @@ export class ListTable {
             this.sortColumnKey = columnKey;
             this.isReverSort = false;
         }
+    }
+
+    toggleFilterActivation(index = null) {
+        const filterToToggleActication =  this.filtersList[index];
+        if (!filterToToggleActication) return;
+        filterToToggleActication.toggleActivation();
     }
 }

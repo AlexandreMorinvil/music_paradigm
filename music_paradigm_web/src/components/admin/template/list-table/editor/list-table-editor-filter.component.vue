@@ -1,14 +1,17 @@
 <template>
 	<div class="filter-contaier" :class="{
-		'active-filter-box': isActive,
+		'active-filter-box': isActivated && isValid,
 		'edition-mode': isInEditionMode,
 		'display-mode': !isInEditionMode
 	}">
+
 		<div class="filters-management-buttons">
-			<i class="bi bi-caret-up-fill button-icon" />
-			<i class="bi bi-caret-down-fill button-icon" />
-			<i class="bi bi-trash3 button-icon" />
+			<i v-if="hasFilterAbove" class="bi bi-caret-up-fill button-icon move-up-button" v-on:click="moveFilterUp" />
+			<i v-if="hasFilterBelow" class="bi bi-caret-down-fill button-icon move-down-button"
+				v-on:click="moveFilterDown" />
+			<i class="bi bi-trash3 button-icon delete-button" v-on:click="deleteFilter" />
 		</div>
+
 		<div>
 			<div v-if="isInEditionMode">
 				<div class="edit-condition-effect-area">
@@ -16,17 +19,18 @@
 						:filter="filter" />
 					<ListTableEditorFilterEffectComponent v-on:update="update" :listTable="listTable" :filter="filter" />
 				</div>
-				<div class="edit-buttons-area">
-					<TemplateButtonComponent color="blue" isSmall v-on:click="emitRequestToEndEdit" text="Confirm"
-						class="confirm-button" />
-				</div>
 			</div>
 			<div v-else v-on:click="emitRequestToEdit">
 				<listTableEditorFilterDescriptionComponent class="clickable-area" :filter="filter" />
 			</div>
 		</div>
 		<div class="filter-activation-button">
-			<i class="bi button-icon" :class="true ? 'bi-square' : 'bi-check-square'" />
+			<i class="bi button-icon" :class="isActivated ? 'bi-check-square' : 'bi-square'"
+				v-on:click="toggleFilterActivation" />
+			<div class="edit-buttons-area" v-if="isInEditionMode">
+				<TemplateButtonComponent color="blue" isSmall v-on:click="emitRequestToEndEdit" text="Confirm"
+					class="confirm-button" />
+			</div>
 		</div>
 	</div>
 </template>
@@ -41,7 +45,7 @@ import listTableEditorFilterDescriptionComponent from './list-table-editor-filte
 import ListTableEditorFilterEffectComponent from './list-table-editor-filter-effect.component.vue';
 
 export default {
-	emits: ['update', 'requestToEdit', 'requestEndEdit'],
+	emits: ['delete', 'moveFilterDown', 'moveFilterUp', 'requestEdit', 'requestEditStop', 'update'],
 	components: {
 		TemplateButtonComponent,
 		ListTableEditorFilterConditionsComponent,
@@ -49,11 +53,9 @@ export default {
 		ListTableEditorFilterEffectComponent,
 	},
 	props: {
-		filter: {
-			type: ListTableFilter,
-			default() {
-				return new ListTableFilter();
-			},
+		index: {
+			type: Number,
+			default: null,
 		},
 		isInEditionMode: {
 			type: Boolean,
@@ -67,20 +69,44 @@ export default {
 		},
 	},
 	computed: {
-		isActive() {
+		filter() {
+			return this.listTable.getFilterAtIndex(this.index) ?? new ListTableFilter();
+		},
+		hasFilterAbove() {
+			return this.index !== 0;
+		},
+		hasFilterBelow() {
+			return this.index !== (this.listTable.filtersCount - 1);
+		},
+		isActivated() {
+			return this.filter.isActivated;
+		},
+		isValid() {
 			return this.filter.isValid;
 		},
 	},
 	methods: {
+		deleteFilter() {
+			this.$emit('delete', this.index);
+		},
+		moveFilterDown() {
+			this.$emit('moveFilterDown', this.index);
+		},
+		moveFilterUp() {
+			this.$emit('moveFilterUp', this.index);
+		},
 		emitRequestToEdit() {
-			this.$emit('requestToEdit');
+			this.$emit('requestEdit', this.index);
 		},
 		emitRequestToEndEdit() {
-			this.$emit('requestEndEdit');
+			this.$emit('requestEditStop', this.index);
+		},
+		toggleFilterActivation() {
+			this.listTable.toggleFilterActivation(this.index);
+			this.update();
 		},
 		update() {
 			this.$emit('update');
-			this.$forceUpdate();
 		},
 	}
 };
@@ -108,11 +134,24 @@ export default {
 }
 
 .filters-management-buttons {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	gap: 15px;
-	margin-right: 15px;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	width: 100px;
+}
+
+.move-up-button {
+	grid-column: 1;
+	margin: auto;
+}
+
+.move-down-button {
+	grid-column: 2;
+	margin: auto;
+}
+
+.delete-button {
+	grid-column: 3;
+	margin: auto;
 }
 
 .filter-activation-button {
@@ -123,7 +162,7 @@ export default {
 	margin-left: 15px;
 }
 
-.litst-table-filter-box.active-filter-box {
+.filter-contaier.active-filter-box {
 	background-color: rgb(195, 210, 195);
 	border-color: rgb(110, 190, 110);
 }
@@ -142,8 +181,9 @@ export default {
 }
 
 .confirm-button {
-	width: 150px;
+	width: 100px;
 }
+
 .button-icon.disabled-icon {
 	color: gray;
 	filter: opacity(100%);
