@@ -21,7 +21,7 @@ function compareArrayForDefaultSort(arrayA = [], arrayB = []) {
 function compareValueForDefaultSort(valueA = null, valueB = null) {
     switch (typeof valueA) {
         case 'string': return compareString(valueA, valueB);
-        case 'number': return compareNumber(stringA, stringB);
+        case 'number': return compareNumber(valueA, valueB);
         default: return compareGenericValue(valueA, valueB);
     }
 }

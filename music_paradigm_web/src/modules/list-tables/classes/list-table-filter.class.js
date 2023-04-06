@@ -34,10 +34,6 @@ export class ListTableFilter {
             this.conditionsList.splice(-conditionsOutOfChainingCount);
     }
 
-    editColumn(index, columnKey) {
-        this.conditionsList[index].editColumn(columnKey);
-    }
-
     getStringDescription() {
         if (!this.isValid) return 'INCOMPLETE FILTER';
         let stringDescription = '';

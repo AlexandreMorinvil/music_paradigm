@@ -69,12 +69,14 @@ export default {
 		},
 		moveFilterDown(index) {
 			const newIndex = this.listTable.moveFilterDown(index);
-			if (this.selectedFilterIndex = index) this.selectedFilterIndex = newIndex;
+			if (newIndex === this.selectedFilterIndex) this.selectedFilterIndex = null;
+			if (this.selectedFilterIndex === index) this.selectedFilterIndex = newIndex;
 			this.update();
 		},
 		moveFilterUp(index) {
 			const newIndex = this.listTable.moveFilterUp(index);
-			if (this.selectedFilterIndex = index) this.selectedFilterIndex = newIndex;
+			if (newIndex === this.selectedFilterIndex) this.selectedFilterIndex = null;
+			if (this.selectedFilterIndex === index) this.selectedFilterIndex = newIndex;
 			this.update();
 		},
 		update() {

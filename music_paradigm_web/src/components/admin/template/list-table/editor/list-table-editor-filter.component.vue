@@ -170,7 +170,7 @@ export default {
 .edit-condition-effect-area {
 	display: flex;
 	flex-direction: column;
-	align-items: start;
+	justify-content: left;
 }
 
 .edit-buttons-area {
@@ -182,11 +182,6 @@ export default {
 
 .confirm-button {
 	width: 100px;
-}
-
-.button-icon.disabled-icon {
-	color: gray;
-	filter: opacity(100%);
 }
 
 i:hover.button-icon {

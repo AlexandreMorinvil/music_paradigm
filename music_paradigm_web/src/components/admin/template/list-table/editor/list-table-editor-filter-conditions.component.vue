@@ -2,7 +2,7 @@
 	<div class="filter-conditions-area">
 		<div v-for="(condition, index) in filter.conditionsList" :key=index class="filter-condition-grid">
 
-			<TemplateFieldSelectComponent :value="condition.columnKey" v-on:edit="(value) => setColumnKey(condition, value)"
+			<TemplateFieldSelectComponent :value="condition.columnKey" v-on:edit="(value) => setColumn(condition, value)"
 				isEmptyAccepted :getDisplayedValueFromElement="(column) => column.title"
 				:getOptionValueFromElement="(column) => column.key" :options="possibleColumnsList" :isNullValid="false"
 				placeholder="# No column" />
@@ -83,8 +83,9 @@ export default {
 			filter.setFilters(index, columnKey);
 			this.update();
 		},
-		setColumnKey(condition, columnKey) {
-			condition.setColumnKey(columnKey);
+		setColumn(condition, columnKey) {
+			const column = this.possibleColumnsList.find(column => columnKey === column.key);
+			condition.setColumn(column);
 			this.update();
 		},
 		setOperatorNegator(condition, operatorNegator) {
@@ -114,6 +115,6 @@ export default {
 <style scoped>
 .filter-condition-grid {
 	display: grid;
-	grid-template-columns: 300px 70px auto 300px 70px;
+	grid-template-columns: 300px 70px 330px 300px 70px;
 }
 </style>

@@ -2,11 +2,19 @@ import { ChainingOperator, ConditionOperator } from "../interfaces/filter.interf
 
 export class ListTableFilterCondition {
     constructor(parameter = {}) {
-        this.columnKey = parameter?.columnKey ?? null;
+        this.column = parameter?.column ?? {};
         this.operatorNegator = parameter?.operatorNegator ?? false;
         this.operator = parameter?.operator ?? ConditionOperator.isEqual;
         this.comparativeValue = parameter?.comparativeValue ?? null;
         this.chainingOperator = parameter?.chainingOperator ?? null;
+    }
+
+    get columnKey() {
+        return this.column.key ?? null;
+    }
+
+    get columnTitle() {
+        return this.column.title ?? this.column.columnTitle ?? this.columnKey;
     }
 
     get usesComparativeValue() {
@@ -32,12 +40,8 @@ export class ListTableFilterCondition {
         }
     }
 
-    editColumn(columnKey) {
-        this.conditionsList.columnKey = columnKey;
-    }
-
     getStringDescription() {
-        const stringDescription = `"${this.columnKey}" ` +
+        const stringDescription = `"${this.columnTitle}" ` +
             (this.operatorNegator ? 'IS NOT ' : 'IS ') +
             `${this.operator} ` +
             (this.usesComparativeValue ? `"${this.comparativeValue}" ` : '');
@@ -60,8 +64,8 @@ export class ListTableFilterCondition {
         this.chainingOperator = chainingOperator;
     }
 
-    setColumnKey(columnKey) {
-        this.columnKey = columnKey;
+    setColumn(column) {
+        this.column = column;
     }
 
     setComparativeValue(comparativeValue) {
