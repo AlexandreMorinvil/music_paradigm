@@ -28,7 +28,7 @@ export default {
 	props: {
 		listTableId: {
 			type: String,
-			default: 'main',
+			default: 'user-managment-list',
 		},
 	},
 	computed: {

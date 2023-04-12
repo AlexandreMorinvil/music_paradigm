@@ -1,8 +1,15 @@
 import { ListTableStateBackup } from "@/modules/list-tables";
 
 export default {
-	listTableState: (state) => (listTableId) => {
-		const listTableState = state.listTableState[listTableId];
-		return new ListTableStateBackup(listTableState);
+	localStorageListTableState: () => {
+		return JSON.parse(localStorage.getItem('listTableState')) ?? {};
+	},
+
+	listTableState: (state, getters) => (listTableId) => {
+		let listTableState = state.listTableState[listTableId];
+		if (listTableState) return new ListTableStateBackup(listTableState);
+
+		listTableState = getters.localStorageListTableState[listTableId];
+		return new ListTableStateBackup(listTableState);		
 	},
 };
