@@ -1,14 +1,14 @@
 export class ListTableColumn {
-    constructor(entity) {
-        this.key = entity.key;
+    constructor(column) {
+        this.key = column?.key ?? null;
 
-        this._columnTitle = entity.columnTitle ?? null;
-        this.isPresentByDefault = entity.isPresentByDefault ?? false;
-        this.isAlwaysPresent = entity.isAlwaysPresent ?? false;
-        this.isDefaultSortColumn = entity.isDefaultSortColumn ?? false;
-        this.formatFunction = entity.formatFunction ?? ((a) => a);
-        this.title = entity.title ?? entity.key ?? null;
-        this.orderPriority = entity.orderPriority ?? Infinity;
+        this._columnTitle = column?.columnTitle ?? null;
+        this.isPresentByDefault = column?.isPresentByDefault ?? false;
+        this.isAlwaysPresent = column?.isAlwaysPresent ?? false;
+        this.isDefaultSortColumn = column?.isDefaultSortColumn ?? false;
+        this.formatFunction = column?.formatFunction ?? ((a) => a);
+        this.title = column?.title ?? column?.key ?? null;
+        this.orderPriority = column?.orderPriority ?? Infinity;
     }
 
     get columnTitle() {
