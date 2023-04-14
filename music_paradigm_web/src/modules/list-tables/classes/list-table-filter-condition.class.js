@@ -1,4 +1,4 @@
-import { ChainingOperator, ConditionOperator } from "../interfaces/filter.interfaces";
+import { ConditionOperator } from "../interfaces/filter.interfaces";
 
 export class ListTableFilterCondition {
     constructor(parameter = {}) {
@@ -115,7 +115,7 @@ export class ListTableFilterCondition {
     }
 
     __isTrue(value) {
-        return value === true;
+        return Boolean(value);
     }
 
     __isDefined(value) {

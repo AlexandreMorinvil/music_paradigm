@@ -1,3 +1,5 @@
+import { ColumnType } from "../interfaces/column.interfaces";
+
 export class ListTableEntity {
     constructor(entity) {
         this._id = entity?._id ?? null;
@@ -13,7 +15,7 @@ export class ListTableEntity {
 
         if (value === null || value === undefined || value === '') return null; 
         switch (column.type) {
-            case Array:
+            case ColumnType.arrayOfStrings:
                 return (value.length === 0) ? column.formatFunction(value) : null;
             default: return column.formatFunction(value);
         }

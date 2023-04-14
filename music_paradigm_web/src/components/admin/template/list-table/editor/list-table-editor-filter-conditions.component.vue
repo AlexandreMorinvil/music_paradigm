@@ -10,17 +10,15 @@
 			<TemplateFieldSelectComponent :value="condition.operatorNegator"
 				v-on:edit="(value) => setOperatorNegator(condition, value)" :isEmptyAccepted="false"
 				:getDisplayedValueFromElement="(negator) => negator.text"
-				:getOptionValueFromElement="(negator) => negator.value" :options="conditionNegatorValues" />
+				:getOptionValueFromElement="(negator) => negator.value" :options="conditionNegatorValues"
+				:isNullValid="false" />
 
 			<TemplateFieldSelectComponent :value="condition.operator" v-on:edit="(value) => setOperator(condition, value)"
-				:isEmptyAccepted="false" :options="operatorsList" />
+				:isEmptyAccepted="false" :options="getValidConditionOperatorsForColumn(condition.column)"
+				:isNullValid="false" />
 
-			<TemplateFieldInputComponent v-if="condition.usesComparativeValue" v-bind:value="condition.comparativeValue"
-				v-on:edit="(value) => setComparativeValue(condition, value)" :inputAttributes="{
-					type: 'text',
-					autocomplete: 'off',
-					placeholder: 'Comparison value',
-				}" :isNullValid="false" />
+			<ListTableEditorFilterConditionValueComponent v-if="condition.usesComparativeValue" :condition="condition"
+				v-on:update="update" />
 			<div v-else />
 
 			<TemplateFieldSelectComponent :value="condition.chainingOperator"
@@ -31,15 +29,23 @@
 </template>
 
 <script>
-import { ListTable, ListTableFilter, ChainingOperator, ConditionOperator } from '@/modules/list-tables';
+import {
+	ListTable,
+	ListTableFilter,
+	ChainingOperator,
+	ConditionOperator,
+	getConditionOperatorsByColumnType
+} from '@/modules/list-tables';
 
 import TemplateButtonComponent from '@/components/admin/template/template-button.component.vue';
 import TemplateFieldInputComponent from '@/components/admin/template/template-field-input.component.vue';
 import TemplateFieldSelectComponent from '@/components/admin/template/template-field-select.component.vue';
+import ListTableEditorFilterConditionValueComponent from './list-table-editor-filter-condition-value.component.vue';
 
 export default {
 	emits: ['update'],
 	components: {
+		ListTableEditorFilterConditionValueComponent,
 		TemplateButtonComponent,
 		TemplateFieldInputComponent,
 		TemplateFieldSelectComponent,
@@ -79,6 +85,9 @@ export default {
 		},
 	},
 	methods: {
+		getValidConditionOperatorsForColumn(column) {
+			return getConditionOperatorsByColumnType(column.type);
+		},
 		editFilter(filter, index, columnKey) {
 			filter.setFilters(index, columnKey);
 			this.update();
@@ -94,10 +103,6 @@ export default {
 		},
 		setOperator(condition, operator) {
 			condition.setOperator(operator);
-			this.update();
-		},
-		setComparativeValue(condition, comparativeValue) {
-			condition.setComparativeValue(comparativeValue);
 			this.update();
 		},
 		setChainingOperator(condition, chainingOperator) {

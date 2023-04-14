@@ -8,6 +8,7 @@ export class ListTableColumn {
         this.isDefaultSortColumn = column?.isDefaultSortColumn ?? false;
         this.formatFunction = column?.formatFunction ?? ((a) => a);
         this.title = column?.title ?? column?.key ?? null;
+        this.type = column?.type ?? null;
         this.orderPriority = column?.orderPriority ?? Infinity;
     }
 

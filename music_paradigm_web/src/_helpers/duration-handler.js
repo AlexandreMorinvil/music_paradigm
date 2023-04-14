@@ -1,6 +1,9 @@
 export default {
+    constructDuration,
     formatDurationWeekToSecondsFromLargerUnit,
     formatTimerTime,
+    isDurationValid,
+    parsedDuration,
 };
 
 function formatDurationWeekToSecondsFromLargerUnit(durationInMilliseconds, elementsTotal = 1, mustAppendPreposition = false) {
@@ -53,6 +56,17 @@ function formatTimerTime(time) {
     return display;
 }
 
+function constructDuration({ isPositive, weeks, days, hours, minutes, seconds }) {
+    let durationInMilliseconds = 0;
+    durationInMilliseconds += ((seconds || 0) * 1000);
+    durationInMilliseconds += ((minutes || 0) * 1000 * 60);
+    durationInMilliseconds += ((hours || 0) * 1000 * 60 * 60);
+    durationInMilliseconds += ((days || 0) * 1000 * 60 * 60 * 24);
+    durationInMilliseconds += ((weeks || 0) * 1000 * 60 * 60 * 24 * 7);
+    durationInMilliseconds *= (isPositive ?? true) ? 1 : -1;
+    return durationInMilliseconds;
+}
+
 function parsedDuration(durationInMilliseconds) {
     const isPositive = durationInMilliseconds >= 0;
     let durationLeft = durationInMilliseconds;
@@ -65,7 +79,7 @@ function parsedDuration(durationInMilliseconds) {
     const minutes = Math.floor(Math.abs(durationLeft / (1000 * 60)));
     durationLeft %= 1000 * 60;
     const seconds = Math.floor(Math.abs(durationLeft / 1000));
-    return { isPositive: isPositive, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds };
+    return { isPositive, weeks, days, hours, minutes, seconds };
 }
 
 function parseTimerTime(milliseconds = 0) {
