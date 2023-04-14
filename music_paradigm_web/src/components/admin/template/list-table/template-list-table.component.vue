@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<ListTableTitleComponent :title="listTable.title" :hasEditorExpanded="hasEditorExpanded" :isExpanded="isExpanded"
+		<ListTableTitleComponent :listTable="listTable" :hasEditorExpanded="hasEditorExpanded" :isExpanded="isExpanded"
 			:isLoading="isLoading" :refreshFunction="refreshFunction" v-on:expand="toggleExpansion"
 			v-on:editor="toggleEditor" />
 
