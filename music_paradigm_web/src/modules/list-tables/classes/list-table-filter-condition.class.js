@@ -1,3 +1,4 @@
+import { dateHandler } from '@/_helpers';
 import { getConditionOperatorsByColumnType } from '../get-condition-operators-by-column-type';
 import { ColumnType } from '../interfaces/column.interfaces';
 import { ConditionOperator } from "../interfaces/filter.interfaces";
@@ -44,6 +45,7 @@ export class ListTableFilterCondition {
             case ConditionOperator.isLarger: return this.__isLarger(value);
             case ConditionOperator.isLargerOrEqual: return this.__isLargerOrEqual(value);
             case ConditionOperator.isSmallerOrEqual: return this.__isSmallerOrEqual(value);
+            case ConditionOperator.sameDay: return this.__sameDay(value);
             case ConditionOperator.startsWith: return this.__startsWith(value);
             case ConditionOperator.endsWith: return this.__endsWith(value);
             case ConditionOperator.contains: return this.__contains(value);
@@ -133,6 +135,10 @@ export class ListTableFilterCondition {
 
     __isSmallerOrEqual(value) {
         return value <= this.comparativeValue;
+    }
+
+    __sameDay(value) {
+        return dateHandler.areSameDay(value, this.comparativeValue);
     }
 
     __startsWith(value) {

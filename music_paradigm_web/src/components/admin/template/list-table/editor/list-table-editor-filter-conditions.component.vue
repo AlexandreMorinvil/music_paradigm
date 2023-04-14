@@ -35,7 +35,6 @@ import {
 	ListTable,
 	ListTableFilter,
 	ChainingOperator,
-	ConditionOperator,
 	getConditionOperatorsByColumnType
 } from '@/modules/list-tables';
 
@@ -75,9 +74,6 @@ export default {
 				{ text: 'IS', value: false },
 				{ text: 'NOT', value: true },
 			];
-		},
-		operatorsList() {
-			return Object.values(ConditionOperator);
 		},
 		filtersList() {
 			return this.listTable.filtersList;

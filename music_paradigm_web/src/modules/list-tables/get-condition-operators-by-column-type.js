@@ -19,7 +19,7 @@ export function getConditionOperatorsByColumnType(columnType) {
 
         case ColumnType.date:
             return [
-                ConditionOperator.isEqual,
+                ConditionOperator.sameDay,
                 ConditionOperator.isLarger,
                 ConditionOperator.isSmaller,
                 ConditionOperator.isLargerOrEqual,
@@ -29,7 +29,6 @@ export function getConditionOperatorsByColumnType(columnType) {
 
         case ColumnType.duration:
             return [
-                ConditionOperator.isEqual,
                 ConditionOperator.isLarger,
                 ConditionOperator.isSmaller,
                 ConditionOperator.isLargerOrEqual,
