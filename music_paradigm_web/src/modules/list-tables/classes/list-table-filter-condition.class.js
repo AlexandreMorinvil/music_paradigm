@@ -1,10 +1,12 @@
 import { getConditionOperatorsByColumnType } from '../get-condition-operators-by-column-type';
 import { ColumnType } from '../interfaces/column.interfaces';
 import { ConditionOperator } from "../interfaces/filter.interfaces";
+import { ListTableColumn } from './list-table-column.class';
+import { formatDefaultByColumnType } from '../format-default-by-column-type';
 
 export class ListTableFilterCondition {
     constructor(parameter = {}) {
-        this.column = parameter?.column ?? {};
+        this.column = parameter?.column ?? new ListTableColumn();
         this.operatorNegator = parameter?.operatorNegator ?? false;
         this.operator = parameter?.operator ?? null;
         this.comparativeValue = parameter?.comparativeValue ?? null;
@@ -21,6 +23,10 @@ export class ListTableFilterCondition {
 
     get columnType() {
         return this.column.type ?? null;
+    }
+
+    get formattedComparativeValue() {
+        return formatDefaultByColumnType(this.comparativeValue, this.columnType);
     }
 
     get usesComparativeValue() {
@@ -51,7 +57,7 @@ export class ListTableFilterCondition {
         const stringDescription = `"${this.columnTitle}" ` +
             (this.operatorNegator ? 'IS NOT ' : 'IS ') +
             `${this.operator} ` +
-            (this.usesComparativeValue ? `"${this.comparativeValue}" ` : '');
+            (this.usesComparativeValue ? `"${this.formattedComparativeValue}" ` : '');
         return stringDescription.trim();
     }
 
