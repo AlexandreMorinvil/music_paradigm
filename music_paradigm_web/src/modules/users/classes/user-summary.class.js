@@ -15,6 +15,9 @@ export class UserSummary {
         this.lastLogin = parameterCopy.lastLogin ?? null;
         this.createdAt = parameterCopy.createdAt ?? null;
         this.updatedAt = parameterCopy.updatedAt ?? null;
+        this.timeLapsedSinceLastLogin = parameterCopy.timeLapsedSinceLastLogin ?? null;
+        this.timeLapsedSinceCreatedAt = parameterCopy.timeLapsedSinceCreatedAt ?? null;
+        this.timeLapsedSinceUpdatedAt = parameterCopy.timeLapsedSinceUpdatedAt ?? null;
 
         // Curriculum information
         this.curriculumTitle = parameterCopy.curriculumTitle ?? null;

@@ -1,3 +1,5 @@
+const { getTimeLapsedSince } = require('_helpers/time-handler')
+
 module.exports  = class UserSummary {
     constructor(parameter = {}) {
         // Deep copy to avoid oject and array shallow copies.
@@ -15,6 +17,9 @@ module.exports  = class UserSummary {
         this.lastLogin = parameterCopy.lastLogin ?? null;
         this.createdAt = parameterCopy.createdAt ?? null;
         this.updatedAt = parameterCopy.updatedAt ?? null;
+        this.timeLapsedSinceLastLogin = this.lastLogin ? getTimeLapsedSince(this.lastLogin) : null;
+        this.timeLapsedSinceCreatedAt = this.createdAt ? getTimeLapsedSince(this.createdAt) : null;
+        this.timeLapsedSinceUpdatedAt = this.updatedAt ? getTimeLapsedSince(this.updatedAt) : null;
         
         // Curriculum information
         this.curriculumTitle = parameterCopy.curriculumTitle ?? null;
@@ -32,6 +37,8 @@ module.exports  = class UserSummary {
         this.reachedSessionTitle = parameterCopy.reachedSessionTitle ?? null;
         this.progressionCompletedSessionsCount = parameterCopy.progressionCompletedSessionsCount ?? 0;
         this.curriculumSessionsCount = parameterCopy.curriculumSessionsCount ?? 0;
+
+        // Durations
     }
 
     toObject() {

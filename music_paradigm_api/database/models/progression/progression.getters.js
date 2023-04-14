@@ -24,8 +24,8 @@ function getAdvanceStartDate(progression) {
  *                      
 */
 function getAdvanceStartTime(progression) {
-    if (!progression) return 0;
-    return progression ? progression.startTimePassed : 0;
+    if (!progression) return null;
+    return progression ? progression.startTimePassed : null;
 }
 
 /**
@@ -45,8 +45,8 @@ function getLastAdvanceDate(progression) {
  *                      
 */
 function getLastAdvanceTime(progression) {
-    if (!progression) return 0;
-    return progression ? progression.lastProgessionTimePassed : 0;
+    if (!progression) return null;
+    return progression ? progression.lastProgessionTimePassed : null;
 }
 
 /**
@@ -56,8 +56,8 @@ function getLastAdvanceTime(progression) {
  *                      
 */
 function getDuration(progression) {
-    if (!progression) return 0;
-    return progression ? progression.duration : 0;
+    if (!progression) return null;
+    return progression ? progression.duration : null;
 }
 
 

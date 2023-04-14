@@ -2,6 +2,7 @@ const moment = require('moment');
 
 module.exports = {
     getHoursMinuteLeft,
+    getTimeLapsedSince,
     timeAsMinutes,
     calculateDaysElapsed,
     isToday,
@@ -23,6 +24,10 @@ function getHoursMinuteLeft(releaseTimeInHours) {
     if (hoursLeft < 10) { hoursLeft = "0" + hoursLeft; }
     if (minutesLeft < 10) { minutesLeft = "0" + minutesLeft; }
     return hoursLeft + ':' + minutesLeft;
+}
+
+function getTimeLapsedSince(date) {
+    return (new Date()).getTime() - (new Date(date)).getTime();
 }
 
 function timeAsMinutes(time) {
