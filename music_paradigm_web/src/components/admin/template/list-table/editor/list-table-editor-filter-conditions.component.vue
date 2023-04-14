@@ -3,23 +3,25 @@
 		<div v-for="(condition, index) in filter.conditionsList" :key=index class="filter-condition-grid">
 
 			<TemplateFieldSelectComponent :value="condition.columnKey" v-on:edit="(value) => setColumn(condition, value)"
-				isEmptyAccepted :getDisplayedValueFromElement="(column) => column.title"
+				:isEmptyAccepted="false" :getDisplayedValueFromElement="(column) => column.title"
 				:getOptionValueFromElement="(column) => column.key" :options="possibleColumnsList" :isNullValid="false"
 				placeholder="# No column" />
 
-			<TemplateFieldSelectComponent :value="condition.operatorNegator"
+			<TemplateFieldSelectComponent v-if="condition.columnKey" :value="condition.operatorNegator"
 				v-on:edit="(value) => setOperatorNegator(condition, value)" :isEmptyAccepted="false"
 				:getDisplayedValueFromElement="(negator) => negator.text"
 				:getOptionValueFromElement="(negator) => negator.value" :options="conditionNegatorValues"
 				:isNullValid="false" />
+			<div v-else class="filler-space" />
 
-			<TemplateFieldSelectComponent :value="condition.operator" v-on:edit="(value) => setOperator(condition, value)"
-				:isEmptyAccepted="false" :options="getValidConditionOperatorsForColumn(condition.column)"
-				:isNullValid="false" />
+			<TemplateFieldSelectComponent v-if="condition.columnKey" :value="condition.operator"
+				v-on:edit="(value) => setOperator(condition, value)" :isEmptyAccepted="false"
+				:options="getValidConditionOperatorsForColumn(condition.column)" :isNullValid="false" />
+			<div v-else class="filler-space" />
 
 			<ListTableEditorFilterConditionValueComponent v-if="condition.usesComparativeValue" :condition="condition"
 				v-on:update="update" />
-			<div v-else />
+			<div v-else class="filler-space" />
 
 			<TemplateFieldSelectComponent :value="condition.chainingOperator"
 				v-on:edit="(value) => setChainingOperator(condition, value)" isEmptyAccepted
@@ -121,5 +123,9 @@ export default {
 .filter-condition-grid {
 	display: grid;
 	grid-template-columns: 300px 70px 330px 300px 70px;
+}
+
+.filler-space {
+	background-color: rgba(0, 0, 0, 0.15);
 }
 </style>

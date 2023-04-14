@@ -60,26 +60,23 @@ export default {
 		},
 	},
 	computed: {
-		column() {
-			return this.condition.column ?? new ListTableColumn();
-		},
 		isBooleanType() {
-			return [ColumnType.boolean].includes(this.column.type);
+			return [ColumnType.boolean].includes(this.columnType);
 		},
 		isDateType() {
-			return [ColumnType.date].includes(this.column.type);
+			return [ColumnType.date].includes(this.columnType);
 		},
 		isDurationType() {
-			return [ColumnType.duration].includes(this.column.type);
+			return [ColumnType.duration].includes(this.columnType);
 		},
 		isNumberType() {
-			return [ColumnType.number].includes(this.column.type);
+			return [ColumnType.number].includes(this.columnType);
 		},
 		isStringType() {
-			return [ColumnType.string, ColumnType.arrayOfStrings].includes(this.column.type);
+			return [ColumnType.string, ColumnType.arrayOfStrings].includes(this.columnType);
 		},
-		type() {
-			return this.column.type;
+		columnType() {
+			return this.condition.columnType;
 		},
 	},
 	methods: {
@@ -91,19 +88,6 @@ export default {
 			this.$emit('update');
 		}
 	},
-	watch: {
-		type: {
-			handler: function (currentValue, previousValue) {
-				if (currentValue === previousValue) return;
-				else if (this.isBooleanType) this.setComparativeValue(true);
-				else if (this.isDateType) this.setComparativeValue(new Date());
-				else if (this.isDurationType) this.setComparativeValue(0);
-				else if (this.isNumberType) this.setComparativeValue(0);
-				else if (this.isStringType) this.setComparativeValue('');
-				else this.setComparativeValue(null);
-			}
-		}
-	}
 };
 </script>
 

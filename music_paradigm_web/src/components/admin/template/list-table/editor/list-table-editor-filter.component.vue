@@ -21,7 +21,8 @@
 				</div>
 			</div>
 			<div v-else v-on:click="emitRequestToEdit">
-				<listTableEditorFilterDescriptionComponent class="clickable-area" :filter="filter" />
+				<listTableEditorFilterDescriptionComponent class="clickable-area" :class="{ 'invalid-outline': !isValid }"
+					:filter="filter" />
 			</div>
 		</div>
 		<div class="filter-activation-button">
@@ -190,5 +191,11 @@ i:hover.button-icon {
 
 i:active.button-icon {
 	filter: opacity(50%);
+}
+
+.invalid-outline {
+	border-color: rgba(255, 0, 0, 0.5);
+	border-width: 3px;
+	color: rgba(255, 0, 0, 0.75);
 }
 </style>

@@ -1,10 +1,12 @@
+import { getConditionOperatorsByColumnType } from '../get-condition-operators-by-column-type';
+import { ColumnType } from '../interfaces/column.interfaces';
 import { ConditionOperator } from "../interfaces/filter.interfaces";
 
 export class ListTableFilterCondition {
     constructor(parameter = {}) {
         this.column = parameter?.column ?? {};
         this.operatorNegator = parameter?.operatorNegator ?? false;
-        this.operator = parameter?.operator ?? ConditionOperator.isEqual;
+        this.operator = parameter?.operator ?? null;
         this.comparativeValue = parameter?.comparativeValue ?? null;
         this.chainingOperator = parameter?.chainingOperator ?? null;
     }
@@ -17,8 +19,13 @@ export class ListTableFilterCondition {
         return this.column.title ?? this.column.columnTitle ?? this.columnKey;
     }
 
+    get columnType() {
+        return this.column.type ?? null;
+    }
+
     get usesComparativeValue() {
         return ![
+            null,
             ConditionOperator.isTrue,
             ConditionOperator.isDefined,
         ].includes(this.operator);
@@ -65,7 +72,12 @@ export class ListTableFilterCondition {
     }
 
     setColumn(column) {
+        const oldType = this.columnType, newType = column.type;
         this.column = column;
+
+        if (oldType === newType) return
+        this.forceValidComparativeValue();
+        this.forceValidOperator();
     }
 
     setComparativeValue(comparativeValue) {
@@ -78,6 +90,21 @@ export class ListTableFilterCondition {
 
     setOperator(operator) {
         this.operator = operator;
+    }
+
+    forceValidOperator() {
+        const allowedConditionOperatorsList = getConditionOperatorsByColumnType(this.columnType);
+        const isOperatorAllowedForNewColumn = allowedConditionOperatorsList.includes(this.operator);
+        if (!isOperatorAllowedForNewColumn) this.setOperator(allowedConditionOperatorsList[0]);
+    }
+
+    forceValidComparativeValue() {
+        if ([ColumnType.boolean].includes(this.columnType)) this.setComparativeValue(true);
+        else if ([ColumnType.date].includes(this.columnType)) this.setComparativeValue(new Date());
+        else if ([ColumnType.duration].includes(this.columnType)) this.setComparativeValue(0);
+        else if ([ColumnType.number].includes(this.columnType)) this.setComparativeValue(0);
+        else if ([ColumnType.string, ColumnType.arrayOfStrings].includes(this.columnType)) this.setComparativeValue('');
+        else this.setComparativeValue(null);
     }
 
     __isEqual(value) {
