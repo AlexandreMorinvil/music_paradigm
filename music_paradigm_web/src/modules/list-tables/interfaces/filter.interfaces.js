@@ -9,6 +9,7 @@ export const ConditionOperator = {
     isLarger: 'GREATER THAN',
     isLargerOrEqual: 'GREATER THAN OR EQUAL TO',
     isSmallerOrEqual: 'SMALLER THAN OR EQUAL TO',
+    sameDay: 'SAME DAY AS',
     startsWith: 'STARTING WITH',
     endsWith: 'ENDING WITH',
     contains: 'CONTAINING',

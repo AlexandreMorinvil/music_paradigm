@@ -4,6 +4,7 @@
 			<h3>
 				{{ title }}
 			</h3>
+			<span v-if="isFiltered" class="filter-indicator">(Filtered)</span>
 		</div>
 		<div class="loader-area">
 			<div v-if="isLoading" class="loading-indication">
@@ -24,6 +25,7 @@
 import '@/styles/color-palette.css';
 import '@/styles/table-template.css';
 
+import { ListTable } from '@/modules/list-tables';
 import LoaderCircularComponent from '@/components/visual-helpers/loader-circular.component.vue';
 
 export default {
@@ -48,9 +50,19 @@ export default {
 			type: Function,
 			default: () => { }
 		},
-		title: {
-			type: String,
-			default: 'Title',
+		listTable: {
+			type: ListTable,
+			default() {
+				return new ListTable();
+			},
+		},
+	},
+	computed: {
+		isFiltered() {
+			return this.listTable.keptEnitiesCount !== this.listTable.entitiesCount;
+		},
+		title() {
+			return this.listTable.title ?? 'Title';
 		},
 	},
 	methods: {
@@ -82,6 +94,11 @@ export default {
 }
 
 .title-area {}
+
+.filter-indicator {
+	font-weight: normal;
+	margin: 10px;
+}
 
 .loader-area {
 	flex-direction: row;

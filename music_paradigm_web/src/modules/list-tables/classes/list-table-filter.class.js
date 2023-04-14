@@ -6,7 +6,7 @@ export class ListTableFilter {
 
     constructor(parameter = {}) {
         this.isActivated = parameter?.isActivated ?? true;
-        this.conditionsList = parameter?.conditionsList ?? [new ListTableFilterCondition()];
+        this.conditionsList = this.generateConditionsList(parameter?.conditionsList);
         this.effectType = parameter?.effectType ?? FilterEffectType.ignore;
         this.effectColor = parameter?.effectColor ?? '#8DE8D4';
     }
@@ -65,6 +65,12 @@ export class ListTableFilter {
         if (this.effectType !== FilterEffectType.color) return null;
         return this.isAppliedTo(entity) ? this.effectColor : null;
     }
+
+    generateConditionsList(conditionsList) {
+        if (!conditionsList || conditionsList.length < 1) return [new ListTableFilterCondition()];
+        else return conditionsList.map((condition) => new ListTableFilterCondition(condition));
+    }
+
 
     isAppliedTo(entity) {
         if (!this.isValid) return false;

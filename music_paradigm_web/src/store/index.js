@@ -17,6 +17,7 @@ import { log } from './log.module';
 import { logs } from './logs.module';
 import { managementCurriculums } from './management-curriculums.module';
 import { managementUsers } from './management-users.module';
+import { pageStatus } from './page-status.module';
 import { piano } from './piano.module';
 import { pvt } from './pvt.module';
 import { question } from './question.module';
@@ -44,6 +45,7 @@ export default new Vuex.Store({
 		logs,
 		managementCurriculums,
 		managementUsers,
+		pageStatus,
 		piano,
 		pvt,
 		question,

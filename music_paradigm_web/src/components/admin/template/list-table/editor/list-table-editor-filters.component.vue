@@ -1,13 +1,12 @@
 <template>
 	<div class="table-editor-columns-area">
 		<h4>Filters</h4>
+		<div> {{ resultMessage }} </div>
 
 		<ListTableEditorFilterComponent v-for="(filter, index) in filtersList" :key="index" v-on:update="update"
-			:isInEditionMode="isSelected(index)" :listTable="listTable" :index="index" 
-			v-on:delete="(index) => deleteFilter(index)"
-			v-on:moveFilterDown="(index) => moveFilterDown(index)"
-			v-on:moveFilterUp="(index) => moveFilterUp(index)" 
-			v-on:requestEdit="(index) => handleFilterSelection(index)"
+			:isInEditionMode="isSelected(index)" :listTable="listTable" :index="index"
+			v-on:delete="(index) => deleteFilter(index)" v-on:moveFilterDown="(index) => moveFilterDown(index)"
+			v-on:moveFilterUp="(index) => moveFilterUp(index)" v-on:requestEdit="(index) => handleFilterSelection(index)"
 			v-on:requestEditStop="(index) => handleFilterDeselection(index)" />
 
 		<TemplateButtonComponent color="blue" isSmall v-on:click="addFilter" text="Add Filter" class="button-width" />
@@ -46,6 +45,21 @@ export default {
 		},
 		possibleColumnsList() {
 			return this.listTable.possibleColumnsList;
+		},
+		entitiesCount() {
+			return this.listTable.entitiesCount;
+		},
+		keptEnitiesCount() {
+			return this.listTable.keptEnitiesCount;
+		},
+		filteredEntitiesCount() {
+			return this.entitiesCount - this.keptEnitiesCount;
+		},
+		resultMessage() {
+			if (this.entitiesCount === 0) return 'There are no elements';
+			else if (this.entitiesCount === this.keptEnitiesCount) return 'No elements are filtered out';
+			else if (this.entitiesCount !== this.keptEnitiesCount)
+				return `${this.keptEnitiesCount}/${this.entitiesCount} elements displayed (${this.filteredEntitiesCount} filtered out)`;
 		},
 	},
 	methods: {

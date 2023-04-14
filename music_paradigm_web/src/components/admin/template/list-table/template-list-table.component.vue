@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<ListTableTitleComponent :title="listTable.title" :hasEditorExpanded="hasEditorExpanded"
-			:isExpanded="isExpanded" :isLoading="isLoading" :refreshFunction="refreshFunction" v-on:expand="toggleExpansion"
+		<ListTableTitleComponent :listTable="listTable" :hasEditorExpanded="hasEditorExpanded" :isExpanded="isExpanded"
+			:isLoading="isLoading" :refreshFunction="refreshFunction" v-on:expand="toggleExpansion"
 			v-on:editor="toggleEditor" />
 
 		<ListTableEditorComponent v-show="hasEditorExpanded" :listTable="listTable" v-on:update="updateTable" />
@@ -19,7 +19,7 @@
 <script>
 import '@/styles/table-template.css';
 
-import { ListTable } from '@/modules/list-tables';
+import { ListTable, ListTableStateBackup } from '@/modules/list-tables';
 
 import ListTableCellsComponent from './list-table-cells.component.vue';
 import ListTableEditorComponent from './editor/list-table-editor.component.vue';
@@ -34,6 +34,10 @@ export default {
 		ListTableTitleComponent,
 	},
 	props: {
+		initialTableState: {
+			type: ListTableStateBackup,
+			default: null,
+		},
 		isLoading: {
 			type: Boolean,
 			default: false,
@@ -52,7 +56,11 @@ export default {
 		},
 		refreshFunction: {
 			type: Function,
-			default: () => { }
+			default: () => { },
+		},
+		saveBackupFunction: {
+			type: Function,
+			default: () => { },
 		},
 		selection: {
 			type: null,
@@ -64,7 +72,7 @@ export default {
 			hasEditorExpanded: false,
 			isExpanded: false,
 			isInitilized: false,
-			listTable: new this.ListTableClass(this.list),
+			listTable: new this.ListTableClass(this.list, this.initialTableState),
 		};
 	},
 	methods: {
@@ -76,6 +84,7 @@ export default {
 		},
 		updateTable() {
 			this.$refs.cells.$forceUpdate();
+			this.saveBackupFunction(this.listTable.getStatusBackup());
 		},
 	},
 	watch: {

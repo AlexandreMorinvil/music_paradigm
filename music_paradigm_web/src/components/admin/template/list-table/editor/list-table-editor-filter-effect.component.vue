@@ -1,7 +1,7 @@
 <template>
 	<div class="filter-effect-grid">
-		<TemplateFieldSelectComponent :value="effectType" v-on:edit="(value) => setEffectType(value)" isEmptyAccepted
-			:options="filterEffectTypes" placeholder="NOTHING" />
+		<TemplateFieldSelectComponent :value="effectType" v-on:edit="(value) => setEffectType(value)"
+			:isEmptyAccepted="false" :options="filterEffectTypes" />
 
 		<TemplateFieldInputColorComponent v-if="hasEffectColor" :value="effectColor"
 			v-on:edit="(value) => setEffectColor(value)" class="effect-parameter" />

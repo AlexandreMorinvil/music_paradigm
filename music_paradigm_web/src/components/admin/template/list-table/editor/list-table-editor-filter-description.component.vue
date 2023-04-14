@@ -50,6 +50,7 @@ export default {
 	gap: 5px;
 	font-size: 0.8em;
 	font-weight: bold;
+	text-align: center;
 }
 
 .filter-color-box {
@@ -57,6 +58,6 @@ export default {
 	border: 2px solid black;
 	border-radius: 5px;
 	height: 0.8em;
-	width: 4em;
+	width: 3em;
 }
 </style>

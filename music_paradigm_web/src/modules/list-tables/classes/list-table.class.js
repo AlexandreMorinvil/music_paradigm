@@ -1,19 +1,20 @@
+import { ListTableColumn } from "./list-table-column.class";
 import { ListTableEntity } from "./list-table-entity.class";
 import { ListTableFilter } from "./list-table-filter.class";
 
 import sorting from "../sorting";
+import { ListTableStateBackup } from "./list-table-state-backup.class";
 
 export class ListTable {
 
-    constructor(list, ListTableEntityClass, parameters = {}) {
+    constructor(list, ListTableEntityClass, listTableStateBackup = null) {
         this.title = 'List';
         this.ListTableEntityClass = ListTableEntityClass ?? ListTableEntity;
         this.entitiesList = this.convertToTableEntitiesList(list);
-        this.filtersList = this.generateFiltersList(parameters.filtersList);
+        this.filtersList = this.generateFiltersList(listTableStateBackup?.filtersList);
         this.selectedColumnsList = this.generateInitialSelectedColumnsList(
-            parameters.selectedColumnsList ??
-            this.presentByDefaultColumnsList ??
-            []
+            listTableStateBackup?.columnKeysList,
+            this.presentByDefaultColumnsList ?? [],
         );
         this.sortColumnKey = this.getDefaultSortColumnKey();
         this.isReverSort = false;
@@ -59,7 +60,7 @@ export class ListTable {
     }
 
     addColumn() {
-        this.selectedColumnsList.push(new ListTableEntity());
+        this.selectedColumnsList.push(new ListTableColumn());
     }
 
     addFilter() {
@@ -81,7 +82,7 @@ export class ListTable {
     }
 
     editSelectedColumns(index, newColumnKey) {
-        const newColumn = this.getColumnByKey(newColumnKey) ?? new ListTableEntity();
+        const newColumn = this.getColumnByKey(newColumnKey) ?? new ListTableColumn();
         this.selectedColumnsList.splice(index, 1, newColumn);
     }
 
@@ -116,16 +117,33 @@ export class ListTable {
         return filtersList.map(filter => new ListTableFilter(filter));
     }
 
-    generateInitialSelectedColumnsList(additionalSelectedColumnsList = []) {
-        return this.sortAndRemoveDuplicateColumns([
-            ...this.selectedColumnsList ?? [],
-            ...this.alwaysPresentColumnsList,
-            ...additionalSelectedColumnsList
-        ]);
+    generateInitialSelectedColumnsList(backupColumnKeysList, additionalSelectedColumnsList = []) {
+        // If a backup is provided, we set the columns as the backup indicates.
+        if (backupColumnKeysList)
+            return backupColumnKeysList.map((columnKey) => {
+                return this.possibleColumnsList.find((possibleColumn) => {
+                    return columnKey === possibleColumn.key;
+                }) ?? new ListTableColumn();
+            });
+
+        // Otherwise, we set the columns using default values.
+        else
+            return this.sortAndRemoveDuplicateColumns([
+                ...this.selectedColumnsList ?? [],
+                ...this.alwaysPresentColumnsList,
+                ...additionalSelectedColumnsList
+            ]);
     }
 
     getColumnByKey(columnKey) {
         return this.possibleColumnsList.find((possibleColumn) => possibleColumn.key === columnKey);
+    }
+
+    getStatusBackup() {
+        return new ListTableStateBackup({
+            columnKeysList: this.selectedColumnsList.map(column => column.key),
+            filtersList: this.filtersList,
+        });
     }
 
     isColumnUsedForSorting(column) {
@@ -200,7 +218,7 @@ export class ListTable {
     }
 
     toggleFilterActivation(index = null) {
-        const filterToToggleActication =  this.filtersList[index];
+        const filterToToggleActication = this.filtersList[index];
         if (!filterToToggleActication) return;
         filterToToggleActication.toggleActivation();
     }

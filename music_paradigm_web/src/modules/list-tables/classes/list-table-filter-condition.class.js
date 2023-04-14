@@ -1,10 +1,15 @@
-import { ChainingOperator, ConditionOperator } from "../interfaces/filter.interfaces";
+import { dateHandler } from '@/_helpers';
+import { getConditionOperatorsByColumnType } from '../get-condition-operators-by-column-type';
+import { ColumnType } from '../interfaces/column.interfaces';
+import { ConditionOperator } from "../interfaces/filter.interfaces";
+import { ListTableColumn } from './list-table-column.class';
+import { formatDefaultByColumnType } from '../format-default-by-column-type';
 
 export class ListTableFilterCondition {
     constructor(parameter = {}) {
-        this.column = parameter?.column ?? {};
+        this.column = parameter?.column ?? new ListTableColumn();
         this.operatorNegator = parameter?.operatorNegator ?? false;
-        this.operator = parameter?.operator ?? ConditionOperator.isEqual;
+        this.operator = parameter?.operator ?? null;
         this.comparativeValue = parameter?.comparativeValue ?? null;
         this.chainingOperator = parameter?.chainingOperator ?? null;
     }
@@ -17,8 +22,17 @@ export class ListTableFilterCondition {
         return this.column.title ?? this.column.columnTitle ?? this.columnKey;
     }
 
+    get columnType() {
+        return this.column.type ?? null;
+    }
+
+    get formattedComparativeValue() {
+        return formatDefaultByColumnType(this.comparativeValue, this.columnType);
+    }
+
     get usesComparativeValue() {
         return ![
+            null,
             ConditionOperator.isTrue,
             ConditionOperator.isDefined,
         ].includes(this.operator);
@@ -31,6 +45,7 @@ export class ListTableFilterCondition {
             case ConditionOperator.isLarger: return this.__isLarger(value);
             case ConditionOperator.isLargerOrEqual: return this.__isLargerOrEqual(value);
             case ConditionOperator.isSmallerOrEqual: return this.__isSmallerOrEqual(value);
+            case ConditionOperator.sameDay: return this.__sameDay(value);
             case ConditionOperator.startsWith: return this.__startsWith(value);
             case ConditionOperator.endsWith: return this.__endsWith(value);
             case ConditionOperator.contains: return this.__contains(value);
@@ -44,7 +59,7 @@ export class ListTableFilterCondition {
         const stringDescription = `"${this.columnTitle}" ` +
             (this.operatorNegator ? 'IS NOT ' : 'IS ') +
             `${this.operator} ` +
-            (this.usesComparativeValue ? `"${this.comparativeValue}" ` : '');
+            (this.usesComparativeValue ? `"${this.formattedComparativeValue}" ` : '');
         return stringDescription.trim();
     }
 
@@ -56,7 +71,9 @@ export class ListTableFilterCondition {
 
     isValid() {
         const isColumnKeyDefined = Boolean(this.columnKey);
-        const isComparativeValueValid = this.usesComparativeValue ? Boolean(this.comparativeValue) : true;
+        const isComparativeValueValid = this.usesComparativeValue ?
+            this.comparativeValue !== '' && this.comparativeValue !== null && this.comparativeValue !== undefined :
+            true;
         return isColumnKeyDefined && isComparativeValueValid;
     }
 
@@ -65,7 +82,12 @@ export class ListTableFilterCondition {
     }
 
     setColumn(column) {
+        const oldType = this.columnType, newType = column.type;
         this.column = column;
+
+        if (oldType === newType) return
+        this.forceValidComparativeValue();
+        this.forceValidOperator();
     }
 
     setComparativeValue(comparativeValue) {
@@ -78,6 +100,21 @@ export class ListTableFilterCondition {
 
     setOperator(operator) {
         this.operator = operator;
+    }
+
+    forceValidOperator() {
+        const allowedConditionOperatorsList = getConditionOperatorsByColumnType(this.columnType);
+        const isOperatorAllowedForNewColumn = allowedConditionOperatorsList.includes(this.operator);
+        if (!isOperatorAllowedForNewColumn) this.setOperator(allowedConditionOperatorsList[0]);
+    }
+
+    forceValidComparativeValue() {
+        if ([ColumnType.boolean].includes(this.columnType)) this.setComparativeValue(true);
+        else if ([ColumnType.date].includes(this.columnType)) this.setComparativeValue(new Date());
+        else if ([ColumnType.duration].includes(this.columnType)) this.setComparativeValue(0);
+        else if ([ColumnType.number].includes(this.columnType)) this.setComparativeValue(0);
+        else if ([ColumnType.string, ColumnType.arrayOfStrings].includes(this.columnType)) this.setComparativeValue('');
+        else this.setComparativeValue(null);
     }
 
     __isEqual(value) {
@@ -100,6 +137,10 @@ export class ListTableFilterCondition {
         return value <= this.comparativeValue;
     }
 
+    __sameDay(value) {
+        return dateHandler.areSameDay(value, this.comparativeValue);
+    }
+
     __startsWith(value) {
         const valueToConsider = Array.isArray(value) ? value[0] : value;
         return String(valueToConsider ?? '').startsWith(String(this.comparativeValue));
@@ -115,7 +156,7 @@ export class ListTableFilterCondition {
     }
 
     __isTrue(value) {
-        return value === true;
+        return Boolean(value);
     }
 
     __isDefined(value) {
