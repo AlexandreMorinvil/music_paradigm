@@ -21,7 +21,8 @@ const possibleColumnsList = [
         type: ColumnType.string,
     }),
     new ListTableColumn({
-        key: 'progressionCompletedSessionsFraction',
+        key: 'progressionCompletedSessionsCount',
+        keyForDisplay: 'progressionCompletedSessionsFraction',
         title: 'Completed sessions count',
         columnTitle: 'Completed sessions',
         type: ColumnType.number,

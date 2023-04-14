@@ -1,9 +1,9 @@
 import { formatDefaultByColumnType } from "../format-default-by-column-type";
-import { ColumnType } from "../interfaces/column.interfaces";
 
 export class ListTableColumn {
     constructor(column) {
         this.key = column?.key ?? null;
+        this.keyForDisplay = column?.keyForDisplay ?? null;
 
         this._columnTitle = column?.columnTitle ?? null;
         this.isPresentByDefault = column?.isPresentByDefault ?? false;

@@ -11,7 +11,7 @@ export class ListTableEntity {
     }
 
     getValueToDisplay(column) {
-        const value = this.getValueByColumnKey(column.key);
+        const value = this.getValueByColumnKey(column.keyForDisplay ?? column.key);
 
         if (value === null || value === undefined || value === '') return null; 
         switch (column.type) {

@@ -69,7 +69,9 @@ export class ListTableFilterCondition {
 
     isValid() {
         const isColumnKeyDefined = Boolean(this.columnKey);
-        const isComparativeValueValid = this.usesComparativeValue ? Boolean(this.comparativeValue) : true;
+        const isComparativeValueValid = this.usesComparativeValue ?
+            this.comparativeValue !== '' && this.comparativeValue !== null && this.comparativeValue !== undefined :
+            true;
         return isColumnKeyDefined && isComparativeValueValid;
     }
 
