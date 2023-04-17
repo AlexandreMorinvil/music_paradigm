@@ -5,8 +5,8 @@
 			<tr>
 				<th v-on:mouseover="indicateCheckboxColumnBeingHovered"
 					v-on:mouseleave="indicateCheckboxColumnNotBeingHovered" class="count-column">
-					<input type="checkbox" v-if="isShallowSelectionActivated" :checked="allEntitesAreShallowSelected"
-						v-on:click="toggleShallowSelectAll" />
+					<input type="checkbox" v-if="isListTableSelectionActivated" :checked="areAllEntitesInListTableSelection"
+						v-on:click="toggleAllEntitiesInListTableSelection" />
 					<span v-else>#</span>
 				</th>
 				<th v-for="(column, index) in selectedColumnsList" :key="index">
@@ -22,12 +22,11 @@
 
 		<tbody>
 			<tr v-for="(entity, index) in entitiesList" :key="entity._id"
-				:class="{ selected: isShallowSelected(entity) }"
-				:style="getImposedColorStyle(entity)">
+				:class="{ selected: isInListTableSelection(entity) }" :style="getImposedColorStyle(entity)">
 				<td v-on:mouseover="indicateCheckboxColumnBeingHovered"
 					v-on:mouseleave="indicateCheckboxColumnNotBeingHovered">
-					<input type="checkbox" v-if="isShallowSelectionActivated" :checked="isShallowSelected(entity)"
-						v-on:click="() => toggleEntityInShallowSelection(entity)" />
+					<input type="checkbox" v-if="isListTableSelectionActivated" :checked="isInListTableSelection(entity)"
+						v-on:click="() => toggleEntityInListTableSelection(entity)" />
 					<span v-else>{{ index + 1 }}</span>
 				</td>
 				<td v-for="column in selectedColumnsList">
@@ -61,7 +60,7 @@ export default {
 				return new ListTable();
 			},
 		},
-		shallowSelection: {
+		listTableSelection: {
 			type: ListTableSelection,
 			default: null,
 		},
@@ -74,8 +73,8 @@ export default {
 		};
 	},
 	computed: {
-		allEntitesAreShallowSelected() {
-			return this.entitiesList.length === this.shallowSelection?.elementsCount;
+		areAllEntitesInListTableSelection() {
+			return this.entitiesList.length === this.listTableSelection?.elementsCount;
 		},
 		entitiesList() {
 			return this.listTable.filteredSortedEntitiesList;
@@ -83,11 +82,11 @@ export default {
 		hasActionButtons() {
 			return true || Boolean(this.$slots.actionButtons);
 		},
-		hasShallowSelectedEntity() {
-			return this.shallowSelection?.hasElements || false;
+		hasEntityInListTableSelection() {
+			return this.listTableSelection?.hasElements || false;
 		},
-		isShallowSelectionActivated() {
-			return (this.shallowSelection && this.isCheckboxColumnBeingHovered) || this.hasShallowSelectedEntity;
+		isListTableSelectionActivated() {
+			return (this.listTableSelection && this.isCheckboxColumnBeingHovered) || this.hasEntityInListTableSelection;
 		},
 		selectedColumnsList() {
 			return this.listTable.selectedColumnsList;
@@ -110,15 +109,15 @@ export default {
 		isColumnUsedForSorting(column) {
 			return this.listTable.isColumnUsedForSorting(column);
 		},
-		isShallowSelected: function (entity) {
-			return this.shallowSelection.includes(entity);
+		isInListTableSelection: function (entity) {
+			return this.listTableSelection.includes(entity);
 		},
-		toggleEntityInShallowSelection(entity) {
-			this.shallowSelection.toggleSelection(entity);
+		toggleAllEntitiesInListTableSelection() {
+			if (this.areAllEntitesInListTableSelection) this.listTableSelection.empty();
+			else this.listTableSelection.addList(this.entitiesList);
 		},
-		toggleShallowSelectAll() {
-			if (this.allEntitesAreShallowSelected) this.shallowSelection.empty();
-			else this.shallowSelection.addList(this.entitiesList);
+		toggleEntityInListTableSelection(entity) {
+			this.listTableSelection.toggleSelection(entity);
 		},
 		toggleSortForColumn(column) {
 			this.listTable.toggleSortForColumn(column);
@@ -128,7 +127,7 @@ export default {
 		entitiesList: {
 			deep: true,
 			handler: function () {
-				this.shallowSelection.removeIfNotIn(this.entitiesList);
+				this.listTableSelection.removeIfNotIn(this.entitiesList);
 			}
 		}
 	}

@@ -23,7 +23,7 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-		shallowSelection: {
+		listTableSelection: {
 			type: ListTableSelection,
 			default: null,
 		},
@@ -36,7 +36,7 @@ export default {
 			return this.listTable.keptEnitiesCount;
 		},
 		selectedEntitiesCount() {
-			return this.shallowSelection.elementsCount;
+			return this.listTableSelection.elementsCount;
 		},
 		entitiesCountMessage() {
 			if (this.entitiesCount === 0) {

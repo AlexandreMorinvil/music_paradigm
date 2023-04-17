@@ -7,12 +7,12 @@
 		<ListTableEditorComponent v-show="hasEditorExpanded" :listTable="listTable" v-on:update="updateTable" />
 
 		<div class="table-area table-context list-table-template" :class="{ 'collapsed-size': !isExpanded }">
-			<ListTableCellsComponent :listTable="listTable" :shallowSelection="shallowSelection" ref="cells">
+			<ListTableCellsComponent :listTable="listTable" :listTableSelection="listTableSelection" ref="cells">
 				<slot slot-scope="{ entity }" :entity="entity" />
 			</ListTableCellsComponent>
 		</div>
 
-		<ListTableFooterComponent :listTable="listTable" :isLoading="isLoading" :shallowSelection="shallowSelection" />
+		<ListTableFooterComponent :listTable="listTable" :isLoading="isLoading" :listTableSelection="listTableSelection" />
 	</div>
 </template>
 
@@ -54,6 +54,10 @@ export default {
 				return ListTable;
 			},
 		},
+		listTableSelection: {
+			type: ListTableSelection,
+			default: null,
+		},
 		refreshFunction: {
 			type: Function,
 			default: () => { },
@@ -61,10 +65,6 @@ export default {
 		saveBackupFunction: {
 			type: Function,
 			default: () => { },
-		},
-		shallowSelection: {
-			type: ListTableSelection,
-			default: null,
 		},
 	},
 	data() {
