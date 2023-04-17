@@ -1,7 +1,7 @@
 <template>
 	<TemplateListTable :ListTableClass="ListTableClass" :initialTableState="initialTableState" :isLoading="isLoading"
 		:list="list" :refreshFunction="fetchUserSummariesList" :saveBackupFunction="saveBackupFunction"
-		:selection="selection" :shallowSelection="shallowSelection">
+		:shallowSelection="shallowSelection">
 		<div slot-scope="{ entity }">
 			<ButtonSelectUserComponent isSmall :entity="entity" hideIfInactive />
 			<ButtonDeselectUserComponent isSmall :entity="entity" hideIfInactive />

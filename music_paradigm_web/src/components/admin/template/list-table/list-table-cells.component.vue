@@ -21,11 +21,12 @@
 		</thead>
 
 		<tbody>
-			<tr v-for="(entity, index) in entitiesList" :key="entity._id" :class="{ selected: isSelected(entity) }"
+			<tr v-for="(entity, index) in entitiesList" :key="entity._id"
+				:class="{ selected: isShallowSelected(entity) }"
 				:style="getImposedColorStyle(entity)">
 				<td v-on:mouseover="indicateCheckboxColumnBeingHovered"
 					v-on:mouseleave="indicateCheckboxColumnNotBeingHovered">
-					<input type="checkbox" v-if="isShallowSelectionActivated" :checked="isEntityShallowSelected(entity)"
+					<input type="checkbox" v-if="isShallowSelectionActivated" :checked="isShallowSelected(entity)"
 						v-on:click="() => toggleEntityInShallowSelection(entity)" />
 					<span v-else>{{ index + 1 }}</span>
 				</td>
@@ -33,7 +34,7 @@
 					<TemplateFieldOutputComponent :value="entity.getValueToDisplay(column)" />
 				</td>
 				<td class="action-cells">
-					<slot :entity="entity" :isSelected="isSelected(entity)" />
+					<slot :entity="entity" />
 				</td>
 			</tr>
 		</tbody>
@@ -64,10 +65,6 @@ export default {
 			type: ListTableSelection,
 			default: null,
 		},
-		selection: {
-			type: null,
-			default: null,
-		},
 	},
 	data() {
 		return {
@@ -95,9 +92,6 @@ export default {
 		selectedColumnsList() {
 			return this.listTable.selectedColumnsList;
 		},
-		selectedEntitiesList() {
-			return this.listTable.convertToTableEntitiesList(this.selection);
-		},
 	},
 	methods: {
 		getImposedColorStyle(entity) {
@@ -116,13 +110,8 @@ export default {
 		isColumnUsedForSorting(column) {
 			return this.listTable.isColumnUsedForSorting(column);
 		},
-		isEntityShallowSelected: function (entity) {
+		isShallowSelected: function (entity) {
 			return this.shallowSelection.includes(entity);
-		},
-		isSelected(entity) {
-			return !!this.selectedEntitiesList.find((selection) => {
-				return entity.isEqual(selection) || false;
-			});
 		},
 		toggleEntityInShallowSelection(entity) {
 			this.shallowSelection.toggleSelection(entity);
@@ -130,12 +119,19 @@ export default {
 		toggleShallowSelectAll() {
 			if (this.allEntitesAreShallowSelected) this.shallowSelection.empty();
 			else this.shallowSelection.addList(this.entitiesList);
-			this.$forceUpdate(); // Used to force the checkboxes to update;
 		},
 		toggleSortForColumn(column) {
 			this.listTable.toggleSortForColumn(column);
 		},
 	},
+	watch: {
+		entitiesList: {
+			deep: true,
+			handler: function () {
+				this.shallowSelection.removeIfNotIn(this.entitiesList);
+			}
+		}
+	}
 };
 </script>
 
@@ -158,7 +154,7 @@ export default {
 }
 
 input[type="checkbox"] {
-	width: 1em;
-	height: 1em;
+	width: 1.25em;
+	height: 1.25em;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <TemplateButtonComponent v-on:click="handleButtonPress" color="turquoise" :isActive="isButtonActive"
-        :isFrozen="isButtonFrozen" v-bind="$attrs" text="Deselect" />
+        :isFrozen="isButtonFrozen" v-bind="$attrs" text="Stop Managing" />
 </template>
 
 <script>

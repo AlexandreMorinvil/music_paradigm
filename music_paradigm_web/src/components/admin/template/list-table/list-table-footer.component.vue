@@ -1,7 +1,7 @@
 <template>
 	<div class="table-results-footer">
 		<span>
-			{{ entitiesCountMessage }}
+			{{ entitiesCountMessage }} {{ selectedEntitiesCountMessage }}
 		</span>
 	</div>
 </template>
@@ -9,7 +9,7 @@
 <script>
 import '@/styles/table-template.css';
 
-import { ListTable } from '@/modules/list-tables';
+import { ListTable, ListTableSelection } from '@/modules/list-tables';
 
 export default {
 	props: {
@@ -23,6 +23,10 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		shallowSelection: {
+			type: ListTableSelection,
+			default: null,
+		},
 	},
 	computed: {
 		entitiesCount() {
@@ -31,15 +35,41 @@ export default {
 		keptEnitiesCount() {
 			return this.listTable.keptEnitiesCount;
 		},
+		selectedEntitiesCount() {
+			return this.shallowSelection.elementsCount;
+		},
 		entitiesCountMessage() {
 			if (this.entitiesCount === 0) {
-				if (this.isLoading) return 'Loading items...';
-				else return 'No items';
+				if (this.isLoading)
+					return 'Loading items...';
+				else
+					return 'No items.';
 			}
 			else {
-				if (this.keptEnitiesCount === this.entitiesCount)
-					return `Showing all ${this.entitiesCount} item(s)`;
-				else return `Showing ${this.keptEnitiesCount} out of ${this.entitiesCount} item(s)`;
+				if (this.entitiesCount === this.keptEnitiesCount) {
+					if (this.entitiesCount === 1)
+						return `Showing the only items that exists.`;
+					else
+						return `Showing all ${this.entitiesCount} items.`;
+				}
+				else
+					return `Showing ${this.keptEnitiesCount} out of ${this.entitiesCount} items.`;
+			}
+		},
+		selectedEntitiesCountMessage() {
+			if (this.selectedEntitiesCount === 0)
+				return '';
+			else if (this.selectedEntitiesCount === this.keptEnitiesCount) {
+				if (this.selectedEntitiesCount === 1)
+					return `The item is selected.`;
+				else
+					return `All ${this.selectedEntitiesCount} items are selected.`;
+			}
+			else {
+				if (this.selectedEntitiesCount === 1)
+					return `${this.selectedEntitiesCount} item is selected.`;
+				else
+					return `${this.selectedEntitiesCount} items are selected.`;
 			}
 		},
 	}
