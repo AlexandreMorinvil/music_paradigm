@@ -35,10 +35,6 @@ export default {
 		return state.selectionUser.password;
 	},
 
-	userSelectionTag: (state) => (index) => {
-		return state.selectionUser.tags[index];
-	},
-
 	userSelectionTags: (state) => {
 		return state.selectionUser.tags;
 	},

@@ -7,6 +7,7 @@ import state from './state';
 import { edition } from './edition.module';
 import { progressions } from './progressions.module';
 import { selection } from './selection.module';
+import { shallowSelection } from './shallow-selections.module';
 
 export const managementUsers = {
 	namespaced: true,
@@ -18,5 +19,6 @@ export const managementUsers = {
 		edition,
 		progressions,
 		selection,
+		shallowSelection,
 	}
 };

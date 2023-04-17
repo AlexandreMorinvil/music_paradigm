@@ -17,6 +17,5 @@ export default {
 
 	// Users list
 	userSummariesListManager: new UserSummariesManager(),
-	usersSummaryList: [],
 	existingUserGroupsList: [],
 };
