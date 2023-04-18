@@ -1,5 +1,3 @@
-import { User } from "@/modules/users";
-
 export default {
 	indicateIsCreatingUser(state, isActive) {
 		state.status.isCreatingUser = isActive;

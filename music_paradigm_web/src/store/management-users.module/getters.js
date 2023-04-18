@@ -73,6 +73,10 @@ export default {
 		return state.userSummariesListManager.userSummariesList;
 	},
 
+	userSummariesListManager: (state) => {
+		return state.userSummariesListManager;
+	},
+
 	usersExistingUserGroupsList: (state) => {
 		return state.existingUserGroupsList;
 	},

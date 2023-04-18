@@ -4,6 +4,7 @@ import mutations from './mutations';
 import state from './state';
 
 // Nested modules
+import { batchCommand } from './batch-command.module';
 import { edition } from './edition.module';
 import { listTableSelection } from './list-table-selection.module';
 import { progressions } from './progressions.module';
@@ -16,6 +17,7 @@ export const managementUsers = {
 	actions,
 	mutations,
 	modules: {
+		batchCommand,
 		edition,
 		listTableSelection,
 		progressions,
