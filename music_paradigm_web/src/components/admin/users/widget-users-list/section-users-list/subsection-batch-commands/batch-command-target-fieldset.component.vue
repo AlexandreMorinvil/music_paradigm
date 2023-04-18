@@ -29,7 +29,6 @@ export default {
 	computed: {
 		...mapGetters('managementUsers/batchCommand', ['usersBatchCommand']),
 		...mapGetters('managementUsers/listTableSelection', [
-			'hasUsersListTableSelection',
 			'usersListTableSelectionCount',
 			'usersListTableSelectionUsernamesList',
 		]),
