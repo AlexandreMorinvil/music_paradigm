@@ -1,4 +1,8 @@
 export default {
+    indicateExecutingBatchCommandAddTag(state, isActive) {
+        state.status.isExecutingBatchCommandAddTag = isActive;
+    },
+
     editUsersBatchCommandGroup(state, group) {
         state.group = group;
     },

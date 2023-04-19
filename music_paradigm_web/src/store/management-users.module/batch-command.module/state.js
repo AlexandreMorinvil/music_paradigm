@@ -1,4 +1,8 @@
 export default {
+	status: {
+		isExecutingBatchCommandAddTag: false,
+	},
+
 	userBatchCommand: null,
 	curriculum: null,
 	password: '',

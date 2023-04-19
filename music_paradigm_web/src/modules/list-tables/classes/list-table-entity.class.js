@@ -16,7 +16,7 @@ export class ListTableEntity {
         if (value === null || value === undefined || value === '') return null; 
         switch (column.type) {
             case ColumnType.arrayOfStrings:
-                return (value.length === 0) ? column.formatFunction(value) : null;
+                return (value.length !== 0) ? column.formatFunction(value) : null;
             default: return column.formatFunction(value);
         }
     }

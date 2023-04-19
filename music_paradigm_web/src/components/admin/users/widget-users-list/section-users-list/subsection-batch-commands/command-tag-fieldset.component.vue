@@ -1,8 +1,8 @@
 <template>
 	<TemplateFieldsetComponent>
-		<TemplateFieldLabelComponent for="batch-command-tag" text="Tags" />
-		<TemplateFieldInputComponent v-bind:value="usersBatchCommandTag" v-on:edit="editUsersBatchCommandTag"
-			:inputAttributes="{
+		<TemplateFieldLabelComponent for="batch-command-tag" text="Tag" />
+		<TemplateFieldInputComponent v-bind:value="usersBatchCommandTag" :datalist="usersListTableSelectionAllTagsList"
+			v-on:edit="editUsersBatchCommandTag" :inputAttributes="{
 				type: 'text',
 				name: 'batch-command-tag',
 				autocomplete: 'off',
@@ -27,6 +27,7 @@ export default {
 	},
 	computed: {
 		...mapGetters('managementUsers/batchCommand', ['usersBatchCommandTag']),
+		...mapGetters('managementUsers/listTableSelection', ['usersListTableSelectionAllTagsList']),
 	},
 	methods: {
 		...mapMutations('managementUsers/batchCommand', ['editUsersBatchCommandTag']),

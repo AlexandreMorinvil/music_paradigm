@@ -4,6 +4,9 @@ const userService = require('./user.service');
 const jwtAuthorize = require('jwt/jwt.authorization');
 const role = require('_helpers/role');
 
+// Nested routes
+router.use('/batch-command', require('./batch-commands/users-batch-commands.controller'))
+
 // routes
 router.delete('/:id',                           jwtAuthorize(role.admin), _delete);
 

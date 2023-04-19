@@ -1,4 +1,8 @@
 export default {
+	isExecutingBatchCommandAddTag: (state) => {
+		return state.status.isExecutingBatchCommandAddTag;
+	},
+
 	usersBatchCommand: (state) => {
 		return state.userBatchCommand;
 	},

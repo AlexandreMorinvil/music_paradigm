@@ -92,7 +92,7 @@ const possibleColumnsList = [
         isPresentByDefault: true,
         title: 'Tags',
         type: ColumnType.arrayOfStrings,
-        formatFunction: (list) => list.join('\n'),
+        formatFunction: (list) => list.join(',\n'),
     }),
     new ListTableColumn({
         key: 'timeLapsedSinceCreatedAt',
