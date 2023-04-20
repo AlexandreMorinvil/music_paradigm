@@ -3,6 +3,14 @@ export default {
         state.status.isExecutingBatchCommandAddTag = isActive;
     },
 
+    indicateExecutingBatchCommandAppendToNote(state, isActive) {
+        state.status.isExecutingBatchCommandAppendToNote = isActive;
+    },
+
+    indicateExecutingBatchCommandPrependToNote(state, isActive) {
+        state.status.isExecutingBatchCommandPrependToNote = isActive;
+    },
+
     editUsersBatchCommandGroup(state, group) {
         state.group = group;
     },

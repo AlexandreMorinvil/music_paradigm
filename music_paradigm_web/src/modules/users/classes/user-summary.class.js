@@ -8,6 +8,7 @@ export class UserSummary {
 
         // User information
         this.group = parameterCopy.group ?? null;
+        this.hasNote = parameterCopy.hasNote ?? null;
         this.tags = parameterCopy.tags ?? [];
         this.username = parameterCopy.username ?? null;
 

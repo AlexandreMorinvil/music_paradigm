@@ -17,14 +17,19 @@ import WidgetSubsectionContainer from '@/components/admin/widget-subsection.cont
 import BatchCommandParametersFieldsetComponent from './batch-command-parameters-fieldset.component.vue';
 import BatchCommandTargetFieldsetComponent from './batch-command-target-fieldset.component.vue';
 
-import ButtonBatchAddTag from './buttons/button-batch-add-tag.component.vue'
+import ButtonBatchAddTagComponent from './buttons/button-batch-add-tag.component.vue'
+import ButtonBatchAppendToNoteComponent from './buttons/button-batch-append-to-note.component.vue';
+import ButtonBatchPrependToNoteComponent from './buttons/button-batch-prepend-to-note.component.vue';
+
 import { mapGetters } from 'vuex';
 
 
 export default {
     components: {
-        addTag: ButtonBatchAddTag,
-
+        addTag: ButtonBatchAddTagComponent,
+        appendToNote: ButtonBatchAppendToNoteComponent,
+        prependToNote: ButtonBatchPrependToNoteComponent,
+ 
         BatchCommandParametersFieldsetComponent,
         BatchCommandTargetFieldsetComponent,
         WidgetSubsectionContainer,
@@ -34,6 +39,8 @@ export default {
         buttonComponent() {
             switch (this.usersBatchCommand) {
                 case UsersBatchCommandsEnum.addTag: return 'addTag';
+                case UsersBatchCommandsEnum.appendToNote: return 'appendToNote';
+                case UsersBatchCommandsEnum.prependToNote: return 'prependToNote';
                 default: return '';
             }
         },

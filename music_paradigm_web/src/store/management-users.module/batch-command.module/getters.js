@@ -3,6 +3,14 @@ export default {
 		return state.status.isExecutingBatchCommandAddTag;
 	},
 
+	isExecutingBatchCommandAppendToNote: (state) => {
+		return state.status.isExecutingBatchCommandAppendToNote;
+	},
+
+	isExecutingBatchCommandPrependToNote: (state) => {
+		return state.status.isExecutingBatchCommandPrependToNote;
+	},
+
 	usersBatchCommand: (state) => {
 		return state.userBatchCommand;
 	},

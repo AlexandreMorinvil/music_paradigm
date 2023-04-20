@@ -133,6 +133,17 @@ export default {
 			});
 	},
 
+	refreshAll({ dispatch }) {
+		dispatch('fetchUserSummariesList');
+		dispatch('refreshSelectedUser');
+	},
+
+	refreshSelectedUser({ dispatch, getters }) {
+		if (!getters['selection/hasSelectedUser']) return;
+		dispatch('refreshSelectedUserProfile');
+		dispatch('progressions/refreshSelectedUserProgression');
+	},
+
 	refreshSelectedUserProfile({ commit, dispatch, getters }) {
 		commit('indicateFetchingUser', true);
 		return usersApi

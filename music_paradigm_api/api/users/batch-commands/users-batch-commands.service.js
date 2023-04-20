@@ -1,100 +1,182 @@
-﻿const mongoose = require("mongoose");
-const ProgressionModel = require('database/db').Progression;
-const UserModel = require('database/db').User;
+﻿const UserModel = require('database/db').User;
 
 // Exports
 module.exports = {
     addTag,
+    appendToNote,
+    prependToNote,
+    removeAllTags,
+    removeTag,
+    setGroup,
+    setNote,
+    setPassword,
 };
 
 async function addTag(userIdsList, tag) {
-    if (!tag) throw Error('The tag value is invalid');
-    const castedIdsList = userIdsList.map((id) => mongoose.Types.ObjectId(id));
-    const queryResult = await UserModel.updateMany(
-        {
-            _id: { $in: castedIdsList },
-            tags: { $ne: [tag].flat() }, // We ignore the users that already have the tag.
-        },
-        {
-            $push: {
-                tags: {
-                    $each: [tag].flat(),
-                    $sort: 1,
-                }
-            }
-        },
-        { upsert: false },
-    );
+    let successesCount = 0;
+    const usersList = await UserModel
+        .find({ _id: { $in: userIdsList } })
+        .select({ username: 1, tags: 1 });
+    const failuresList = [];
+    const promisesList = usersList.map(async (user) => {
+        try {
+            await user.addTag(tag);
+            successesCount += 1;
+        } catch (error) {
+            failuresList.push([user.username, error]);
+        }
+    });
+    await Promise.all(promisesList);
     return {
-        queryResult,
+        failuresList,
+        successesCount,
     };
 }
 
-// async function createUserWithCurriculum(user, curriculumId, assignedParameters) {
-//     try {
-//         const { user: userCreated }  = await createUser(user);
-//         const { progression, progressionSessionsStatus } =
-//             await progressionsService.assignCurriculum(userCreated._id, curriculumId, assignedParameters);
-//         return {
-//             user: userCreated,
-//             progression: progression,
-//             progressionSessionsStatus: progressionSessionsStatus,
-//         };
-//     } catch (err) {
-//         throw err;
-//     }
-// }
+async function appendToNote(userIdsList, noteToAppend) {
+    let successesCount = 0;
+    const usersList = await UserModel
+        .find({ _id: { $in: userIdsList } })
+        .select({ username: 1, note: 1 });
+    const failuresList = [];
+    const promisesList = usersList.map(async (user) => {
+        try {
+            await user.appendToNote(noteToAppend);
+            successesCount += 1;
+        } catch (error) {
+            failuresList.push([user.username, error]);
+        }
+    });
+    await Promise.all(promisesList);
+    return {
+        failuresList,
+        successesCount,
+    };
+}
 
-// async function getAll() {
-//     try {
-//         return await generateUserSummariesList();
-//     } catch (err) {
-//         throw err;
-//     }
-// }
+async function prependToNote(userIdsList, noteToPrepend) {
+    let successesCount = 0;
+    const usersList = await UserModel
+        .find({ _id: { $in: userIdsList } })
+        .select({ username: 1, note: 1 });
+    const failuresList = [];
+    const promisesList = usersList.map(async (user) => {
+        try {
+            await user.prependToNote(noteToPrepend);
+            successesCount += 1;
+        } catch (error) {
+            failuresList.push([user.username, error]);
+        }
+    });
+    await Promise.all(promisesList);
+    return {
+        failuresList,
+        successesCount,
+    };
+}
 
-// async function getUserById(userId) {
-//     try {
-//         const user = await UserModel.findById(userId).lean();
-//         const lastProgression = await ProgressionModel.getActiveProgressionByUserId(userId);
-//         const progressionSessionsStatus = await generateProgressionSessionsStatusForProgression(lastProgression);
-//         return {
-//             user: user,
-//             progression: lastProgression,
-//             progressionSessionsStatus: progressionSessionsStatus,
-//         };
-//     } catch (err) {
-//         throw err;
-//     }
-// }
+async function removeAllTags(userIdsList) {
+    let successesCount = 0;
+    const usersList = await UserModel
+        .find({ _id: { $in: userIdsList } })
+        .select({ username: 1, tags: 1 });
+    const failuresList = [];
+    const promisesList = usersList.map(async (user) => {
+        try {
+            await user.removeAllTags();
+            successesCount += 1;
+        } catch (error) {
+            failuresList.push([user.username, error]);
+        }
+    });
+    await Promise.all(promisesList);
+    return {
+        failuresList,
+        successesCount,
+    };
+}
 
-// async function getExistingUserGroupsList() {
-//     try {
-//         const groupsList = await UserModel.getExistingUserGroupsList();
-//         return groupsList;
-//     } catch (err) {
-//         throw err;
-//     }
-// }
+async function removeTag(userIdsList, tagToRemove) {
+    let successesCount = 0;
+    const usersList = await UserModel
+        .find({ _id: { $in: userIdsList } })
+        .select({ username: 1, tags: 1 });
+    const failuresList = [];
+    const promisesList = usersList.map(async (user) => {
+        try {
+            await user.removeTag(tagToRemove);
+            successesCount += 1;
+        } catch (error) {
+            failuresList.push([user.username, error]);
+        }
+    });
+    await Promise.all(promisesList);
+    return {
+        failuresList,
+        successesCount,
+    };
+}
 
-// async function updateUserProfile(userId, userUpdated) {
-//     try {
-//         const user = await UserModel.findById(userId);
-//         return await user.updateDetails(userUpdated);
-//     } catch (err) {
-//         switch (err.code) {
-//             case 11000:
-//                 throw new Error(`The username is already used`);
-//             default:
-//                 throw err;
-//         }
-//     }
-// }
+async function setGroup(userIdsList, group) {
+    let successesCount = 0;
+    const usersList = await UserModel
+        .find({ _id: { $in: userIdsList } })
+        .select({ username: 1, group: 1 });
+    const failuresList = [];
+    const promisesList = usersList.map(async (user) => {
+        try {
+            await user.setGroup(group);
+            successesCount += 1;
+        } catch (error) {
+            failuresList.push([user.username, error]);
+        }
+    });
+    await Promise.all(promisesList);
+    return {
+        failuresList,
+        successesCount,
+    };
+}
 
-// async function deleteUser(userId) {
-//     try {
-//         return await UserModel.delete(userId);
-//     } catch (err) {
-//         throw err;
-//     }
-// }
+async function setNote(userIdsList, note) {
+    let successesCount = 0;
+    const usersList = await UserModel
+        .find({ _id: { $in: userIdsList } })
+        .select({ username: 1, note: 1 });
+    const failuresList = [];
+    const promisesList = usersList.map(async (user) => {
+        try {
+            await user.setNote(note);
+            successesCount += 1;
+        } catch (error) {
+            failuresList.push([user.username, error]);
+        }
+    });
+    await Promise.all(promisesList);
+    return {
+        failuresList,
+        successesCount,
+    };
+}
+
+async function setPassword(userIdsList, password, isPasswordSecret = true) {
+    let successesCount = 0;
+    const usersList = await UserModel
+        .find({ _id: { $in: userIdsList } })
+        .select({ username: 1, password: 1, isPasswordSecret: 1 });
+    const failuresList = [];
+    const promisesList = usersList.map(async (user) => {
+        try {
+            await user.setPassword(password, isPasswordSecret);
+            successesCount += 1;
+        } catch (error) {
+            failuresList.push([user.username, error]);
+        }
+    });
+    await Promise.all(promisesList);
+    return {
+        failuresList,
+        successesCount,
+    };
+}
+

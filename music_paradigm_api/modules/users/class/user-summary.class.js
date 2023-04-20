@@ -12,6 +12,7 @@ module.exports  = class UserSummary {
         this.group = parameterCopy.group ?? null;
         this.tags = parameterCopy.tags ?? [];
         this.username = parameterCopy.username ?? null;
+        this.hasNote = Boolean(parameterCopy.note);
         
         // Timestamps
         this.lastLogin = parameterCopy.lastLogin ?? null;
@@ -37,8 +38,6 @@ module.exports  = class UserSummary {
         this.reachedSessionTitle = parameterCopy.reachedSessionTitle ?? null;
         this.progressionCompletedSessionsCount = parameterCopy.progressionCompletedSessionsCount ?? 0;
         this.curriculumSessionsCount = parameterCopy.curriculumSessionsCount ?? 0;
-
-        // Durations
     }
 
     toObject() {

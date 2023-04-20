@@ -76,6 +76,11 @@ const possibleColumnsList = [
         formatFunction: (value) => durationHandler.formatDurationWeekToSecondsFromLargerUnit(value, 2),
     }),
     new ListTableColumn({
+        key: 'hasNote',
+        title: 'Has note',
+        type: ColumnType.boolean,
+    }),
+    new ListTableColumn({
         key: 'isAdvanceResultOfConsiderCompletedAdjustmentSessions',
         title: 'Has skipped session by adjustment',
         columnTitle: 'Skip session adjustment',
