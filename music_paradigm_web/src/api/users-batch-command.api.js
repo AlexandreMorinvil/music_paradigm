@@ -20,7 +20,7 @@ function addTag(idsList, tag) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ idsList, tag }),
 	};
-	return fetch(url.users(['batch-command','add-tag']), requestOptions).then(defaultResponseHandler);
+	return fetch(url.users(['batch-command', 'add-tag']), requestOptions).then(defaultResponseHandler);
 }
 
 function appendToNote(idsList, note) {
@@ -29,7 +29,7 @@ function appendToNote(idsList, note) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ idsList, note }),
 	};
-	return fetch(url.users(['batch-command','append-to-note']), requestOptions).then(defaultResponseHandler);
+	return fetch(url.users(['batch-command', 'append-to-note']), requestOptions).then(defaultResponseHandler);
 }
 
 function assignCurriculum(idsList, curriculum) {
@@ -38,7 +38,7 @@ function assignCurriculum(idsList, curriculum) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ idsList, curriculum }),
 	};
-	return fetch(url.users(['batch-command','assign-curriculum']), requestOptions).then(defaultResponseHandler);
+	return fetch(url.users(['batch-command', 'assign-curriculum']), requestOptions).then(defaultResponseHandler);
 }
 
 function setPassword(idsList, password) {
@@ -47,7 +47,7 @@ function setPassword(idsList, password) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ idsList, password }),
 	};
-	return fetch(url.users(['batch-command','set-password']), requestOptions).then(defaultResponseHandler);
+	return fetch(url.users(['batch-command', 'set-password']), requestOptions).then(defaultResponseHandler);
 }
 
 function setGroup(idsList, group) {
@@ -56,7 +56,7 @@ function setGroup(idsList, group) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ idsList, group }),
 	};
-	return fetch(url.users(['batch-command','set-group']), requestOptions).then(defaultResponseHandler);
+	return fetch(url.users(['batch-command', 'set-group']), requestOptions).then(defaultResponseHandler);
 }
 
 function setNote(idsList, note) {
@@ -65,7 +65,7 @@ function setNote(idsList, note) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ idsList, note }),
 	};
-	return fetch(url.users(['batch-command','set-note']), requestOptions).then(defaultResponseHandler);
+	return fetch(url.users(['batch-command', 'set-note']), requestOptions).then(defaultResponseHandler);
 }
 
 function prependToNote(idsList, note) {
@@ -74,7 +74,7 @@ function prependToNote(idsList, note) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ idsList, note }),
 	};
-	return fetch(url.users(['batch-command','prepend-to-note']), requestOptions).then(defaultResponseHandler);
+	return fetch(url.users(['batch-command', 'prepend-to-note']), requestOptions).then(defaultResponseHandler);
 }
 
 function removeTag(idsList, tag) {
@@ -83,7 +83,7 @@ function removeTag(idsList, tag) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ idsList, tag }),
 	};
-	return fetch(url.users(['batch-command','remove-tag']), requestOptions).then(defaultResponseHandler);
+	return fetch(url.users(['batch-command', 'remove-tag']), requestOptions).then(defaultResponseHandler);
 }
 
 function removeAllTags(idsList) {
@@ -92,7 +92,7 @@ function removeAllTags(idsList) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ idsList }),
 	};
-	return fetch(url.users(['batch-command','remove-tag']), requestOptions).then(defaultResponseHandler);
+	return fetch(url.users(['batch-command', 'remove-all-tags']), requestOptions).then(defaultResponseHandler);
 }
 
 function deleteUsers(idsList) {

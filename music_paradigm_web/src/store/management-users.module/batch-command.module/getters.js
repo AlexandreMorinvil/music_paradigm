@@ -11,6 +11,14 @@ export default {
 		return state.status.isExecutingBatchCommandPrependToNote;
 	},
 
+	isExecutingBatchCommandRemoveAllTags: (state) => {
+		return state.status.isExecutingBatchCommandRemoveAllTags;
+	},
+
+	isExecutingBatchCommandRemoveTag: (state) => {
+		return state.status.isExecutingBatchCommandRemoveTag;
+	},
+
 	usersBatchCommand: (state) => {
 		return state.userBatchCommand;
 	},

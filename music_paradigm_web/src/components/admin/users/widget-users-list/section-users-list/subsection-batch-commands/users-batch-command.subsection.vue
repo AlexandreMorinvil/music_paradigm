@@ -20,6 +20,8 @@ import BatchCommandTargetFieldsetComponent from './batch-command-target-fieldset
 import ButtonBatchAddTagComponent from './buttons/button-batch-add-tag.component.vue'
 import ButtonBatchAppendToNoteComponent from './buttons/button-batch-append-to-note.component.vue';
 import ButtonBatchPrependToNoteComponent from './buttons/button-batch-prepend-to-note.component.vue';
+import ButtonBatchRemoveAllTagsComponent from './buttons/button-batch-remove-all-tags.component.vue';
+import ButtonBatchRemoveTagComponent from './buttons/button-batch-remove-tag.component.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -29,6 +31,8 @@ export default {
         addTag: ButtonBatchAddTagComponent,
         appendToNote: ButtonBatchAppendToNoteComponent,
         prependToNote: ButtonBatchPrependToNoteComponent,
+        removeAllTags: ButtonBatchRemoveAllTagsComponent,
+        removeTag: ButtonBatchRemoveTagComponent,
  
         BatchCommandParametersFieldsetComponent,
         BatchCommandTargetFieldsetComponent,
@@ -41,6 +45,8 @@ export default {
                 case UsersBatchCommandsEnum.addTag: return 'addTag';
                 case UsersBatchCommandsEnum.appendToNote: return 'appendToNote';
                 case UsersBatchCommandsEnum.prependToNote: return 'prependToNote';
+                case UsersBatchCommandsEnum.removeAllTags: return 'removeAllTags';
+                case UsersBatchCommandsEnum.removeTag: return 'removeTag';
                 default: return '';
             }
         },

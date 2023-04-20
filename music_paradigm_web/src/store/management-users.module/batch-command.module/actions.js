@@ -78,6 +78,56 @@ export default {
 			});
 	},
 
+	executeUsersBatchCommandRemoveAllTags({ commit, dispatch }, { idsList }) {
+		commit('indicateExecutingBatchCommandRemoveAllTags', true);
+		return usersBatchCommandsApi
+			.removeAllTags(idsList)
+			.then(
+				(response) => {
+					const { failuresList, successesCount } = response;
+					if (failuresList.length > 0)
+						dispatch(
+							successesCount > 0 ? 'alert/setWarningAlert' : 'alert/setErrorAlert',
+							`Tags deletion failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
+							{ root: true });
+					else
+						dispatch('alert/setSuccessAlert', 'Tags deletion sucessfully', { root: true });
+					dispatch('managementUsers/refreshAll', null, { root: true });
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateExecutingBatchCommandRemoveAllTags', false);
+			});
+	},
+
+	executeUsersBatchCommandRemoveTag({ commit, dispatch }, { idsList, tag }) {
+		commit('indicateExecutingBatchCommandRemoveTag', true);
+		return usersBatchCommandsApi
+			.removeTag(idsList, tag)
+			.then(
+				(response) => {
+					const { failuresList, successesCount } = response;
+					if (failuresList.length > 0)
+						dispatch(
+							successesCount > 0 ? 'alert/setWarningAlert' : 'alert/setErrorAlert',
+							`Tags deletion failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
+							{ root: true });
+					else
+						dispatch('alert/setSuccessAlert', 'Tags deletion sucessfully', { root: true });
+					dispatch('managementUsers/refreshAll', null, { root: true });
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateExecutingBatchCommandRemoveTag', false);
+			});
+	},
+
 	setUsersBatchCommand({ commit }, userBatchCommand) {
 		commit('setUsersBatchCommand', userBatchCommand);
 	},

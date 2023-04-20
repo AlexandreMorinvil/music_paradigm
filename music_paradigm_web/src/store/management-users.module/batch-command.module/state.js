@@ -3,6 +3,8 @@ export default {
 		isExecutingBatchCommandAddTag: false,
 		isExecutingBatchCommandAppendToNote: false,
 		isExecutingBatchCommandPrependToNote: false,
+		isExecutingBatchCommandRemoveAllTags: false,
+		isExecutingBatchCommandRemoveTag: false,
 	},
 
 	userBatchCommand: null,
