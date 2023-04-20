@@ -53,6 +53,37 @@ export default {
 			});
 	},
 
+
+	executeUsersBatchCommandDeleteUsers({ commit, dispatch }, { idsList }) {
+		commit('indicateExecutingBatchCommandDeleteUsers', true);
+		return usersBatchCommandsApi
+			.deleteUsers(idsList)
+			.then(
+				(response) => {
+					const { successIdsList, failuresList } = response;
+					dispatch(
+						'managementUsers/listTableSelection/removeFromUsersListTableSelection',
+						successIdsList,
+						{ root: true }
+					);
+					if (failuresList.length > 0)
+						dispatch(
+							successIdsList.length > 0 ? 'alert/setWarningAlert' : 'alert/setErrorAlert',
+							`Users deletion failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
+							{ root: true });
+					else
+						dispatch('alert/setSuccessAlert', 'Users deleted sucessfully', { root: true });
+					dispatch('managementUsers/refreshAll', null, { root: true });
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateExecutingBatchCommandDeleteUsers', false);
+			});
+	},
+
 	executeUsersBatchCommandPrependToNote({ commit, dispatch }, { idsList, note }) {
 		commit('indicateExecutingBatchCommandPrependToNote', true);
 		return usersBatchCommandsApi

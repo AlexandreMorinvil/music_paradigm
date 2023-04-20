@@ -37,10 +37,18 @@ export class ListTableSelection {
         this.idsList.splice(indexOfRemoval, 1);
     }
 
+    removeIfIn(elementsToRemoveList) {
+        const idsToRemoveList = elementsToRemoveList.map((element) => this.transformIntoId(element));
+        this.idsList.forEach((idSelected) => {
+            if (idsToRemoveList.includes(idSelected))
+                this.remove(idSelected);
+        })
+    }
+
     removeIfNotIn(elementsAutorizedList) {
         const idsAutorizedList = elementsAutorizedList.map((element) => this.transformIntoId(element));
         this.idsList.forEach((idSelected) => {
-            if (!idsAutorizedList.includes(idSelected)) 
+            if (!idsAutorizedList.includes(idSelected))
                 this.remove(idSelected);
         })
     }

@@ -7,6 +7,10 @@ export default {
         state.status.isExecutingBatchCommandAppendToNote = isActive;
     },
 
+    indicateExecutingBatchCommandDeleteUsers(state, isActive) {
+        state.status.isExecutingBatchCommandDeleteUsers = isActive;
+    },
+
     indicateExecutingBatchCommandPrependToNote(state, isActive) {
         state.status.isExecutingBatchCommandPrependToNote = isActive;
     },

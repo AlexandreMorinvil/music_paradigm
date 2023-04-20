@@ -41,6 +41,15 @@ function assignCurriculum(idsList, curriculum) {
 	return fetch(url.users(['batch-command', 'assign-curriculum']), requestOptions).then(defaultResponseHandler);
 }
 
+function deleteUsers(idsList) {
+	const requestOptions = {
+		method: 'DELETE',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify({ idsList }),
+	};
+	return fetch(url.users(['batch-command', 'delete-users']), requestOptions).then(defaultResponseHandler);
+}
+
 function setPassword(idsList, password) {
 	const requestOptions = {
 		method: 'POST',
@@ -93,13 +102,4 @@ function removeAllTags(idsList) {
 		body: JSON.stringify({ idsList }),
 	};
 	return fetch(url.users(['batch-command', 'remove-all-tags']), requestOptions).then(defaultResponseHandler);
-}
-
-function deleteUsers(idsList) {
-	const requestOptions = {
-		method: 'DELETE',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify({ idsList }),
-	};
-	return fetch(url.users(['batch-command', 'delete-users']), requestOptions).then(defaultResponseHandler);
 }

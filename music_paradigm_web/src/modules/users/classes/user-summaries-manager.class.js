@@ -16,8 +16,6 @@ export class UserSummariesManager {
         const userSummariesList = this.userSummariesList.filter((userSummary) => {
             return userIdsList.includes(userSummary._id);
         });
-        if (userSummariesList.length !== userIdsList.length) 
-            throw Error(`Expected ${userIdsList.length} user summaries, got ${userSummariesList.length}.`);
         return userSummariesList;
     }
 

@@ -7,6 +7,10 @@ export default {
 		return state.status.isExecutingBatchCommandAppendToNote;
 	},
 
+	isExecutingBatchCommandDeleteUsers: (state) => {
+		return state.status.isExecutingBatchCommandDeleteUsers;
+	},
+
 	isExecutingBatchCommandPrependToNote: (state) => {
 		return state.status.isExecutingBatchCommandPrependToNote;
 	},

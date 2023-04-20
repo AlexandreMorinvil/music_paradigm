@@ -2,6 +2,7 @@ export default {
 	status: {
 		isExecutingBatchCommandAddTag: false,
 		isExecutingBatchCommandAppendToNote: false,
+		isExecutingBatchCommandDeleteUsers: false,
 		isExecutingBatchCommandPrependToNote: false,
 		isExecutingBatchCommandRemoveAllTags: false,
 		isExecutingBatchCommandRemoveTag: false,

@@ -19,6 +19,7 @@ import BatchCommandTargetFieldsetComponent from './batch-command-target-fieldset
 
 import ButtonBatchAddTagComponent from './buttons/button-batch-add-tag.component.vue'
 import ButtonBatchAppendToNoteComponent from './buttons/button-batch-append-to-note.component.vue';
+import ButtonBatchDeleteUsersComponent from './buttons/button-batch-delete-users.component.vue';
 import ButtonBatchPrependToNoteComponent from './buttons/button-batch-prepend-to-note.component.vue';
 import ButtonBatchRemoveAllTagsComponent from './buttons/button-batch-remove-all-tags.component.vue';
 import ButtonBatchRemoveTagComponent from './buttons/button-batch-remove-tag.component.vue';
@@ -32,6 +33,7 @@ export default {
     components: {
         addTag: ButtonBatchAddTagComponent,
         appendToNote: ButtonBatchAppendToNoteComponent,
+        deleteUsers: ButtonBatchDeleteUsersComponent,
         prependToNote: ButtonBatchPrependToNoteComponent,
         removeAllTags: ButtonBatchRemoveAllTagsComponent,
         removeTag: ButtonBatchRemoveTagComponent,
@@ -48,6 +50,7 @@ export default {
             switch (this.usersBatchCommand) {
                 case UsersBatchCommandsEnum.addTag: return 'addTag';
                 case UsersBatchCommandsEnum.appendToNote: return 'appendToNote';
+                case UsersBatchCommandsEnum.deleteUsers: return 'deleteUsers';
                 case UsersBatchCommandsEnum.prependToNote: return 'prependToNote';
                 case UsersBatchCommandsEnum.removeAllTags: return 'removeAllTags';
                 case UsersBatchCommandsEnum.removeTag: return 'removeTag';

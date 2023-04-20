@@ -4,6 +4,7 @@
 module.exports = {
     addTag,
     appendToNote,
+    deleteUsers,
     prependToNote,
     removeAllTags,
     removeTag,
@@ -51,6 +52,27 @@ async function appendToNote(userIdsList, noteToAppend) {
     return {
         failuresList,
         successesCount,
+    };
+}
+
+async function deleteUsers(userIdsList) {
+    let successIdsList = [];
+    const usersList = await UserModel
+        .find({ _id: { $in: userIdsList } })
+        .select({ username: 1, tags: 1 });
+    const failuresList = [];
+    const promisesList = usersList.map(async (user) => {
+        try {
+            await user.remove();
+            successIdsList.push(user._id);
+        } catch (error) {
+            failuresList.push([user.username, error]);
+        }
+    });
+    await Promise.all(promisesList);
+    return {
+        failuresList,
+        successIdsList,
     };
 }
 

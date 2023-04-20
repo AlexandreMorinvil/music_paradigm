@@ -10,5 +10,5 @@ export const UsersBatchCommandsEnum = {
     removeAllTags: 'Remove all tags',
     // assignCurriculum: 'Assign curriculum',
     // assignParameters: 'Assign parameters',
-    // delete: 'Delete user', HEEEERRRRREEEEE
+    deleteUsers: 'Delete users',
 }

@@ -5,6 +5,8 @@ const jwtAuthorize = require('jwt/jwt.authorization');
 const role = require('_helpers/role');
 
 // routes
+router.delete('/delete-users',  jwtAuthorize(role.admin), deleteUsers);
+
 router.post('/add-tag',         jwtAuthorize(role.admin), addTag);
 router.post('/append-to-note',  jwtAuthorize(role.admin), appendToNote);
 router.post('/prepend-to-note', jwtAuthorize(role.admin), prependToNote);
@@ -36,6 +38,18 @@ function appendToNote(req, res, next) {
 
     // Processing
     usersBatchCommandsService.appendToNote(userIdsList, note)
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
+function deleteUsers(req, res, next) {
+
+    // Parameters
+    const userIdsList = req.body.idsList ?? [];
+
+    // Processing
+    usersBatchCommandsService.deleteUsers(userIdsList)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
