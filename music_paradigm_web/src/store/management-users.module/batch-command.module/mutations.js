@@ -19,6 +19,14 @@ export default {
         state.status.isExecutingBatchCommandRemoveTag = isActive;
     },
 
+    indicateExecutingBatchCommandSetGroup(state, isActive) {
+        state.status.isExecutingBatchCommandSetGroup = isActive;
+    },
+
+    indicateExecutingBatchCommandSetNote(state, isActive) {
+        state.status.isExecutingBatchCommandSetNote = isActive;
+    },
+
     editUsersBatchCommandGroup(state, group) {
         state.group = group;
     },

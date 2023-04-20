@@ -1,7 +1,8 @@
 export const UsersBatchCommandsEnum = {
+    // createUsersFromCsv: 'Create users from csv',
     // setPassword: 'Set password',
-    // setGroup: 'Set group',
-    // setNote: 'Set note',
+    setGroup: 'Set group',
+    setNote: 'Set note',
     prependToNote: 'Add at note begining',
     appendToNote: 'Add at note end',
     addTag: 'Add tag',
@@ -9,5 +10,5 @@ export const UsersBatchCommandsEnum = {
     removeAllTags: 'Remove all tags',
     // assignCurriculum: 'Assign curriculum',
     // assignParameters: 'Assign parameters',
-    // delete: 'Delete user',
+    // delete: 'Delete user', HEEEERRRRREEEEE
 }

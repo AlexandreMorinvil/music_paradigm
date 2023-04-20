@@ -10,6 +10,8 @@ router.post('/append-to-note',  jwtAuthorize(role.admin), appendToNote);
 router.post('/prepend-to-note', jwtAuthorize(role.admin), prependToNote);
 router.post('/remove-all-tags', jwtAuthorize(role.admin), removeAllTags);
 router.post('/remove-tag',      jwtAuthorize(role.admin), removeTag);
+router.post('/set-group',       jwtAuthorize(role.admin), setGroup);
+router.post('/set-note',        jwtAuthorize(role.admin), setNote);
 
 module.exports = router;
 
@@ -72,6 +74,32 @@ function removeTag(req, res, next) {
 
     // Processing
     usersBatchCommandsService.removeTag(userIdsList, tag)
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
+function setGroup(req, res, next) {
+
+    // Parameters
+    const userIdsList = req.body.idsList ?? [];
+    const group = req.body.group;
+
+    // Processing
+    usersBatchCommandsService.setGroup(userIdsList, group)
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
+function setNote(req, res, next) {
+
+    // Parameters
+    const userIdsList = req.body.idsList ?? [];
+    const note = req.body.note;
+
+    // Processing
+    usersBatchCommandsService.setNote(userIdsList, note)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());

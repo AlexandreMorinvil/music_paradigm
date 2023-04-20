@@ -91,7 +91,7 @@ export default {
 							`Tags deletion failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
 							{ root: true });
 					else
-						dispatch('alert/setSuccessAlert', 'Tags deletion sucessfully', { root: true });
+						dispatch('alert/setSuccessAlert', 'Tags deleted sucessfully', { root: true });
 					dispatch('managementUsers/refreshAll', null, { root: true });
 				},
 				(error) => {
@@ -116,7 +116,7 @@ export default {
 							`Tags deletion failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
 							{ root: true });
 					else
-						dispatch('alert/setSuccessAlert', 'Tags deletion sucessfully', { root: true });
+						dispatch('alert/setSuccessAlert', 'Tags deleted sucessfully', { root: true });
 					dispatch('managementUsers/refreshAll', null, { root: true });
 				},
 				(error) => {
@@ -125,6 +125,56 @@ export default {
 			)
 			.finally(() => {
 				commit('indicateExecutingBatchCommandRemoveTag', false);
+			});
+	},
+
+	executeUsersBatchCommandSetGroup({ commit, dispatch }, { idsList, group }) {
+		commit('indicateExecutingBatchCommandSetGroup', true);
+		return usersBatchCommandsApi
+			.setGroup(idsList, group)
+			.then(
+				(response) => {
+					const { failuresList, successesCount } = response;
+					if (failuresList.length > 0)
+						dispatch(
+							successesCount > 0 ? 'alert/setWarningAlert' : 'alert/setErrorAlert',
+							`Group edition failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
+							{ root: true });
+					else
+						dispatch('alert/setSuccessAlert', 'Group edited sucessfully', { root: true });
+					dispatch('managementUsers/refreshAll', null, { root: true });
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateExecutingBatchCommandSetGroup', false);
+			});
+	},
+
+	executeUsersBatchCommandSetNote({ commit, dispatch }, { idsList, note }) {
+		commit('indicateExecutingBatchCommandSetNote', true);
+		return usersBatchCommandsApi
+			.setNote(idsList, note)
+			.then(
+				(response) => {
+					const { failuresList, successesCount } = response;
+					if (failuresList.length > 0)
+						dispatch(
+							successesCount > 0 ? 'alert/setWarningAlert' : 'alert/setErrorAlert',
+							`Notes edition failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
+							{ root: true });
+					else
+						dispatch('alert/setSuccessAlert', 'Notes edited sucessfully', { root: true });
+					dispatch('managementUsers/refreshAll', null, { root: true });
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateExecutingBatchCommandSetNote', false);
 			});
 	},
 

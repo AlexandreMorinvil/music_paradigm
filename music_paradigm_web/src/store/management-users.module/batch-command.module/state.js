@@ -5,6 +5,8 @@ export default {
 		isExecutingBatchCommandPrependToNote: false,
 		isExecutingBatchCommandRemoveAllTags: false,
 		isExecutingBatchCommandRemoveTag: false,
+		isExecutingBatchCommandSetGroup: false,
+		isExecutingBatchCommandSetNote: false,
 	},
 
 	userBatchCommand: null,

@@ -22,6 +22,8 @@ import ButtonBatchAppendToNoteComponent from './buttons/button-batch-append-to-n
 import ButtonBatchPrependToNoteComponent from './buttons/button-batch-prepend-to-note.component.vue';
 import ButtonBatchRemoveAllTagsComponent from './buttons/button-batch-remove-all-tags.component.vue';
 import ButtonBatchRemoveTagComponent from './buttons/button-batch-remove-tag.component.vue';
+import ButtonBatchSetGroupComponent from './buttons/button-batch-set-group.component.vue';
+import ButtonBatchSetNoteComponent from './buttons/button-batch-set-note.component.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -33,6 +35,8 @@ export default {
         prependToNote: ButtonBatchPrependToNoteComponent,
         removeAllTags: ButtonBatchRemoveAllTagsComponent,
         removeTag: ButtonBatchRemoveTagComponent,
+        setGroup: ButtonBatchSetGroupComponent,
+        setNote: ButtonBatchSetNoteComponent,
  
         BatchCommandParametersFieldsetComponent,
         BatchCommandTargetFieldsetComponent,
@@ -47,6 +51,8 @@ export default {
                 case UsersBatchCommandsEnum.prependToNote: return 'prependToNote';
                 case UsersBatchCommandsEnum.removeAllTags: return 'removeAllTags';
                 case UsersBatchCommandsEnum.removeTag: return 'removeTag';
+                case UsersBatchCommandsEnum.setGroup: return 'setGroup';
+                case UsersBatchCommandsEnum.setNote: return 'setNote';
                 default: return '';
             }
         },

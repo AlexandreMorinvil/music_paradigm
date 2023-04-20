@@ -139,6 +139,7 @@ async function setGroup(userIdsList, group) {
 }
 
 async function setNote(userIdsList, note) {
+    console.log
     let successesCount = 0;
     const usersList = await UserModel
         .find({ _id: { $in: userIdsList } })
