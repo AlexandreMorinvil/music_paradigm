@@ -32,7 +32,7 @@ export default {
 	},
 
 	userSelectionPassword: (state) => {
-		return state.selectionUser.password;
+		return state.selectionUser.exposablePassword;
 	},
 
 	userSelectionTags: (state) => {

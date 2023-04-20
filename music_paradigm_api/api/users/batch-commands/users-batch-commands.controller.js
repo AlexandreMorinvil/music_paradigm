@@ -14,6 +14,7 @@ router.post('/remove-all-tags', jwtAuthorize(role.admin), removeAllTags);
 router.post('/remove-tag',      jwtAuthorize(role.admin), removeTag);
 router.post('/set-group',       jwtAuthorize(role.admin), setGroup);
 router.post('/set-note',        jwtAuthorize(role.admin), setNote);
+router.post('/set-password',    jwtAuthorize(role.admin), setPassword);
 
 module.exports = router;
 
@@ -114,6 +115,20 @@ function setNote(req, res, next) {
 
     // Processing
     usersBatchCommandsService.setNote(userIdsList, note)
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
+function setPassword(req, res, next) {
+
+    // Parameters
+    const userIdsList = req.body.idsList ?? [];
+    const password = req.body.password;
+    const isPasswordSecret = req.body.isPasswordSecret;
+
+    // Processing
+    usersBatchCommandsService.setPassword(userIdsList, password, isPasswordSecret)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());

@@ -25,6 +25,7 @@ import ButtonBatchRemoveAllTagsComponent from './buttons/button-batch-remove-all
 import ButtonBatchRemoveTagComponent from './buttons/button-batch-remove-tag.component.vue';
 import ButtonBatchSetGroupComponent from './buttons/button-batch-set-group.component.vue';
 import ButtonBatchSetNoteComponent from './buttons/button-batch-set-note.component.vue';
+import ButtonBatchSetPasswordComponent from './buttons/button-batch-set-password.component.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -39,6 +40,7 @@ export default {
         removeTag: ButtonBatchRemoveTagComponent,
         setGroup: ButtonBatchSetGroupComponent,
         setNote: ButtonBatchSetNoteComponent,
+        setPassword: ButtonBatchSetPasswordComponent,
  
         BatchCommandParametersFieldsetComponent,
         BatchCommandTargetFieldsetComponent,
@@ -56,6 +58,7 @@ export default {
                 case UsersBatchCommandsEnum.removeTag: return 'removeTag';
                 case UsersBatchCommandsEnum.setGroup: return 'setGroup';
                 case UsersBatchCommandsEnum.setNote: return 'setNote';
+                case UsersBatchCommandsEnum.setPassword: return 'setPassword';
                 default: return '';
             }
         },

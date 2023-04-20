@@ -31,6 +31,10 @@ export default {
 		return state.status.isExecutingBatchCommandSetNote;
 	},
 
+	isExecutingBatchCommandSetPassword: (state) => {
+		return state.status.isExecutingBatchCommandSetPassword;
+	},
+
 	usersBatchCommand: (state) => {
 		return state.userBatchCommand;
 	},

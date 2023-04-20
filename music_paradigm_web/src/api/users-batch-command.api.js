@@ -50,33 +50,6 @@ function deleteUsers(idsList) {
 	return fetch(url.users(['batch-command', 'delete-users']), requestOptions).then(defaultResponseHandler);
 }
 
-function setPassword(idsList, password) {
-	const requestOptions = {
-		method: 'POST',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify({ idsList, password }),
-	};
-	return fetch(url.users(['batch-command', 'set-password']), requestOptions).then(defaultResponseHandler);
-}
-
-function setGroup(idsList, group) {
-	const requestOptions = {
-		method: 'POST',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify({ idsList, group }),
-	};
-	return fetch(url.users(['batch-command', 'set-group']), requestOptions).then(defaultResponseHandler);
-}
-
-function setNote(idsList, note) {
-	const requestOptions = {
-		method: 'POST',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify({ idsList, note }),
-	};
-	return fetch(url.users(['batch-command', 'set-note']), requestOptions).then(defaultResponseHandler);
-}
-
 function prependToNote(idsList, note) {
 	const requestOptions = {
 		method: 'POST',
@@ -102,4 +75,31 @@ function removeAllTags(idsList) {
 		body: JSON.stringify({ idsList }),
 	};
 	return fetch(url.users(['batch-command', 'remove-all-tags']), requestOptions).then(defaultResponseHandler);
+}
+
+function setGroup(idsList, group) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify({ idsList, group }),
+	};
+	return fetch(url.users(['batch-command', 'set-group']), requestOptions).then(defaultResponseHandler);
+}
+
+function setNote(idsList, note) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify({ idsList, note }),
+	};
+	return fetch(url.users(['batch-command', 'set-note']), requestOptions).then(defaultResponseHandler);
+}
+
+function setPassword(idsList, password, isPasswordSecret) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify({ idsList, password, isPasswordSecret }),
+	};
+	return fetch(url.users(['batch-command', 'set-password']), requestOptions).then(defaultResponseHandler);
 }

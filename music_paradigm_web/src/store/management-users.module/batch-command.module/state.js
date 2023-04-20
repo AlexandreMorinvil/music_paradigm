@@ -7,6 +7,7 @@ export default {
 		isExecutingBatchCommandRemoveAllTags: false,
 		isExecutingBatchCommandRemoveTag: false,
 		isExecutingBatchCommandSetGroup: false,
+		isExecutingBatchCommandSetPassword: false,
 		isExecutingBatchCommandSetNote: false,
 	},
 

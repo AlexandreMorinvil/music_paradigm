@@ -94,7 +94,7 @@ const schema = new Schema(
             transform: (doc, ret) => {
                 delete ret.password;
                 return ret;
-            }
+            },
         }
     }
 );

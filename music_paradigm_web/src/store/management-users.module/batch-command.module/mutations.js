@@ -31,6 +31,10 @@ export default {
         state.status.isExecutingBatchCommandSetNote = isActive;
     },
 
+    indicateExecutingBatchCommandSetPassword(state, isActive) {
+        state.status.isExecutingBatchCommandSetPassword = isActive;
+    },
+
     editUsersBatchCommandGroup(state, group) {
         state.group = group;
     },

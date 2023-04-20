@@ -1,22 +1,19 @@
 export class User {
     constructor(user = {}) {
-        this._id = user._id || null;
+        const parameters = JSON.parse(JSON.stringify(user ?? {}));
 
-        this.createdAt = user.createdAt ? user.createdAt : null;
-        this.curriculum = user.curriculum || null;
-        this.group = user.group || '';
-        this.isPasswordSecret = typeof user.isPasswordSecret === 'boolean' ? user.isPasswordSecret : true;
-        this.lastLogin = user.lastLogin ? user.lastLogin : null;
-        this.note = user.note || '';
-        this.password = user.exposablePassword || user.password || '';
-        this.role = user.role || 'user';
-        this.tags = JSON.parse(JSON.stringify(user.tags || []));
-        this.updatedAt = user.updatedAt ? user.updatedAt : null;
-        this.username = user.username || '';
-    }
+        this._id = parameters._id ?? null;
 
-    toObject() {
-        const { ...object } = this;
-        return object;
+        this.createdAt = parameters.createdAt ?? null;
+        this.curriculum = parameters.curriculum ?? null;
+        this.exposablePassword = parameters.exposablePassword ?? '';
+        this.group = parameters.group ?? '';
+        this.isPasswordSecret = parameters.isPasswordSecret ?? true;
+        this.lastLogin = parameters.lastLogin ?? null;
+        this.note = parameters.note ?? '';
+        this.password = parameters.password ?? null;
+        this.tags = parameters.tags ?? [];
+        this.updatedAt = parameters.updatedAt ?? null;
+        this.username = parameters.username ?? '';
     }
 }

@@ -209,6 +209,31 @@ export default {
 			});
 	},
 
+	executeUsersBatchCommandSetPassword({ commit, dispatch }, { idsList, password, isPasswordSecret }) {
+		commit('indicateExecutingBatchCommandSetPassword', true);
+		return usersBatchCommandsApi
+			.setPassword(idsList, password, isPasswordSecret)
+			.then(
+				(response) => {
+					const { failuresList, successesCount } = response;
+					if (failuresList.length > 0)
+						dispatch(
+							successesCount > 0 ? 'alert/setWarningAlert' : 'alert/setErrorAlert',
+							`Password update failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
+							{ root: true });
+					else
+						dispatch('alert/setSuccessAlert', 'Passwords updated sucessfully', { root: true });
+					dispatch('managementUsers/refreshAll', null, { root: true });
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateExecutingBatchCommandSetPassword', false);
+			});
+	},
+
 	setUsersBatchCommand({ commit }, userBatchCommand) {
 		commit('setUsersBatchCommand', userBatchCommand);
 	},

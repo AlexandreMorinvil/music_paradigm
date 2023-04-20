@@ -16,7 +16,7 @@ export default {
 	},
 
 	userEditionPassword: (state) => {
-		return state.editionUser.password;
+		return state.editionUser.exposablePassword;
 	},
 
 	userEditionTag: (state) => (index) => {
