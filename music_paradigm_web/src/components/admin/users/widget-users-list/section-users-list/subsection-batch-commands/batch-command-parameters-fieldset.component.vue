@@ -31,24 +31,32 @@ export default {
 	computed: {
 		...mapGetters('managementUsers/batchCommand', ['usersBatchCommand']),
 		involvesCurriculum() {
-			return [UsersBatchCommandsEnum.assignCurriculum, UsersBatchCommandsEnum.assignParameters]
-				.includes(this.usersBatchCommand);
+			return [
+				UsersBatchCommandsEnum.assignCurriculum, 
+				UsersBatchCommandsEnum.assignParameters,
+				UsersBatchCommandsEnum.createUsersFromCsv, 
+			].includes(this.usersBatchCommand);
 		},
 		involvesGroup() {
 			return [UsersBatchCommandsEnum.setGroup]
 				.includes(this.usersBatchCommand);
 		},
 		involvesNote() {
-			return [UsersBatchCommandsEnum.appendToNote, UsersBatchCommandsEnum.prependToNote, UsersBatchCommandsEnum.setNote]
-				.includes(this.usersBatchCommand);
+			return [
+				UsersBatchCommandsEnum.appendToNote, 
+				UsersBatchCommandsEnum.prependToNote, 
+				UsersBatchCommandsEnum.setNote,
+			].includes(this.usersBatchCommand);
 		},
 		involvesPassword() {
 			return [UsersBatchCommandsEnum.setPassword]
 				.includes(this.usersBatchCommand);
 		},
 		involvesTag() {
-			return [UsersBatchCommandsEnum.addTag, UsersBatchCommandsEnum.removeTag]
-				.includes(this.usersBatchCommand);
+			return [
+				UsersBatchCommandsEnum.addTag, 
+				UsersBatchCommandsEnum.removeTag,
+			].includes(this.usersBatchCommand);
 		},
 		mustHaveSetCurriculum() {
 			return this.usersBatchCommand === UsersBatchCommandsEnum.assignParameters;

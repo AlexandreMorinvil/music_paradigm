@@ -1,5 +1,5 @@
 export const UsersBatchCommandsEnum = {
-    // createUsersFromCsv: 'Create users from csv',
+    createUsersFromCsv: 'Create users from csv',
     setPassword: 'Set password',
     setGroup: 'Set group',
     setNote: 'Set note',

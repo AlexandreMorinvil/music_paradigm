@@ -26,6 +26,7 @@ import ButtonBatchRemoveTagComponent from './buttons/button-batch-remove-tag.com
 import ButtonBatchSetGroupComponent from './buttons/button-batch-set-group.component.vue';
 import ButtonBatchSetNoteComponent from './buttons/button-batch-set-note.component.vue';
 import ButtonBatchSetPasswordComponent from './buttons/button-batch-set-password.component.vue';
+import ButtonGetTemplateCsvComponent from './buttons/button-get-template-csv.component.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -35,6 +36,7 @@ export default {
         addTag: ButtonBatchAddTagComponent,
         appendToNote: ButtonBatchAppendToNoteComponent,
         deleteUsers: ButtonBatchDeleteUsersComponent,
+        getUsersCreationTemplateCsv: ButtonGetTemplateCsvComponent,
         prependToNote: ButtonBatchPrependToNoteComponent,
         removeAllTags: ButtonBatchRemoveAllTagsComponent,
         removeTag: ButtonBatchRemoveTagComponent,
@@ -59,6 +61,9 @@ export default {
                 case UsersBatchCommandsEnum.setGroup: return 'setGroup';
                 case UsersBatchCommandsEnum.setNote: return 'setNote';
                 case UsersBatchCommandsEnum.setPassword: return 'setPassword';
+                case UsersBatchCommandsEnum.createUsersFromCsv: 
+                    if (false) return 'createUsersFromCsv';
+                    else return 'getUsersCreationTemplateCsv';
                 default: return '';
             }
         },

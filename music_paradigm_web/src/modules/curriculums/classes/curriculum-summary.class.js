@@ -1,35 +1,28 @@
+import { CurriculumTaskParameter } from "./curriculum-task-parameter.class";
+
 export class CurriculumSummary {
-    constructor(curriculumSummary = {}) {
+    constructor(data = {}) {
         // Deep copy to avoid oject and array shallow copies.
-        const curriculumSummaryCopy = JSON.parse(JSON.stringify(curriculumSummary));
+        const dataCopy = JSON.parse(JSON.stringify(data));
 
         // Curriculum information
-        this._id = curriculumSummaryCopy._id || null;
-        this.title = curriculumSummaryCopy.title || ''; 
-        this.isSequential = curriculumSummaryCopy.isSequential || null;
-        this.logType = curriculumSummaryCopy.logType || '';
-        this.sessionsList = curriculumSummaryCopy.sessionsList || curriculumSummaryCopy.experiments || [];
+        this._id = dataCopy._id || null;
+        this.title = dataCopy.title || '';
+        this.isSequential = dataCopy.isSequential || null;
+        this.logType = dataCopy.logType || '';
+        this.sessionsList = dataCopy.sessionsList || dataCopy.experiments || [];
 
         // Timestamps
-        this.createdAt = curriculumSummaryCopy.createdAt;
-        this.updatedAt = curriculumSummaryCopy.updatedAt;
+        this.createdAt = dataCopy.createdAt;
+        this.updatedAt = dataCopy.updatedAt;
 
-        // Task parameters information
-        this.parameterOptionValuesListMap = curriculumSummaryCopy.parameterOptionValuesListMap || {};
-        this.parameterDefaultValueMap = curriculumSummaryCopy.parameterDefaultValueMap || {};
-        this.parameterAcceptsFreeTextValuesMap = curriculumSummaryCopy.parameterAcceptsFreeTextValuesMap || {};
+        // Task parameters
+        this.parametersList = [];
+        this.parametersList = this.parseParametersList(dataCopy.parametersList);
     }
 
-    get parametersList() {
-        const parametersList = [];
-        for (const parameterName in this.parameterOptionValuesListMap)
-            parametersList.push({
-                name: parameterName,
-                optionValuesList: this.parameterOptionValuesListMap[parameterName],
-                defaultValue: this.parameterDefaultValueMap[parameterName],
-                acceptsFreeTextValues: this.parameterAcceptsFreeTextValuesMap[parameterName],
-            })
-        return parametersList;
+    parseParametersList(parametersList) {
+        return parametersList.map((parameter) => new CurriculumTaskParameter(parameter));
     }
 
     getBlankParametersAssignation() {

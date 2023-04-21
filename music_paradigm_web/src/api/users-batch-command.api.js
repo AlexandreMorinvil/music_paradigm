@@ -1,11 +1,12 @@
 import { authHeader, url } from '@/_helpers';
-import { defaultResponseHandler } from './response-handler';
+import { csvFileResponseHandler, defaultResponseHandler } from './response-handler';
 
 export const usersBatchCommandsApi = {
 	addTag,
 	appendToNote,
 	assignCurriculum,
 	deleteUsers,
+	getUsersCreationTemplateCsv,
 	prependToNote,
 	removeAllTags,
 	removeTag,
@@ -48,6 +49,15 @@ function deleteUsers(idsList) {
 		body: JSON.stringify({ idsList }),
 	};
 	return fetch(url.users(['batch-command', 'delete-users']), requestOptions).then(defaultResponseHandler);
+}
+
+function getUsersCreationTemplateCsv(curriculumId) {
+	const requestOptions = {
+		method: 'GET',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+	};
+	return fetch(url.users(['batch-command', 'get-template-csv', curriculumId]), requestOptions)
+		.then(csvFileResponseHandler.bind(null, true /* mustSave */));
 }
 
 function prependToNote(idsList, note) {

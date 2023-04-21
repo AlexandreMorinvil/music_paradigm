@@ -59,12 +59,8 @@ async function getUserById(userId) {
 }
 
 async function getExistingUserGroupsList() {
-    try {
-        const groupsList = await UserModel.getExistingUserGroupsList();
-        return groupsList;
-    } catch (err) {
-        throw err;
-    }
+    const groupsList = await UserModel.getExistingUserGroupsList();
+    return groupsList;
 }
 
 async function updateUserProfile(userId, userUpdated) {

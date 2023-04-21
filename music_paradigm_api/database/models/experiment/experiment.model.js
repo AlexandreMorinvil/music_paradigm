@@ -52,10 +52,10 @@ schema.methods.updateDescription = function (description) {
     return this.save();
 };
 
-schema.methods.getParameters = function () {
+schema.methods.getParametersList = function () {
     const allVariables = this.variables.toObject();
-    const parameters = allVariables.filter(variable => variable.type === 'parameter');
-    return parameters;
+    const parametersList = allVariables.filter(variable => variable.type === 'parameter');
+    return parametersList;
 }
 
 // Create the model

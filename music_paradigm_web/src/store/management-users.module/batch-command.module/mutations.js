@@ -35,6 +35,10 @@ export default {
         state.status.isExecutingBatchCommandSetPassword = isActive;
     },
 
+    indicateGettingUsersCreationTemplateCsv(state, isActive) {
+        state.status.isGettingUsersCreationTemplateCsv = isActive;
+    },
+
     editUsersBatchCommandGroup(state, group) {
         state.group = group;
     },

@@ -9,6 +9,7 @@ export default {
 		isExecutingBatchCommandSetGroup: false,
 		isExecutingBatchCommandSetPassword: false,
 		isExecutingBatchCommandSetNote: false,
+		isGettingUsersCreationTemplateCsv: false,
 	},
 
 	userBatchCommand: null,

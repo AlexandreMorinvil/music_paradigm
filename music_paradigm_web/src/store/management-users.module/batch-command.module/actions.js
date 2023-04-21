@@ -234,6 +234,21 @@ export default {
 			});
 	},
 
+	getUsersCreationTemplateCsv({ commit, dispatch }, { curriculum }) {
+		commit('indicateGettingUsersCreationTemplateCsv', true);
+		return usersBatchCommandsApi
+			.getUsersCreationTemplateCsv(curriculum)
+			.then(
+				() => {},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateGettingUsersCreationTemplateCsv', false);
+			});
+	},
+
 	setUsersBatchCommand({ commit }, userBatchCommand) {
 		commit('setUsersBatchCommand', userBatchCommand);
 	},

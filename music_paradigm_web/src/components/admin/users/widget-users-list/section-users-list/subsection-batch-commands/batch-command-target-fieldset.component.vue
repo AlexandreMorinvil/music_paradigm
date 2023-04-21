@@ -1,7 +1,9 @@
 <template>
 	<TemplateFieldsetComponent>
-		<TemplateFieldLabelComponent text="Selected Users" />
-		<TemplateFieldOutputComponent :value="usernameListingText" :complementaryValue="selectedUsersCountText" />
+		<template v-if="involvesListTableSelction">
+			<TemplateFieldLabelComponent text="Selected Users" />
+			<TemplateFieldOutputComponent :value="usernameListingText" :complementaryValue="selectedUsersCountText" />
+		</template>
 
 		<TemplateFieldLabelComponent text="Action" />
 		<TemplateFieldSelectComponent :value="usersBatchCommand" v-on:edit="setUsersBatchCommand" isEmptyAccepted
@@ -32,6 +34,11 @@ export default {
 			'usersListTableSelectionCount',
 			'usersListTableSelectionUsernamesList',
 		]),
+
+		...mapGetters('managementUsers/batchCommand', ['usersBatchCommand']),
+		involvesListTableSelction() {
+			return ![UsersBatchCommandsEnum.createUsersFromCsv].includes(this.usersBatchCommand);
+		},
 		possibleCommandsList() {
 			return Object.values(UsersBatchCommandsEnum);
 		},

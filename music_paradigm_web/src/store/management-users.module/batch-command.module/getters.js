@@ -35,6 +35,10 @@ export default {
 		return state.status.isExecutingBatchCommandSetPassword;
 	},
 
+	isGettingUsersCreationTemplateCsv: (state) => {
+		return state.status.isGettingUsersCreationTemplateCsv;
+	},
+
 	usersBatchCommand: (state) => {
 		return state.userBatchCommand;
 	},

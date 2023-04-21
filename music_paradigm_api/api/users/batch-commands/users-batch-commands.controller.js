@@ -5,16 +5,19 @@ const jwtAuthorize = require('jwt/jwt.authorization');
 const role = require('_helpers/role');
 
 // routes
-router.delete('/delete-users',  jwtAuthorize(role.admin), deleteUsers);
+router.delete('/delete-users', jwtAuthorize(role.admin), deleteUsers);
 
-router.post('/add-tag',         jwtAuthorize(role.admin), addTag);
-router.post('/append-to-note',  jwtAuthorize(role.admin), appendToNote);
+router.get('/get-template-csv', jwtAuthorize(role.admin), getUsersCreationTemplateCsv)
+router.get('/get-template-csv/:curriculumId', jwtAuthorize(role.admin), getUsersCreationTemplateCsv)
+
+router.post('/add-tag', jwtAuthorize(role.admin), addTag);
+router.post('/append-to-note', jwtAuthorize(role.admin), appendToNote);
 router.post('/prepend-to-note', jwtAuthorize(role.admin), prependToNote);
 router.post('/remove-all-tags', jwtAuthorize(role.admin), removeAllTags);
-router.post('/remove-tag',      jwtAuthorize(role.admin), removeTag);
-router.post('/set-group',       jwtAuthorize(role.admin), setGroup);
-router.post('/set-note',        jwtAuthorize(role.admin), setNote);
-router.post('/set-password',    jwtAuthorize(role.admin), setPassword);
+router.post('/remove-tag', jwtAuthorize(role.admin), removeTag);
+router.post('/set-group', jwtAuthorize(role.admin), setGroup);
+router.post('/set-note', jwtAuthorize(role.admin), setNote);
+router.post('/set-password', jwtAuthorize(role.admin), setPassword);
 
 module.exports = router;
 
@@ -53,6 +56,23 @@ function deleteUsers(req, res, next) {
     usersBatchCommandsService.deleteUsers(userIdsList)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
+function getUsersCreationTemplateCsv(req, res, next) {
+
+    // Parameters
+    const curriculumId = req.params.curriculumId ?? null;
+
+    // Processing
+    usersBatchCommandsService.getUsersCreationTemplateCsv(curriculumId)
+        .then((csv) => {
+            res.setHeader('Content-disposition', 'attachment; filename=users-creation-template.csv');
+            res.set('Access-Control-Expose-Headers', 'Content-Disposition');
+            res.set('Content-Type', 'text/csv');
+            res.status(200).send(csv);
+        })
+        .catch(err => next(err))
         .finally(() => next());
 }
 

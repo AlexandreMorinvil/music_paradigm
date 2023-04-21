@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const CurriculumSummary = require('modules/curriculum/class/curriculum-summary.class');
+const CurriculumTaskParameter = require('modules/curriculum/class/curriculum-task-parameter.class');
 const schema = require('./curriculum.middleware');
 
 schema.set('toJSON', { virtuals: true });
@@ -23,10 +24,12 @@ schema.statics.getCurriculumSummariesList = async function () {
 
     // Fill the list of curriculum summaries asynchronously.
     await Promise.all(curriculumDocumentsList.map(async (curriculumDocument) => {
-        curriculumSummariesList.push(new CurriculumSummary({
-            ...(await curriculumDocument.getParameters()),
-            ...curriculumDocument.toObject(),
-        }));
+        curriculumSummariesList.push(
+            new CurriculumSummary({
+                parametersList: await curriculumDocument.getParametersList(),
+                ...curriculumDocument.toObject(),
+            })
+        );
     }));
 
     // Returns alist of all the curriculum objects
@@ -66,31 +69,12 @@ schema.methods.update = async function (updatedCurriculum) {
  * be assigned a value inputed as a free text value.
  * 
  * @return {Object} Informations on the parameters involved in the curriculum.
- * format :
- * {
- *      parameterOptionValuesListMap: {
- *          VARIABLE_NAME: [ ... options ... ],
- *          VARIABLE_NAME: [ ... options ... ],
- *          ...
- *      },
- *      parameterDefaultValueMap: {
- *          VARIABLE_NAME: DEFAULT_VALUE,
- *          VARIABLE_NAME: DEFAULT_VALUE,
- *          ...
- *      }
- *      parameterAcceptsFreeTextValuesMap: {
- *          VARIABLE_NAME: Boolean,
- *          VARIABLE_NAME: Boolean,
- *          ... 
- *      }
- * }
  */
-schema.methods.getParameters = async function () {
+schema.methods.getParametersList = async function () {
 
     // Initialize the return values.
     const acceptsFreeTextValuesMap = {};
-    const completeOptionValuesListMap = {};
-    const defaultAssignedValueMap = {};
+    const optionValuesListMap = {};
 
     // Retreive the list of all the "variables" attributes from all the experiments of the curriculum.
     const curriculum = await model
@@ -101,40 +85,42 @@ schema.methods.getParameters = async function () {
         .populate(
             { path: 'experiments.experimentReference', select: 'variables' }
         )
-    const referencExperimentsList = curriculum.experiments;
-    const variableAttributeInExperimentsList = referencExperimentsList.map(
-        experiment => experiment.experimentReference
+    const curriculumSessionsList = curriculum.experiments;
+    const variableAttributeInTasksList = curriculumSessionsList.map(
+        curriculumSession => curriculumSession.experimentReference
     );
 
     // Parse the variables of type "parameter" among the variables in all the experiments.
-    const parametersFullList = [];
-    variableAttributeInExperimentsList.forEach((experiment) => parametersFullList.push(experiment.getParameters()))
-    parametersFullList.forEach(variablesArray => {
-        variablesArray.forEach(variable => {
-            const { assignedValue, acceptsFreeTextValue, name, optionValues } = variable
+    const listOfparametersListFromTasks = [];
+    variableAttributeInTasksList.forEach((task) => listOfparametersListFromTasks.push(task.getParametersList()));
 
-            // Assign the default values a the first assigned value found for a given variable name in all the 
-            // experiments of the curriculum.
-            if (!defaultAssignedValueMap[name]) defaultAssignedValueMap[name] = assignedValue;
+    listOfparametersListFromTasks.forEach(parametersListFromTasks => {
+        parametersListFromTasks.forEach(parameterVariable => {
+            const { assignedValue, acceptsFreeTextValue, name, optionValues } = parameterVariable
 
             // List all the option values taking into account the explicitly state option values of the variable and
             // including the assign value (which isn't necessarily included in the option vlaues).
-            if (!completeOptionValuesListMap[name]) completeOptionValuesListMap[name] = [];
-            completeOptionValuesListMap[name] = completeOptionValuesListMap[name].concat(optionValues);
-            completeOptionValuesListMap[name] = completeOptionValuesListMap[name].concat(assignedValue);
-            completeOptionValuesListMap[name] = [...new Set(completeOptionValuesListMap[name])];
+            if (!optionValuesListMap[name]) optionValuesListMap[name] = [];
+            optionValuesListMap[name] = optionValuesListMap[name].concat(optionValues);
+            optionValuesListMap[name] = optionValuesListMap[name].concat(assignedValue);
+            optionValuesListMap[name] = [...new Set(optionValuesListMap[name])];
 
             // Indicate whether or not the variable accepts free text value assignation.
-            if (!acceptsFreeTextValuesMap[name]) acceptsFreeTextValuesMap[name] = acceptsFreeTextValue;
+            acceptsFreeTextValuesMap[name] = Boolean(acceptsFreeTextValuesMap[name] || acceptsFreeTextValue);
         });
     });
 
-    // Return informations of the parameters involved in the curriculum.
-    return {
-        parameterOptionValuesListMap: completeOptionValuesListMap,
-        parameterDefaultValueMap: defaultAssignedValueMap,
-        parameterAcceptsFreeTextValuesMap: acceptsFreeTextValuesMap,
-    };
+    // Wrap the values in TaskParameterValue objects
+    const parametersList = [];
+    for (const parameterName in optionValuesListMap)
+        parametersList.push(new CurriculumTaskParameter({
+            name: parameterName,
+            optionValuesList: optionValuesListMap[parameterName],
+            acceptsFreeTextValues: acceptsFreeTextValuesMap[parameterName],
+        }));
+
+    // Return the parameters list
+    return parametersList;
 }
 
 // Creating the model

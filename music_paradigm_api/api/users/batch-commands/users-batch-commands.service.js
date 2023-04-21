@@ -1,10 +1,13 @@
-﻿const UserModel = require('database/db').User;
+﻿const CurriculumModel = require('database/db').Curriculum;
+const UserModel = require('database/db').User;
+const { makeUsersCreationTemplateCsv } = require('modules/users/users-creation-csv');
 
 // Exports
 module.exports = {
     addTag,
     appendToNote,
     deleteUsers,
+    getUsersCreationTemplateCsv,
     prependToNote,
     removeAllTags,
     removeTag,
@@ -74,6 +77,11 @@ async function deleteUsers(userIdsList) {
         failuresList,
         successIdsList,
     };
+}
+
+async function getUsersCreationTemplateCsv(curriculumId) {
+    const curriculum = await CurriculumModel.findById(curriculumId);
+    return await makeUsersCreationTemplateCsv(curriculum);
 }
 
 async function prependToNote(userIdsList, noteToPrepend) {
@@ -161,7 +169,6 @@ async function setGroup(userIdsList, group) {
 }
 
 async function setNote(userIdsList, note) {
-    console.log
     let successesCount = 0;
     const usersList = await UserModel
         .find({ _id: { $in: userIdsList } })
