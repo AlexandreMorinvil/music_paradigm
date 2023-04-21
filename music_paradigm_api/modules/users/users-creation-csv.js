@@ -8,21 +8,21 @@ module.exports = {
 
 async function makeUsersCreationTemplateCsv(curriculumDocument) {
 
+    // Generate explaination row.
     const explainationRow = {
-        USERNAME: "my_username",
+        USERNAME: "(This row must be erased)",
         PASSWORD: "my_password",
         IS_PASSWORD_SECRET: "true or false",
         GROUP: "my_group",
-        NOTE: "This user was generated from a csv file. ",
-        TAG_1: "first_tag",
-        TAG_2: "second_tag",
-        CURRICULUM: "",
+        NOTE: "Note to assign to the user. ",
+        TAG_1: "a_first_tag",
+        TAG_2: "a_second_tag",
+        CURRICULUM: "curriculum_title",
     }
 
+    let parametersList = [];
     if (curriculumDocument) {
-        Object.assign(explainationRow, { CURRICULUM: curriculumDocument.title });
-
-        const parametersList = await curriculumDocument.getParametersList();
+        parametersList = await curriculumDocument.getParametersList();
         parametersList.forEach((curriculumTaskParameter) =>
             Object.assign(
                 explainationRow,
@@ -31,7 +31,27 @@ async function makeUsersCreationTemplateCsv(curriculumDocument) {
         );
     }
 
-    const exampleRowsList = [explainationRow];
+    // Generate examples
+    const exampleUsersList = [];
+    for (let index = 0; index < 10; index++) {
+        const exampleRow = {
+            USERNAME: "example_user_" + (index + 1),
+            PASSWORD: Math.random().toString(36).slice(2, 10),
+            IS_PASSWORD_SECRET: Math.random() < 0.5,
+            CURRICULUM: curriculumDocument?.title ?? "",
+        };
+
+        parametersList.forEach((curriculumTaskParameter) =>
+            Object.assign(
+                exampleRow, 
+                curriculumTaskParameter.getRandomValuePick(),
+            )
+        );
+
+        exampleUsersList.push(exampleRow);
+    }
+
+    const exampleRowsList = [explainationRow, ...exampleUsersList];
 
     // Generate csv file
     const parser = new Parser({ header: true });
