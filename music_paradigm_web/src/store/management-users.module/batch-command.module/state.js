@@ -21,5 +21,6 @@ export default {
 	note: '',
 	tag: '',
 
-	csvFile: null, // File
+	csvFileContent: null,
+	csvFileName: null,
 };

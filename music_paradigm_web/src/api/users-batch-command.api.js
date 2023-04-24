@@ -43,11 +43,11 @@ function assignCurriculum(idsList, curriculum) {
 	return fetch(url.users(['batch-command', 'assign-curriculum']), requestOptions).then(defaultResponseHandler);
 }
 
-function createUsersFromCsv(csvFile) {
+function createUsersFromCsv(csvFileContent) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify({ csvFile }),
+		body: JSON.stringify({ csvFileContent }),
 	};
 	return fetch(url.users(['batch-command', 'create-users-from-csv']), requestOptions).then(defaultResponseHandler)
 		.then(csvFileResponseHandler.bind(null, true /* mustSave */));

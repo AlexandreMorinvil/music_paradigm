@@ -3,10 +3,10 @@ import { usersBatchCommandsApi } from "@/api/users-batch-command.api";
 const formatFailuresListMessage = (failuresList) => failuresList.map(fail => `${fail[0]}: ${fail[1]}`).join(';\n')
 
 export default {
-	createUsersFromCsv({ commit, dispatch }, { csvFile }) {
+	createUsersFromCsv({ commit, dispatch }, { csvFileContent }) {
 		commit('indicateCreatingUsersFromCsv', true);
 		return usersBatchCommandsApi
-			.createUsersFromCsv(csvFile)
+			.createUsersFromCsv(csvFileContent)
 			.then(
 				() => {
 					dispatch('alert/setInformationAlert', 'Please review the users creation repport.', { root: true });

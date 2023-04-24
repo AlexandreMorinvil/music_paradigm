@@ -73,7 +73,15 @@ export default {
 
     setUsersBatchCommandCsvFile(state, csvFile) {
         const file = (csvFile instanceof FileList) ? csvFile[0] : csvFile;
-        state.csvFile = file;
+        state.csvFileContent = null, state.csvFileName = null;
+        if (!file) return;
+        
+        let fileReader = new FileReader();
+        fileReader.onload = (event) => {
+            state.csvFileContent = event.target.result;
+            state.csvFileName = file.name;
+        };
+        fileReader.readAsText(file);
     },
 
 	setUsersBatchCommandCurriculum(state, curriculum) {

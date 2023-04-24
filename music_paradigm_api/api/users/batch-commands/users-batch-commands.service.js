@@ -1,6 +1,6 @@
 ﻿const CurriculumModel = require('database/db').Curriculum;
 const UserModel = require('database/db').User;
-const { makeUsersCreationTemplateCsv } = require('modules/users/users-creation-csv');
+const { createUsersFrom, makeUsersCreationTemplateCsv } = require('modules/users/users-creation-csv');
 
 // Exports
 module.exports = {
@@ -59,8 +59,9 @@ async function appendToNote(userIdsList, noteToAppend) {
     };
 }
 
-async function createUsersFromCsv(csvFile) {
-    return ``;
+async function createUsersFromCsv(csvFileContent) {
+    const usersCreationReportText = await createUsersFrom(csvFileContent);
+    return usersCreationReportText;
 }
 
 async function deleteUsers(userIdsList) {

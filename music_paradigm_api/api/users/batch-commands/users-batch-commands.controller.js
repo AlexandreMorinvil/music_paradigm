@@ -51,12 +51,12 @@ function appendToNote(req, res, next) {
 function createUsersFromCsv(req, res, next) {
 
     // Parameters
-    const csvFile = req.body.csvFile;
+    const csvFileContent = req.body.csvFileContent;
 
     // Processing
-    usersBatchCommandsService.createUsersFromCsv(csvFile)
+    usersBatchCommandsService.createUsersFromCsv(csvFileContent)
         .then((usersCreationReportTxt) => {
-            res.setHeader('Content-disposition', 'attachment; filename=users-creation-repport.txt');
+            res.setHeader('Content-disposition', 'attachment; filename=users-creation-report.txt');
             res.set('Access-Control-Expose-Headers', 'Content-Disposition');
             res.set('Content-Type', 'text/plain');
             res.status(200).send(usersCreationReportTxt);

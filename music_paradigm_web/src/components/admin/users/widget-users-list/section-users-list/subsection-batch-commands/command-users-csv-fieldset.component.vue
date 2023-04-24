@@ -1,7 +1,7 @@
 <template>
 	<TemplateFieldsetComponent>
 		<TemplateFieldLabelComponent for="batch-command-group" text="Csv file with users list" />
-		<TemplateFieldInputFileComponent v-bind:file="usersBatchCommandCsvFile"
+		<TemplateFieldInputFileComponent v-bind:fileName="usersBatchCommandCsvFileName"
 			v-on:edit="setUsersBatchCommandCsvFile" :inputAttributes="{
 				name: 'users-creation-csv',
 				accept: '.csv',
@@ -24,7 +24,7 @@ export default {
 		TemplateFieldsetComponent,
 	},
 	computed: {
-		...mapGetters('managementUsers/batchCommand', ['usersBatchCommandCsvFile']),
+		...mapGetters('managementUsers/batchCommand', ['usersBatchCommandCsvFileName']),
 	},
 	methods: {
 		...mapActions('managementUsers/batchCommand', ['setUsersBatchCommandCsvFile']),

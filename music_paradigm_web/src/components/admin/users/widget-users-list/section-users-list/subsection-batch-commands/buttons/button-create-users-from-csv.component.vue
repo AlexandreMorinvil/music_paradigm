@@ -19,7 +19,7 @@ export default {
         ...mapGetters('managementUsers/batchCommand', [
             'hasUsersCreationCsvFile',
             'isCreatingUsersFromCsv',
-            'usersBatchCommandCsvFile',
+            'usersBatchCommandCsvFileContent',
         ]),
         isLoading() {
             return this.isCreatingUsersFromCsv;
@@ -38,8 +38,9 @@ export default {
         ...mapActions('managementUsers/batchCommand', ['createUsersFromCsv']),
         handleButtonPress() {
             if (!this.isButtonActive) return;
+            console.log('here');
             this.createUsersFromCsv({
-                csvFile: this.usersBatchCommandCsvFile,
+                csvFileContent: this.usersBatchCommandCsvFileContent,
             });
         },
     }

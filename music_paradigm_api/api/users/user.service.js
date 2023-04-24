@@ -18,7 +18,7 @@ module.exports = {
 
 async function createUser(user) {
     try {
-        const userCreated = await UserModel.create(user);
+        const userCreated = await UserModel.createUser(user);
         return {
             user: userCreated,
         };

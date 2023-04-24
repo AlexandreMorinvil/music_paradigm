@@ -2,7 +2,7 @@
 	<div class="template-field-input-area">
 		<input class="input-spacing" :class="{
 			'invalid-input': isInvalid,
-		}" type="text" readonly value="fileName" v-on:click="handleClick" :value="fileName" />
+		}" type="text" readonly v-on:click="handleClick" :value="name" />
 		<input type='file' v-on:input="(event) => edit(event)" v-bind="inputAttributes" ref="fileInput" />
 	</div>
 </template>
@@ -13,8 +13,13 @@ import '@/styles/field-template.css';
 export default {
 	emits: ['edit'],
 	props: {
+		// The file or the filename can be provided. (They should not be used both at the same time)
 		file: {
 			type: File,
+			default: null,
+		},
+		fileName: {
+			type: String,
 			default: null,
 		},
 		inputAttributes: {
@@ -39,14 +44,13 @@ export default {
 		isInvalid() {
 			return this.hasNoValue && !this.isNullValid;
 		},
-		fileName() {
-			return this.file?.name ?? 'No file chosen';
+		name() {
+			return this.file?.name ?? this.fileName ?? 'No file chosen';
 		},
 	},
 	methods: {
 		edit(event) {
 			const filesList = event.target.files;
-			console.log(filesList[0]);
 			this.$emit('edit', filesList);
 		},
 		handleClick() {

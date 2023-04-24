@@ -19,7 +19,7 @@ schema.statics.authenticate = async function (username, password) {
     return user.toObject();
 };
 
-schema.statics.create = async function (user) {
+schema.statics.createUser = async function (user) {
     const { _id, id, ...userToCreate } = user;
     userToCreate.createdAt = Date.now();
     const userCreated = new model(userToCreate);
