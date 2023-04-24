@@ -3,6 +3,24 @@ import { usersBatchCommandsApi } from "@/api/users-batch-command.api";
 const formatFailuresListMessage = (failuresList) => failuresList.map(fail => `${fail[0]}: ${fail[1]}`).join(';\n')
 
 export default {
+	createUsersFromCsv({ commit, dispatch }, { csvFile }) {
+		commit('indicateCreatingUsersFromCsv', true);
+		return usersBatchCommandsApi
+			.createUsersFromCsv(csvFile)
+			.then(
+				() => {
+					dispatch('alert/setInformationAlert', 'Please review the users creation repport.', { root: true });
+					dispatch('managementUsers/refreshAll', null, { root: true });
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', error.message, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateCreatingUsersFromCsv', false);
+			});
+	},
+
 	executeUsersBatchCommandAddTag({ commit, dispatch }, { idsList, tag }) {
 		commit('indicateExecutingBatchCommandAddTag', true);
 		return usersBatchCommandsApi
@@ -239,7 +257,7 @@ export default {
 		return usersBatchCommandsApi
 			.getUsersCreationTemplateCsv(curriculum)
 			.then(
-				() => {},
+				() => { },
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
 				},
@@ -251,6 +269,10 @@ export default {
 
 	setUsersBatchCommand({ commit }, userBatchCommand) {
 		commit('setUsersBatchCommand', userBatchCommand);
+	},
+
+	setUsersBatchCommandCsvFile({ commit }, csvFile) {
+		commit('setUsersBatchCommandCsvFile', csvFile);
 	},
 
 	setUsersBatchCommandCurriculum({ commit }, curriculum) {

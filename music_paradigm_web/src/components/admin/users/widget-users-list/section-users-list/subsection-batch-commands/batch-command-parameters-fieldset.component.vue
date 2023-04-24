@@ -1,5 +1,6 @@
 <template>
 	<div class="batch-command-parameters-area">
+		<CommandUsersCsvFieldsetComponent v-if="involvesCsvFile" />
 		<CommandPasswordFieldsetComponent v-if="involvesPassword" />
 		<CommandGroupFieldsetComponent v-if="involvesGroup" />
 		<CommandNoteFieldsetComponent v-if="involvesNote" />
@@ -19,6 +20,8 @@ import CommandGroupFieldsetComponent from './command-group-fieldset.component.vu
 import CommandNoteFieldsetComponent from './command-note-fieldset.component.vue';
 import CommandPasswordFieldsetComponent from './command-password-fieldset.component.vue';
 import CommandTagFieldsetComponent from './command-tag-fieldset.component.vue';
+import CommandUsersCsvFieldsetComponent from './command-users-csv-fieldset.component.vue';
+
 
 export default {
 	components: {
@@ -27,15 +30,24 @@ export default {
 		CommandNoteFieldsetComponent,
 		CommandPasswordFieldsetComponent,
 		CommandTagFieldsetComponent,
+		CommandUsersCsvFieldsetComponent,
 	},
 	computed: {
-		...mapGetters('managementUsers/batchCommand', ['usersBatchCommand']),
-		involvesCurriculum() {
+		...mapGetters('managementUsers/batchCommand', ['hasUsersCreationCsvFile', 'usersBatchCommand']),
+		involvesCsvFile() {
 			return [
-				UsersBatchCommandsEnum.assignCurriculum, 
-				UsersBatchCommandsEnum.assignParameters,
-				UsersBatchCommandsEnum.createUsersFromCsv, 
+				UsersBatchCommandsEnum.createUsersFromCsv,
 			].includes(this.usersBatchCommand);
+		},
+		involvesCurriculum() {
+			const isInActionThatAlwaysInvolvesIt = [
+				UsersBatchCommandsEnum.assignCurriculum,
+				UsersBatchCommandsEnum.assignParameters,
+			].includes(this.usersBatchCommand);
+			const isRequiredInUsersCreationCsvAction =
+				this.usersBatchCommand === UsersBatchCommandsEnum.createUsersFromCsv &&
+				!this.hasUsersCreationCsvFile;
+			return isInActionThatAlwaysInvolvesIt || isRequiredInUsersCreationCsvAction;
 		},
 		involvesGroup() {
 			return [UsersBatchCommandsEnum.setGroup]
@@ -43,8 +55,8 @@ export default {
 		},
 		involvesNote() {
 			return [
-				UsersBatchCommandsEnum.appendToNote, 
-				UsersBatchCommandsEnum.prependToNote, 
+				UsersBatchCommandsEnum.appendToNote,
+				UsersBatchCommandsEnum.prependToNote,
 				UsersBatchCommandsEnum.setNote,
 			].includes(this.usersBatchCommand);
 		},
@@ -54,7 +66,7 @@ export default {
 		},
 		involvesTag() {
 			return [
-				UsersBatchCommandsEnum.addTag, 
+				UsersBatchCommandsEnum.addTag,
 				UsersBatchCommandsEnum.removeTag,
 			].includes(this.usersBatchCommand);
 		},

@@ -6,6 +6,7 @@ const { makeUsersCreationTemplateCsv } = require('modules/users/users-creation-c
 module.exports = {
     addTag,
     appendToNote,
+    createUsersFromCsv,
     deleteUsers,
     getUsersCreationTemplateCsv,
     prependToNote,
@@ -56,6 +57,10 @@ async function appendToNote(userIdsList, noteToAppend) {
         failuresList,
         successesCount,
     };
+}
+
+async function createUsersFromCsv(csvFile) {
+    return ``;
 }
 
 async function deleteUsers(userIdsList) {

@@ -19,6 +19,7 @@ import BatchCommandTargetFieldsetComponent from './batch-command-target-fieldset
 
 import ButtonBatchAddTagComponent from './buttons/button-batch-add-tag.component.vue'
 import ButtonBatchAppendToNoteComponent from './buttons/button-batch-append-to-note.component.vue';
+import ButtonCreateUsersFromCsvComponent from './buttons/button-create-users-from-csv.component.vue';
 import ButtonBatchDeleteUsersComponent from './buttons/button-batch-delete-users.component.vue';
 import ButtonBatchPrependToNoteComponent from './buttons/button-batch-prepend-to-note.component.vue';
 import ButtonBatchRemoveAllTagsComponent from './buttons/button-batch-remove-all-tags.component.vue';
@@ -35,6 +36,7 @@ export default {
     components: {
         addTag: ButtonBatchAddTagComponent,
         appendToNote: ButtonBatchAppendToNoteComponent,
+        createUsersFromCsv: ButtonCreateUsersFromCsvComponent,
         deleteUsers: ButtonBatchDeleteUsersComponent,
         getUsersCreationTemplateCsv: ButtonGetTemplateCsvComponent,
         prependToNote: ButtonBatchPrependToNoteComponent,
@@ -49,7 +51,7 @@ export default {
         WidgetSubsectionContainer,
     },
     computed: {
-        ...mapGetters('managementUsers/batchCommand', ['usersBatchCommand']),
+        ...mapGetters('managementUsers/batchCommand', ['hasUsersCreationCsvFile', 'usersBatchCommand']),
         buttonComponent() {
             switch (this.usersBatchCommand) {
                 case UsersBatchCommandsEnum.addTag: return 'addTag';
@@ -62,7 +64,7 @@ export default {
                 case UsersBatchCommandsEnum.setNote: return 'setNote';
                 case UsersBatchCommandsEnum.setPassword: return 'setPassword';
                 case UsersBatchCommandsEnum.createUsersFromCsv: 
-                    if (false) return 'createUsersFromCsv';
+                    if (this.hasUsersCreationCsvFile) return 'createUsersFromCsv';
                     else return 'getUsersCreationTemplateCsv';
                 default: return '';
             }

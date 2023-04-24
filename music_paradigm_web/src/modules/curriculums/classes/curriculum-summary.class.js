@@ -6,11 +6,11 @@ export class CurriculumSummary {
         const dataCopy = JSON.parse(JSON.stringify(data));
 
         // Curriculum information
-        this._id = dataCopy._id || null;
-        this.title = dataCopy.title || '';
-        this.isSequential = dataCopy.isSequential || null;
-        this.logType = dataCopy.logType || '';
-        this.sessionsList = dataCopy.sessionsList || dataCopy.experiments || [];
+        this._id = dataCopy._id ?? null;
+        this.title = dataCopy.title ?? '';
+        this.isSequential = dataCopy.isSequential ?? null;
+        this.logType = dataCopy.logType ?? null;
+        this.sessionsList = dataCopy.sessionsList ?? dataCopy.experiments ?? [];
 
         // Timestamps
         this.createdAt = dataCopy.createdAt;

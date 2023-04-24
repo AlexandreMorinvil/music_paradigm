@@ -1,4 +1,12 @@
 export default {
+	hasUsersCreationCsvFile: (state) => {
+		return Boolean(state.csvFile);
+	},
+
+	isCreatingUsersFromCsv: (state) => {
+		return state.status.isCreatingUsersFromCsv;
+	},
+
 	isExecutingBatchCommandAddTag: (state) => {
 		return state.status.isExecutingBatchCommandAddTag;
 	},
@@ -41,6 +49,10 @@ export default {
 
 	usersBatchCommand: (state) => {
 		return state.userBatchCommand;
+	},
+
+	usersBatchCommandCsvFile: (state) => {
+		return state.csvFile;
 	},
 
 	usersBatchCommandCurriculum: (state) => {

@@ -1,4 +1,8 @@
 export default {
+    indicateCreatingUsersFromCsv(state, isActive) {
+        state.status.isCreatingUsersFromCsv = isActive;
+    },
+
     indicateExecutingBatchCommandAddTag(state, isActive) {
         state.status.isExecutingBatchCommandAddTag = isActive;
     },
@@ -65,6 +69,11 @@ export default {
 
     setUsersBatchCommand(state, userBatchCommand) {
         state.userBatchCommand = userBatchCommand;
+    },
+
+    setUsersBatchCommandCsvFile(state, csvFile) {
+        const file = (csvFile instanceof FileList) ? csvFile[0] : csvFile;
+        state.csvFile = file;
     },
 
 	setUsersBatchCommandCurriculum(state, curriculum) {

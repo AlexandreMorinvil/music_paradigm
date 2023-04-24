@@ -1,5 +1,6 @@
 export default {
 	status: {
+		isCreatingUsersFromCsv: false,
 		isExecutingBatchCommandAddTag: false,
 		isExecutingBatchCommandAppendToNote: false,
 		isExecutingBatchCommandDeleteUsers: false,
@@ -19,4 +20,6 @@ export default {
 	group: '',
 	note: '',
 	tag: '',
+
+	csvFile: null, // File
 };

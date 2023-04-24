@@ -51,9 +51,8 @@ async function makeUsersCreationTemplateCsv(curriculumDocument) {
         exampleUsersList.push(exampleRow);
     }
 
-    const exampleRowsList = [explainationRow, ...exampleUsersList];
-
     // Generate csv file
+    const exampleRowsList = [explainationRow, ...exampleUsersList];
     const parser = new Parser({ header: true });
     const csv = parser.parse(exampleRowsList);
     return csv;

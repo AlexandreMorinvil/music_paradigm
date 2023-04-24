@@ -12,6 +12,7 @@ router.get('/get-template-csv/:curriculumId', jwtAuthorize(role.admin), getUsers
 
 router.post('/add-tag', jwtAuthorize(role.admin), addTag);
 router.post('/append-to-note', jwtAuthorize(role.admin), appendToNote);
+router.post('/create-users-from-csv', jwtAuthorize(role.admin), createUsersFromCsv);
 router.post('/prepend-to-note', jwtAuthorize(role.admin), prependToNote);
 router.post('/remove-all-tags', jwtAuthorize(role.admin), removeAllTags);
 router.post('/remove-tag', jwtAuthorize(role.admin), removeTag);
@@ -44,6 +45,23 @@ function appendToNote(req, res, next) {
     usersBatchCommandsService.appendToNote(userIdsList, note)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
+function createUsersFromCsv(req, res, next) {
+
+    // Parameters
+    const csvFile = req.body.csvFile;
+
+    // Processing
+    usersBatchCommandsService.createUsersFromCsv(csvFile)
+        .then((usersCreationReportTxt) => {
+            res.setHeader('Content-disposition', 'attachment; filename=users-creation-repport.txt');
+            res.set('Access-Control-Expose-Headers', 'Content-Disposition');
+            res.set('Content-Type', 'text/plain');
+            res.status(200).send(usersCreationReportTxt);
+        })
+        .catch(err => next(err))
         .finally(() => next());
 }
 
