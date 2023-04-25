@@ -32,9 +32,7 @@ export class ListTableSelection {
 
     remove(element) {
         const idToRemove = this.transformIntoId(element);
-        const indexOfRemoval = this.idsList.findIndex((id) => idToRemove === id);
-        if (indexOfRemoval < 0) return;
-        this.idsList.splice(indexOfRemoval, 1);
+        this.idsList = this.idsList.filter((id) => id !== idToRemove);
     }
 
     removeIfIn(elementsToRemoveList) {

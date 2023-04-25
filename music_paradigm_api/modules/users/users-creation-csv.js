@@ -22,21 +22,27 @@ const CURRICULUM = 'CURRICULUM';
 
 async function createUser(userDescription) {
 
-    const userToCreate = {};
-
+    const interpretBoolean = (textBoolean) => { 
+        if (textBoolean.trim().toLowerCase() === 'true') return true;
+        else if (textBoolean.trim().toLowerCase() === 'false') return false;
+        return null;
+    }
+    
     // Fill some of the base attributes
+    const userToCreate = {};
     userToCreate['username'] = userDescription[USERNAME] ?? null;
+    userToCreate['isPasswordSecret'] = interpretBoolean(userDescription[IS_PASSWORD_SECRET]) ?? false;
     userToCreate['password'] = userDescription[PASSWORD] ?? null;
-    userToCreate['isPasswordSecret'] = userDescription[IS_PASSWORD_SECRET] ?? true;
     userToCreate['group'] = userDescription[GROUP] ?? null;
+    userToCreate['note'] = userDescription[NOTE] ?? null;
+    userToCreate['tags'] = [];
 
     // Retreiving all the tags
     const tagColumnsNameList = Object
         .keys(userDescription)
         .filter((tagColumnName) => tagColumnName.startsWith(TAG));
-    userToCreate[TAG] = [];
     tagColumnsNameList.forEach((tagColumnName) => {
-        userToCreate[TAG].push(userDescription[tagColumnName]);
+        userToCreate['tags'].push(userDescription[tagColumnName]);
     });
 
     // Create the user
@@ -110,7 +116,7 @@ async function createUser(userDescription) {
     const specifiedParametersNameList = Object
         .keys(userDescription)
         .filter((parameterColumnName) => {
-            return tagColumnName.startsWith('$') && Boolean(userDescription[parameterColumnName]);
+            return parameterColumnName.startsWith('$') && Boolean(userDescription[parameterColumnName]);
         });
     const superfluousParametersList = [];
     for (let specifiedParameterName of specifiedParametersNameList)

@@ -38,7 +38,6 @@ export default {
         ...mapActions('managementUsers/batchCommand', ['createUsersFromCsv']),
         handleButtonPress() {
             if (!this.isButtonActive) return;
-            console.log('here');
             this.createUsersFromCsv({
                 csvFileContent: this.usersBatchCommandCsvFileContent,
             });

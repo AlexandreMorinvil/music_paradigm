@@ -79,6 +79,8 @@ export default {
 			.then(
 				(response) => {
 					const { successIdsList, failuresList } = response;
+					console.log('successIdsList', successIdsList);
+					console.log('failuresList', failuresList);
 					dispatch(
 						'managementUsers/listTableSelection/removeFromUsersListTableSelection',
 						successIdsList,

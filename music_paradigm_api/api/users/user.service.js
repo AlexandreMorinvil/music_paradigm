@@ -37,7 +37,7 @@ async function createUserWithCurriculum(user, curriculumId, assignedParameters) 
     const { progression, progressionSessionsStatus } =
         await progressionsService.assignCurriculum(userCreated._id, curriculumId, assignedParameters);
     return {
-        userCreated,
+        user: userCreated,
         progression,
         progressionSessionsStatus,
     };
@@ -49,11 +49,11 @@ async function getAll() {
 
 async function getUserById(userId) {
     const user = await UserModel.findById(userId);
-    const lastProgression = await ProgressionModel.getActiveProgressionByUserId(userId);
-    const progressionSessionsStatus = await generateProgressionSessionsStatusForProgression(lastProgression);
+    const progression = await ProgressionModel.getActiveProgressionByUserId(userId);
+    const progressionSessionsStatus = await generateProgressionSessionsStatusForProgression(progression);
     return {
         user,
-        lastProgression,
+        progression,
         progressionSessionsStatus,
     };
 }
