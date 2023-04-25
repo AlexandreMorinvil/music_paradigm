@@ -61,7 +61,7 @@ async function createUser(userDescription) {
         detail: 'User sucessfully created!',
     };
 
-    const curriculumToAssign = curriculumTitle ? CurriculumModel.findOne({ title: curriculumTitle }) : null;
+    const curriculumToAssign = curriculumTitle ? await CurriculumModel.findOne({ title: curriculumTitle }) : null;
     if (!curriculumToAssign) return {
         username: userToCreate[USERNAME],
         isCreated: true,
@@ -70,7 +70,7 @@ async function createUser(userDescription) {
             `and couldn't be assinged`,
     };
 
-    const progression = null;
+    let progression = null;
     try {
         progression = await ProgressionModel.createProgression(user._id, curriculumToAssign._id);
     } catch (error) {
@@ -85,7 +85,7 @@ async function createUser(userDescription) {
 
     // Assign the task parameters
     const assignedParameters = {};
-    const parametersList = curriculum.getParametersList();
+    const parametersList = await curriculumToAssign.getParametersList();
     parametersList.forEach((parameter) => {
         const parameterValue = userDescription['$' + parameter.name];
         if (parameter.acceptsFreeTextValues ||
@@ -121,7 +121,7 @@ async function createUser(userDescription) {
     if (superfluousParametersList.length > 0)
         warningMessages +=
             ` (WARNING) The parameter(s) ${superfluousParametersList.join(', ')} ` +
-                `do not apply to the curriculum ${curriculumTitle})`;
+            `do not apply to the curriculum ${curriculumTitle})`;
 
     // Indicate a successful user creation without error
     return {
@@ -154,27 +154,36 @@ async function createUsersFrom(csvFileContent) {
 function generateUsersCreationReport(invalidColumnNamesList, usersCreationResultsList) {
     const writeSeparation = (text) =>
         '\n' +
-        '========================================================================================' +
-        text +
-        '========================================================================================' +
+        '========================================================================================\n' +
+        text + '\n' +
+        '========================================================================================\n' +
         '\n';
 
 
-    const columnsProblemText = writeSeparation('General details') + 
-    invalidColumnNamesList.map((invalidColumnName) => {
-        return `The column ${invalidColumnName} is not recognized. All information from this column was ignored.\n`;
-    });
+    const columnsProblemText = writeSeparation('General details') +
+        invalidColumnNamesList.map((invalidColumnName) => {
+            return `The column ${invalidColumnName} is not recognized. All information from this column was ignored.\n`;
+        });
 
-    const usersCreationResultsText = writeSeparation('Users creation details') + 
-    'USERNAME\t\tIS CREATED\t\tCURRICULUM ASSIGNED\tDETAILS' +
-    usersCreationResultsList.map((result) => {
-        return `${result.username}\t\t${result.isCreated}\t\t${result.hasAssignedCurriculum}\t\t${result.detail}`;
-    });
+    const usersCreationResultsText = writeSeparation('Users creation details') +
+        'USERNAME'.padEnd(24, ' ') +
+        'CREATED'.padEnd(12, ' ') +
+        'CURRICULUM'.padEnd(12, ' ') +
+        'DETAILS' +
+        '\n' +
+        usersCreationResultsList.map((result) => {
+            const { username, isCreated, hasAssignedCurriculum, detail } = result;
+            return String(username).padEnd(24, ' ') +
+                String(isCreated).padEnd(12, ' ') +
+                String(hasAssignedCurriculum).padEnd(12, '') +
+                String(detail) +
+                '\n';
+        });
 
     let report = '';
     if (invalidColumnNamesList.length > 0) report += columnsProblemText;
     report += usersCreationResultsText;
-    
+
     return report;
 }
 

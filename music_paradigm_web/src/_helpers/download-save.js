@@ -1,10 +1,11 @@
 export default {
     saveCsv,
     saveJson,
+    saveText,
     saveZip,
 };
 
-function saveCsv(data, filename = 'file.json') {
+function saveCsv(data, filename = 'file.csv') {
     const dataUrl = 'data:text/csv;charset=utf-8,' + encodeURIComponent(data);
     const downloadAnchorElement = document.createElement('a');
     downloadAnchorElement.setAttribute('href', dataUrl);
@@ -19,6 +20,15 @@ function saveJson(data, filename = 'file.json') {
     else if (isJsonObject(data)) dataUrl = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data, null, '\t'));
     else throw Error('The content to save as a JSON does not have a JSON format');
 
+    const downloadAnchorElement = document.createElement('a');
+    downloadAnchorElement.setAttribute('href', dataUrl);
+    downloadAnchorElement.setAttribute('download', filename);
+    downloadAnchorElement.click();
+}
+
+
+function saveText(data, filename = 'file.txt') {
+    const dataUrl = 'data:text/plain;charset=utf-8,' + encodeURIComponent(data);
     const downloadAnchorElement = document.createElement('a');
     downloadAnchorElement.setAttribute('href', dataUrl);
     downloadAnchorElement.setAttribute('download', filename);

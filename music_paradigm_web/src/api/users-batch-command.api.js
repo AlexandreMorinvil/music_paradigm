@@ -1,5 +1,5 @@
 import { authHeader, url } from '@/_helpers';
-import { csvFileResponseHandler, defaultResponseHandler } from './response-handler';
+import { csvFileResponseHandler, textFileResponseHandler, defaultResponseHandler } from './response-handler';
 
 export const usersBatchCommandsApi = {
 	addTag,
@@ -49,8 +49,8 @@ function createUsersFromCsv(csvFileContent) {
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 		body: JSON.stringify({ csvFileContent }),
 	};
-	return fetch(url.users(['batch-command', 'create-users-from-csv']), requestOptions).then(defaultResponseHandler)
-		.then(csvFileResponseHandler.bind(null, true /* mustSave */));
+	return fetch(url.users(['batch-command', 'create-users-from-csv']), requestOptions)
+		.then(textFileResponseHandler.bind(null, true /* mustSave */));
 }
 
 function deleteUsers(idsList) {
