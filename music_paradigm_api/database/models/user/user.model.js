@@ -21,16 +21,14 @@ schema.statics.authenticate = async function (username, password) {
 
 schema.statics.createUser = async function (user) {
     const { _id, id, ...userToCreate } = user;
-    
-    // Reorder the object keys 'isPasswordSecret' and password to make sure that the former is set before the
-    // password when creating the user since the password value stored depends on the 'isPasswordSecret' value.
-    const { isPasswordSecret, password } = userToCreate.isPasswordSecret
-    Object.assign(userToCreate, { isPasswordSecret, password });
-    
     userToCreate.createdAt = Date.now();
-    
     const userCreated = new model(userToCreate);
-    return await userCreated.save();
+    
+    // Reassign the password to to make sure the the password setter is triggered after the 'isPasswordSecret' is set
+    // since the password value stored depends on the 'isPasswordSecret' value.
+    userCreated.password = userToCreate.password;
+
+    return userCreated.save();
 };
 
 schema.statics.delete = async function (userId) {

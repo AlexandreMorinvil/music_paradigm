@@ -51,7 +51,7 @@ async function createUser(userDescription) {
         user = await UserModel.createUser(userToCreate);
     } catch (error) {
         return {
-            username: userToCreate[USERNAME],
+            username: userDescription[USERNAME],
             isCreated: false,
             hasAssignedCurriculum: false,
             detail: `(ERROR) User couldn't be created due to the following error : ${error.message}`,
@@ -61,7 +61,7 @@ async function createUser(userDescription) {
     // Assign the curriculum if there is one
     const curriculumTitle = userDescription[CURRICULUM] ?? null;
     if (!curriculumTitle) return {
-        username: userToCreate[USERNAME],
+        username: userDescription[USERNAME],
         isCreated: true,
         hasAssignedCurriculum: false,
         detail: 'User sucessfully created!',
@@ -69,7 +69,7 @@ async function createUser(userDescription) {
 
     const curriculumToAssign = curriculumTitle ? await CurriculumModel.findOne({ title: curriculumTitle }) : null;
     if (!curriculumToAssign) return {
-        username: userToCreate[USERNAME],
+        username: userDescription[USERNAME],
         isCreated: true,
         hasAssignedCurriculum: false,
         detail: `(ERROR) User created, but the curriculum '${curriculumTitle}' does not exist ` +
@@ -81,7 +81,7 @@ async function createUser(userDescription) {
         progression = await ProgressionModel.createProgression(user._id, curriculumToAssign._id);
     } catch (error) {
         return {
-            username: userToCreate[USERNAME],
+            username: userDescription[USERNAME],
             isCreated: true,
             hasAssignedCurriculum: true,
             detail: `(ERROR) User created, but the curriculum '${curriculumTitle}' couldn't be assinged ` +
@@ -103,7 +103,7 @@ async function createUser(userDescription) {
         await ProgressionModel.assignParametersToProgression(progression._id, assignedParameters);
     } catch (error) {
         return {
-            username: userToCreate[USERNAME],
+            username: userDescription[USERNAME],
             isCreated: true,
             hasAssignedCurriculum: true,
             detail: `(ERROR) User created, curriculum '${curriculumTitle}' assigned, ` +
@@ -131,7 +131,7 @@ async function createUser(userDescription) {
 
     // Indicate a successful user creation without error
     return {
-        username: userToCreate[USERNAME],
+        username: userDescription[USERNAME],
         isCreated: true,
         hasAssignedCurriculum: true,
         detail: 'User sucessfully created!' + warningMessages,
@@ -181,10 +181,10 @@ function generateUsersCreationReport(invalidColumnNamesList, usersCreationResult
             const { username, isCreated, hasAssignedCurriculum, detail } = result;
             return String(username).padEnd(24, ' ') +
                 String(isCreated).padEnd(12, ' ') +
-                String(hasAssignedCurriculum).padEnd(12, '') +
+                String(hasAssignedCurriculum).padEnd(12, ' ') +
                 String(detail) +
                 '\n';
-        });
+        }).join('');
 
     let report = '';
     if (invalidColumnNamesList.length > 0) report += columnsProblemText;
