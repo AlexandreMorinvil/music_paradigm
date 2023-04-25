@@ -40,6 +40,19 @@ export function jsonFileResponseHandler(mustSave, response, handleErrorStatus = 
 	});
 }
 
+export function textFileResponseHandler(mustSave, response, handleErrorStatus = () => { }) {
+	const filename = getFileNameFromResponse(response);
+	return response.text().then((text) => {
+		if (!response.ok) {
+			handleErrorStatus(response.status);
+			const error = response.statusText;
+			return Promise.reject(new Error(error));
+		}
+		if (mustSave) downloadSave.saveText(text, filename);
+		return text;
+	});
+}
+
 export function zipFileResponseHandler(mustSave, response, handleErrorStatus = () => { }) {
 	const filename = getFileNameFromResponse(response);
 	return response.text().then((data) => {

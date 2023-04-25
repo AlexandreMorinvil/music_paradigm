@@ -76,6 +76,11 @@ const possibleColumnsList = [
         formatFunction: (value) => durationHandler.formatDurationWeekToSecondsFromLargerUnit(value, 2),
     }),
     new ListTableColumn({
+        key: 'hasNote',
+        title: 'Has note',
+        type: ColumnType.boolean,
+    }),
+    new ListTableColumn({
         key: 'isAdvanceResultOfConsiderCompletedAdjustmentSessions',
         title: 'Has skipped session by adjustment',
         columnTitle: 'Skip session adjustment',
@@ -92,7 +97,7 @@ const possibleColumnsList = [
         isPresentByDefault: true,
         title: 'Tags',
         type: ColumnType.arrayOfStrings,
-        formatFunction: (list) => list.join('\n'),
+        formatFunction: (list) => list.join(',\n'),
     }),
     new ListTableColumn({
         key: 'timeLapsedSinceCreatedAt',

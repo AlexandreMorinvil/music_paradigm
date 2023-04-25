@@ -1,27 +1,20 @@
 module.exports  = class CurriculumSummary {
-    constructor(curriculumListEntry = {}) {
+    constructor(data = {}) {
         // Deep copy to avoid oject and array shallow copies.
-        const listEntry = JSON.parse(JSON.stringify(curriculumListEntry));
+        const dataCopy = JSON.parse(JSON.stringify(data));
 
         // Curriculum information
-        this._id = listEntry._id || null;
-        this.title = listEntry.title || ''; 
-        this.isSequential = listEntry.isSequential || null;
-        this.logType = listEntry.logType || '';
-        this.sessionsList = listEntry.sessionsList || listEntry.experiments || [];
+        this._id = dataCopy._id ?? null;
+        this.title = dataCopy.title ?? null; 
+        this.isSequential = dataCopy.isSequential ?? null;
+        this.logType = dataCopy.logType ?? '';
+        this.sessionsList = dataCopy.sessionsList ?? dataCopy.experiments ?? [];
 
         // Timestamps
-        this.createdAt = listEntry.createdAt;
-        this.updatedAt = listEntry.updatedAt;
+        this.createdAt = dataCopy.createdAt ?? null;
+        this.updatedAt = dataCopy.updatedAt ?? null;
 
         // Task parameters information
-        this.parameterOptionValuesListMap = listEntry.parameterOptionValuesListMap || {};
-        this.parameterDefaultValueMap = listEntry.parameterDefaultValueMap || {};
-        this.parameterAcceptsFreeTextValuesMap = listEntry.parameterAcceptsFreeTextValuesMap || {};
-    }
-
-    toObject() {
-        const { ...object } = this;
-        return object;
+        this.parametersList = dataCopy.parametersList ?? [];
     }
 }

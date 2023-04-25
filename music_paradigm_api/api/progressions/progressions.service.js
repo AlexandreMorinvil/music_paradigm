@@ -61,8 +61,8 @@ async function getProgressionById(progressionId) {
         const progression = await ProgressionModel.findById(progressionId);
         const progressionSessionsStatus = await generateProgressionSessionsStatusForProgression(progression);
         return {
-            progression: progression,
-            progressionSessionsStatus: progressionSessionsStatus,
+            progression: progression ?? {},
+            progressionSessionsStatus: progressionSessionsStatus ?? {},
         };
     } catch (err) {
         throw err;

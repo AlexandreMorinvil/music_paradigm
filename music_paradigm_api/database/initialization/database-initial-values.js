@@ -17,7 +17,7 @@ async function createDefaultAdmin() {
         const defaultAdminPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'CoffeyLabInConcordia';
 
         await timeout.dbQuery(
-            users.create({
+            users.createUser({
                 username: defaultAdminUsername,
                 password: defaultAdminPassword,
                 role: role.admin,

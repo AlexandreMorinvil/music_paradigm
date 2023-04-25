@@ -1,7 +1,7 @@
 <template>
 	<TemplateListTable :ListTableClass="ListTableClass" :initialTableState="initialTableState" :isLoading="isLoading"
 		:list="list" :refreshFunction="fetchUserSummariesList" :saveBackupFunction="saveBackupFunction"
-		:selection="selection">
+		:listTableSelection="listTableSelection">
 		<div slot-scope="{ entity }">
 			<ButtonSelectUserComponent isSmall :entity="entity" hideIfInactive />
 			<ButtonDeselectUserComponent isSmall :entity="entity" hideIfInactive />
@@ -33,8 +33,8 @@ export default {
 	},
 	computed: {
 		...mapGetters('pageStatus', ['listTableState']),
-		...mapGetters('managementUsers', ['isFetchingUsersSummaryList', 'usersSummaryList']),
-		...mapGetters('managementUsers/selection', ['userSelection']),
+		...mapGetters('managementUsers', ['isFetchingUsersSummaryList', 'userSummariesList']),
+		...mapGetters('managementUsers/listTableSelection', ['usersListTableSelection']),
 		initialTableState() {
 			return this.listTableState(this.listTableId);
 		},
@@ -42,13 +42,13 @@ export default {
 			return this.isFetchingUsersSummaryList;
 		},
 		list() {
-			return this.usersSummaryList;
+			return this.userSummariesList;
 		},
 		ListTableClass() {
 			return UsersListTable;
 		},
-		selection() {
-			return this.userSelection;
+		listTableSelection() {
+			return this.usersListTableSelection;
 		},
 	},
 	methods: {

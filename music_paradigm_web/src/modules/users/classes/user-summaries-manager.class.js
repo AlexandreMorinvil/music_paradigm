@@ -12,6 +12,13 @@ export class UserSummariesManager {
         });
     }
 
+    getUserSummariesByIdsList(userIdsList) {
+        const userSummariesList = this.userSummariesList.filter((userSummary) => {
+            return userIdsList.includes(userSummary._id);
+        });
+        return userSummariesList;
+    }
+
     setUsersSummariesList(userSummariesList = []) {
         this.userSummariesList = userSummariesList.map((userSummary) => {
             return new UserSummary(userSummary);

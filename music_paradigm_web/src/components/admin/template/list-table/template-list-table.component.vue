@@ -7,19 +7,19 @@
 		<ListTableEditorComponent v-show="hasEditorExpanded" :listTable="listTable" v-on:update="updateTable" />
 
 		<div class="table-area table-context list-table-template" :class="{ 'collapsed-size': !isExpanded }">
-			<ListTableCellsComponent :listTable="listTable" :selection="selection" ref="cells">
+			<ListTableCellsComponent :listTable="listTable" :listTableSelection="listTableSelection" ref="cells">
 				<slot slot-scope="{ entity }" :entity="entity" />
 			</ListTableCellsComponent>
 		</div>
 
-		<ListTableFooterComponent :listTable="listTable" :isLoading="isLoading" />
+		<ListTableFooterComponent :listTable="listTable" :isLoading="isLoading" :listTableSelection="listTableSelection" />
 	</div>
 </template>
 
 <script>
 import '@/styles/table-template.css';
 
-import { ListTable, ListTableStateBackup } from '@/modules/list-tables';
+import { ListTable, ListTableSelection, ListTableStateBackup } from '@/modules/list-tables';
 
 import ListTableCellsComponent from './list-table-cells.component.vue';
 import ListTableEditorComponent from './editor/list-table-editor.component.vue';
@@ -54,6 +54,10 @@ export default {
 				return ListTable;
 			},
 		},
+		listTableSelection: {
+			type: ListTableSelection,
+			default: null,
+		},
 		refreshFunction: {
 			type: Function,
 			default: () => { },
@@ -61,10 +65,6 @@ export default {
 		saveBackupFunction: {
 			type: Function,
 			default: () => { },
-		},
-		selection: {
-			type: null,
-			default: null,
 		},
 	},
 	data() {

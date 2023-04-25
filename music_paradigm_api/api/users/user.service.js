@@ -18,7 +18,7 @@ module.exports = {
 
 async function createUser(user) {
     try {
-        const userCreated = await UserModel.create(user);
+        const userCreated = await UserModel.createUser(user);
         return {
             user: userCreated,
         };
@@ -33,50 +33,34 @@ async function createUser(user) {
 }
 
 async function createUserWithCurriculum(user, curriculumId, assignedParameters) {
-    try {
-        const { user: userCreated }  = await createUser(user);
-        const { progression, progressionSessionsStatus } =
-            await progressionsService.assignCurriculum(userCreated._id, curriculumId, assignedParameters);
-        return {
-            user: userCreated,
-            progression: progression,
-            progressionSessionsStatus: progressionSessionsStatus,
-        };
-    } catch (err) {
-        throw err;
-    }
+    const { user: userCreated } = await createUser(user);
+    const { progression, progressionSessionsStatus } =
+        await progressionsService.assignCurriculum(userCreated._id, curriculumId, assignedParameters);
+    return {
+        user: userCreated,
+        progression,
+        progressionSessionsStatus,
+    };
 }
 
 async function getAll() {
-    try {
-        return await generateUserSummariesList();
-    } catch (err) {
-        throw err;
-    }
+    return await generateUserSummariesList();
 }
 
 async function getUserById(userId) {
-    try {
-        const user = await UserModel.findById(userId).lean();
-        const lastProgression = await ProgressionModel.getActiveProgressionByUserId(userId);
-        const progressionSessionsStatus = await generateProgressionSessionsStatusForProgression(lastProgression);
-        return {
-            user: user,
-            progression: lastProgression,
-            progressionSessionsStatus: progressionSessionsStatus,
-        };
-    } catch (err) {
-        throw err;
-    }
+    const user = await UserModel.findById(userId);
+    const progression = await ProgressionModel.getActiveProgressionByUserId(userId);
+    const progressionSessionsStatus = await generateProgressionSessionsStatusForProgression(progression);
+    return {
+        user,
+        progression,
+        progressionSessionsStatus,
+    };
 }
 
 async function getExistingUserGroupsList() {
-    try {
-        const groupsList = await UserModel.getExistingUserGroupsList();
-        return groupsList;
-    } catch (err) {
-        throw err;
-    }
+    const groupsList = await UserModel.getExistingUserGroupsList();
+    return groupsList;
 }
 
 async function updateUserProfile(userId, userUpdated) {
@@ -94,9 +78,5 @@ async function updateUserProfile(userId, userUpdated) {
 }
 
 async function deleteUser(userId) {
-    try {
-        return await UserModel.delete(userId);
-    } catch (err) {
-        throw err;
-    }
+    return await UserModel.delete(userId);
 }

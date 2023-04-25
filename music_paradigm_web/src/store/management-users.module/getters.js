@@ -69,8 +69,12 @@ export default {
 		return state.selectedUser.username;
 	},
 
-	usersSummaryList: (state) => {
+	userSummariesList: (state) => {
 		return state.userSummariesListManager.userSummariesList;
+	},
+
+	userSummariesListManager: (state) => {
+		return state.userSummariesListManager;
 	},
 
 	usersExistingUserGroupsList: (state) => {
