@@ -7,6 +7,10 @@ export default {
 		state.status.isCreatingCurriculum = isActive;
 	},
 
+	indicateFetchingAndSelectingCurriculumById(state, curriculumId) {
+		state.status.fetchingAndSelectingCurriculumId = curriculumId;
+	},
+
 	indicateFetchingCurriculumSummariesList(state, isActive) {
 		state.status.isFetchingCurriculumSummariesList = isActive;
 	},

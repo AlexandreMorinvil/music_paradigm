@@ -18,37 +18,35 @@ export default {
             type: Object,
             default: null,
         },
-        userId: {
+        id: {
             type: null,
             default: null,
         }
     },
     computed: {
-        ...mapGetters('managementUsers', [
-            'isExecutingUserCommand'
-        ]),
-        ...mapGetters('managementUsers/selection', [
-            'hasSelectedUser',
-            'userSelectionId',
+        ...mapGetters('managementCurriculums', ['isExecutingCurriculumCommand']),
+        ...mapGetters('managementCurriculums/selection', [
+            'curriculumSelectionId',
+            'hasSelectedCurriculm',
         ]),
         isButtonFrozen() {
-            return this.isExecutingUserCommand;
+            return this.isExecutingCurriculumCommand;
         },
         isButtonActive() {
-            return this.userIdParameter ? this.isSelected : this.hasSelectedUser;
+            return this.curriculumIdParameter ? this.isSelected : this.hasSelectedCurriculm;
         },
-        userIdParameter() {
-            return this.entity?._id || this.userId || null;
+        curriculumIdParameter() {
+            return this.entity?._id || this.id || null;
         },
         isSelected() {
-            return this.userIdParameter === this.userSelectionId;
+            return this.curriculumIdParameter === this.curriculumSelectionId;
         },
     },
     methods: {
-        ...mapActions('managementUsers', ['unsetSelectedUser']),
+        ...mapActions('managementCurriculums', ['unsetSelectedCurriculum']),
         handleButtonPress() {
             if (!this.isButtonActive) return;
-            this.unsetSelectedUser();
+            this.unsetSelectedCurriculum();
         },
     }
 };

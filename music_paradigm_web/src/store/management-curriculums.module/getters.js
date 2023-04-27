@@ -9,6 +9,10 @@ export default {
 		return state.curriculumSummariesManager;
 	},
 
+	fetchingAndSelectingCurriculumId: (state) => {
+		return state.status.fetchingAndSelectingCurriculumId;
+	},
+
 	hasEditedCurriculum: (_, getters) => {
 		return !_isEqual(
 			getters['selection/curriculumSelection'],

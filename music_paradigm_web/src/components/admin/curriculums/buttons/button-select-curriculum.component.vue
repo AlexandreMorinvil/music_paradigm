@@ -1,6 +1,6 @@
 <template>
-    <TemplateButtonComponent v-on:click="handleButtonPress" color="blue" :isActive="isButtonActive"
-        :isLoading="isLoading" :isFrozen="isButtonFrozen" v-bind="$attrs" text="Manage" />
+    <TemplateButtonComponent v-on:click="handleButtonPress" color="blue" :isActive="isButtonActive" :isLoading="isLoading"
+        :isFrozen="isButtonFrozen" v-bind="$attrs" text="Manage" />
 </template>
 
 <script>
@@ -18,43 +18,44 @@ export default {
             type: Object,
             default: null,
         },
-        userId: {
+        id: {
             type: null,
             default: null,
         }
     },
     computed: {
-        ...mapGetters('managementUsers', [
-            'fetchingAndSelectingUserId',
-            'isExecutingUserCommand',
+        ...mapGetters('managementCurriculums', [
+            'fetchingAndSelectingCurriculumId',
+            'isExecutingCurriculumCommand',
         ]),
-        ...mapGetters('managementUsers/selection', [
-            'userSelectionId',
-        ]),
+        ...mapGetters('managementCurriculums/selection', ['curriculumSelectionId']),
         isLoading() {
-            return Boolean(this.userIdParameter) && this.fetchingAndSelectingUserId === this.userIdParameter;
+            return Boolean(this.curriculumIdParameter) &&
+                this.fetchingAndSelectingCurriculumId === this.curriculumIdParameter;
         },
         isButtonFrozen() {
             // Fetching other user
-            if (!!this.fetchingAndSelectingUserId && this.fetchingAndSelectingUserId !== this.userIdParameter) return true;
+            if (!!this.fetchingAndSelectingCurriculumId &&
+                this.fetchingAndSelectingCurriculumId !== this.curriculumIdParameter)
+                return true;
             // Executing other user command
-            return !this.fetchingAndSelectingUserId && this.isExecutingUserCommand;
+            return !this.fetchingAndSelectingCurriculumId && this.isExecutingCurriculumCommand;
         },
         isButtonActive() {
-            return Boolean(this.userIdParameter) && !this.isSelected;
+            return Boolean(this.curriculumIdParameter) && !this.isSelected;
         },
         isSelected() {
-            return this.userIdParameter === this.userSelectionId;
+            return this.curriculumIdParameter === this.curriculumSelectionId;
         },
-        userIdParameter() {
-            return this.entity?._id ?? this.userId ?? null;
+        curriculumIdParameter() {
+            return this.entity?._id ?? this.id ?? null;
         },
     },
     methods: {
-        ...mapActions('managementUsers', ['fetchAndSelectUserById']),
+        ...mapActions('managementCurriculums', ['fetchAndSelectCurriculumById']),
         handleButtonPress() {
             if (!this.isButtonActive) return;
-            this.fetchAndSelectUserById(this.userIdParameter);
+            this.fetchAndSelectCurriculumById(this.curriculumIdParameter);
         },
     }
 };

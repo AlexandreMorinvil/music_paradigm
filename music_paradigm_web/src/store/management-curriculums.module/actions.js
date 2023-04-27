@@ -42,6 +42,21 @@ export default {
 			});
 	},
 
+	fetchAndSelectCurriculumById({ commit, dispatch }, curriculumId) {
+		commit('indicateFetchingAndSelectingCurriculumById', curriculumId);
+		return curriculumsApi
+			.getCurriculumById(curriculumId).then(
+				(curriculum) => {
+					dispatch('setSelectedCurriculum', curriculum);
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `Curriculum selection failed : ${error.message}`, { root: true });
+				},
+			).finally(() => {
+				commit('indicateFetchingAndSelectingCurriculumById', null);
+			});
+	},
+
 	fetchCurriculumSummariesList({ commit, dispatch }) {
 		commit('indicateFetchingCurriculumSummariesList', true);
 		return curriculumsApi
@@ -57,17 +72,6 @@ export default {
 			.finally(() => {
 				commit('indicateFetchingCurriculumSummariesList', false);
 			});
-	},
-
-	selectCurriculum({ dispatch }, curriculumId) {
-		return curriculumsApi.getCurriculumById(curriculumId).then(
-			(curriculum) => {
-				dispatch('setSelectedCurriculum', curriculum);
-			},
-			(error) => {
-				dispatch('alert/setErrorAlert', `Curriculum selection failed : ${error.message}`, { root: true });
-			},
-		);
 	},
 
 	setSelectedCurriculum({ dispatch }, curriculum) {

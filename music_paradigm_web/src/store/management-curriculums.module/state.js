@@ -2,6 +2,7 @@ import { curriculumGenerator, CurriculumSummariesManager } from '@/modules/curri
 
 export default {
 	status: {
+		fetchingAndSelectingCurriculumId: null,
 		isCreatingCurriculum: false,
 		isDeletingCurriculum: false,
 		isFetchingCurriculumSummariesList: false,

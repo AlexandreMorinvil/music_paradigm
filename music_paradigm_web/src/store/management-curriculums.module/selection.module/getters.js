@@ -3,23 +3,23 @@ export default {
 		return state.selectionCurriculum;	
 	},
 
-	curriculumSelectionId: (_, getters) => {
-		return getters.curriculumSelection._id;
+	curriculumSelectionId: (state) => {
+		return state.selectionCurriculum._id;
 	},
 
-	curriculumSelectionTitle: (_, getters) => {
-		return getters.curriculumSelection.title;
+	curriculumSelectionTitle: (state) => {
+		return state.selectionCurriculum.title;
 	},
 
-	curriculumSelectionIsSequential: (_, getters) => {
-		return getters.curriculumSelection.isSequential;
+	curriculumSelectionIsSequential: (state) => {
+		return state.selectionCurriculum.isSequential;
 	},
 
-	curriculumSelectionCurriculumTasks: (_, getters) => {
-		return getters.curriculumSelection.experiments;
+	curriculumSelectionCurriculumTasks: (state) => {
+		return state.selectionCurriculum.experiments;
 	},
 
-	hasSelectedCurriculum: (_, getters) => {
-		return Boolean(getters.curriculumSelection._id);
+	hasSelectedCurriculum: (state) => {
+		return Boolean(state.selectionCurriculum._id);
 	},
 };
