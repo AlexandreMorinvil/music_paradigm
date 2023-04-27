@@ -1,23 +1,42 @@
 <template>
-    <button v-on:click="handleCurriculumDeletion" class="widget-button green" :class="isButtonActive || 'inactive'">
-        Create Curriculum
-    </button>
+    <TemplateButtonComponent v-on:click="handleButtonPress" color="green" :isActive="isButtonActive"
+        :isLoading="isButtonLoading" :isFrozen="isButtonFrozen" v-bind="$attrs" text="Create curriculum" />
 </template>
 
 <script>
-import '@/styles/widget-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
+import TemplateButtonComponent from '@/components/admin/template/template-button.component.vue';
+
 export default {
+    components: {
+        TemplateButtonComponent,
+    },
     computed: {
-        ...mapGetters('managementCurriculums/edition', ['curriculumEditionCurriculum']),
+        ...mapGetters('managementCurriculums', [
+            'hasEditedCurriculumTitle',
+            'isCreatingCurriculum',
+            'isExecutingCurriculumCommand',
+        ]),
+        ...mapGetters('managementCurriculums/edition', [
+            'curriculumEditionCurriculum', 
+            'curriculumEditionTitle',
+        ]),
+        ...mapGetters('managementCurriculums/selection', ['hasSelectedCurriculum']),
+        isButtonFrozen() {
+            return !this.isCreatingCurriculum && this.isExecutingCurriculumCommand; // Has other user command running
+        },
         isButtonActive() {
-            return true;
+            if (this.hasSelectedCurriculum && !this.hasEditedCurriculumTitle) return false;
+            return Boolean(this.curriculumEditionTitle);
+        },
+        isButtonLoading() {
+            return this.isCreatingCurriculum;
         },
     },
     methods: {
         ...mapActions('managementCurriculums', ['createCurriculum']),
-        handleCurriculumDeletion() {
+        handleButtonPress() {
             if (!this.isButtonActive) return;
             this.createCurriculum(this.curriculumEditionCurriculum);
         },

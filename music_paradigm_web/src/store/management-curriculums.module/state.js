@@ -2,10 +2,10 @@ import { curriculumGenerator, CurriculumSummariesManager } from '@/modules/curri
 
 export default {
 	status: {
+		isCreatingCurriculum: false,
+		isDeletingCurriculum: false,
 		isFetchingCurriculumSummariesList: false,
-		isCreating: false,
-		isUpdating: false,
-		isDeleting: false,
+		isUpdatingCurriculum: false,
 	},
 	selection: curriculumGenerator.GENERATE_BLANK_CURRICULUM(),
 	curriculumSummariesManager: new CurriculumSummariesManager(),

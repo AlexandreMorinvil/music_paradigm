@@ -3,7 +3,7 @@ import { curriculumsApi } from '@/api';
 export default {
 
 	createCurriculum({ commit, dispatch }, curriculum) {
-		commit('indicateCreateRequest');
+		commit('indicateCreatingCurriculum', true);
 		return curriculumsApi
 			.createCurriculum(curriculum)
 			.then(
@@ -19,12 +19,12 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateCreateRequestEnd');
+				commit('indicateCreatingCurriculum', false);
 			});
 	},
 
 	deleteCurriculum({ commit, dispatch }, curriculumId) {
-		commit('indicateDeleteRequest');
+		commit('indicateDeletingCurriculum', true);
 		return curriculumsApi
 			.deleteCurriculum(curriculumId)
 			.then(
@@ -38,12 +38,12 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateDeleteRequestEnd');
+				commit('indicateDeletingCurriculum', false);
 			});
 	},
 
 	fetchCurriculumSummariesList({ commit, dispatch }) {
-		commit('indicateFetchingCurriculumList');
+		commit('indicateFetchingCurriculumSummariesList', true);
 		return curriculumsApi
 			.getCurriculumSummariesList()
 			.then(
@@ -55,7 +55,7 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateFetchingCurriculumListEnd');
+				commit('indicateFetchingCurriculumSummariesList', false);
 			});
 	},
 
@@ -76,7 +76,7 @@ export default {
 	},
 
 	updateCurriculum({ commit, dispatch }, { id, curriculum }) {
-		commit('indicateUpdateRequest');
+		commit('indicateUpdatingCurriculum', true);
 		return curriculumsApi
 			.updateCurriculum(id, curriculum)
 			.then(
@@ -92,7 +92,7 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateUpdateRequestEnd');
+				commit('indicateUpdatingCurriculum', false);
 			});
 	},
 
