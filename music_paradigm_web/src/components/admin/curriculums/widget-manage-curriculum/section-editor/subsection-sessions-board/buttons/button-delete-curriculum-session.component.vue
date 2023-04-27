@@ -1,26 +1,37 @@
 <template>
-    <button v-on:click="handleCurriculumSessionDeletion" class="widget-button red" :class="isButtonActive || 'inactive'">
-        Delete Selected Session
-    </button>
+    <TemplateButtonComponent v-on:click="handleButtonPress" color="red" :isActive="isButtonActive"
+        :isLoading="isButtonLoading" :isFrozen="isButtonFrozen" v-bind="$attrs" text="Delete selected session" />
 </template>
 
 <script>
-import '@/styles/widget-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
+import TemplateButtonComponent from '@/components/admin/template/template-button.component.vue';
+
 export default {
+    components: {
+        TemplateButtonComponent,
+    },
     computed: {
+        ...mapGetters('managementCurriculums', ['isExecutingCurriculumCommand']),
         ...mapGetters('managementCurriculums/edition', [
             'hasCurriculumEditionSelectedSession',
             'hasMoreThanOneSessionInCurriculumEdition',
         ]),
+        isButtonFrozen() {
+            return false;
+        },
         isButtonActive() {
+            if (this.isExecutingCurriculumCommand) return false;
             return this.hasCurriculumEditionSelectedSession && this.hasMoreThanOneSessionInCurriculumEdition;
+        },
+        isButtonLoading() {
+            return false;
         },
     },
     methods: {
         ...mapActions('managementCurriculums/edition', ['removeCurriculumEditionSession']),
-        handleCurriculumSessionDeletion() {
+        handleButtonPress() {
             if (!this.isButtonActive) return;
             this.removeCurriculumEditionSession();
         },

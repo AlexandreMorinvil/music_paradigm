@@ -1,20 +1,31 @@
 <template>
-    <button v-on:click="toggleMode" 
-        class="widget-button"
-     :class="isModeActive ? 'turquoise' : 'blue'">
-        {{ text }}
-    </button>
+    <TemplateButtonComponent v-on:click="handleButtonPress" :color="color" :isActive="isButtonActive"
+        :isLoading="isButtonLoading" :isFrozen="isButtonFrozen" v-bind="$attrs" :text="text" />
 </template>
 
 <script>
-import '@/styles/widget-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
+import TemplateButtonComponent from '@/components/admin/template/template-button.component.vue';
+
 export default {
+    components: {
+        TemplateButtonComponent,
+    },
     computed: {
+        ...mapGetters('managementCurriculums', ['isExecutingCurriculumCommand']),
         ...mapGetters('managementCurriculums/edition', ['isInCurriculumEditionSessionAdditionMode']),
+        color() {
+            return this.isModeActive ? "turquoise" : "blue";
+        },
+        isButtonFrozen() {
+            return false;
+        },
         isButtonActive() {
-            return true;
+            return !this.isExecutingCurriculumCommand;
+        },
+        isButtonLoading() {
+            return false;
         },
         isModeActive() {
             return this.isInCurriculumEditionSessionAdditionMode;
@@ -28,7 +39,7 @@ export default {
             'activateCurriculumEditionSessionAdditionMode',
             'deactivateCurriculumEditionSessionAdditionMode',
         ]),
-        toggleMode() {
+        handleButtonPress() {
             if (this.isModeActive) this.deactivateCurriculumEditionSessionAdditionMode();
             else this.activateCurriculumEditionSessionAdditionMode();
         },

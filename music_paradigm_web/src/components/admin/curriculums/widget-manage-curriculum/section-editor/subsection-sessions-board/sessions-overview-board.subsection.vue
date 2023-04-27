@@ -2,9 +2,9 @@
     <WidgetSubsectionContainer title="Curriculum Sessions Overview">
         <CurriculumBoardComponent />
         <template v-slot:buttons>
-            <ButtonMoveCurriculumSessionComponent />
-            <ButtonAddCurriculumSessionComponent />
-            <ButtonDeleteCurriculumSessionComponent />
+            <ButtonMoveCurriculumSessionComponent hideIfInactive />
+            <ButtonAddCurriculumSessionComponent hideIfInactive />
+            <ButtonDeleteCurriculumSessionComponent hideIfInactive />
         </template>
     </WidgetSubsectionContainer>
 </template>
