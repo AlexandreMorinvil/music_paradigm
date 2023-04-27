@@ -15,6 +15,8 @@ export class CurriculumSummary {
         // Timestamps
         this.createdAt = dataCopy.createdAt;
         this.updatedAt = dataCopy.updatedAt;
+        this.timeLapsedSinceCreatedAt = dataCopy.timeLapsedSinceCreatedAt;
+        this.timeLapsedSinceUpdatedAt = dataCopy.timeLapsedSinceUpdatedAt;
 
         // Task parameters
         this.parametersList = [];

@@ -6,7 +6,7 @@
             :expectedValue="userProgressionSelectionCurriculumReference"
             v-on:edit="editUserProgressionEditionCurriculumReference"
             :isEmptyAccepted="true"
-            :isLoading="isFetchingCurriculumsList"
+            :isLoading="isFetchingCurriculumSummariesList"
             :getDisplayedValueFromElement="(curriculumSummary) => curriculumSummary.title"
             :getOptionValueFromElement="(curriculumSummary) => curriculumSummary._id" :options="curriculumSummariesList"
             placeholder="# No Curriculum" />
@@ -30,7 +30,7 @@ export default {
     computed: {
         ...mapGetters('managementCurriculums', [
             'curriculumSummariesList',
-            'isFetchingCurriculumsList',
+            'isFetchingCurriculumSummariesList',
         ]),
         ...mapGetters('managementUsers/progressions/edition', [
             'userProgressionEditionCurriculumReference'

@@ -1,3 +1,5 @@
+const { getTimeLapsedSince } = require('_helpers/time-handler')
+
 module.exports  = class CurriculumSummary {
     constructor(data = {}) {
         // Deep copy to avoid oject and array shallow copies.
@@ -13,6 +15,8 @@ module.exports  = class CurriculumSummary {
         // Timestamps
         this.createdAt = dataCopy.createdAt ?? null;
         this.updatedAt = dataCopy.updatedAt ?? null;
+        this.timeLapsedSinceCreatedAt = this.createdAt ? getTimeLapsedSince(this.createdAt) : null;
+        this.timeLapsedSinceUpdatedAt = this.updatedAt ? getTimeLapsedSince(this.updatedAt) : null;
 
         // Task parameters information
         this.parametersList = dataCopy.parametersList ?? [];

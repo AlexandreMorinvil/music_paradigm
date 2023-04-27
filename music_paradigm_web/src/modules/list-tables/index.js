@@ -5,6 +5,8 @@ import { ListTableFilter } from './classes/list-table-filter.class';
 import { ListTableFilterCondition } from './classes/list-table-filter-condition.class';
 import { ListTableSelection } from './classes/list-table-selection.class';
 import { ListTableStateBackup } from './classes/list-table-state-backup.class';
+
+import { CurriculumsListTable } from './classes/curriculum-list-table.class';
 import { UsersListTable } from './classes/user-list-table.class';
 
 import { ChainingOperator, ConditionOperator, FilterEffectType } from './interfaces/filter.interfaces';
@@ -21,6 +23,8 @@ export {
     ListTableFilterCondition,
     ListTableSelection,
     ListTableStateBackup,
+
+    CurriculumsListTable,
     UsersListTable,
 
     // Interfaces

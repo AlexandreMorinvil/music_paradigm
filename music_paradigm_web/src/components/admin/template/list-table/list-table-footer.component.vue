@@ -36,7 +36,7 @@ export default {
 			return this.listTable.keptEnitiesCount;
 		},
 		selectedEntitiesCount() {
-			return this.listTableSelection.elementsCount;
+			return this.listTableSelection?.elementsCount ?? 0;
 		},
 		entitiesCountMessage() {
 			if (this.entitiesCount === 0) {

@@ -1,10 +1,10 @@
 export default {
 	indicateFetchingCurriculumList(state) {
-		state.status.isFetchingCurriculumsList = true;
+		state.status.isFetchingCurriculumSummariesList = true;
 	},
 
 	indicateFetchingCurriculumListEnd(state) {
-		state.status.isFetchingCurriculumsList = false;
+		state.status.isFetchingCurriculumSummariesList = false;
 	},
 
 	indicateCreateRequest(state) {

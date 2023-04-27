@@ -7,7 +7,7 @@ import { ListTableStateBackup } from "./list-table-state-backup.class";
 
 export class ListTable {
 
-    constructor(list, ListTableEntityClass, listTableStateBackup = null) {
+    constructor(list, listTableStateBackup = null, ListTableEntityClass = null) {
         this.title = 'List';
         this.ListTableEntityClass = ListTableEntityClass ?? ListTableEntity;
         this.entitiesList = this.convertToTableEntitiesList(list);

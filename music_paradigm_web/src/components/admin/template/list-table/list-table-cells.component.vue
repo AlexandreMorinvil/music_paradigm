@@ -110,14 +110,14 @@ export default {
 			return this.listTable.isColumnUsedForSorting(column);
 		},
 		isInListTableSelection: function (entity) {
-			return this.listTableSelection.includes(entity);
+			return this.listTableSelection?.includes(entity);
 		},
 		toggleAllEntitiesInListTableSelection() {
-			if (this.areAllEntitesInListTableSelection) this.listTableSelection.empty();
-			else this.listTableSelection.addList(this.entitiesList);
+			if (this.areAllEntitesInListTableSelection) this.listTableSelection?.empty();
+			else this.listTableSelection?.addList(this.entitiesList);
 		},
 		toggleEntityInListTableSelection(entity) {
-			this.listTableSelection.toggleSelection(entity);
+			this.listTableSelection?.toggleSelection(entity);
 		},
 		toggleSortForColumn(column) {
 			this.listTable.toggleSortForColumn(column);
@@ -127,7 +127,7 @@ export default {
 		entitiesList: {
 			deep: true,
 			handler: function () {
-				this.listTableSelection.removeIfNotIn(this.entitiesList);
+				this.listTableSelection?.removeIfNotIn(this.entitiesList);
 			}
 		}
 	}
