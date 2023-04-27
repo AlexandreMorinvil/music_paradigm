@@ -1,7 +1,7 @@
 <template>
     <WidgetSubsectionContainer title="General settings">
         <div class="centering">
-            <CurriculumGeneralSettingsFormComponent />
+            <CurriculumGeneralSettingsFieldsetComponent />
         </div>
     </WidgetSubsectionContainer>
 </template>
@@ -9,11 +9,11 @@
 <script>
 import WidgetSubsectionContainer from '@/components/admin/widget-subsection.container.vue';
 
-import CurriculumGeneralSettingsFormComponent from './curriculum-general-settings-form.component.vue';
+import CurriculumGeneralSettingsFieldsetComponent from './curriculum-general-settings-fieldset.component.vue';
 
 export default {
     components: {
-        CurriculumGeneralSettingsFormComponent,
+        CurriculumGeneralSettingsFieldsetComponent,
         WidgetSubsectionContainer,
     },
 };

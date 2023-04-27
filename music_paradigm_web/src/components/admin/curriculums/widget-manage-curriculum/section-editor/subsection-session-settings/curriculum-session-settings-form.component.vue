@@ -1,51 +1,82 @@
 <template>
-	<div class="form-area">
-		<form @submit.prevent="" class="label-input-spacing" v-if="canFormBeDisplayed">
+	<TemplateFieldsetComponent>
 
-			<label for="log-type">Task* </label>
-			<select :class="!taskReference && 'placeholder-option'" name="experiment-reference" v-model="taskReference">
-				<option value="">Select the task of this session</option>
-				<option v-for="(referenceAndName, index) in tasksReferenceAndNameList" :key="index"
-					:value="tasksReferenceAndNameList[index].reference">
-					{{ referenceAndName.fullName }}
-				</option>
-			</select>
+		<TemplateFieldLabelComponent for="task" text="Task" />
+		<TemplateFieldSelectComponent :value="curriculumEditionSessionTaskReference"
+			v-on:edit="editCurriculumEditionSessionTaskReference" isEmptyAccepted
+			:getDisplayedValueFromElement="(tasksReferenceAndName) => tasksReferenceAndName.title"
+			:getOptionValueFromElement="(tasksReferenceAndName) => tasksReferenceAndName.reference"
+			:options="tasksReferenceAndNameList" placeholder="Select the task of this session" />
 
-			<label for="title">Session title </label>
-			<input type="text" v-model="title" name="title" autocomplete="new-title"
-				placeholder="Insert the session title" />
+		<TemplateFieldLabelComponent for="session-title" text="Session title" />
+		<TemplateFieldInputComponent v-bind:value="curriculumEditionSessionTitle"
+			v-on:edit="editCurriculumEditionSessionTitle" :inputAttributes="{
+					type: 'text',
+					name: 'session-title',
+					autocomplete: 'off',
+					placeholder: 'Insert the session title',
+				}" />
 
-			<label for="delay-in-days"> Delay in days </label>
-			<input type="number" v-model="delayInDays" min="0" name="delay-in-days" autocomplete="new-delay"
-				placeholder="Insert the delay before availability" />
+		<TemplateFieldLabelComponent for="delay-in-days" text="Delay preavailability (in days)" />
+		<TemplateFieldInputComponent v-bind:value="curriculumEditionSessionDelayInDays"
+			v-on:edit="editCurriculumEditionSessionDelayInDays" :inputAttributes="{
+					type: 'number',
+					name: 'delay-in-days',
+					autocomplete: 'off',
+					placeholder: 'Insert the delay before availability',
+					min: 0,
+				}" />
 
-			<label for="isUniqueInDay"> Once done, wait next day </label>
-			<input class="checkbox" v-model="isUniqueInDay" name="isUniqueInDay" type="checkbox" />
+		<TemplateFieldLabelComponent for="wait-next-day" text="Once done, wait next day" />
+		<TemplateFieldCheckboxInputComponent v-bind:value="curriculumEditionSessionIsUniqueInDay"
+			v-on:edit="editCurriculumEditionSessionIsUniqueInDay" name="wait-next-day" />
 
-			<label for="isCompletionLimited"> Only one completion </label>
-			<input class="checkbox" v-model="isCompletionLimited" name="isCompletionLimited" type="checkbox" />
+		<TemplateFieldLabelComponent for="is-completion-limited" text="Only one completion" />
+		<TemplateFieldCheckboxInputComponent v-bind:value="curriculumEditionSessionIsCompletionLimited"
+			v-on:edit="editCurriculumEditionSessionIsCompletionLimited" name="is-completion-limited" />
 
-			<label for="text">Text</label>
-			<textarea v-model="text" name="text" row="2" placeholder="Insert a text to display to the user" />
+		<TemplateFieldLabelComponent for="pre-start-text" text="Text to show before starting" />
+		<TemplateFieldTextareaComponent v-bind:value="curriculumEditionSessionText"
+			v-on:edit="editCurriculumEditionSessionText" :textAreaAttributes="{
+					name: 'pre-start-text',
+					placeholder: 'Insert a text to display to the user',
+					rows: 4
+				}" />
 
-			<label for="title">Associative ID </label>
-			<div class="associative-id-input-area">
-				<input type="text" v-model="associativeIdInput" name="title" autocomplete="new-associative-id"
-					placeholder="Insert an associative Id" />
-				<button class="widget-button small blue" :class="isAssociativeIdEdited || 'inactive'"
-					v-on:click="commitAssociativeIdEdition">Edit</button>
-			</div>
-		</form>
-	</div>
+		<TemplateFieldLabelComponent for="associative-id" text="Associative ID (Id of the session)" />
+		<div class="associative-id-input-area">
+			<TemplateFieldInputComponent v-bind:value="associativeIdInput"
+				v-on:edit="(value) => { associativeIdInput = value }" :inputAttributes="{
+						type: 'text',
+						name: 'associative-id',
+						autocomplete: 'off',
+						placeholder: 'Insert an identifier',
+					}" />
+			<button class="widget-button small blue" :class="isAssociativeIdEdited || 'inactive'"
+				v-on:click="commitAssociativeIdEdition">Edit</button>
+		</div>
+	</TemplateFieldsetComponent>
 </template>
 
 <script>
-import '@/styles/form-template.css';
-import '@/styles/widget-template.css';
-
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 
+import TemplateFieldCheckboxInputComponent from '@/components/admin/template/template-field-checkbox-input.component.vue';
+import TemplateFieldInputComponent from '@/components/admin/template/template-field-input.component.vue';
+import TemplateFieldLabelComponent from '@/components/admin/template/template-field-label.component.vue';
+import TemplateFieldSelectComponent from '@/components/admin/template/template-field-select.component.vue';
+import TemplateFieldsetComponent from '@/components/admin/template/template-fieldset.component.vue';
+import TemplateFieldTextareaComponent from '@/components/admin/template/template-field-textarea.component.vue';
+
 export default {
+	components: {
+		TemplateFieldCheckboxInputComponent,
+		TemplateFieldInputComponent,
+		TemplateFieldLabelComponent,
+		TemplateFieldSelectComponent,
+		TemplateFieldsetComponent,
+		TemplateFieldTextareaComponent,
+	},
 	data() {
 		return {
 			associativeIdInput: "",
@@ -62,60 +93,9 @@ export default {
 			'curriculumEditionSessionTaskReference',
 			'curriculumEditionSessionText',
 			'curriculumEditionSessionTitle',
-			'hasCurriculumEditionSelectedSession',
 			'hasAtLeastOneSessionInEditionCurriculum',
 		]),
-		delayInDays: {
-			get() {
-				return this.curriculumEditionSessionDelayInDays;
-			},
-			set(value) {
-				this.editCurriculumEditionSessionDelayInDays(value);
-			},
-		},
-		isCompletionLimited: {
-			get() {
-				return this.curriculumEditionSessionIsCompletionLimited;
-			},
-			set(value) {
-				this.editCurriculumEditionSessionIsCompletionLimited(value);
-			},
-		},
-		isUniqueInDay: {
-			get() {
-				return this.curriculumEditionSessionIsUniqueInDay;
-			},
-			set(value) {
-				this.editCurriculumEditionSessionIsUniqueInDay(value);
-			},
-		},
-		taskReference: {
-			get() {
-				return this.curriculumEditionSessionTaskReference;
-			},
-			set(value) {
-				this.editCurriculumEditionSessionTaskReference(value);
-			},
-		},
-		text: {
-			get() {
-				return this.curriculumEditionSessionText;
-			},
-			set(value) {
-				this.editCurriculumEditionSessionText(value);
-			},
-		},
-		title: {
-			get() {
-				return this.curriculumEditionSessionTitle;
-			},
-			set(value) {
-				this.editCurriculumEditionSessionTitle(value);
-			},
-		},
-		canFormBeDisplayed() {
-			return this.hasCurriculumEditionSelectedSession;
-		},
+		// TODO: Replace once I will have implemented the task summaries list
 		tasksReferenceAndNameList() {
 			const tasksReferenceAndNameList = [];
 			this.experimentsHeadersList.forEach((taskHeader) => {
