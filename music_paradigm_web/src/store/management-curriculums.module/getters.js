@@ -1,3 +1,5 @@
+import _isEqual from 'lodash/isEqual';
+
 export default {
 	curriculumSummariesList: (state) => {
 		return state.curriculumSummariesManager.curriculumSummariesList;
@@ -5,6 +7,13 @@ export default {
 
 	curriculumSummariesManager: (state) => {
 		return state.curriculumSummariesManager;
+	},
+
+	hasEditedCurriculum: (_, getters) => {
+		return !_isEqual(
+			getters['selection/curriculumSelection'],
+			getters['edition/curriculumEdition'],
+		);
 	},
 
 	hasEditedCurriculumTitle: (_, getters) => {

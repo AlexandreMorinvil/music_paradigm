@@ -27,19 +27,19 @@ export default {
     },
     computed: {
         ...mapGetters('managementCurriculums/edition', [
-            'curriculumEditionCurriculum',
+            'curriculumEdition',
         ]),
     },
     methods: {
         updateBoard() {
             this.curriculumDayWorloadList = curriculumDailyWorkload.generateCurriculumDayWorkloadList(
-                this.curriculumEditionCurriculum
+                this.curriculumEdition
             );
             this.$forceUpdate();
         }
     },
     watch: {
-        curriculumEditionCurriculum: {
+        curriculumEdition: {
             deep: true,
             immediate: true,
             handler: function () {

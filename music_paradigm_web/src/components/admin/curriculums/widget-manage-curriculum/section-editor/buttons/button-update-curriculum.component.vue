@@ -1,30 +1,47 @@
 <template>
-    <button v-on:click="handleCurriculumDeletion" class="widget-button blue" :class="isButtonActive || 'inactive'">
-        Update Curriculum
-    </button>
+    <TemplateButtonComponent v-on:click="handleButtonPress" color="blue" :isActive="isButtonActive"
+        :isLoading="isButtonLoading" :isFrozen="isButtonFrozen" v-bind="$attrs" text="Update curriculum" />
 </template>
 
 <script>
-import '@/styles/widget-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
+import TemplateButtonComponent from '@/components/admin/template/template-button.component.vue';
+
 export default {
+    components: {
+        TemplateButtonComponent,
+    },
     computed: {
-        ...mapGetters('managementCurriculums/edition', ['curriculumEditionCurriculum']),
-        ...mapGetters('managementCurriculums/selection', ['curriculumSelectionId', 'hasSelectedCurriculum']),
+        ...mapGetters('managementCurriculums', [
+            'hasEditedCurriculum',
+            'isExecutingCurriculumCommand',
+            'isUpdatingCurriculum',
+        ]),
+        ...mapGetters('managementCurriculums/edition', ['curriculumEdition']),
+        ...mapGetters('managementCurriculums/selection', [
+            'curriculumSelectionId', 
+            'hasSelectedCurriculum'
+        ]),
+        isButtonFrozen() {
+            return !this.isUpdatingCurriculum && this.isExecutingCurriculumCommand; // Has other user command running
+        },
         isButtonActive() {
-            return this.hasSelectedCurriculum;
+            return this.hasSelectedCurriculum && this.hasEditedCurriculum;
+        },
+        isButtonLoading() {
+            return this.isUpdatingCurriculum;
         },
     },
     methods: {
         ...mapActions('managementCurriculums', ['updateCurriculum']),
-        handleCurriculumDeletion() {
+        handleButtonPress() {
             if (!this.isButtonActive) return;
             const answer = window.confirm('Are your sure you want to edit the curriculum?');
             if (answer) {
                 this.updateCurriculum({
                     id: this.curriculumSelectionId,
-                    curriculum: this.curriculumEditionCurriculum,
+                    curriculum: this.curriculumEdition,
                 });
             }
         },

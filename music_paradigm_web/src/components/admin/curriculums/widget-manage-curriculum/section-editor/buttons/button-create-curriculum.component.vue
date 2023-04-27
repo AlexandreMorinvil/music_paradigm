@@ -19,7 +19,7 @@ export default {
             'isExecutingCurriculumCommand',
         ]),
         ...mapGetters('managementCurriculums/edition', [
-            'curriculumEditionCurriculum', 
+            'curriculumEdition', 
             'curriculumEditionTitle',
         ]),
         ...mapGetters('managementCurriculums/selection', ['hasSelectedCurriculum']),
@@ -38,7 +38,7 @@ export default {
         ...mapActions('managementCurriculums', ['createCurriculum']),
         handleButtonPress() {
             if (!this.isButtonActive) return;
-            this.createCurriculum(this.curriculumEditionCurriculum);
+            this.createCurriculum(this.curriculumEdition);
         },
     }
 };

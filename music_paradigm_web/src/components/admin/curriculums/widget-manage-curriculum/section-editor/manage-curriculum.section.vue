@@ -6,9 +6,9 @@
         <SessionSettingsSubsection />
 
         <template v-slot:buttons>
-            <ButtonCreateCurriculumComponent />
-            <ButtonUpdateCurriculumComponent />
-            <ButtonDeleteCurriculumComponent />
+            <ButtonCreateCurriculumComponent hideIfInactive />
+            <ButtonUpdateCurriculumComponent hideIfInactive />
+            <ButtonDeleteCurriculumComponent hideIfInactive />
         </template>
 
     </WidgetSectionContainer>
