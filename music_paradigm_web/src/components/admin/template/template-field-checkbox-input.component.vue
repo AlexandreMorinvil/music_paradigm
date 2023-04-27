@@ -1,5 +1,5 @@
 <template>
-	<input :class="{ 'edited-input': isEdited }" :value="value" :checked="value"
+	<input :class="{ 'edited-input': mustHighlightIfChanged && isEdited }" :value="value" :checked="value"
 		v-on:input="(event) => edit(event.target.value)" type="checkbox" />
 </template>
 
@@ -12,6 +12,10 @@ export default {
 		expectedValue: {
 			type: null,
 			default: null,
+		},
+		mustHighlightIfChanged: {
+			type: Boolean,
+			default: true,
 		},
 		name: {
 			type: String,

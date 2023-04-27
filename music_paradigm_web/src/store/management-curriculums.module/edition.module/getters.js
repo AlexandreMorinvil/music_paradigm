@@ -11,10 +11,6 @@ export default {
 		return state.editionCurriculum.isSequential;
 	},
 
-	curriculumEditionLogType: (state) => {
-		return state.editionCurriculum.logType;
-	},
-
 	curriculumEditionSelectedSessionIndex: (state) => {
 		return state.selectedSessionIndex;
 	},

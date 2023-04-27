@@ -25,16 +25,8 @@ export default {
 		state.isInCurriculumEditionSessionMoveMode = false;
 	},
 
-	editCurriculumEditionLogType(state, logType) {
-		state.editionCurriculum.logType = logType;
-	},
-
 	editCurriculumEditionIsSequential(state, isSequential) {
 		state.editionCurriculum.isSequential = isSequential;
-	},
-
-	editCurriculumEditionCurriculumTasks(state, tasks) {
-		state.editionCurriculum.experiments = tasks;
 	},
 
 	editCurriculumEditionSessionAssociativeId(state, associativeId) {

@@ -1,5 +1,5 @@
 <template>
-	<input class="input-spacing" :class="{ 'edited-text': isEdited }" :value="value"
+	<input class="input-spacing" :class="{ 'edited-text': mustHighlightIfChanged && isEdited }" :value="value"
 		v-on:input="(event) => edit(event.target.value)" v-bind="inputAttributes" type="color" />
 </template>
 
@@ -29,6 +29,10 @@ export default {
 					placeholder: ''
 				}
 			}
+		},
+		mustHighlightIfChanged: {
+			type: Boolean,
+			default: true,
 		},
 		value: {
 			type: null,

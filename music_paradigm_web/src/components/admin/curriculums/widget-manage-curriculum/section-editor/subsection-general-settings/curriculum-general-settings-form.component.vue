@@ -1,98 +1,57 @@
 <template>
-	<div class="form-area">
-		<form @submit.prevent="" class="label-input-spacing">
-			<label for="title">Curriculum title </label>
-			<input type="text" v-model="title" name="title" autocomplete="new-username" placeholder="Insert new title" />
+	<TemplateFieldsetComponent>
+		<TemplateFieldLabelComponent for="title" text="Curriculum title" />
+		<TemplateFieldInputComponent v-bind:value="curriculumEditionTitle" v-on:edit="editCurriculumEditionTitle"
+			:expectedValue="curriculumSelectionTitle" :isNullValid="false" :mustHighlightIfChanged="hasSelectedCurriculum"
+			:inputAttributes="{
+					type: 'text',
+					name: 'title',
+					autocomplete: 'off',
+					placeholder: 'Insert new title',
+				}" />
 
-			<label for="log-type">Data aquisition format</label>
-			<select name="log-type" v-model="logType">
-				<option v-for="(type, index) in logTypeOptions" :key="index" :value="setValidLogType(type)">
-					{{ type }}
-				</option>
-			</select>
-
-			<label for="isSequential"> Delays start after sessions </label>
-			<input class="checkbox" v-model="isSequential" name="isSequential" type="checkbox" />
-		</form>
-	</div>
+		<TemplateFieldLabelComponent for="isSequential" text="Delays start after sessions" />
+		<TemplateFieldCheckboxInputComponent v-bind:value="curriculumEditionIsSequential"
+			v-on:edit="editCurriculumEditionIsSequential" :expectedValue="curriculumSelectionIsSequential"
+			:mustHighlightIfChanged="hasSelectedCurriculum" name="isSequential" />
+	</TemplateFieldsetComponent>
 </template>
 
 <script>
-import '@/styles/form-template.css';
-
 import { mapGetters, mapMutations } from 'vuex';
-import { log } from '@/_helpers';
+
+import TemplateFieldCheckboxInputComponent from '@/components/admin/template/template-field-checkbox-input.component.vue';
+import TemplateFieldInputComponent from '@/components/admin/template/template-field-input.component.vue';
+import TemplateFieldLabelComponent from '@/components/admin/template/template-field-label.component.vue';
+import TemplateFieldsetComponent from '@/components/admin/template/template-fieldset.component.vue';
 
 
 export default {
+	components: {
+		TemplateFieldCheckboxInputComponent,
+		TemplateFieldInputComponent,
+		TemplateFieldLabelComponent,
+		TemplateFieldsetComponent,
+	},
 	computed: {
 		...mapGetters('experiments', ['experimentsHeadersList']),
 		...mapGetters('managementCurriculums/edition', [
 			'curriculumEditionIsSequential',
-			'curriculumEditionLogType',
 			'curriculumEditionTitle',
 		]),
-		isSequential: {
-			get() {
-				return this.curriculumEditionIsSequential;
-			},
-			set(value) {
-				this.editCurriculumEditionIsSequential(value);
-			},
-		},
-		logType: {
-			get() {
-				return this.curriculumEditionLogType;
-			},
-			set(value) {
-				this.editCurriculumEditionLogType(value);
-			},
-		},
-		title: {
-			get() {
-				return this.curriculumEditionTitle;
-			},
-			set(value) {
-				this.editCurriculumEditionTitle(value);
-			},
-		},
-		logTypeOptions() {
-			return log.logTypeOptions;
-		},
+		...mapGetters('managementCurriculums/selection', [
+			'curriculumSelectionIsSequential',
+			'curriculumSelectionTitle',
+			'hasSelectedCurriculum',
+		]),
 	},
 	methods: {
 		...mapMutations('managementCurriculums/edition', [
 			'editCurriculumEditionIsSequential',
-			'editCurriculumEditionLogType',
 			'editCurriculumEditionTitle',
 		]),
-		setValidLogType(logType) {
-			return log.returnValidLogType(logType);
-		},
 	},
 };
 </script>
 
-<style scoped>
-.form-area {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-}
-
-.label-input-spacing {
-	display: grid;
-	gap: 4px;
-	grid-template-columns: 250px 400px;
-}
-
-label {
-	min-width: 250px;
-	white-space: nowrap;
-}
-
-select {
-	min-width: fit-content;
-}
-</style>
+<style scoped></style>

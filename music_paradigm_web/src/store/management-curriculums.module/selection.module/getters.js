@@ -11,10 +11,6 @@ export default {
 		return state.selectionCurriculum.title;
 	},
 
-	curriculumSelectionLogType: (state) => {
-		return state.selectionCurriculum.logType;
-	},
-
 	curriculumSelectionIsSequential: (state) => {
 		return state.selectionCurriculum.isSequential;
 	},

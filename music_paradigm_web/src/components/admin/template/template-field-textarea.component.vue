@@ -1,5 +1,5 @@
 <template>
-	<textarea class="input-spacing" :class="{ 'edited-text': isEdited }" :value="value"
+	<textarea class="input-spacing" :class="{ 'edited-text': mustHighlightIfChanged && isEdited }" :value="value"
 		v-on:input="(event) => edit(event.target.value)" v-bind="textAreaAttributes" />
 </template>
 
@@ -12,6 +12,10 @@ export default {
 		expectedValue: {
 			type: null,
 			default: null,
+		},
+		mustHighlightIfChanged: {
+			type: Boolean,
+			default: true,
 		},
 		textAreaAttributes: {
 			type: Object,

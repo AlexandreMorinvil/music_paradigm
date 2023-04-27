@@ -1,6 +1,8 @@
 <template>
     <WidgetSubsectionContainer title="General settings">
-        <CurriculumGeneralSettingsFormComponent />
+        <div class="centering">
+            <CurriculumGeneralSettingsFormComponent />
+        </div>
     </WidgetSubsectionContainer>
 </template>
 
@@ -18,5 +20,10 @@ export default {
 </script>
 
 <style scoped>
-
+.centering {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 </style>

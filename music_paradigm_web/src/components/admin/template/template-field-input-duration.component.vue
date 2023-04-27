@@ -1,7 +1,7 @@
 <template>
 	<div class="template-field-input-area" v-on:focus="activateEditor">
 		<input class="input-spacing" :class="{
-			'edited-text': isEdited,
+			'edited-text': mustHighlightIfChanged && isEdited,
 			'invalid-input': isInvalid,
 		}" :value="valueToDisplay" v-on:input="(event) => edit(event)" v-on:click="activateEditor" v-bind="inputAttributes"
 			readonly />
@@ -51,6 +51,10 @@ export default {
 			}
 		},
 		isNullValid: {
+			type: Boolean,
+			default: true,
+		},
+		mustHighlightIfChanged: {
 			type: Boolean,
 			default: true,
 		},
