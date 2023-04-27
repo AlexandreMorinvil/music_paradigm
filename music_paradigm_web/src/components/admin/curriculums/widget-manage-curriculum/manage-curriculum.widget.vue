@@ -1,7 +1,7 @@
 <template>
-	<WidgetContentFrameComponent title="Manage User">
+	<WidgetContentFrameComponent title="Manage Curriculum">
 		<div class="widget widget-bg">
-			<UserProfileSection />
+			<ManageCurriculumSection />
 		</div>
 	</WidgetContentFrameComponent>
 </template>
@@ -11,14 +11,13 @@ import '@/styles/widget-template.css';
 
 import WidgetContentFrameComponent from '@/components/content-frame/widget-content-frame.component.vue';
 
-import UserProfileSection from './section-profile/user-profile.section.vue';
+import ManageCurriculumSection from './section-editor/manage-curriculum.section.vue';
 
 export default {
 	components: {
-		UserProfileSection,
+		ManageCurriculumSection,
 		WidgetContentFrameComponent,
 	},
-
 };
 </script>
 
