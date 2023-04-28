@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const CurriculumSummary = require('modules/curriculum/class/curriculum-summary.class');
-const CurriculumTaskParameter = require('modules/curriculum/class/curriculum-task-parameter.class');
+const CurriculumSummary = require('modules/curriculums/class/curriculum-summary.class');
+const CurriculumTaskParameter = require('modules/curriculums/class/curriculum-task-parameter.class');
 const schema = require('./curriculum.middleware');
 
 schema.set('toJSON', { virtuals: true });

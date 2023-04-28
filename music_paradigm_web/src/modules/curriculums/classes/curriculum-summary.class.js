@@ -13,10 +13,13 @@ export class CurriculumSummary {
         this.sessionsList = dataCopy.sessionsList ?? dataCopy.experiments ?? [];
 
         // Timestamps
-        this.createdAt = dataCopy.createdAt;
-        this.updatedAt = dataCopy.updatedAt;
-        this.timeLapsedSinceCreatedAt = dataCopy.timeLapsedSinceCreatedAt;
-        this.timeLapsedSinceUpdatedAt = dataCopy.timeLapsedSinceUpdatedAt;
+        this.createdAt = dataCopy.createdAt ?? null;
+        this.updatedAt = dataCopy.updatedAt ?? null;
+        this.timeLapsedSinceCreatedAt = dataCopy.timeLapsedSinceCreatedAt ?? null;
+        this.timeLapsedSinceUpdatedAt = dataCopy.timeLapsedSinceUpdatedAt ?? null;
+
+        // Progressions with the curriculum
+        this.progressionsInvolvedCount = dataCopy.progressionsInvolvedCount ?? null;
 
         // Task parameters
         this.parametersList = [];

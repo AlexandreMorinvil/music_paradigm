@@ -7,18 +7,18 @@ import { CurrirulumsListTableEntity } from "./curriculum-list-table-entity.class
 
 const possibleColumnsList = [
     new ListTableColumn({
-        key: 'group',
+        key: 'title',
         isAlwaysPresent: true,
         orderPriority: 1,
-        title: 'Group',
+        title: 'Title',
         type: ColumnType.string,
     }),
     new ListTableColumn({
-        key: 'title',
-        isAlwaysPresent: true,
-        orderPriority: 2,
-        title: 'Title',
-        type: ColumnType.string,
+        key: 'progressionsInvolvedCount',
+        isPresentByDefault: true,
+        orderPriority: 3,
+        title: 'Assignments count',
+        type: ColumnType.number,
     }),
     new ListTableColumn({
         key: 'createdAt',
@@ -43,6 +43,7 @@ const possibleColumnsList = [
     new ListTableColumn({
         key: 'sessionsCount',
         isPresentByDefault: true,
+        orderPriority: 2,
         title: 'Sessions count',
         type: ColumnType.number,
     }),

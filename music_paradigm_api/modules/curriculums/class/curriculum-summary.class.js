@@ -18,6 +18,9 @@ module.exports  = class CurriculumSummary {
         this.timeLapsedSinceCreatedAt = this.createdAt ? getTimeLapsedSince(this.createdAt) : null;
         this.timeLapsedSinceUpdatedAt = this.updatedAt ? getTimeLapsedSince(this.updatedAt) : null;
 
+        // Progressions with the curriculum
+        this.progressionsInvolvedCount = dataCopy.progressionsInvolvedList?.length ?? null;
+
         // Task parameters information
         this.parametersList = dataCopy.parametersList ?? [];
     }

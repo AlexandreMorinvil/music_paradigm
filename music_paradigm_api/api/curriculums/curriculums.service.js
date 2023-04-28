@@ -1,6 +1,8 @@
 ﻿const db = require('database/db');
 const CurriculumModel = db.Curriculum;
 
+const { generateCurriculumSummariesList } = require('modules/curriculums/curriculum-summary-generator');
+
 module.exports = {
     createCurriculum,
     deleteCurriculum,
@@ -49,7 +51,7 @@ async function getCurriculumById(id) {
 }
 
 async function getCurriculumSummariesList() {
-    const curriculumSummariesList = await CurriculumModel.getCurriculumSummariesList();
+    const curriculumSummariesList = await generateCurriculumSummariesList();
 
     return {
         summariesList: curriculumSummariesList,
