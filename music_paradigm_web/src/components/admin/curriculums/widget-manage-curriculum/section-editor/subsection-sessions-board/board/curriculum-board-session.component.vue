@@ -30,15 +30,15 @@
 <script>
 import '@/styles/color-palette.css';
 
-import { curriculumGenerator, curriculumSessionValidator } from '@/modules/curriculums';
+import { CurriculumSession, curriculumSessionValidator } from '@/modules/curriculums';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
     props: {
         curriculumSession: {
-            type: Object,
+            type: CurriculumSession,
             default() {
-                return curriculumGenerator.GENERATE_BLANK_CURRICULUM_SESSION();
+                return new CurriculumSession();
             }
         },
         index: {

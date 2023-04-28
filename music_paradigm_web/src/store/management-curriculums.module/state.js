@@ -1,4 +1,4 @@
-import { curriculumGenerator, CurriculumSummariesManager } from '@/modules/curriculums';
+import { Curriculum, CurriculumSummariesManager } from '@/modules/curriculums';
 
 export default {
 	status: {
@@ -8,6 +8,5 @@ export default {
 		isFetchingCurriculumSummariesList: false,
 		isUpdatingCurriculum: false,
 	},
-	selection: curriculumGenerator.GENERATE_BLANK_CURRICULUM(),
 	curriculumSummariesManager: new CurriculumSummariesManager(),
 };

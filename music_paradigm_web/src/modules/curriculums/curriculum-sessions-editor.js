@@ -1,4 +1,4 @@
-import curriculumGenerator from './curriculum-generator';
+import CurriculumSession from './classes/curriculum-session.class';
 
 export default {
 	addCurriculumSessionToList,
@@ -10,9 +10,9 @@ export default {
 
 function addCurriculumSessionToList(curriculumSessionsList, indexCurriculumSession, isAddedBefore = true) {
 	const generateRandomString = () => (Math.random() + 1).toString(36).substring(8);
-	const newCurriculumSession = curriculumGenerator.GENERATE_BLANK_CURRICULUM_SESSION(
-		`session_${generateRandomString()}`
-	);
+	const newCurriculumSession = new CurriculumSession({
+		associativeId: `session_${generateRandomString()}`,
+	});
 	if (isAddedBefore)
 		curriculumSessionsList.splice(indexCurriculumSession, 0, newCurriculumSession);
 	else

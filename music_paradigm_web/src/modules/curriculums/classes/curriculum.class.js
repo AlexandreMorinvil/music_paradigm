@@ -3,12 +3,12 @@ import { CurriculumSession } from './curriculum-session.class';
 
 export class Curriculum {
     constructor(data = {}) {
-        const dataCopy = JSON.parse(JSON.stringify(user ?? {}));
+        const dataCopy = JSON.parse(JSON.stringify(data ?? {}));
 
         this._id = dataCopy._id ?? null;
         this.title = dataCopy.title ?? '';
 		this.logType = dataCopy.logType ?? log.defaultLogType;
-		this.isSequential = dataCopy.logType ?? true;
+		this.isSequential = dataCopy.isSequential ?? true;
 		this.experiments = this.generateCurriculumSessions(dataCopy.experiments ?? null);
     }
 
