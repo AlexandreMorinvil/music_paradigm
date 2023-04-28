@@ -3,32 +3,16 @@ import { logsQuery } from '@/_helpers';
 
 export default {
 	// Clearing
-	clearUserSimpleLogSummaryList({ commit }) {
-		commit('clearUserSimpleLogs');
-	},
-
 	clearUserThoroughLogSummaryList({ commit }) {
 		commit('clearUserThoroughLogs');
-	},
-
-	clearAdminSimpleLogSummaryList({ commit }) {
-		commit('clearAdminSimpleLogs');
 	},
 
 	clearAdminThoroughLogSummaryList({ commit }) {
 		commit('clearAdminThoroughLogs');
 	},
 
-	clearSelectedUserSimpleLog({ commit }) {
-		commit('clearSelectedUserSimpleLog');
-	},
-
 	clearSelectedUserThoroughLog({ commit }) {
 		commit('clearSelectedUserThoroughLog');
-	},
-
-	clearSelectedAdminSimpleLog({ commit }) {
-		commit('clearSelectedAdminSimpleLog');
 	},
 
 	clearSelectedAdminThoroughLog({ commit }) {
@@ -36,19 +20,6 @@ export default {
 	},
 
 	// Log selection
-	getSpecificUserSimpleLog({ commit, dispatch }, logId) {
-		return logsApi
-			.getSpecificUserSimpleLog(logId)
-			.then(
-				(log) => {
-					commit('setSelectedUserSimpleLog', log);
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', `User simple log fetch failed : ${error.message}`, { root: true });
-				}
-			);
-	},
-
 	getSpecificUserThoroughLog({ commit, dispatch }, logId) {
 		return logsApi
 			.getSpecificUserThoroughLog(logId)
@@ -58,19 +29,6 @@ export default {
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', `User thorough log fetch failed : ${error.message}`, { root: true });
-				}
-			);
-	},
-
-	getSpecificAdminSimpleLog({ commit, dispatch }, logId) {
-		return logsApi
-			.getSpecificAdminSimpleLog(logId)
-			.then(
-				(log) => {
-					commit('setSelectedAdminSimpleLog', log);
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', `Admin simple log fetch failed : ${error.message}`, { root: true });
 				}
 			);
 	},
@@ -89,24 +47,6 @@ export default {
 	},
 
 	// Summary lists
-	getUserSimpleLogSummaryList({ commit, dispatch }, rules) {
-		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
-		commit('indicateLoadingUserSimpleLogList');
-		return logsApi
-			.getUserSimpleLogSummaryList(criterias)
-			.then(
-				(summarylist) => {
-					commit('setUserSimpleLogList', summarylist);
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', `User simple logs list fetch failed : ${error.message}`, { root: true });
-				},
-			)
-			.finally(() => {
-				commit('indicateLoadingUserSimpleLogListEnd');
-			});
-	},
-
 	getUserThoroughLogSummaryList({ commit, dispatch }, rules) {
 		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
 		commit('indicateLoadingUserThoroughLogList');
@@ -122,24 +62,6 @@ export default {
 			)
 			.finally(() => {
 				commit('indicateLoadingUserThoroughLogListEnd');
-			});
-	},
-
-	getAdminSimpleLogSummaryList({ commit, dispatch }, rules) {
-		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
-		commit('indicateLoadingAdminSimpleLogList');
-		return logsApi
-			.getAdminSimpleLogSummaryList(criterias)
-			.then(
-				(summarylist) => {
-					commit('setAdminSimpleLogList', summarylist);
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', `Admin simple logs list fetch failed : ${error.message}`, { root: true });
-				},
-			)
-			.finally(() => {
-				commit('indicateLoadingAdminSimpleLogListEnd');
 			});
 	},
 
@@ -162,24 +84,6 @@ export default {
 	},
 
 	// Basic CSV fetching
-	downloadUserSimpleLogCSV({ commit, dispatch }, rules) {
-		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
-		commit('indicateIsDownloading');
-		return logsApi
-			.getUserSimpleLogCsv(criterias)
-			.then(
-				() => {
-					dispatch('alert/setInformationAlert', 'Simple log CSV file generated and retreived sucessfully', { root: true });
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', `User simple logs CSV download failed : ${error.message}`, { root: true });
-				},
-			)
-			.finally(() => {
-				commit('indicateIsDownloadingEnd');
-			});
-	},
-
 	downloadUserThoroughLogCSV({ commit, dispatch }, rules) {
 		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
 		commit('indicateIsDownloading');
@@ -191,24 +95,6 @@ export default {
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', `User thorough logs CSV download failed : ${error.message}`, { root: true });
-				},
-			)
-			.finally(() => {
-				commit('indicateIsDownloadingEnd');
-			});
-	},
-
-	downloadAdminSimpleLogCSV({ commit, dispatch }, rules) {
-		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
-		commit('indicateIsDownloading');
-		return logsApi
-			.getAdminSimpleLogCsv(criterias)
-			.then(
-				() => {
-					dispatch('alert/setInformationAlert', 'Admin simple log CSV file generated and retreived sucessfully', { root: true });
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', `Admin simple logs CSV download failed : ${error.message}`, { root: true });
 				},
 			)
 			.finally(() => {
@@ -272,24 +158,6 @@ export default {
 	},
 
 	// JSON fetching
-	downloadUserSimpleLogJson({ commit, dispatch }, rules) {
-		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
-		commit('indicateIsDownloading');
-		return logsApi
-			.getUserSimpleLogJson(criterias)
-			.then(
-				() => {
-					dispatch('alert/setInformationAlert', 'Simple log JSON file generated and retreived sucessfully', { root: true });
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', `User simple logs JSON download failed : ${error.message}`, { root: true });
-				},
-			)
-			.finally(() => {
-				commit('indicateIsDownloadingEnd');
-			});
-	},
-
 	downloadUserThoroughLogJson({ commit, dispatch }, rules) {
 		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
 		commit('indicateIsDownloading');
@@ -301,24 +169,6 @@ export default {
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', `User simple logs JSON download failed : ${error.message}`, { root: true });
-				},
-			)
-			.finally(() => {
-				commit('indicateIsDownloadingEnd');
-			});
-	},
-
-	downloadAdminSimpleLogJson({ commit, dispatch }, rules) {
-		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
-		commit('indicateIsDownloading');
-		return logsApi
-			.getAdminSimpleLogJson(criterias)
-			.then(
-				() => {
-					dispatch('alert/setInformationAlert', 'Admin simple log JSON file generated and retreived sucessfully', { root: true });
-				},
-				(error) => {
-					dispatch('alert/setErrorAlert', `Admin simple logs JSON download failed : ${error.message}`, { root: true });
 				},
 			)
 			.finally(() => {

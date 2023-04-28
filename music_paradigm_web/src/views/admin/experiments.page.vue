@@ -8,14 +8,15 @@
 			<experiments-launcher-widget />
 		</widget-content-frame>
 
-		<widget-content-frame :isShownInitial="false" title="Administrators Experiments Logs">
+		<widget-content-frame title="Administrators Task Data">
 			<experiments-admin-logs-widget />
 		</widget-content-frame>
 
-		<widget-content-frame :isShownInitial="false" title="Users Experiements Logs">
+		<widget-content-frame title="Users Task Data">
 			<experiments-users-logs-widget />
 		</widget-content-frame>
 
+		<TasksDataWidget />
 		<widget-content-frame title="Tasks List">
 			<tasks-list-widget />
 		</widget-content-frame>
@@ -24,12 +25,14 @@
 
 <script>
 import AdminPageContentFrame from '@/components/content-frame/admin-page-content-frame.component.vue';
-import ExperimentsEditor from '@/components/admin/experiments/ExperimentsEditorWidget.vue';
+import ExperimentsEditor from '@/components/admin/tasks/ExperimentsEditorWidget.vue';
 
-import ExperimentsAdminLogsWidget from '@/components/admin/experiments/widget-admin-logs/experiments-admin-logs.widget.vue';
-import ExperimentsLauncherWidget from '@/components/admin/experiments/widget-launcher/experiments-launcher.widget.vue';
-import TasksListWidget from '@/components/admin/experiments/widget-list/tasks-list.widget.vue';
-import ExperimentsUsersLogsWidget from '@/components/admin/experiments/widget-users-logs/experiments-users-logs.widget.vue';
+import ExperimentsAdminLogsWidget from '@/components/admin/tasks/widget-admin-logs/experiments-admin-logs.widget.vue';
+import ExperimentsLauncherWidget from '@/components/admin/tasks/widget-launcher/experiments-launcher.widget.vue';
+import TasksDataWidget from '@/components/admin/tasks/widget-task-data/task-data.widget.vue';
+import TasksListWidget from '@/components/admin/tasks/widget-list/tasks-list.widget.vue';
+
+import ExperimentsUsersLogsWidget from '@/components/admin/tasks/widget-users-logs/experiments-users-logs.widget.vue';
 import WidgetContentFrame from '@/components/content-frame/widget-content-frame.component.vue';
 
 export default {
@@ -40,6 +43,7 @@ export default {
 		ExperimentsLauncherWidget,
 		ExperimentsAdminLogsWidget,
 		ExperimentsUsersLogsWidget,
+		TasksDataWidget,
 		TasksListWidget,
 	},
 };

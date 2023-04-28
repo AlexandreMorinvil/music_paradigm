@@ -49,7 +49,7 @@ const schema = new Schema(
         logType: {
             type: String,
             required: true,
-            enum: ["none" ,"simple", "thorough"],
+            enum: ["none", "thorough"],
             default: "thorough"
         },
 

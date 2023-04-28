@@ -18,11 +18,6 @@ schema.pre('remove', function (next) {
         .exec();
         
     // Delete the logs that possess the progression ID concerned
-    const LogSimple = require('database/models/log-simple/log-simple.model').model;
-    LogSimple
-        .deleteMany({ progressionId: this._id })
-        .exec();
-
     const LogThorough = require('database/models/log-thorough/log-thorough.model').model;
     LogThorough
         .deleteMany({ progressionId: this._id })

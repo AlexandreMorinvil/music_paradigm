@@ -11,22 +11,6 @@ export default {
 		commit('clearLogSpecifications');
 	},
 
-	addSimmpleLogBlock({ commit }) {
-		const block = logFormat.makeSimpleLogBlock();
-		commit('indicateAddBlockRequest');
-		return logApi
-			.addSimpleLogBlock(block)
-			.then(
-				() => {
-					// Nothing is done
-				},
-				(error) => {
-					console.log(error);
-				},
-			)
-			.finally(() => commit('indicateAddBlockRequestEnd'));
-	},
-
 	initializeThoroughLog({ commit }) {
 		const logHeader = logFormat.makeThoroughLogHeader();
 		commit('indicateInitializeLogRequest');
