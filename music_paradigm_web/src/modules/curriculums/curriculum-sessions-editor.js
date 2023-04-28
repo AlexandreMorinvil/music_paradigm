@@ -1,4 +1,4 @@
-import CurriculumSession from './classes/curriculum-session.class';
+import { CurriculumSession } from './classes/curriculum-session.class';
 
 export default {
 	addCurriculumSessionToList,

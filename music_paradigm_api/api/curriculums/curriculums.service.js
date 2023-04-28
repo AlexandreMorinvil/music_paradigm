@@ -1,71 +1,68 @@
 ﻿const db = require('database/db');
-const Curriculum = db.Curriculum;
+const CurriculumModel = db.Curriculum;
 
 module.exports = {
-    create,
+    createCurriculum,
+    deleteCurriculum,
+    getCurriculumById,
     getCurriculumSummariesList,
-    getById,
-    update,
-    delete: _delete
+    updateCurriculum,
 };
 
-async function getCurriculumSummariesList() {
+async function createCurriculum(curriculumParameters) {
     try {
-        return await Curriculum.getCurriculumSummariesList();
-    } catch (err) {
-        throw err;
-    }
-}
+        const curriculumCreated = await CurriculumModel.createCurriculum(curriculumParameters);
 
-async function getById(id) {
-    try {
-        return await Curriculum.findById(id);
+        return {
+            curriculum: curriculumCreated,
+        };
     } catch (err) {
-        throw err;
-    }
-}
-
-async function create(curriculumParameters) {
-    try {
-        const curriculum = new Curriculum(curriculumParameters);
-        return await curriculum.save();
-    } catch (err) {
-        // Add a cast error in the error answer handlinf as Mongoose doesn't allow custom cast error messages 
+        // Add a cast error in the error answer handling as Mongoose doesn't allow custom cast error messages 
+        console.log(err);
         if (err.errors)
             Object.values(err.errors)
                 .filter(fieldError => fieldError.name === 'CastError')
                 .forEach(() => {
-                    err.message = "A task must be specified for all sessions";
+                    err = new Error("A task must be specified for all sessions");
                 });
-        else if (err.errmsg)
-            if (err.errmsg.includes("1100")) err.message = "A curriculum with this title already exists";
-            
+        
+        else if (err?.errmsg?.includes("1100"))
+            throw new Error("A curriculum with this title already exists");
+
         throw err;
     }
 }
 
-async function update(id, updatedCurriculum) {
-    try {
-        // Retreive the experiemtn to update
-        const curriculum = await Curriculum.findById(id);
-        if (!curriculum) throw new Error('Curriculum to update not found');
+async function deleteCurriculum(id) {
+    const curriculum = await CurriculumModel.findById(id);
+    if (!curriculum) throw new Error('Curriculum to delete not found');
 
-        // Update the experiment
-        curriculum.update(updatedCurriculum);
-        return curriculum.save();
-    }
-    catch (err) {
-        throw err;
-    }
+    return await curriculum.remove();
 }
 
-async function _delete(id) {
-    try {
-        const curriculum = await Curriculum.findById(id);
-        if (!curriculum) throw new Error('Curriculum to delete not found');
+async function getCurriculumById(id) {
+    const curriculum = await CurriculumModel.findById(id);
 
-        return await curriculum.remove();
-    } catch (err) {
-        throw err;
-    }
+    return {
+        curriculum,
+    };
+}
+
+async function getCurriculumSummariesList() {
+    const curriculumSummariesList = await CurriculumModel.getCurriculumSummariesList();
+
+    return {
+        summariesList: curriculumSummariesList,
+    };
+}
+
+async function updateCurriculum(id, updatedCurriculum) {
+    const curriculum = await CurriculumModel.findById(id);
+    if (!curriculum) throw new Error('Curriculum to update not found');
+
+    const curriculumUpdated = await curriculum.update(updatedCurriculum);
+
+    return {
+        curriculum: curriculumUpdated,
+    };
 }

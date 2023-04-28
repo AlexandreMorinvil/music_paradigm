@@ -65,10 +65,11 @@ export default {
 	fetchUserSummariesList({ commit, dispatch }) {
 		commit('indicateFetchingUserList', true);
 		return usersApi
-			.getListAllSummaries()
+			.getUserSummariesList()
 			.then(
-				(userSummariesList) => {
-					commit('setUserSummariesList', userSummariesList);
+				(response) => {
+					const { summariesList } = response;
+					commit('setUserSummariesList', summariesList);
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });

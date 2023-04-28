@@ -9,8 +9,8 @@ const progressionsService = require('../progressions/progressions.service');
 module.exports = {
     createUser,
     createUserWithCurriculum,
-    getAll,
     getUserById,
+    getUserSummariesList,
     getExistingUserGroupsList,
     deleteUser,
     updateUserProfile,
@@ -43,8 +43,11 @@ async function createUserWithCurriculum(user, curriculumId, assignedParameters) 
     };
 }
 
-async function getAll() {
-    return await generateUserSummariesList();
+async function getUserSummariesList() {
+    const usersSummariesList = await generateUserSummariesList();
+    return {
+        summariesList: usersSummariesList,
+    } 
 }
 
 async function getUserById(userId) {

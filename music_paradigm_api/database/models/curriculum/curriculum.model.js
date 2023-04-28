@@ -8,6 +8,13 @@ schema.set('toJSON', { virtuals: true });
 
 // Static methods
 
+schema.statics.createCurriculum = async function (curriculum) {
+    const { _id, id, ...curriculumToCreate } = curriculum;
+    curriculumToCreate.createdAt = Date.now();
+    const curriculumCreated = new model(curriculumToCreate);
+    return curriculumCreated.save();
+};
+
 /**
  * Get curriculum list entries list
  * This function returns  a list of all the the curriculum list entries. A curriculum list entry is a curriculum objects
@@ -54,11 +61,9 @@ schema.methods.getExperimentAssociated = function (associativeId) {
 
 schema.methods.update = async function (updatedCurriculum) {
     if (updatedCurriculum.hasOwnProperty('title')) this.title = updatedCurriculum.title;
-    if (updatedCurriculum.hasOwnProperty('logType')) this.logType = updatedCurriculum.logType;
     if (updatedCurriculum.hasOwnProperty('isSequential')) this.isSequential = updatedCurriculum.isSequential;
     if (updatedCurriculum.hasOwnProperty('experiments')) this.experiments = updatedCurriculum.experiments;
-
-    return this;
+    return this.save();
 };
 
 /**

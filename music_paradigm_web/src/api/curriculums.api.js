@@ -39,7 +39,7 @@ function getCurriculumById(id) {
 		method: 'GET',
 		headers: authHeader(),
 	};
-	return fetch(url.curriculums(id), requestOptions).then(defaultResponseHandler);
+	return fetch(url.curriculums(['get-by-id', id]), requestOptions).then(defaultResponseHandler);
 }
 
 function updateCurriculum(id, curriculum) {

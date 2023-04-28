@@ -1,4 +1,4 @@
-import { Curriculum, CurriculumSummariesManager } from '@/modules/curriculums';
+import { CurriculumSummariesManager } from '@/modules/curriculums';
 
 export default {
 	status: {
