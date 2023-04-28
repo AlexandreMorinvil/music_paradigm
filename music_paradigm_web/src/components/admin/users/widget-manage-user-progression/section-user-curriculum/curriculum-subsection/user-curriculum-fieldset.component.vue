@@ -5,7 +5,7 @@
             :value="userProgressionEditionCurriculumReference"
             :expectedValue="userProgressionSelectionCurriculumReference"
             v-on:edit="editUserProgressionEditionCurriculumReference"
-            :isEmptyAccepted="true"
+            isEmptyAccepted
             :isLoading="isFetchingCurriculumSummariesList"
             :getDisplayedValueFromElement="(curriculumSummary) => curriculumSummary.title"
             :getOptionValueFromElement="(curriculumSummary) => curriculumSummary._id" :options="curriculumSummariesList"

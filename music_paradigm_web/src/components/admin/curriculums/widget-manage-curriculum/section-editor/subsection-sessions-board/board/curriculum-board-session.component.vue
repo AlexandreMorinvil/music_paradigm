@@ -90,10 +90,6 @@ export default {
             return this.curriculumSession.associativeId === this.curriculumEditionSessionAssociativeId;
         },
 
-        releaseTime() {
-            return this.curriculumSession.releaseTime || 0;
-        },
-
         taskName() {
             const taskReference = this.curriculumSession.experimentReference;
             const taskHeader = this.taskHeaderForReference(taskReference);

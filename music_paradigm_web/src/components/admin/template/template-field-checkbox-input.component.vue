@@ -46,5 +46,7 @@ export default {
 input {
 	height: 30px;
 	width: 30px;
+	margin-bottom: auto;
+	margin-top: auto;
 }
 </style>

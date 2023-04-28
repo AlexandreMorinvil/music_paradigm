@@ -1,10 +1,9 @@
 <template>
 	<TemplateFieldsetComponent>
-
 		<TemplateFieldLabelComponent for="task" text="Task" />
 		<TemplateFieldSelectComponent :value="curriculumEditionSessionTaskReference"
 			v-on:edit="editCurriculumEditionSessionTaskReference" isEmptyAccepted
-			:getDisplayedValueFromElement="(tasksReferenceAndName) => tasksReferenceAndName.title"
+			:getDisplayedValueFromElement="(tasksReferenceAndName) => tasksReferenceAndName.fullName"
 			:getOptionValueFromElement="(tasksReferenceAndName) => tasksReferenceAndName.reference"
 			:options="tasksReferenceAndNameList" placeholder="Select the task of this session" />
 
@@ -93,7 +92,6 @@ export default {
 			'curriculumEditionSessionTaskReference',
 			'curriculumEditionSessionText',
 			'curriculumEditionSessionTitle',
-			'hasAtLeastOneSessionInEditionCurriculum',
 		]),
 		// TODO: Replace once I will have implemented the task summaries list
 		tasksReferenceAndNameList() {
@@ -153,28 +151,5 @@ export default {
 .associative-id-input-area {
 	display: grid;
 	grid-template-columns: 4fr 1fr;
-}
-
-.label-input-spacing {
-	display: grid;
-	gap: 4px;
-	grid-template-columns: 250px 400px;
-}
-
-.placeholder-option {
-	color: grey;
-}
-
-label {
-	min-width: 250px;
-	white-space: nowrap;
-}
-
-option {
-	color: black;
-}
-
-select {
-	min-width: fit-content;
 }
 </style>

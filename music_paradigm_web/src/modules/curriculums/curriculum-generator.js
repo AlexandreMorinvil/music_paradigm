@@ -19,10 +19,9 @@ function GENERATE_BLANK_CURRICULUM_SESSION(associativeId = "id0") {
 	return {
 		associativeId: associativeId,
 		associativeIdOrdinalNumber: 0,
-		experimentReference: '',
+		experimentReference: null,
 		title: '',
 		delayInDays: 0,
-		releaseTime: '00:00',
 		isUniqueInDay: false,
 		isCompletionLimited: true,
 		text: '',
