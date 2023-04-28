@@ -1,6 +1,6 @@
 <template>
     <WidgetSubsectionContainer title="Session settings">
-        <div v-if="canEditorBeDisplayed" class="session-settings-area">
+        <div class="session-settings-area">
             <CurriculumSessionSettingsFormComponent />
         </div>
     </WidgetSubsectionContainer>
@@ -8,7 +8,6 @@
 
 <script>
 import WidgetSubsectionContainer from '@/components/admin/widget-subsection.container.vue';
-import { mapGetters } from 'vuex';
 
 import CurriculumSessionSettingsFormComponent from './curriculum-session-settings-form.component.vue';
 
@@ -17,12 +16,6 @@ export default {
         CurriculumSessionSettingsFormComponent,
         WidgetSubsectionContainer,
     },
-    computed: {
-        ...mapGetters('managementCurriculums/edition', ['hasCurriculumEditionSelectedSession']),
-        canEditorBeDisplayed() {
-			return this.hasCurriculumEditionSelectedSession;
-		},
-    }
 };
 </script>
 

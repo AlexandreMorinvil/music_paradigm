@@ -3,7 +3,7 @@
 
         <GeneralSettingsSubSection />
         <SessionsOverviewBoardSubsection />
-        <SessionSettingsSubsection />
+        <SessionSettingsSubsection v-if="hasSelectedSession" />
 
         <template v-slot:buttons>
             <ButtonCreateCurriculumComponent hideIfInactive />
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 import WidgetSectionContainer from '@/components/admin/widget-section.container.vue';
 
@@ -35,6 +35,12 @@ export default {
         SessionsOverviewBoardSubsection,
         SessionSettingsSubsection,
         WidgetSectionContainer,
+    },
+    computed: {
+        ...mapGetters('managementCurriculums/edition', ['hasCurriculumEditionSelectedSession']),
+        hasSelectedSession() {
+            return this.hasCurriculumEditionSelectedSession;
+        },
     },
     methods: {
         ...mapActions('experiments', ['fetchAllExperimentsHeaders']),
