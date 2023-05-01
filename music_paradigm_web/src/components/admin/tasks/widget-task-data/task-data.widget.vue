@@ -1,5 +1,5 @@
 <template>
-	<WidgetContentFrameComponent title="Task Data">
+	<WidgetContentFrameComponent title="Task Data Entries List">
 		<div class="widget widget-bg">
 			<TaskDataListSection />
 		</div>

@@ -17,11 +17,11 @@ export const logsApi = {
 	getAdminThoroughLogJson,
 };
 
-function getTaskDataSummariesList(criterias) {
+function getTaskDataSummariesList(criteria) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify({ criterias }),
+		body: JSON.stringify({ criteria }),
 	};
 	return fetch(url.taskData('get-summaries-list'), requestOptions).then(defaultResponseHandler);
 }

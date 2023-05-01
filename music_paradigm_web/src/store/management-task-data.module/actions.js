@@ -1,10 +1,9 @@
 import { logsApi } from '@/api';
-import { logsQuery } from '@/_helpers';
+import { taskDataQueryHandler } from '@/modules/task-data';
 
 export default {
 
-	fetchTaskDataSummariesList({ commit, dispatch }, rules) {
-		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+	fetchTaskDataSummariesList({ commit, dispatch }, criterias = {}) {
 		commit('indicateFetchingTaskDataSummariesList', true);
 		return logsApi
 			.getTaskDataSummariesList(criterias)
@@ -23,7 +22,7 @@ export default {
 	},
 
 	// getAdminThoroughLogSummaryList({ commit, dispatch }, rules) {
-	// 	const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+	// 	const criterias = taskDataQueryHandler.makeTaskDataQueryCriteriaList(rules);
 	// 	commit('indicateLoadingAdminThoroughLogList');
 	// 	return logsApi
 	// 		.getAdminThoroughLogSummaryList(criterias)
@@ -87,7 +86,7 @@ export default {
 
 	// Summary lists
 	getUserThoroughLogSummaryList({ commit, dispatch }, rules) {
-		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+		const criterias = taskDataQueryHandler.makeTaskDataQueryCriteriaList(rules);
 		commit('indicateLoadingUserThoroughLogList');
 		return logsApi
 			.getUserThoroughLogSummaryList(criterias)
@@ -105,7 +104,7 @@ export default {
 	},
 
 	getAdminThoroughLogSummaryList({ commit, dispatch }, rules) {
-		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+		const criterias = taskDataQueryHandler.makeTaskDataQueryCriteriaList(rules);
 		commit('indicateLoadingAdminThoroughLogList');
 		return logsApi
 			.getAdminThoroughLogSummaryList(criterias)
@@ -124,7 +123,7 @@ export default {
 
 	// Basic CSV fetching
 	downloadUserThoroughLogCSV({ commit, dispatch }, rules) {
-		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+		const criterias = taskDataQueryHandler.makeTaskDataQueryCriteriaList(rules);
 		commit('indicateIsDownloading');
 		return logsApi
 			.getUserThoroughLogCsv(criterias)
@@ -142,7 +141,7 @@ export default {
 	},
 
 	downloadAdminThoroughLogCSV({ commit, dispatch }, rules) {
-		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+		const criterias = taskDataQueryHandler.makeTaskDataQueryCriteriaList(rules);
 		commit('indicateIsDownloading');
 		return logsApi
 			.getAdminThoroughLogCsv(criterias)
@@ -161,7 +160,7 @@ export default {
 
 	// Unwound CSV fetchin
 	downloadUserThoroughLogUnwoundCSV({ commit, dispatch }, rules) {
-		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+		const criterias = taskDataQueryHandler.makeTaskDataQueryCriteriaList(rules);
 		commit('indicateIsDownloading');
 		return logsApi
 			.getUserThoroughLogUnwoundCsv(criterias)
@@ -179,7 +178,7 @@ export default {
 	},
 
 	downloadAdminThoroughLogUnwoundCSV({ commit, dispatch }, rules) {
-		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+		const criterias = taskDataQueryHandler.makeTaskDataQueryCriteriaList(rules);
 		commit('indicateIsDownloading');
 		return logsApi
 			.getAdminThoroughLogUnwoundCsv(criterias)
@@ -198,7 +197,7 @@ export default {
 
 	// JSON fetching
 	downloadUserThoroughLogJson({ commit, dispatch }, rules) {
-		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+		const criterias = taskDataQueryHandler.makeTaskDataQueryCriteriaList(rules);
 		commit('indicateIsDownloading');
 		return logsApi
 			.getUserThoroughLogJson(criterias)
@@ -216,7 +215,7 @@ export default {
 	},
 
 	downloadAdminThoroughLogJson({ commit, dispatch }, rules) {
-		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+		const criterias = taskDataQueryHandler.makeTaskDataQueryCriteriaList(rules);
 		commit('indicateIsDownloading');
 		return logsApi
 			.getAdminThoroughLogJson(criterias)

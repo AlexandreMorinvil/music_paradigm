@@ -26,6 +26,10 @@ export default {
 			type: String,
 			default: 'task-management-task-data-list',
 		},
+		taskDataQueryCriteria: {
+			type: Object,
+			default: 'task-management-task-data-list',
+		},
 	},
 	computed: {
 		...mapGetters('pageStatus', ['listTableState']),
@@ -53,6 +57,9 @@ export default {
 	methods: {
 		...mapActions('pageStatus', ['saveListTableState']),
 		...mapActions('managementTaskData', ['fetchTaskDataSummariesList']),
+		refreshFunction() {
+			this.fetchTaskDataSummariesList(this.taskDataQueryCriteria);
+		},
 		saveBackupFunction(listTableStateBackup) {
 			this.saveListTableState({
 				listTableId: this.listTableId,
@@ -62,6 +69,14 @@ export default {
 	},
 	beforeMount() {
 		this.fetchTaskDataSummariesList();
+	},
+	watch: {
+		taskDataQueryCriteria: {
+			deep: true,
+			handler: function() {
+				this.refreshFunction();
+			},
+		},
 	},
 };
 </script>

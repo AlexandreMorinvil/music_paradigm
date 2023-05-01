@@ -1,18 +1,22 @@
 <template>
     <WidgetSectionContainer title="Task Data Entries List">
-        <TaskDataListTableComponent />
+        <TaskSpecificTaskDataListTableComponent :taskReference="selectedId" />
     </WidgetSectionContainer>
 </template>
 
 <script>
-import WidgetSectionContainer from '@/components/admin/widget-section.container.vue';
+import { mapGetters } from 'vuex';
 
-import TaskDataListTableComponent from './task-data-list-table/task-data-list-table.component.vue';
+import TaskSpecificTaskDataListTableComponent from '@/components/admin/task-data/list-table/task-specific-task-data-list-table.component';
+import WidgetSectionContainer from '@/components/admin/widget-section.container.vue';
 
 export default {
     components: {
-        TaskDataListTableComponent,
+        TaskSpecificTaskDataListTableComponent,
         WidgetSectionContainer,
+    },
+    computed: {
+        ...mapGetters('experiments', ['selectedId']), // TODO : Rename when the task logic will be adjusted.
     },
 };
 </script>

@@ -2,42 +2,42 @@ const mongoose = require("mongoose");
 
 // Exports
 module.exports = {
-    makeMongooseLogQuery,
+    makeMongooseTaskDataQuery,
 };
 
-function makeMongooseLogQuery(criterias) {
+function makeMongooseTaskDataQuery(criterias) {
     const {
-        userCriterias,
-        progressionCriterias,
-        associativeIdCriterias,
-        logLabelCriterias,
-        completionCountCriterias,
-        curriculumCriterias,
-        experimentCriterias,
-        datesCriterias,
-        specificChoiceCriterias,
+        userCriteria,
+        progressionCriteria,
+        associativeIdCriteria,
+        logLabelCriteria,
+        completionCountCriteria,
+        curriculumCriteria,
+        experimentCriteria,
+        datesCriteria,
+        specificChoiceCriteria,
     } = criterias;
 
     const filters = {};
-    Object.assign(filters, makeUserMongooseFilters(userCriterias));
-    Object.assign(filters, makeProgressionMongooseFilters(progressionCriterias));
-    Object.assign(filters, makeAssociativeIdMongooseFilters(associativeIdCriterias));
-    Object.assign(filters, makeLogLabelMongooseFilters(logLabelCriterias));
-    Object.assign(filters, makeCurriculumMongooseFilters(curriculumCriterias));
-    Object.assign(filters, makeExperimentMongooseFilters(experimentCriterias));
-    Object.assign(filters, makeCompletionCountMongooseFilters(completionCountCriterias));
-    Object.assign(filters, makeDatesMongooseFilters(datesCriterias));
-    Object.assign(filters, makeLogsSpecificChoiceMongooseFilters(specificChoiceCriterias));
+    Object.assign(filters, makeUserMongooseFilters(userCriteria));
+    Object.assign(filters, makeProgressionMongooseFilters(progressionCriteria));
+    Object.assign(filters, makeAssociativeIdMongooseFilters(associativeIdCriteria));
+    Object.assign(filters, makeLogLabelMongooseFilters(logLabelCriteria));
+    Object.assign(filters, makeCurriculumMongooseFilters(curriculumCriteria));
+    Object.assign(filters, makeExperimentMongooseFilters(experimentCriteria));
+    Object.assign(filters, makeCompletionCountMongooseFilters(completionCountCriteria));
+    Object.assign(filters, makeDatesMongooseFilters(datesCriteria));
+    Object.assign(filters, makeLogsSpecificChoiceMongooseFilters(specificChoiceCriteria));
 
     return filters;
 }
 
-function makeUserMongooseFilters(userCriterias = null) {
-    if (!userCriterias) return {};
+function makeUserMongooseFilters(userCriteria = null) {
+    if (!userCriteria) return {};
     const filters = {};
 
     // Parse the criterias
-    const { ids } = userCriterias;
+    const { ids } = userCriteria;
     if (Array.isArray(ids) && ids.length > 0) {
         const castedIds = ids.map((id) => { return mongoose.Types.ObjectId(id) });
         Object.assign(filters, { userId: { $in: castedIds } });
@@ -46,12 +46,12 @@ function makeUserMongooseFilters(userCriterias = null) {
     return filters;
 }
 
-function makeProgressionMongooseFilters(progressionCriterias = null) {
-    if (!progressionCriterias) return {};
+function makeProgressionMongooseFilters(progressionCriteria = null) {
+    if (!progressionCriteria) return {};
     const filters = {};
 
     // Parse the criterias
-    const { ids } = progressionCriterias;
+    const { ids } = progressionCriteria;
     if (Array.isArray(ids) && ids.length > 0) {
         const castedIds = ids.map((id) => { return mongoose.Types.ObjectId(id) });
         Object.assign(filters, { progressionId: { $in: castedIds } })
@@ -60,36 +60,36 @@ function makeProgressionMongooseFilters(progressionCriterias = null) {
     return filters;
 }
 
-function makeAssociativeIdMongooseFilters(associativeIdCriterias = null) {
-    if (!associativeIdCriterias) return {};
+function makeAssociativeIdMongooseFilters(associativeIdCriteria = null) {
+    if (!associativeIdCriteria) return {};
     const filters = {};
 
     // Parse the criterias
-    const { values } = associativeIdCriterias;
+    const { values } = associativeIdCriteria;
     if (Array.isArray(values) && values.length > 0)
         Object.assign(filters, { associativeId: { $in: values } });
 
     return filters;
 }
 
-function makeLogLabelMongooseFilters(logLabelCriterias = null) {
-    if (!logLabelCriterias) return {};
+function makeLogLabelMongooseFilters(logLabelCriteria = null) {
+    if (!logLabelCriteria) return {};
     const filters = {};
 
     // Parse the criterias
-    const { values } = logLabelCriterias;
+    const { values } = logLabelCriteria;
     if (Array.isArray(values) && values.length > 0)
         Object.assign(filters, { logLabel: { $in: values } });
 
     return filters;
 }
 
-function makeCurriculumMongooseFilters(curriculumCriterias = null) {
-    if (!curriculumCriterias) return {};
+function makeCurriculumMongooseFilters(curriculumCriteria = null) {
+    if (!curriculumCriteria) return {};
     const filters = {};
 
     // Parse the criterias
-    const { ids } = curriculumCriterias;
+    const { ids } = curriculumCriteria;
     if (Array.isArray(ids) && ids.length > 0) {
         const castedIds = ids.map((id) => { return mongoose.Types.ObjectId(id) });
         Object.assign(filters, { completionCount: { $in: castedIds } });
@@ -98,12 +98,12 @@ function makeCurriculumMongooseFilters(curriculumCriterias = null) {
     return filters;
 }
 
-function makeExperimentMongooseFilters(experimentCriterias = null) {
-    if (!experimentCriterias) return {};
+function makeExperimentMongooseFilters(experimentCriteria = null) {
+    if (!experimentCriteria) return {};
     const filters = {};
 
     // Parse the criterias
-    const { ids } = experimentCriterias;
+    const { ids } = experimentCriteria;
     if (Array.isArray(ids) && ids.length > 0) {
         const castedIds = ids.map((id) => { return mongoose.Types.ObjectId(id) });
         Object.assign(filters, { experimentId: { $in: castedIds } })
@@ -112,12 +112,12 @@ function makeExperimentMongooseFilters(experimentCriterias = null) {
     return filters;
 }
 
-function makeCompletionCountMongooseFilters(completionCountCriterias = null) {
-    if (!completionCountCriterias) return {};
+function makeCompletionCountMongooseFilters(completionCountCriteria = null) {
+    if (!completionCountCriteria) return {};
     const filters = {};
 
     // Parse the criterias
-    const { min, max, values } = completionCountCriterias;
+    const { min, max, values } = completionCountCriteria;
     if (Array.isArray(values) && values.length > 0) {
         Object.assign(filters, { completionCount: { $in: values } });
     }
@@ -132,12 +132,12 @@ function makeCompletionCountMongooseFilters(completionCountCriterias = null) {
     return filters;
 }
 
-function makeDatesMongooseFilters(datesCriterias = null) {
-    if (!datesCriterias) return {};
+function makeDatesMongooseFilters(datesCriteria = null) {
+    if (!datesCriteria) return {};
     const filters = {};
 
     // Parse the criterias
-    const { maxDate, minDate } = datesCriterias;
+    const { maxDate, minDate } = datesCriteria;
     if (maxDate)
         Object.assign(filters, { $or: [{ createdAt: { $lte: Date(maxDate) } }, { updatedAt: { $lte: Date(maxDate) } }] })
 
@@ -147,12 +147,12 @@ function makeDatesMongooseFilters(datesCriterias = null) {
     return filters;
 }
 
-function makeLogsSpecificChoiceMongooseFilters(specificChoiceCriterias = null) {
-    if (!specificChoiceCriterias) return {};
+function makeLogsSpecificChoiceMongooseFilters(specificChoiceCriteria = null) {
+    if (!specificChoiceCriteria) return {};
     const filters = {};
 
     // Parse the criterias
-    const { ids, excludedIds } = specificChoiceCriterias;
+    const { ids, excludedIds } = specificChoiceCriteria;
     if (Array.isArray(ids) && ids.length > 0) {
         const castedIds = ids.map((id) => { return mongoose.Types.ObjectId(id) });
         Object.assign(filters, { _id: { $in: castedIds } });
