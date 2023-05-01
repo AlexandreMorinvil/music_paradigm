@@ -6,6 +6,10 @@ export class TaskDataSummariesManager {
         this.setTaskDataSummariesList(taskDataSummariesList);
     }
 
+    clearTaskDataSummariesList() {
+        this.taskDataSummariesList = [];
+    }
+
     getTaskDataSummaryById(curriculumId) {
         return this.taskDataSummariesList.find((taskDataSummary) => {
             return taskDataSummary._id === curriculumId;

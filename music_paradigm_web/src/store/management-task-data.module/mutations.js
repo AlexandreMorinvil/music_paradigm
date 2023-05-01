@@ -2,6 +2,10 @@ import { defaultState } from '@/store-helper/logs.module-helper';
 
 export default {
 
+	clearTaskDataSummariesList(state) {
+		state.taskDataSummariesManager.clearTaskDataSummariesList();
+	},
+
 	indicateFetchingTaskDataSummariesList(state, isActive) {
 		state.status.isFetchingTaskDataSummariesList = isActive;
 	},

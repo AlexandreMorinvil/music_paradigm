@@ -1,5 +1,6 @@
 <template>
-	<TemplateTaskDataListTableComponent :listTableId="listTableId" :taskDataQueryCriteria="taskDataQueryCriteria" />
+	<TemplateTaskDataListTableComponent :listTableId="listTableId" :mustClear="mustClear"
+		:taskDataQueryCriteria="taskDataQueryCriteria" />
 </template>
 
 <script>
@@ -16,7 +17,11 @@ export default {
 			type: String,
 			default: 'task-management-task-data-list',
 		},
-		taskReference: {
+		mustClear: {
+			type: Boolean,
+			default: false,
+		},
+		taskId: {
 			type: String,
 			default: null,
 		},
@@ -24,7 +29,7 @@ export default {
 	computed: {
 		taskDataQueryCriteria() {
 			const criteria = taskDataQueryHandler.makeTaskDataQueryCriteriaList({
-				experimentIdList: Array(this.taskReference).flat(),
+				experimentIdList: Array(this.taskId).flat(),
 			});
 			return criteria;
 		},

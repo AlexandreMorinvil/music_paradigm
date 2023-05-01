@@ -3,6 +3,10 @@ import { taskDataQueryHandler } from '@/modules/task-data';
 
 export default {
 
+	clearTaskDataSummariesList({ commit }) {
+		commit('clearTaskDataSummariesList');
+	},
+
 	fetchTaskDataSummariesList({ commit, dispatch }, criterias = {}) {
 		commit('indicateFetchingTaskDataSummariesList', true);
 		return logsApi

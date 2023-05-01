@@ -1,6 +1,6 @@
 <template>
 	<TemplateListTable :ListTableClass="ListTableClass" :initialTableState="initialTableState" :isLoading="isLoading"
-		:list="list" :refreshFunction="fetchTaskDataSummariesList" :saveBackupFunction="saveBackupFunction">
+		:list="list" :refreshFunction="refreshFunction" :saveBackupFunction="saveBackupFunction">
 		<!-- :listTableSelection="listTableSelection"> -->
 		<!-- <div slot-scope="{ entity }">
 			<ButtonSelectUserComponent isSmall :entity="entity" hideIfInactive />
@@ -25,6 +25,10 @@ export default {
 		listTableId: {
 			type: String,
 			default: 'task-management-task-data-list',
+		},
+		mustClear: {
+			type: Boolean,
+			default: false,
 		},
 		taskDataQueryCriteria: {
 			type: Object,
@@ -56,8 +60,12 @@ export default {
 	},
 	methods: {
 		...mapActions('pageStatus', ['saveListTableState']),
-		...mapActions('managementTaskData', ['fetchTaskDataSummariesList']),
+		...mapActions('managementTaskData', [
+			'clearTaskDataSummariesList',
+			'fetchTaskDataSummariesList',
+		]),
 		refreshFunction() {
+			if (this.mustClear) return;
 			this.fetchTaskDataSummariesList(this.taskDataQueryCriteria);
 		},
 		saveBackupFunction(listTableStateBackup) {
@@ -71,9 +79,14 @@ export default {
 		this.fetchTaskDataSummariesList();
 	},
 	watch: {
+		mustClear: {
+			handler: function () {
+				if (this.mustClear) this.clearTaskDataSummariesList();
+			},
+		},
 		taskDataQueryCriteria: {
 			deep: true,
-			handler: function() {
+			handler: function () {
 				this.refreshFunction();
 			},
 		},
