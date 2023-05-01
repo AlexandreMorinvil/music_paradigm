@@ -39,7 +39,7 @@ schema.statics.makeSummaryList = async function (query) {
     const fieldToRemove = [
         '-blocks'
     ];
-    return this.find(query, fieldToRemove);
+    return this.find(query, fieldToRemove).lean();
 }
 
 schema.statics.getFileRelevantData = async function (query) {

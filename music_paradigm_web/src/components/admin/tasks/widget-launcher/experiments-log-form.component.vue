@@ -29,7 +29,7 @@ export default {
 	components: {},
 	computed: {
 		...mapGetters('experiments', ['logType']),
-		...mapGetters('session', ['tags']),
+		...mapGetters('session', ['logTags']),
 		logTypeOptions() {
 			return log.logTypeOptions;
 		},
@@ -51,7 +51,7 @@ export default {
 	},
 	beforeMount() {
 		this.selectedLogType = this.logType;
-		this.insertedLogTag = this.tags[0] || '';
+		this.insertedLogTag = this.logTags[0] || '';
 	},
 };
 </script>

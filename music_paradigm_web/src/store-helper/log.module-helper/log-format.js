@@ -82,7 +82,7 @@ function makeThoroughLogHeader(targetLogLabel) {
 		associativeId: gettersSession.associativeId(stateSession) || null,
 		associativeIdOrdinalNumber: gettersSession.associativeIdOrdinalNumber(stateSession) || 0,
 		logLabel: targetLogLabel || gettersExperiment.logLabel(stateExperiment),
-		logTags: gettersSession.tags(stateSession),
+		logTags: gettersSession.logTags(stateSession),
 
 		completionCount: gettersSession.completionCount(stateSession),
 

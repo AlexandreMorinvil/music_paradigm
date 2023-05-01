@@ -1,4 +1,14 @@
 export default {
+
+	isFetchingTaskDataSummariesList: (state) => {
+		return state.status.isFetchingTaskDataSummariesList;
+	},
+
+	taskDataSummariesList: (state) => {
+		return state.taskDataSummariesManager.taskDataSummariesList;
+	},
+
+	// TODO: Ajust the code below this line
 	// Status Getters
 	isLoadingUserThoroughLogList: (state) => {
 		return state.status.isLoadingUserThoroughLogList || false;

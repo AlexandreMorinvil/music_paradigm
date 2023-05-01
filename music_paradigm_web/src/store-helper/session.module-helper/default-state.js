@@ -9,6 +9,6 @@ function EMPTY_SESSION_INFORMATION() {
 	return {
 		associativeId: randomUniqueId,
 		logType: log.defaultLogType,
-		tags: [],
+		logTags: [],
 	};
 }

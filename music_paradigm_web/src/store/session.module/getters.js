@@ -81,7 +81,7 @@ export default {
 		return state.sessionInformation.logType;
 	},
 
-	tags: (state) => {
-		return state.sessionInformation.tags;
+	logTags: (state) => {
+		return state.sessionInformation.logTags;
 	}
 };

@@ -1,6 +1,17 @@
 import { defaultState } from '@/store-helper/logs.module-helper';
 
 export default {
+
+	indicateFetchingTaskDataSummariesList(state, isActive) {
+		state.status.isFetchingTaskDataSummariesList = isActive;
+	},
+
+	setTaskDataSummariesList(state, taskDataSummariesList) {
+		state.taskDataSummariesManager.setTaskDataSummariesList(taskDataSummariesList);
+	},
+
+	// TODO: Adjust the code for all the code below this comment
+
 	// Status Updates
 	indicateLoadingUserThoroughLogList(state) {
 		state.status.isLoadingUserThoroughLogList = true;

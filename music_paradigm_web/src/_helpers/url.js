@@ -11,8 +11,8 @@ const progressions = '/progressions/'
 const sessions = '/sessions/';
 const users = '/users/';
 
-const logSimple = '/log-simple/';
-const logThorough = '/log-thorough/';
+const logThorough = '/log-thorough/'; // TODO: Delete when the code will have been adjusted
+const taskData = '/task-data/';
 
 const storage = '/storage/';
 
@@ -47,9 +47,6 @@ export default {
 	experimentMarkers: function (parameters) {
 		return addSlugs(config.apiUrl, experimentMarkers, parameters);
 	},
-	logSimple: function (parameters) {
-		return addSlugs(config.apiUrl, logSimple, parameters);
-	},
 	logThorough: function (parameters) {
 		return addSlugs(config.apiUrl, logThorough, parameters);
 	},
@@ -61,6 +58,9 @@ export default {
 	},
 	storage: function (parameters) {
 		return addSlugs(config.apiUrl, storage, parameters);
+	},
+	taskData: function (parameters) {
+		return addSlugs(config.apiUrl, taskData, parameters);
 	},
 	users: function (parameters) {
 		return addSlugs(config.apiUrl, users, parameters);

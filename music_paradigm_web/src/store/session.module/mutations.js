@@ -60,6 +60,6 @@ export default {
 	},
 
 	setImposedTags(state, tags) {
-		state.sessionInformation.tags = tags;
+		state.sessionInformation.logTags = tags;
 	},
 };

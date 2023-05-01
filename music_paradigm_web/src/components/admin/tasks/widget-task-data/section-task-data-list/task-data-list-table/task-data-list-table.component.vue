@@ -1,7 +1,7 @@
 <template>
 	<TemplateListTable :ListTableClass="ListTableClass" :initialTableState="initialTableState" :isLoading="isLoading"
-		:list="list" :refreshFunction="fetchUserSummariesList" :saveBackupFunction="saveBackupFunction"
-		:listTableSelection="listTableSelection">
+		:list="list" :refreshFunction="fetchTaskDataSummariesList" :saveBackupFunction="saveBackupFunction">
+		<!-- :listTableSelection="listTableSelection"> -->
 		<!-- <div slot-scope="{ entity }">
 			<ButtonSelectUserComponent isSmall :entity="entity" hideIfInactive />
 			<ButtonDeselectUserComponent isSmall :entity="entity" hideIfInactive />
@@ -14,7 +14,7 @@ import '@/styles/widget-template.css';
 
 import { mapActions, mapGetters } from 'vuex';
 
-import { ListTableStateBackup, UsersListTable } from '@/modules/list-tables';
+import { ListTableStateBackup, TaskDataListTable } from '@/modules/list-tables';
 import TemplateListTable from '@/components/admin/template/list-table/template-list-table.component.vue';
 
 export default {
@@ -29,19 +29,22 @@ export default {
 	},
 	computed: {
 		...mapGetters('pageStatus', ['listTableState']),
-		...mapGetters('managementUsers', ['isFetchingUsersSummaryList', 'userSummariesList']),
+		...mapGetters('managementTaskData', [
+			'isFetchingTaskDataSummariesList',
+			'taskDataSummariesList',
+		]),
 		...mapGetters('managementUsers/listTableSelection', ['usersListTableSelection']),
 		initialTableState() {
 			return this.listTableState(this.listTableId);
 		},
 		isLoading() {
-			return this.isFetchingUsersSummaryList;
+			return this.isFetchingTaskDataSummariesList;
 		},
 		list() {
-			return this.userSummariesList;
+			return this.taskDataSummariesList;
 		},
 		ListTableClass() {
-			return UsersListTable;
+			return TaskDataListTable;
 		},
 		listTableSelection() {
 			return this.usersListTableSelection;
@@ -49,7 +52,7 @@ export default {
 	},
 	methods: {
 		...mapActions('pageStatus', ['saveListTableState']),
-		...mapActions('managementUsers', ['fetchUserSummariesList']),
+		...mapActions('managementTaskData', ['fetchTaskDataSummariesList']),
 		saveBackupFunction(listTableStateBackup) {
 			this.saveListTableState({
 				listTableId: this.listTableId,
@@ -58,7 +61,7 @@ export default {
 		},
 	},
 	beforeMount() {
-		this.fetchUserSummariesList();
+		this.fetchTaskDataSummariesList();
 	},
 };
 </script>

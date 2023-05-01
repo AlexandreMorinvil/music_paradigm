@@ -2,6 +2,45 @@ import { logsApi } from '@/api';
 import { logsQuery } from '@/_helpers';
 
 export default {
+
+	fetchTaskDataSummariesList({ commit, dispatch }, rules) {
+		const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+		commit('indicateFetchingTaskDataSummariesList', true);
+		return logsApi
+			.getTaskDataSummariesList(criterias)
+			.then(
+				(response) => {
+					const { summariesList } = response;
+					commit('setTaskDataSummariesList', summariesList);
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `Failed to load the task data : ${error.message}`, { root: true });
+				},
+			)
+			.finally(() => {
+				commit('indicateFetchingTaskDataSummariesList', false);
+			});
+	},
+
+	// getAdminThoroughLogSummaryList({ commit, dispatch }, rules) {
+	// 	const criterias = logsQuery.makeLogQueryCriteriaList(rules);
+	// 	commit('indicateLoadingAdminThoroughLogList');
+	// 	return logsApi
+	// 		.getAdminThoroughLogSummaryList(criterias)
+	// 		.then(
+	// 			(summarylist) => {
+	// 				commit('setAdminThoroughLogList', summarylist);
+	// 			},
+	// 			(error) => {
+	// 				dispatch('alert/setErrorAlert', `Admin thorough logs list fetch failed : ${error.message}`, { root: true });
+	// 			},
+	// 		)
+	// 		.finally(() => {
+	// 			commit('indicateLoadingAdminThoroughLogListEnd');
+	// 		});
+	// },
+
+	// TODO: Adjust the code for all the code below this comment
 	// Clearing
 	clearUserThoroughLogSummaryList({ commit }) {
 		commit('clearUserThoroughLogs');

@@ -2,6 +2,9 @@ import { authHeader, url } from '@/_helpers';
 import { csvFileResponseHandler, defaultResponseHandler, jsonFileResponseHandler } from './response-handler';
 
 export const logsApi = {
+	getTaskDataSummariesList,
+
+	// TODO: Adjust the code below this line
 	getSpecificUserThoroughLog,
 	getSpecificAdminThoroughLog,
 	getUserThoroughLogSummaryList,
@@ -14,6 +17,16 @@ export const logsApi = {
 	getAdminThoroughLogJson,
 };
 
+function getTaskDataSummariesList(criterias) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify({ criterias }),
+	};
+	return fetch(url.taskData('get-summaries-list'), requestOptions).then(defaultResponseHandler);
+}
+
+// TODO: Ajust the code below this line
 
 // Log selection
 function getSpecificUserThoroughLog(logId) {

@@ -126,7 +126,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('logs', ['isLoadingUserThoroughLogList', 'userThoroughLogList', 'isDownloadingLogs', 'selectedUserThoroughLog']),
+		...mapGetters('managementTaskData', ['isLoadingUserThoroughLogList', 'userThoroughLogList', 'isDownloadingLogs', 'selectedUserThoroughLog']),
 		isListLoading() {
 			return this.isLoadingUserThoroughLogList;
 		},
@@ -173,7 +173,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('logs', [
+		...mapActions('managementTaskData', [
 			'getSpecificUserThoroughLog',
 			'getUserThoroughLogSummaryList',
 			'clearUserThoroughLogSummaryList',

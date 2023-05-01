@@ -120,7 +120,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('logs', ['isLoadingAdminThoroughLogList', 'adminThoroughLogList', 'isDownloadingLogs', 'selectedAdminThoroughLog']),
+		...mapGetters('managementTaskData', ['isLoadingAdminThoroughLogList', 'adminThoroughLogList', 'isDownloadingLogs', 'selectedAdminThoroughLog']),
 		isListLoading() {
 			return this.isLoadingAdminThoroughLogList;
 		},
@@ -167,7 +167,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('logs', [
+		...mapActions('managementTaskData', [
 			'getSpecificAdminThoroughLog',
 			'getAdminThoroughLogSummaryList',
 			'clearAdminThoroughLogSummaryList',
