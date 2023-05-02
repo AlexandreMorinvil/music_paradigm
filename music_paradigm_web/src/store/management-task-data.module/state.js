@@ -3,6 +3,7 @@ import { TaskDataSummariesManager } from '@/modules/task-data';
 
 export default {
 	status: {
+		isDownloadingTaskDataCsv: false,
 		isFetchingTaskDataSummariesList: false,
 
 		// TODO: Ajust code below this line

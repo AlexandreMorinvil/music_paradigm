@@ -12,6 +12,7 @@
 			</div>
 		</div>
 		<div class="options-area">
+			<i v-if="downloadCsvFunction" class="bi bi-filetype-csv" v-on:click="downloadCsvFunction" />
 			<i class="bi bi-arrow-repeat" v-on:click="refreshListTable" :class="{ 'disabled-icon': isLoading }" />
 			<i class="bi" :class="hasEditorExpanded ? 'bi-caret-up-square' : 'bi-pencil-square'"
 				v-on:click="() => $emit('editor')" />
@@ -34,6 +35,10 @@ export default {
 		LoaderCircularComponent,
 	},
 	props: {
+		downloadCsvFunction: {
+			type: Function,
+			default: null,
+		},
 		hasEditorExpanded: {
 			type: Boolean,
 			default: false,
@@ -131,7 +136,7 @@ export default {
 }
 
 i {
-	-webkit-text-stroke: 1px;
+	-webkit-text-stroke: 0.5px;
 }
 
 i:hover {

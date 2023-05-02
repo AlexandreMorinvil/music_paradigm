@@ -2,8 +2,8 @@
 const LogThorough = require('database/db').LogThorough;
 const User = require('database/db').User;
 
-const csvConverter = require('_helpers/csv-converter');
-const jsonConverter = require('_helpers/json-converter');
+const csvConverter = require('modules/task-data/csv-converter');
+const jsonConverter = require('modules/task-data/json-converter');
 const { makeMongooseTaskDataQuery } = require('log/log-query-maker.service')
 
 
@@ -113,7 +113,7 @@ async function makeAdminLogCsv(criterias) {
 async function makeUserLogUnwoundCsv(criterias) {
     try {
         const query = makeMongooseTaskDataQuery(criterias);
-        let data = await LogThorough.getFileRelevantDataUnwound(query);
+        let data = await LogThorough.getFileRelevantDataForCsv(query);
         return csvConverter.makeCsv(data);
     } catch (err) {
         throw err;
@@ -123,7 +123,7 @@ async function makeUserLogUnwoundCsv(criterias) {
 async function makeAdminLogUnwoundCsv(criterias) {
     try {
         const query = makeMongooseTaskDataQuery(criterias);
-        let data = await AdminLogThorough.getFileRelevantDataUnwound(query);
+        let data = await AdminLogThorough.getFileRelevantDataForCsv(query);
         return csvConverter.makeCsv(data);
     } catch (err) {
         throw err;

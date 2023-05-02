@@ -19,12 +19,11 @@ async function generateCurriculumSummariesList() {
 
 async function generateCurriculumSummary(curriculum) {
 
-    const progressionsInvolvedList = await ProgressionModel
-        .find({ curriculumReference: curriculum._id })
-        .lean() ?? [];
+    const progressionsInvolvedCount = await ProgressionModel
+        .countDocuments({ curriculumReference: curriculum._id });
 
     return new CurriculumSummary({
-        progressionsInvolvedList,
+        progressionsInvolvedCount,
         ...curriculum,
     })
 }

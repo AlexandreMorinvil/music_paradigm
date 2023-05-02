@@ -1,7 +1,7 @@
 <template>
 	<TemplateListTable :ListTableClass="ListTableClass" :initialTableState="initialTableState" :isLoading="isLoading"
-		:list="list" :refreshFunction="refreshFunction" :saveBackupFunction="saveBackupFunction">
-		<!-- :listTableSelection="listTableSelection"> -->
+		:list="list" :refreshFunction="refreshFunction" :saveBackupFunction="saveBackupFunction"
+		:listTableSelection="listTableSelection" :downloadCsvFunction="downloadTaskDataCsv">
 		<!-- <div slot-scope="{ entity }">
 			<ButtonSelectUserComponent isSmall :entity="entity" hideIfInactive />
 			<ButtonDeselectUserComponent isSmall :entity="entity" hideIfInactive />
@@ -41,7 +41,7 @@ export default {
 			'isFetchingTaskDataSummariesList',
 			'taskDataSummariesList',
 		]),
-		...mapGetters('managementUsers/listTableSelection', ['usersListTableSelection']),
+		...mapGetters('managementTaskData/listTableSelection', ['taskDataListTableSelection']),
 		initialTableState() {
 			return this.listTableState(this.listTableId);
 		},
@@ -55,18 +55,23 @@ export default {
 			return TaskDataListTable;
 		},
 		listTableSelection() {
-			return this.usersListTableSelection;
+			return this.taskDataListTableSelection;
 		},
 	},
 	methods: {
 		...mapActions('pageStatus', ['saveListTableState']),
+		...mapActions('managementTaskData/listTableSelection', ['clearTaskDataListTableSelection']),
 		...mapActions('managementTaskData', [
 			'clearTaskDataSummariesList',
+			'downloadTaskDataCsv',
 			'fetchTaskDataSummariesList',
 		]),
+		downloadCsv() {
+			this.downloadTaskDataCsv();
+		},
 		refreshFunction() {
-			if (this.mustClear) return;
-			this.fetchTaskDataSummariesList(this.taskDataQueryCriteria);
+			if (this.mustClear) this.clearTaskDataSummariesList();
+			else this.fetchTaskDataSummariesList(this.taskDataQueryCriteria);
 		},
 		saveBackupFunction(listTableStateBackup) {
 			this.saveListTableState({
@@ -76,12 +81,15 @@ export default {
 		},
 	},
 	beforeMount() {
-		this.fetchTaskDataSummariesList();
+		this.refreshFunction();
+	},
+	beforeDestroy() {
+		this.clearTaskDataListTableSelection();
 	},
 	watch: {
 		mustClear: {
 			handler: function () {
-				if (this.mustClear) this.clearTaskDataSummariesList();
+				this.refreshFunction();
 			},
 		},
 		taskDataQueryCriteria: {

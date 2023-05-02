@@ -2,7 +2,7 @@
 	<div>
 		<ListTableTitleComponent :listTable="listTable" :hasEditorExpanded="hasEditorExpanded" :isExpanded="isExpanded"
 			:isLoading="isLoading" :refreshFunction="refreshFunction" v-on:expand="toggleExpansion"
-			v-on:editor="toggleEditor" />
+			v-on:editor="toggleEditor" :downloadCsvFunction="downloadCsvFunction" />
 
 		<ListTableEditorComponent v-show="hasEditorExpanded" :listTable="listTable" v-on:update="updateTable" />
 
@@ -34,6 +34,10 @@ export default {
 		ListTableTitleComponent,
 	},
 	props: {
+		downloadCsvFunction: {
+			type: Function,
+			default: null,
+		},
 		initialTableState: {
 			type: ListTableStateBackup,
 			default: null,

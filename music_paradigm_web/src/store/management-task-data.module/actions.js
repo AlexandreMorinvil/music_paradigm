@@ -7,6 +7,31 @@ export default {
 		commit('clearTaskDataSummariesList');
 	},
 
+	downloadTaskDataCsv({ commit, dispatch }, criterias = {}) {
+		commit('indicateDownloadingTaskDataCsv', true);
+		return logsApi
+			.downloadTaskDataCsv(criterias)
+			.then(
+				() => {
+					dispatch(
+						'alert/setInformationAlert',
+						'Task data CSV file generated and retreived sucessfully',
+						{ root: true }
+					);
+				},
+				(error) => {
+					dispatch(
+						'alert/setErrorAlert',
+						`Failed to download the task data CSV file : ${error.message}`,
+						{ root: true }
+					);
+				},
+			)
+			.finally(() => {
+				commit('indicateDownloadingTaskDataCsv', false);
+			});
+	},
+
 	fetchTaskDataSummariesList({ commit, dispatch }, criterias = {}) {
 		commit('indicateFetchingTaskDataSummariesList', true);
 		return logsApi
@@ -17,7 +42,11 @@ export default {
 					commit('setTaskDataSummariesList', summariesList);
 				},
 				(error) => {
-					dispatch('alert/setErrorAlert', `Failed to load the task data : ${error.message}`, { root: true });
+					dispatch(
+						'alert/setErrorAlert',
+						`Failed to load the task data : ${error.message}`,
+						{ root: true }
+					);
 				},
 			)
 			.finally(() => {

@@ -3,16 +3,10 @@ import getters from './getters';
 import mutations from './mutations';
 import state from './state';
 
-// Nested modules
-import { listTableSelection } from './list-table-selection.module';
-
-export const managementTaskData = {
+export const listTableSelection = {
 	namespaced: true,
 	state,
 	getters,
 	actions,
 	mutations,
-	modules: {
-		listTableSelection,
-	}
 };

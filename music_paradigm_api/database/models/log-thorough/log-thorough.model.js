@@ -8,7 +8,7 @@ const irrelevantFields = [
     '__v',
     'endTimestamp._id'
 ];
-const irrelevantFieldsWithMinus = irrelevantFields.map((field) => { return '-' + field })
+const projectionIrrelevantFieldsRemoval = irrelevantFields.reduce((a, v) => ({ ...a, [v]: 0}), {});
 
 // Static methods
 schema.statics.initializeLog = async function (logHeader) {
@@ -43,21 +43,21 @@ schema.statics.makeSummaryList = async function (query) {
 }
 
 schema.statics.getFileRelevantData = async function (query) {
-    return this.find(query, irrelevantFieldsWithMinus);
+    return this.find(query, projectionIrrelevantFieldsRemoval);
 }
 
-schema.statics.getFileRelevantDataUnwound = async function (query) {
+schema.statics.getFileRelevantDataForCsv = async function (query) {
     return this.
         aggregate(
             [
                 { $match: query },
-                { $unset: irrelevantFields },
+                { $project: projectionIrrelevantFieldsRemoval },
                 { $unwind: { path: "$blocks", preserveNullAndEmptyArrays: true } }
             ])
 }
 
 schema.statics.getOneLogFromId = async function (logId) {
-    return this.findById(logId, irrelevantFieldsWithMinus);
+    return this.findById(logId, projectionIrrelevantFieldsRemoval);
 }
 
 // Helper functions

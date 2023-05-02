@@ -6,6 +6,10 @@ export default {
 		state.taskDataSummariesManager.clearTaskDataSummariesList();
 	},
 
+	indicateDownloadingTaskDataCsv(state, isActive) {
+		state.status.isDownloadingTaskDataCsv = isActive;
+	},
+
 	indicateFetchingTaskDataSummariesList(state, isActive) {
 		state.status.isFetchingTaskDataSummariesList = isActive;
 	},

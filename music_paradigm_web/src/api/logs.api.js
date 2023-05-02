@@ -2,6 +2,7 @@ import { authHeader, url } from '@/_helpers';
 import { csvFileResponseHandler, defaultResponseHandler, jsonFileResponseHandler } from './response-handler';
 
 export const logsApi = {
+	downloadTaskDataCsv,
 	getTaskDataSummariesList,
 
 	// TODO: Adjust the code below this line
@@ -16,6 +17,16 @@ export const logsApi = {
 	getUserThoroughLogJson,
 	getAdminThoroughLogJson,
 };
+
+function downloadTaskDataCsv(criterias, mustSave = true) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify(criterias),
+	};
+	return fetch(url.taskData('download-csv'), requestOptions)
+		.then(csvFileResponseHandler.bind(null, mustSave));
+}
 
 function getTaskDataSummariesList(criteria) {
 	const requestOptions = {
