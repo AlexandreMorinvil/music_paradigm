@@ -3,10 +3,10 @@
 		:list="list" :refreshFunction="refreshFunction" :saveBackupFunction="saveBackupFunction"
 		:listTableSelection="listTableSelection" :downloadCsvFunction="downloadCsvFunction"
 		:downloadJsonFunction="downloadJsonFunction">
-		<!-- <div slot-scope="{ entity }">
-			<ButtonSelectUserComponent isSmall :entity="entity" hideIfInactive />
-			<ButtonDeselectUserComponent isSmall :entity="entity" hideIfInactive />
-		</div> -->
+		<div slot-scope="{ entity }">
+			<ButtonSelectTaskDataEntryComponent isSmall :entity="entity" hideIfInactive />
+			<!-- <ButtonDeselectUserComponent isSmall :entity="entity" hideIfInactive /> -->
+		</div>
 	</TemplateListTable>
 </template>
 
@@ -15,13 +15,15 @@ import '@/styles/widget-template.css';
 
 import { mapActions, mapGetters } from 'vuex';
 
-
 import { ListTableStateBackup, TaskDataListTable } from '@/modules/list-tables';
 import { taskDataQueryHandler } from '@/modules/task-data';
 import TemplateListTable from '@/components/admin/template/list-table/template-list-table.component.vue';
 
+import ButtonSelectTaskDataEntryComponent from './buttons/button-select-task-data-entry.component.vue';
+
 export default {
 	components: {
+		ButtonSelectTaskDataEntryComponent,
 		TemplateListTable,
 	},
 	props: {

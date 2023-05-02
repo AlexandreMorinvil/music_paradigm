@@ -21,8 +21,7 @@ export default {
 	},
 
 	hasEditedUserUsername: (_, getters) => {
-		return getters['selection/userSelectionUsername'] !==
-			getters['edition/userEditionUsername'];
+		return getters['selection/userSelectionUsername'] !== getters['edition/userEditionUsername'];
 	},
 
 	isCreatingUser: (state) => {
@@ -41,14 +40,9 @@ export default {
 		return state.status.isFetchingUser;
 	},
 
-	isExecutingUserCommand: (_, getters) => {
+	isExecutingUserCommand: (state, getters) => {
 		return getters['progressions/isExecutingUserProgressionCommand'] ||
-			!!getters.fetchingAndSelectingUserId ||
-			getters.isCreatingUser ||
-			getters.isCreatingUserWithCurriculum ||
-			getters.isDeletingUser ||
-			getters.isFetchingUser ||
-			getters.isUpdatingUser;
+			Object.values(state.status).some((value) => Boolean(value));
 	},
 
 	isFetchingUsersSummaryList: (state) => {

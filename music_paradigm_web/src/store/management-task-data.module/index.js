@@ -5,6 +5,7 @@ import state from './state';
 
 // Nested modules
 import { listTableSelection } from './list-table-selection.module';
+import { selection } from './selection.module';
 
 export const managementTaskData = {
 	namespaced: true,
@@ -14,5 +15,6 @@ export const managementTaskData = {
 	mutations,
 	modules: {
 		listTableSelection,
+		selection,
 	}
 };

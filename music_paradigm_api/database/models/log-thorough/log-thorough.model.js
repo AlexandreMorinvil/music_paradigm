@@ -56,7 +56,7 @@ schema.statics.getFileRelevantDataForCsv = async function (query) {
             ])
 }
 
-schema.statics.getOneLogFromId = async function (logId) {
+schema.statics.getTaskDataEntryById = async function (logId) {
     return this.findById(logId, projectionIrrelevantFieldsRemoval);
 }
 

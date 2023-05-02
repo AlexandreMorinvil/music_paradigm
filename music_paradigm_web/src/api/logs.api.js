@@ -4,6 +4,7 @@ import { csvFileResponseHandler, defaultResponseHandler, jsonFileResponseHandler
 export const logsApi = {
 	downloadTaskDataCsv,
 	downloadTaskDataJson,
+	getTaskDataEntryById,
 	getTaskDataSummariesList,
 
 	// TODO: Adjust the code below this line
@@ -37,6 +38,14 @@ function downloadTaskDataJson(criteria, mustSave = true) {
 	};
 	return fetch(url.taskData('download-json'), requestOptions)
 		.then(jsonFileResponseHandler.bind(null, mustSave));
+}
+
+function getTaskDataEntryById(taskDataEntryId) {
+	const requestOptions = {
+		method: 'GET',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+	};
+	return fetch(url.taskData(['select-by-id', taskDataEntryId]), requestOptions).then(defaultResponseHandler);
 }
 
 function getTaskDataSummariesList(criteria) {

@@ -33,11 +33,8 @@ export default {
 		return state.status.isDeletingCurriculum;
 	},
 
-	isExecutingCurriculumCommand: (_, getters) => {
-		return getters.isCreatingCurriculum ||
-			getters.isDeletingCurriculum ||
-			getters.isFetchingCurriculumSummariesList ||
-			getters.isUpdatingCurriculum;
+	isExecutingCurriculumCommand: (state) => {
+		return Object.values(state.status).some((value) => Boolean(value));
 	},
 
 	isFetchingCurriculumSummariesList: (state) => {

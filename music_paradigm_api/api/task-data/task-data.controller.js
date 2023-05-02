@@ -7,9 +7,11 @@ const service = require('./task-data.service');
 const { makeMongooseTaskDataQuery } = require('modules/task-data/task-data-query-maker')
 
 // routes
-router.post('/download-csv',        jwtAuthorize(role.admin), downloadTaskDataCsv);
-router.post('/download-json',       jwtAuthorize(role.admin), downloadTaskDataJson);
-router.post('/get-summaries-list',  jwtAuthorize(role.admin), getTaskDataSummariesList);
+router.get('/select-by-id/:taskDataEntryId',    jwtAuthorize(role.admin), getTaskDataEntryById);
+
+router.post('/download-csv',                    jwtAuthorize(role.admin), downloadTaskDataCsv);
+router.post('/download-json',                   jwtAuthorize(role.admin), downloadTaskDataJson);
+router.post('/get-summaries-list',              jwtAuthorize(role.admin), getTaskDataSummariesList);
 
 module.exports = router;
 
@@ -43,6 +45,18 @@ function downloadTaskDataJson(req, res, next) {
             res.set('Content-Type', 'application/json');
             res.status(200).send(json);
         })
+        .catch(err => next(err))
+        .finally(() => next());
+}
+
+function getTaskDataEntryById(req, res, next) {
+
+    // Parameters
+    const taskDataEntryId = req.params.taskDataEntryId ?? null;
+
+    // Processing
+    service.getTaskDataEntryById(taskDataEntryId)
+        .then((result) => res.status(200).json(result))
         .catch(err => next(err))
         .finally(() => next());
 }

@@ -8,6 +8,11 @@ export default {
 		return state.status.isDownloadingTaskDataJson;
 	},
 
+	isExecutingTaskDataCommand: (state, getters) => {
+		return getters['selection/isExecutingTaskDataSelectionCommand'] ||
+			Object.values(state.status).some((value) => Boolean(value));
+	},
+
 	isFetchingTaskDataSummariesList: (state) => {
 		return state.status.isFetchingTaskDataSummariesList;
 	},

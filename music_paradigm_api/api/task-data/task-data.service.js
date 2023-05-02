@@ -8,17 +8,26 @@ const jsonConverter = require('modules/task-data/json-converter');
 module.exports = {
     downloadTaskDataCsv,
     downloadTaskDataJson,
+    getTaskDataEntryById,
     getTaskDataSummariesList,
 };
 
 async function downloadTaskDataCsv(query) {
-    let data = await TaskDataModel.getFileRelevantDataForCsv(query);
+    const data = await TaskDataModel.getFileRelevantDataForCsv(query);
     return csvConverter.makeCsv(data);
 }
 
 async function downloadTaskDataJson(query) {
-    let data = await TaskDataModel.getFileRelevantData(query);
+    const data = await TaskDataModel.getFileRelevantData(query);
     return jsonConverter.makeJson(data);
+}
+
+async function getTaskDataEntryById(taskDataEntryId) {
+    const data = await TaskDataModel.getTaskDataEntryById(taskDataEntryId);
+    const taskDataEntry = jsonConverter.makeJson(data);
+    return {
+        taskDataEntry,
+    }
 }
 
 async function getTaskDataSummariesList(query) {
