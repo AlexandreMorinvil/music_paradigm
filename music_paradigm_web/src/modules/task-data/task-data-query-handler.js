@@ -18,8 +18,8 @@ function makeTaskDataQueryCriteriaList(rules = null) {
 		maxCompletionCount,
 		minDate,
 		maxDate,
-		selectedLogIds,
-		excludedLogIds,
+		selectedEntriesId,
+		excludedEntriesId,
 	} = rules;
 
 	const taskDataQueryCriteria = {};
@@ -31,7 +31,7 @@ function makeTaskDataQueryCriteriaList(rules = null) {
 	Object.assign(taskDataQueryCriteria, makeExperimentCriteria(experimentIdList));
 	Object.assign(taskDataQueryCriteria, makeCompletionCountCriteria(completionCountList, minCompletionCount, maxCompletionCount));
 	Object.assign(taskDataQueryCriteria, makeDatesCriteria(minDate, maxDate));
-	Object.assign(taskDataQueryCriteria, makeLogsSpecificCriteria(selectedLogIds, excludedLogIds));
+	Object.assign(taskDataQueryCriteria, makeLogsSpecificCriteria(selectedEntriesId, excludedEntriesId));
 
 	return taskDataQueryCriteria;
 }

@@ -4,6 +4,9 @@ export class TaskDataSummary {
         const dataCopy = JSON.parse(JSON.stringify(data));
 
         // Data to identifiy a task data entry
+        this._id = dataCopy._id ?? null;
+
+        // Data of the task data entry
         this.username = dataCopy.username ?? null;
 
         this.logTags = dataCopy.logTags ?? [];

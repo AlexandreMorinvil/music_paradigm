@@ -15,7 +15,9 @@ import '@/styles/widget-template.css';
 
 import { mapActions, mapGetters } from 'vuex';
 
+
 import { ListTableStateBackup, TaskDataListTable } from '@/modules/list-tables';
+import { taskDataQueryHandler } from '@/modules/task-data';
 import TemplateListTable from '@/components/admin/template/list-table/template-list-table.component.vue';
 
 export default {
@@ -42,7 +44,11 @@ export default {
 			'isFetchingTaskDataSummariesList',
 			'taskDataSummariesList',
 		]),
-		...mapGetters('managementTaskData/listTableSelection', ['taskDataListTableSelection']),
+		...mapGetters('managementTaskData/listTableSelection', [
+			'hasTaskDataListTableSelection',
+			'taskDataListTableSelection',
+			'taskDataListTableSelectionIdsList',
+		]),
 		initialTableState() {
 			return this.listTableState(this.listTableId);
 		},
@@ -58,6 +64,13 @@ export default {
 		listTableSelection() {
 			return this.taskDataListTableSelection;
 		},
+		selectedTaskDataQueryCriteria() {
+			if (this.hasTaskDataListTableSelection)
+				return taskDataQueryHandler.makeTaskDataQueryCriteriaList({
+					selectedEntriesId: this.taskDataListTableSelectionIdsList
+				});
+			else return this.taskDataQueryCriteria;
+		},
 	},
 	methods: {
 		...mapActions('pageStatus', ['saveListTableState']),
@@ -69,10 +82,10 @@ export default {
 			'fetchTaskDataSummariesList',
 		]),
 		downloadCsvFunction() {
-			this.downloadTaskDataCsv();
+			this.downloadTaskDataCsv(this.selectedTaskDataQueryCriteria);
 		},
 		downloadJsonFunction() {
-			this.downloadTaskDataJson();
+			this.downloadTaskDataJson(this.selectedTaskDataQueryCriteria);
 		},
 		refreshFunction() {
 			if (this.mustClear) this.clearTaskDataSummariesList();
