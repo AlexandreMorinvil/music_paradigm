@@ -4,6 +4,10 @@ export default {
 		return state.status.isDownloadingTaskDataCsv;
 	},
 
+	isDownloadingTaskDataJson: (state) => {
+		return state.status.isDownloadingTaskDataJson;
+	},
+
 	isFetchingTaskDataSummariesList: (state) => {
 		return state.status.isFetchingTaskDataSummariesList;
 	},

@@ -1,7 +1,8 @@
 <template>
 	<TemplateListTable :ListTableClass="ListTableClass" :initialTableState="initialTableState" :isLoading="isLoading"
 		:list="list" :refreshFunction="refreshFunction" :saveBackupFunction="saveBackupFunction"
-		:listTableSelection="listTableSelection" :downloadCsvFunction="downloadTaskDataCsv">
+		:listTableSelection="listTableSelection" :downloadCsvFunction="downloadCsvFunction"
+		:downloadJsonFunction="downloadJsonFunction">
 		<!-- <div slot-scope="{ entity }">
 			<ButtonSelectUserComponent isSmall :entity="entity" hideIfInactive />
 			<ButtonDeselectUserComponent isSmall :entity="entity" hideIfInactive />
@@ -64,10 +65,14 @@ export default {
 		...mapActions('managementTaskData', [
 			'clearTaskDataSummariesList',
 			'downloadTaskDataCsv',
+			'downloadTaskDataJson',
 			'fetchTaskDataSummariesList',
 		]),
-		downloadCsv() {
+		downloadCsvFunction() {
 			this.downloadTaskDataCsv();
+		},
+		downloadJsonFunction() {
+			this.downloadTaskDataJson();
 		},
 		refreshFunction() {
 			if (this.mustClear) this.clearTaskDataSummariesList();

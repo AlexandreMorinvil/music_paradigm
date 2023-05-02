@@ -4,6 +4,7 @@ import { TaskDataSummariesManager } from '@/modules/task-data';
 export default {
 	status: {
 		isDownloadingTaskDataCsv: false,
+		isDownloadingTaskDataJson: false,
 		isFetchingTaskDataSummariesList: false,
 
 		// TODO: Ajust code below this line

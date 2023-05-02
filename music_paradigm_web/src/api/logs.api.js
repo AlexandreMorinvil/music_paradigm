@@ -3,6 +3,7 @@ import { csvFileResponseHandler, defaultResponseHandler, jsonFileResponseHandler
 
 export const logsApi = {
 	downloadTaskDataCsv,
+	downloadTaskDataJson,
 	getTaskDataSummariesList,
 
 	// TODO: Adjust the code below this line
@@ -18,14 +19,24 @@ export const logsApi = {
 	getAdminThoroughLogJson,
 };
 
-function downloadTaskDataCsv(criterias, mustSave = true) {
+function downloadTaskDataCsv(criteria, mustSave = true) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(criterias),
+		body: JSON.stringify({ criteria }),
 	};
 	return fetch(url.taskData('download-csv'), requestOptions)
 		.then(csvFileResponseHandler.bind(null, mustSave));
+}
+
+function downloadTaskDataJson(criteria, mustSave = true) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify({ criteria }),
+	};
+	return fetch(url.taskData('download-json'), requestOptions)
+		.then(jsonFileResponseHandler.bind(null, mustSave));
 }
 
 function getTaskDataSummariesList(criteria) {

@@ -10,6 +10,10 @@ export default {
 		state.status.isDownloadingTaskDataCsv = isActive;
 	},
 
+	indicateDownloadingTaskDataJson(state, isActive) {
+		state.status.isDownloadingTaskDataJson = isActive;
+	},
+
 	indicateFetchingTaskDataSummariesList(state, isActive) {
 		state.status.isFetchingTaskDataSummariesList = isActive;
 	},

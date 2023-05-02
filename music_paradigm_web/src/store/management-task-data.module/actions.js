@@ -7,10 +7,10 @@ export default {
 		commit('clearTaskDataSummariesList');
 	},
 
-	downloadTaskDataCsv({ commit, dispatch }, criterias = {}) {
+	downloadTaskDataCsv({ commit, dispatch }, criteria = {}) {
 		commit('indicateDownloadingTaskDataCsv', true);
 		return logsApi
-			.downloadTaskDataCsv(criterias)
+			.downloadTaskDataCsv(criteria)
 			.then(
 				() => {
 					dispatch(
@@ -29,6 +29,31 @@ export default {
 			)
 			.finally(() => {
 				commit('indicateDownloadingTaskDataCsv', false);
+			});
+	},
+
+	downloadTaskDataJson({ commit, dispatch }, criteria = {}) {
+		commit('indicateDownloadingTaskDataJson', true);
+		return logsApi
+			.downloadTaskDataJson(criteria)
+			.then(
+				() => {
+					dispatch(
+						'alert/setInformationAlert',
+						'Task data JSON file generated and retreived sucessfully',
+						{ root: true }
+					);
+				},
+				(error) => {
+					dispatch(
+						'alert/setErrorAlert',
+						`Failed to download the task data JSON file : ${error.message}`,
+						{ root: true }
+					);
+				},
+			)
+			.finally(() => {
+				commit('indicateDownloadingTaskDataJson', false);
 			});
 	},
 
