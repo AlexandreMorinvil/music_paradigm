@@ -42,7 +42,7 @@ function downloadTaskDataJson(criteria, isAdminData, mustSave = true) {
 
 function getTaskDataEntryById(taskDataEntryId, isAdminData) {
 	const requestOptions = {
-		method: 'GET',
+		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
 	return fetch(url.taskData(['select-by-id', taskDataEntryId]), requestOptions).then(defaultResponseHandler);

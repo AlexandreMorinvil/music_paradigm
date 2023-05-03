@@ -41,11 +41,9 @@ export default {
 		codemirror,
 	},
 	props: {
-		startText: {
+		assignedText: {
 			type: String,
-			default() {
-				return '';
-			},
+			default: ''
 		},
 		readOnly: {
 			type: Boolean,
@@ -129,11 +127,14 @@ export default {
 	beforeMount() {
 		window.jsonlint = jsonlint;
 	},
-	mounted() {
-		// Deep copy the text of the start value props
-		if (this.startText) this.code = (' ' + this.startText).slice(1);
-	},
 	watch: {
+		assignedText: {
+			immediate: true,
+			handler: function (text) {
+				if (text) this.code = text;
+				else this.code = '';
+			},
+		},
 		isFullScreen(isTrue) {
 			if (isTrue) {
 				this.codemirror.setSize('100%', '100%');

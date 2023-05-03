@@ -44,7 +44,7 @@
 import '@/styles/widget-template.css';
 import { mapActions, mapGetters } from 'vuex';
 
-import CodeEditor from '@/components/admin/TextEditor.vue';
+import CodeEditor from '@/components/admin/template/template-code-editor.vue';
 import { validator } from '@/_helpers';
 
 export default {
