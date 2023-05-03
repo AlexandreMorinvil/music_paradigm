@@ -1,6 +1,24 @@
 <template>
     <div class="widget-subsection">
-        <h4 class="title"> {{ title }} </h4>
+
+
+
+        <div class="title-area">
+            <div class="title-left-side">
+                <slot name="topLeft" />
+            </div>
+            <h4 class="title"> {{ title }} </h4>
+            <div class="title-right-side">
+                <slot name="topRight" />
+            </div>
+        </div>
+
+
+
+
+
+        
+
         <slot />
         <div v-if="hasButtonsArea" class="area-buttons">
             <slot name="buttons" />
@@ -24,10 +42,33 @@ export default {
 </script>
 
 <style scoped>
+.title-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: space-between;
+}
+
 .title {
     text-align: center;
     margin-bottom: 10px;
 }
+.title-right-side {
+    gap: 5px;
+    display: flex;
+    justify-content: right;
+}
+
+.title-left-side {
+    gap: 5px;
+    display: flex;
+    justify-content: left;
+}
+
+.title-left-side > button,
+.title-right-side > button {
+    height: 35px;
+    width: 135px;
+} 
 
 .area-buttons {
     display: flex;

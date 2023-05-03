@@ -18,6 +18,10 @@ export default {
             type: Object,
             default: null,
         },
+        isAdminData: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         ...mapGetters('managementTaskData/selection', [
@@ -59,7 +63,10 @@ export default {
         handleButtonPress() {
             if (!this.isButtonActive) return;
             if (this.isSelected) this.unsetTaskDataEntrySelection();
-            else this.fetchAndSelectTaskDataEntryById(this.taskDataEntryId);
+            else this.fetchAndSelectTaskDataEntryById({
+                isAdminData: this.isAdminData,
+                taskDataEntryId: this.taskDataEntryId,
+            });
         },
     }
 };

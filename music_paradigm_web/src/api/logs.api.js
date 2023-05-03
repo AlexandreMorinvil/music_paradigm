@@ -20,7 +20,7 @@ export const logsApi = {
 	getAdminThoroughLogJson,
 };
 
-function downloadTaskDataCsv(criteria, isAdminData, mustSave = true) {
+function downloadTaskDataCsv(criteria, isAdminData = false, mustSave = true) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -30,7 +30,7 @@ function downloadTaskDataCsv(criteria, isAdminData, mustSave = true) {
 		.then(csvFileResponseHandler.bind(null, mustSave));
 }
 
-function downloadTaskDataJson(criteria, isAdminData, mustSave = true) {
+function downloadTaskDataJson(criteria, isAdminData = false, mustSave = true) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -40,15 +40,16 @@ function downloadTaskDataJson(criteria, isAdminData, mustSave = true) {
 		.then(jsonFileResponseHandler.bind(null, mustSave));
 }
 
-function getTaskDataEntryById(taskDataEntryId, isAdminData) {
+function getTaskDataEntryById(taskDataEntryId, isAdminData = false) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify({ isAdminData }),
 	};
 	return fetch(url.taskData(['select-by-id', taskDataEntryId]), requestOptions).then(defaultResponseHandler);
 }
 
-function getTaskDataSummariesList(criteria, isAdminData) {
+function getTaskDataSummariesList(criteria, isAdminData = false) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },

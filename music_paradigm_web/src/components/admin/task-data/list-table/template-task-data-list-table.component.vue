@@ -4,7 +4,7 @@
 		:listTableSelection="listTableSelection" :downloadCsvFunction="downloadCsvFunction"
 		:downloadJsonFunction="downloadJsonFunction">
 		<div slot-scope="{ entity }">
-			<ButtonSelectTaskDataEntryComponent isSmall :entity="entity" />
+			<ButtonSelectTaskDataEntryComponent isSmall :entity="entity" :isAdminData="isAdminData" />
 		</div>
 	</TemplateListTable>
 </template>
@@ -18,7 +18,7 @@ import { AdminTaskDataListTable, ListTableStateBackup, TaskDataListTable } from 
 import { taskDataQueryHandler } from '@/modules/task-data';
 import TemplateListTable from '@/components/admin/template/list-table/template-list-table.component.vue';
 
-import ButtonSelectTaskDataEntryComponent from './buttons/button-select-task-data-entry.component.vue';
+import ButtonSelectTaskDataEntryComponent from '../buttons/button-select-task-data-entry.component.vue';
 
 export default {
 	components: {

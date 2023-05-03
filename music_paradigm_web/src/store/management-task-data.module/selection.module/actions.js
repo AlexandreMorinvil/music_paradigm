@@ -2,10 +2,10 @@ import { logsApi } from '@/api';
 
 export default {
 
-	fetchAndSelectTaskDataEntryById({ commit, dispatch }, taskDataEntryId) {
+	fetchAndSelectTaskDataEntryById({ commit, dispatch }, { isAdminData, taskDataEntryId }) {
 		commit('indicateFetchingAndSelectingTaskDataEntryById', taskDataEntryId);
 		return logsApi
-			.getTaskDataEntryById(taskDataEntryId)
+			.getTaskDataEntryById(taskDataEntryId, isAdminData)
 			.then(
 				(response) => {
 					const { taskDataEntry } = response;

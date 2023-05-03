@@ -1,6 +1,6 @@
 <template>
     <WidgetSectionContainer title="Task Data Entries List">
-        <TaskDataEntryViewSubsection class="spacing" />
+        <TaskDataEntryViewSubsection v-if="hasSelectedTaskDataEntry" class="spacing" />
         <TaskDataListTableComponent :mustClear="!hasSelectedTask" :taskId="selectedId"
             listTableId="task-management-task-data-list" class="spacing" />
         <TaskDataListTableComponent isAdminData :mustClear="!hasSelectedTask" :taskId="selectedId"
@@ -23,6 +23,7 @@ export default {
     },
     computed: {
         ...mapGetters('experiments', ['selectedId']), // TODO : Rename when the task logic will be adjusted.
+        ...mapGetters('managementTaskData/selection', ['hasSelectedTaskDataEntry']),
         hasSelectedTask() {
             return Boolean(this.selectedId); // TODO : Move to the vuex store when the task logic will be adjusted.
         },

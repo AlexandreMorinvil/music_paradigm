@@ -4,7 +4,7 @@ export default {
 	},
 
 	hasSelectedTaskDataEntry: (state) => {
-		return Boolean(state.selectionTaskDataEntry.id);
+		return Boolean(state.selectionTaskDataEntry._id);
 	},
 
 	isExecutingTaskDataSelectionCommand: (state) => {
