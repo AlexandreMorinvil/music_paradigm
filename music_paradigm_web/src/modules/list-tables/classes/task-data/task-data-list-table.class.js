@@ -8,14 +8,15 @@ import { TaskDataListTableEntity } from "./task-data-list-table-entity.class";
 const possibleColumnsList = [
     new ListTableColumn({
         key: 'username',
-        isAlwaysPresent: true,
-        orderPriority: 2,
+        isPresentByDefault: true,
+        orderPriority: 1,
         title: 'Username',
         type: ColumnType.string,
     }),
     new ListTableColumn({
         key: 'curriculumTitle',
         isPresentByDefault: true,
+        orderPriority: 2,
         title: 'Curriculum',
         type: ColumnType.string,
     }),
@@ -57,6 +58,7 @@ const possibleColumnsList = [
     new ListTableColumn({
         key: 'associativeId',
         isPresentByDefault: true,
+        orderPriority: 3,
         title: 'Session ID (Associative ID)',
         columnTitle: 'Session ID',
         type: ColumnType.string,
@@ -64,6 +66,7 @@ const possibleColumnsList = [
     new ListTableColumn({
         key: 'associativeIdOrdinalNumber',
         isPresentByDefault: true,
+        orderPriority: 4,
         title: 'Session ID ordinal number',
         columnTitle: 'Session ID ord. num.',
         type: ColumnType.number,
@@ -71,6 +74,7 @@ const possibleColumnsList = [
     new ListTableColumn({
         key: 'taskFullName',
         isPresentByDefault: true,
+        orderPriority: 5,
         title: 'Task full name',
         type: ColumnType.string,
     }),
@@ -100,6 +104,8 @@ const possibleColumnsList = [
         key: 'timeLapsedSinceCreatedAt',
         title: 'Time lapsed since creation',
         columnTitle: 'Since creation',
+        isPresentByDefault: true,
+        orderPriority: 6,
         type: ColumnType.duration,
         formatFunction: (value) => durationHandler.formatDurationWeekToSecondsFromLargerUnit(value, 2),
     }),

@@ -6,6 +6,7 @@ import { ListTableFilterCondition } from './classes/list-table-filter-condition.
 import { ListTableSelection } from './classes/list-table-selection.class';
 import { ListTableStateBackup } from './classes/list-table-state-backup.class';
 
+import { AdminTaskDataListTable } from './classes/task-data/admin-task-data-list-table.class';
 import { CurriculumsListTable } from './classes/curriculum-list-table.class';
 import { TaskDataListTable } from './classes/task-data/task-data-list-table.class';
 import { UsersListTable } from './classes/user-list-table.class';
@@ -25,6 +26,7 @@ export {
     ListTableSelection,
     ListTableStateBackup,
 
+    AdminTaskDataListTable,
     CurriculumsListTable,
     TaskDataListTable,
     UsersListTable,

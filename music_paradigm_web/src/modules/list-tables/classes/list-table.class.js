@@ -28,6 +28,10 @@ export class ListTable {
         return this.possibleColumnsList.filter((column) => column.isAlwaysPresent);
     }
 
+    get context() {
+        return this.title;
+    }
+
     get entitiesCount() {
         return this.entitiesList.length;
     }

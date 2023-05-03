@@ -4,8 +4,7 @@
 		:listTableSelection="listTableSelection" :downloadCsvFunction="downloadCsvFunction"
 		:downloadJsonFunction="downloadJsonFunction">
 		<div slot-scope="{ entity }">
-			<ButtonSelectTaskDataEntryComponent isSmall :entity="entity" hideIfInactive />
-			<!-- <ButtonDeselectUserComponent isSmall :entity="entity" hideIfInactive /> -->
+			<ButtonSelectTaskDataEntryComponent isSmall :entity="entity" />
 		</div>
 	</TemplateListTable>
 </template>
@@ -15,7 +14,7 @@ import '@/styles/widget-template.css';
 
 import { mapActions, mapGetters } from 'vuex';
 
-import { ListTableStateBackup, TaskDataListTable } from '@/modules/list-tables';
+import { AdminTaskDataListTable, ListTableStateBackup, TaskDataListTable } from '@/modules/list-tables';
 import { taskDataQueryHandler } from '@/modules/task-data';
 import TemplateListTable from '@/components/admin/template/list-table/template-list-table.component.vue';
 
@@ -27,9 +26,13 @@ export default {
 		TemplateListTable,
 	},
 	props: {
+		isAdminData: {
+			type: Boolean,
+			default: false,
+		},
 		listTableId: {
 			type: String,
-			default: 'task-management-task-data-list',
+			default: 'task-data-list',
 		},
 		mustClear: {
 			type: Boolean,
@@ -37,37 +40,49 @@ export default {
 		},
 		taskDataQueryCriteria: {
 			type: Object,
-			default: 'task-management-task-data-list',
+			default: null,
 		},
 	},
 	computed: {
 		...mapGetters('pageStatus', ['listTableState']),
 		...mapGetters('managementTaskData', [
+			'adminTaskDataSummariesList',
+			'isFetchingAdminTaskDataSummariesList',
 			'isFetchingTaskDataSummariesList',
 			'taskDataSummariesList',
 		]),
 		...mapGetters('managementTaskData/listTableSelection', [
 			'hasTaskDataListTableSelection',
+			'isAdminTaskDataListTableSelection',
 			'taskDataListTableSelection',
 			'taskDataListTableSelectionIdsList',
 		]),
+		apiParameters() {
+			return {
+				criteria: this.taskDataQueryCriteriaConsideringSelections,
+				isAdminData: this.isAdminData,
+			};
+		},
 		initialTableState() {
 			return this.listTableState(this.listTableId);
 		},
 		isLoading() {
-			return this.isFetchingTaskDataSummariesList;
+			return this.isAdminData ? this.isFetchingAdminTaskDataSummariesList : this.isFetchingTaskDataSummariesList;
+		},
+		isSelectionInSameContext() {
+			return this.isAdminTaskDataListTableSelection === this.isAdminData;
 		},
 		list() {
-			return this.taskDataSummariesList;
+			return this.isAdminData ? this.adminTaskDataSummariesList : this.taskDataSummariesList;
 		},
 		ListTableClass() {
-			return TaskDataListTable;
+			return this.isAdminData ? AdminTaskDataListTable : TaskDataListTable;
 		},
 		listTableSelection() {
 			return this.taskDataListTableSelection;
 		},
-		selectedTaskDataQueryCriteria() {
-			if (this.hasTaskDataListTableSelection)
+		taskDataQueryCriteriaConsideringSelections() {
+			if (this.hasTaskDataListTableSelection && this.isSelectionInSameContext)
 				return taskDataQueryHandler.makeTaskDataQueryCriteriaList({
 					selectedEntriesId: this.taskDataListTableSelectionIdsList
 				});
@@ -84,14 +99,17 @@ export default {
 			'fetchTaskDataSummariesList',
 		]),
 		downloadCsvFunction() {
-			this.downloadTaskDataCsv(this.selectedTaskDataQueryCriteria);
+			this.downloadTaskDataCsv(this.apiParameters);
 		},
 		downloadJsonFunction() {
-			this.downloadTaskDataJson(this.selectedTaskDataQueryCriteria);
+			this.downloadTaskDataJson(this.apiParameters);
 		},
 		refreshFunction() {
 			if (this.mustClear) this.clearTaskDataSummariesList();
-			else this.fetchTaskDataSummariesList(this.taskDataQueryCriteria);
+			else this.fetchTaskDataSummariesList({
+				criteria: this.taskDataQueryCriteria,
+				isAdminData: this.isAdminData,
+			});
 		},
 		saveBackupFunction(listTableStateBackup) {
 			this.saveListTableState({

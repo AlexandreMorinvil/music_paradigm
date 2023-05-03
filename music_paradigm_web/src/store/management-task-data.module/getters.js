@@ -1,5 +1,9 @@
 export default {
 
+	adminTaskDataSummariesList: (state) => {
+		return state.adminTaskDataSummariesManager.taskDataSummariesList;
+	},
+
 	isDownloadingTaskDataCsv: (state) => {
 		return state.status.isDownloadingTaskDataCsv;
 	},
@@ -8,9 +12,8 @@ export default {
 		return state.status.isDownloadingTaskDataJson;
 	},
 
-	isExecutingTaskDataCommand: (state, getters) => {
-		return getters['selection/isExecutingTaskDataSelectionCommand'] ||
-			Object.values(state.status).some((value) => Boolean(value));
+	isFetchingAdminTaskDataSummariesList: (state) => {
+		return state.status.isFetchingAdminTaskDataSummariesList;
 	},
 
 	isFetchingTaskDataSummariesList: (state) => {

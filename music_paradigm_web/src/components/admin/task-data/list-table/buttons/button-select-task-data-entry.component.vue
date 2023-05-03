@@ -20,9 +20,6 @@ export default {
         },
     },
     computed: {
-        ...mapGetters('managementTaskData', [
-            'isExecutingTaskDataCommand',
-        ]),
         ...mapGetters('managementTaskData/selection', [
             'beingFetchedAndSelectedTaskDataEntryId',
             'taskDataEntrySelectionId',
@@ -35,12 +32,11 @@ export default {
                 this.beingFetchedAndSelectedTaskDataEntryId === this.taskDataEntryId;
         },
         isButtonFrozen() {
-            // Fetching other user
+            // Fetching other task data entry
             if (this.beingFetchedAndSelectedTaskDataEntryId &&
                 this.beingFetchedAndSelectedTaskDataEntryId !== this.taskDataEntryId)
                 return true;
-            // Executing other user command
-            return !this.beingFetchedAndSelectedTaskDataEntryId && this.isExecutingTaskDataCommand;
+            else return false;
         },
         isButtonActive() {
             return true;

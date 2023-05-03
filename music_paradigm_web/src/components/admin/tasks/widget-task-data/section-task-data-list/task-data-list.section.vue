@@ -1,6 +1,9 @@
 <template>
     <WidgetSectionContainer title="Task Data Entries List">
-        <TaskDataListTableComponent :mustClear="!hasSelectedTask" :taskId="selectedId" />
+        <TaskDataListTableComponent :mustClear="!hasSelectedTask" :taskId="selectedId"
+            listTableId="task-management-task-data-list" />
+        <TaskDataListTableComponent isAdminData :mustClear="!hasSelectedTask" :taskId="selectedId"
+            listTableId="admin-task-management-task-data-list" />
     </WidgetSectionContainer>
 </template>
 

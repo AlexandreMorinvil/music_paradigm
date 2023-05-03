@@ -7,10 +7,10 @@ export default {
 		commit('clearTaskDataSummariesList');
 	},
 
-	downloadTaskDataCsv({ commit, dispatch }, criteria = {}) {
+	downloadTaskDataCsv({ commit, dispatch }, { criteria, isAdminData = false }) {
 		commit('indicateDownloadingTaskDataCsv', true);
 		return logsApi
-			.downloadTaskDataCsv(criteria)
+			.downloadTaskDataCsv(criteria, isAdminData)
 			.then(
 				() => {
 					dispatch(
@@ -32,10 +32,10 @@ export default {
 			});
 	},
 
-	downloadTaskDataJson({ commit, dispatch }, criteria = {}) {
+	downloadTaskDataJson({ commit, dispatch }, { criteria, isAdminData = false }) {
 		commit('indicateDownloadingTaskDataJson', true);
 		return logsApi
-			.downloadTaskDataJson(criteria)
+			.downloadTaskDataJson(criteria, isAdminData)
 			.then(
 				() => {
 					dispatch(
@@ -57,14 +57,14 @@ export default {
 			});
 	},
 
-	fetchTaskDataSummariesList({ commit, dispatch }, criterias = {}) {
-		commit('indicateFetchingTaskDataSummariesList', true);
+	fetchTaskDataSummariesList({ commit, dispatch }, { criteria, isAdminData = false }) {
+		commit('indicateFetchingTaskDataSummariesList', { isActive: true, isAdminData });
 		return logsApi
-			.getTaskDataSummariesList(criterias)
+			.getTaskDataSummariesList(criteria, isAdminData)
 			.then(
 				(response) => {
-					const { summariesList } = response;
-					commit('setTaskDataSummariesList', summariesList);
+					const { isAdminData, summariesList } = response;
+					commit('setTaskDataSummariesList', { summariesList, isAdminData });
 				},
 				(error) => {
 					dispatch(
@@ -75,27 +75,9 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateFetchingTaskDataSummariesList', false);
+				commit('indicateFetchingTaskDataSummariesList', { isActive: false, isAdminData });
 			});
 	},
-
-	// getAdminThoroughLogSummaryList({ commit, dispatch }, rules) {
-	// 	const criterias = taskDataQueryHandler.makeTaskDataQueryCriteriaList(rules);
-	// 	commit('indicateLoadingAdminThoroughLogList');
-	// 	return logsApi
-	// 		.getAdminThoroughLogSummaryList(criterias)
-	// 		.then(
-	// 			(summarylist) => {
-	// 				commit('setAdminThoroughLogList', summarylist);
-	// 			},
-	// 			(error) => {
-	// 				dispatch('alert/setErrorAlert', `Admin thorough logs list fetch failed : ${error.message}`, { root: true });
-	// 			},
-	// 		)
-	// 		.finally(() => {
-	// 			commit('indicateLoadingAdminThoroughLogListEnd');
-	// 		});
-	// },
 
 	// TODO: Adjust the code for all the code below this comment
 	// Clearing

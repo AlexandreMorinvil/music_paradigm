@@ -3,6 +3,10 @@ export default {
 		return getters.taskDataListTableSelection.hasElements;
 	},
 
+	isAdminTaskDataListTableSelection: (state) => {
+		return state.taskDataListTableSelection.isContextContaining('admin');
+	},
+
 	taskDataListTableSelection: (state) => {
 		return state.taskDataListTableSelection;
 	},

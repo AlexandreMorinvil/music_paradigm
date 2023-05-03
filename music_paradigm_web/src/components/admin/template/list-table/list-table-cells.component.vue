@@ -10,11 +10,13 @@
 					<span v-else>#</span>
 				</th>
 				<th v-for="(column, index) in selectedColumnsList" :key="index">
-					<TemplateFieldOutputComponent :value="column.columnTitle" />
-					<i v-if="isColumnUsedForSorting(column)" class="clickable-sort-icon bi"
-						:class="listTable.isReverSort ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"
-						v-on:click="() => toggleSortForColumn(column)" />
-					<i v-else class="clickable-sort-icon bi bi-dot" v-on:click="() => toggleSortForColumn(column)" />
+					<div class="header-row">
+						<TemplateFieldOutputComponent :value="column.columnTitle" class="column-title"/>
+						<i v-if="isColumnUsedForSorting(column)" class="clickable-sort-icon bi"
+							:class="listTable.isReverSort ? 'bi-caret-up-fill' : 'bi-caret-down-fill'"
+							v-on:click="() => toggleSortForColumn(column)" />
+						<i v-else class="clickable-sort-icon bi bi-dot" v-on:click="() => toggleSortForColumn(column)" />
+					</div>
 				</th>
 				<th v-if="hasActionButtons">Actions</th>
 			</tr>
@@ -86,7 +88,11 @@ export default {
 			return this.listTableSelection?.hasElements || false;
 		},
 		isListTableSelectionActivated() {
-			return (this.listTableSelection && this.isCheckboxColumnBeingHovered) || this.hasEntityInListTableSelection;
+			return (this.listTableSelection && this.isCheckboxColumnBeingHovered) ||
+				(this.listTableSelection?.isSameContext(this.context) && this.hasEntityInListTableSelection);
+		},
+		context() {
+			return this.listTable.context;
 		},
 		selectedColumnsList() {
 			return this.listTable.selectedColumnsList;
@@ -114,10 +120,10 @@ export default {
 		},
 		toggleAllEntitiesInListTableSelection() {
 			if (this.areAllEntitesInListTableSelection) this.listTableSelection?.empty();
-			else this.listTableSelection?.addList(this.entitiesList);
+			else this.listTableSelection?.addList(this.entitiesList, this.context);
 		},
 		toggleEntityInListTableSelection(entity) {
-			this.listTableSelection?.toggleSelection(entity);
+			this.listTableSelection?.toggleSelection(entity, this.context);
 		},
 		toggleSortForColumn(column) {
 			this.listTable.toggleSortForColumn(column);
@@ -148,8 +154,21 @@ export default {
 	white-space: normal;
 }
 
+.column-title {
+	margin-bottom: auto;
+	margin-top: auto;
+}
+
 .clickable-sort-icon {
 	cursor: pointer;
+}
+
+.header-row {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 input[type="checkbox"] {

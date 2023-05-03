@@ -1,5 +1,5 @@
 <template>
-	<TemplateTaskDataListTableComponent :listTableId="listTableId" :mustClear="mustClear"
+	<TemplateTaskDataListTableComponent :isAdminData="isAdminData" :listTableId="listTableId" :mustClear="mustClear"
 		:taskDataQueryCriteria="taskDataQueryCriteria" />
 </template>
 
@@ -13,6 +13,10 @@ export default {
 		TemplateTaskDataListTableComponent,
 	},
 	props: {
+		isAdminData: {
+			type: Boolean,
+			default: false,
+		},
 		listTableId: {
 			type: String,
 			default: 'task-management-task-data-list',

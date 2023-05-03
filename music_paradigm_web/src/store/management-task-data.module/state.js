@@ -5,6 +5,7 @@ export default {
 	status: {
 		isDownloadingTaskDataCsv: false,
 		isDownloadingTaskDataJson: false,
+		isFetchingAdminTaskDataSummariesList: false,
 		isFetchingTaskDataSummariesList: false,
 
 		// TODO: Ajust code below this line
@@ -13,6 +14,7 @@ export default {
 		isDownloading: false,
 	},
 
+	adminTaskDataSummariesManager: new TaskDataSummariesManager(),
 	taskDataSummariesManager: new TaskDataSummariesManager(),
 
 	// TODO: Adjust the code below

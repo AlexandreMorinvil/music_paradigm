@@ -14,12 +14,14 @@ export default {
 		state.status.isDownloadingTaskDataJson = isActive;
 	},
 
-	indicateFetchingTaskDataSummariesList(state, isActive) {
-		state.status.isFetchingTaskDataSummariesList = isActive;
+	indicateFetchingTaskDataSummariesList(state, { isActive, isAdminData = false }) {
+		if (isAdminData) state.status.isFetchingAdminTaskDataSummariesList = isActive;
+		else state.status.isFetchingTaskDataSummariesList = isActive;
 	},
 
-	setTaskDataSummariesList(state, taskDataSummariesList) {
-		state.taskDataSummariesManager.setTaskDataSummariesList(taskDataSummariesList);
+	setTaskDataSummariesList(state, { isAdminData, summariesList }) {
+		if (isAdminData) state.adminTaskDataSummariesManager.setTaskDataSummariesList(summariesList);
+		else state.taskDataSummariesManager.setTaskDataSummariesList(summariesList);
 	},
 
 	// TODO: Adjust the code for all the code below this comment
