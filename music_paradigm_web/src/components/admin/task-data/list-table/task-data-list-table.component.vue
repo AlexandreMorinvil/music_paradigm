@@ -19,13 +19,27 @@ export default {
 		},
 		listTableId: {
 			type: String,
-			default: 'task-management-task-data-list',
+			default: 'task-data-list',
 		},
 		mustClear: {
 			type: Boolean,
 			default: false,
 		},
+
+		// Summary fetching query parameters
+		associativeId: {
+			type: String,
+			default: null,
+		},
+		completionCount: {
+			type: Number,
+			default: null,	
+		},
 		taskId: {
+			type: String,
+			default: null,
+		},
+		userId: {
 			type: String,
 			default: null,
 		},
@@ -33,7 +47,11 @@ export default {
 	computed: {
 		taskDataQueryCriteria() {
 			const criteria = taskDataQueryHandler.makeTaskDataQueryCriteriaList({
-				experimentIdList: Array(this.taskId).flat(),
+				completionCountList: this.completionCount ? Array(this.completionCount).flat() : null,
+				curriculumIdList: this.curriculumId ? Array(this.curriculumId).flat() : null,
+				experimentIdList: this.taskId ? Array(this.taskId).flat() : null,
+				userIdList: this.userId ? Array(this.userId).flat() : null,
+				associativeIdList: this.associativeId ? Array(this.associativeId).flat() : null,
 			});
 			return criteria;
 		},

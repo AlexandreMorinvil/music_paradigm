@@ -1,6 +1,6 @@
 <template>
-	<admin-page-content-frame title="Experiments">
-		<widget-content-frame title="Experiment Editor">
+	<admin-page-content-frame title="Tasks">
+		<widget-content-frame title="Tasks Editor">
 			<experiments-editor />
 		</widget-content-frame>
 
