@@ -1,8 +1,6 @@
 <template>
     <div class="widget-subsection">
 
-
-
         <div class="title-area">
             <div class="title-left-side">
                 <slot name="topLeft" />
@@ -12,12 +10,6 @@
                 <slot name="topRight" />
             </div>
         </div>
-
-
-
-
-
-        
 
         <slot />
         <div v-if="hasButtonsArea" class="area-buttons">

@@ -92,7 +92,7 @@ function makeCurriculumMongooseFilters(curriculumCriteria = null) {
     const { ids } = curriculumCriteria;
     if (Array.isArray(ids) && ids.length > 0) {
         const castedIds = ids.map((id) => { return mongoose.Types.ObjectId(id) });
-        Object.assign(filters, { completionCount: { $in: castedIds } });
+        Object.assign(filters, { curriculumId: { $in: castedIds } });
     }
 
     return filters;

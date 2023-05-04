@@ -31,9 +31,13 @@ export default {
 			type: String,
 			default: null,
 		},
+		curriculumId: {
+			type: String,
+			default: null,
+		},
 		completionCount: {
 			type: Number,
-			default: null,	
+			default: null,
 		},
 		taskId: {
 			type: String,
@@ -47,7 +51,7 @@ export default {
 	computed: {
 		taskDataQueryCriteria() {
 			const criteria = taskDataQueryHandler.makeTaskDataQueryCriteriaList({
-				completionCountList: this.completionCount ? Array(this.completionCount).flat() : null,
+				completionCountList: typeof this.completionCount === 'number' ? Array(this.completionCount).flat() : null,
 				curriculumIdList: this.curriculumId ? Array(this.curriculumId).flat() : null,
 				experimentIdList: this.taskId ? Array(this.taskId).flat() : null,
 				userIdList: this.userId ? Array(this.userId).flat() : null,

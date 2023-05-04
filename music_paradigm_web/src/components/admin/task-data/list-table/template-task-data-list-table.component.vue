@@ -92,6 +92,7 @@ export default {
 	methods: {
 		...mapActions('pageStatus', ['saveListTableState']),
 		...mapActions('managementTaskData/listTableSelection', ['clearTaskDataListTableSelection']),
+		...mapActions('managementTaskData/selection', ['unsetTaskDataEntrySelection']),
 		...mapActions('managementTaskData', [
 			'clearTaskDataSummariesList',
 			'downloadTaskDataCsv',
@@ -122,7 +123,9 @@ export default {
 		this.refreshFunction();
 	},
 	beforeDestroy() {
+		console.log('This was triggered');
 		this.clearTaskDataListTableSelection();
+		this.unsetTaskDataEntrySelection();
 	},
 	watch: {
 		mustClear: {

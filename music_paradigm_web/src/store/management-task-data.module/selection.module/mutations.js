@@ -10,6 +10,7 @@ export default {
 	},
 
 	unsetTaskDataEntrySelection(state) {
+		console.log('Got here');
 		state.selectionTaskDataEntry = new TaskDataEntry();
 	},
 };

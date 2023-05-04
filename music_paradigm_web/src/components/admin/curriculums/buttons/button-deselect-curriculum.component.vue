@@ -27,13 +27,13 @@ export default {
         ...mapGetters('managementCurriculums', ['isExecutingCurriculumCommand']),
         ...mapGetters('managementCurriculums/selection', [
             'curriculumSelectionId',
-            'hasSelectedCurriculm',
+            'hasSelectedCurriculum',
         ]),
         isButtonFrozen() {
             return this.isExecutingCurriculumCommand;
         },
         isButtonActive() {
-            return this.curriculumIdParameter ? this.isSelected : this.hasSelectedCurriculm;
+            return this.curriculumIdParameter ? this.isSelected : this.hasSelectedCurriculum;
         },
         curriculumIdParameter() {
             return this.entity?._id || this.id || null;
