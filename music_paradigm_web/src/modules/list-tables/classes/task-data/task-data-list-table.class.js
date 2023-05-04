@@ -21,6 +21,11 @@ const possibleColumnsList = [
         type: ColumnType.string,
     }),
     new ListTableColumn({
+        key: 'completionCount',
+        title: 'Completion count',
+        type: ColumnType.number,
+    }),
+    new ListTableColumn({
         key: 'completionDate',
         title: 'Date of completion',
         columnTitle: 'Completion date',

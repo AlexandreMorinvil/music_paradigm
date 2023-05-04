@@ -1,41 +1,43 @@
 export class UserSummary {
-    constructor(parameter = {}) {
+    constructor(data = {}) {
         // Deep copy to avoid oject and array shallow copies.
-        const parameterCopy = JSON.parse(JSON.stringify(parameter));
+        const dataCopy = JSON.parse(JSON.stringify(data));
 
         // Id
-        this._id = parameterCopy._id ?? null;
+        this._id = dataCopy._id ?? null;
 
         // User information
-        this.group = parameterCopy.group ?? null;
-        this.hasNote = parameterCopy.hasNote ?? null;
-        this.tags = parameterCopy.tags ?? [];
-        this.username = parameterCopy.username ?? null;
+        this.group = dataCopy.group ?? null;
+        this.hasNote = dataCopy.hasNote ?? null;
+        this.tags = dataCopy.tags ?? [];
+        this.username = dataCopy.username ?? null;
 
         // Timestamps
-        this.lastLogin = parameterCopy.lastLogin ?? null;
-        this.createdAt = parameterCopy.createdAt ?? null;
-        this.updatedAt = parameterCopy.updatedAt ?? null;
-        this.timeLapsedSinceLastLogin = parameterCopy.timeLapsedSinceLastLogin ?? null;
-        this.timeLapsedSinceCreatedAt = parameterCopy.timeLapsedSinceCreatedAt ?? null;
-        this.timeLapsedSinceUpdatedAt = parameterCopy.timeLapsedSinceUpdatedAt ?? null;
+        this.lastLogin = dataCopy.lastLogin ?? null;
+        this.createdAt = dataCopy.createdAt ?? null;
+        this.updatedAt = dataCopy.updatedAt ?? null;
+        this.timeLapsedSinceLastLogin = dataCopy.timeLapsedSinceLastLogin ?? null;
+        this.timeLapsedSinceCreatedAt = dataCopy.timeLapsedSinceCreatedAt ?? null;
+        this.timeLapsedSinceUpdatedAt = dataCopy.timeLapsedSinceUpdatedAt ?? null;
 
         // Curriculum information
-        this.curriculumTitle = parameterCopy.curriculumTitle ?? null;
+        this.curriculumTitle = dataCopy.curriculumTitle ?? null;
 
         // Progression information
-        this.progressionStartDate = parameterCopy.progressionStartDate ?? null;
-        this.progressionStartTime = parameterCopy.progressionStartTime ?? null;
-        this.progressionLastAdvancedDate = parameterCopy.progressionLastAdvancedDate ?? null;
-        this.progressionLastAdvancedTime = parameterCopy.progressionLastAdvancedTime ?? null;
-        this.progressionDuration = parameterCopy.progressionDuration ?? null;
+        this.progressionStartDate = dataCopy.progressionStartDate ?? null;
+        this.progressionStartTime = dataCopy.progressionStartTime ?? null;
+        this.progressionLastAdvancedDate = dataCopy.progressionLastAdvancedDate ?? null;
+        this.progressionLastAdvancedTime = dataCopy.progressionLastAdvancedTime ?? null;
+        this.progressionDuration = dataCopy.progressionDuration ?? null;
 
         this.isAdvanceResultOfConsiderCompletedAdjustmentSessions =
-            parameterCopy.isAdvanceResultOfConsiderCompletedAdjustmentSessions ?? null;
-        this.inAdvanceCount = parameterCopy.inAdvanceCount ?? null;
-        this.isProgressionBlocked = parameterCopy.isProgressionBlocked ?? null;
-        this.reachedSessionTitle = parameterCopy.reachedSessionTitle ?? null;
-        this.progressionCompletedSessionsCount = parameterCopy.progressionCompletedSessionsCount ?? null;
-        this.curriculumSessionsCount = parameterCopy.curriculumSessionsCount ?? null;
+            dataCopy.isAdvanceResultOfConsiderCompletedAdjustmentSessions ?? null;
+        this.inAdvanceCount = dataCopy.inAdvanceCount ?? null;
+        this.isProgressionBlocked = dataCopy.isProgressionBlocked ?? null;
+        this.reachedSessionTitle = dataCopy.reachedSessionTitle ?? null;
+        this.progressionCompletedSessionsCount = dataCopy.progressionCompletedSessionsCount ?? null;
+        this.curriculumSessionsCount = dataCopy.curriculumSessionsCount ?? null;
+
+        this.assignedParameters = dataCopy.assignedParameters ?? {};
     }
 }

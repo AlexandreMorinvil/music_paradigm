@@ -123,7 +123,6 @@ export default {
 		this.refreshFunction();
 	},
 	beforeDestroy() {
-		console.log('This was triggered');
 		this.clearTaskDataListTableSelection();
 		this.unsetTaskDataEntrySelection();
 	},

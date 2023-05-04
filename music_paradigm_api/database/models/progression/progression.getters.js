@@ -1,6 +1,7 @@
 module.exports = {
     getAdvanceStartDate,
     getAdvanceStartTime,
+    getAssignedParameters,
     getLastAdvanceDate,
     getLastAdvanceTime,
     getDuration,
@@ -26,6 +27,10 @@ function getAdvanceStartDate(progression) {
 function getAdvanceStartTime(progression) {
     if (!progression) return null;
     return progression ? progression.startTimePassed : null;
+}
+
+function getAssignedParameters(progression) {
+    return progression?.assignedParameters ?? {};
 }
 
 /**
@@ -59,8 +64,6 @@ function getDuration(progression) {
     if (!progression) return null;
     return progression ? progression.duration : null;
 }
-
-
 
 /**
  * Returns the nested experimetn associacted to an associative ID and it's orinal number

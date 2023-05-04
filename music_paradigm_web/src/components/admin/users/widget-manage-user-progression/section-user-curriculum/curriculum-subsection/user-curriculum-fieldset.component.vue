@@ -9,7 +9,7 @@
             :isLoading="isFetchingCurriculumSummariesList"
             :getDisplayedValueFromElement="(curriculumSummary) => curriculumSummary.title"
             :getOptionValueFromElement="(curriculumSummary) => curriculumSummary._id" :options="curriculumSummariesList"
-            placeholder="# No Curriculum" />
+            placeholder="No Curriculum" />
     </TemplateFieldsetComponent>
 </template>
 

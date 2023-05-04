@@ -17,7 +17,7 @@
 						isEmptyAccepted :getDisplayedValueFromElement="(column) => column.title"
 						:isForcedDisabled="isMandatoryColumnIndex(index)"
 						:getOptionValueFromElement="(column) => column.key" :options="possibleColumnsList"
-						placeholder="# No column" />
+						placeholder="No column" />
 
 					<TemplateButtonComponent v-if="!isMandatoryColumnIndex(index)" color="red" isSmall
 						v-on:click="() => deleteColumn(index)" text="Delete" />

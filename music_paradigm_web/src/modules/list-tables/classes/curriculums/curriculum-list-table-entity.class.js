@@ -1,4 +1,4 @@
-import { ListTableEntity } from "./list-table-entity.class";
+import { ListTableEntity } from "../list-table-entity.class";
 
 export class CurrirulumsListTableEntity extends ListTableEntity {
     constructor(user) {

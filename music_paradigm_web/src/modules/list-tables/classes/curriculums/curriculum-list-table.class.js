@@ -1,8 +1,8 @@
 import { dateHandler, durationHandler } from '@/_helpers';
 
-import { ColumnType } from '../interfaces/column.interfaces';
-import { ListTable } from "./list-table.class";
-import { ListTableColumn } from "./list-table-column.class";
+import { ColumnType } from '../../interfaces/column.interfaces';
+import { ListTable } from "../list-table.class";
+import { ListTableColumn } from "../list-table-column.class";
 import { CurrirulumsListTableEntity } from "./curriculum-list-table-entity.class";
 
 const possibleColumnsList = [

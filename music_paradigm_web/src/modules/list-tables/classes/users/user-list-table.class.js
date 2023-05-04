@@ -1,8 +1,8 @@
 import { dateHandler, durationHandler } from '@/_helpers';
 
-import { ColumnType } from '../interfaces/column.interfaces';
-import { ListTable } from "./list-table.class";
-import { ListTableColumn } from "./list-table-column.class";
+import { ColumnType } from '../../interfaces/column.interfaces';
+import { ListTable } from "../list-table.class";
+import { ListTableColumn } from "../list-table-column.class";
 import { UsersListTableEntity } from "./user-list-table-entity.class";
 
 const possibleColumnsList = [
@@ -19,6 +19,27 @@ const possibleColumnsList = [
         orderPriority: 2,
         title: 'Username',
         type: ColumnType.string,
+    }),
+    new ListTableColumn({
+        key: 'assignedParametersAssignation',
+        title: 'Assigned parameters assignation',
+        columnTitle: 'Parameters assignation',
+        type: ColumnType.arrayOfStrings,
+        formatFunction: (list) => list.join(',\n'),
+    }),
+    new ListTableColumn({
+        key: 'assignedParametersNames',
+        title: 'Assigned parameters name',
+        columnTitle: 'Parameters name',
+        type: ColumnType.arrayOfStrings,
+        formatFunction: (list) => list.join(',\n'),
+    }),
+    new ListTableColumn({
+        key: 'assignedParametersValues',
+        title: 'Assigned parameters value',
+        columnTitle: 'Parameters value',
+        type: ColumnType.arrayOfStrings,
+        formatFunction: (list) => list.join(',\n'),
     }),
     new ListTableColumn({
         key: 'progressionCompletedSessionsCount',
