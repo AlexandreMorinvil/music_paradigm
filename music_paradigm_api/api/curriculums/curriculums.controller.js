@@ -5,17 +5,27 @@ const role = require('_helpers/role');
 const curriculumService = require('./curriculums.service');
 
 // routes
-router.post('/',                jwtAuthorize(role.admin),  create);
+router.delete('/:id',           jwtAuthorize(role.admin),  deleteCurriculum);
 
+
+router.get('/get-by-id/:id',    jwtAuthorize(role.admin),  getCurriculumById);
 router.get('/',                 jwtAuthorize(role.admin),  getCurriculumSummariesList);
-router.get('/:id',              jwtAuthorize(role.admin),  getById);
-router.put('/:id',              jwtAuthorize(role.admin),  update);
-router.delete('/:id',           jwtAuthorize(role.admin),  _delete);
+
+router.post('/',                jwtAuthorize(role.admin),  createCurriculum);
+
+router.put('/:id',              jwtAuthorize(role.admin),  updateCurriculum);
 
 module.exports = router;
 
-function create(req, res, next) {
-    curriculumService.create(req.body)
+function createCurriculum(req, res, next) {
+    curriculumService.createCurriculum(req.body)
+        .then(result => res.status(200).json(result))
+        .catch(error => res.status(400).json({ message: error.message }))
+        .finally(() => next());
+}
+
+function deleteCurriculum(req, res, next) {
+    curriculumService.deleteCurriculum(req.params.id)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
@@ -28,22 +38,15 @@ function getCurriculumSummariesList(req, res, next) {
         .finally(() => next());
 }
 
-function getById(req, res, next) {
-    curriculumService.getById(req.params.id)
+function getCurriculumById(req, res, next) {
+    curriculumService.getCurriculumById(req.params.id)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());
 }
 
-function update(req, res, next) {
-    curriculumService.update(req.params.id, req.body)
-        .then(result => res.status(200).json(result))
-        .catch(error => res.status(400).json({ message: error.message }))
-        .finally(() => next());
-}
-
-function _delete(req, res, next) {
-    curriculumService.delete(req.params.id)
+function updateCurriculum(req, res, next) {
+    curriculumService.updateCurriculum(req.params.id, req.body)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());

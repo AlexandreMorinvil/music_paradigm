@@ -32,6 +32,7 @@ async function generateUserSummary(user) {
 
     return new UserSummary({
         curriculumTitle: curriculumGetters.getTitle(currentCurriculum),
+        assignedParameters: progressionGetters.getAssignedParameters(currentProgression),
         progressionStartDate: progressionGetters.getAdvanceStartDate(currentProgression),
         progressionStartTime: progressionGetters.getAdvanceStartTime(currentProgression),
         progressionLastAdvancedDate: progressionGetters.getLastAdvanceDate(currentProgression),

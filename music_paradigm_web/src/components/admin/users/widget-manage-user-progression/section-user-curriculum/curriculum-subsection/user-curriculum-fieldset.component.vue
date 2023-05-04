@@ -5,11 +5,11 @@
             :value="userProgressionEditionCurriculumReference"
             :expectedValue="userProgressionSelectionCurriculumReference"
             v-on:edit="editUserProgressionEditionCurriculumReference"
-            :isEmptyAccepted="true"
-            :isLoading="isFetchingCurriculumsList"
+            isEmptyAccepted
+            :isLoading="isFetchingCurriculumSummariesList"
             :getDisplayedValueFromElement="(curriculumSummary) => curriculumSummary.title"
             :getOptionValueFromElement="(curriculumSummary) => curriculumSummary._id" :options="curriculumSummariesList"
-            placeholder="# No Curriculum" />
+            placeholder="No Curriculum" />
     </TemplateFieldsetComponent>
 </template>
 
@@ -30,7 +30,7 @@ export default {
     computed: {
         ...mapGetters('managementCurriculums', [
             'curriculumSummariesList',
-            'isFetchingCurriculumsList',
+            'isFetchingCurriculumSummariesList',
         ]),
         ...mapGetters('managementUsers/progressions/edition', [
             'userProgressionEditionCurriculumReference'

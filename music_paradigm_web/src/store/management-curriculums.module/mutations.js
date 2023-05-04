@@ -1,34 +1,26 @@
 export default {
 	indicateFetchingCurriculumList(state) {
-		state.status.isFetchingCurriculumsList = true;
+		state.status.isFetchingCurriculumSummariesList = true;
 	},
 
-	indicateFetchingCurriculumListEnd(state) {
-		state.status.isFetchingCurriculumsList = false;
+	indicateCreatingCurriculum(state, isActive) {
+		state.status.isCreatingCurriculum = isActive;
 	},
 
-	indicateCreateRequest(state) {
-		state.status.isCreating = true;
+	indicateFetchingAndSelectingCurriculumById(state, curriculumId) {
+		state.status.fetchingAndSelectingCurriculumId = curriculumId;
 	},
 
-	indicateCreateRequestEnd(state) {
-		state.status.isCreating = false;
+	indicateFetchingCurriculumSummariesList(state, isActive) {
+		state.status.isFetchingCurriculumSummariesList = isActive;
 	},
 
-	indicateUpdateRequest(state) {
-		state.status.isUpdating = true;
+	indicateDeletingCurriculum(state, isActive) {
+		state.status.isDeletingCurriculum = isActive;
 	},
 
-	indicateUpdateRequestEnd(state) {
-		state.status.isUpdating = false;
-	},
-
-	indicateDeleteRequest(state) {
-		state.status.isDeleting = true;
-	},
-
-	indicateDeleteRequestEnd(state) {
-		state.status.isDeleting = false;
+	indicateUpdatingCurriculum(state, isActive) {
+		state.status.isUpdatingCurriculum = isActive;
 	},
 
 	setCurriculumSummariesList(state, curriculumSummariesList) {

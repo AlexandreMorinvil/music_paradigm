@@ -22,9 +22,7 @@ module.exports = {
     Progression: require('./models/progression/progression.model'),
     User: require('./models/user/user.model'),
     ExperimentMarker: require('./models/experiment-marker/experiment-marker.model'),
-    AdminLogSimple: require('./models/log-simple/log-simple.model').adminModel,
     AdminLogThorough: require('./models/log-thorough/log-thorough.model').adminModel,
-    LogSimple: require('./models/log-simple/log-simple.model').model,
     LogThorough: require('./models/log-thorough/log-thorough.model').model,
 };
 

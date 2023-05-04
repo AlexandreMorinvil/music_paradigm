@@ -1,7 +1,7 @@
-import { curriculumGenerator } from '@/modules/curriculums';
+import { Curriculum } from '@/modules/curriculums';
 
 export default {
-	editionCurriculum: curriculumGenerator.GENERATE_BLANK_CURRICULUM(),
+	editionCurriculum: new Curriculum(),
 	isInCurriculumEditionSessionAdditionMode: false,
 	isInCurriculumEditionSessionMoveMode: false,
 	selectedSessionIndex: -1,

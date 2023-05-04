@@ -1,12 +1,19 @@
 const mongoose = require('mongoose');
 
-const CurriculumSummary = require('modules/curriculum/class/curriculum-summary.class');
-const CurriculumTaskParameter = require('modules/curriculum/class/curriculum-task-parameter.class');
+const CurriculumSummary = require('modules/curriculums/class/curriculum-summary.class');
+const CurriculumTaskParameter = require('modules/curriculums/class/curriculum-task-parameter.class');
 const schema = require('./curriculum.middleware');
 
 schema.set('toJSON', { virtuals: true });
 
 // Static methods
+
+schema.statics.createCurriculum = async function (curriculum) {
+    const { _id, id, ...curriculumToCreate } = curriculum;
+    curriculumToCreate.createdAt = Date.now();
+    const curriculumCreated = new model(curriculumToCreate);
+    return curriculumCreated.save();
+};
 
 /**
  * Get curriculum list entries list
@@ -54,11 +61,9 @@ schema.methods.getExperimentAssociated = function (associativeId) {
 
 schema.methods.update = async function (updatedCurriculum) {
     if (updatedCurriculum.hasOwnProperty('title')) this.title = updatedCurriculum.title;
-    if (updatedCurriculum.hasOwnProperty('logType')) this.logType = updatedCurriculum.logType;
     if (updatedCurriculum.hasOwnProperty('isSequential')) this.isSequential = updatedCurriculum.isSequential;
     if (updatedCurriculum.hasOwnProperty('experiments')) this.experiments = updatedCurriculum.experiments;
-
-    return this;
+    return this.save();
 };
 
 /**

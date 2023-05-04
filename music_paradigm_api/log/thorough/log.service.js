@@ -2,9 +2,9 @@
 const LogThorough = require('database/db').LogThorough;
 const User = require('database/db').User;
 
-const csvConverter = require('_helpers/csv-converter');
-const jsonConverter = require('_helpers/json-converter');
-const { makeMongooseLogQuery } = require('log/log-query-maker.service')
+const csvConverter = require('modules/task-data/csv-converter');
+const jsonConverter = require('modules/task-data/json-converter');
+const { makeMongooseTaskDataQuery } = require('log/log-query-maker.service')
 
 
 // Exports
@@ -56,7 +56,7 @@ async function concludeLog(userId, logHeader, logConclusion) {
 
 async function getOneUserLogFromId(logId) {
     try {
-        let data = await LogThorough.getOneLogFromId(logId);
+        let data = await LogThorough.getTaskDataEntryById(logId);
         return jsonConverter.makeJson(data);
     } catch (err) {
         throw err;
@@ -65,7 +65,7 @@ async function getOneUserLogFromId(logId) {
 
 async function getOneAdminLogFromId(logId) {
     try {
-        let data = await AdminLogThorough.getOneLogFromId(logId);
+        let data = await AdminLogThorough.getTaskDataEntryById(logId);
         return jsonConverter.makeJson(data);
     } catch (err) {
         throw err;
@@ -74,7 +74,7 @@ async function getOneAdminLogFromId(logId) {
 
 async function getUserLogSummaryList(criterias) {
     try {
-        const query = makeMongooseLogQuery(criterias);
+        const query = makeMongooseTaskDataQuery(criterias);
         return await LogThorough.makeSummaryList(query);
     } catch (err) {
         throw err;
@@ -83,7 +83,7 @@ async function getUserLogSummaryList(criterias) {
 
 async function getAdminLogSummaryList(criterias) {
     try {
-        const query = makeMongooseLogQuery(criterias);
+        const query = makeMongooseTaskDataQuery(criterias);
         return await AdminLogThorough.makeSummaryList(query);
     } catch (err) {
         throw err;
@@ -92,7 +92,7 @@ async function getAdminLogSummaryList(criterias) {
 
 async function makeUserLogCsv(criterias) {
     try {
-        const query = makeMongooseLogQuery(criterias);
+        const query = makeMongooseTaskDataQuery(criterias);
         let data = await LogThorough.getFileRelevantData(query);
         return csvConverter.makeCsv(data);
     } catch (err) {
@@ -102,7 +102,7 @@ async function makeUserLogCsv(criterias) {
 
 async function makeAdminLogCsv(criterias) {
     try {
-        const query = makeMongooseLogQuery(criterias);
+        const query = makeMongooseTaskDataQuery(criterias);
         let data = await AdminLogThorough.getFileRelevantData(query);
         return csvConverter.makeCsv(data);
     } catch (err) {
@@ -112,8 +112,8 @@ async function makeAdminLogCsv(criterias) {
 
 async function makeUserLogUnwoundCsv(criterias) {
     try {
-        const query = makeMongooseLogQuery(criterias);
-        let data = await LogThorough.getFileRelevantDataUnwound(query);
+        const query = makeMongooseTaskDataQuery(criterias);
+        let data = await LogThorough.getFileRelevantDataForCsv(query);
         return csvConverter.makeCsv(data);
     } catch (err) {
         throw err;
@@ -122,8 +122,8 @@ async function makeUserLogUnwoundCsv(criterias) {
 
 async function makeAdminLogUnwoundCsv(criterias) {
     try {
-        const query = makeMongooseLogQuery(criterias);
-        let data = await AdminLogThorough.getFileRelevantDataUnwound(query);
+        const query = makeMongooseTaskDataQuery(criterias);
+        let data = await AdminLogThorough.getFileRelevantDataForCsv(query);
         return csvConverter.makeCsv(data);
     } catch (err) {
         throw err;
@@ -132,7 +132,7 @@ async function makeAdminLogUnwoundCsv(criterias) {
 
 async function makeUserLogJson(criterias) {
     try {
-        const query = makeMongooseLogQuery(criterias);
+        const query = makeMongooseTaskDataQuery(criterias);
         let data = await LogThorough.getFileRelevantData(query);
         return jsonConverter.makeJson(data);
     } catch (err) {
@@ -142,7 +142,7 @@ async function makeUserLogJson(criterias) {
 
 async function makeAdminLogJson(criterias) {
     try {
-        const query = makeMongooseLogQuery(criterias);
+        const query = makeMongooseTaskDataQuery(criterias);
         let data = await AdminLogThorough.getFileRelevantData(query);
         return jsonConverter.makeJson(data);
     } catch (err) {

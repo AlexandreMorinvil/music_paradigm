@@ -13,7 +13,6 @@ import { survey } from '@/store/survey.module';
 import { writting } from '@/store/writting.module';
 
 export default {
-	makeSimpleLogBlock,
 	makeThoroughLogHeader,
 	makeThoroughLogBlock,
 	makeThoroughLogConclusion,
@@ -50,116 +49,6 @@ const stateSurvey = survey.state;
 const stateWritting = writting.state;
 
 /**
- * Simple-Log
- * Simple-Log format is summarized as follow :
- *
- * 	Simple-Log Block 1 : { Information about performance }
- * 	Simple-Log Block 2 : { Information about performance }
- * 	Simple-Log Block 3 : { Information from survey }
- *  Simple-Log Block 4 : { Information from written input }
- * 	...
- *
- * Each Simple-Log block contains the information about the session to which it is associated.
- * The Simple-Log format does not provide the full story of how a session happened.
- * Only the information about the performances or the required inputs of the user are recorded.
- * Simple-Log blocks are (generally) only generated for "playing", "pvt", "survey" and "writting" states.
- */
-
-/**
- * Create a block for a Simple-Log format
- *
- * A Simple-Log block is made of the attributes of the following Object types :
- *  - Simple_Log_Block_General_Information
- *  - Simple_Log_Block_Performance_Information OR Log_Block_Survey_Answers OR Log_Block_Writting_Answer
- *
- * @returns {Simple_Log_Block}
- */
-function makeSimpleLogBlock() {
-	// Block construction helper
-	const blockType = gettersExperiment.currentStateType(stateExperiment);
-
-	// Block construction
-	const block = {};
-	Object.assign(block, makeSimpleLogBlockGeneralInformation());
-	Object.assign(block, makeSimpleLogBlockPerformanceInformation());
-	if (blockType === 'survey') Object.assign(block, makeLogBlockSurveyAnswers());
-	if (blockType === 'witting') Object.assign(block, makeLogBlockWrittenAnswer());
-	if (blockType === 'question') Object.assign(block, makeLogBlockQuestionAnswer());
-	if (blockType === 'pvt') Object.assign(block, makeLogBlockPvtResults());
-	return block;
-}
-
-/**
- * Gather the information of general interest for a block fo Simple-Log format
- * @returns {Simple_Log_Block_General_Information}
- */
-function makeSimpleLogBlockGeneralInformation() {
-	return {
-		userId: gettersAccount.accountId(stateAccount),
-		experimentId: gettersExperiment.experimentId(stateExperiment),
-		curriculumId: gettersSession.curriculumId(stateSession) || null,
-		progressionId: gettersSession.progressionId(stateSession) || null,
-		associativeId: gettersSession.associativeId(stateSession) || null,
-		associativeIdOrdinalNumber: gettersSession.associativeIdOrdinalNumber(stateSession) || 0,
-		logLabel: gettersExperiment.logLabel(stateExperiment),
-		logTags: gettersSession.tags(stateSession),
-
-		startCount: gettersSession.startCount(stateSession),
-		completionCount: gettersSession.completionCount(stateSession),
-
-		username: gettersAccount.username(stateAccount),
-		curriculumTitle: gettersSession.curriculumTitle(stateSession) || null,
-		experimentGroup: gettersExperiment.experimentGroup(stateExperiment),
-		experimentName: gettersExperiment.experimentName(stateExperiment),
-		experimentVersion: gettersExperiment.experimentVersion(stateExperiment),
-
-		blockType: gettersExperiment.currentStateType(stateExperiment),
-		blockSubType: gettersExperiment.currentStateSubtype(stateExperiment),
-		controlType: gettersExperiment.controlType(stateExperiment),
-		index: gettersExperiment.currentIndex(stateExperiment),
-		innerStepIndex: gettersExperiment.currentInnerStepIndex(stateExperiment),
-		repetition: gettersExperiment.currentRepetition(stateExperiment),
-		isInPrelude: gettersExperiment.isInPrelude(stateExperiment),
-		isInConclusion: gettersExperiment.isInConclusion(stateExperiment),
-		timestamp: Date.now(),
-	};
-}
-
-/**
- * Gather the information of relative to the performance for a block fo Simple-Log format
- * @returns {Simple_Log_Block_Performance_Information}
- */
-function makeSimpleLogBlockPerformanceInformation() {
-	const blockType = gettersExperiment.currentStateType(stateExperiment);
-	const controlType = gettersExperiment.controlType(stateExperiment);
-	const performanceLog = {};
-
-	switch (controlType) {
-		case 'clicker':
-		case 'piano':
-			Object.assign(performanceLog, gettersPiano.pianoSimpleLogSummary(statePiano));
-			Object.assign(performanceLog, gettersPiano.pianoSimpleLogPreprocesed(statePiano));
-			break;
-		case 'keyboard':
-			Object.assign(performanceLog, gettersKeyboard.keyboardSimpleLogSummary(stateKeyboard));
-			Object.assign(performanceLog, gettersKeyboard.keyboardSimpleLogPreprocesed(stateKeyboard));
-			break;
-		default:
-			break;
-	}
-
-	// Include the grades if it's a feedback state or a playing state
-	if (['feedback', 'glt', 'playing'].includes(blockType))
-	{
-		// TODO: the 'grades' is kept for compatibility with previous data, but should be removed to only keep the 'unwoundgrades'.
-		performanceLog.grades = gettersEvaluation.grades(stateEvaluation);
-		Object.assign(performanceLog, gettersEvaluation.unwoundGrades(stateEvaluation));
-	}
-
-	return performanceLog;
-}
-
-/**
  * Thorough-Log
  * Thorough-Log format is summarized as follow :
  *
@@ -193,7 +82,7 @@ function makeThoroughLogHeader(targetLogLabel) {
 		associativeId: gettersSession.associativeId(stateSession) || null,
 		associativeIdOrdinalNumber: gettersSession.associativeIdOrdinalNumber(stateSession) || 0,
 		logLabel: targetLogLabel || gettersExperiment.logLabel(stateExperiment),
-		logTags: gettersSession.tags(stateSession),
+		logTags: gettersSession.logTags(stateSession),
 
 		completionCount: gettersSession.completionCount(stateSession),
 
@@ -298,7 +187,7 @@ function makeThoroughLogConclusion(isInTimeUp = false, newLogLabel) {
 }
 
 /**
- * Gather the information of relative to the results of a survey for a log block of Simple-Log and Thorough-Log format
+ * Gather the information of relative to the results of a survey for a log block of and Thorough-Log format
  * @returns {Log_Block_Survey_Answers}
  */
 function makeLogBlockSurveyAnswers() {
@@ -313,7 +202,7 @@ function makeLogBlockSurveyAnswers() {
 }
 
 /**
- * Gather the information of a written input from a 'writting' state for a log block of Simple-Log and Thorough-Log format
+ * Gather the information of a written input from a 'writting' state for a log block of Thorough-Log format
  * @returns {Log_Block_Writting_Answer}
  */
 function makeLogBlockWrittenAnswer() {
@@ -327,7 +216,7 @@ function makeLogBlockWrittenAnswer() {
 }
 
 /**
- * Gather the information of a 'question' state for a log block of Simple-Log and Thorough-Log format
+ * Gather the information of a 'question' state for a log block of and Thorough-Log format
  * @returns {Log_Block_Question_Answer}
  */
  function makeLogBlockQuestionAnswer() {
@@ -344,7 +233,7 @@ function makeLogBlockWrittenAnswer() {
 }
 
 /**
- * Gather the information of a 'pvt' state for a log block of Simple-Log and Thorough-Log format
+ * Gather the information of a 'pvt' state for a log block of and Thorough-Log format
  * @returns {Log_Block_Pvt_Results}
  */
  function makeLogBlockPvtResults() {
@@ -363,7 +252,7 @@ function makeLogBlockWrittenAnswer() {
 }
 
 /**
- * Gather the information of a 'glt' (grid-location-task) state for a log block of Simple-Log and Thorough-Log format
+ * Gather the information of a 'glt' (grid-location-task) state for a log block of and Thorough-Log format
  * @returns {Log_Block_Grid_Location_Task_Results}
  */
  function makeLogBlockGltResults() {

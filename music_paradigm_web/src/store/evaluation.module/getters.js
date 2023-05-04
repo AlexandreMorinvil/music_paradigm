@@ -43,13 +43,6 @@ export default {
 		return true;
 	},
 
-	evaluationSimpleLogPreprocesed: (state) => {
-		return {
-			type: state.type,
-			...state.grades,
-		};
-	},
-
 	evluationPianoLogSummary: (state) => {
 		return {
 			type: state.type,

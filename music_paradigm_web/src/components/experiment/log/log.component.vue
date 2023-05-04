@@ -9,13 +9,11 @@ import { mapActions, mapGetters } from 'vuex';
 import { log } from '@/_helpers';
 
 import LogNoneComponent from './log-none.component.vue';
-import LogSimpleComponent from './log-simple.component.vue';
 import LogThoroughComponent from './log-thorough.component.vue';
 
 export default {
 	components: {
 		none: LogNoneComponent,
-		simple: LogSimpleComponent,
 		thorough: LogThoroughComponent,
 	},
 	data() {

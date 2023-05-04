@@ -1,5 +1,5 @@
-import { curriculumGenerator } from '@/modules/curriculums';
+import { Curriculum } from '@/modules/curriculums';
 
 export default {
-	selectionCurriculum: curriculumGenerator.GENERATE_BLANK_CURRICULUM(),
+	selectionCurriculum: new Curriculum(),
 };

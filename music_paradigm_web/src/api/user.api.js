@@ -6,7 +6,7 @@ export const usersApi = {
 	createUserWithCurriculum,
 	deleteUser,
 	getExistingUserGroupsList,
-	getListAllSummaries,
+	getUserSummariesList,
 	getUserById,
 	updateUserProfile,
 };
@@ -37,7 +37,7 @@ function deleteUser(id) {
 	return fetch(url.users(id), requestOptions).then(defaultResponseHandler);
 }
 
-function getListAllSummaries() {
+function getUserSummariesList() {
 	const requestOptions = {
 		method: 'GET',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },

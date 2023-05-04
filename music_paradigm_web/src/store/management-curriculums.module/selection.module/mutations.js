@@ -1,11 +1,11 @@
-import { curriculumGenerator } from '@/modules/curriculums';
+import { Curriculum } from '@/modules/curriculums';
 
 export default {
 	setCurriculumSelection(state, curriculum) {
-		state.selectionCurriculum = curriculum;
+		state.selectionCurriculum = new Curriculum(curriculum);
 	},
 
 	unsetCurriculumSelection(state) {
-		state.selectionCurriculum = curriculumGenerator.GENERATE_BLANK_CURRICULUM();
+		state.selectionCurriculum = new Curriculum();
 	},
 };

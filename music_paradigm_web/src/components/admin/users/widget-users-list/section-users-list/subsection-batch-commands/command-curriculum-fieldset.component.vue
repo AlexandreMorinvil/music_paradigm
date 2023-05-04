@@ -2,7 +2,7 @@
 	<TemplateFieldsetComponent>
 		<TemplateFieldLabelComponent text="Curriculum" />
 		<TemplateFieldSelectComponent :value="usersBatchCommandCurriculum" v-on:edit="setUsersBatchCommandCurriculum"
-			isEmptyAccepted :isForcedDisabled="isFrozen" :isLoading="isFetchingCurriculumsList"
+			isEmptyAccepted :isForcedDisabled="isFrozen" :isLoading="isFetchingCurriculumSummariesList"
 			:getDisplayedValueFromElement="(curriculumSummary) => curriculumSummary.title"
 			:getOptionValueFromElement="(curriculumSummary) => curriculumSummary._id" :options="curriculumSummariesList"
 			placeholder="No Curriculum" />
@@ -32,7 +32,7 @@ export default {
 	computed: {
 		...mapGetters('managementCurriculums', [
 			'curriculumSummariesList',
-			'isFetchingCurriculumsList',
+			'isFetchingCurriculumSummariesList',
 		]),
 		...mapGetters('managementUsers/batchCommand', ['usersBatchCommandCurriculum']),
 	},

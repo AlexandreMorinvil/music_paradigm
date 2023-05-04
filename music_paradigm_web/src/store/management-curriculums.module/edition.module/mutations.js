@@ -1,4 +1,4 @@
-import { curriculumGenerator, curriculumSessionsEditor } from '@/modules/curriculums';
+import { Curriculum, curriculumSessionsEditor } from '@/modules/curriculums';
 
 export default {
 	activateCurriculumEditionSessionAdditionMode(state) {
@@ -25,16 +25,8 @@ export default {
 		state.isInCurriculumEditionSessionMoveMode = false;
 	},
 
-	editCurriculumEditionLogType(state, logType) {
-		state.editionCurriculum.logType = logType;
-	},
-
 	editCurriculumEditionIsSequential(state, isSequential) {
 		state.editionCurriculum.isSequential = isSequential;
-	},
-
-	editCurriculumEditionCurriculumTasks(state, tasks) {
-		state.editionCurriculum.experiments = tasks;
 	},
 
 	editCurriculumEditionSessionAssociativeId(state, associativeId) {
@@ -93,9 +85,7 @@ export default {
 	},
 
 	setCurriculumEdition(state, curriculum) {
-		state.editionCurriculum = JSON.parse(JSON.stringify(curriculum));
-		delete state.editionCurriculum._id;
-		delete state.editionCurriculum.id;
+		state.editionCurriculum = new Curriculum(curriculum);
 	},
 
 	setCurriculumEditionSelectedSessionIndex(state, index) {
@@ -103,7 +93,7 @@ export default {
 	},
 
 	unsetCurriculumEdition(state) {
-		state.editionCurriculum = curriculumGenerator.GENERATE_BLANK_CURRICULUM();
+		state.editionCurriculum = new Curriculum();
 	},
 
 	unsetCurriculumEditionSelectedSessionIndex(state) {

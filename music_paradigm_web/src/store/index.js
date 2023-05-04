@@ -14,8 +14,8 @@ import { experiments } from './experiments.module';
 import { glt } from './glt.module';
 import { keyboard } from './keyboard.module';
 import { log } from './log.module';
-import { logs } from './logs.module';
 import { managementCurriculums } from './management-curriculums.module';
+import { managementTaskData } from './management-task-data.module';
 import { managementUsers } from './management-users.module';
 import { pageStatus } from './page-status.module';
 import { piano } from './piano.module';
@@ -42,8 +42,8 @@ export default new Vuex.Store({
 		glt,
 		keyboard,
 		log,
-		logs,
 		managementCurriculums,
+		managementTaskData,
 		managementUsers,
 		pageStatus,
 		piano,

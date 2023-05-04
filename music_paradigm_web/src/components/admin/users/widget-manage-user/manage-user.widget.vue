@@ -10,6 +10,7 @@
 import '@/styles/widget-template.css';
 
 import WidgetContentFrameComponent from '@/components/content-frame/widget-content-frame.component.vue';
+
 import UserProfileSection from './section-profile/user-profile.section.vue';
 
 export default {

@@ -58,7 +58,7 @@ async function generateProgressionSessionsStatus(curriculum, progression) {
     let hasBlockingUniqueInDayDoneToday = false;
     const progressionSessionsDetailedList = [];
 
-    for (i in curriculum.experiments) {
+    for (let i in curriculum.experiments) {
         // We retrieve the history of the experients completed
         const {
             curriculumExperiment,

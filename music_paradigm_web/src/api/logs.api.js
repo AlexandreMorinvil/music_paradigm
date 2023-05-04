@@ -2,50 +2,71 @@ import { authHeader, url } from '@/_helpers';
 import { csvFileResponseHandler, defaultResponseHandler, jsonFileResponseHandler } from './response-handler';
 
 export const logsApi = {
-	getSpecificUserSimpleLog,
+	downloadTaskDataCsv,
+	downloadTaskDataJson,
+	getTaskDataEntryById,
+	getTaskDataSummariesList,
+
+	// TODO: Adjust the code below this line
 	getSpecificUserThoroughLog,
-	getSpecificAdminSimpleLog,
 	getSpecificAdminThoroughLog,
-	getUserSimpleLogSummaryList,
 	getUserThoroughLogSummaryList,
-	getAdminSimpleLogSummaryList,
 	getAdminThoroughLogSummaryList,
-	getUserSimpleLogCsv,
 	getUserThoroughLogCsv,
 	getUserThoroughLogUnwoundCsv,
-	getAdminSimpleLogCsv,
 	getAdminThoroughLogCsv,
 	getAdminThoroughLogUnwoundCsv,
-	getUserSimpleLogJson,
 	getUserThoroughLogJson,
-	getAdminSimpleLogJson,
 	getAdminThoroughLogJson,
 };
 
-
-// Log selection
-function getSpecificUserSimpleLog(logId) {
+function downloadTaskDataCsv(criteria, isAdminData = false, mustSave = true) {
 	const requestOptions = {
-		method: 'GET',
+		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify({ criteria, isAdminData }),
 	};
-	return fetch(url.logSimple(['user-select-by-id', logId]), requestOptions).then(defaultResponseHandler);
+	return fetch(url.taskData('download-csv'), requestOptions)
+		.then(csvFileResponseHandler.bind(null, mustSave));
 }
 
+function downloadTaskDataJson(criteria, isAdminData = false, mustSave = true) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify({ criteria, isAdminData }),
+	};
+	return fetch(url.taskData('download-json'), requestOptions)
+		.then(jsonFileResponseHandler.bind(null, mustSave));
+}
+
+function getTaskDataEntryById(taskDataEntryId, isAdminData = false) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify({ isAdminData }),
+	};
+	return fetch(url.taskData(['select-by-id', taskDataEntryId]), requestOptions).then(defaultResponseHandler);
+}
+
+function getTaskDataSummariesList(criteria, isAdminData = false) {
+	const requestOptions = {
+		method: 'POST',
+		headers: { ...authHeader(), 'Content-Type': 'application/json' },
+		body: JSON.stringify({ criteria, isAdminData }),
+	};
+	return fetch(url.taskData('get-summaries-list'), requestOptions).then(defaultResponseHandler);
+}
+
+// TODO: Ajust the code below this line
+
+// Log selection
 function getSpecificUserThoroughLog(logId) {
 	const requestOptions = {
 		method: 'GET',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
 	};
 	return fetch(url.logThorough(['user-select-by-id', logId]), requestOptions).then(defaultResponseHandler);
-}
-
-function getSpecificAdminSimpleLog(logId) {
-	const requestOptions = {
-		method: 'GET',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-	};
-	return fetch(url.logSimple(['admin-select-by-id', logId]), requestOptions).then(defaultResponseHandler);
 }
 
 function getSpecificAdminThoroughLog(logId) {
@@ -57,15 +78,6 @@ function getSpecificAdminThoroughLog(logId) {
 }
 
 // Summary list
-function getUserSimpleLogSummaryList(criterias) {
-	const requestOptions = {
-		method: 'POST',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(criterias),
-	};
-	return fetch(url.logSimple('user-summary-list'), requestOptions).then(defaultResponseHandler);
-}
-
 function getUserThoroughLogSummaryList(criterias) {
 	const requestOptions = {
 		method: 'POST',
@@ -73,15 +85,6 @@ function getUserThoroughLogSummaryList(criterias) {
 		body: JSON.stringify(criterias),
 	};
 	return fetch(url.logThorough('user-summary-list'), requestOptions).then(defaultResponseHandler);
-}
-
-function getAdminSimpleLogSummaryList(criterias) {
-	const requestOptions = {
-		method: 'POST',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(criterias),
-	};
-	return fetch(url.logSimple('admin-summary-list'), requestOptions).then(defaultResponseHandler);
 }
 
 function getAdminThoroughLogSummaryList(criterias) {
@@ -94,15 +97,6 @@ function getAdminThoroughLogSummaryList(criterias) {
 }
 
 // CSV
-function getUserSimpleLogCsv(criterias, mustSave = true) {
-	const requestOptions = {
-		method: 'POST',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(criterias),
-	};
-	return fetch(url.logSimple('user-csv'), requestOptions).then(csvFileResponseHandler.bind(null, mustSave));
-}
-
 function getUserThoroughLogCsv(criterias, mustSave = true) {
 	const requestOptions = {
 		method: 'POST',
@@ -119,15 +113,6 @@ function getUserThoroughLogUnwoundCsv(criterias, mustSave = true) {
 		body: JSON.stringify(criterias),
 	};
 	return fetch(url.logThorough('user-csv-unwound'), requestOptions).then(csvFileResponseHandler.bind(null, mustSave));
-}
-
-function getAdminSimpleLogCsv(criterias, mustSave = true) {
-	const requestOptions = {
-		method: 'POST',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(criterias),
-	};
-	return fetch(url.logSimple('admin-csv'), requestOptions).then(csvFileResponseHandler.bind(null, mustSave));
 }
 
 function getAdminThoroughLogCsv(criterias, mustSave = true) {
@@ -149,15 +134,6 @@ function getAdminThoroughLogUnwoundCsv(criterias, mustSave = true) {
 }
 
 // JSON
-function getUserSimpleLogJson(criterias, mustSave = true) {
-	const requestOptions = {
-		method: 'POST',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(criterias),
-	};
-	return fetch(url.logSimple('user-json'), requestOptions).then(jsonFileResponseHandler.bind(null, mustSave));
-}
-
 function getUserThoroughLogJson(criterias, mustSave = true) {
 	const requestOptions = {
 		method: 'POST',
@@ -165,15 +141,6 @@ function getUserThoroughLogJson(criterias, mustSave = true) {
 		body: JSON.stringify(criterias),
 	};
 	return fetch(url.logThorough('user-json'), requestOptions).then(jsonFileResponseHandler.bind(null, mustSave));
-}
-
-function getAdminSimpleLogJson(criterias, mustSave = true) {
-	const requestOptions = {
-		method: 'POST',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(criterias),
-	};
-	return fetch(url.logSimple('admin-json'), requestOptions).then(jsonFileResponseHandler.bind(null, mustSave));
 }
 
 function getAdminThoroughLogJson(criterias, mustSave = true) {

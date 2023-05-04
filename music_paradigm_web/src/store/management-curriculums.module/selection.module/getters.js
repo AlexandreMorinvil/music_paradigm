@@ -1,5 +1,5 @@
 export default {
-	curriculumSelectionCurriculum: (state) => {
+	curriculumSelection: (state) => {
 		return state.selectionCurriculum;	
 	},
 
@@ -9,10 +9,6 @@ export default {
 
 	curriculumSelectionTitle: (state) => {
 		return state.selectionCurriculum.title;
-	},
-
-	curriculumSelectionLogType: (state) => {
-		return state.selectionCurriculum.logType;
 	},
 
 	curriculumSelectionIsSequential: (state) => {

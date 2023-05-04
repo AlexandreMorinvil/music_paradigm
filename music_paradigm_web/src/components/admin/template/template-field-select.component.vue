@@ -1,7 +1,7 @@
 <template>
 	<div class="template-field-input-area">
 		<select class="input-spacing" :class="{
-			'edited-text': isEdited,
+			'edited-text': mustHighlightIfChanged && isEdited,
 			'placeholder-option': !isEdited && value === null,
 			'dissabled-text': isDissabled,
 			'invalid-input': isInvalid,
@@ -59,6 +59,10 @@ export default {
 		isLoading: {
 			type: Boolean,
 			default: false,
+		},
+		mustHighlightIfChanged: {
+			type: Boolean,
+			default: true,
 		},
 		options: {
 			type: Array,

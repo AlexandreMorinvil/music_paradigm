@@ -10,10 +10,10 @@ router.use('/batch-command', require('./batch-commands/users-batch-commands.cont
 // routes
 router.delete('/:id',                           jwtAuthorize(role.admin), _delete);
 
-router.get('/',                                 jwtAuthorize(role.admin), getAll);
+router.get('/',                                 jwtAuthorize(role.admin), getUserSummariesList);
 router.get('/current',                                                    getCurrent);
 router.get('/existing-groups-list',             jwtAuthorize(role.admin), getExistingUserGroupsList);
-router.get('/get-by-id/:userId',                    jwtAuthorize(role.admin), getUserById);
+router.get('/get-by-id/:userId',                jwtAuthorize(role.admin), getUserById);
 
 router.post('/create',                          jwtAuthorize(role.admin), createUser);
 router.post('/create-with-curriculum',          jwtAuthorize(role.admin), createUserWithCurriculum);
@@ -23,8 +23,8 @@ router.put('/:id',                              jwtAuthorize(role.admin), update
 
 module.exports = router;
 
-function getAll(req, res, next) {
-    userService.getAll()
+function getUserSummariesList(req, res, next) {
+    userService.getUserSummariesList()
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());

@@ -2,9 +2,7 @@
 	<admin-page-content-frame title="Home">
 		<widget-content-frame title="Main information">
 			<div class="widget widget-bg">
-				Admin Home page
-				<br /><br />
-				No Recent activity.
+				Welcome to the Home Page.
 			</div>
 		</widget-content-frame>
 	</admin-page-content-frame>

@@ -2,20 +2,10 @@ import { authHeader, url } from '@/_helpers';
 import { defaultResponseHandler } from './response-handler';
 
 export const logApi = {
-	addSimpleLogBlock,
 	initializeThoroughLog,
 	addThoroughLogBlock,
 	concludeThoroughLog,
 };
-
-function addSimpleLogBlock(simpleLog) {
-	const requestOptions = {
-		method: 'POST',
-		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify(simpleLog),
-	};
-	return fetch(url.logSimple('add-block'), requestOptions).then(defaultResponseHandler);
-}
 
 function initializeThoroughLog(logHeader) {
 	const requestOptions = {

@@ -1,7 +1,7 @@
 <template>
 	<div class="template-field-input-area">
 		<input class="input-spacing" :class="{
-			'edited-text': isEdited,
+			'edited-text': mustHighlightIfChanged && isEdited,
 			'invalid-input': isInvalid,
 		}" :list="hasDataList ? datalistReference : ''" :value="value" v-on:input="(event) => edit(event.target.value)"
 			v-bind="inputAttributes" />
@@ -39,6 +39,10 @@ export default {
 			}
 		},
 		isNullValid: {
+			type: Boolean,
+			default: true,
+		},
+		mustHighlightIfChanged: {
 			type: Boolean,
 			default: true,
 		},

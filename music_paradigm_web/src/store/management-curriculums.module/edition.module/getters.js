@@ -1,18 +1,10 @@
 export default {
-	curriculumEditionCurriculum: (state) => {
+	curriculumEdition: (state) => {
 		return state.editionCurriculum;
-	},
-
-	curriculumEditionCurriculumTasksList: (state) => {
-		return state.editionCurriculum.experiments;
 	},
 
 	curriculumEditionIsSequential: (state) => {
 		return state.editionCurriculum.isSequential;
-	},
-
-	curriculumEditionLogType: (state) => {
-		return state.editionCurriculum.logType;
 	},
 
 	curriculumEditionSelectedSessionIndex: (state) => {

@@ -3,15 +3,14 @@ import { curriculumsApi } from '@/api';
 export default {
 
 	createCurriculum({ commit, dispatch }, curriculum) {
-		commit('indicateCreateRequest');
+		commit('indicateCreatingCurriculum', true);
 		return curriculumsApi
 			.createCurriculum(curriculum)
 			.then(
-				(createdCurriculum) => {
+				(response) => {
+					const { curriculum: createdCurriculum } = response;
 					dispatch('setSelectedCurriculum', createdCurriculum);
-					dispatch('alert/setSuccessAlert', 'Curriculum creation sucessful', {
-						root: true,
-					});
+					dispatch('alert/setSuccessAlert', 'Curriculum creation sucessful', { root: true });
 					dispatch('fetchCurriculumSummariesList');
 				},
 				(error) => {
@@ -19,12 +18,12 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateCreateRequestEnd');
+				commit('indicateCreatingCurriculum', false);
 			});
 	},
 
 	deleteCurriculum({ commit, dispatch }, curriculumId) {
-		commit('indicateDeleteRequest');
+		commit('indicateDeletingCurriculum', true);
 		return curriculumsApi
 			.deleteCurriculum(curriculumId)
 			.then(
@@ -38,36 +37,42 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateDeleteRequestEnd');
+				commit('indicateDeletingCurriculum', false);
+			});
+	},
+
+	fetchAndSelectCurriculumById({ commit, dispatch }, curriculumId) {
+		commit('indicateFetchingAndSelectingCurriculumById', curriculumId);
+		return curriculumsApi
+			.getCurriculumById(curriculumId).then(
+				(response) => {
+					const { curriculum } = response;
+					dispatch('setSelectedCurriculum', curriculum);
+				},
+				(error) => {
+					dispatch('alert/setErrorAlert', `Curriculum selection failed : ${error.message}`, { root: true });
+				},
+			).finally(() => {
+				commit('indicateFetchingAndSelectingCurriculumById', null);
 			});
 	},
 
 	fetchCurriculumSummariesList({ commit, dispatch }) {
-		commit('indicateFetchingCurriculumList');
+		commit('indicateFetchingCurriculumSummariesList', true);
 		return curriculumsApi
 			.getCurriculumSummariesList()
 			.then(
-				(curriculumSummariesList) => {
-					commit('setCurriculumSummariesList', curriculumSummariesList);
+				(response) => {
+					const { summariesList } = response;
+					commit('setCurriculumSummariesList', summariesList);
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
 				},
 			)
 			.finally(() => {
-				commit('indicateFetchingCurriculumListEnd');
+				commit('indicateFetchingCurriculumSummariesList', false);
 			});
-	},
-
-	selectCurriculum({ dispatch }, curriculumId) {
-		return curriculumsApi.getCurriculumById(curriculumId).then(
-			(curriculum) => {
-				dispatch('setSelectedCurriculum', curriculum);
-			},
-			(error) => {
-				dispatch('alert/setErrorAlert', `Curriculum selection failed : ${error.message}`, { root: true });
-			},
-		);
 	},
 
 	setSelectedCurriculum({ dispatch }, curriculum) {
@@ -76,11 +81,12 @@ export default {
 	},
 
 	updateCurriculum({ commit, dispatch }, { id, curriculum }) {
-		commit('indicateUpdateRequest');
+		commit('indicateUpdatingCurriculum', true);
 		return curriculumsApi
 			.updateCurriculum(id, curriculum)
 			.then(
-				(updatedCurriculum) => {
+				(response) => {
+					const { curriculum: updatedCurriculum } = response;
 					dispatch('setSelectedCurriculum', updatedCurriculum);
 					dispatch('alert/setSuccessAlert', 'Curriculum update sucessful', {
 						root: true,
@@ -92,7 +98,7 @@ export default {
 				},
 			)
 			.finally(() => {
-				commit('indicateUpdateRequestEnd');
+				commit('indicateUpdatingCurriculum', false);
 			});
 	},
 

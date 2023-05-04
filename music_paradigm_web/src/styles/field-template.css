@@ -22,3 +22,13 @@
 .selected-input {
     color: var(--color-selected-text);
 }
+
+input,
+select,
+button,
+textarea {
+    background-color: white;
+    border: 2px solid rgb(210, 210, 210);
+    color: black;
+    padding: 2.5px;
+}

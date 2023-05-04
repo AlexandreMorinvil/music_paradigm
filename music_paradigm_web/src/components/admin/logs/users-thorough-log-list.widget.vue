@@ -79,7 +79,7 @@ import '@/styles/widget-template.css';
 
 import { mapActions, mapGetters } from 'vuex';
 
-import CodeEditorComponent from '@/components/admin/TextEditor.vue';
+import CodeEditorComponent from '@/components/admin/template/template-code-editor.vue';
 import LoaderCircularComponent from '@/components/visual-helpers/loader-circular.component.vue';
 
 export default {
@@ -126,7 +126,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('logs', ['isLoadingUserThoroughLogList', 'userThoroughLogList', 'isDownloadingLogs', 'selectedUserThoroughLog']),
+		...mapGetters('managementTaskData', ['isLoadingUserThoroughLogList', 'userThoroughLogList', 'isDownloadingLogs', 'selectedUserThoroughLog']),
 		isListLoading() {
 			return this.isLoadingUserThoroughLogList;
 		},
@@ -173,7 +173,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('logs', [
+		...mapActions('managementTaskData', [
 			'getSpecificUserThoroughLog',
 			'getUserThoroughLogSummaryList',
 			'clearUserThoroughLogSummaryList',
