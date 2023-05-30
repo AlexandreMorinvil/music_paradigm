@@ -67,11 +67,15 @@ export default {
 	},
 
 	// Send a signal to the back-end to indicate that the session can be considered as completed
-	concludeSession({ commit, getters }, isInTimeUp) {
+	concludeSession({ commit, getters }, { isInTimeUp, mustKeepMarkerAfterEnd }) {
 		commit('setIsConcludingSession');
 		return sessionApi
-			.concludeSession(getters.associativeId, getters.associativeIdOrdinalNumber, isInTimeUp)
-			.then(
+			.concludeSession(
+				getters.associativeId,
+				getters.associativeIdOrdinalNumber,
+				isInTimeUp,
+				mustKeepMarkerAfterEnd,
+			).then(
 				() => {
 					/* Nothing is done */
 				},

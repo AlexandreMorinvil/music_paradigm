@@ -17,10 +17,16 @@ async function initializeSession(userId, associativeId, associativeIdOrdinalNumb
     }
 }
 
-async function concludeSession(userId, associativeId, associativeIdOrdinalNumber, isInTimeUp) {
+async function concludeSession(userId, associativeId, associativeIdOrdinalNumber, isInTimeUp, mustKeepMarkerAfterEnd) {
     try {
         if (await User.isAdmin(userId)) return;
-        await sessionManager.concludeSession(userId, associativeId, associativeIdOrdinalNumber, isInTimeUp);
+        await sessionManager.concludeSession(
+            userId,
+            associativeId,
+            associativeIdOrdinalNumber,
+            isInTimeUp,
+            mustKeepMarkerAfterEnd
+        );
         return;
     } catch (err) {
         throw err;

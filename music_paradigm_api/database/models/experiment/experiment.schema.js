@@ -199,6 +199,8 @@ const schema = new Schema({
 
     reproductionSeed: { type: String, default: undefined },
 
+    mustKeepMarkerAfterEnd: { type: Boolean, default: undefined },
+
     keyboardToMidiInputMapping:{
         default: undefined,
         type: Object,

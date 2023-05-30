@@ -58,6 +58,7 @@ const DEFAULT_HAS_NAVIGATION_BAR = true;
 const DEFAULT_STAUS_BAR = true;
 const DEFAULT_IF_FULL_SCREEN = false;
 const DEFAULT_REPRODUCTION_SEED = null;
+const DEFAULT_MUST_KEEP_MARKER_AFTFER_END = false;
 
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
@@ -147,6 +148,7 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		isFullScreen: DEFAULT_IF_FULL_SCREEN,												// Indicates if the session should be in full screen
 		reproductionSeed: DEFAULT_REPRODUCTION_SEED,										// Seed used in randomized components that can make the components reproductible.
 		cuePresentationDelay: DEFAULT_CUE_PRESENTATION_DELAY,								// Delay that should be waited before presenting the cue in a cue state.
+		mustKeepMarkerAfterEnd: DEFAULT_MUST_KEEP_MARKER_AFTFER_END,						// Indicates whether or not the task progression marker must be kept even after the end of a session
 	};
 }
 
