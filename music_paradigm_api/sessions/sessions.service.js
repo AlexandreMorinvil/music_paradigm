@@ -8,31 +8,29 @@ module.exports = {
 };
 
 async function initializeSession(userId, associativeId, associativeIdOrdinalNumber) {
-    try {
-        if (await User.isAdmin(userId)) return;
-        await sessionManager.initializeSession(userId, associativeId, associativeIdOrdinalNumber);
-        return;
-    } catch (err) {
-        throw err;
-    }
+    if (await User.isAdmin(userId)) return;
+    return await sessionManager.initializeSession(userId, associativeId, associativeIdOrdinalNumber);
 }
 
-async function concludeSession(userId, associativeId, associativeIdOrdinalNumber, isInTimeUp) {
-    try {
-        if (await User.isAdmin(userId)) return;
-        await sessionManager.concludeSession(userId, associativeId, associativeIdOrdinalNumber, isInTimeUp);
-        return;
-    } catch (err) {
-        throw err;
-    }
+async function concludeSession(userId, associativeId, associativeIdOrdinalNumber, isInTimeUp, mustKeepMarkerAfterEnd) {
+    if (await User.isAdmin(userId)) return;
+    return await sessionManager.concludeSession(
+        userId,
+        associativeId,
+        associativeIdOrdinalNumber,
+        isInTimeUp,
+        mustKeepMarkerAfterEnd
+    );
 }
 
 async function saveSessionState(userId, associativeId, cursor, state, timeIndicated, progressRatio) {
-    try {
-        if (await User.isAdmin(userId)) return;
-        await sessionManager.saveSessionState(userId, associativeId, cursor, state, timeIndicated, progressRatio);
-        return;
-    } catch (err) {
-        throw err;
-    }
+    if (await User.isAdmin(userId)) return;
+    return await sessionManager.saveSessionState(
+        userId,
+        associativeId,
+        cursor,
+        state,
+        timeIndicated,
+        progressRatio,
+    );
 }

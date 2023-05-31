@@ -6,6 +6,11 @@ export default {
 		return state.state.settings.checkpoint || '';
 	},
 
+	mustKeepMarkerAfterEnd: (state) => {
+		return state.settings.mustKeepMarkerAfterEnd ?? false;
+	},
+
+	// Data stored for each marker
 	state: (state) => {
 		return state.state;
 	},

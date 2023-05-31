@@ -17,6 +17,7 @@ export default {
 			'needsResetLoopParameters',
 			'isNewBlock',
 			'isInTimeUp',
+			'mustKeepMarkerAfterEnd',
 		]),
 	},
 	methods: {
@@ -31,7 +32,10 @@ export default {
 			else if (this.checkpoint === 'all' && this.isNewBlock) this.saveSessionState();
 		},
 		conclude() {
-			this.concludeSession(this.isInTimeUp);
+			this.concludeSession({
+				isInTimeUp: this.isInTimeUp, 
+				mustKeepMarkerAfterEnd: this.mustKeepMarkerAfterEnd,
+			});
 		},
 	},
 };

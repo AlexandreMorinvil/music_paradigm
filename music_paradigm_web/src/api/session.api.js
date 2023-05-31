@@ -15,11 +15,11 @@ function initializeSession(associativeId, associativeIdOrdinalNumber) {
 	return fetch(url.sessions('initialize-session' + '/' + associativeId + '/' + associativeIdOrdinalNumber), requestOptions).then(handleResponse);
 }
 
-function concludeSession(associativeId, associativeIdOrdinalNumber, isInTimeUp = false) {
+function concludeSession(associativeId, associativeIdOrdinalNumber, isInTimeUp = false, mustKeepMarkerAfterEnd = false) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
-		body: JSON.stringify({ isInTimeUp: isInTimeUp }),
+		body: JSON.stringify({ isInTimeUp, mustKeepMarkerAfterEnd }),
 	};
 	return fetch(url.sessions('conclude-session/' + associativeId + '/' + associativeIdOrdinalNumber), requestOptions).then(handleResponse);
 }

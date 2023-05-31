@@ -96,7 +96,7 @@ async function initializeSession(userId, associativeId, associativeIdOrdinalNumb
     return progression.save();
 };
 
-async function concludeSession(userId, associativeId, associativeIdOrdinalNumber, isInTimeUp) {
+async function concludeSession(userId, associativeId, associativeIdOrdinalNumber, isInTimeUp, mustKeepMarkerAfterEnd) {
 
     const progression = await ProgressionModel.getActiveProgressionByUserId(userId);
     const curriculum = await Curriculum.findById(progression.curriculumReference);
@@ -130,8 +130,11 @@ async function concludeSession(userId, associativeId, associativeIdOrdinalNumber
         progression.lastProgressionDate = Date.now();
 
     // Remove the experiment marker if the experiment was completely finished (keep it if it was ended through a timeout)
-    if (!isInTimeUp) await ExperimentMarker.deleteTaskStateMarker(progression._id, associativeId);
-    else await ExperimentMarker.resetSessionTimer(progression._id, associativeId);
+    const isConclusionDueToReachingEndOfTask = !isInTimeUp;
+    if (!mustKeepMarkerAfterEnd && isConclusionDueToReachingEndOfTask) 
+        await ExperimentMarker.deleteTaskStateMarker(progression._id, associativeId);
+    else 
+        await ExperimentMarker.resetSessionTimer(progression._id, associativeId);
 
     // Save changes
     return progression.save();
