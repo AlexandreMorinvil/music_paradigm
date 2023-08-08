@@ -59,22 +59,34 @@ async function createUser(userDescription) {
         }
     }
 
+    // If the user created did not have a username, we indicate the username generated for that user.
+    const usernameUsed = userDescription[USERNAME] || user?.username;
+    const wasUsernameGenerated = usernameUsed !== userDescription[USERNAME];
+    const usernameGenerationDetail = wasUsernameGenerated ? 
+        ` (INFO) The username "${usernameUsed}" was generated `: '';
+
+    const hadProvidedUsername = Boolean(userDescription[USERNAME]);
+    const usernameGenerationReason = (wasUsernameGenerated && !hadProvidedUsername) ?
+        'since no username was provided. ' : '';
+    
+    let detailsCumulated = usernameGenerationDetail + usernameGenerationReason;
+
     // Assign the curriculum if there is one
     const curriculumTitle = userDescription[CURRICULUM] ?? null;
     if (!curriculumTitle) return {
-        username: userDescription[USERNAME],
+        username: usernameUsed,
         isCreated: true,
         hasAssignedCurriculum: false,
-        detail: 'User sucessfully created!',
+        detail: 'User sucessfully created!' + detailsCumulated,
     };
 
     const curriculumToAssign = curriculumTitle ? await CurriculumModel.findOne({ title: curriculumTitle }) : null;
     if (!curriculumToAssign) return {
-        username: userDescription[USERNAME],
+        username: usernameUsed,
         isCreated: true,
         hasAssignedCurriculum: false,
         detail: `(ERROR) User created, but the curriculum '${curriculumTitle}' does not exist ` +
-            `and couldn't be assinged`,
+            `and couldn't be assinged` + detailsCumulated,
     };
 
     let progression = null;
@@ -82,11 +94,11 @@ async function createUser(userDescription) {
         progression = await ProgressionModel.createProgression(user._id, curriculumToAssign._id);
     } catch (error) {
         return {
-            username: userDescription[USERNAME],
+            username: usernameUsed,
             isCreated: true,
             hasAssignedCurriculum: true,
             detail: `(ERROR) User created, but the curriculum '${curriculumTitle}' couldn't be assinged ` +
-                `due to the following error : ${error.message}`,
+                `due to the following error : ${error.message}` + detailsCumulated,
         }
     }
 
@@ -104,11 +116,11 @@ async function createUser(userDescription) {
         await ProgressionModel.assignParametersToProgression(progression._id, assignedParameters);
     } catch (error) {
         return {
-            username: userDescription[USERNAME],
+            username: usernameUsed,
             isCreated: true,
             hasAssignedCurriculum: true,
             detail: `(ERROR) User created, curriculum '${curriculumTitle}' assigned, ` +
-                `but parameters couldn't be assinged due to the following error : ${error.message}`,
+                `but parameters couldn't be assinged due to the following error : ${error.message}` + detailsCumulated,
         }
     }
 
@@ -127,15 +139,15 @@ async function createUser(userDescription) {
     let warningMessages = '';
     if (superfluousParametersList.length > 0)
         warningMessages +=
-            ` (WARNING) The parameter(s) ${superfluousParametersList.join(', ')} ` +
+            ` ((WARNING) The parameter(s) ${superfluousParametersList.join(', ')} ` +
             `do not apply to the curriculum ${curriculumTitle})`;
 
     // Indicate a successful user creation without error
     return {
-        username: userDescription[USERNAME],
+        username: usernameUsed,
         isCreated: true,
         hasAssignedCurriculum: true,
-        detail: 'User sucessfully created!' + warningMessages,
+        detail: 'User sucessfully created!' + detailsCumulated + warningMessages,
     }
 }
 
@@ -170,14 +182,14 @@ function generateUsersCreationReport(invalidColumnNamesList, usersCreationResult
         });
 
     const usersCreationResultsText = writeSeparation('Users creation details') +
-        'USERNAME'.padEnd(24, ' ') +
+        'USERNAME'.padEnd(26, ' ') +
         'CREATED'.padEnd(12, ' ') +
         'CURRICULUM'.padEnd(12, ' ') +
         'DETAILS' +
         '\n' +
         usersCreationResultsList.map((result) => {
             const { username, isCreated, hasAssignedCurriculum, detail } = result;
-            return String(username).padEnd(24, ' ') +
+            return String(username).padEnd(26, ' ') +
                 String(isCreated).padEnd(12, ' ') +
                 String(hasAssignedCurriculum).padEnd(12, ' ') +
                 String(detail) +
