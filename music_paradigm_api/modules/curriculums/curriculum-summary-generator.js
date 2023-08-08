@@ -10,20 +10,23 @@ module.exports = {
 
 async function generateCurriculumSummariesList() {
     const curriculumSummariesList = [];
-    const curriculumsObjectList = await CurriculumModel.find().lean();
-    await Promise.all(curriculumsObjectList.map(async (curriculumObject) => {
-        curriculumSummariesList.push(await generateCurriculumSummary(curriculumObject));
+    const curriculumsList = await CurriculumModel.find();
+    await Promise.all(curriculumsList.map(async (curriculum) => {
+        curriculumSummariesList.push(await generateCurriculumSummary(curriculum));
     }));
     return curriculumSummariesList;
 };
 
-async function generateCurriculumSummary(curriculum) {
+async function generateCurriculumSummary(curriculumDocument) {
 
     const progressionsInvolvedCount = await ProgressionModel
-        .countDocuments({ curriculumReference: curriculum._id });
+        .countDocuments({ curriculumReference: curriculumDocument._id });
+
+    const parametersList = await curriculumDocument.getParametersList();
 
     return new CurriculumSummary({
         progressionsInvolvedCount,
-        ...curriculum,
+        parametersList,
+        ...curriculumDocument.toObject(),
     })
 }
