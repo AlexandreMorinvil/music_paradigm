@@ -3,7 +3,8 @@ const ProgressionModel = require('database/db').Progression;
 const UserModel = require('database/db').User;
 
 const { Parser: JsonToCsvParser } = require('json2csv');
-const { parse: parseCsvToJson } = require('csv-parse/sync');
+
+const { getColumnsNameListFromCsv, parseCsvToJson } = require('_helpers/csv-handler');
 
 // Exports
 module.exports = {
@@ -141,10 +142,7 @@ async function createUser(userDescription) {
 async function createUsersFrom(csvFileContent) {
 
     const invalidColumnNamesList = retreiveInvalidColumnNames(csvFileContent);
-    const usersDescriptionList = parseCsvToJson(csvFileContent, {
-        columns: true,
-        skip_empty_lines: true
-    });
+    const usersDescriptionList = parseCsvToJson(csvFileContent);
 
     const creationResultsList = [];
     const promisesList = usersDescriptionList.map(async (userDescription) => {
@@ -247,10 +245,7 @@ async function makeUsersCreationTemplateCsv(curriculumDocument) {
 
 
 function retreiveInvalidColumnNames(csvFileContent) {
-    const [columnsName, ...restOfFile] = parseCsvToJson(csvFileContent, {
-        columns: false,
-        skip_empty_lines: true
-    });
+    const columnsNameList = getColumnsNameListFromCsv(csvFileContent);
     const baseColumnNamesList = [
         USERNAME,
         PASSWORD,
@@ -262,7 +257,7 @@ function retreiveInvalidColumnNames(csvFileContent) {
     ];
 
     const invalidColumnNames = [];
-    columnsName.forEach((columnName) => {
+    columnsNameList.forEach((columnName) => {
         if (!columnName.trim().startsWith(TAG) &&
             !columnName.trim().startsWith('$') &&
             !baseColumnNamesList.includes(columnName)
