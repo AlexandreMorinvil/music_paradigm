@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-const CurriculumSummary = require('modules/curriculums/class/curriculum-summary.class');
 const CurriculumTaskParameter = require('modules/curriculums/class/curriculum-task-parameter.class');
 const schema = require('./curriculum.middleware');
 
@@ -13,34 +12,6 @@ schema.statics.createCurriculum = async function (curriculum) {
     curriculumToCreate.createdAt = Date.now();
     const curriculumCreated = new model(curriculumToCreate);
     return curriculumCreated.save();
-};
-
-/**
- * Get curriculum list entries list
- * This function returns  a list of all the the curriculum list entries. A curriculum list entry is a curriculum objects
- * to which is added additional information regarding the parameters included in the tasks that are included in the 
- * curriculum.
- * 
- * @return {Array<Object>} A list of all the curriculum objects with parameter's infomration added.
- */
-schema.statics.getCurriculumSummariesList = async function () {
-
-    // Get the list of all curriculum documents.
-    const curriculumDocumentsList = await this.find({}).sort({ title: 1 });
-    const curriculumSummariesList = [];
-
-    // Fill the list of curriculum summaries asynchronously.
-    await Promise.all(curriculumDocumentsList.map(async (curriculumDocument) => {
-        curriculumSummariesList.push(
-            new CurriculumSummary({
-                parametersList: await curriculumDocument.getParametersList(),
-                ...curriculumDocument.toObject(),
-            })
-        );
-    }));
-
-    // Returns alist of all the curriculum objects
-    return curriculumSummariesList;
 };
 
 // Instance methods
