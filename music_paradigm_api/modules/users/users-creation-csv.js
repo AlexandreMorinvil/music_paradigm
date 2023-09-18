@@ -107,8 +107,7 @@ async function createUser(userDescription) {
     const parametersList = await curriculumToAssign.getParametersList();
     parametersList.forEach((parameter) => {
         const parameterValue = userDescription['$' + parameter.name];
-        if (parameter.acceptsFreeTextValues ||
-            parameter.optionValuesList.includes(parameterValue))
+        if (parameter.isValueAssignationAccepted(parameterValue))
             assignedParameters[parameter.name] = parameterValue;
     });
 

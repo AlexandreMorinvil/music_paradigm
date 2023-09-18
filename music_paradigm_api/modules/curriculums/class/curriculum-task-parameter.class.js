@@ -14,4 +14,17 @@ module.exports = class CurriculumTaskParameter {
     getUserCreationCsvTemplateFormat() {
         return { ["$" + this.name]: this.optionValuesList };
     }
+
+    isValueAssignationAccepted(value) {
+        // With free text values, any value assignation is accepted
+        if (this.acceptsFreeTextValues) return true;
+        
+        // Verify if the value is part of the allowed values
+        const stringifiedOptionValues = this.optionValuesList.map((optionValue) => String(optionValue))
+        const stringifiedValue = String(value);
+        if (stringifiedOptionValues.includes(stringifiedValue)) return true;
+        
+        // Otherwise, the assignation is refused
+        return false;
+    }
 }
