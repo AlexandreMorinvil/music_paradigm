@@ -3,6 +3,8 @@
 import defaultState from './default-state';
 import variableHandler from './variable-handler';
 
+import { TaskVariable, TaskVariableAssignment } from "@/modules/task";
+
 export default {
 	initExperimentParsing,
 	concludeExperimentParsing,
@@ -20,17 +22,22 @@ export default {
 
 /**
  * Store the parameters imposed to the user by the admin account.
- * The imposed values must be stored before the variables concerned are initialized when calling the setImposedParameterValues() function. 
+ * The imposed values must be stored before the variables concerned are initialized when calling the 
+ * setImposedParameterValues() function. 
  * @param {Object} state 						Vuex state
- * @param {Object} parameters					Object containing the list of the parameters imposed in to the user by the admin.
+ * @param {Object} parameters					Object containing the list of the parameters imposed in to the user by 
+ * 												the admin.
  * 												The object has the shape : 
- * 												{ NAME_OF_PARAMETER_1 : VALUE_OF_PARAMETER_1, NAME_OF_PARAMETER_2 : VALUE_OF_PARAMETER_2, ... }
+ * 												{ 
+ * 												NAME_OF_PARAMETER_1 : VALUE_OF_PARAMETER_1, 
+ * 												NAME_OF_PARAMETER_2 : VALUE_OF_PARAMETER_2, 
+ * 												... 
+ * 												}
 */
-function storeParameterImposedValues(state, parameters) {
-	for (const parameter in parameters) {
-		const isVariableExisting = Boolean(state.variablesInformation.variables[parameter]);
-		if (!isVariableExisting) state.variablesInformation.variables[parameter] = {};
-		state.variablesInformation.variables[parameter].imposedValue = parameters[parameter];
+function storeParameterImposedValues(state, imposedValueByParameterNameMap) {
+	for (const parameterName in imposedValueByParameterNameMap) {
+		const imposedValue = imposedValueByParameterNameMap[parameterName];
+		state.variablesInformation.variables[parameterName] = new TaskVariableAssignment(undefined, imposedValue);
 	}
 }
 
@@ -85,26 +92,17 @@ function setExperimentVariables(state) {
 	const { variables } = state.experiment;
 	if (!Array.isArray(variables)) return;
 
+
 	// Get the dynamic variables
 	for (const variable of variables) {
-		// Initialize the variable
-		const parsedVariable = state.variablesInformation.variables[variable.name] || {};
-		state.variablesInformation.variables[variable.name] = parsedVariable;
 
-		// Verifying if there is a valis imposed value
-		const hasImposedValue = Object.prototype.hasOwnProperty.call(parsedVariable, 'imposedValue');
-		const allowedValues = new Set(variable.optionValues);
-		allowedValues.add(variable.assignedValue);
-		const isImposedValueValid = allowedValues.has(parsedVariable.imposedValue);
+		// Initialize the variable assignement (in case it did not have an preinitialized imposed value)
+		const preinitializedVariableAssignment = state.variablesInformation.variables[variable.name];
+		const variableAssignment = preinitializedVariableAssignment ?? new TaskVariableAssignment();
 
-		// Assign the attributes of the variable
-		parsedVariable.initialValue = (hasImposedValue && isImposedValueValid) ? parsedVariable.imposedValue : variable.assignedValue;
-		parsedVariable.currentValue = parsedVariable.initialValue;
-		parsedVariable.isConstant = variable.assignation === 'constant';
-		parsedVariable.optionValues = variable.optionValues;
-		parsedVariable.valueSelectionType = variable.valueSelectionType;
-		parsedVariable.scheduleName = variable.scheduleName;
-		parsedVariable.isStateVariable = false;
+		// Set the variable assignment
+		variableAssignment.setVariableAssignment(new TaskVariable(variable)) 
+		state.variablesInformation.variables[variable.name] = variableAssignment;
 	}
 }
 
