@@ -34,6 +34,7 @@ export default {
 		// If a cursor is provided, the experiment is resumed with the state of the cursor.
 		// If no cursor is provided, the default values of the cursor is the start ofthe experiment.
 		state.cursor = cursorHandler.assignCursor(state.flow, presetCursor);
+		cursorHandler.determineGroupEnd(state.flow, state.cursor);
 
 		// Set the initialization indicators to false
 		state.isInitialized = defaultState.IS_FULLY_NOT_INITIALIZED_STATUS();

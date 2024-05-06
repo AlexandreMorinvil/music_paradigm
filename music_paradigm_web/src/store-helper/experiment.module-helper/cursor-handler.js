@@ -5,6 +5,7 @@ import stateHandler from './state-handler';
 import variableHandler from './variable-handler';
 
 export default {
+	determineGroupEnd,
 	stepsCompletionRatio,
 	countStepsLeft,
 	assignCursor,
@@ -13,8 +14,61 @@ export default {
 	skip,
 };
 
-function stepsCompletionRatio(flow, startPointCursor) {
-	return 1 - countStepsLeft(flow, startPointCursor) / countStepsLeft(flow);
+// FIXME : This is a temporary solution that needs further work. I should be improved.
+function stepsCompletionRatio(flow, cursor) {
+	
+	// Initialize the ration
+	let ratio = 0;
+
+	const { indexGroupEnd, 
+		indexLoopStart, 
+		indexPileStart,
+		lastPiledContentIndex,
+		totalNumberRepetitions,
+	} = cursor.navigation;
+	const { index, numberRepetition, piledContentIndex } = cursor.current;
+
+	// Set to the position on the start of the pile
+	const totalNumberIndexPositions = flow.length;
+	const currentPileStartPosition = (indexPileStart != defaultState.UNSET_INDEX) ? 
+		indexPileStart : 1;
+	const indexPositionUnitValue = 1 / totalNumberIndexPositions;
+	ratio += currentPileStartPosition * indexPositionUnitValue;
+	
+	// Adjust the position for the number of piled elements completed
+	let blocksToReplicateCount = null;
+	let numberElementsInPile = null;
+	let positionInPile = null;
+	if (indexPileStart != defaultState.UNSET_INDEX) {
+		blocksToReplicateCount = indexGroupEnd - indexPileStart + 1;
+		numberElementsInPile = lastPiledContentIndex + 1;
+		positionInPile = index - indexPileStart;
+	} else {
+		blocksToReplicateCount = 1;
+		numberElementsInPile = 1;
+		positionInPile = 0;
+	}
+	const totalStepsInDepiling = blocksToReplicateCount * numberElementsInPile ;
+	const currentStepOfDepiling = blocksToReplicateCount * piledContentIndex + positionInPile;
+	ratio += currentStepOfDepiling / totalStepsInDepiling * indexPositionUnitValue;
+
+	// Adjust te position for the looped steps
+	let blocksInLoopCount = null;
+	let positionInLoop = null;
+	if (indexLoopStart != defaultState.UNSET_INDEX) {
+		blocksInLoopCount = indexGroupEnd - indexLoopStart;
+		positionInLoop = index - indexLoopStart;
+	} else {
+		blocksInLoopCount = 1;
+		positionInLoop = 0;
+	}
+	
+	const unitValueForRepetitionSteps = indexPositionUnitValue / totalStepsInDepiling;
+	const totalStepsInLooping = blocksInLoopCount * totalNumberRepetitions;
+	const currentStepOfLooping = blocksInLoopCount * (numberRepetition - 1) + positionInLoop;
+	ratio += currentStepOfLooping / totalStepsInLooping * unitValueForRepetitionSteps;
+
+	return ratio;
 }
 
 function countStepsLeft(flow, startPointCursor) {
@@ -43,6 +97,7 @@ function advance(state, flow, cursor, isInitialized) {
 	determineGroupEnd(flow, cursor);
 	if (moveCursorSpecialCases(state, flow, cursor, isInitialized)) return;
 	else moveCursorNext(flow, cursor, isInitialized);
+	determineGroupEnd(flow, cursor);
 }
 
 function goBack(flow, cursor, isInitialized) {
@@ -217,7 +272,10 @@ function setCursorInnerStepsTotal(cursor, textContent, pictureFileName) {
 		innerStepsPictureFile = Array.isArray(currentPictureFile) ? currentPictureFile.length - 1 : defaultState.UNSET_INDEX;
 	}
 
-	const maxNumberContentElement = Math.max(innerStepsTextContent, innerStepsPictureFile);
+	const maxNumberContentElement = Math.max(
+		innerStepsTextContent || 0, 
+		innerStepsPictureFile || 0,
+	);
 	cursor.navigation.lastInnerStepsIndex = maxNumberContentElement;
 }
 
