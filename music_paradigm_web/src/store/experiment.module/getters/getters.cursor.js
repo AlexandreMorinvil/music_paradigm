@@ -14,14 +14,6 @@ export default {
 		return state.cursor.flag.isInConclusion;
 	},
 
-	stepsTotalCount: (state) => {
-		return cursorHandler.countStepsLeft(state.flow);
-	},
-
-	stepsLeftCount: (state) => {
-		return cursorHandler.countStepsLeft(state.flow, state.cursor);
-	},
-
 	isBeyondEnd: (state) => {
 		return state.cursor.flag.isBeyondEnd;
 	},
