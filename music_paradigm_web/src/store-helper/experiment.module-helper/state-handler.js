@@ -12,11 +12,11 @@ export default {
 
 function initializeStartState(stateToInitialize, initialState = null) {
 	if (initialState) {
-		stateToInitialize = initialState;
+		Object.assign(stateToInitialize, initialState);
 	} else {
 		const defaultInitialState = defaultState.DEFAULT_EXPERIMENT_STATE_STATE_VALUES();
 		Object.assign(defaultInitialState.record, stateToInitialize.record);
-		stateToInitialize = defaultInitialState;
+		Object.assign(stateToInitialize, defaultInitialState);
 	}
 }
 
