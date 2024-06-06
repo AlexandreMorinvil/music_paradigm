@@ -1,5 +1,3 @@
-import { controllerToMidiMapper } from '@/_helpers';
-
 export default {
 	curriculumTitle: (state) => {
 		return state.sessionInformation.curriculumTitle || null;

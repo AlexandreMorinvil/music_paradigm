@@ -1,3 +1,5 @@
+import { defaultState } from '@/store-helper/experiment.module-helper/default-state';
+
 // parameters for the evaluations
 export default {
 	relativeRhythmImportance: (state) => {

@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 /* eslint-disable key-spacing */
 import blockHandler from './block-handler';

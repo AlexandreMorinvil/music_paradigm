@@ -1,5 +1,4 @@
 import { TaskDataListTable } from "./task-data-list-table.class";
-import { TaskDataListTableEntity } from "./task-data-list-table-entity.class";
 
 export class AdminTaskDataListTable extends TaskDataListTable {
     static get possibleColumnsList() {

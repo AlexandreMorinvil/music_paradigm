@@ -15,12 +15,14 @@ export default {
 };
 
 // FIXME : This is a temporary solution that needs further work. I should be improved.
+/* eslint-disable max-lines-per-function */
 function stepsCompletionRatio(flow, cursor) {
 	
 	// Initialize the ration
 	let ratio = 0;
 
-	const { indexGroupEnd, 
+	const { 
+		indexGroupEnd, 
 		indexLoopStart, 
 		indexPileStart,
 		lastPiledContentIndex,

@@ -10,9 +10,13 @@
 		<TemplateFieldsetComponent>
 			<template v-for="(column, index) in selectedColumnsList">
 
-				<TemplateFieldLabelComponent :for="`column-${index + 1}`" :text="`Column ${index + 1}`" />
+				<TemplateFieldLabelComponent 
+					:for="`column-${index + 1}`" 
+					:text="`Column ${index + 1}`" 
+					:key="index"
+				/>
 
-				<div class="column-input-area">
+				<div class="column-input-area" :key="index">
 					<TemplateFieldSelectComponent :value="column.key" v-on:edit="(value) => editColumn(index, value)"
 						isEmptyAccepted :getDisplayedValueFromElement="(column) => column.title"
 						:isForcedDisabled="isMandatoryColumnIndex(index)"
@@ -36,7 +40,6 @@
 import { ListTable } from '@/modules/list-tables';
 
 import TemplateButtonComponent from '@/components/admin/template/template-button.component.vue';
-import TemplateFieldInputComponent from '@/components/admin/template/template-field-input.component.vue';
 import TemplateFieldLabelComponent from '@/components/admin/template/template-field-label.component.vue';
 import TemplateFieldSelectComponent from '@/components/admin/template/template-field-select.component.vue';
 import TemplateFieldsetComponent from '@/components/admin/template/template-fieldset.component.vue';
@@ -45,7 +48,6 @@ export default {
 	emits: ['update'],
 	components: {
 		TemplateButtonComponent,
-		TemplateFieldInputComponent,
 		TemplateFieldLabelComponent,
 		TemplateFieldSelectComponent,
 		TemplateFieldsetComponent,

@@ -79,7 +79,7 @@ export default {
         },
 
         isCompletionLitmitedText() {
-            return this.curriculumSession.isCompletionLimited ? "✓" : "";;
+            return this.curriculumSession.isCompletionLimited ? "✓" : "";
         },
 
         isSelectedSession() {

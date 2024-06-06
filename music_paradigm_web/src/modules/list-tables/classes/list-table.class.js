@@ -72,7 +72,7 @@ export class ListTable {
     }
 
     convertToTableEntitiesList(entities = []) {
-        let entitiesList = Array.isArray(entities) ? entities : [entities];
+        const entitiesList = Array.isArray(entities) ? entities : [entities];
         return entitiesList.map((entity) => new this.ListTableEntityClass(entity))
     }
 
@@ -92,7 +92,7 @@ export class ListTable {
 
     filterEntitiesList(entitiesList) {
         return entitiesList.filter((entity) => {
-            let initialIsKeptValue = true;
+            const initialIsKeptValue = true;
             return this.filtersList.reduce((isKeptByPreviousFilters, filter) => {
                 return isKeptByPreviousFilters && !filter.shouldRemoveEntity(entity);
             }, initialIsKeptValue);
@@ -111,7 +111,7 @@ export class ListTable {
     }
 
     getFilterImposedColorOfEntity(entity) {
-        let initialImposedColor = null;
+        const initialImposedColor = null;
         return this.filtersList.reduce((currentImposedColor, filter) => {
             return filter.getImposedColor(entity) ?? currentImposedColor;
         }, initialImposedColor);

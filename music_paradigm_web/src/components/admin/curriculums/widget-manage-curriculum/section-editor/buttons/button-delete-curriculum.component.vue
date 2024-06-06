@@ -35,7 +35,7 @@ export default {
         ...mapActions('managementCurriculums', ['deleteCurriculum']),
         handleButtonPress() {
             if (!this.isButtonActive) return;
-            let answer = window.confirm('Are you sure you want to delete the curriculum? \nThis cannot be undone.');
+            const answer = window.confirm('Are you sure you want to delete the curriculum? \nThis cannot be undone.');
             if (!answer) return;
             window.confirm(
                 'Have you made sure that no user was currently completing this curriculum?\n' +

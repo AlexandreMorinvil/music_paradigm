@@ -44,6 +44,7 @@ export default {
             if (delayInDays === 0) return 'First day';
             else if (delayInDays === 1) return 'After 1 day';
             else if (delayInDays > 1) return `After ${delayInDays} days`;
+            else return null
         },
         isDelayDueToUniqueInDay() {
             return this.dayWorkload.isDelayDueToUniqueInDay;

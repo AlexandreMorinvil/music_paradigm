@@ -1,5 +1,3 @@
-import { cursorHandler } from '@/store-helper/experiment.module-helper';
-
 // Getters for the experiment flow's information
 export default {
 	isInMainFlow: (state) => {

@@ -38,7 +38,7 @@ export default {
         ...mapActions('managementUsers/batchCommand', ['executeUsersBatchCommandRemoveAllTags']),
         handleButtonPress() {
             if (!this.isButtonActive) return;
-            let answer = window.confirm(
+            const answer = window.confirm(
                 'Are you sure you want to remove all tags for the selected users?\nThis cannot be undone.'
             );
             if (!answer) return;

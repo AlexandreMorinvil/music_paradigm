@@ -38,8 +38,6 @@ import {
 	getConditionOperatorsByColumnType
 } from '@/modules/list-tables';
 
-import TemplateButtonComponent from '@/components/admin/template/template-button.component.vue';
-import TemplateFieldInputComponent from '@/components/admin/template/template-field-input.component.vue';
 import TemplateFieldSelectComponent from '@/components/admin/template/template-field-select.component.vue';
 import ListTableEditorFilterConditionValueComponent from './list-table-editor-filter-condition-value.component.vue';
 
@@ -47,8 +45,6 @@ export default {
 	emits: ['update'],
 	components: {
 		ListTableEditorFilterConditionValueComponent,
-		TemplateButtonComponent,
-		TemplateFieldInputComponent,
 		TemplateFieldSelectComponent,
 	},
 	props: {

@@ -1,7 +1,7 @@
 <template>
     <TemplateFieldsetComponent>
-        <template v-for="parameter in userProgressionEditionCurriculumParameters">
-            <TemplateFieldLabelComponent :text="parameter.name" />
+        <template v-for="parameter in userProgressionEditionCurriculumParameters" >
+            <TemplateFieldLabelComponent :text="parameter.name" :key="parameter.name"/>
             <TemplateFieldSelectComponent
                 :value="userProgressionEditionAssignedParameters[parameter.name]"
                 :expectedValue="getExpectedValue(parameter.name)"
@@ -11,6 +11,7 @@
                 :options="parameter.optionValuesList"
                 placeholder="TASK DEPENDANT DEFAULT"
                 :selectAttributes="{ name: `parameter-${parameter.name}` }"
+                :key="parameter.name"
             />
         </template>
     </TemplateFieldsetComponent>

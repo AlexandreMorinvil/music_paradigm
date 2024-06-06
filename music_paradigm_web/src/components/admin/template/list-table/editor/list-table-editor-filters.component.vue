@@ -60,6 +60,7 @@ export default {
 			else if (this.entitiesCount === this.keptEnitiesCount) return 'No elements are filtered out';
 			else if (this.entitiesCount !== this.keptEnitiesCount)
 				return `${this.keptEnitiesCount}/${this.entitiesCount} elements displayed (${this.filteredEntitiesCount} filtered out)`;
+			else return null
 		},
 	},
 	methods: {

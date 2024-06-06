@@ -21,7 +21,10 @@ import '@/styles/widget-template.css';
 
 export default {
     props: {
-        title: "",
+        title: {
+            type: String,
+            default: "",
+        },
     },
     computed: {
         hasButtonsArea() {

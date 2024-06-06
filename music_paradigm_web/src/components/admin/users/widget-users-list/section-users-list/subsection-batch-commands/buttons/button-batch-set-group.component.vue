@@ -41,7 +41,7 @@ export default {
         ...mapActions('managementUsers/batchCommand', ['executeUsersBatchCommandSetGroup']),
         handleButtonPress() {
             if (!this.isButtonActive) return;
-            let answer = window.confirm('Are you sure you want to change the group of the selected users?');
+            const answer = window.confirm('Are you sure you want to change the group of the selected users?');
             if (!answer) return;
             this.executeUsersBatchCommandSetGroup({
                 idsList: this.usersListTableSelectionIdsList,

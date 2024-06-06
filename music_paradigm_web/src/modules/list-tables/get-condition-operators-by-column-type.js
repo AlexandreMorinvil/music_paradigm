@@ -1,6 +1,8 @@
 import { ColumnType } from "./interfaces/column.interfaces"
 import { ConditionOperator } from "./interfaces/filter.interfaces";
 
+// FIXME: Explore if there is a way to implement this without a switch case
+/* eslint-disable max-lines-per-function */
 export function getConditionOperatorsByColumnType(columnType) {
     switch (columnType) {
         case ColumnType.arrayOfStrings:

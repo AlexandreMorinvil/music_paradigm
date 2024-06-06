@@ -31,7 +31,7 @@
 						v-on:click="() => toggleEntityInListTableSelection(entity)" />
 					<span v-else>{{ index + 1 }}</span>
 				</td>
-				<td v-for="column in selectedColumnsList">
+				<td v-for="column in selectedColumnsList" :key="column.key">
 					<TemplateFieldOutputComponent :value="entity.getValueToDisplay(column)" />
 				</td>
 				<td class="action-cells">

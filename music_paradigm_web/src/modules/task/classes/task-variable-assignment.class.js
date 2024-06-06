@@ -1,4 +1,4 @@
-import { AssignmentType, ValueSelectionType, VariableType } from '../interfaces/assignment.interfaces';
+import { AssignmentType } from '../interfaces/assignment.interfaces';
 import { TaskVariable } from './task-variable.class';
 
 export class TaskVariableAssignment {

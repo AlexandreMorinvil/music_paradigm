@@ -32,7 +32,8 @@ export default {
 						dispatch(
 							successesCount > 0 ? 'alert/setWarningAlert' : 'alert/setErrorAlert',
 							`Note update failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
-							{ root: true });
+							{ root: true }
+						);
 					else
 						dispatch('alert/setSuccessAlert', 'Tags added sucessfully', { root: true });
 					dispatch('managementUsers/refreshAll', null, { root: true });
@@ -57,7 +58,8 @@ export default {
 						dispatch(
 							successesCount > 0 ? 'alert/setWarningAlert' : 'alert/setErrorAlert',
 							`Note update failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
-							{ root: true });
+							{ root: true }
+						);
 					else
 						dispatch('alert/setSuccessAlert', 'Notes updated sucessfully', { root: true });
 					dispatch('managementUsers/refreshAll', null, { root: true });
@@ -90,7 +92,8 @@ export default {
 						dispatch(
 							successIdsList.length > 0 ? 'alert/setWarningAlert' : 'alert/setErrorAlert',
 							`Users deletion failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
-							{ root: true });
+							{ root: true }
+						);
 					else
 						dispatch('alert/setSuccessAlert', 'Users deleted sucessfully', { root: true });
 					dispatch('managementUsers/refreshAll', null, { root: true });
@@ -115,7 +118,8 @@ export default {
 						dispatch(
 							successesCount > 0 ? 'alert/setWarningAlert' : 'alert/setErrorAlert',
 							`Note update failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
-							{ root: true });
+							{ root: true }
+						);
 					else
 						dispatch('alert/setSuccessAlert', 'Notes updated sucessfully', { root: true });
 					dispatch('managementUsers/refreshAll', null, { root: true });
@@ -140,7 +144,8 @@ export default {
 						dispatch(
 							successesCount > 0 ? 'alert/setWarningAlert' : 'alert/setErrorAlert',
 							`Tags deletion failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
-							{ root: true });
+							{ root: true }
+						);
 					else
 						dispatch('alert/setSuccessAlert', 'Tags deleted sucessfully', { root: true });
 					dispatch('managementUsers/refreshAll', null, { root: true });
@@ -165,7 +170,8 @@ export default {
 						dispatch(
 							successesCount > 0 ? 'alert/setWarningAlert' : 'alert/setErrorAlert',
 							`Tags deletion failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
-							{ root: true });
+							{ root: true }
+						);
 					else
 						dispatch('alert/setSuccessAlert', 'Tags deleted sucessfully', { root: true });
 					dispatch('managementUsers/refreshAll', null, { root: true });
@@ -190,7 +196,8 @@ export default {
 						dispatch(
 							successesCount > 0 ? 'alert/setWarningAlert' : 'alert/setErrorAlert',
 							`Group edition failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
-							{ root: true });
+							{ root: true }
+						);
 					else
 						dispatch('alert/setSuccessAlert', 'Group edited sucessfully', { root: true });
 					dispatch('managementUsers/refreshAll', null, { root: true });
@@ -215,7 +222,8 @@ export default {
 						dispatch(
 							successesCount > 0 ? 'alert/setWarningAlert' : 'alert/setErrorAlert',
 							`Notes edition failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
-							{ root: true });
+							{ root: true }
+						);
 					else
 						dispatch('alert/setSuccessAlert', 'Notes edited sucessfully', { root: true });
 					dispatch('managementUsers/refreshAll', null, { root: true });
@@ -240,7 +248,8 @@ export default {
 						dispatch(
 							successesCount > 0 ? 'alert/setWarningAlert' : 'alert/setErrorAlert',
 							`Password update failed for the following users:\n${formatFailuresListMessage(failuresList)}`,
-							{ root: true });
+							{ root: true }
+						);
 					else
 						dispatch('alert/setSuccessAlert', 'Passwords updated sucessfully', { root: true });
 					dispatch('managementUsers/refreshAll', null, { root: true });

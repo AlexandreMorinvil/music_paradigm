@@ -2,9 +2,9 @@ import { AssignmentType, ValueSelectionType, VariableType } from '../interfaces/
 
 export class TaskVariable {
     constructor(parameter = {}) {
-        this.name = parameter.name ?? null,
+        this.name = parameter.name ?? null;
         this.type = parameter.type ?? VariableType.variable;
-        this.assignation = parameter.assignation ?? AssignmentType.constant,
+        this.assignation = parameter.assignation ?? AssignmentType.constant;
         this.assignedValue = parameter.assignedValue ?? null;
         this.acceptsFreeTextValue = parameter.acceptsFreeTextValue ?? false;
         this.valueSelectionType = parameter.valueSelectionType ?? ValueSelectionType.assigned;

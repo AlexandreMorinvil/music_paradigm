@@ -28,6 +28,7 @@
 </template>
 
 <script>
+/* eslint-disable no-unused-vars */
 import '@/styles/field-template.css';
 
 import { durationHandler } from '@/_helpers';

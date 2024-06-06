@@ -55,17 +55,6 @@ class Player {
 	}
 
 	/**
-	 * Load a file into the player (Node.js only).
-	 * @param {string} path - Path of file.
-	 * @return {Player}
-	 */
-	loadFile(path) {
-		const fs = require('fs');
-		this.buffer = fs.readFileSync(path);
-		return this.fileLoaded();
-	}
-
-	/**
 	 * Load an array buffer into the player.
 	 * @param {array} arrayBuffer - Array buffer of file to be loaded.
 	 * @return {Player}

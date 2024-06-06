@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "serve-dev": "vue-cli-service serve --host 0.0.0.0 --https",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --type-check --format stylish --ext js,.vue",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
     "lint:fix": "npm run lint -- --fix",
+    "serve-dev": "vue-cli-service serve --host 0.0.0.0 --https",
     "translate": "node_modules/.bin/vue-translation-manager translate"
   },
   "dependencies": {
@@ -17,28 +17,30 @@
     "@tonejs/midi": "^2.0.23",
     "axios": "^0.19.0",
     "bootstrap-icons": "^1.10.3",
+    "core-js": "^3.37.1",
     "jsonlint-mod": "^1.7.5",
     "jszip": "^3.10.1",
     "lodash": "^4.17.21",
     "midi-player-js": "^2.0.5",
-    "sass": "^1.32.0",
     "soundfont-player": "^0.11.0",
     "tone": "^14.7.77",
     "video.js": "^7.8.2",
     "vue": "^2.6.10",
+    "vue-class-component": "^7.2.3",
     "vue-codemirror": "^4.0.6",
     "vue-i18n": "^8.17.3",
+    "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.0.6",
     "vue-translation-manager": "^1.2.0",
-    "vuetify": "^2.4.0",
     "vuetify-file-browser": "^1.0.2",
-    "vuetify-loader": "^1.6.0",
     "vuex": "^3.1.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.8.0",
-    "@vue/cli-plugin-eslint": "^3.9.1",
-    "@vue/cli-service": "^3.8.0",
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-plugin-typescript": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
+    "@vue/eslint-config-typescript": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^7.16.0",
     "eslint-config-google": "^0.14.0",
@@ -46,10 +48,14 @@
     "eslint-plugin-prettier": "^3.3.0",
     "eslint-plugin-vue": "^7.3.0",
     "prettier": "^2.2.1",
-    "sass-loader": "^7.1.0",
+    "sass": "^1.77.4",
+    "sass-loader": "^14.2.1",
+    "typescript": "~4.5.5",
     "vue-cli-plugin-i18n": "~1.0.1",
     "vue-cli-plugin-vuetify": "^2.0.9",
-    "vue-template-compiler": "^2.6.10"
+    "vue-loader": "^17.4.2",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^5.91.0"
   },
   "eslintConfig": {
     "root": true,
@@ -58,13 +64,14 @@
     },
     "extends": [
       "plugin:vue/essential",
-      "eslint:recommended"
+      "eslint:recommended",
+      "@vue/typescript"
     ],
     "rules": {
       "no-console": 0
     },
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@typescript-eslint/parser"
     }
   },
   "postcss": {

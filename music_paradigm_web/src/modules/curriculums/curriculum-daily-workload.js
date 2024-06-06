@@ -4,6 +4,8 @@ export default {
     generateCurriculumDayWorkloadList
 }
 
+// TODO: Explore if this function could not be separated into smaller functions
+/* eslint-disable max-lines-per-function */
 function generateCurriculumDayWorkloadList(curriculum) {
 
     if (!curriculum) return [];
