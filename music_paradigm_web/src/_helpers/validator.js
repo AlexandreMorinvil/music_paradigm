@@ -1,3 +1,6 @@
+import { TaskVariable, TaskVariableAssignment } from "@/modules/task";
+import variableHandler from "@/store-helper/experiment.module-helper/variable-handler";
+
 /* eslint-disable max-lines */
 /* eslint-disable max-lines-per-function */
 export default {
@@ -63,6 +66,28 @@ function getMinimalValidExperimentStructure() {
 	};
 }
 
+// TODO: Implement this in a cleaner way
+function populateVariablesOfExperimentToValidate(experiment) {
+	const { variables } = experiment;
+	const variablesInformation = { variables: {}, schedules: {} };
+
+	if (!Array.isArray(variables)) return;
+
+	// Get the dynamic variables
+	for (const variable of variables) {
+		const variableAssignment = new TaskVariableAssignment();
+		variableAssignment.setVariableAssignment(new TaskVariable(variable)) 
+		variablesInformation.variables[variable.name] = variableAssignment;
+	}
+
+	const taskDescriptionToValidate = JSON.parse(JSON.stringify(experiment));
+	return variableHandler.populateVariables(
+		taskDescriptionToValidate, 
+		true, 
+		variablesInformation
+	); 
+}
+
 function isExperimentValid(experiment) {
 	try {
 		validateExperiment(experiment);
@@ -72,7 +97,10 @@ function isExperimentValid(experiment) {
 	}
 }
 
-function validateExperiment(experiment) {
+function validateExperiment(taskDescription) {
+
+	const experiment = populateVariablesOfExperimentToValidate(taskDescription);
+
 	// Verification of the validity of the experiment object type
 	if (!(typeof experiment === 'object')) {
 		throw new Error('The experiment is not defined within a JSON object');
@@ -349,6 +377,8 @@ function validateBlock(block, index = null) {
 
 		'waitBeforeNextStep',
 		'textWaitBeforeNextStep',
+
+		'maxStackedContent',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -434,6 +464,7 @@ function validateAttributeType(key, value) {
 		case 'gltCellSize':
 		case 'cuePresentationDelay':
 		case 'waitBeforeNextStep':
+		case 'maxStackedContent':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}

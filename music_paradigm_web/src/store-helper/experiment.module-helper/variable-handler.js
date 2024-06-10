@@ -13,11 +13,16 @@ export default {
  * @param {Boolean} isForConstants	Indicate if the dynamic or constant variables must be populated
  * @returns {Object} 				Block with the variables populated
  */
-function populateVariables(block, isForConstants = false) {
+function populateVariables(block, isForConstants = false, providedVariablesInformation = null) {
 
 	// Get the up to date list of variables
-	updateStateVariables();
-	const variablesInformation = experimentStoreState.variablesInformation;
+	if (!providedVariablesInformation) 
+		updateStateVariables();
+
+	const variablesInformation = providedVariablesInformation ? 
+		providedVariablesInformation : 
+		experimentStoreState.variablesInformation;
+
 	const { variables } = variablesInformation;
 
 	// Clone the block and populate it
@@ -25,7 +30,8 @@ function populateVariables(block, isForConstants = false) {
 
 	// Verify if the is any sign that might lead to a variable replacement
 	const blockString = JSON.stringify(blockToPopulate);
-	if (!blockString.includes('$') && !blockString.includes('&')) return blockToPopulate;
+	if (!blockString.includes('$') && !blockString.includes('&')) 
+		return blockToPopulate;
 
 	// Variable replacement
 	for (const variableName in variables) {
@@ -84,9 +90,13 @@ function performVariableReplacement(block, conversionRules) {
 		let conversionValue = conversionRules[reference];
 		if (typeof conversionValue === 'string') conversionValue = conversionValue.replace(/(\r\n|\n|\r)/gm, '\\n');
 
-		// Replace the reference by tge conversion value
+		// Replace the reference by the conversion value
 		stringBlock = stringBlock.replace(new RegExp(reference, 'g'), conversionValue);
 	}
+
+	// Transform the quoted numbers, booleans and null into real numbers boolean and null values
+	stringBlock = stringBlock.replace(/"(-?\d+(\.\d+)?)"/g, '$1');
+	stringBlock = stringBlock.replace(/"(true|false|null)"/g, '$1');
 
 	// Parse the converted block
 	block = JSON.parse(stringBlock);

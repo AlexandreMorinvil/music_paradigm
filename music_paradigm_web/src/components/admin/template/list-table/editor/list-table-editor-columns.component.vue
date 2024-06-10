@@ -16,7 +16,7 @@
 					:key="index"
 				/>
 
-				<div class="column-input-area" :key="index">
+				<div class="column-input-area" :key="column.key">
 					<TemplateFieldSelectComponent :value="column.key" v-on:edit="(value) => editColumn(index, value)"
 						isEmptyAccepted :getDisplayedValueFromElement="(column) => column.title"
 						:isForcedDisabled="isMandatoryColumnIndex(index)"

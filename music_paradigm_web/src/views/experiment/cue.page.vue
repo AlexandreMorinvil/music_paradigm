@@ -65,6 +65,7 @@ export default {
 			'addPlayerEndOfFileAction', 
 			'removePlayerEndOfFileAction',
 			'pausePiano',
+			'stopPlayingMidiFile',
 			'unPausePiano',
 		]),
 		updateFootnote() {
@@ -97,6 +98,7 @@ export default {
 		this.addPlayerEndOfFileAction(this.handleEndOfMidiFile);
 	},
 	beforeDestroy() {
+		this.stopPlayingMidiFile();
 		this.removePlayerEndOfFileAction(this.handleEndOfMidiFile);
 	},
 	watch: {

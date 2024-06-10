@@ -42,6 +42,9 @@ export default {
 	removePlayerEndOfFileAction: ({ commit }, functionToRemove) => {
 		commit('removePlayerEndOfFileAction', functionToRemove);
 	},
+	stopPlayingMidiFile: ({ commit }) => {
+		commit('stopPlayingMidiFile');
+	},
 
 	// Key interaction actions
 	addPressedKey: ({ commit }, key) => {

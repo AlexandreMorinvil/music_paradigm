@@ -242,6 +242,7 @@ function updateCursorNavigation(flow, cursor) {
 		referenceKeyboardKeys,
 		audioFirst,
 		audioSecond,
+		maxStackedContent,
 
 		// Cursor parameters
 		numberRepetition,
@@ -258,7 +259,19 @@ function updateCursorNavigation(flow, cursor) {
 	// Set all the navigation parameters
 	setCursorInnerStepsTotal(cursor, textContent, pictureFileName);
 	setCursorLoopStart(cursor, numberRepetition);
-	setCursorMediaDepilingStart(cursor, [midiFileName, videoFileName, textContent, pictureFileName, referenceKeyboardKeys, audioFirst, audioSecond]);
+	setCursorMediaDepilingStart(
+		cursor, 
+		[
+			midiFileName, 
+			videoFileName, 
+			textContent, 
+			pictureFileName, 
+			referenceKeyboardKeys, 
+			audioFirst, 
+			audioSecond, 
+		],
+		maxStackedContent
+	);
 	setCursorNextStep(cursor, followedBy, loopEnd);
 }
 
@@ -321,13 +334,15 @@ function setCursorLoopStart(cursor, numberRepetition) {
 //
 //  The execution order would be :
 //  A[0] - B[0] - C[0] - A[1] - B[1] - C[1] - D[0] - D[1] - D[2]
-function setCursorMediaDepilingStart(cursor, listOfArrays) {
+function setCursorMediaDepilingStart(cursor, listOfArrays, maxStackedContent) {
 
 	// Count the number of piled media elements of each type and detemine the maximum number of piled content.
 	let maxNumberElementsPiled = 0;
 	for (const array of listOfArrays) {
 		const numberElementsPiled = Array.isArray(array) ? array.length : 0;
 		maxNumberElementsPiled = Math.max(numberElementsPiled, maxNumberElementsPiled);
+		if (maxStackedContent)
+			maxNumberElementsPiled = Math.min(maxStackedContent, maxNumberElementsPiled);
 	}
 
 	// Initialize the number of piled media content (playable media pile index & number of medias) if :

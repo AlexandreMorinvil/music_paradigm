@@ -46,6 +46,9 @@ export default {
 	removePlayerEndOfFileAction: (state, functionToRemove) => {
 		state.player.off('endOfFile', functionToRemove);
 	},
+	stopPlayingMidiFile: (state) => {
+		state.player.stop();
+	},
 
 	// Mutations on key interations arrays
 	addPressedKey: (state, key) => {
