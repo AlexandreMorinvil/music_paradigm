@@ -302,6 +302,9 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			matrixUnusedCells: null,												// Indicates the cells that should not be used in a matrix (used in glt).
 
 			cuePresentationDelay: DEFAULT_CUE_PRESENTATION_DELAY,					// Block specific delay that should be waited before presenting the cue in a cue state.
+			cueMelodyProportionalDelayAfter: 0,
+			cueAdditionalDelayAfter: 0,
+			cueEnablePianoAfterCue: false,
 
 			reproductionSeed: DEFAULT_REPRODUCTION_SEED,							// Block specific Seed used in randomized components that can make the components reproductible.
 			waitBeforeNextStep: 0,													// Delay before the transition to the next state used in certain states (glt).

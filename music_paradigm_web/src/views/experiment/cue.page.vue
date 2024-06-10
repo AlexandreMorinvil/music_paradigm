@@ -49,11 +49,24 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('piano', ['isMidiFileLoaded']),
-		...mapGetters('experiment', ['cuePresentationDelay', 'midiName', 'cueWaitForClick']),
+		...mapGetters('piano', ['isMidiFileLoaded', 'midiFileTotalDuration']),
+		...mapGetters('experiment', [
+			'cuePresentationDelay', 
+			'midiName', 
+			'cueWaitForClick',
+			'cueMelodyProportionalDelayAfter',
+			'cueAdditionalDelayAfter',
+			'cueEnablePianoAfterCue',
+		]),
 	},
 	methods: {
-		...mapActions('piano', ['playMidiFile', 'addPlayerEndOfFileAction', 'removePlayerEndOfFileAction']),
+		...mapActions('piano', [
+			'playMidiFile', 
+			'addPlayerEndOfFileAction', 
+			'removePlayerEndOfFileAction',
+			'pausePiano',
+			'unPausePiano',
+		]),
 		updateFootnote() {
 			let footnoteMessage = '';
 			const secondsLeft = this.errorAutomaticTransitionSeconds;
@@ -64,7 +77,12 @@ export default {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_SET_FOOTNOTE, footnoteMessage);
 		},
 		handleEndOfMidiFile() {
-			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
+			const delayAfterMelody = 0 + 
+				this.cueMelodyProportionalDelayAfter * this.midiFileTotalDuration +
+				this.cueAdditionalDelayAfter;
+			setTimeout(() => {
+				ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
+			}, delayAfterMelody)
 		},
 		manageHavingNoMidiFile() {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
@@ -72,6 +90,8 @@ export default {
 	},
 	beforeMount() {
 		this.updateFootnote();
+		if (this.cueEnablePianoAfterCue)
+			this.pausePiano()
 	},
 	mounted() {
 		this.addPlayerEndOfFileAction(this.handleEndOfMidiFile);
@@ -83,8 +103,12 @@ export default {
 		isMidiFileLoaded: {
 			immediate: true,
 			handler: function (isReady) {
-				if (!this.cueWaitForClick && isReady)
-					setTimeout(this.playMidiFile, this.cuePresentationDelay);
+				if (!this.cueWaitForClick && isReady) {
+					setTimeout(() => { 
+						this.playMidiFile();
+						setTimeout(this.unPausePiano, this.midiFileTotalDuration - 2000);
+					}, this.cuePresentationDelay);
+				}
 				else if (this.midiName === '')
 					setTimeout(() => this.manageHavingNoMidiFile(), this.errorAutomaticTransitionMs);
 			},

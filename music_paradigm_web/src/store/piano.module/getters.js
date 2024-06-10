@@ -24,13 +24,21 @@ export default {
 	midiFileTriggeredKeys: (state) => {
 		return state.midiFileTriggeredKeys;
 	},
-
+	
 	// Getters for the current MIDI file data
 	midiFileNotesMidi: (state) => {
 		return state.midiFile.notes.midi;
 	},
 	midiFileNotesName: (state) => {
 		return state.midiFile.notes.name;
+	},
+	midiFileTotalDuration: (state) => {
+		// TODO: Implement this function in a more flexible way (handling the situations where a 
+		// 		 note before the last note has a duration that makes it the last playing note, 
+		// 		 which determines the duration).
+		const { time, duration } = state.midiFile.notes;
+		const lastNoteIndex = time.length - 1;
+		return time[lastNoteIndex] + duration[lastNoteIndex];
 	},
 
 	// Getters for the played notes

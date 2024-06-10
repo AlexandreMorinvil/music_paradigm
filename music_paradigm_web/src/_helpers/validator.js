@@ -231,6 +231,7 @@ function validateBlock(block, index = null) {
 		'referenceKeyboardKeys',
 		'numberRepetition',
 		'followedBy',
+		'loopEnd',
 		'anyPianoKey',
 		'enableSoundFlag',
 		'timeoutInSeconds',
@@ -342,6 +343,9 @@ function validateBlock(block, index = null) {
 		'matrixUnusedCells',
 
 		'cuePresentationDelay',
+		'cueMelodyProportionalDelayAfter',
+		'cueAdditionalDelayAfter',
+		'cueEnablePianoAfterCue',
 
 		'waitBeforeNextStep',
 		'textWaitBeforeNextStep',
@@ -401,6 +405,8 @@ function validateAttributeType(key, value) {
 			break;
 
 		// Number
+		case 'cueMelodyProportionalDelayAfter':
+		case 'cueAdditionalDelayAfter':
 		case 'numberRepetition':
 		case 'timeoutInSeconds':
 		case 'successesForSkipLoop':
@@ -434,11 +440,13 @@ function validateAttributeType(key, value) {
 			break;
 
 		// Boolean
+		case 'cueEnablePianoAfterCue':
 		case 'followedBy':
 		case 'footnote':
 		case 'anyPianoKey':
 		case 'enableSoundFlag':
 		case 'logFlag':
+		case 'loopEnd':
 		case 'hideFeedbackSmiley':
 		case 'skipStepButtonInFootnote':
 		case 'isSkipStepButtonInFootnote':

@@ -7,4 +7,16 @@ export default {
 	cuePresentationDelay: (state) => {
 		return state.state.settings.cuePresentationDelay;
 	},
+
+	cueMelodyProportionalDelayAfter: (state) => {
+		return state.state.settings.cueMelodyProportionalDelayAfter;
+	},
+
+	cueAdditionalDelayAfter: (state) => {
+		return state.state.settings.cueAdditionalDelayAfter;
+	},
+
+	cueEnablePianoAfterCue: (state) => {
+		return state.state.settings.cueEnablePianoAfterCue;
+	}
 };

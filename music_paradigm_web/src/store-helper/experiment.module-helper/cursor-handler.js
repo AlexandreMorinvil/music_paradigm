@@ -246,6 +246,7 @@ function updateCursorNavigation(flow, cursor) {
 		// Cursor parameters
 		numberRepetition,
 		followedBy,
+		loopEnd,
 		isInSkipableChain,
 		isInSkipIfNotMetSuccessGoalChain,
 	} = currentBlock;
@@ -258,7 +259,7 @@ function updateCursorNavigation(flow, cursor) {
 	setCursorInnerStepsTotal(cursor, textContent, pictureFileName);
 	setCursorLoopStart(cursor, numberRepetition);
 	setCursorMediaDepilingStart(cursor, [midiFileName, videoFileName, textContent, pictureFileName, referenceKeyboardKeys, audioFirst, audioSecond]);
-	setCursorNextStep(cursor, followedBy);
+	setCursorNextStep(cursor, followedBy, loopEnd);
 }
 
 function setCursorInnerStepsTotal(cursor, textContent, pictureFileName) {
@@ -345,16 +346,20 @@ function setCursorMediaDepilingStart(cursor, listOfArrays) {
 	}
 }
 
-function setCursorNextStep(cursor, followedBy) {
+function setCursorNextStep(cursor, followedBy, loopEnd) {
+	
+	const numberRepetitionsLeftInLoop = cursor.current.numberRepetition;
+	const isLooping = numberRepetitionsLeftInLoop > 1;
+
 	// Updating the next index
 	// If the block is followed by the next block, we will necessarily go to the next block and we know that we are within a group of blocks
-	if (followedBy) {
+	if ((followedBy && !loopEnd) || (!isLooping && loopEnd)) {
 		cursor.navigation.indexNext = cursor.current.index + 1;
 	}
 
 	// If the block is not followed by another block, it is necesserily the end of a group of blocks
 	// If there remains reptitions: We loop back to the start of the loop
-	else if (cursor.current.numberRepetition > 1) {
+	else if (numberRepetitionsLeftInLoop > 1) {
 		cursor.navigation.indexNext = cursor.navigation.indexLoopStart;
 	}
 

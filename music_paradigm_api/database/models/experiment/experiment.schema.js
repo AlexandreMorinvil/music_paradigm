@@ -42,6 +42,7 @@ const stateSchema = new Schema({
     footnote: { type: Boolean, default: undefined },
     footnoteType: { type: String, default: undefined },
     logFlag: { type: Boolean, default: undefined },
+    loopEnd: { type: Boolean, default: undefined },
     hideFeedbackSmiley: { type: Boolean, default: undefined },
     abortSessionButton: { type: String, default: undefined },
     abortSessionButtonMessage: { type: String, default: undefined },
@@ -150,6 +151,10 @@ const stateSchema = new Schema({
     textWaitBeforeNextStep: { type: String, default: undefined },
     waitBeforeNextStep: { type: Number, default: undefined },
     reproductionSeed: { type: String, default: undefined },
+
+    cueMelodyProportionalDelayAfter: { type: Number, default: undefined },
+    cueAdditionalDelayAfter: { type: Number, default: undefined },
+    cueEnablePianoAfterCue: { type: Boolean, default: undefined },
 },
     {
         strict: true
