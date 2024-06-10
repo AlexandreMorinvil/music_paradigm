@@ -314,6 +314,9 @@ function validateBlock(block, index = null) {
 		'surveyLeftSideText',
 		'surveyRightSideText',
 
+		'writtingTextAreasNumber',
+		'writtingTextAreasMax',
+		'writtingTextAreasMin',
 		'writtingMaxCharacters',
 		'writtingMinCharacters',
 		'writtingIsNumber',
@@ -449,6 +452,9 @@ function validateAttributeType(key, value) {
 		case 'skipIfNotMetSuccessGoal':
 		case 'writtingMaxCharacters':
 		case 'writtingMinCharacters':
+		case 'writtingTextAreasNumber':
+		case 'writtingTextAreasMax':
+		case 'writtingTextAreasMin':
 		case 'pvtMinTime':
 		case 'pvtMaxTime':
 		case 'pvtCount':

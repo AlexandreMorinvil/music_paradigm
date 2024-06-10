@@ -94,6 +94,9 @@ const stateSchema = new Schema({
     surveyLeftSideText: { type: [], default: undefined },
     surveyRightSideText: { type: [], default: undefined },
 
+    writtingTextAreasNumber: { type: Schema.Types.Mixed, default: undefined },
+    writtingTextAreasMax: { type: Schema.Types.Mixed, default: undefined },
+    writtingTextAreasMin: { type: Schema.Types.Mixed, default: undefined },
     writtingMaxCharacters: { type: Schema.Types.Mixed, default: undefined },
     writtingMinCharacters: { type: Schema.Types.Mixed, default: undefined },
     writtingIsNumber: { type: Schema.Types.Mixed, default: undefined },

@@ -265,7 +265,10 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			writtingMinCharacters: 0,												// Indicate the minimum amount of characters needed in a "writting" state to be able to move to the next state
 			writtingIsNumber: false,												// Indicate whether the input writting expected should only be a numerical input
 			writtingIsMultiline: true,												// Indicate whether the input writting area should be displayed with multiple lines
-			writtingTextPlaceHolder: '',											// Indicate the text that will be written in the text input area when there is nothing written 
+			writtingTextPlaceHolder: '',											// Indicate the text that will be written in the text input area when there is nothing written
+			writtingTextAreasNumber: 1,
+			writtingTextAreasMax: 1,
+			writtingTextAreasMin: 1,
 
 			questionType: DEFAULT_QUESTION_TYPE,									// Indicate the question type for the 'question' states
 			areAnswerOptionsVertical: false,										// Disposition of the anserChoices (vertical if true, horizontal if false)

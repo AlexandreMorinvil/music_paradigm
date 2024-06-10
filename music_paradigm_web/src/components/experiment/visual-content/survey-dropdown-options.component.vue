@@ -6,7 +6,10 @@
 				<td>
 					<select class="survey-input" v-model="selectionPerRow[rowNumber - 1]">
 						<option :value="null" style="text-align: center">&#x25BC;</option>
-						<option v-for="(value, index) in valueOptions" :key="index" :value="value" class="survey-option">{{ getOptionText(index) }}</option>
+						<option v-for="(value, index) in valueOptions" :key="index" :value="value" 
+						class="survey-option">
+						{{ getOptionText(index) }}
+					</option>
 					</select>
 				</td>
 				<td v-if="hasRightSideColumn">{{ rightSideText[rowNumber - 1] }}</td>
@@ -91,7 +94,11 @@ export default {
 	},
 	methods: {
 		getOptionText(index) {
-			return index > this.surveyInputOptionsText.length ? this.surveyInputOptionsText[index] : this.surveyInputOptionsValues[index];
+			const optionText = index >= this.surveyInputOptionsText.length ? 
+				this.surveyInputOptionsValues[index] : 
+				this.surveyInputOptionsText[index];
+			console.log("optionText:", optionText);
+			return optionText;
 		},
 	},
 	beforeMount() {
@@ -134,6 +141,7 @@ export default {
 
 .survey-input {
 	width: 75%;
+	height: 40px;
 	max-width: 700px;
 	font-size: 0.8em;
 	text-align: center;

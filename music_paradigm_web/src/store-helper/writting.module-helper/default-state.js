@@ -4,7 +4,7 @@ export default {
 
 function DEFAULT_WRITTING_STATE() {
 	return {
-		writtenInput: '',
+		writtenInput: [''],
 		writtingMaxCharacters: null,
 		writtingMinCharacters: null,
 		writtingIsNumber: false,

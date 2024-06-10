@@ -19,4 +19,17 @@ export default {
 	writtingTextPlaceHolder: (state) => {
 		return state.state.settings.writtingTextPlaceHolder;
 	},
+
+	writtingTextAreasNumber: (state) => {
+		return state.state.settings.writtingTextAreasNumber;
+	},
+
+	writtingTextAreasMax: (state) => {
+		return state.state.settings.writtingTextAreasMax;
+	},
+
+	writtingTextAreasMin: (state) => {
+		return state.state.settings.writtingTextAreasMin;
+	},
+
 };

@@ -149,8 +149,8 @@ export default {
 }
 
 .survey-input {
-	width: 1em;
-	height: 1em;
+	width: 35px;
+	height: 35px;
 	margin: 10px 20px;
 }
 
