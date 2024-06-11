@@ -16,6 +16,7 @@ export default {
 
 // FIXME : This is a temporary solution that needs further work. I should be improved.
 /* eslint-disable max-lines-per-function */
+/* eslint-disable max-lines */
 function stepsCompletionRatio(flow, cursor) {
 	
 	// Initialize the ration
@@ -113,27 +114,48 @@ function skip(state, flow, cursor, isInitialized) {
 		moveCursorNext(flow, cursor, isInitialized);
 		stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
 	} while (cursor.flag.isInSkipableChain);
+	determineGroupEnd(flow, cursor);
 }
 
 // Inner cursor move manipulations
 function moveCursorSpecialCases(state, flow, cursor, isInitialized) {
+	
+	const currentBlock = blockHandler.getCurrentBlock(flow, cursor);
+
 	// Successes for skipping loop was attained
 	// We skip until we are out of the block group
-	if (state.record.successesInLoop >= blockHandler.getCurrentBlock(flow, cursor).successesForSkipLoop) {
+	const referenceSurveyAnswer = state.record.referenceSurveyAnswer;
+	if (referenceSurveyAnswer !== null) {
+		const mustJumpBecauseTooHigh = 
+			(currentBlock.jumpIfSurveyAnswerHigherThan ?? null) !== null && 
+			referenceSurveyAnswer > currentBlock.jumpIfSurveyAnswerHigherThan;
+		const mustJumpBecauseNoEqual = 
+			(currentBlock.jumpIfSurveyAnswerIsNot ?? null) !== null &&
+			currentBlock.jumpIfSurveyAnswerIsNot !== referenceSurveyAnswer;
+
+		if (mustJumpBecauseTooHigh || mustJumpBecauseNoEqual) {
+			moveCursorSkipBasedOnSurveyAnswer(state, flow, cursor, isInitialized);
+			return true;
+		}
+	}
+
+	// Successes for skipping loop was attained
+	// We skip until we are out of the block group
+	if (state.record.successesInLoop >= currentBlock.successesForSkipLoop) {
 		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
 		return true;
 	}
 
 	// Successes to not skip the "skip if minimal goal is not met" was not met :
 	// We skip until we reach a block that does not have the "skipIfNotMetSuccessGoal"
-	else if (state.record.previousSucessesInLoop < blockHandler.getCurrentBlock(flow, cursor).skipIfNotMetSuccessGoal) {
+	else if (state.record.previousSucessesInLoop < currentBlock.skipIfNotMetSuccessGoal) {
 		moveCursorNotMetSuccessGoal(state, flow, cursor, isInitialized);
 		return true;
 	}
 
 	// A skip on last repetition block is encountered
 	// If we are at the last repetition, we skip the block
-	else if (blockHandler.getCurrentBlock(flow, cursor).skipLoopOnLastRepetition && cursor.current.numberRepetition <= 1) {
+	else if (currentBlock.skipLoopOnLastRepetition && cursor.current.numberRepetition <= 1) {
 		moveCursorSkipRepetions(state, flow, cursor, isInitialized);
 		return true;
 	} else return false;
@@ -163,6 +185,24 @@ function moveCursorNotMetSuccessGoal(state, flow, cursor, isInitialized) {
 		moveCursorNext(flow, cursor, isInitialized);
 		stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
 	} while (cursor.flag.isInSkipIfNotMetSuccessGoalChain && !cursor.flag.isBeyondEnd);
+}
+
+function moveCursorSkipBasedOnSurveyAnswer(state, flow, cursor, isInitialized) {
+	const referenceSurveyAnswer = state.record.referenceSurveyAnswer;
+	const mustSkipBlock = () => {
+		const currentBlock = blockHandler.getCurrentBlock(flow, cursor);
+		const mustJumpBecauseTooHigh = 
+			(currentBlock.jumpIfSurveyAnswerHigherThan ?? null) !== null && 
+			referenceSurveyAnswer > currentBlock.jumpIfSurveyAnswerHigherThan;
+		const mustJumpBecauseNoEqual = 
+			(currentBlock.jumpIfSurveyAnswerIsNot ?? null) !== null &&
+			currentBlock.jumpIfSurveyAnswerIsNot !== referenceSurveyAnswer;
+		return mustJumpBecauseTooHigh || mustJumpBecauseNoEqual;
+	}
+	do {
+		moveCursorNext(flow, cursor, isInitialized);
+		stateHandler.updateStateOnSkip(state, flow, cursor, isInitialized);
+	} while (cursor.flag.isInSkipableChain || mustSkipBlock()); 
 }
 
 function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {

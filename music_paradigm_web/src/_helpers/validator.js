@@ -382,6 +382,9 @@ function validateBlock(block, index = null) {
 		'textWaitBeforeNextStep',
 
 		'maxStackedContent',
+		'jumpIfSurveyAnswerHigherThan',
+		'jumpIfSurveyAnswerIsNot',
+		'isReferenceSurveyAnswer',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -432,6 +435,7 @@ function validateAttributeType(key, value) {
 		case 'reproductionSeed':
 		case 'questionSubmitAnswerButtonText':
 		case 'questionBlankAnswerButtonText':
+		case 'jumpIfSurveyAnswerIsNot':
 			if (!(typeof value === 'string')) {
 				throw new Error(`The key '${key}' must be of type 'String'`);
 			}
@@ -471,6 +475,7 @@ function validateAttributeType(key, value) {
 		case 'cuePresentationDelay':
 		case 'waitBeforeNextStep':
 		case 'maxStackedContent':
+		case 'jumpIfSurveyAnswerHigherThan':
 			if (!(typeof value === 'number')) {
 				throw new Error(`The key '${key}' must be of type 'Number'`);
 			}
@@ -516,6 +521,7 @@ function validateAttributeType(key, value) {
 		case 'questionMustConfirmAnswer':
 		case 'questionCanSubmitBlankAnswer':
 		case 'mustKeepMarkerAfterEnd':
+		case 'isReferenceSurveyAnswer':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

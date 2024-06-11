@@ -55,6 +55,9 @@ export default {
 	addSuccess: ({ commit }) => {
 		commit('addSuccess');
 	},
+	setReferenceSurveyAnswer: ({ commit }, referenceSurveyAnswer) => {
+		commit('setReferenceSurveyAnswer', referenceSurveyAnswer);
+	},
 	stopWaitingStartSignalReady: ({ commit }) => {
 		commit('stopWaitingStartSignalReady');
 	},

@@ -1,8 +1,12 @@
 <template>
 	<div id="survey-area" class="state-section state-division-text">
-		<template v-for="(_, index) in texts">
+		<div v-for="(_, index) in texts" :key="index" class="text-input-area">
+			<button 
+				v-if="hasVariableNumberOfInputs && !hasMinNumberInputs" 
+				class="delete-textarea-button"
+				v-on:click="() => deleteTextArea(index)"
+			>-</button>
 			<textarea
-				:key="index"
 				class="text-input"
 				id="text-input"
 				name="text-input"
@@ -13,7 +17,12 @@
 				:placeholder="placeHolder"
 				v-model="texts[index]"
 			/>
-		</template>
+		</div>
+		<button 
+			v-if="hasVariableNumberOfInputs && !hasMaxNumberInputs" 
+			class="add-text-area-button"
+			v-on:click="addTextArea"
+		>+</button>
 	</div>
 </template>
 
@@ -56,6 +65,15 @@ export default {
 			const lengthOfEachTextArea = this.texts.map((text) => text.length);
 			return Math.min(...lengthOfEachTextArea);
 		},
+		hasVariableNumberOfInputs() {
+			return this.writtingMinCharacters > 0 || this.writtingMaxCharacters > 1;
+		},
+		hasMaxNumberInputs() {
+			return this.writtingTextAreasMax && this.texts.length >= this.writtingTextAreasMax;
+		},
+		hasMinNumberInputs() {
+			return this.texts.length <= this.writtingTextAreasMin;
+		},
 		context() {
 			return {
 				writtingMaxCharacters: this.writtingMaxCharacters,
@@ -68,6 +86,15 @@ export default {
 		},
 	},
 	methods: {
+		addTextArea() {
+			console.log("this.texts.length < this.writtingTextAreasMax", this.texts.length < this.writtingTextAreasMax)
+			if (this.texts.length < this.writtingTextAreasMax);
+				this.texts.push("");
+		},
+		deleteTextArea(index) {
+			if (this.texts.length > this.writtingTextAreasMin)
+				this.texts.splice(index, 1);
+		},
 		removeNonNumberCaracters() {
 			const invalidChars = /[^0-9]/gi;
 			for (const index in this.texts) {
@@ -87,7 +114,8 @@ export default {
 		writtingTextAreasNumber: {
 			immediate: true,
 			handler: function () {
-				this.texts = new Array(this.writtingTextAreasNumber || 1).fill("");
+				const textAreasNumber = this.writtingTextAreasNumber ?? 0;
+				this.texts = new Array(textAreasNumber || 1).fill("");
 			},
 		},
 	},
@@ -111,6 +139,26 @@ export default {
 textarea {
 	resize: none;
 	background-color: rgb(245, 245, 245);
+}
+
+.add-text-area-button {
+	border-radius: 10px;
+	height: 40px;
+	width: 40px;
+	font-size: 20px;
+}
+
+.delete-textarea-button {
+	border-radius: 10px;
+	height: 40px;
+	width: 40px;
+	font-size: 20px;
+}
+
+.text-input-area {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 
 .centering {

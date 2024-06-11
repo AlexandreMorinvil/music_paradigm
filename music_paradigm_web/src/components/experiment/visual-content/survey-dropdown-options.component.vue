@@ -97,7 +97,6 @@ export default {
 			const optionText = index >= this.surveyInputOptionsText.length ? 
 				this.surveyInputOptionsValues[index] : 
 				this.surveyInputOptionsText[index];
-			console.log("optionText:", optionText);
 			return optionText;
 		},
 	},

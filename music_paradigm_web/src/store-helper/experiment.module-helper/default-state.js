@@ -260,6 +260,9 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			surveyType: '',															// Indicate the survey type for the 'survey' type
 			surveyOptionsAreRadio: true,											// Indicate if the survey questions are radio (one choice is allowed per question) or if multiple choices per questions are allowed
 			surveyAreAnswersMandatory: false,										// Indicate whether all answers are mandatory in order to be able to go to the next step when in a survey or if some questions can be left unanswered
+			jumpIfSurveyAnswerHigherThan: null,										
+			jumpIfSurveyAnswerIsNot: null,											
+			isReferenceSurveyAnswer: false,
 
 			writtingMaxCharacters: 100,												// Indicate the maximum amount of caracters allowed to be written in a "writting" state
 			writtingMinCharacters: 0,												// Indicate the minimum amount of characters needed in a "writting" state to be able to move to the next state
@@ -322,7 +325,8 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			isSuccess: false, 														// Indicate whether the current step was a success
 			isWaitingReadyStartSignal: false, 										// Indicate whether a 'Ready Start' signal is being awaited
 			considerExperimentFinished: false,										// Signal that indicates whether at the current position in experiment, the sesion can be considered completed (it is set as a record since it must be considered even when skipping steps)
-			timeIndicatedInMilliseconds: 0											// Value in indicating the time indicated in the experiment (is used when the experiment has a time limit, this allows the app to make the user restart with the time he had left if he leaves the experiment early)
+			timeIndicatedInMilliseconds: 0,											// Value in indicating the time indicated in the experiment (is used when the experiment has a time limit, this allows the app to make the user restart with the time he had left if he leaves the experiment early)
+			referenceSurveyAnswer: null
 		},
 	};
 }

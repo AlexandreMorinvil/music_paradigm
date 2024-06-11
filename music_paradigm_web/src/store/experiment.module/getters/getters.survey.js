@@ -27,4 +27,8 @@ export default {
 	surveyAreAnswersMandatory: (state) => {
 		return state.state.settings.surveyAreAnswersMandatory;
 	},
+
+	isReferenceSurveyAnswer: (state) => {
+		return state.state.settings.isReferenceSurveyAnswer;
+	},
 };

@@ -93,6 +93,9 @@ const stateSchema = new Schema({
     surveyInputOptionsText: { type: [], default: undefined },
     surveyLeftSideText: { type: [], default: undefined },
     surveyRightSideText: { type: [], default: undefined },
+    jumpIfSurveyAnswerHigherThan: { type: Schema.Types.Mixed, default: undefined },
+    jumpIfSurveyAnswerIsNot: { type: Schema.Types.Mixed, default: undefined },
+    isReferenceSurveyAnswer: { type: Schema.Types.Mixed, default: undefined },
 
     writtingTextAreasNumber: { type: Schema.Types.Mixed, default: undefined },
     writtingTextAreasMax: { type: Schema.Types.Mixed, default: undefined },

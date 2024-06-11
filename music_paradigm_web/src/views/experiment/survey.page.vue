@@ -34,7 +34,13 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('experiment', ['surveyType', 'surveyAreAnswersMandatory', 'mainOptionText', 'hasMainOptionText']),
+		...mapGetters('experiment', [
+			'surveyType', 
+			'surveyAreAnswersMandatory', 
+			'mainOptionText', 
+			'hasMainOptionText',
+			'isReferenceSurveyAnswer',
+		]),
 		buttonText() {
 			if (this.hasMainOptionText) return this.mainOptionText;
 			else return this.$t('views.experiment.survey.continue');
@@ -45,7 +51,12 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions('survey', ['setSurveyContext', 'setSurveyAnswers', 'resetSurvey']),
+		...mapActions('survey', [
+			'setSurveyContext', 
+			'setSurveyAnswers', 
+			'resetSurvey',
+			'setReferenceSurveyAnswer',
+		]),
 		updateFootnote() {
 			let footnoteMessage = '';
 			if (this.surveyAreAnswersMandatory) footnoteMessage = this.$t('views.experiment.survey.footnote-answer-first');
@@ -55,6 +66,10 @@ export default {
 		storeSurveyRecords() {
 			this.setSurveyContext(this.$refs.survey.context);
 			this.setSurveyAnswers(this.$refs.survey.answers);
+
+			// TODO: Implement this with a more flexible approach to handle different survey entries
+			if (this.isReferenceSurveyAnswer)
+				this.setReferenceSurveyAnswer(this.$refs.survey.answers[0]);
 		},
 		emitStateEndedSignal() {
 			this.storeSurveyRecords();

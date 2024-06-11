@@ -102,6 +102,10 @@ export default {
 		state.state.record.successesInLoop += 1;
 	},
 
+	setReferenceSurveyAnswer: (state, referenceSurveyAnswer) => {
+		state.state.record.referenceSurveyAnswer = referenceSurveyAnswer;
+	},
+
 	stopWaitingStartSignalReady: (state) => {
 		state.state.record.isWaitingReadyStartSignal = false;
 	},

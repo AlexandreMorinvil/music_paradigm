@@ -7,6 +7,10 @@ export default {
 		commit('setSurveyAnswers', answers);
 	},
 
+	setReferenceSurveyAnswer: ({ dispatch }, answer) => {
+		dispatch('experiment/setReferenceSurveyAnswer', answer, { root: true });
+	},
+
 	resetSurvey: ({ commit }) => {
 		commit('resetSurvey');
 	},
