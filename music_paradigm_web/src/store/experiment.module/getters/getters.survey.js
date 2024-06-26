@@ -31,4 +31,8 @@ export default {
 	isReferenceSurveyAnswer: (state) => {
 		return state.state.settings.isReferenceSurveyAnswer;
 	},
+
+	surveyCheckboxesOneVerticalLine: (state) => {
+		return state.state.settings.surveyCheckboxesOneVerticalLine;
+	}
 };

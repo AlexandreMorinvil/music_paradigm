@@ -6,15 +6,20 @@
 			</tr>
 			<tr v-for="rowNumber in rowsCount" :key="rowNumber">
 				<td v-if="hasLeftSideColumn" class="left-title">{{ leftSideText[rowNumber - 1] }}</td>
-				<td v-for="columnNumber in columnsCount" :key="columnNumber">
-					<input
-						:type="isRadioOptions ? 'radio' : 'checkbox'"
-						:name="'question-' + rowNumber"
-						:value="valueOptions[columnNumber - 1]"
-						class="survey-input"
-						v-model="selectionPerRow[rowNumber - 1]"
-					/>
+
+				<td v-if="isOneVerticalLine">
+					<input :type="isRadioOptions ? 'radio' : 'checkbox'" :name="'question-linked'"
+						:value="valueOptions[rowNumber - 1]" class="survey-input"
+						v-model="selectionPerRow[0]" />
 				</td>
+
+				<template v-else v-for="columnNumber in columnsCount">
+					<td :key="columnNumber">
+						<input :type="isRadioOptions ? 'radio' : 'checkbox'" :name="'question-' + rowNumber"
+							:value="valueOptions[columnNumber - 1]" class="survey-input"
+							v-model="selectionPerRow[rowNumber - 1]" />
+					</td>
+				</template>
 				<td v-if="hasRightSideColumn" class="right-title">{{ rightSideText[rowNumber - 1] }}</td>
 			</tr>
 		</table>
@@ -39,7 +44,11 @@ export default {
 			'surveyInputOptionsText',
 			'surveyLeftSideText',
 			'surveyRightSideText',
+			'surveyCheckboxesOneVerticalLine',
 		]),
+		isOneVerticalLine() {
+			return this.surveyCheckboxesOneVerticalLine;
+		},
 		hasSurvey() {
 			return this.surveyInputOptionsValues.length > 0;
 		},
@@ -105,7 +114,8 @@ export default {
 		},
 	},
 	beforeMount() {
-		if (this.isRadioOptions) this.selectionPerRow = new Array(this.rowsCount).fill(null);
+		if (this.isOneVerticalLine) this.selectionPerRow = [null];
+		else if (this.isRadioOptions) this.selectionPerRow = new Array(this.rowsCount).fill(null);
 		else this.selectionPerRow = new Array(this.rowsCount).fill([]);
 	},
 	watch: {
@@ -113,7 +123,7 @@ export default {
 			immediate: true,
 			deep: true,
 			handler: function () {
-				let allAnswersAreGiven = true;
+				let allAnswersAreGiven = true;				
 				for (const answer of this.selectionPerRow) {
 					if (this.isRadioOptions && answer === null) allAnswersAreGiven = false;
 					else if (!this.isRadioOptions && !answer.length > 0) allAnswersAreGiven = false;

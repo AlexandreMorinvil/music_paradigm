@@ -263,6 +263,7 @@ function DEFAULT_EXPERIMENT_STATE_STATE_VALUES() {
 			jumpIfSurveyAnswerHigherThan: null,										
 			jumpIfSurveyAnswerIsNot: null,											
 			isReferenceSurveyAnswer: false,
+			surveyCheckboxesOneVerticalLine: false,
 
 			writtingMaxCharacters: 100,												// Indicate the maximum amount of caracters allowed to be written in a "writting" state
 			writtingMinCharacters: 0,												// Indicate the minimum amount of characters needed in a "writting" state to be able to move to the next state
