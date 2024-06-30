@@ -163,6 +163,8 @@ const stateSchema = new Schema({
     cueMelodyProportionalDelayAfter: { type: Schema.Types.Mixed, default: undefined },
     cueAdditionalDelayAfter: { type: Schema.Types.Mixed, default: undefined },
     cueEnablePianoAfterCue: { type: Schema.Types.Mixed, default: undefined },
+
+    mustMaintainPiledContentIndex: { type: Schema.Types.Mixed, default: undefined },
 },
     {
         strict: true
