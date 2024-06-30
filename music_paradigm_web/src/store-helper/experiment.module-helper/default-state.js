@@ -168,6 +168,7 @@ function DEFAULT_EXPERIMENT_STATE_CURSOR_VALUES() {
 			lastInnerStepsIndex: 0, 												// Last index of inner steps in a given block
 			totalNumberRepetitions: 1, 												// Number of repetitions in total
 			lastPiledContentIndex: 0, 												// Last index of media content piled at the index pile start
+			mustMaintainPiledContentIndex: false, // HACK
 		},
 		flag: {
 			isInPrelude: false,														// Indicator of whether or not the cursor is pointing at the prelude flow

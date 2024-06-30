@@ -228,14 +228,15 @@ function performCursorDisplacementForward(flow, cursor, isInitialized = {}) {
 			} else if (cursor.navigation.lastPiledContentIndex > 1) {
 				cursor.navigation.lastPiledContentIndex -= 1;
 				cursor.current.piledContentIndex += 1;
-				needsResetLoopParameters = true; // Flag asjustment
+				needsResetLoopParameters = true; // Flag adjustment
 			}
 		}
 
 		// Otherwise, if the next step is beyond a group of blocks, we reset the piled content index
 		else if (cursor.navigation.indexNext > cursor.navigation.indexGroupEnd) {
 			cursor.flag.isFirstIndexPassage = true;
-			cursor.current.piledContentIndex = 0;
+			if (!cursor.navigation.mustMaintainPiledContentIndex)
+				cursor.current.piledContentIndex = 0;
 			needsResetLoopParameters = cursor.navigation.indexNext > cursor.navigation.indexGroupEnd; // Flag asjustment
 		}
 
@@ -432,8 +433,13 @@ function setCursorNextStep(cursor, followedBy, loopEnd) {
 
 function determineGroupEnd(flow, cursor) {
 	const cursorCopy = assignCursor(flow, cursor);
-	while (blockHandler.getCurrentBlock(flow, cursorCopy).followedBy && !cursorCopy.flag.isBeyondEnd) {
+	const currentBlock = blockHandler.getCurrentBlock(flow, cursorCopy);
+	while (currentBlock.followedBy && !cursorCopy.flag.isBeyondEnd) {
 		moveCursorNext(flow, cursorCopy);
 	}
 	cursor.navigation.indexGroupEnd = cursorCopy.current.index;
+
+	// HACK
+	// Set the flag indicating whether or not the piled content should be maintained
+	cursor.navigation.mustMaintainPiledContentIndex = !!currentBlock.mustMaintainPiledContentIndex;
 }

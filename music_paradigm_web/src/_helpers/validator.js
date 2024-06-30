@@ -386,6 +386,8 @@ function validateBlock(block, index = null) {
 		'jumpIfSurveyAnswerHigherThan',
 		'jumpIfSurveyAnswerIsNot',
 		'isReferenceSurveyAnswer',
+
+		'mustMaintainPiledContentIndex',
 	];
 	const innerBlockAttributes = ['lastRepetitionVersion', 'succeeededForSkipLoopVersion'];
 	Object.keys(block).forEach((key) => {
@@ -524,6 +526,7 @@ function validateAttributeType(key, value) {
 		case 'mustKeepMarkerAfterEnd':
 		case 'isReferenceSurveyAnswer':
 		case 'surveyCheckboxesOneVerticalLine':
+		case 'mustMaintainPiledContentIndex':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}
