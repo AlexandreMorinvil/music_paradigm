@@ -11,21 +11,21 @@ export default {
 		router.push({ name: 'experiment.preparing' });
 	},
 
-	moveToState: function (blockTyoe) {
+	moveToState: function (blockType) {
 		// The instantaneous "transition" page is to force Vue to unmount a page and then remount it
 		// for each block (which would not happen if two consecutive blocks were of the same type).
 		// The unmounting and remounting of a page will force vue to redo the "mounted" component
 		// each time we reach a new block, regardless of whether or not we move to twice the same
 		// type of vue page.
-		router.replace({ name: 'experiment.transition' });
+		router.replace({ name: 'experiment.transition' }).catch(() => {});
 		const microDelay = setTimeout(() => {
-			router.replace({ name: 'experiment.' + blockTyoe });
+			router.replace({ name: 'experiment.' + blockType });
 			clearTimeout(microDelay);
-		}, 1);
+		}, 50);
 	},
 	// Redirect to home page
 	goToRootPage: function () {
-		router.push({ path: '/' });
+		router.push({ path: '/' }).catch(() => {});
 	},
 	goToHomePage: function (role) {
 		switch (role) {

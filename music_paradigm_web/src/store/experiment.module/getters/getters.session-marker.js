@@ -24,6 +24,7 @@ export default {
 	},
 
 	progressRatio: (state) => {
-		return cursorHandler.stepsCompletionRatio(state.flow, state.cursor);
+		if (state.settings.mustPreciselyTrackProgress) return cursorHandler.computeThoroughStepsCompletionRatio(state.flow, state.cursor);
+		else return cursorHandler.computeApproximativeStepsCompletionRatio(state.flow, state.cursor);
 	},
 };

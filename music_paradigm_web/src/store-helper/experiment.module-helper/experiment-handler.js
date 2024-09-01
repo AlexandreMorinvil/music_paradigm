@@ -178,6 +178,7 @@ function setExperimentGeneralSettings(state) {
 		isFullScreen,
 		reproductionSeed,
 		mustKeepMarkerAfterEnd,
+		mustPreciselyTrackProgress,
 	} = state.experiment;
 
 	// Set the settings for the state. If no value is found, an appropreate default value is set
@@ -214,6 +215,7 @@ function setExperimentGeneralSettings(state) {
 		isFullScreen:						typeof isFullScreen === 'boolean'					? isFullScreen : defaultSettings.isFullScreen,
 		reproductionSeed:					typeof reproductionSeed === 'string'				? reproductionSeed : defaultSettings.reproductionSeed,
 		mustKeepMarkerAfterEnd: 			typeof mustKeepMarkerAfterEnd === 'boolean'			? mustKeepMarkerAfterEnd : defaultSettings.mustKeepMarkerAfterEnd,
+		mustPreciselyTrackProgress: 		typeof mustPreciselyTrackProgress === 'boolean'		? mustPreciselyTrackProgress : defaultSettings.mustPreciselyTrackProgress,
 	};
 }
 

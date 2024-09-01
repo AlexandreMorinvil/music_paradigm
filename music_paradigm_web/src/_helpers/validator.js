@@ -190,8 +190,9 @@ function validateExperiment(taskDescription) {
 		'keyboardToMidiInputMapping',
 
 		'reproductionSeed',
-		
+
 		'mustKeepMarkerAfterEnd',
+		'mustPreciselyTrackProgress',
 	];
 	Object.keys(experiment).forEach((key) => {
 		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the general parameters is not allowed`);
@@ -527,6 +528,7 @@ function validateAttributeType(key, value) {
 		case 'isReferenceSurveyAnswer':
 		case 'surveyCheckboxesOneVerticalLine':
 		case 'mustMaintainPiledContentIndex':
+		case 'mustPreciselyTrackProgress':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

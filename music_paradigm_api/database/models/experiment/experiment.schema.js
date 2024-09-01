@@ -215,6 +215,7 @@ const schema = new Schema({
     reproductionSeed: { type: String, default: undefined },
 
     mustKeepMarkerAfterEnd: { type: Schema.Types.Mixed, default: undefined },
+    mustPreciselyTrackProgress: { type: Schema.Types.Mixed, default: undefined },
 
     keyboardToMidiInputMapping:{
         default: undefined,

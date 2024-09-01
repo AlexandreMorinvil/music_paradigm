@@ -112,7 +112,7 @@
         "rest": "REMOVE",
         "video": "REMOVE"
       },
-      "piano":{
+      "piano": {
         "on": "PÅ",
         "off": "AV",
         "load": "Laddar...",
@@ -175,11 +175,26 @@
       },
       "playing": {
         "footnote-after-performance": "REMOVE"
-        
       },
       "preparing": {
         "loading": "Laddar...",
         "ready": "Klar"
+      },
+      "question": {
+        "submit": "Skicka svar",
+        "submit-no-answer": "Inget svar",
+        "midi-note": {
+          "footnote-explaination": "Välj anteckningen genom att klicka på sekvensnumret"
+        },
+        "audio-first": {
+          "footnote-explaination": "Lyssna och välj ett svar"
+        },
+        "image-choices": {
+          "footnote-explaination": "Välj ditt svar"
+        },
+        "simple": {
+          "footnote-explaination": "Välj ditt svar"
+        }
       },
       "rest": {
         "footnote-after-time": "Sessionen kommer att gå vidare till nästa moment om {time}",

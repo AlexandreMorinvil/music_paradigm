@@ -11,6 +11,7 @@ import * as Tone from 'tone';
 export default {
 	data() {
 		return {
+			failsafeTimeoutUniqueId: null,
 			VOLUME_LEVEL: 0.05,
 			numberNotesTriggered: 0,
 			numberNotesReleased: 0,
@@ -43,7 +44,11 @@ export default {
 
 			if (!parsedMidiNotes || parsedMidiNotes.length <= 0) return;
 
-			Tone.Transport.scheduleOnce((schedulerNow) => {
+			const event = (schedulerNow) => {
+
+				// We do not trigger the failsafe if we have entered the scheduled event
+				clearTimeout(this.failsafeTimeoutUniqueId);
+
 				// The current time of ToneJs (used for synchronizing the events with the notes) and the audio
 				// corrent time of the audio context of soundfont-player (used to play an  instrument) are not
 				// the same. Therefore, we have a separete 'schedulerNow' and 'playerNow'
@@ -69,20 +74,34 @@ export default {
 					// Indicate that the note stopped playing
 					Tone.Draw.schedule(() => this.incrementReeasedNotesNumber(), schedulerNow + note.time + noteDuration);
 				});
-			});
+			}
+			Tone.Transport.scheduleOnce(event);
 
+			// Failsafe (in case the single scheduled event did not occur, we launch it again)
+			this.failsafeTimeoutUniqueId = setTimeout(() => {
+				Tone.Transport.stop();
+				Tone.Transport.clear();
+				Tone.Transport.scheduleOnce(event);
+				Tone.Transport.start();
+			}, 100);
+
+			// Play the melody
 			Tone.Transport.start();
+
 		},
 		stop() {
+			Tone.Transport.stop();
 			for (const note in this.audioNodes) this.audioNodes[note].stop();
 			this.audioNodes = {};
 		},
+		debug() {
+			Tone.Transport.start();
+		}
 	},
-	mounted() {
+	beforeMount() {
 		Tone.start();
 	},
 	beforeDestroy() {
-		Tone.Transport.stop();
 		this.stop();
 	},
 	watch: {
