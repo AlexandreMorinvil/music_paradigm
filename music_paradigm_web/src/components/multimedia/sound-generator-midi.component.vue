@@ -11,7 +11,7 @@ import * as Tone from 'tone';
 export default {
 	data() {
 		return {
-			failsafeTimeoutUniqueId: null,
+			failsafeTimeoutUniqueIdList: [],
 			VOLUME_LEVEL: 0.05,
 			numberNotesTriggered: 0,
 			numberNotesReleased: 0,
@@ -47,7 +47,8 @@ export default {
 			const event = (schedulerNow) => {
 
 				// We do not trigger the failsafe if we have entered the scheduled event
-				clearTimeout(this.failsafeTimeoutUniqueId);
+				for (const uniqueId of this.failsafeTimeoutUniqueIdList)
+					clearTimeout(uniqueId);
 
 				// The current time of ToneJs (used for synchronizing the events with the notes) and the audio
 				// corrent time of the audio context of soundfont-player (used to play an  instrument) are not
@@ -78,16 +79,19 @@ export default {
 			Tone.Transport.scheduleOnce(event);
 
 			// Failsafe (in case the single scheduled event did not occur, we launch it again)
-			this.failsafeTimeoutUniqueId = setTimeout(() => {
+			const executeFailsafe = () => {
 				Tone.Transport.stop();
 				Tone.Transport.clear();
 				Tone.Transport.scheduleOnce(event);
 				Tone.Transport.start();
-			}, 100);
+			};
+			for (const delay of [100, 250, 500, 1000]) {
+				const timeoutUniqueID = setTimeout(executeFailsafe, delay);
+				this.failsafeTimeoutUniqueIdList.push(timeoutUniqueID);
+			}
 
 			// Play the melody
 			Tone.Transport.start();
-
 		},
 		stop() {
 			Tone.Transport.stop();
