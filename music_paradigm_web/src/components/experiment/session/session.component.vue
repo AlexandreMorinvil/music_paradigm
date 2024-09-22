@@ -33,7 +33,7 @@ export default {
 		},
 		conclude() {
 			this.concludeSession({
-				isInTimeUp: this.isInTimeUp, 
+				isInTimeUp: this.isInTimeUp,
 				mustKeepMarkerAfterEnd: this.mustKeepMarkerAfterEnd,
 			});
 		},

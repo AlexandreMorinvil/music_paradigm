@@ -1,6 +1,6 @@
 export default {
 	curriculumSelection: (state) => {
-		return state.selectionCurriculum;	
+		return state.selectionCurriculum;
 	},
 
 	curriculumSelectionId: (state) => {
@@ -13,6 +13,14 @@ export default {
 
 	curriculumSelectionIsSequential: (state) => {
 		return state.selectionCurriculum.isSequential;
+	},
+
+	curriculumSelectionUsesCdn: (state) => {
+		return state.selectionCurriculum.usesCdn;
+	},
+
+	curriculumSelectionCdnUrl: (state) => {
+		return state.selectionCurriculum.cdnUrl;
 	},
 
 	curriculumSelectionCurriculumTasks: (state) => {

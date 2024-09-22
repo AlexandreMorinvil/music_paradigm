@@ -7,6 +7,14 @@ export default {
 		return state.editionCurriculum.isSequential;
 	},
 
+	curriculumEditionUsesCdn: (state) => {
+		return state.editionCurriculum.usesCdn;
+	},
+
+	curriculumEditionCdnUrl: (state) => {
+		return state.editionCurriculum.cdnUrl;
+	},
+
 	curriculumEditionSelectedSessionIndex: (state) => {
 		return state.selectedSessionIndex;
 	},

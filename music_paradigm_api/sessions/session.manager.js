@@ -35,6 +35,10 @@ async function getSessionInformation(userId, associativeId, associativeIdOrdinal
         curriculumTitle: curriculum.title,
         logType: curriculum.logType,
 
+        // CDN information
+        cdnUrl: curriculum.cdnUrl,
+        usesCdn: curriculum.usesCdn,
+
         // Curriculum indications for the specific experiment
         title: experimentPlanedInCurriculum.title,
         text: experimentPlanedInCurriculum.text,

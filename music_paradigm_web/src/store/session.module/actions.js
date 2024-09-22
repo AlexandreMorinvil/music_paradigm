@@ -7,8 +7,7 @@ export default {
 			.fetchDueExperimentSession()
 			.then(
 				(sessionInformation) => {
-					commit('setFetchedSession', sessionInformation);
-					commit('goToPreSession');
+					dispatch('preparePresession', sessionInformation);
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
@@ -25,8 +24,7 @@ export default {
 			.fetchSpecificExperimentSession(associativeId, associativeIdOrdinalNumber)
 			.then(
 				(sessionInformation) => {
-					commit('setFetchedSession', sessionInformation);
-					commit('goToPreSession');
+					dispatch('preparePresession', sessionInformation);
 				},
 				(error) => {
 					dispatch('alert/setErrorAlert', error.message, { root: true });
@@ -113,9 +111,16 @@ export default {
 			});
 	},
 
-	abortPresession({ commit }) {
+	preparePresession({ commit, dispatch }, sessionInformation) {
+		dispatch('cdn/setCdnDetails', sessionInformation, { root: true });
+		commit('setFetchedSession', sessionInformation);
+		commit('goToPreSession');
+	},
+
+	abortPresession({ commit, dispatch }) {
 		commit('clearSessionInformation');
 		commit('leavePreSession');
+		dispatch('cdn/clear', undefined, { root: true });
 	},
 
 	setImposedTags({ commit }, tags) {

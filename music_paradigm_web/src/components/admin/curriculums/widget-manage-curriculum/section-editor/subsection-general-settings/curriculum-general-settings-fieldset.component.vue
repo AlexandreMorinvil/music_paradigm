@@ -14,6 +14,20 @@
 		<TemplateFieldCheckboxInputComponent v-bind:value="curriculumEditionIsSequential"
 			v-on:edit="editCurriculumEditionIsSequential" :expectedValue="curriculumSelectionIsSequential"
 			:mustHighlightIfChanged="hasSelectedCurriculum" name="isSequential" />
+		<TemplateFieldLabelComponent for="usesCdn" text="Curriculum uses CDN" />
+		<TemplateFieldCheckboxInputComponent v-bind:value="curriculumEditionUsesCdn"
+			v-on:edit="editCurriculumEditionUsesCdn" :expectedValue="curriculumSelectionUsesCdn"
+			:mustHighlightIfChanged="hasSelectedCurriculum" name="usesCdn" />
+
+		<TemplateFieldLabelComponent for="cdnUrl" text="CDN URL" />
+		<TemplateFieldInputComponent v-bind:value="curriculumEditionCdnUrl" v-on:edit="editCurriculumEditionCdnUrl"
+			:expectedValue="curriculumSelectionCdnUrl" :isNullValid="true" :mustHighlightIfChanged="hasSelectedCurriculum"
+			:inputAttributes="{
+					type: 'text',
+					name: 'cdnUrl',
+					autocomplete: 'off',
+					placeholder: 'Insert CDN URL',
+				}" />
 	</TemplateFieldsetComponent>
 </template>
 
@@ -38,10 +52,14 @@ export default {
 		...mapGetters('managementCurriculums/edition', [
 			'curriculumEditionIsSequential',
 			'curriculumEditionTitle',
+			'curriculumEditionUsesCdn',
+			'curriculumEditionCdnUrl',
 		]),
 		...mapGetters('managementCurriculums/selection', [
 			'curriculumSelectionIsSequential',
 			'curriculumSelectionTitle',
+			'curriculumSelectionUsesCdn',
+			'curriculumSelectionCdnUrl',
 			'hasSelectedCurriculum',
 		]),
 	},
@@ -49,6 +67,8 @@ export default {
 		...mapMutations('managementCurriculums/edition', [
 			'editCurriculumEditionIsSequential',
 			'editCurriculumEditionTitle',
+			'editCurriculumEditionUsesCdn',
+			'editCurriculumEditionCdnUrl',
 		]),
 	},
 };

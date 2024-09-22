@@ -81,5 +81,9 @@ export default {
 
 	logTags: (state) => {
 		return state.sessionInformation.logTags;
+	},
+
+	cdnUrl: (state) => {
+		return state.sessionInformation.cdnUrl;
 	}
 };

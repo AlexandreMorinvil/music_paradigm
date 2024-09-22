@@ -29,6 +29,14 @@ export default {
 		state.editionCurriculum.isSequential = isSequential;
 	},
 
+	editCurriculumEditionUsesCdn(state, usesCdn) {
+		state.editionCurriculum.usesCdn = usesCdn;
+	},
+
+	editCurriculumEditionCdnUrl(state, cdnUrl) {
+		state.editionCurriculum.cdnUrl = cdnUrl;
+	},
+
 	editCurriculumEditionSessionAssociativeId(state, associativeId) {
 		curriculumSessionsEditor.editCurriculumSessionAssociativeId(
 			state.editionCurriculum.experiments,

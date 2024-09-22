@@ -8,6 +8,7 @@ import state from './state';
 
 import { account } from './account.module';
 import { alert } from './alert.module';
+import { cdn } from './cdn.module';
 import { evaluation } from './evaluation.module';
 import { experiment } from './experiment.module';
 import { experiments } from './experiments.module';
@@ -36,6 +37,7 @@ export default new Vuex.Store({
 	modules: {
 		alert,
 		account,
+		cdn,
 		evaluation,
 		experiment,
 		experiments,

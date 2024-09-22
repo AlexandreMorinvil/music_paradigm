@@ -53,6 +53,18 @@ const schema = new Schema(
             default: "thorough"
         },
 
+        cdnUrl: {
+            type: String,
+            required: false,
+            default: ""
+        },
+
+        usesCdn: {
+            type: Boolean,
+            required: true,
+            default: false
+        },
+
         // List of the experiments composing the curriculum
         experiments: {
             type: [

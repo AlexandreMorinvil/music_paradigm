@@ -34,6 +34,8 @@ schema.methods.update = async function (updatedCurriculum) {
     if (updatedCurriculum.hasOwnProperty('title')) this.title = updatedCurriculum.title;
     if (updatedCurriculum.hasOwnProperty('isSequential')) this.isSequential = updatedCurriculum.isSequential;
     if (updatedCurriculum.hasOwnProperty('experiments')) this.experiments = updatedCurriculum.experiments;
+    if (updatedCurriculum.hasOwnProperty('cdnUrl')) this.cdnUrl = updatedCurriculum.cdnUrl;
+    if (updatedCurriculum.hasOwnProperty('usesCdn')) this.usesCdn = updatedCurriculum.usesCdn;
     return this.save();
 };
 

@@ -9,6 +9,9 @@ export class Curriculum {
         this.title = dataCopy.title ?? '';
 		this.logType = dataCopy.logType ?? log.defaultLogType;
 		this.isSequential = dataCopy.isSequential ?? true;
+        this.cdnUrl = dataCopy.cdnUrl ?? '';
+        this.usesCdn = dataCopy.usesCdn ?? false;
+
 		this.experiments = this.generateCurriculumSessions(dataCopy.experiments ?? null);
     }
 
