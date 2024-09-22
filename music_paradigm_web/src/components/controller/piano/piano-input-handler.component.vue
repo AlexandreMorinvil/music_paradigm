@@ -67,6 +67,11 @@ export default {
 				velocity: midiNote.data[2],
 			};
 
+			// FIXME: Sometime the notes had an offset of +60. The root cause of that offset was not
+			// 		  yet found, so for now, the bug ws mitigated by renoving 60 if the midi note
+			// 		  is too high.
+			if (midiMessage.note >= 120) midiMessage.note -= 60;
+
 			// Verification to prevent buggy multiple input handling
 			if (!this.isOnsetValid(midiMessage)) return;
 
