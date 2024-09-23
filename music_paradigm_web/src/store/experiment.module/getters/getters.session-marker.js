@@ -27,4 +27,9 @@ export default {
 		if (state.settings.mustPreciselyTrackProgress) return cursorHandler.computeThoroughStepsCompletionRatio(state.flow, state.cursor);
 		else return cursorHandler.computeApproximativeStepsCompletionRatio(state.flow, state.cursor);
 	},
+
+	// Critical backup
+	criticalBackup: (state) => {
+		return state.criticalBackup;
+	}
 };

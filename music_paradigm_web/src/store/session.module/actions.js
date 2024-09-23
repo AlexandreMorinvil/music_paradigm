@@ -43,6 +43,12 @@ export default {
 		dispatch('experiment/setExperiment', getters.sessionExperiment, { root: true });
 		dispatch('experiment/setStartingPoint', getters.sessionCursor, { root: true });
 		dispatch('experiment/initExperiment', getters.sessionState, { root: true });
+		// HACK
+		dispatch('experiment/setCriticalBackup', {
+			criticalBackup: getters.sessionCriticalBackup,
+			previousState: getters.sessionState,
+			previousCursor: getters.sessionCursor,
+		}, { root: true });
 		dispatch('experiment/initInitialTime', getters.sessionInitialTime, { root: true });
 	},
 
@@ -88,8 +94,9 @@ export default {
 	},
 
 	// Send a signal to the back-end to indicate that the session can be considered as started
-	saveSessionState({ commit, getters, rootGetters }) {
+	saveSessionState({ commit, getters, rootGetters, dispatch }) {
 		commit('setIsSavingSessionState');
+		dispatch('experiment/updateCriticalBackup', undefined, { root: true });
 		return sessionApi
 			.saveSessionState(
 				getters.associativeId,
@@ -97,6 +104,7 @@ export default {
 				rootGetters['experiment/state'],
 				rootGetters['experiment/timeIndicated'],
 				rootGetters['experiment/progressRatio'],
+				rootGetters['experiment/criticalBackup'],
 			)
 			.then(
 				() => {

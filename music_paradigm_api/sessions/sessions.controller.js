@@ -49,9 +49,10 @@ function saveSessionState(req, res, next) {
     const state = req.body.state;
     const timeIndicated = req.body.timeIndicated;
     const progressRatio = req.body.progressRatio;
+    const criticalBackup = req.body.criticalBackup;
 
     // Processing
-    service.saveSessionState(userId, associativeId, cursor, state, timeIndicated, progressRatio)
+    service.saveSessionState(userId, associativeId, cursor, state, timeIndicated, progressRatio, criticalBackup)
         .then(result => res.status(200).json(result))
         .catch(error => res.status(400).json({ message: error.message }))
         .finally(() => next());

@@ -16,7 +16,7 @@ function changeFlowIfNeeded(storeState) {
 	if (cursor.flag.isBeyondEnd) {
 
 		// If we go beyond the end in the prelude, we will move to the main flow
-		if (cursor.flag.isInPrelude) leavePreludeFlow(storeState);
+		if (cursor.flag.isInPrelude)  leavePreludeFlow(storeState);
 
 		// If we go beyong the end in the main flow, we will move to the conclusion flow
 		else if (!cursor.flag.isInConclusion && state.type !== 'end') moveToConclusionFlow(storeState);
@@ -73,6 +73,9 @@ function leavePreludeFlow(state) {
 
 	// Set the status so the state is fully reinitialized for the real flow
 	state.isInitialized = defaultState.IS_FULLY_NOT_INITIALIZED_STATUS();
+
+	// Raise the flag indicating that we just entered th main flow
+	state.hasJustEnteredTheMainFlow = true;
 
 }
 

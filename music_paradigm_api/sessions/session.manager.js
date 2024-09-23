@@ -57,6 +57,7 @@ async function getSessionInformation(userId, associativeId, associativeIdOrdinal
         previousState: experimentMaker.state,
         previousCursor: experimentMaker.cursor,
         previousTimeIndicated: experimentMaker.timeIndicated,
+        criticalBackup: experimentMaker.criticalBackup,
 
         // Session specific information
         logTags: user.tags,
@@ -144,7 +145,7 @@ async function concludeSession(userId, associativeId, associativeIdOrdinalNumber
     return progression.save();
 };
 
-async function saveSessionState(userId, associativeId, cursor, state, timeIndicated, progressRatio) {
+async function saveSessionState(userId, associativeId, cursor, state, timeIndicated, progressRatio, criticalBackup) {
 
     // Update or create the marker
     const progression = await ProgressionModel.getActiveProgressionByUserId(userId);
@@ -152,8 +153,8 @@ async function saveSessionState(userId, associativeId, cursor, state, timeIndica
     const experimentMarker = await ExperimentMarker.findMarker(progression._id, associativeId);
 
     // Assign the state of the session to the marker
-    if (experimentMarker) await experimentMarker.updateMarker(cursor, state, timeIndicated, progressRatio);
-    else await ExperimentMarker.createMarker(progression._id, associativeId, cursor, state, timeIndicated, progressRatio);
+    if (experimentMarker) await experimentMarker.updateMarker(cursor, state, timeIndicated, progressRatio, criticalBackup);
+    else await ExperimentMarker.createMarker(progression._id, associativeId, cursor, state, timeIndicated, progressRatio, criticalBackup);
 
     // Save changes
     return progression.save();

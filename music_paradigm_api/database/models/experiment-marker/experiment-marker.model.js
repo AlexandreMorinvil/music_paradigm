@@ -5,7 +5,7 @@ schema.set('toJSON', { virtuals: true });
 
 // Static methods
 
-schema.statics.createMarker = async function (progressionReference, associativeId, cursor, state, timeIndicated, progressRatio) {
+schema.statics.createMarker = async function (progressionReference, associativeId, cursor, state, timeIndicated, progressRatio, criticalBackup) {
     const marker = {
         progressionReference: progressionReference,
         associativeId: associativeId,
@@ -13,6 +13,7 @@ schema.statics.createMarker = async function (progressionReference, associativeI
         state: state,
         timeIndicated: timeIndicated,
         progressRatio: progressRatio,
+        criticalBackup: criticalBackup,
     }
     this.create(marker);
 }
@@ -50,11 +51,12 @@ schema.statics.resetSessionTimer = async function (progressionReference, associa
 // Instance methods
 
 // We set the cursor and the current state
-schema.methods.updateMarker = async function (cursor, state, timeIndicated, progressRatio) {
+schema.methods.updateMarker = async function (cursor, state, timeIndicated, progressRatio, criticalBackup) {
     this.cursor = cursor;
     this.state = state;
     this.timeIndicated = timeIndicated;
     this.progressRatio = progressRatio;
+    this.criticalBackup = criticalBackup;
 
     return this.save();
 };

@@ -19,6 +19,13 @@ export default {
 	initInitialTime: ({ commit }, initialTime) => {
 		commit('initInitialTime', initialTime);
 	},
+	setCriticalBackup: ({ commit }, { criticalBackup, previousState, previousCursor }) => {
+		commit('setCriticalBackup', { criticalBackup, previousState, previousCursor })
+	},
+	updateCriticalBackup: ({ commit }) => {
+		commit('updateCriticalBackup');
+	},
+
 	updateState: ({ commit }) => {
 		commit('updateState');
 	},

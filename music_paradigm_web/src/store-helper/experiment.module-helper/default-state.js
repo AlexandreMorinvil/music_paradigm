@@ -60,6 +60,7 @@ const DEFAULT_IF_FULL_SCREEN = false;
 const DEFAULT_REPRODUCTION_SEED = null;
 const DEFAULT_MUST_KEEP_MARKER_AFTFER_END = false;
 const DEFAULT_MUST_PRECISELY_TRACK_PROGRESS_RATIO = true;
+const DEFAULT_USE_CRITICAL_CHECKPOINTS = false;
 
 function DEFAULT_EXPERIMENT_STATE_VALUES() {
 	return {
@@ -103,7 +104,13 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 		isInitialized: IS_FULLY_NOT_INITIALIZED_STATUS(),
 
 		// Temporary space to store the flow, cursor and state of the real experiment while in prelude mode
-		tempMemory: { /* flow, state, cursor */ }
+		tempMemory: { /* flow, state, cursor */ },
+
+		// HACK: This is a hack implemented to patch a bug (dissapearing experiment marker) which could not be fixed
+		criticalBackup: { /* state, cursor */ },
+
+		// Used to prevent certain actions if we just entered the main flow
+		hasJustEnteredTheMainFlow: false,
 	};
 }
 
@@ -149,7 +156,8 @@ function DEFAULT_EXPERIMENT_STATE_SETTINGS_VALUES() {
 		reproductionSeed: DEFAULT_REPRODUCTION_SEED,										// Seed used in randomized components that can make the components reproductible.
 		cuePresentationDelay: DEFAULT_CUE_PRESENTATION_DELAY,								// Delay that should be waited before presenting the cue in a cue state.
 		mustKeepMarkerAfterEnd: DEFAULT_MUST_KEEP_MARKER_AFTFER_END,						// Indicates whether or not the task progression marker must be kept even after the end of a session
-		mustPreciselyTrackProgress: DEFAULT_MUST_PRECISELY_TRACK_PROGRESS_RATIO,		// Indicates whether or not the thorough algorithm is used to compute the progress bar of the task (should not be used in very large tasks)
+		mustPreciselyTrackProgress: DEFAULT_MUST_PRECISELY_TRACK_PROGRESS_RATIO,			// Indicates whether or not the thorough algorithm is used to compute the progress bar of the task (should not be used in very large tasks)
+		useCriticalCheckpoints: DEFAULT_USE_CRITICAL_CHECKPOINTS,							// Indicates whether the application uses the "critical checkpoints". This is a mechanism implemented to prevent an unpredictable bug related to experimentProgressionMarkers 
 	};
 }
 

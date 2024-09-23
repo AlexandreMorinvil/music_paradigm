@@ -217,6 +217,8 @@ const schema = new Schema({
     mustKeepMarkerAfterEnd: { type: Schema.Types.Mixed, default: undefined },
     mustPreciselyTrackProgress: { type: Schema.Types.Mixed, default: undefined },
 
+    useCriticalCheckpoints: { type: Schema.Types.Mixed, default: undefined },
+
     keyboardToMidiInputMapping:{
         default: undefined,
         type: Object,

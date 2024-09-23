@@ -193,6 +193,7 @@ function validateExperiment(taskDescription) {
 
 		'mustKeepMarkerAfterEnd',
 		'mustPreciselyTrackProgress',
+		'useCriticalCheckpoints',
 	];
 	Object.keys(experiment).forEach((key) => {
 		if (!allowedAttributes.includes(key)) throw new Error(`The key '${key}' of the general parameters is not allowed`);
@@ -529,6 +530,7 @@ function validateAttributeType(key, value) {
 		case 'surveyCheckboxesOneVerticalLine':
 		case 'mustMaintainPiledContentIndex':
 		case 'mustPreciselyTrackProgress':
+		case 'useCriticalCheckpoints':
 			if (!(typeof value === 'boolean')) {
 				throw new Error(`The key '${key}' must be of type 'Boolean'`);
 			}

@@ -23,7 +23,7 @@ async function concludeSession(userId, associativeId, associativeIdOrdinalNumber
     );
 }
 
-async function saveSessionState(userId, associativeId, cursor, state, timeIndicated, progressRatio) {
+async function saveSessionState(userId, associativeId, cursor, state, timeIndicated, progressRatio, criticalBackup) {
     if (await User.isAdmin(userId)) return;
     return await sessionManager.saveSessionState(
         userId,
@@ -32,5 +32,6 @@ async function saveSessionState(userId, associativeId, cursor, state, timeIndica
         state,
         timeIndicated,
         progressRatio,
+        criticalBackup,
     );
 }

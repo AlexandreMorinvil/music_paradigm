@@ -5,6 +5,7 @@ import defaultState from './default-state';
 import experimentHandler from './experiment-handler';
 import flowHandler from './flow-handler';
 import stateHandler from './state-handler';
+import taskMarkerCriticalBackup from './task-marker-critical-backup';
 import variableHandler from './variable-handler';
 
 export {
@@ -15,5 +16,6 @@ export {
     experimentHandler,
     flowHandler,
     stateHandler,
+    taskMarkerCriticalBackup,
     variableHandler
 };

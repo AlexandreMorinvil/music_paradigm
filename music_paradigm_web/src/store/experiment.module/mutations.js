@@ -1,4 +1,4 @@
-import { cursorHandler, defaultState, experimentHandler, flowHandler, stateHandler } from '@/store-helper/experiment.module-helper';
+import { cursorHandler, defaultState, experimentHandler, flowHandler, stateHandler, taskMarkerCriticalBackup } from '@/store-helper/experiment.module-helper';
 import { routerNavigation } from '@/_helpers';
 
 export default {
@@ -50,9 +50,19 @@ export default {
 		state.initialTimeIndicated = initialTimeInMilliseconds ? initialTimeInMilliseconds / 1000 : state.settings.timeLimitInSeconds;
 	},
 
+	// HACK
+	setCriticalBackup: (state, { criticalBackup, previousState, previousCursor }) => {
+		state.criticalBackup = criticalBackup ?? { state: previousState, cursor: previousCursor };
+	},
+
+	updateCriticalBackup: (state) => {
+		taskMarkerCriticalBackup.updateCriticalBackup(state);
+	},
+
 	updateState: (state) => {
-		const { flow, cursor, isInitialized, settings } = state;
-		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
+		const { flow, isInitialized, settings } = state;
+		taskMarkerCriticalBackup.performCriticalAdjustment(state); // HACK
+		stateHandler.updateState(state.state, flow, state.cursor, isInitialized, settings);
 	},
 
 	// Prelude flow initialization functions
@@ -64,6 +74,7 @@ export default {
 
 	// Conclusion flow initialization functions
 	endExperimentByTimeUp: (state) => {
+		state.hasJustEnteredTheMainFlow = false;
 		flowHandler.moveToTimesUpConclusionFlow(state);
 		const { flow, cursor, isInitialized, settings } = state;
 		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
@@ -71,24 +82,30 @@ export default {
 
 	// Cursor handling
 	moveNextStep: (state) => {
+		state.hasJustEnteredTheMainFlow = false;
 		let { flow, cursor, isInitialized, settings } = state;
 		cursorHandler.advance(state.state, flow, cursor, isInitialized);
 		({ flow, cursor, isInitialized, settings } = flowHandler.changeFlowIfNeeded(state));
-		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
+		taskMarkerCriticalBackup.performCriticalAdjustment(state); // HACK
+		stateHandler.updateState(state.state, flow, state.cursor, isInitialized, settings);
 	},
 
 	movePreviousInnerStep: (state) => {
+		state.hasJustEnteredTheMainFlow = false;
 		let { flow, cursor, isInitialized, settings } = state;
 		cursorHandler.goBack(flow, cursor, isInitialized);
 		({ flow, cursor, isInitialized, settings } = flowHandler.changeFlowIfNeeded(state));
-		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
+		taskMarkerCriticalBackup.performCriticalAdjustment(state); // HACK
+		stateHandler.updateState(state.state, flow, state.cursor, isInitialized, settings);
 	},
 
 	movePostSkip: (state) => {
+		state.hasJustEnteredTheMainFlow = false;
 		let { flow, cursor, isInitialized, settings } = state;
 		cursorHandler.skip(state.state, flow, cursor, isInitialized);
 		({ flow, cursor, isInitialized, settings } = flowHandler.changeFlowIfNeeded(state));
-		stateHandler.updateState(state.state, flow, cursor, isInitialized, settings);
+		taskMarkerCriticalBackup.performCriticalAdjustment(state); // HACK
+		stateHandler.updateState(state.state, flow, state.cursor, isInitialized, settings);
 	},
 
 	leaveExperiment: () => {

@@ -24,7 +24,7 @@ function concludeSession(associativeId, associativeIdOrdinalNumber, isInTimeUp =
 	return fetch(url.sessions('conclude-session/' + associativeId + '/' + associativeIdOrdinalNumber), requestOptions).then(handleResponse);
 }
 
-function saveSessionState(associativeId, cursor, state, timeIndicated, progressRatio) {
+function saveSessionState(associativeId, cursor, state, timeIndicated, progressRatio, criticalBackup) {
 	const requestOptions = {
 		method: 'POST',
 		headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -32,7 +32,8 @@ function saveSessionState(associativeId, cursor, state, timeIndicated, progressR
 			cursor: cursor,
 			state: state,
 			timeIndicated: timeIndicated,
-			progressRatio: progressRatio
+			progressRatio: progressRatio,
+			criticalBackup
 		}),
 	};
 	return fetch(url.sessions('save-session-state/' + associativeId), requestOptions).then(handleResponse);

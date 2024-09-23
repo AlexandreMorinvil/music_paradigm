@@ -18,6 +18,8 @@ export default {
 			'isNewBlock',
 			'isInTimeUp',
 			'mustKeepMarkerAfterEnd',
+			'isInMainFlow',
+			'hasJustEnteredTheMainFlow',
 		]),
 	},
 	methods: {
@@ -26,7 +28,7 @@ export default {
 			this.initializeSession();
 		},
 		saveState() {
-			if (!this.checkpoint || this.considerExperimentFinished) return;
+			if (!this.checkpoint || this.considerExperimentFinished || !this.isInMainFlow || this.hasJustEnteredTheMainFlow) return;
 			else if (this.checkpoint === 'once' && this.isFirstIndexPassage) this.saveSessionState();
 			else if (this.checkpoint === 'first' && this.needsResetLoopParameters) this.saveSessionState();
 			else if (this.checkpoint === 'all' && this.isNewBlock) this.saveSessionState();

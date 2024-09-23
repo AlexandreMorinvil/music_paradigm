@@ -42,7 +42,13 @@ const schema = new Schema(
         progressRatio: {
             type: Number,
             default: undefined,
-        }
+        },
+
+        // Critical backup
+        criticalBackup: {
+            type: Object, // Contains { cursor, state }
+            default: undefined
+        },
     },
     {
         strict: false,

@@ -81,4 +81,8 @@ export default {
 	reproductionSeed: (state) => {
 		return state.state.settings.reproductionSeed;
 	},
+
+	hasJustEnteredTheMainFlow: (state) => {
+		return state.hasJustEnteredTheMainFlow;
+	}
 };

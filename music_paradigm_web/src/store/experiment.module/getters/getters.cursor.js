@@ -1,7 +1,7 @@
 // Getters for the experiment flow's information
 export default {
-	isInMainFlow: (state) => {
-		return !state.cursor.flag.isInPrelude && !state.cursor.flag.isInConclusion;
+	isInMainFlow: (state, getters) => {
+		return !state.cursor.flag.isInPrelude && !state.cursor.flag.isInConclusion && !getters.isInTimeUp;
 	},
 
 	isInPrelude: (state) => {

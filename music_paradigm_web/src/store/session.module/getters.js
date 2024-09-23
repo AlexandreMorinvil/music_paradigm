@@ -43,6 +43,11 @@ export default {
 		return state.sessionInformation.previousTimeIndicated || 0;
 	},
 
+	// HACK
+	sessionCriticalBackup: (state) => {
+		return state.sessionInformation.criticalBackup || null;
+	},
+
 	assignedParameters: (state) => {
 		return state.sessionInformation.assignedParameters || {};
 	},
