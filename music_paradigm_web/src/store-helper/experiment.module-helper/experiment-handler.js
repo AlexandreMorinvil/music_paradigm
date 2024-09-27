@@ -266,6 +266,7 @@ function setExperimentFlow(state) {
 	// Deep copying the flow
 	const { flow, flowPrelude, flowConclusion, timeUpState } = state.experiment;
 	state.flow = JSON.parse(JSON.stringify(flow));
+	state.mainFlow = state.flow;
 
 	// Deep copying the prelude flow
 	const flowPreludeToAssign = Array.isArray(flowPrelude) ? flowPrelude : [];

@@ -90,5 +90,22 @@ export default {
 
 	cdnUrl: (state) => {
 		return state.sessionInformation.cdnUrl;
+	},
+
+	// Used for the preloader
+	baseResourcesFolder: (state) => {
+		return state.sessionInformation.experiment.folder;
+	},
+
+	initialFlow: (state) => {
+		return state.sessionInformation.experiment.flow;
+	},
+
+	initialFlowPrelude: (state) => {
+		return state.sessionInformation.experiment.flowPrelude || [];
+	},
+
+	initialReachedIndex: (state) => {
+		return state.sessionInformation?.previousCursor?.current?.index ?? 0;
 	}
 };

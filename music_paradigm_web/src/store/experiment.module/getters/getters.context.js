@@ -84,5 +84,5 @@ export default {
 
 	hasJustEnteredTheMainFlow: (state) => {
 		return state.hasJustEnteredTheMainFlow;
-	}
+	},
 };

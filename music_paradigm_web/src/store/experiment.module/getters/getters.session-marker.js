@@ -31,5 +31,12 @@ export default {
 	// Critical backup
 	criticalBackup: (state) => {
 		return state.criticalBackup;
+	},
+
+	// Current index
+	markerCurrentIndex: (state) => {
+		// If there is a critical marker, we use it
+		const { cursor } = state.criticalBackup;
+		return cursor?.current?.index ?? 0;
 	}
 };

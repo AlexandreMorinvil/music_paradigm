@@ -24,6 +24,7 @@ import { pvt } from './pvt.module';
 import { question } from './question.module';
 import { session } from './session.module';
 import { soundGenerator } from './sound-generator.module';
+import { resourcesPreloader } from './resource-preloader.module';
 import { survey } from './survey.module';
 import { writting } from './writting.module';
 
@@ -51,6 +52,7 @@ export default new Vuex.Store({
 		piano,
 		pvt,
 		question,
+		resourcesPreloader,
 		session,
 		soundGenerator,
 		survey,

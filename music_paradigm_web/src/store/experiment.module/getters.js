@@ -4,6 +4,7 @@ import sessionMakerGetters from './getters/getters.session-marker';
 import containGetters from './getters/getters.contain';
 import contextGetters from './getters/getters.context';
 import currentStateGetters from './getters/getters.current-state';
+import flow from './getters/getters.flow';
 import globalSessionGetters from './getters/getters.global-session';
 import logGetters from './getters/getters.log';
 
@@ -32,6 +33,7 @@ export default {
 	...globalSessionGetters,
 	...cursorGetters,
 	...currentStateGetters,
+	...flow,
 
 	// Interactive components
 	...interactiveControllerGetters,

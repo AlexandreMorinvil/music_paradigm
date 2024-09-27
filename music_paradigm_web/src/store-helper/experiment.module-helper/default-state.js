@@ -73,8 +73,11 @@ function DEFAULT_EXPERIMENT_STATE_VALUES() {
 		// The conclusion sequence of the experiment
 		flowConclusion: [], // Those steps are allways put at the end of a session (when the end is reached or through a timeout)
 
-		// The sequence of the experiment
+		// (CURRENT flow) The sequence of the experiment
 		flow: [], // Description of the different steps of the experiment
+
+		// Main flow
+		mainFlow: [],
 
 		// The state to reach upon timeout
 		timeUpState: null,

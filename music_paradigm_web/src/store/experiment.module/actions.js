@@ -13,8 +13,18 @@ export default {
 	setStartingPoint: ({ commit }, cursor = null) => {
 		commit('initCursor', cursor);
 	},
-	initExperiment: ({ commit }, initialState = null) => {
+	initExperiment: ({ commit, dispatch, getters }, initialState = null) => {
 		commit('initExperiment', initialState);
+		dispatch(
+			'resourcesPreloader/initializePreloading',
+			{
+				folder: getters.baseResourcesFolder,
+				flow: getters.mainFlow,
+				index: getters.markerCurrentIndex,
+				flowPrelude: getters.preludeFlow,
+			},
+			{ root: true }
+		);
 	},
 	initInitialTime: ({ commit }, initialTime) => {
 		commit('initInitialTime', initialTime);
@@ -41,21 +51,38 @@ export default {
 	},
 
 	// Cursor handling actions
-	goNextStep: ({ commit }) => {
+	goNextStep: ({ commit, dispatch, getters }) => {
 		commit('moveNextStep');
+		dispatch('resourcesPreloader/updatePreloader', {
+			folder: getters.baseResourcesFolder,
+			flow: getters.currentFlow,
+			index: getters.currentIndex,
+			isMainFlow: getters.isInMainFlow,
+		}, { root: true });
 	},
 
-	goPreviousInnerStep: ({ commit }) => {
+	goPreviousInnerStep: ({ commit, dispatch, getters }) => {
 		commit('movePreviousInnerStep');
+		dispatch('resourcesPreloader/updatePreloader', {
+			flow: getters.currentFlow,
+			index: getters.currentIndex,
+			isMainFlow: getters.isInMainFlow,
+		}, { root: true });
 	},
 
-	goStepPostSkip: ({ commit }) => {
+	goStepPostSkip: ({ commit, dispatch, getters }) => {
 		commit('movePostSkip');
+		dispatch('resourcesPreloader/updatePreloader', {
+			flow: getters.currentFlow,
+			index: getters.currentIndex,
+			isMainFlow: getters.isInMainFlow,
+		}, { root: true });
 	},
 
 	// End actions
-	leaveExperiment: ({ commit }) => {
+	leaveExperiment: ({ commit, dispatch }) => {
 		commit('leaveExperiment');
+		dispatch('resourcesPreloader/reset', undefined, { root: true });
 	},
 
 	// Record actions
@@ -71,7 +98,12 @@ export default {
 	trackExperimentTimeIndicated: ({ commit }, timeIndicated) => {
 		commit('trackExperimentTimeIndicated', timeIndicated);
 	},
-	setTimesUpStatus: ({ commit }) => {
-		commit('setTimesUpStatus')
+	setTimesUpStatus: ({ commit, dispatch, getters  }) => {
+		commit('setTimesUpStatus');
+		dispatch('resourcesPreloader/updatePreloader', {
+			flow: getters.currentFlow,
+			index: getters.currentIndex,
+			isMainFlow: getters.isInMainFlow,
+		}, { root: true });
 	}
 };

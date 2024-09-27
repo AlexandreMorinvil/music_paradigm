@@ -15,4 +15,8 @@ export default {
 	experimentVersion: (state) => {
 		return state.description.version || 0;
 	},
+
+	baseResourcesFolder: (state) => {
+		return state.description.folder;
+	},
 };

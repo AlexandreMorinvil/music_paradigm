@@ -7,9 +7,14 @@ export default {
 
 	// eslint-disable-next-line no-unused-vars
 	urlExperimentResource: (_, __, ___, rootGetters) => (directory) => {
+		// Verify if a CDN is being used
+		let resourceUrl = null;
 		if (rootGetters['cdn/canUseCdn']) 
-			return rootGetters['cdn/cdnUrl'] + '/experiment_resources/' + directory;
+			resourceUrl = rootGetters['cdn/cdnUrl'] + '/experiment_resources/' + directory;
 		else
-			return url.experimentResource(directory);
+			resourceUrl = url.experimentResource(directory);
+
+		// Return the obejct URL if the resource was preloaded
+		return rootGetters['resourcesPreloader/optimizedResourceUrl'](resourceUrl);
 	},
 };
