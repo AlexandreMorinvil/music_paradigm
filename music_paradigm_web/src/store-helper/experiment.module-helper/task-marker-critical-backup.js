@@ -23,7 +23,7 @@ function performCriticalAdjustment(state) {
     // Verify is the index of the current cursor is behind the index.
     // If it is, we force the session to return to the critical position in the task.
     const currentIndex = cursor.current.index;
-    const criticalIndex = criticalCursor?.current.index;
+    const criticalIndex = criticalCursor?.current?.index;
     if (criticalIndex && currentIndex < criticalIndex) {
         state.state = JSON.parse(JSON.stringify(criticalState));
         state.cursor = JSON.parse(JSON.stringify(criticalCursor));
@@ -39,7 +39,7 @@ function updateCriticalBackup(state) {
     // If the index of the cursor is ahead or eaqual to the critical cursor, we update the critical
     // backup
     const currentIndex = cursor.current.index;
-    const criticalIndex = criticalCursor?.current.index;
+    const criticalIndex = criticalCursor?.current?.index;
     if (!criticalIndex || currentIndex >= criticalIndex) {
         state.criticalBackup = { state: currentState, cursor: cursor };
     }

@@ -44,7 +44,7 @@ export class Preloader {
 
         try {
             // Fetch the file from the URL
-            console.log('Preloading:', url);
+            // console.log('Preloading:', url);
             const response = await fetch(url, {
                 headers: {
                   'X-Requested-With': 'XMLHttpRequest'
