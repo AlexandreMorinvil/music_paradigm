@@ -185,7 +185,8 @@
       "cue": {
         "footnote-no-melody": "There is no melody to be played, the session will automatically go to the next step in {second} second | There is no melody to be played, the session will automatically go to the next step in {second} seconds",
         "footnote-after-melody": "The session will automatically go to the next step after the muscial cue",
-        "footnote-after-wait-click": "Press the space bar and listen to the melody"
+        "footnote-after-wait-click": "Press the space bar and listen to the melody",
+        "unexpected-issue-needs-replay": "An unexpected issue occured, click here to replay the audio"
       },
       "end": {
         "footnote-press-any-key": "Press any piano key or the space bar to end the session",

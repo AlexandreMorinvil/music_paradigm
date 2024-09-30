@@ -159,7 +159,8 @@
       "cue": {
         "footnote-no-melody": "Det finns ingen melodi att spela,\nsessionen kommer automatiskt gå vidare till nästa moment om {second} sekund | Det finns ingen melodi att spela,\nsessionen kommer automatiskt gå vidare till nästa moment om {second} sekunder",
         "footnote-after-melody": "REMOVE",
-        "footnote-after-wait-click": "Tryck på mellanslagstangenten och lyssna på melodin"
+        "footnote-after-wait-click": "Tryck på mellanslagstangenten och lyssna på melodin",
+        "unexpected-issue-needs-replay": "Ett oväntat problem uppstod, klicka här för att spela upp melodin igen"
       },
       "end": {
         "footnote-press-any-key": "Tryck på valfri piano- eller datortangent för att avsluta sessionen.",

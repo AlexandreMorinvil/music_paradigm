@@ -5,6 +5,10 @@
 		<clicker-area-component class="virtual-controller-area state-section" />
 		<piano-area-component class="virtual-controller-area state-section" />
 		<keyboard-area-component class="virtual-controller-area state-section" />
+		<div v-if="isStayingLongerThanExpected && !hasRestartedTheCueToFixIssue"
+			v-on:click="() => handleClickOnReplayButton()" class="fix-issue-replay-button">
+			{{ $t('views.experiment.cue.unexpected-issue-needs-replay') }}
+		</div>
 	</div>
 </template>
 
@@ -44,8 +48,11 @@ export default {
 	},
 	data() {
 		return {
+			timeoutUniqueId: null,
 			errorAutomaticTransitionMs: 5,
 			isSpacebarPressRecorded: false,
+			isStayingLongerThanExpected: false,
+			hasRestartedTheCueToFixIssue: false,
 		};
 	},
 	computed: {
@@ -88,11 +95,25 @@ export default {
 		manageHavingNoMidiFile() {
 			ExperimentEventBus.$emit(experimentEvents.EVENT_STATE_ENDED);
 		},
+		playCue() {
+			this.playMidiFile();
+
+			// If the next state is not reached 2 seconds after the expected duration of the audio,
+			// we prompt a button to replay the melody
+			this.timeoutUniqueId = setTimeout(() => {
+				this.isStayingLongerThanExpected = true;
+			}, this.midiFileTotalDuration + 2000);
+		},
+		handleClickOnReplayButton() {
+			this.stopPlayingMidiFile();
+			setTimeout(() => this.playMidiFile(), 100);
+			this.hasRestartedTheCueToFixIssue = true;
+		}
 	},
 	beforeMount() {
 		this.updateFootnote();
 		if (this.cueEnablePianoAfterCue)
-			this.pausePiano()
+			this.pausePiano();
 	},
 	mounted() {
 		this.addPlayerEndOfFileAction(this.handleEndOfMidiFile);
@@ -100,6 +121,7 @@ export default {
 	beforeDestroy() {
 		this.stopPlayingMidiFile();
 		this.removePlayerEndOfFileAction(this.handleEndOfMidiFile);
+		clearTimeout(this.timeoutUniqueId);
 	},
 	watch: {
 		isMidiFileLoaded: {
@@ -107,7 +129,7 @@ export default {
 			handler: function (isReady) {
 				if (!this.cueWaitForClick && isReady) {
 					setTimeout(() => { 
-						this.playMidiFile();
+						this.playCue();
 						setTimeout(this.unPausePiano, this.midiFileTotalDuration - 2000);
 					}, this.cuePresentationDelay);
 				}
@@ -117,7 +139,7 @@ export default {
 		},
 		isSpaceBarPressed(isPressed) {
 			if (this.cueWaitForClick && this.isMidiFileLoaded && isPressed && !this.isSpacebarPressRecorded) {
-				this.playMidiFile();
+				this.playCue();
 				this.isSpacebarPressRecorded = true;
 			}
 		},
@@ -139,5 +161,28 @@ export default {
 .virtual-controller-area {
 	flex-grow: 1;
 	height: 50%;
+}
+
+.fix-issue-replay-button {
+	/* Position */
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	/* Appearance */
+	z-index: 10;
+	width: 50vw;
+	height: 35vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-image: radial-gradient(rgb(200, 165, 0), rgb(200, 130, 30));
+	border-radius: 20px;
+	text-align: center;
+
+	/* Font-size */
+	font-size: 2em;
 }
 </style>
