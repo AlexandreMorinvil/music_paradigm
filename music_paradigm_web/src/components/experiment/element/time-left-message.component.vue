@@ -12,6 +12,7 @@ export default {
 			isToBeDisplayed: false,
 			messageDisplayTimeInSeconds: 5,
 			timeoutUniqueIndex: null,
+			VOLUME_LEVEL: 0.05,
 		};
 	},
 	methods: {
@@ -19,6 +20,11 @@ export default {
 			clearTimeout(this.timeoutUniqueIndex);
 			this.message = message;
 			this.isToBeDisplayed = true;
+
+			// Make a beep sound
+			const sound = new Audio('beep-count.wav');
+			sound.volume = this.VOLUME_LEVEL;
+			sound.play();
 		},
 		hideMessage() {
 			this.isToBeDisplayed = false;
@@ -53,5 +59,8 @@ export default {
 	padding: 20px;
 	border-radius: 10px;
 	opacity: 0.5;
+
+	font-size: 3em;
+	z-index: 1;
 }
 </style>
